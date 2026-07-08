@@ -11767,6 +11767,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/forms/testing-that-z-coerce-number-converts-an-empty-string-to-zero-not-nan': {
+    apis: ['z.coerce.number()', 'Number()', 'safeParse()'],
+    related: [
+      { label: 'Forms & Validation (overview)', route: '/react/forms' },
+      { label: 'refine() Path Placement', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' },
+      { label: 'Advanced Hooks', route: '/react/hooks-advanced' },
+    ],
+    tip: 'Number("") is 0 in JavaScript — z.coerce.number() inherits this, so an empty numeric field coerces to a valid 0 unless the schema\'s bounds happen to exclude it.',
+    docs: [
+      { label: 'Zod Docs — Coercion', url: 'https://zod.dev/?id=coercion-for-primitives' },
+      { label: 'Zod Docs',            url: 'https://zod.dev' },
+    ],
+    resources: [
+      { label: 'colinhacks/zod', url: 'https://github.com/colinhacks/zod', badge: 'code' },
+    ],
+    gotchas: [
+      'min(0) or no minimum at all silently accepts an empty field as a valid zero.',
+      'A genuinely required numeric field needs an explicit non-empty check, not just numeric bounds.',
+      'z.string().min(1).pipe(z.coerce.number()) is one way to reject the empty case before coercion.',
+    ],
+  },
+
+  'react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too': {
+    apis: ['.refine()', 'path option', 'formState.errors'],
+    related: [
+      { label: 'Forms & Validation (overview)', route: '/react/forms' },
+      { label: 'z.coerce.number() Empty String', route: '/react/forms/testing-that-z-coerce-number-converts-an-empty-string-to-zero-not-nan' },
+      { label: 'Real-Time Validation Re-renders', route: '/react/forms/testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf' },
+    ],
+    tip: 'path in .refine() is a manual, one-sided assignment — only the listed field(s) receive the error, regardless of how many fields are logically involved in the check.',
+    docs: [
+      { label: 'Zod Docs — refine', url: 'https://zod.dev/?id=refine' },
+      { label: 'RHF Docs — Errors', url: 'https://react-hook-form.com/docs/useform/formstate' },
+    ],
+    resources: [
+      { label: 'colinhacks/zod', url: 'https://github.com/colinhacks/zod', badge: 'code' },
+    ],
+    gotchas: [
+      'password shows no error at all in the main page\'s own exact confirm-password example.',
+      'Listing multiple fields in path flags all of them; omitting path attaches the error to the schema root instead.',
+      'An empty formState.errors.<field> only proves that field passed its OWN rule, not every cross-field check.',
+    ],
+  },
+
+  'react/forms/testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf': {
+    apis: ['mode: \'onChange\'', 'formState.isValid', 'useForm()'],
+    related: [
+      { label: 'Forms & Validation (overview)', route: '/react/forms' },
+      { label: 'refine() Path Placement', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' },
+      { label: 'Context Selector Memo (Advanced Hooks)', route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
+    ],
+    tip: 'RHF\'s default mode avoids per-keystroke re-renders — switching to mode: \'onChange\' for real-time validation reintroduces a re-render on every keystroke for any component reading formState.',
+    docs: [
+      { label: 'RHF Docs — useForm mode', url: 'https://react-hook-form.com/docs/useform' },
+      { label: 'RHF Docs — formState',    url: 'https://react-hook-form.com/docs/useform/formstate' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+    ],
+    gotchas: [
+      'formState is a single object covering the whole form — reading any part of it re-renders on every validity change, not just for the field being typed into.',
+      'The "no re-render per keystroke" pitch is specific to the default onSubmit mode.',
+      'This is a real trade-off, not a reason to avoid real-time validation — just something to budget for.',
+    ],
+  },
+
   'react/context': {
     apis: ['createContext()', 'useContext()', 'Context.Provider', 'useReducer + Context'],
     related: [

@@ -1219,6 +1219,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Memoizing a Context Selector Doesn’t Stop the Consumer Re-rendering', route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
     { label: 'A Module-Level Variable Leaks State Across Custom Hook Instances', route: '/react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances' },
   ],
+  'react-forms': [
+    { label: 'z.coerce.number() Converts an Empty String to Zero', route: '/react/forms/testing-that-z-coerce-number-converts-an-empty-string-to-zero-not-nan' },
+    { label: 'refine()’s path Option Only Flags confirm, Not password Too', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' },
+    { label: 'Real-Time Validation Mode Reintroduces Per-Keystroke Re-renders', route: '/react/forms/testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf' },
+  ],
 };
 
 @Component({

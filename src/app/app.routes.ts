@@ -1513,7 +1513,12 @@ export const routes: Routes = [
       { path: 'testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering', loadComponent: () => import('./components/frontend/react/hooks-advanced/subtopics/context-selector-memo-still-rerenders/context-selector-memo-still-rerenders').then(m => m.ContextSelectorMemoStillRerendersSubtopic) },
       { path: 'testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances', loadComponent: () => import('./components/frontend/react/hooks-advanced/subtopics/module-level-var-leaks-across-hook-instances/module-level-var-leaks-across-hook-instances').then(m => m.ModuleLevelVarLeaksAcrossHookInstancesSubtopic) },
     ]},
-    { path: 'forms',          loadComponent: () => import('./components/frontend/react/forms/forms').then(m => m.ReactForms) },
+    { path: 'forms', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/forms/forms').then(m => m.ReactForms) },
+      { path: 'testing-that-z-coerce-number-converts-an-empty-string-to-zero-not-nan', loadComponent: () => import('./components/frontend/react/forms/subtopics/zod-coerce-number-empty-string/zod-coerce-number-empty-string').then(m => m.ZodCoerceNumberEmptyStringSubtopic) },
+      { path: 'testing-that-refines-path-option-only-flags-confirm-not-password-too', loadComponent: () => import('./components/frontend/react/forms/subtopics/refine-path-only-flags-confirm/refine-path-only-flags-confirm').then(m => m.RefinePathOnlyFlagsConfirmSubtopic) },
+      { path: 'testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf', loadComponent: () => import('./components/frontend/react/forms/subtopics/rhf-onchange-mode-reintroduces-rerenders/rhf-onchange-mode-reintroduces-rerenders').then(m => m.RhfOnchangeModeReintroducesRerendersSubtopic) },
+    ]},
     { path: 'context',          loadComponent: () => import('./components/frontend/react/context/context').then(m => m.ReactContext) },
     { path: 'state-management', loadComponent: () => import('./components/frontend/react/state-management/state-management').then(m => m.ReactStateManagement) },
     { path: 'router',           loadComponent: () => import('./components/frontend/react/router/router').then(m => m.ReactRouter) },

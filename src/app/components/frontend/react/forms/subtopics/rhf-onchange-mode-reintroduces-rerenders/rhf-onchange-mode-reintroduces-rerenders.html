@@ -1,0 +1,50 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Forms & Validation"
+    topicRoute="/react/forms"
+    subtopicLabel="Real-Time Validation Mode Reintroduces Per-Keystroke Re-renders" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Real-Time Validation Mode Reintroduces Per-Keystroke Re-renders in RHF</h1>
+  <p class="page-subtitle">
+    The main page never checks its own "RHF avoids re-rendering on every keystroke" claim against its
+    separate recommendation to switch to real-time validation — this checks whether the two actually hold
+    together.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="React Hook Form 7+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two identical forms, differing only in <code>mode</code> — <code>'onSubmit'</code> (default) versus
+      <code>'onChange'</code> (the main page's own recommended real-time validation setting) — each with a
+      visible render counter.
+    </p>
+    <app-live-playground
+      title="RHF validation mode and re-render count"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own React Hook
+      Form and Zod claims — an empty numeric field's silent coercion, refine()'s one-sided error placement,
+      and now the real cost of the page's own recommended validation timing.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Forms & Validation"
+    topicRoute="/react/forms"
+    [prev]="{ label: 'refine()’s path Option Only Flags confirm, Not password Too', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' }" />
+</div>

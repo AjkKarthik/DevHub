@@ -1,0 +1,47 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Forms & Validation"
+    topicRoute="/react/forms"
+    subtopicLabel="z.coerce.number() Converts an Empty String to Zero, Not NaN" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That z.coerce.number() Converts an Empty String to Zero, Not NaN</h1>
+  <p class="page-subtitle">
+    The main page's fix only ever shows a filled-in value ("25" → 25) — this checks what happens to the
+    natural empty state of a cleared number input, using JavaScript's own Number("") quirk.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Zod 3.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The same age field validated against two schemas differing only in their minimum bound —
+      <code>min(0)</code> and the main page's own <code>min(1)</code>.
+    </p>
+    <app-live-playground
+      title="z.coerce.number() and an empty string input"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own coerce example to its unstated edge case, before checking a related
+      gap in cross-field error placement with <code>.refine()</code> in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Forms & Validation"
+    topicRoute="/react/forms"
+    [next]="{ label: 'refine()’s path Option Only Flags confirm, Not password Too', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' }" />
+</div>
