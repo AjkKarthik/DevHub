@@ -1199,6 +1199,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'noImplicitAny Doesn’t Restrict Explicit any', route: '/typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any' },
     { label: 'A Leaf Module’s Untyped Import Leaks any', route: '/typescript/strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any' },
   ],
+  'ts-performance': [
+    { label: 'DeepPartial’s Depth Counter Makes Deep Fields Required', route: '/typescript/ts-performance/testing-that-deeppartials-depth-counter-makes-deep-fields-required' },
+    { label: 'Forgetting as const Collapses the Color Union', route: '/typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string' },
+    { label: 'skipLibCheck Only Skips .d.ts, Not Content', route: '/typescript/ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content' },
+  ],
 };
 
 @Component({

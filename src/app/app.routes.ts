@@ -1484,7 +1484,12 @@ export const routes: Routes = [
       { path: 'testing-that-noimplicitany-doesnt-restrict-explicit-any', loadComponent: () => import('./components/frontend/typescript/strict-migration/subtopics/testing-that-noimplicitany-doesnt-restrict-explicit-any/testing-that-noimplicitany-doesnt-restrict-explicit-any').then(m => m.TestingThatNoimplicitanyDoesntRestrictExplicitAnySubtopic) },
       { path: 'testing-that-a-leaf-modules-untyped-import-leaks-any', loadComponent: () => import('./components/frontend/typescript/strict-migration/subtopics/testing-that-a-leaf-modules-untyped-import-leaks-any/testing-that-a-leaf-modules-untyped-import-leaks-any').then(m => m.TestingThatALeafModulesUntypedImportLeaksAnySubtopic) },
     ] },
-    { path: 'ts-performance',          loadComponent: () => import('./components/frontend/typescript/ts-performance/ts-performance').then(m => m.TsPerformance) },
+    { path: 'ts-performance', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/ts-performance/ts-performance').then(m => m.TsPerformance) },
+      { path: 'testing-that-deeppartials-depth-counter-makes-deep-fields-required', loadComponent: () => import('./components/frontend/typescript/ts-performance/subtopics/testing-that-deeppartials-depth-counter-makes-deep-fields-required/testing-that-deeppartials-depth-counter-makes-deep-fields-required').then(m => m.TestingThatDeeppartialsDepthCounterMakesDeepFieldsRequiredSubtopic) },
+      { path: 'testing-that-forgetting-as-const-collapses-the-color-union-to-string', loadComponent: () => import('./components/frontend/typescript/ts-performance/subtopics/testing-that-forgetting-as-const-collapses-the-color-union-to-string/testing-that-forgetting-as-const-collapses-the-color-union-to-string').then(m => m.TestingThatForgettingAsConstCollapsesTheColorUnionToStringSubtopic) },
+      { path: 'testing-that-skiplibcheck-only-skips-d-ts-extension-not-content', loadComponent: () => import('./components/frontend/typescript/ts-performance/subtopics/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content').then(m => m.TestingThatSkiplibcheckOnlySkipsDTsExtensionNotContentSubtopic) },
+    ]},
     { path: 'cheatsheet',              loadComponent: () => import('./components/frontend/typescript/cheatsheet/cheatsheet').then(m => m.TsCheatsheet) },
     { path: 'interview-prep',          loadComponent: () => import('./components/frontend/typescript/interview-prep/interview-prep').then(m => m.TsInterviewPrep) },
   ] },

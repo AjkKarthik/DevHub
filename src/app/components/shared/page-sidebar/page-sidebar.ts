@@ -11253,6 +11253,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/ts-performance/testing-that-deeppartials-depth-counter-makes-deep-fields-required': {
+    apis: ['D extends number = 5', 'Prev[D]', 'conditional types', 'mapped types'],
+    related: [
+      { label: 'TypeScript Performance (overview)', route: '/typescript/ts-performance' },
+      { label: 'as const Union Fragility',           route: '/typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string' },
+      { label: 'Conditional Types',                  route: '/typescript/conditional-types' },
+    ],
+    tip: 'A depth-bounded recursive type trades correctness at the boundary for speed — fields past the limit come back exactly as originally declared, required or not.',
+    docs: [
+      { label: 'Conditional Types', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html' },
+      { label: 'Performance Wiki',  url: 'https://github.com/microsoft/TypeScript/wiki/Performance' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'The base case `D extends 0 ? T : ...` returns T completely unchanged — no mapped type runs at that level or any level beneath it.',
+      'A depth-5 counter still makes 5 levels of nesting optional (D=5,4,3,2,1); the 6th level is where the guarantee silently stops.',
+      'Raising the depth counter to cover deeper objects reintroduces the exact language-server cost the fix was written to solve.',
+    ],
+  },
+
+  'typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string': {
+    apis: ['as const', 'typeof', 'indexed access types', '[number]'],
+    related: [
+      { label: 'TypeScript Performance (overview)', route: '/typescript/ts-performance' },
+      { label: 'DeepPartial Depth Counter',          route: '/typescript/ts-performance/testing-that-deeppartials-depth-counter-makes-deep-fields-required' },
+      { label: 'skipLibCheck Extension Rule',        route: '/typescript/ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content' },
+    ],
+    tip: 'Without as const, an array literal of strings infers as string[] — typeof arr[number] then resolves to plain string, not a literal union.',
+    docs: [
+      { label: 'const Assertions', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions' },
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Dropping as const from the array produces no compile error anywhere — the resulting type just silently widens to string.',
+      'A call site that relied on the narrow union to catch typos loses that protection completely, with the code still "looking" type-safe.',
+      'This is easy to trigger accidentally during a refactor that copies the array literal without noticing the trailing as const.',
+    ],
+  },
+
+  'typescript/ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content': {
+    apis: ['skipLibCheck', '.d.ts', 'declare'],
+    related: [
+      { label: 'TypeScript Performance (overview)', route: '/typescript/ts-performance' },
+      { label: 'as const Union Fragility',           route: '/typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string' },
+      { label: 'Declaration Files',                  route: '/typescript/declarations' },
+    ],
+    tip: 'skipLibCheck keys strictly on the .d.ts file extension — a .ts file with identical declare-only content gets zero exemption.',
+    docs: [
+      { label: 'TSConfig Reference — skipLibCheck', url: 'https://www.typescriptlang.org/tsconfig/#skipLibCheck' },
+      { label: 'Declaration Files Handbook',         url: 'https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'A stray declare block placed in a regular .ts file (instead of a proper .d.ts file) is fully type-checked, not exempted.',
+      'The exact same undefined-type-name error is silent in a .d.ts file but fully reported in a .ts file with identical content.',
+      'Moving declarations out of a .d.ts file during a reorganization can turn a clean build into a failing one with no code logic changed.',
+    ],
+  },
+
   'typescript/cheatsheet': {
     apis: ['Partial<T>', 'Record<K,V>', 'ReturnType<F>', 'keyof', 'typeof', 'infer', 'satisfies', 'as const'],
     related: [

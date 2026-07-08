@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TypeScript Performance"
+    topicRoute="/typescript/ts-performance"
+    subtopicLabel="skipLibCheck Only Skips .d.ts, Not Content" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That skipLibCheck Only Skips the .d.ts Extension, Not Declaration-Like Content</h1>
+  <p class="page-subtitle">
+    The main page describes skipLibCheck in terms of "declaration files" — this tests whether that exemption
+    is based on a file's extension or its content, using two files with identical declare statements.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="TypeScript 2.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      A genuine <code>.d.ts</code> file and a <code>.ts</code> file with byte-for-byte identical declaration
+      content, both referencing the same undefined type name.
+    </p>
+    <app-live-playground
+      title="skipLibCheck — extension vs content"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own performance
+      fixes — the depth-counter's correctness cost, the as const union's fragility, and now
+      skipLibCheck's precise exemption rule.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TypeScript Performance"
+    topicRoute="/typescript/ts-performance"
+    [prev]="{ label: 'Forgetting as const Collapses the Color Union', route: '/typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string' }" />
+</div>

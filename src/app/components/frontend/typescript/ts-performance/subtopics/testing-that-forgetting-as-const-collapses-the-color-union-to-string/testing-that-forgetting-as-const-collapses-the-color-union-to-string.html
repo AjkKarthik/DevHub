@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TypeScript Performance"
+    topicRoute="/typescript/ts-performance"
+    subtopicLabel="Forgetting as const Collapses the Color Union" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Forgetting as const Collapses the Color Union to string</h1>
+  <p class="page-subtitle">
+    The main page's "same safety, less TypeScript work" fix for a large string-literal union rests entirely
+    on one keyword — drop it, and the type silently downgrades to plain string with no compiler warning.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 3.4+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Compare the main page's own <code>as const</code> fix against the identical pattern with that one
+      keyword removed.
+    </p>
+    <app-live-playground
+      title="as const and the color union — testing the safety guarantee"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This shows how fragile the union-shrinking fix is to a single dropped keyword, before checking a
+      different silent gap in a checking-related compiler flag in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TypeScript Performance"
+    topicRoute="/typescript/ts-performance"
+    [prev]="{ label: 'DeepPartial’s Depth Counter Makes Deep Fields Required', route: '/typescript/ts-performance/testing-that-deeppartials-depth-counter-makes-deep-fields-required' }"
+    [next]="{ label: 'skipLibCheck Only Skips .d.ts, Not Content', route: '/typescript/ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content' }" />
+</div>

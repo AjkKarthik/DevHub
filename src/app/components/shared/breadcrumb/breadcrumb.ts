@@ -941,6 +941,9 @@ const TYPESCRIPT_LABELS: Record<string, string> = {
   'strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any': 'noImplicitAny Doesn’t Restrict Explicit any',
   'strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any': 'A Leaf Module’s Untyped Import Leaks any',
   'ts-performance':           'TypeScript Performance',
+  'ts-performance/testing-that-deeppartials-depth-counter-makes-deep-fields-required': 'DeepPartial’s Depth Counter Makes Deep Fields Required',
+  'ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string': 'Forgetting as const Collapses the Color Union',
+  'ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content': 'skipLibCheck Only Skips .d.ts, Not Content',
   'cheatsheet':               'Cheat Sheet',
   'interview-prep':           'Interview Prep',
 };
