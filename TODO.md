@@ -1598,7 +1598,7 @@ off here with a date.
 - [x] `/typescript/unions` — Union & Intersection Types (2026-07-08 — 3 subtopics: testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing, testing-that-the-safe-isuser-fix-still-uses-as-any-twice, testing-that-the-assertion-function-example-never-actually-runs)
 - [x] `/typescript/narrowing` — Type Guards & Narrowing (2026-07-08 — 3 subtopics: testing-that-narrowing-survives-an-unrelated-function-call, testing-that-array-isarray-narrows-to-any-and-loses-element-safety, testing-that-greet-with-an-empty-string-does-not-say-hello-stranger)
 - [x] `/typescript/enums-tuples` — Enums & Tuples (2026-07-08 — 3 subtopics: testing-that-direction-42-returns-undefined-not-a-name, testing-that-const-enum-import-doesnt-throw-in-this-playground, testing-that-minmax-without-return-type-becomes-an-array)
-- [ ] `/typescript/generics` — Generics Fundamentals
+- [x] `/typescript/generics` — Generics Fundamentals (2026-07-08 — 3 subtopics: testing-that-memoize-collapses-nan-and-null-into-the-same-result, testing-that-getinstance-returns-the-same-object-across-different-t, testing-that-getorset-avoids-the-falsy-value-cache-trap — SUBTOPICS map key hub-prefixed to 'ts-generics' due to collision with existing bare 'generics' key from /csharp/generics)
 - [ ] `/typescript/generic-patterns` — Generic Patterns
 - [ ] `/typescript/utility-types` — Utility Types
 - [ ] `/typescript/mapped-types` — Mapped Types
