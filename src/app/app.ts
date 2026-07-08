@@ -1229,6 +1229,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Mega-Context Re-renders Consumers of Unrelated Fields', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
     { label: 'A Toast Container Outside the Provider Can’t Access Notifications', route: '/react/context/testing-that-a-toast-container-outside-the-provider-cant-access-notifications' },
   ],
+  'state-management': [
+    { label: 'A Zustand Computed Selector Re-renders on Every Store Update', route: '/react/state-management/testing-that-a-zustand-computed-selector-rerenders-on-every-store-update' },
+    { label: 'Mutating a useSelector Value Directly Fails Silently', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' },
+    { label: 'Jotai’s atomFamily Shares State for the Same ID', route: '/react/state-management/testing-that-jotais-atomfamily-shares-state-for-the-same-id' },
+  ],
 };
 
 @Component({

@@ -1525,7 +1525,12 @@ export const routes: Routes = [
       { path: 'testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields', loadComponent: () => import('./components/frontend/react/context/subtopics/mega-context-rerenders-unrelated-consumers/mega-context-rerenders-unrelated-consumers').then(m => m.MegaContextRerendersUnrelatedConsumersSubtopic) },
       { path: 'testing-that-a-toast-container-outside-the-provider-cant-access-notifications', loadComponent: () => import('./components/frontend/react/context/subtopics/toast-container-outside-provider-cant-access/toast-container-outside-provider-cant-access').then(m => m.ToastContainerOutsideProviderCantAccessSubtopic) },
     ]},
-    { path: 'state-management', loadComponent: () => import('./components/frontend/react/state-management/state-management').then(m => m.ReactStateManagement) },
+    { path: 'state-management', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/state-management/state-management').then(m => m.ReactStateManagement) },
+      { path: 'testing-that-a-zustand-computed-selector-rerenders-on-every-store-update', loadComponent: () => import('./components/frontend/react/state-management/subtopics/zustand-computed-selector-rerenders-every-update/zustand-computed-selector-rerenders-every-update').then(m => m.ZustandComputedSelectorRerendersEveryUpdateSubtopic) },
+      { path: 'testing-that-mutating-a-useselector-value-directly-fails-silently', loadComponent: () => import('./components/frontend/react/state-management/subtopics/rtk-mutating-useselector-value-directly-fails-silently/rtk-mutating-useselector-value-directly-fails-silently').then(m => m.RtkMutatingUseselectorValueDirectlyFailsSilentlySubtopic) },
+      { path: 'testing-that-jotais-atomfamily-shares-state-for-the-same-id', loadComponent: () => import('./components/frontend/react/state-management/subtopics/jotai-atomfamily-shares-state-for-same-id/jotai-atomfamily-shares-state-for-same-id').then(m => m.JotaiAtomfamilySharesStateForSameIdSubtopic) },
+    ]},
     { path: 'router',           loadComponent: () => import('./components/frontend/react/router/router').then(m => m.ReactRouter) },
     { path: 'tanstack-query',   loadComponent: () => import('./components/frontend/react/tanstack-query/tanstack-query').then(m => m.ReactTanstackQuery) },
     { path: 'performance',      loadComponent: () => import('./components/frontend/react/performance/performance').then(m => m.ReactPerformance) },

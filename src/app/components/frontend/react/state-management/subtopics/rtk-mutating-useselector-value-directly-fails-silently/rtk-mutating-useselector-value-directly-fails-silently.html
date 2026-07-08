@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="State Management"
+    topicRoute="/react/state-management"
+    subtopicLabel="Mutating a useSelector Value Directly Fails Silently" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Mutating a useSelector Value Directly Fails Silently</h1>
+  <p class="page-subtitle">
+    The main page teaches "you can mutate state directly" via Immer without specifying where — this checks
+    what happens when that same instinct is applied to the plain object useSelector returns, outside any
+    reducer.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="Redux Toolkit 1.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The same toggle action performed two ways — the main page's own reducer-based Immer mutation, and a
+      direct mutation of the value <code>useSelector</code> returned.
+    </p>
+    <app-live-playground
+      title="RTK — reducer mutation vs direct useSelector mutation"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This draws the exact boundary of RTK's "mutate directly" convenience, before checking a related
+      shared-state guarantee in Jotai's atomFamily in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="State Management"
+    topicRoute="/react/state-management"
+    [prev]="{ label: 'A Zustand Computed Selector Re-renders on Every Store Update', route: '/react/state-management/testing-that-a-zustand-computed-selector-rerenders-on-every-store-update' }"
+    [next]="{ label: 'Jotai’s atomFamily Shares State for the Same ID', route: '/react/state-management/testing-that-jotais-atomfamily-shares-state-for-the-same-id' }" />
+</div>

@@ -11943,6 +11943,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/state-management/testing-that-a-zustand-computed-selector-rerenders-on-every-store-update': {
+    apis: ['useStore(selector)', 'zustand/shallow', 'Object.is'],
+    related: [
+      { label: 'State Management (overview)', route: '/react/state-management' },
+      { label: 'useSelector Mutation Boundary', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' },
+      { label: 'Context Mega-Context Re-renders', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
+    ],
+    tip: 'A selector that computes a new array/object (like .filter()) defeats Zustand\'s default Object.is comparison — pair it with zustand/shallow or memoize the derivation.',
+    docs: [
+      { label: 'Zustand Docs — Selecting state', url: 'https://zustand-demo.pmnd.rs/' },
+      { label: 'Zustand Docs — shallow',          url: 'https://github.com/pmndrs/zustand/blob/main/docs/guides/prevent-rerenders-with-use-shallow.md' },
+    ],
+    resources: [
+      { label: 'pmndrs/zustand', url: 'https://github.com/pmndrs/zustand', badge: 'code' },
+    ],
+    gotchas: [
+      'This is a general selector-based-state pattern, not unique to Zustand — Redux\'s useSelector has the identical trap.',
+      'The fix is a shallow-equality comparator or memoization, not avoiding selectors entirely.',
+      'A plain field selector is unaffected — only computed/derived selectors need this care.',
+    ],
+  },
+
+  'react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently': {
+    apis: ['useSelector()', 'createSlice()', 'Immer draft'],
+    related: [
+      { label: 'State Management (overview)', route: '/react/state-management' },
+      { label: 'Zustand Computed Selector', route: '/react/state-management/testing-that-a-zustand-computed-selector-rerenders-on-every-store-update' },
+      { label: 'Jotai atomFamily Sharing', route: '/react/state-management/testing-that-jotais-atomfamily-shares-state-for-the-same-id' },
+    ],
+    tip: 'Immer\'s "mutate directly" safety only exists inside a reducer\'s draft Proxy — the plain object useSelector returns has no such tracking, and mutating it directly desyncs the UI silently.',
+    docs: [
+      { label: 'Redux Toolkit Docs — createSlice', url: 'https://redux-toolkit.js.org/api/createslice' },
+      { label: 'Immer Docs',                        url: 'https://immerjs.github.io/immer/' },
+    ],
+    resources: [
+      { label: 'reduxjs/redux-toolkit', url: 'https://github.com/reduxjs/redux-toolkit', badge: 'code' },
+    ],
+    gotchas: [
+      'The mutation genuinely happens at the JS level — the bug is React never learning about it, not the data being wrong.',
+      'A later unrelated re-render can make the stale UI suddenly "catch up," disguising the bug as a timing issue.',
+      'Never mutate a value obtained from useSelector, getState(), or any already-resolved state read.',
+    ],
+  },
+
+  'react/state-management/testing-that-jotais-atomfamily-shares-state-for-the-same-id': {
+    apis: ['atomFamily()', 'atom()', 'useAtom()'],
+    related: [
+      { label: 'State Management (overview)', route: '/react/state-management' },
+      { label: 'useSelector Mutation Boundary', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' },
+      { label: 'Context API', route: '/react/context' },
+    ],
+    tip: 'atomFamily caches by parameter value — two unrelated components calling atomFamily(5) share the exact same atom, not just two atoms that start out looking similar.',
+    docs: [
+      { label: 'Jotai Docs — atomFamily', url: 'https://jotai.org/docs/utilities/family' },
+      { label: 'Jotai Docs',               url: 'https://jotai.org/docs/introduction' },
+    ],
+    resources: [
+      { label: 'pmndrs/jotai', url: 'https://github.com/pmndrs/jotai', badge: 'code' },
+    ],
+    gotchas: [
+      'This differs from useState, which is always scoped per component instance regardless of any argument passed.',
+      'Sharing is by design here — it is what makes atomFamily useful for "one atom per row" patterns that must stay in sync across usages.',
+      'Two separate atom() calls (not atomFamily) would NOT share state, even with identical initial values.',
+    ],
+  },
+
   'react/router': {
     apis: ['createBrowserRouter()', 'loader', 'action', '<Outlet />', 'useFetcher()', 'useNavigate()'],
     related: [
