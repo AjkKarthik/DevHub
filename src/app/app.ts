@@ -1194,6 +1194,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ApiResponse Still Requires data on Error', route: '/typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status' },
     { label: 'setTimeout’s Return Type Depends on Node Types', route: '/typescript/frameworks/testing-that-settimeouts-return-type-depends-on-node-types' },
   ],
+  'strict-migration': [
+    { label: '@ts-expect-error Doesn’t Check Which Error', route: '/typescript/strict-migration/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses' },
+    { label: 'noImplicitAny Doesn’t Restrict Explicit any', route: '/typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any' },
+    { label: 'A Leaf Module’s Untyped Import Leaks any', route: '/typescript/strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any' },
+  ],
 };
 
 @Component({

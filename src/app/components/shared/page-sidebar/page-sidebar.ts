@@ -11172,6 +11172,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/strict-migration/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses': {
+    apis: ['@ts-expect-error', 'diagnostic suppression', 'unused directive'],
+    related: [
+      { label: 'noImplicitAny Doesn’t Restrict Explicit any — next', route: '/typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any' },
+      { label: 'Strict Mode & Migration (overview)', route: '/typescript/strict-migration' },
+    ],
+    tip: '@ts-expect-error only verifies "an error is present" on the next line — it has no memory of which specific error it originally suppressed, so a swapped, unrelated error satisfies it just as well.',
+    docs: [
+      { label: 'TypeScript 3.9 Release Notes', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#-ts-expect-error-comments' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a narrower guarantee than "the original bug is fixed" — code review is still needed on suppressed lines.',
+      'It does catch the specific case the main page describes: the suppression becoming entirely unnecessary.',
+    ],
+  },
+
+  'typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any': {
+    apis: ['noImplicitAny', 'explicit any', '@typescript-eslint/no-explicit-any'],
+    related: [
+      { label: '@ts-expect-error Doesn’t Check Which Error — previous', route: '/typescript/strict-migration/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses' },
+      { label: 'A Leaf Module’s Untyped Import Leaks any — next', route: '/typescript/strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any' },
+      { label: 'Strict Mode & Migration (overview)', route: '/typescript/strict-migration' },
+    ],
+    tip: 'noImplicitAny only checks that SOME annotation is present — an explicit data: any satisfies it exactly as well as a real type, providing zero actual type safety.',
+    docs: [
+      { label: 'no-explicit-any (ESLint)', url: 'https://typescript-eslint.io/rules/no-explicit-any/' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Banning explicit any requires the separate @typescript-eslint/no-explicit-any lint rule, not a compiler flag.',
+      'A codebase with strict: true and no compile errors can still be full of deliberate any annotations.',
+    ],
+  },
+
+  'typescript/strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any': {
+    apis: ['leaf module', 'implicit any', 'return type inference'],
+    related: [
+      { label: 'noImplicitAny Doesn’t Restrict Explicit any — previous', route: '/typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any' },
+      { label: 'Strict Mode & Migration (overview)', route: '/typescript/strict-migration' },
+    ],
+    tip: '"No internal dependencies" does not mean "no dependencies" — a leaf module calling into an untyped external library can silently leak any through its own inferred return type.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a different source than the page\'s own "cascading any" mistake — an external leak, not an internal migration-order problem.',
+      'The fix is explicitly annotating return types for functions that call into untyped external code, even in simple leaf modules.',
+    ],
+  },
+
   'typescript/ts-performance': {
     apis: ['composite: true', 'incremental: true', 'isolatedModules: true', 'skipLibCheck: true', '--listFiles', '--diagnostics', 'project references'],
     related: [

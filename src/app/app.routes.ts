@@ -1478,7 +1478,12 @@ export const routes: Routes = [
       { path: 'testing-that-apiresponse-still-requires-data-on-an-error-status', loadComponent: () => import('./components/frontend/typescript/frameworks/subtopics/testing-that-apiresponse-still-requires-data-on-an-error-status/testing-that-apiresponse-still-requires-data-on-an-error-status').then(m => m.TestingThatApiresponseStillRequiresDataOnAnErrorStatusSubtopic) },
       { path: 'testing-that-settimeouts-return-type-depends-on-node-types', loadComponent: () => import('./components/frontend/typescript/frameworks/subtopics/testing-that-settimeouts-return-type-depends-on-node-types/testing-that-settimeouts-return-type-depends-on-node-types').then(m => m.TestingThatSettimeoutsReturnTypeDependsOnNodeTypesSubtopic) },
     ] },
-    { path: 'strict-migration',        loadComponent: () => import('./components/frontend/typescript/strict-migration/strict-migration').then(m => m.TsStrictMigration) },
+    { path: 'strict-migration', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/strict-migration/strict-migration').then(m => m.TsStrictMigration) },
+      { path: 'testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses', loadComponent: () => import('./components/frontend/typescript/strict-migration/subtopics/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses').then(m => m.TestingThatTsExpectErrorDoesntCheckWhichErrorItSuppressesSubtopic) },
+      { path: 'testing-that-noimplicitany-doesnt-restrict-explicit-any', loadComponent: () => import('./components/frontend/typescript/strict-migration/subtopics/testing-that-noimplicitany-doesnt-restrict-explicit-any/testing-that-noimplicitany-doesnt-restrict-explicit-any').then(m => m.TestingThatNoimplicitanyDoesntRestrictExplicitAnySubtopic) },
+      { path: 'testing-that-a-leaf-modules-untyped-import-leaks-any', loadComponent: () => import('./components/frontend/typescript/strict-migration/subtopics/testing-that-a-leaf-modules-untyped-import-leaks-any/testing-that-a-leaf-modules-untyped-import-leaks-any').then(m => m.TestingThatALeafModulesUntypedImportLeaksAnySubtopic) },
+    ] },
     { path: 'ts-performance',          loadComponent: () => import('./components/frontend/typescript/ts-performance/ts-performance').then(m => m.TsPerformance) },
     { path: 'cheatsheet',              loadComponent: () => import('./components/frontend/typescript/cheatsheet/cheatsheet').then(m => m.TsCheatsheet) },
     { path: 'interview-prep',          loadComponent: () => import('./components/frontend/typescript/interview-prep/interview-prep').then(m => m.TsInterviewPrep) },
