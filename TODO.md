@@ -1603,7 +1603,7 @@ off here with a date.
 - [x] `/typescript/utility-types` — Utility Types (2026-07-08 — 3 subtopics: testing-that-partial-record-of-literal-keys-is-safely-optional, testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to, testing-that-distributiveomit-preserves-per-member-narrowing)
 - [x] `/typescript/mapped-types` — Mapped Types (2026-07-08 — 3 subtopics: testing-that-eventhandlers-wrongly-includes-online, testing-that-stringkeys-excludes-an-optional-string-property, testing-that-optionaltonullable-detects-implicit-undefined — hit a NEW single-brace escaping gotcha, see CLAUDE.md)
 - [x] `/typescript/conditional-types` — Conditional Types (2026-07-08 — 3 subtopics: testing-that-equals-cannot-distinguish-any-from-unknown, testing-that-head-of-an-empty-tuple-hides-undefined-behind-never, testing-that-myreturntype-rejects-a-class-constructor)
-- [ ] `/typescript/template-literal-types` — Template Literal Types
+- [x] `/typescript/template-literal-types` — Template Literal Types (2026-07-08 — 3 subtopics: testing-that-a-let-variable-widens-handlername-to-plain-string, testing-that-dotpath-hits-infinite-recursion-on-self-reference, testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product)
 - [ ] `/typescript/classes` — Classes & Visibility
 - [ ] `/typescript/decorators` — Decorators
 - [ ] `/typescript/tsconfig` — tsconfig Deep Dive
