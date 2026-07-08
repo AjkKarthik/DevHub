@@ -10035,6 +10035,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/narrowing/testing-that-narrowing-survives-an-unrelated-function-call': {
+    apis: ['control flow analysis', 'closures', 'let narrowing'],
+    related: [
+      { label: 'Array.isArray Narrows to any[] — next', route: '/typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety' },
+      { label: 'Type Guards & Narrowing (overview)', route: '/typescript/narrowing' },
+    ],
+    tip: 'An unrelated function call that never references the narrowed variable does not invalidate its narrowing — only referencing it inside a nested closure does.',
+    docs: [
+      { label: 'TypeScript Narrowing', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'JavaScript gives a called function no mechanism to reach into the caller\'s local variables and reassign them.',
+      'The fix inside a closure is simply re-checking the condition at that point, not restructuring the surrounding code.',
+    ],
+  },
+
+  'typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety': {
+    apis: ['Array.isArray', 'any[]', 'element narrowing'],
+    related: [
+      { label: 'Narrowing Survives an Unrelated Call — previous', route: '/typescript/narrowing/testing-that-narrowing-survives-an-unrelated-function-call' },
+      { label: 'greet(‘’) Doesn’t Say Hello, Stranger — next', route: '/typescript/narrowing/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger' },
+      { label: 'Type Guards & Narrowing (overview)', route: '/typescript/narrowing' },
+    ],
+    tip: 'Array.isArray(x) narrows x to any[] — every element is any, not unknown, so element access is completely unchecked without a further narrowing step.',
+    docs: [
+      { label: 'TypeScript lib.es5.d.ts', url: 'https://github.com/microsoft/TypeScript/blob/main/src/lib/es5.d.ts' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Confirming a value is an array does not confirm anything about its elements — a second narrowing pass (e.g. filter with a type predicate) is needed for element safety.',
+      'Code compiling cleanly after Array.isArray does not mean the elements have been validated.',
+    ],
+  },
+
+  'typescript/narrowing/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger': {
+    apis: ['&&', '??', 'nullish coalescing'],
+    related: [
+      { label: 'Array.isArray Narrows to any[] — previous', route: '/typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety' },
+      { label: 'Type Guards & Narrowing (overview)', route: '/typescript/narrowing' },
+    ],
+    tip: '&& returns its own falsy left operand unchanged — for a falsy STRING like "", that means ?? (which only catches null/undefined) never fires.',
+    docs: [
+      { label: 'MDN Nullish Coalescing', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Two individually-accurate comments about && and ?? don\'t reveal what happens when they\'re chained together for a falsy-but-defined value.',
+      'A plain ternary on truthiness (name ? ... : fallback) sidesteps this specific gap entirely.',
+    ],
+  },
+
   'typescript/enums-tuples': {
     apis: ['enum', 'const enum', 'string enum', 'numeric enum', 'tuple', 'labeled tuple', 'rest in tuple'],
     related: [

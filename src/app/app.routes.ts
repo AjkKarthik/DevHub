@@ -1394,7 +1394,12 @@ export const routes: Routes = [
       { path: 'testing-that-the-safe-isuser-fix-still-uses-as-any-twice', loadComponent: () => import('./components/frontend/typescript/unions/subtopics/testing-that-the-safe-isuser-fix-still-uses-as-any-twice/testing-that-the-safe-isuser-fix-still-uses-as-any-twice').then(m => m.TestingThatTheSafeIsuserFixStillUsesAsAnyTwiceSubtopic) },
       { path: 'testing-that-the-assertion-function-example-never-actually-runs', loadComponent: () => import('./components/frontend/typescript/unions/subtopics/testing-that-the-assertion-function-example-never-actually-runs/testing-that-the-assertion-function-example-never-actually-runs').then(m => m.TestingThatTheAssertionFunctionExampleNeverActuallyRunsSubtopic) },
     ] },
-    { path: 'narrowing',               loadComponent: () => import('./components/frontend/typescript/narrowing/narrowing').then(m => m.TsNarrowing) },
+    { path: 'narrowing', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/narrowing/narrowing').then(m => m.TsNarrowing) },
+      { path: 'testing-that-narrowing-survives-an-unrelated-function-call', loadComponent: () => import('./components/frontend/typescript/narrowing/subtopics/testing-that-narrowing-survives-an-unrelated-function-call/testing-that-narrowing-survives-an-unrelated-function-call').then(m => m.TestingThatNarrowingSurvivesAnUnrelatedFunctionCallSubtopic) },
+      { path: 'testing-that-array-isarray-narrows-to-any-and-loses-element-safety', loadComponent: () => import('./components/frontend/typescript/narrowing/subtopics/testing-that-array-isarray-narrows-to-any-and-loses-element-safety/testing-that-array-isarray-narrows-to-any-and-loses-element-safety').then(m => m.TestingThatArrayIsarrayNarrowsToAnyAndLosesElementSafetySubtopic) },
+      { path: 'testing-that-greet-with-an-empty-string-does-not-say-hello-stranger', loadComponent: () => import('./components/frontend/typescript/narrowing/subtopics/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger').then(m => m.TestingThatGreetWithAnEmptyStringDoesNotSayHelloStrangerSubtopic) },
+    ] },
     { path: 'enums-tuples',            loadComponent: () => import('./components/frontend/typescript/enums-tuples/enums-tuples').then(m => m.TsEnumsTuples) },
     { path: 'generics',                loadComponent: () => import('./components/frontend/typescript/generics/generics').then(m => m.TsGenerics) },
     { path: 'generic-patterns',        loadComponent: () => import('./components/frontend/typescript/generic-patterns/generic-patterns').then(m => m.TsGenericPatterns) },

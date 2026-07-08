@@ -1124,6 +1124,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The “Safe” isUser Fix Still Uses as any', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' },
     { label: 'The Assertion Function Example Doesn’t Run', route: '/typescript/unions/testing-that-the-assertion-function-example-never-actually-runs' },
   ],
+  'narrowing': [
+    { label: 'Narrowing Survives an Unrelated Call', route: '/typescript/narrowing/testing-that-narrowing-survives-an-unrelated-function-call' },
+    { label: 'Array.isArray Narrows to any[]', route: '/typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety' },
+    { label: 'greet(‘’) Doesn’t Say Hello, Stranger', route: '/typescript/narrowing/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger' },
+  ],
 };
 
 @Component({
