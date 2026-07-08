@@ -1204,6 +1204,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Forgetting as const Collapses the Color Union', route: '/typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string' },
     { label: 'skipLibCheck Only Skips .d.ts, Not Content', route: '/typescript/ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content' },
   ],
+  'react-basics': [
+    { label: 'Batching Applies to Native Event Listeners', route: '/react/basics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick' },
+    { label: 'Index Keys Leave Stale Text After Prepend', route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' },
+    { label: 'React.memo Alone Doesn’t Stop a Fresh Object Prop', route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
+  ],
 };
 
 @Component({

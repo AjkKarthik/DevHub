@@ -11497,6 +11497,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/basics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick': {
+    apis: ['createRoot()', 'addEventListener', 'useEffect()', 'automatic batching'],
+    related: [
+      { label: 'React Fundamentals (overview)', route: '/react/basics' },
+      { label: 'Index Keys Leave Stale Text',    route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' },
+      { label: 'Core Hooks',                     route: '/react/hooks-core' },
+    ],
+    tip: 'React 18 batching is keyed off the JS task/microtask boundary, not off React\'s own synthetic event dispatcher — it reaches native listeners, timeouts, and promises too.',
+    docs: [
+      { label: 'React 18 Automatic Batching', url: 'https://react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching' },
+      { label: 'React.dev Quick Start',        url: 'https://react.dev/learn' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Pre-React 18, batching only worked inside React\'s own synthetic event dispatcher — a raw addEventListener callback caused one render per setState call.',
+      'unstable_batchedUpdates is no longer necessary in React 18 for this case — automatic batching already covers native listeners.',
+      'This matters directly for third-party libraries that call your state setters from their own DOM listeners.',
+    ],
+  },
+
+  'react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend': {
+    apis: ['key', 'defaultValue', 'reconciliation', 'uncontrolled components'],
+    related: [
+      { label: 'React Fundamentals (overview)', route: '/react/basics' },
+      { label: 'Batching and Native Listeners',  route: '/react/basics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick' },
+      { label: 'React.memo and Object Props',    route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
+    ],
+    tip: 'key={index} makes React identify list items by position, not identity — an uncontrolled input\'s live DOM value stays behind on the wrong reused node after a prepend or reorder.',
+    docs: [
+      { label: 'React Docs — Rendering Lists', url: 'https://react.dev/learn/rendering-lists' },
+      { label: 'Controlled vs Uncontrolled Components', url: 'https://react.dev/reference/react-dom/components/input' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'The rendered label text is correct — it is specifically the uncontrolled input\'s live DOM value that stays behind, mismatched with its label.',
+      'key={index} is only safe for a genuinely static list that never reorders, inserts, or removes items.',
+      'The same root cause also explains lost focus and animation glitches the main page mentions alongside stale input values.',
+    ],
+  },
+
+  'react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render': {
+    apis: ['React.memo()', 'useMemo()', 'Object.is', 'shallow comparison'],
+    related: [
+      { label: 'React Fundamentals (overview)', route: '/react/basics' },
+      { label: 'Index Keys Leave Stale Text',    route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' },
+      { label: 'React Performance',              route: '/react/performance' },
+    ],
+    tip: 'React.memo shallow-compares props with Object.is — it cannot see inside a freshly allocated object to notice the field values are unchanged; the reference itself must be stabilized upstream with useMemo.',
+    docs: [
+      { label: 'React Docs — memo', url: 'https://react.dev/reference/react/memo' },
+      { label: 'React Docs — useMemo', url: 'https://react.dev/reference/react/useMemo' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Wrapping a component in memo() without also stabilizing its object/array/function props buys nothing — the child still re-renders every time.',
+      'memo does support a custom second-argument comparator for deep/custom equality, but the main page\'s fix uses useMemo instead, which is usually simpler.',
+      'memo adds a shallow-comparison cost on every parent render — applying it to components that always receive fresh inline props is pure overhead.',
+    ],
+  },
+
   'react/hooks-core': {
     apis: ['useState()', 'useEffect()', 'useRef()', 'useContext()', 'Rules of Hooks'],
     related: [

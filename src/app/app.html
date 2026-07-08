@@ -2463,7 +2463,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/react/basics"      routerLinkActive="active"><span class="nl-text">React Fundamentals</span>@if(progress.isDone('react-basics')){<span class="nl-done">✓</span>}@if(diff('react-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/basics" routerLinkActive="active">
+        <span class="nl-text">React Fundamentals</span>
+        @if (progress.isDone('react-basics')) {<span class="nl-done">✓</span>}
+        @if (diff('react-basics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('react-basics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('react-basics')"
+                  (click)="toggleSubtopics('react-basics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('react-basics'); as reactBasicsSubs) {
+        @if (isSubtopicsExpanded('react-basics')) {
+          <div class="nav-subtopics">
+            @for (s of reactBasicsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/react/typescript"  routerLinkActive="active"><span class="nl-text">TypeScript &amp; React</span>@if(progress.isDone('react-typescript')){<span class="nl-done">✓</span>}@if(diff('react-typescript');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/react/forms"       routerLinkActive="active"><span class="nl-text">Forms &amp; Validation</span>@if(progress.isDone('react-forms')){<span class="nl-done">✓</span>}@if(diff('react-forms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

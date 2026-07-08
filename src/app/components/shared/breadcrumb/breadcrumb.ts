@@ -950,6 +950,9 @@ const TYPESCRIPT_LABELS: Record<string, string> = {
 
 const REACT_LABELS: Record<string, string> = {
   'basics':            'React Fundamentals',
+  'basics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick': 'Batching Applies to Native Event Listeners',
+  'basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend': 'Index Keys Leave Stale Text After Prepend',
+  'basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render': 'React.memo Alone Doesn’t Stop a Fresh Object Prop',
   'hooks-core':        'Core Hooks',
   'hooks-advanced':    'Advanced Hooks',
   'forms':             'Forms & Validation',

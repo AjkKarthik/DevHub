@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Fundamentals"
+    topicRoute="/react/basics"
+    subtopicLabel="React.memo Alone Doesn’t Stop a Fresh Object Prop" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That React.memo Alone Doesn't Stop a Fresh Object Prop Re-render</h1>
+  <p class="page-subtitle">
+    The main page's Mistake #6 names React.memo directly, but its wrong example never actually wraps the
+    child in memo — this checks whether memo alone would have helped, or whether useMemo was always the
+    part doing the work.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="React 16.6+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two <code>React.memo</code>-wrapped instances of the same component — one fed an inline object
+      literal, one fed a <code>useMemo</code>-stabilized object — both re-rendered by an unrelated click.
+    </p>
+    <app-live-playground
+      title="React.memo and object-literal props"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the main page's own runtime claims — automatic batching's
+      real reach, the observable cost of index keys, and now exactly what memo can and can't do on its own.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Fundamentals"
+    topicRoute="/react/basics"
+    [prev]="{ label: 'Index Keys Leave Stale Text After Prepend', route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' }" />
+</div>

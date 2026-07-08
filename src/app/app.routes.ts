@@ -1495,7 +1495,12 @@ export const routes: Routes = [
   ] },
   { path: 'react', children: [
     { path: '', loadComponent: () => import('./components/frontend/react/home/home').then(m => m.ReactHome) },
-    { path: 'basics',       loadComponent: () => import('./components/frontend/react/basics/basics').then(m => m.ReactBasics) },
+    { path: 'basics', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/basics/basics').then(m => m.ReactBasics) },
+      { path: 'testing-that-batching-applies-to-native-event-listeners-not-just-onclick', loadComponent: () => import('./components/frontend/react/basics/subtopics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick/testing-that-batching-applies-to-native-event-listeners-not-just-onclick').then(m => m.TestingThatBatchingAppliesToNativeEventListenersNotJustOnclickSubtopic) },
+      { path: 'testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend', loadComponent: () => import('./components/frontend/react/basics/subtopics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend').then(m => m.TestingThatIndexKeysLeaveStaleTextInAnUncontrolledInputAfterPrependSubtopic) },
+      { path: 'testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render', loadComponent: () => import('./components/frontend/react/basics/subtopics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render').then(m => m.TestingThatReactMemoAloneDoesntStopAFreshObjectPropReRenderSubtopic) },
+    ]},
     { path: 'hooks-core',     loadComponent: () => import('./components/frontend/react/hooks-core/hooks-core').then(m => m.ReactHooksCore) },
     { path: 'hooks-advanced', loadComponent: () => import('./components/frontend/react/hooks-advanced/hooks-advanced').then(m => m.ReactHooksAdvanced) },
     { path: 'forms',          loadComponent: () => import('./components/frontend/react/forms/forms').then(m => m.ReactForms) },

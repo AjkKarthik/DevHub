@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Fundamentals"
+    topicRoute="/react/basics"
+    subtopicLabel="Batching Applies to Native Event Listeners, Not Just onClick" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Batching Applies to Native Event Listeners, Not Just onClick</h1>
+  <p class="page-subtitle">
+    The main page claims React 18 batches state updates in "all scenarios including... native event
+    listeners" — every example on the page only ever uses onClick, so this puts that specific claim to
+    the test with a raw addEventListener.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="React 18" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A button wired up with plain <code>addEventListener</code>, completely bypassing React's own
+      synthetic event system, firing two state setters per click.
+    </p>
+    <app-live-playground
+      title="Automatic batching and a native addEventListener"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This confirms exactly how far React 18's batching guarantee reaches, before checking a related
+      runtime gotcha around index-based keys in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Fundamentals"
+    topicRoute="/react/basics"
+    [next]="{ label: 'Index Keys Leave Stale Text After Prepend', route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' }" />
+</div>
