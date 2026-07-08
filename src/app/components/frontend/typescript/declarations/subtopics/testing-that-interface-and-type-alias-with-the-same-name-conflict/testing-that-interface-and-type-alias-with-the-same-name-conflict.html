@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Declaration Files (d.ts)"
+    topicRoute="/typescript/declarations"
+    subtopicLabel="interface and type alias Conflict, Not Merge" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That interface and type Alias With the Same Name Conflict</h1>
+  <p class="page-subtitle">
+    The main page tests interface-with-interface merging and type-with-type duplication separately — mixing
+    the two kinds under one name is a hard error, not a partial merge.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Declare an <code>interface Widget</code>, then a <code>type Widget</code> alias with the same name, and
+      check whether they merge.
+    </p>
+    <app-live-playground
+      title="Merging only within the same kind — testing interface vs type alias"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This connects the main page's two separate merging facts into one rule, before checking a related gap
+      in how merging handles generic type parameters.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Declaration Files (d.ts)"
+    topicRoute="/typescript/declarations"
+    [next]="{ label: 'Declaration Merging Ignores Generic Parameter Names', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' }" />
+</div>

@@ -1184,6 +1184,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Barrel Import Runs Every File’s Side Effects', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' },
     { label: 'export type Strips the Value, Even for a Class', route: '/typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class' },
   ],
+  'declarations': [
+    { label: 'interface and type alias Conflict, Not Merge', route: '/typescript/declarations/testing-that-interface-and-type-alias-with-the-same-name-conflict' },
+    { label: 'Merging Ignores Generic Parameter Names', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' },
+    { label: 'A Hand-Written .d.ts Doesn’t Verify the Real JS', route: '/typescript/declarations/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js' },
+  ],
 };
 
 @Component({

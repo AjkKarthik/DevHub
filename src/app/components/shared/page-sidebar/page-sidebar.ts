@@ -11006,6 +11006,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/declarations/testing-that-interface-and-type-alias-with-the-same-name-conflict': {
+    apis: ['declaration merging', 'interface', 'type alias'],
+    related: [
+      { label: 'Merging Ignores Generic Parameter Names — next', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' },
+      { label: 'Declaration Files (overview)', route: '/typescript/declarations' },
+    ],
+    tip: 'Merging only combines declarations of the exact same kind — an interface and a type alias sharing a name is a hard "Duplicate identifier" error, not a partial merge.',
+    docs: [
+      { label: 'Declaration Merging (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/declaration-merging.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the same underlying rule as "duplicate type aliases always error" — just applied across two different declaration kinds.',
+      'If a name needs to stay mergeable (for module augmentation), it must be an interface everywhere, consistently.',
+    ],
+  },
+
+  'typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names': {
+    apis: ['generic interface', 'declaration merging', 'type parameter arity'],
+    related: [
+      { label: 'interface and type alias Conflict, Not Merge — previous', route: '/typescript/declarations/testing-that-interface-and-type-alias-with-the-same-name-conflict' },
+      { label: 'A Hand-Written .d.ts Doesn’t Verify the Real JS — next', route: '/typescript/declarations/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js' },
+      { label: 'Declaration Files (overview)', route: '/typescript/declarations' },
+    ],
+    tip: 'Box<T> and Box<U> merge cleanly — only the number of type parameters (arity) has to match, not the names used for them.',
+    docs: [
+      { label: 'Declaration Merging (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/declaration-merging.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Relevant for augmenting an already-generic library interface — you never need to match the library\'s internal parameter naming.',
+      'The merge remains fully type-safe — the generic substitution threads through every merged member correctly.',
+    ],
+  },
+
+  'typescript/declarations/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js': {
+    apis: ['declare module', 'ambient declaration', 'DefinitelyTyped'],
+    related: [
+      { label: 'Merging Ignores Generic Parameter Names — previous', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' },
+      { label: 'Declaration Files (overview)', route: '/typescript/declarations' },
+    ],
+    tip: 'A hand-written .d.ts is a pure assertion with zero connection to the real JS it describes — a wrong parameter type compiles cleanly and produces nonsensical runtime behavior with no warning anywhere.',
+    docs: [
+      { label: 'Declaration Files (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html' },
+    ],
+    resources: [
+      { label: 'DefinitelyTyped', url: 'https://github.com/DefinitelyTyped/DefinitelyTyped', badge: 'code' },
+    ],
+    gotchas: [
+      'Compiler-generated .d.ts files (via declaration: true) do not carry this risk — they are mechanically derived from real, running source.',
+      'This is exactly why @types/xxx (community-vetted) is preferred over writing your own declarations from scratch.',
+    ],
+  },
+
   'typescript/frameworks': {
     apis: ['React.FC<Props>', 'JSX.Element', 'z.infer<T>', 'Zod', 'Request augmentation', 'Next.js types', '@types/node'],
     related: [

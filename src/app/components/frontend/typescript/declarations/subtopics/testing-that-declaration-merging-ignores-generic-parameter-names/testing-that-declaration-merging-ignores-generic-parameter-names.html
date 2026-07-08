@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Declaration Files (d.ts)"
+    topicRoute="/typescript/declarations"
+    subtopicLabel="Merging Ignores Generic Parameter Names" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Declaration Merging Ignores Generic Parameter Names</h1>
+  <p class="page-subtitle">
+    The main page's merge example is non-generic — two Box&lt;T&gt; and Box&lt;U&gt; declarations, using
+    different parameter names, merge cleanly and stay fully type-safe.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Declare the same interface twice with generic parameters named differently, and confirm both members
+      merge with the generic relationship intact.
+    </p>
+    <app-live-playground
+      title="Arity, not naming — testing generic interface merging"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own merging example to generics, a case relevant to augmenting
+      already-generic library interfaces, before checking a deeper .d.ts trust gap in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Declaration Files (d.ts)"
+    topicRoute="/typescript/declarations"
+    [prev]="{ label: 'interface and type alias Conflict, Not Merge', route: '/typescript/declarations/testing-that-interface-and-type-alias-with-the-same-name-conflict' }"
+    [next]="{ label: 'A Hand-Written .d.ts Doesn’t Verify the Real JS', route: '/typescript/declarations/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js' }" />
+</div>

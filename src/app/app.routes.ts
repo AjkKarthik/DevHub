@@ -1466,7 +1466,12 @@ export const routes: Routes = [
       { path: 'testing-that-a-barrel-import-runs-every-files-side-effects', loadComponent: () => import('./components/frontend/typescript/modules/subtopics/testing-that-a-barrel-import-runs-every-files-side-effects/testing-that-a-barrel-import-runs-every-files-side-effects').then(m => m.TestingThatABarrelImportRunsEveryFilesSideEffectsSubtopic) },
       { path: 'testing-that-export-type-strips-the-value-even-for-a-class', loadComponent: () => import('./components/frontend/typescript/modules/subtopics/testing-that-export-type-strips-the-value-even-for-a-class/testing-that-export-type-strips-the-value-even-for-a-class').then(m => m.TestingThatExportTypeStripsTheValueEvenForAClassSubtopic) },
     ] },
-    { path: 'declarations',            loadComponent: () => import('./components/frontend/typescript/declarations/declarations').then(m => m.TsDeclarations) },
+    { path: 'declarations', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/declarations/declarations').then(m => m.TsDeclarations) },
+      { path: 'testing-that-interface-and-type-alias-with-the-same-name-conflict', loadComponent: () => import('./components/frontend/typescript/declarations/subtopics/testing-that-interface-and-type-alias-with-the-same-name-conflict/testing-that-interface-and-type-alias-with-the-same-name-conflict').then(m => m.TestingThatInterfaceAndTypeAliasWithTheSameNameConflictSubtopic) },
+      { path: 'testing-that-declaration-merging-ignores-generic-parameter-names', loadComponent: () => import('./components/frontend/typescript/declarations/subtopics/testing-that-declaration-merging-ignores-generic-parameter-names/testing-that-declaration-merging-ignores-generic-parameter-names').then(m => m.TestingThatDeclarationMergingIgnoresGenericParameterNamesSubtopic) },
+      { path: 'testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js', loadComponent: () => import('./components/frontend/typescript/declarations/subtopics/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js').then(m => m.TestingThatAHandWrittenDTsDoesntVerifyTheRealJsSubtopic) },
+    ] },
     { path: 'frameworks',              loadComponent: () => import('./components/frontend/typescript/frameworks/frameworks').then(m => m.TsFrameworks) },
     { path: 'strict-migration',        loadComponent: () => import('./components/frontend/typescript/strict-migration/strict-migration').then(m => m.TsStrictMigration) },
     { path: 'ts-performance',          loadComponent: () => import('./components/frontend/typescript/ts-performance/ts-performance').then(m => m.TsPerformance) },
