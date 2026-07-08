@@ -1596,7 +1596,7 @@ off here with a date.
 - [x] `/typescript/primitive-types` — Primitive & Literal Types (2026-07-08 — 3 subtopics: testing-that-as-consts-readonly-is-compile-time-only-not-runtime, testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port, testing-that-throw-fail-cannot-appear-in-an-expression-position)
 - [x] `/typescript/interfaces-types` — Interfaces & Type Aliases (2026-07-08 — 3 subtopics: testing-that-pluginregistry-never-verifies-name-matches-its-key, testing-that-window-merging-needs-declare-global-in-a-module-file, testing-that-conflicting-merged-properties-are-a-compile-error)
 - [x] `/typescript/unions` — Union & Intersection Types (2026-07-08 — 3 subtopics: testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing, testing-that-the-safe-isuser-fix-still-uses-as-any-twice, testing-that-the-assertion-function-example-never-actually-runs)
-- [ ] `/typescript/narrowing` — Type Guards & Narrowing
+- [x] `/typescript/narrowing` — Type Guards & Narrowing (2026-07-08 — 3 subtopics: testing-that-narrowing-survives-an-unrelated-function-call, testing-that-array-isarray-narrows-to-any-and-loses-element-safety, testing-that-greet-with-an-empty-string-does-not-say-hello-stranger)
 - [ ] `/typescript/enums-tuples` — Enums & Tuples
 - [ ] `/typescript/generics` — Generics Fundamentals
 - [ ] `/typescript/generic-patterns` — Generic Patterns
