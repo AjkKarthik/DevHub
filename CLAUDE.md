@@ -755,6 +755,25 @@ Confirmed via direct file inspection and a live browser pilot before the first s
    render-count `useRef` counter displayed in the UI, or typing into an input and clicking a
    button to observe a real DOM consequence. Prefer this where the main page's own claim is
    about runtime behavior (batching, reconciliation, memoization) rather than type-checking.
+7. **Real npm packages (not stubs) work fine in the `create-react-app` template — just add
+   them directly to the `liveDemoFiles` `package.json`'s own `dependencies` field.** Confirmed
+   with `react-hook-form`, `@hookform/resolvers`, and `zod` (`/react/forms`, 2026-07-08) — no
+   separate `[dependencies]` Angular-input mechanism needed, since a full `package.json` is
+   already hand-written for every React subtopic (unlike Angular's `angular-cli` template,
+   which auto-generates one). This is the OPPOSITE of the TypeScript hub's own established
+   practice (declare-stub interfaces to avoid needing real `@types/react`/`zod` packages) —
+   the difference is that TypeScript-hub subtopics only need to typecheck, while React-hub
+   subtopics need to actually RUN the real library's behavior (e.g. Zod's real coercion
+   rules, RHF's real re-render timing) to make a runtime claim demonstrable at all.
+8. **Windows MAX_PATH risk is proportionally higher for the React hub** — its longer topic
+   folder names (`hooks-advanced`, `context`, `state-management`) combined with descriptive
+   subtopic slugs push paths close to 260 chars more often than shorter hub names did. From
+   `/react/hooks-core` onward, default to a SHORT folder/file name (~30-45 chars) chosen
+   BEFORE writing files, rather than the full descriptive slug — keep the full descriptive
+   slug only in the route `path:` and every other wiring touchpoint, per the general MAX_PATH
+   fix already documented above. Computing the exact planned path length with a quick shell
+   check before `mkdir`/`Write` (not just before `git add`) avoids a rename cycle after the
+   fact.
 
 ## Current state (update when it changes!)
 
