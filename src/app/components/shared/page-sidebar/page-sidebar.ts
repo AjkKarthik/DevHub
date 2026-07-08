@@ -10359,6 +10359,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/utility-types/testing-that-partial-record-of-literal-keys-is-safely-optional': {
+    apis: ['Record<string, T>', 'index signature', 'optional property'],
+    related: [
+      { label: 'ViewDTO’s tags Array Can Still Be Pushed To — next', route: '/typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to' },
+      { label: 'Utility Types (overview)', route: '/typescript/utility-types' },
+    ],
+    tip: 'Record<string, T> is an index signature with no per-key presence tracking, but Partial<Record<LiteralUnion, T>> produces real optional properties — the two look similar but have different safety.',
+    docs: [
+      { label: 'TSConfig noUncheckedIndexedAccess', url: 'https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'noUncheckedIndexedAccess only affects index-signature access — optional properties are already safely typed without it.',
+      'A literal union key turns Record into individual mapped properties, not an index signature.',
+    ],
+  },
+
+  'typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to': {
+    apis: ['Readonly<T>', 'ReadonlyArray<T>', 'shallow immutability'],
+    related: [
+      { label: 'Partial Record of Literal Keys Is Safe — previous', route: '/typescript/utility-types/testing-that-partial-record-of-literal-keys-is-safely-optional' },
+      { label: 'DistributiveOmit Preserves Narrowing — next', route: '/typescript/utility-types/testing-that-distributiveomit-preserves-per-member-narrowing' },
+      { label: 'Utility Types (overview)', route: '/typescript/utility-types' },
+    ],
+    tip: 'Readonly<T> blocks reassigning a property but not mutating what it points to — an array-typed property stays fully mutable via .push()/.splice() unless the source type itself uses readonly T[].',
+    docs: [
+      { label: 'Utility Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the same shallowness category as the page\'s own "Partial is shallow" mistake, just for Readonly instead.',
+      'Readonly<T> performs no copying — mutations through array methods are visible on every reference to the same object.',
+    ],
+  },
+
+  'typescript/utility-types/testing-that-distributiveomit-preserves-per-member-narrowing': {
+    apis: ['distributive conditional type', 'in operator', 'DistributiveOmit'],
+    related: [
+      { label: 'ViewDTO’s tags Array Can Still Be Pushed To — previous', route: '/typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to' },
+      { label: 'Utility Types (overview)', route: '/typescript/utility-types' },
+    ],
+    tip: 'DistributiveOmit removes the discriminant field but each union member keeps its own distinct remaining keys — narrowing with the "in" operator on those keys still works fine.',
+    docs: [
+      { label: 'Distributive Conditional Types', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Narrowing does not require a dedicated discriminant property — any structurally-distinguishing key works with the in operator.',
+      'A distributive conditional over a union produces a genuine per-member union, not a merged shape.',
+    ],
+  },
+
   'typescript/mapped-types': {
     apis: ['{ [K in keyof T]: T[K] }', '-?', '-readonly', 'as (key remap)', 'PropertyKey', 'template literal key'],
     related: [

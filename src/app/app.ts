@@ -1144,6 +1144,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'FunctionKeys Drops Optional Methods', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' },
     { label: 'QueryBuilder Builds With Zero Fields', route: '/typescript/generic-patterns/testing-that-querybuilder-builds-successfully-with-zero-fields-set' },
   ],
+  'utility-types': [
+    { label: 'Partial Record of Literal Keys Is Safe', route: '/typescript/utility-types/testing-that-partial-record-of-literal-keys-is-safely-optional' },
+    { label: 'ViewDTO’s tags Array Can Still Be Pushed To', route: '/typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to' },
+    { label: 'DistributiveOmit Preserves Narrowing', route: '/typescript/utility-types/testing-that-distributiveomit-preserves-per-member-narrowing' },
+  ],
 };
 
 @Component({

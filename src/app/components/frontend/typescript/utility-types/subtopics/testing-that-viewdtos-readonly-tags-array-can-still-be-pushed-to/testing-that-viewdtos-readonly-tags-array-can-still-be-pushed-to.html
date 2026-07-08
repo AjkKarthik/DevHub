@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Utility Types"
+    topicRoute="/typescript/utility-types"
+    subtopicLabel="ViewDTO’s tags Array Can Still Be Pushed To" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That ViewDTO's Readonly tags Array Can Still Be Pushed To</h1>
+  <p class="page-subtitle">
+    The challenge's AdminView comment calls itself "all fields, readonly" — but Readonly&lt;Post&gt; never
+    touches the mutability of the tags array's own contents.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 2.1+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Build the challenge's own <code>AdminView = ViewDTO&lt;Post, keyof Post&gt;</code>, then push a value
+      onto its <code>tags</code> array and check whether it compiles.
+    </p>
+    <app-live-playground
+      title="Readonly<T> and array contents — testing AdminView.tags"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own "Partial is shallow" Common Mistake to the parallel case for
+      Readonly — before closing out with a check on the page's DistributiveOmit fix.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Utility Types"
+    topicRoute="/typescript/utility-types"
+    [prev]="{ label: 'Partial Record of Literal Keys Is Safe', route: '/typescript/utility-types/testing-that-partial-record-of-literal-keys-is-safely-optional' }"
+    [next]="{ label: 'DistributiveOmit Preserves Narrowing', route: '/typescript/utility-types/testing-that-distributiveomit-preserves-per-member-narrowing' }" />
+</div>
