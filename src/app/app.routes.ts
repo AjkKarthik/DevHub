@@ -1501,7 +1501,12 @@ export const routes: Routes = [
       { path: 'testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend', loadComponent: () => import('./components/frontend/react/basics/subtopics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend').then(m => m.TestingThatIndexKeysLeaveStaleTextInAnUncontrolledInputAfterPrependSubtopic) },
       { path: 'testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render', loadComponent: () => import('./components/frontend/react/basics/subtopics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render').then(m => m.TestingThatReactMemoAloneDoesntStopAFreshObjectPropReRenderSubtopic) },
     ]},
-    { path: 'hooks-core',     loadComponent: () => import('./components/frontend/react/hooks-core/hooks-core').then(m => m.ReactHooksCore) },
+    { path: 'hooks-core', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/hooks-core/hooks-core').then(m => m.ReactHooksCore) },
+      { path: 'testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects', loadComponent: () => import('./components/frontend/react/hooks-core/subtopics/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects').then(m => m.TestingThatStrictmodeDoubleInvokesTheLazyInitializerNotJustEffectsSubtopic) },
+      { path: 'testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined', loadComponent: () => import('./components/frontend/react/hooks-core/subtopics/usecontext-defaultvalue-undefined-provider/usecontext-defaultvalue-undefined-provider').then(m => m.UsecontextDefaultvalueUndefinedProviderSubtopic) },
+      { path: 'testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop', loadComponent: () => import('./components/frontend/react/hooks-core/subtopics/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop').then(m => m.TestingThatAFunctionalUpdateFixesStaleStateButNotAStalePropSubtopic) },
+    ]},
     { path: 'hooks-advanced', loadComponent: () => import('./components/frontend/react/hooks-advanced/hooks-advanced').then(m => m.ReactHooksAdvanced) },
     { path: 'forms',          loadComponent: () => import('./components/frontend/react/forms/forms').then(m => m.ReactForms) },
     { path: 'context',          loadComponent: () => import('./components/frontend/react/context/context').then(m => m.ReactContext) },

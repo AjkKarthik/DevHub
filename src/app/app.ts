@@ -1209,6 +1209,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Index Keys Leave Stale Text After Prepend', route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' },
     { label: 'React.memo Alone Doesn’t Stop a Fresh Object Prop', route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
   ],
+  'hooks-core': [
+    { label: 'StrictMode Double-Invokes the Lazy Initializer', route: '/react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects' },
+    { label: 'useContext’s defaultValue Is Skipped by an Explicit undefined Provider', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
+    { label: 'Functional Update Fixes Stale State, Not a Stale Prop', route: '/react/hooks-core/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop' },
+  ],
 };
 
 @Component({

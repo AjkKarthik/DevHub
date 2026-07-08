@@ -11588,6 +11588,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects': {
+    apis: ['useState(() => init)', 'StrictMode', 'lazy initializer'],
+    related: [
+      { label: 'Core Hooks (overview)', route: '/react/hooks-core' },
+      { label: 'useContext defaultValue', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
+      { label: 'React Fundamentals',     route: '/react/basics' },
+    ],
+    tip: 'StrictMode double-invokes more than effects — the component body and the useState/useReducer lazy initializer also run twice on the initial mount in development.',
+    docs: [
+      { label: 'React Docs — StrictMode', url: 'https://react.dev/reference/react/StrictMode' },
+      { label: 'useState Reference',      url: 'https://react.dev/reference/react/useState' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'React keeps only the second call\'s result — the state value itself is correct either way, only side effects inside the initializer are visibly doubled.',
+      'This is unproblematic for a pure initializer; it only surfaces bugs when the initializer has an observable side effect.',
+      'Production builds never double-invoke — this behavior only ever appears in development under StrictMode.',
+    ],
+  },
+
+  'react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined': {
+    apis: ['createContext()', 'useContext()', 'Context.Provider'],
+    related: [
+      { label: 'Core Hooks (overview)', route: '/react/hooks-core' },
+      { label: 'StrictMode Lazy Initializer', route: '/react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects' },
+      { label: 'Context API',            route: '/react/context' },
+    ],
+    tip: 'defaultValue is a "no Provider found" fallback, not a "falsy value" fallback — a present Provider\'s value, however falsy, always wins over defaultValue.',
+    docs: [
+      { label: 'React Docs — createContext', url: 'https://react.dev/reference/react/createContext' },
+      { label: 'React Docs — useContext',    url: 'https://react.dev/reference/react/useContext' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'A Provider passing value={undefined} is still "present" from useContext\'s perspective — defaultValue is never consulted in that case.',
+      'This is exactly why the "throw if ctx is undefined" required-context pattern works reliably.',
+      'Only a consumer with literally no Provider ancestor anywhere above it falls back to defaultValue.',
+    ],
+  },
+
+  'react/hooks-core/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop': {
+    apis: ['setState(prev => next)', 'useEffect()', 'exhaustive-deps'],
+    related: [
+      { label: 'Core Hooks (overview)', route: '/react/hooks-core' },
+      { label: 'useContext defaultValue', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
+      { label: 'React Patterns',          route: '/react/patterns' },
+    ],
+    tip: 'A functional update only avoids reading its OWN state from the closure — every other value the same effect references still needs correct dependencies.',
+    docs: [
+      { label: 'React Docs — useState',  url: 'https://react.dev/reference/react/useState' },
+      { label: 'React Docs — useEffect', url: 'https://react.dev/reference/react/useEffect' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'setCount(prev => prev + 1) works because React hands the current value directly to the callback — no closure read needed for that value specifically.',
+      'A prop or other state referenced in the same effect is still read from the closure the effect captured on creation.',
+      'react-hooks/exhaustive-deps still applies to every value NOT covered by a functional update.',
+    ],
+  },
+
   'react/hooks-advanced': {
     apis: ['useReducer()', 'useMemo()', 'useCallback()', 'useTransition()', 'useDeferredValue()', 'useId()'],
     related: [
