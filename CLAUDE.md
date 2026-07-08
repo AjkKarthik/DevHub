@@ -510,6 +510,26 @@ to the topic page, not its subtopics.
   (SUBTOPICS map, breadcrumb, sidebar, search index, nav labels) keep using the long,
   descriptive route string unchanged. Run `git add -A` before considering a subtopic batch
   done — a successful build does NOT catch this, only `git add` does.
+- **A markdown-style inline-code backtick inside a `solution:` (or any backtick-delimited
+  `content:`) TS template literal breaks the build with a confusing cascade of unrelated
+  parser errors, not an obvious "unterminated string" message.** Confirmed via a real build
+  failure (`/react/context`'s mega-context subtopic, 2026-07-08): writing `` destructuring
+  only `theme` in ThemeDisplay's own code `` inside a `solution: \`...\`` block used a bare
+  backtick around "theme" for emphasis (a habit carried over from writing prose in this same
+  file's `misconceptions`/`theory` fields, which use SINGLE-QUOTED strings where a backtick
+  is just a literal character) — the backtick prematurely closed the outer template literal,
+  and everything after it was parsed as loose top-level code, producing unrelated errors like
+  `TS2339: Property 'misconceptions' does not exist`, `TS2693: 'Misconception' only refers to
+  a type`, and `Unexpected "]"` scattered across the rest of the class body — none of which
+  point at the actual backtick. **Fix: never use backtick-wrapped inline code inside a
+  `solution:`/`content:` field's own backtick-delimited string — use plain text or double
+  quotes for emphasis instead** (backticks are completely safe inside the SINGLE-quoted
+  `thought:`/`reality:`/`prompt:`/`hint:` fields elsewhere in the same file, since those use
+  `'...'` not `` `...` ``, so this is specific to which delimiter a given field uses, not a
+  blanket "no backticks in subtopic files" rule). Before trusting a "no errors" build result
+  on a file with `solution:`/`content:` fields, a quick sanity check is comparing total
+  backtick count per file is even (`grep -o '`' file | wc -l`) — odd catches the obvious case,
+  but even-but-still-broken (two internal pairs) needs eyeballing each `solution:` block.
 
 ### Non-Angular hubs (C#, SQL, Python, Go, etc.) — the "See it run" section has no live playground
 
