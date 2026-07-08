@@ -1605,7 +1605,7 @@ off here with a date.
 - [x] `/typescript/conditional-types` — Conditional Types (2026-07-08 — 3 subtopics: testing-that-equals-cannot-distinguish-any-from-unknown, testing-that-head-of-an-empty-tuple-hides-undefined-behind-never, testing-that-myreturntype-rejects-a-class-constructor)
 - [x] `/typescript/template-literal-types` — Template Literal Types (2026-07-08 — 3 subtopics: testing-that-a-let-variable-widens-handlername-to-plain-string, testing-that-dotpath-hits-infinite-recursion-on-self-reference, testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product)
 - [x] `/typescript/classes` — Classes & Visibility (2026-07-08 — 3 subtopics: testing-that-typescript-private-is-still-included-in-json-stringify, testing-that-getstates-object-freeze-doesnt-stop-mutating-items, testing-that-object-create-bypasses-appconfigs-private-constructor)
-- [ ] `/typescript/decorators` — Decorators
+- [x] `/typescript/decorators` — Decorators (2026-07-08 — 3 subtopics: testing-that-celsius-field-decorator-only-validates-construction, testing-that-singleton-silently-ignores-second-calls-args, testing-that-describes-class-decorator-returns-an-unnamed-class)
 - [ ] `/typescript/tsconfig` — tsconfig Deep Dive
 - [ ] `/typescript/modules` — Module System & Namespaces
 - [ ] `/typescript/declarations` — Declaration Files (d.ts)
