@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Mapped Types"
+    topicRoute="/typescript/mapped-types"
+    subtopicLabel="EventHandlers Wrongly Includes online" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That EventHandlers Wrongly Includes online</h1>
+  <p class="page-subtitle">
+    The main page's EventHandlers filters keys by name, not by value type — a boolean property named
+    "online" passes the on&#36;&#123;string&#125; pattern exactly like a real handler.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TypeScript 4.1+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Add a non-handler <code>online: boolean</code> property to the main page's own <code>Component</code>
+      interface and check whether <code>EventHandlers&lt;Component&gt;</code> still includes it.
+    </p>
+    <app-live-playground
+      title="Key-name-only filtering — testing EventHandlers against a false match"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This tests the main page's key-remapping example against a case it never exercises, before checking
+      the page's OTHER value-based filter for a related but opposite gap.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Mapped Types"
+    topicRoute="/typescript/mapped-types"
+    [next]="{ label: 'StringKeys Excludes an Optional String Property', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' }" />
+</div>

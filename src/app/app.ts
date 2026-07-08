@@ -1149,6 +1149,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ViewDTO’s tags Array Can Still Be Pushed To', route: '/typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to' },
     { label: 'DistributiveOmit Preserves Narrowing', route: '/typescript/utility-types/testing-that-distributiveomit-preserves-per-member-narrowing' },
   ],
+  'mapped-types': [
+    { label: 'EventHandlers Wrongly Includes online', route: '/typescript/mapped-types/testing-that-eventhandlers-wrongly-includes-online' },
+    { label: 'StringKeys Excludes an Optional String', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' },
+    { label: 'OptionalToNullable Detects Implicit undefined', route: '/typescript/mapped-types/testing-that-optionaltonullable-detects-implicit-undefined' },
+  ],
 };
 
 @Component({

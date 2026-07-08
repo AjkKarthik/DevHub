@@ -10439,6 +10439,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/mapped-types/testing-that-eventhandlers-wrongly-includes-online': {
+    apis: ['key remapping (as)', 'template literal type', 'key-name filter'],
+    related: [
+      { label: 'StringKeys Excludes an Optional String — next', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' },
+      { label: 'Mapped Types (overview)', route: '/typescript/mapped-types' },
+    ],
+    tip: 'EventHandlers<T> filters purely by key name (on${string}) — a boolean property named "online" passes the pattern exactly like a real handler, since it never checks T[K] at all.',
+    docs: [
+      { label: 'Key Remapping (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Filtering by key name and filtering by value type answer genuinely different questions — combine both when you need a real handler check.',
+      'A pattern like on${string} matches "online" and "onboarded" just as readily as "onClick".',
+    ],
+  },
+
+  'typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property': {
+    apis: ['NonNullable<T>', 'optional property (?)', 'extends check'],
+    related: [
+      { label: 'EventHandlers Wrongly Includes online — previous', route: '/typescript/mapped-types/testing-that-eventhandlers-wrongly-includes-online' },
+      { label: 'OptionalToNullable Detects Implicit undefined — next', route: '/typescript/mapped-types/testing-that-optionaltonullable-detects-implicit-undefined' },
+      { label: 'Mapped Types (overview)', route: '/typescript/mapped-types' },
+    ],
+    tip: 'StringKeys<T> checks T[K] extends string directly — an optional string property\'s T[K] includes | undefined, which fails that check and gets silently dropped.',
+    docs: [
+      { label: 'Conditional Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the same underlying mechanic as the FunctionKeys gap on the Generic Patterns page — it affects any "filter by value type" mapped type, not just one utility.',
+      'NonNullable<T[K]> before the extends check is the general fix for this whole category of filter.',
+    ],
+  },
+
+  'typescript/mapped-types/testing-that-optionaltonullable-detects-implicit-undefined': {
+    apis: ['undefined extends T[K]', 'optional property (?)', 'indexed access type'],
+    related: [
+      { label: 'StringKeys Excludes an Optional String — previous', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' },
+      { label: 'Mapped Types (overview)', route: '/typescript/mapped-types' },
+    ],
+    tip: 'OptionalToNullable checks undefined extends T[K] (is undefined a member?) rather than T[K] extends X (does the whole type match?) — the reversed direction is exactly what correctly detects optional properties.',
+    docs: [
+      { label: 'Mapped Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/mapped-types.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This mapped type does NOT have the same optional-property gap as EventHandlers or StringKeys — the direction of the extends check matters.',
+      'A required property\'s indexed-access type never includes undefined unless explicitly written that way.',
+    ],
+  },
+
   'typescript/conditional-types': {
     apis: ['T extends U ? X : Y', 'infer P', 'distributive conditional', 'NonNullable<T>', 'Awaited<T>', 'ReturnType<F>'],
     related: [

@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Mapped Types"
+    topicRoute="/typescript/mapped-types"
+    subtopicLabel="OptionalToNullable Detects Implicit undefined" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That OptionalToNullable Detects Implicit undefined</h1>
+  <p class="page-subtitle">
+    Unlike the previous two subtopics' findings, OptionalToNullable correctly handles a plain optional
+    property with no explicit "| undefined" written anywhere.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TypeScript 2.8+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Apply the main page's own <code>OptionalToNullable&lt;T&gt;</code> to an interface with a plain
+      optional property and confirm it — and only it — becomes nullable.
+    </p>
+    <app-live-playground
+      title="Checking undefined extends T[K] — testing OptionalToNullable"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the mapped types topic by confirming not every conditional-type filter on this page
+      has the same optional-property gap — the direction of the extends check is what matters.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Mapped Types"
+    topicRoute="/typescript/mapped-types"
+    [prev]="{ label: 'StringKeys Excludes an Optional String', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' }" />
+</div>

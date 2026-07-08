@@ -1424,7 +1424,12 @@ export const routes: Routes = [
       { path: 'testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to', loadComponent: () => import('./components/frontend/typescript/utility-types/subtopics/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to').then(m => m.TestingThatViewdtosReadonlyTagsArrayCanStillBePushedToSubtopic) },
       { path: 'testing-that-distributiveomit-preserves-per-member-narrowing', loadComponent: () => import('./components/frontend/typescript/utility-types/subtopics/testing-that-distributiveomit-preserves-per-member-narrowing/testing-that-distributiveomit-preserves-per-member-narrowing').then(m => m.TestingThatDistributiveomitPreservesPerMemberNarrowingSubtopic) },
     ] },
-    { path: 'mapped-types',            loadComponent: () => import('./components/frontend/typescript/mapped-types/mapped-types').then(m => m.TsMappedTypes) },
+    { path: 'mapped-types', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/mapped-types/mapped-types').then(m => m.TsMappedTypes) },
+      { path: 'testing-that-eventhandlers-wrongly-includes-online', loadComponent: () => import('./components/frontend/typescript/mapped-types/subtopics/testing-that-eventhandlers-wrongly-includes-online/testing-that-eventhandlers-wrongly-includes-online').then(m => m.TestingThatEventhandlersWronglyIncludesOnlineSubtopic) },
+      { path: 'testing-that-stringkeys-excludes-an-optional-string-property', loadComponent: () => import('./components/frontend/typescript/mapped-types/subtopics/testing-that-stringkeys-excludes-an-optional-string-property/testing-that-stringkeys-excludes-an-optional-string-property').then(m => m.TestingThatStringkeysExcludesAnOptionalStringPropertySubtopic) },
+      { path: 'testing-that-optionaltonullable-detects-implicit-undefined', loadComponent: () => import('./components/frontend/typescript/mapped-types/subtopics/testing-that-optionaltonullable-detects-implicit-undefined/testing-that-optionaltonullable-detects-implicit-undefined').then(m => m.TestingThatOptionaltonullableDetectsImplicitUndefinedSubtopic) },
+    ] },
     { path: 'conditional-types',       loadComponent: () => import('./components/frontend/typescript/conditional-types/conditional-types').then(m => m.TsConditionalTypes) },
     { path: 'template-literal-types',  loadComponent: () => import('./components/frontend/typescript/template-literal-types/template-literal-types').then(m => m.TsTemplateLiteralTypes) },
     { path: 'classes',                 loadComponent: () => import('./components/frontend/typescript/classes/classes').then(m => m.TsClasses) },
