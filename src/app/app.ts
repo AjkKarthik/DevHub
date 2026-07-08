@@ -1129,6 +1129,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Array.isArray Narrows to any[]', route: '/typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety' },
     { label: 'greet(‘’) Doesn’t Say Hello, Stranger', route: '/typescript/narrowing/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger' },
   ],
+  'enums-tuples': [
+    { label: 'Direction[42] Returns Undefined', route: '/typescript/enums-tuples/testing-that-direction-42-returns-undefined-not-a-name' },
+    { label: 'const enum Doesn’t Actually Throw Here', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' },
+    { label: 'minMax Without a Return Type', route: '/typescript/enums-tuples/testing-that-minmax-without-return-type-becomes-an-array' },
+  ],
 };
 
 @Component({

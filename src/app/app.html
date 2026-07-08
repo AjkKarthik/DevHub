@@ -2129,7 +2129,26 @@
           </div>
         }
       }
-      <a routerLink="/typescript/enums-tuples"     routerLinkActive="active"><span class="nl-text">Enums &amp; Tuples</span>@if(progress.isDone('ts-enums-tuples')){<span class="nl-done">✓</span>}@if(diff('ts-enums-tuples');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/enums-tuples" routerLinkActive="active">
+        <span class="nl-text">Enums &amp; Tuples</span>
+        @if (progress.isDone('ts-enums-tuples')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-enums-tuples'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('enums-tuples')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('enums-tuples')"
+                  (click)="toggleSubtopics('enums-tuples', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('enums-tuples'); as subs2) {
+        @if (isSubtopicsExpanded('enums-tuples')) {
+          <div class="nav-subtopics">
+            @for (s of subs2; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -10116,6 +10116,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/enums-tuples/testing-that-direction-42-returns-undefined-not-a-name': {
+    apis: ['numeric enum', 'reverse mapping', 'bitwise flags'],
+    related: [
+      { label: 'const enum Doesn’t Actually Throw Here — next', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' },
+      { label: 'Enums & Tuples (overview)', route: '/typescript/enums-tuples' },
+    ],
+    tip: 'The reverse mapping only contains entries for numbers actually assigned to declared members — an out-of-range or bitwise-combined number reverse-maps to undefined.',
+    docs: [
+      { label: 'TypeScript Enums (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/enums.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A numeric enum accepting any number and a numeric enum having a reverse mapping are two independent mechanisms, not one.',
+      'Combined bitwise-flag values (Read | Write) are never individually assigned to a member, so they never reverse-map to a name.',
+    ],
+  },
+
+  'typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground': {
+    apis: ['const enum', 'isolatedModules', 'per-file transpilation'],
+    related: [
+      { label: 'Direction[42] Returns Undefined — previous', route: '/typescript/enums-tuples/testing-that-direction-42-returns-undefined-not-a-name' },
+      { label: 'minMax Without a Return Type — next', route: '/typescript/enums-tuples/testing-that-minmax-without-return-type-becomes-an-array' },
+      { label: 'Enums & Tuples (overview)', route: '/typescript/enums-tuples' },
+    ],
+    tip: 'A whole-program compiler (plain tsc, or this playground) can inline a const enum imported from another file — the runtime-error failure needs a per-file transpiler like esbuild, Babel, or SWC.',
+    docs: [
+      { label: 'isolatedModules (TSConfig Reference)', url: 'https://www.typescriptlang.org/tsconfig/#isolatedModules' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The failure requires BOTH a multi-file structure AND a per-file transpiler in the build pipeline — either alone is not enough.',
+      'isolatedModules only controls whether TypeScript itself warns at compile time; the runtime failure depends on what actually transpiles the JS that ships.',
+    ],
+  },
+
+  'typescript/enums-tuples/testing-that-minmax-without-return-type-becomes-an-array': {
+    apis: ['tuple type', 'return type annotation', 'array inference'],
+    related: [
+      { label: 'const enum Doesn’t Actually Throw Here — previous', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' },
+      { label: 'Enums & Tuples (overview)', route: '/typescript/enums-tuples' },
+    ],
+    tip: 'Destructuring the first two elements works identically whether minMax returns a tuple or an inferred array — the difference only shows up when indexing past position 1.',
+    docs: [
+      { label: 'Tuple Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'TypeScript infers T[] from an array literal by default, regardless of how many elements are written — fixed-length tuples require an explicit annotation or as const.',
+      'An inferred number[] return type turns an out-of-bounds access from a compile-time error into a silent runtime undefined.',
+    ],
+  },
+
   'typescript/generics': {
     apis: ['<T>', '<T extends U>', 'default type parameter', 'keyof T', 'T[K]', 'generic function', 'generic interface'],
     related: [

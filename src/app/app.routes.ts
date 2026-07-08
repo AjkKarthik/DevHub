@@ -1400,7 +1400,12 @@ export const routes: Routes = [
       { path: 'testing-that-array-isarray-narrows-to-any-and-loses-element-safety', loadComponent: () => import('./components/frontend/typescript/narrowing/subtopics/testing-that-array-isarray-narrows-to-any-and-loses-element-safety/testing-that-array-isarray-narrows-to-any-and-loses-element-safety').then(m => m.TestingThatArrayIsarrayNarrowsToAnyAndLosesElementSafetySubtopic) },
       { path: 'testing-that-greet-with-an-empty-string-does-not-say-hello-stranger', loadComponent: () => import('./components/frontend/typescript/narrowing/subtopics/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger').then(m => m.TestingThatGreetWithAnEmptyStringDoesNotSayHelloStrangerSubtopic) },
     ] },
-    { path: 'enums-tuples',            loadComponent: () => import('./components/frontend/typescript/enums-tuples/enums-tuples').then(m => m.TsEnumsTuples) },
+    { path: 'enums-tuples', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/enums-tuples/enums-tuples').then(m => m.TsEnumsTuples) },
+      { path: 'testing-that-direction-42-returns-undefined-not-a-name', loadComponent: () => import('./components/frontend/typescript/enums-tuples/subtopics/testing-that-direction-42-returns-undefined-not-a-name/testing-that-direction-42-returns-undefined-not-a-name').then(m => m.TestingThatDirection42ReturnsUndefinedNotANameSubtopic) },
+      { path: 'testing-that-const-enum-import-doesnt-throw-in-this-playground', loadComponent: () => import('./components/frontend/typescript/enums-tuples/subtopics/testing-that-const-enum-import-doesnt-throw-in-this-playground/testing-that-const-enum-import-doesnt-throw-in-this-playground').then(m => m.TestingThatConstEnumImportDoesntThrowInThisPlaygroundSubtopic) },
+      { path: 'testing-that-minmax-without-return-type-becomes-an-array', loadComponent: () => import('./components/frontend/typescript/enums-tuples/subtopics/testing-that-minmax-without-return-type-becomes-an-array/testing-that-minmax-without-return-type-becomes-an-array').then(m => m.TestingThatMinmaxWithoutReturnTypeBecomesAnArraySubtopic) },
+    ] },
     { path: 'generics',                loadComponent: () => import('./components/frontend/typescript/generics/generics').then(m => m.TsGenerics) },
     { path: 'generic-patterns',        loadComponent: () => import('./components/frontend/typescript/generic-patterns/generic-patterns').then(m => m.TsGenericPatterns) },
     { path: 'utility-types',           loadComponent: () => import('./components/frontend/typescript/utility-types/utility-types').then(m => m.TsUtilityTypes) },
