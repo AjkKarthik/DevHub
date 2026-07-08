@@ -1454,7 +1454,12 @@ export const routes: Routes = [
       { path: 'testing-that-singleton-silently-ignores-second-calls-args', loadComponent: () => import('./components/frontend/typescript/decorators/subtopics/testing-that-singleton-silently-ignores-second-calls-args/testing-that-singleton-silently-ignores-second-calls-args').then(m => m.TestingThatSingletonSilentlyIgnoresSecondCallsArgsSubtopic) },
       { path: 'testing-that-describes-class-decorator-returns-an-unnamed-class', loadComponent: () => import('./components/frontend/typescript/decorators/subtopics/testing-that-describes-class-decorator-returns-an-unnamed-class/testing-that-describes-class-decorator-returns-an-unnamed-class').then(m => m.TestingThatDescribesClassDecoratorReturnsAnUnnamedClassSubtopic) },
     ] },
-    { path: 'tsconfig',                loadComponent: () => import('./components/frontend/typescript/tsconfig/tsconfig').then(m => m.TsTsconfig) },
+    { path: 'tsconfig', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/tsconfig/tsconfig').then(m => m.TsTsconfig) },
+      { path: 'testing-that-strictpropertyinitialization-misses-a-private-helper', loadComponent: () => import('./components/frontend/typescript/tsconfig/subtopics/testing-that-strictpropertyinitialization-misses-a-private-helper/testing-that-strictpropertyinitialization-misses-a-private-helper').then(m => m.TestingThatStrictpropertyinitializationMissesAPrivateHelperSubtopic) },
+      { path: 'testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access', loadComponent: () => import('./components/frontend/typescript/tsconfig/subtopics/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access').then(m => m.TestingThatNouncheckedindexedaccessDoesntAffectTupleAccessSubtopic) },
+      { path: 'testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax', loadComponent: () => import('./components/frontend/typescript/tsconfig/subtopics/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax').then(m => m.TestingThatStrictfunctiontypesDoesntApplyToMethodSyntaxSubtopic) },
+    ] },
     { path: 'modules',                 loadComponent: () => import('./components/frontend/typescript/modules/modules').then(m => m.TsModules) },
     { path: 'declarations',            loadComponent: () => import('./components/frontend/typescript/declarations/declarations').then(m => m.TsDeclarations) },
     { path: 'frameworks',              loadComponent: () => import('./components/frontend/typescript/frameworks/frameworks').then(m => m.TsFrameworks) },

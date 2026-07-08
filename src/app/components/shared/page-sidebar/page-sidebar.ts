@@ -10843,6 +10843,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/tsconfig/testing-that-strictpropertyinitialization-misses-a-private-helper': {
+    apis: ['strictPropertyInitialization', 'definite assignment (!)', 'syntactic analysis'],
+    related: [
+      { label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples — next', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' },
+      { label: 'tsconfig Deep Dive (overview)', route: '/typescript/tsconfig' },
+    ],
+    tip: 'strictPropertyInitialization only recognizes a direct this.field = value assignment written literally in the constructor — initialization via a called private helper method is invisible to the check, even when it always runs.',
+    docs: [
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig/#strictPropertyInitialization' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a false positive, not a real bug — the check is syntactic, not a full control-flow trace.',
+      'The definite-assignment assertion (!) is the standard fix for genuinely-safe helper-method initialization.',
+    ],
+  },
+
+  'typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access': {
+    apis: ['noUncheckedIndexedAccess', 'tuple type', 'literal index'],
+    related: [
+      { label: 'strictPropertyInitialization Misses a Private Helper — previous', route: '/typescript/tsconfig/testing-that-strictpropertyinitialization-misses-a-private-helper' },
+      { label: 'strictFunctionTypes Doesn’t Apply to Methods — next', route: '/typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax' },
+      { label: 'tsconfig Deep Dive (overview)', route: '/typescript/tsconfig' },
+    ],
+    tip: 'A tuple accessed with a literal, in-bounds index (pair[0]) is exempt from noUncheckedIndexedAccess — the same tuple accessed with a computed number index falls back to | undefined, just like a plain array.',
+    docs: [
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The exemption is specifically about literal, provably-in-bounds indices, not about tuples in general.',
+      'The main page\'s own single example is a plain array — this gap only surfaces with a tuple.',
+    ],
+  },
+
+  'typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax': {
+    apis: ['strictFunctionTypes', 'method syntax', 'bivariant checking'],
+    related: [
+      { label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples — previous', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' },
+      { label: 'tsconfig Deep Dive (overview)', route: '/typescript/tsconfig' },
+    ],
+    tip: 'strictFunctionTypes only checks property-typed functions (handle: (e: MouseEvent) => void) contravariantly — the identical substitution written as a method (handle(e: MouseEvent): void) stays bivariant, a deliberate exemption for OOP compatibility.',
+    docs: [
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig/#strictFunctionTypes' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a documented, intentional design decision, not a bug awaiting a fix.',
+      'Method syntax and property-function syntax look nearly identical in an interface but are checked by different rules.',
+    ],
+  },
+
   'typescript/modules': {
     apis: ['import', 'export', 'export default', 'import type', 'require()', 'namespace', 'declare module', 'module resolution'],
     related: [

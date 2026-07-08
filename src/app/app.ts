@@ -1174,6 +1174,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Singleton Silently Ignores the Second Call’s Args', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' },
     { label: 'describe’s Class Decorator Returns an Unnamed Class', route: '/typescript/decorators/testing-that-describes-class-decorator-returns-an-unnamed-class' },
   ],
+  'tsconfig': [
+    { label: 'strictPropertyInitialization Misses a Private Helper', route: '/typescript/tsconfig/testing-that-strictpropertyinitialization-misses-a-private-helper' },
+    { label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' },
+    { label: 'strictFunctionTypes Doesn’t Apply to Methods', route: '/typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax' },
+  ],
 };
 
 @Component({

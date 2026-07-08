@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="tsconfig Deep Dive"
+    topicRoute="/typescript/tsconfig"
+    subtopicLabel="noUncheckedIndexedAccess Doesn’t Affect Tuples" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That noUncheckedIndexedAccess Doesn't Affect Tuple Access</h1>
+  <p class="page-subtitle">
+    The main page's only example is a plain array — a tuple accessed with a literal, in-bounds index is
+    exempt entirely, staying its exact declared type.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 4.1+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Compare a literal, in-bounds tuple index against the same tuple accessed with a computed index, under
+      <code>noUncheckedIndexedAccess</code>.
+    </p>
+    <app-live-playground
+      title="Literal vs computed tuple indices — testing noUncheckedIndexedAccess"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's single array example to tuples, before checking a related strictness
+      sub-flag that has its own surprising exemption in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="tsconfig Deep Dive"
+    topicRoute="/typescript/tsconfig"
+    [prev]="{ label: 'strictPropertyInitialization Misses a Private Helper', route: '/typescript/tsconfig/testing-that-strictpropertyinitialization-misses-a-private-helper' }"
+    [next]="{ label: 'strictFunctionTypes Doesn’t Apply to Method Syntax', route: '/typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax' }" />
+</div>

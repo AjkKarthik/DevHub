@@ -2325,7 +2325,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Tooling</p>
-      <a routerLink="/typescript/tsconfig"        routerLinkActive="active"><span class="nl-text">tsconfig Deep Dive</span>@if(progress.isDone('ts-tsconfig')){<span class="nl-done">✓</span>}@if(diff('ts-tsconfig');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/tsconfig" routerLinkActive="active">
+        <span class="nl-text">tsconfig Deep Dive</span>
+        @if (progress.isDone('ts-tsconfig')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-tsconfig'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('tsconfig')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tsconfig')"
+                  (click)="toggleSubtopics('tsconfig', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tsconfig'); as subs11) {
+        @if (isSubtopicsExpanded('tsconfig')) {
+          <div class="nav-subtopics">
+            @for (s of subs11; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/modules"         routerLinkActive="active"><span class="nl-text">Module System</span>@if(progress.isDone('ts-modules')){<span class="nl-done">✓</span>}@if(diff('ts-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/typescript/declarations"    routerLinkActive="active"><span class="nl-text">Declaration Files</span>@if(progress.isDone('ts-declarations')){<span class="nl-done">✓</span>}@if(diff('ts-declarations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/typescript/frameworks"      routerLinkActive="active"><span class="nl-text">TS with Frameworks</span>@if(progress.isDone('ts-frameworks')){<span class="nl-done">✓</span>}@if(diff('ts-frameworks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
