@@ -10761,6 +10761,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/decorators/testing-that-celsius-field-decorator-only-validates-construction': {
+    apis: ['ClassFieldDecoratorContext', 'field initializer', 'accessor keyword'],
+    related: [
+      { label: 'Singleton Silently Ignores the Second Call’s Args — next', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' },
+      { label: 'Decorators (overview)', route: '/typescript/decorators' },
+    ],
+    tip: 'A field decorator\'s returned function only runs once, as the field\'s initializer at construction — reassigning the field afterward bypasses it entirely, unlike an accessor decorator.',
+    docs: [
+      { label: 'TC39 Decorators Proposal', url: 'https://github.com/tc39/proposal-decorators' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This corrects the main page\'s own inline comment for this exact code example.',
+      'Use the accessor keyword instead of a plain field when every assignment needs validation.',
+    ],
+  },
+
+  'typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args': {
+    apis: ['class decorator (legacy)', 'constructor wrapping', 'singleton pattern'],
+    related: [
+      { label: 'Field Decorator Only Validates Construction — previous', route: '/typescript/decorators/testing-that-celsius-field-decorator-only-validates-construction' },
+      { label: 'describe’s Class Decorator Returns an Unnamed Class — next', route: '/typescript/decorators/testing-that-describes-class-decorator-returns-an-unnamed-class' },
+      { label: 'Decorators (overview)', route: '/typescript/decorators' },
+    ],
+    tip: 'Only the first new Database(...) call\'s arguments ever reach the real constructor — every later call\'s arguments are silently discarded, with zero compiler warning since the type signature still advertises them.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The main page\'s own Database example has no constructor arguments, which is exactly why this gap stays invisible there.',
+      'TypeScript\'s type checker only verifies the call matches the signature — it cannot see that the decorator discards the arguments at runtime.',
+    ],
+  },
+
+  'typescript/decorators/testing-that-describes-class-decorator-returns-an-unnamed-class': {
+    apis: ['ClassDecoratorContext', 'NamedEvaluation', 'constructor.name'],
+    related: [
+      { label: 'Singleton Silently Ignores the Second Call’s Args — previous', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' },
+      { label: 'Decorators (overview)', route: '/typescript/decorators' },
+    ],
+    tip: 'A class decorator that returns class extends target { ... } preserves the prototype chain (instanceof still works) but the anonymous class expression\'s own .name is empty, not "BankAccount".',
+    docs: [
+      { label: 'MDN Function.name', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'instanceof and .name are unrelated mechanisms — one checks the prototype chain, the other reads how the class expression was written.',
+      'Object.defineProperty(replacement, "name", { value: target.name }) is the fix — plain assignment silently fails since .name is non-writable but configurable.',
+    ],
+  },
+
   'typescript/tsconfig': {
     apis: ['target', 'lib', 'module', 'moduleResolution', 'strict', 'paths', 'baseUrl', 'composite', 'references', 'skipLibCheck'],
     related: [

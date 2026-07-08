@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Decorators"
+    topicRoute="/typescript/decorators"
+    subtopicLabel="describe’s Class Decorator Returns an Unnamed Class" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That describe's Class Decorator Returns an Unnamed Class</h1>
+  <p class="page-subtitle">
+    acc instanceof BankAccount still works after the decorator runs — but BankAccount.name silently becomes
+    an empty string, breaking anything that reads constructor.name.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="TypeScript 5.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Run the main page's own <code>&#64;describe(...)</code> example, then check <code>BankAccount.name</code>
+      and <code>acc.constructor.name</code> against an undecorated baseline class.
+    </p>
+    <app-live-playground
+      title="Class name inference — testing describe's returned anonymous class"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the decorators topic by checking a subtle side effect of the page's own
+      class-replacing decorator pattern that neither instanceof checks nor the page's own example surfaces.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Decorators"
+    topicRoute="/typescript/decorators"
+    [prev]="{ label: 'Singleton Silently Ignores the Second Call’s Args', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' }" />
+</div>

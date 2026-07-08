@@ -1169,6 +1169,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'getState’s Object.freeze Doesn’t Stop Array Mutation', route: '/typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items' },
     { label: 'Object.create Bypasses the Private Constructor', route: '/typescript/classes/testing-that-object-create-bypasses-appconfigs-private-constructor' },
   ],
+  'decorators': [
+    { label: 'Field Decorator Only Validates Construction', route: '/typescript/decorators/testing-that-celsius-field-decorator-only-validates-construction' },
+    { label: 'Singleton Silently Ignores the Second Call’s Args', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' },
+    { label: 'describe’s Class Decorator Returns an Unnamed Class', route: '/typescript/decorators/testing-that-describes-class-decorator-returns-an-unnamed-class' },
+  ],
 };
 
 @Component({

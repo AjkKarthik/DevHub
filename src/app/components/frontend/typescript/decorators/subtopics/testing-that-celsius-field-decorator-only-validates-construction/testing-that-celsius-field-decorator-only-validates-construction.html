@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Decorators"
+    topicRoute="/typescript/decorators"
+    subtopicLabel="Field Decorator Only Validates Construction" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That the celsius Field Decorator Only Validates Construction</h1>
+  <p class="page-subtitle">
+    The main page's own comment claims t.celsius = -300 throws a RangeError after construction — it
+    doesn't. Field decorators only ever validate the field's initial value.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 5.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Reassign <code>t.celsius</code> to an out-of-range value on an already-constructed instance, and
+      compare against violating the range in the field's own initializer.
+    </p>
+    <app-live-playground
+      title="Construction-time vs every-assignment — testing the range field decorator"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This corrects a specific inline comment on the main page's own code, and sets up the contrast with the
+      accessor-based readonly decorator shown right beside it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Decorators"
+    topicRoute="/typescript/decorators"
+    [next]="{ label: 'Singleton Silently Ignores the Second Call’s Args', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' }" />
+</div>

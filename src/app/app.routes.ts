@@ -1448,7 +1448,12 @@ export const routes: Routes = [
       { path: 'testing-that-getstates-object-freeze-doesnt-stop-mutating-items', loadComponent: () => import('./components/frontend/typescript/classes/subtopics/testing-that-getstates-object-freeze-doesnt-stop-mutating-items/testing-that-getstates-object-freeze-doesnt-stop-mutating-items').then(m => m.TestingThatGetstatesObjectFreezeDoesntStopMutatingItemsSubtopic) },
       { path: 'testing-that-object-create-bypasses-appconfigs-private-constructor', loadComponent: () => import('./components/frontend/typescript/classes/subtopics/testing-that-object-create-bypasses-appconfigs-private-constructor/testing-that-object-create-bypasses-appconfigs-private-constructor').then(m => m.TestingThatObjectCreateBypassesAppconfigsPrivateConstructorSubtopic) },
     ] },
-    { path: 'decorators',              loadComponent: () => import('./components/frontend/typescript/decorators/decorators').then(m => m.TsDecorators) },
+    { path: 'decorators', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/decorators/decorators').then(m => m.TsDecorators) },
+      { path: 'testing-that-celsius-field-decorator-only-validates-construction', loadComponent: () => import('./components/frontend/typescript/decorators/subtopics/testing-that-celsius-field-decorator-only-validates-construction/testing-that-celsius-field-decorator-only-validates-construction').then(m => m.TestingThatCelsiusFieldDecoratorOnlyValidatesConstructionSubtopic) },
+      { path: 'testing-that-singleton-silently-ignores-second-calls-args', loadComponent: () => import('./components/frontend/typescript/decorators/subtopics/testing-that-singleton-silently-ignores-second-calls-args/testing-that-singleton-silently-ignores-second-calls-args').then(m => m.TestingThatSingletonSilentlyIgnoresSecondCallsArgsSubtopic) },
+      { path: 'testing-that-describes-class-decorator-returns-an-unnamed-class', loadComponent: () => import('./components/frontend/typescript/decorators/subtopics/testing-that-describes-class-decorator-returns-an-unnamed-class/testing-that-describes-class-decorator-returns-an-unnamed-class').then(m => m.TestingThatDescribesClassDecoratorReturnsAnUnnamedClassSubtopic) },
+    ] },
     { path: 'tsconfig',                loadComponent: () => import('./components/frontend/typescript/tsconfig/tsconfig').then(m => m.TsTsconfig) },
     { path: 'modules',                 loadComponent: () => import('./components/frontend/typescript/modules/modules').then(m => m.TsModules) },
     { path: 'declarations',            loadComponent: () => import('./components/frontend/typescript/declarations/declarations').then(m => m.TsDeclarations) },
