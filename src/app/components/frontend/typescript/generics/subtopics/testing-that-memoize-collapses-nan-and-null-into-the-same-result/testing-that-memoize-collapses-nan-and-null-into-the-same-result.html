@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Generics Fundamentals"
+    topicRoute="/typescript/generics"
+    subtopicLabel="memoize Collapses NaN and null" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That memoize Collapses NaN and null Into the Same Result</h1>
+  <p class="page-subtitle">
+    The main page's memoize preserves its full generic type signature — but its JSON.stringify cache key
+    strategy silently treats NaN and null as the identical cache entry.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 2.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Call the main page's exact <code>memoize</code> implementation first with <code>NaN</code>, then with
+      <code>null</code> — and check whether the second call actually recomputes.
+    </p>
+    <app-live-playground
+      title="memoize's JSON.stringify cache key — testing NaN vs null"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This separates the main page's generic-signature claim (accurate) from its cache-key implementation
+      detail (has a real collision) — a distinction worth knowing before reusing this exact memoize pattern.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generics Fundamentals"
+    topicRoute="/typescript/generics"
+    [next]="{ label: 'getInstance Returns the Same Object', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' }" />
+</div>

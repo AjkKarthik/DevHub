@@ -1134,6 +1134,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'const enum Doesn’t Actually Throw Here', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' },
     { label: 'minMax Without a Return Type', route: '/typescript/enums-tuples/testing-that-minmax-without-return-type-becomes-an-array' },
   ],
+  'ts-generics': [
+    { label: 'memoize Collapses NaN and null', route: '/typescript/generics/testing-that-memoize-collapses-nan-and-null-into-the-same-result' },
+    { label: 'getInstance Returns the Same Object', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' },
+    { label: 'getOrSet Avoids the Falsy-Value Trap', route: '/typescript/generics/testing-that-getorset-avoids-the-falsy-value-cache-trap' },
+  ],
 };
 
 @Component({

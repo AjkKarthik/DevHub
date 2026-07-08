@@ -2153,7 +2153,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Generics</p>
-      <a routerLink="/typescript/generics"         routerLinkActive="active"><span class="nl-text">Generics Fundamentals</span>@if(progress.isDone('ts-generics')){<span class="nl-done">✓</span>}@if(diff('ts-generics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/generics" routerLinkActive="active">
+        <span class="nl-text">Generics Fundamentals</span>
+        @if (progress.isDone('ts-generics')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-generics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ts-generics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ts-generics')"
+                  (click)="toggleSubtopics('ts-generics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ts-generics'); as subs3) {
+        @if (isSubtopicsExpanded('ts-generics')) {
+          <div class="nav-subtopics">
+            @for (s of subs3; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/generic-patterns" routerLinkActive="active"><span class="nl-text">Generic Patterns</span>@if(progress.isDone('ts-generic-patterns')){<span class="nl-done">✓</span>}@if(diff('ts-generic-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/typescript/utility-types"    routerLinkActive="active"><span class="nl-text">Utility Types</span>@if(progress.isDone('ts-utility-types')){<span class="nl-done">✓</span>}@if(diff('ts-utility-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

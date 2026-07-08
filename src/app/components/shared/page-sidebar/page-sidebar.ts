@@ -10197,6 +10197,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/generics/testing-that-memoize-collapses-nan-and-null-into-the-same-result': {
+    apis: ['JSON.stringify', 'Map cache key', 'NaN serialization'],
+    related: [
+      { label: 'getInstance Returns the Same Object — next', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' },
+      { label: 'Generics Fundamentals (overview)', route: '/typescript/generics' },
+    ],
+    tip: 'JSON.stringify(NaN) and JSON.stringify(null) both produce "null" — a memoize cache keyed by JSON.stringify(args) silently collides those two distinct values.',
+    docs: [
+      { label: 'MDN JSON.stringify', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A generic function\'s type signature being fully preserved says nothing about whether its runtime cache-key strategy is collision-free.',
+      'undefined inside an array, functions, and symbols all serialize similarly to null — the same collision class extends beyond just NaN.',
+    ],
+  },
+
+  'typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t': {
+    apis: ['static getInstance<T>()', 'type assertion (as)', 'generic erasure'],
+    related: [
+      { label: 'memoize Collapses NaN and null — previous', route: '/typescript/generics/testing-that-memoize-collapses-nan-and-null-into-the-same-result' },
+      { label: 'getOrSet Avoids the Falsy-Value Trap — next', route: '/typescript/generics/testing-that-getorset-avoids-the-falsy-value-cache-trap' },
+      { label: 'Generics Fundamentals (overview)', route: '/typescript/generics' },
+    ],
+    tip: 'Registry.getInstance<string>() and Registry.getInstance<number>() return the literal same object — the ??= singleton runs once, and the as Registry<T> cast has zero runtime effect.',
+    docs: [
+      { label: 'Type Assertions (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A generic type parameter on a singleton accessor provides zero runtime partitioning between different "typed" call sites.',
+      'Data written through one typed view of a shared singleton is visible, unconverted, through any other typed view.',
+    ],
+  },
+
+  'typescript/generics/testing-that-getorset-avoids-the-falsy-value-cache-trap': {
+    apis: ['Map.has()', 'truthiness check', 'falsy cache value'],
+    related: [
+      { label: 'getInstance Returns the Same Object — previous', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' },
+      { label: 'Generics Fundamentals (overview)', route: '/typescript/generics' },
+    ],
+    tip: 'The challenge solution checks has(key), not the cached value\'s truthiness — that is what keeps a legitimately cached 0 or "" from being silently recomputed.',
+    docs: [
+      { label: 'MDN Map.prototype.has()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/has' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'if (this.get(key)) and if (this.has(key)) look interchangeable but diverge for any falsy-but-cached value.',
+      'Falsy-but-valid cache values (0, "", false) are common in practice, not a rare edge case.',
+    ],
+  },
+
   'typescript/generic-patterns': {
     apis: ['Result<T,E>', 'Option<T>', 'generic factory (new() => T)', 'fluent builder', 'phantom type', 'branded type'],
     related: [

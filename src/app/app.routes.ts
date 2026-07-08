@@ -1406,7 +1406,12 @@ export const routes: Routes = [
       { path: 'testing-that-const-enum-import-doesnt-throw-in-this-playground', loadComponent: () => import('./components/frontend/typescript/enums-tuples/subtopics/testing-that-const-enum-import-doesnt-throw-in-this-playground/testing-that-const-enum-import-doesnt-throw-in-this-playground').then(m => m.TestingThatConstEnumImportDoesntThrowInThisPlaygroundSubtopic) },
       { path: 'testing-that-minmax-without-return-type-becomes-an-array', loadComponent: () => import('./components/frontend/typescript/enums-tuples/subtopics/testing-that-minmax-without-return-type-becomes-an-array/testing-that-minmax-without-return-type-becomes-an-array').then(m => m.TestingThatMinmaxWithoutReturnTypeBecomesAnArraySubtopic) },
     ] },
-    { path: 'generics',                loadComponent: () => import('./components/frontend/typescript/generics/generics').then(m => m.TsGenerics) },
+    { path: 'generics', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/generics/generics').then(m => m.TsGenerics) },
+      { path: 'testing-that-memoize-collapses-nan-and-null-into-the-same-result', loadComponent: () => import('./components/frontend/typescript/generics/subtopics/testing-that-memoize-collapses-nan-and-null-into-the-same-result/testing-that-memoize-collapses-nan-and-null-into-the-same-result').then(m => m.TestingThatMemoizeCollapsesNanAndNullIntoTheSameResultSubtopic) },
+      { path: 'testing-that-getinstance-returns-the-same-object-across-different-t', loadComponent: () => import('./components/frontend/typescript/generics/subtopics/testing-that-getinstance-returns-the-same-object-across-different-t/testing-that-getinstance-returns-the-same-object-across-different-t').then(m => m.TestingThatGetinstanceReturnsTheSameObjectAcrossDifferentTSubtopic) },
+      { path: 'testing-that-getorset-avoids-the-falsy-value-cache-trap', loadComponent: () => import('./components/frontend/typescript/generics/subtopics/testing-that-getorset-avoids-the-falsy-value-cache-trap/testing-that-getorset-avoids-the-falsy-value-cache-trap').then(m => m.TestingThatGetorsetAvoidsTheFalsyValueCacheTrapSubtopic) },
+    ] },
     { path: 'generic-patterns',        loadComponent: () => import('./components/frontend/typescript/generic-patterns/generic-patterns').then(m => m.TsGenericPatterns) },
     { path: 'utility-types',           loadComponent: () => import('./components/frontend/typescript/utility-types/utility-types').then(m => m.TsUtilityTypes) },
     { path: 'mapped-types',            loadComponent: () => import('./components/frontend/typescript/mapped-types/mapped-types').then(m => m.TsMappedTypes) },
