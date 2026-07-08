@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template Literal Types"
+    topicRoute="/typescript/template-literal-types"
+    subtopicLabel="A Single as Cast Defeats CSSVarName" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That a Single as Cast Defeats the CSSVarName Cross-Product</h1>
+  <p class="page-subtitle">
+    The challenge's nine-token CSSVarName machinery correctly rejects an unknown token when called
+    normally — one type assertion at the call site bypasses all of it, with zero runtime check remaining.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 4.1+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Call the challenge's own <code>typedVar()</code> with an invalid token forced past the type checker,
+      then confirm at runtime that it was never a real theme token at all.
+    </p>
+    <app-live-playground
+      title="Type assertions vs runtime checks — testing typedVar's actual guarantees"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the template literal types topic by applying the page's own general "types are
+      compile-time only" warning to the specific, elaborate machinery the challenge itself builds.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template Literal Types"
+    topicRoute="/typescript/template-literal-types"
+    [prev]="{ label: 'DotPath Hits Infinite Recursion on Self-Reference', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' }" />
+</div>

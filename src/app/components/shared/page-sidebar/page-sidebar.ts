@@ -10599,6 +10599,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/template-literal-types/testing-that-a-let-variable-widens-handlername-to-plain-string': {
+    apis: ['let widening', 'const literal inference', 'generic type inference'],
+    related: [
+      { label: 'DotPath Hits Infinite Recursion on Self-Reference — next', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' },
+      { label: 'Template Literal Types (overview)', route: '/typescript/template-literal-types' },
+    ],
+    tip: 'A let variable initialized with a string literal widens to plain string — passing it into a generic template-literal-returning function silently collapses the return type to the broad form.',
+    docs: [
+      { label: 'Literal Inference (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/type-inference.html#literal-inference' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This happens silently — no error anywhere in the chain flags the loss of specificity.',
+      'const keeps the literal type; let widens to the general primitive type.',
+    ],
+  },
+
+  'typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference': {
+    apis: ['recursive conditional type', 'ts2589', 'self-referencing interface'],
+    related: [
+      { label: 'let Widens HandlerName to Plain string — previous', route: '/typescript/template-literal-types/testing-that-a-let-variable-widens-handlername-to-plain-string' },
+      { label: 'A Single as Cast Defeats CSSVarName — next', route: '/typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product' },
+      { label: 'Template Literal Types (overview)', route: '/typescript/template-literal-types' },
+    ],
+    tip: 'DotPath<T> has no base case for a self-referencing interface — TypeScript eventually reports "Type instantiation is excessively deep and possibly infinite" (ts2589) instead of resolving or looping forever.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'TypeScript has no cycle detection here — only a maximum instantiation depth that eventually triggers the error.',
+      'Any hand-written recursive conditional/mapped type applied to a self-referencing interface shares this risk.',
+    ],
+  },
+
+  'typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product': {
+    apis: ['type assertion (as)', 'compile-time-only types', 'runtime validation'],
+    related: [
+      { label: 'DotPath Hits Infinite Recursion on Self-Reference — previous', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' },
+      { label: 'Template Literal Types (overview)', route: '/typescript/template-literal-types' },
+    ],
+    tip: 'typedVar never reads from the real theme object at runtime — a single "as ThemeVar" cast bypasses the entire nine-token CSSVarName cross-product with zero remaining protection.',
+    docs: [
+      { label: 'Type Assertions (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a structural property of all compile-time-only type safety, not a flaw specific to this challenge\'s implementation.',
+      'Untrusted string values (user input, API responses) flowing through an as cast get zero protection from even the most elaborate type.',
+    ],
+  },
+
   'typescript/classes': {
     apis: ['class', 'private / protected / public', '#private (ECMAScript)', 'readonly', 'abstract class', 'override', 'parameter property'],
     related: [

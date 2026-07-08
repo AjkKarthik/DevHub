@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template Literal Types"
+    topicRoute="/typescript/template-literal-types"
+    subtopicLabel="let Widens HandlerName to Plain string" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That a let Variable Widens HandlerName to Plain string</h1>
+  <p class="page-subtitle">
+    A generic version of the main page's HandlerName pattern silently loses its literal specificity when
+    called with a let-declared variable instead of a const or literal.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 4.1+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Call a generic <code>makeHandlerName&lt;E&gt;</code> with a <code>const</code> literal, then with a
+      widened <code>let</code> variable, and compare the resulting return types.
+    </p>
+    <app-live-playground
+      title="let widening vs const literals — testing generic template literal inference"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This connects the main page's HandlerName example directly to its own separate Common Mistake #2,
+      showing the exact mechanism (generic inference from a widened variable) that triggers it silently.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template Literal Types"
+    topicRoute="/typescript/template-literal-types"
+    [next]="{ label: 'DotPath Hits Infinite Recursion on Self-Reference', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' }" />
+</div>

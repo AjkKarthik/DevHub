@@ -2257,7 +2257,26 @@
           </div>
         }
       }
-      <a routerLink="/typescript/template-literal-types"  routerLinkActive="active"><span class="nl-text">Template Literal Types</span>@if(progress.isDone('ts-template-literal-types')){<span class="nl-done">✓</span>}@if(diff('ts-template-literal-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/template-literal-types" routerLinkActive="active">
+        <span class="nl-text">Template Literal Types</span>
+        @if (progress.isDone('ts-template-literal-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-template-literal-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('template-literal-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('template-literal-types')"
+                  (click)="toggleSubtopics('template-literal-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('template-literal-types'); as subs8) {
+        @if (isSubtopicsExpanded('template-literal-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs8; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

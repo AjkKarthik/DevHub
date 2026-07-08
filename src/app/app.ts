@@ -1159,6 +1159,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Head of an Empty Tuple Hides undefined', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' },
     { label: 'MyReturnType Rejects a Class Constructor', route: '/typescript/conditional-types/testing-that-myreturntype-rejects-a-class-constructor' },
   ],
+  'template-literal-types': [
+    { label: 'let Widens HandlerName to Plain string', route: '/typescript/template-literal-types/testing-that-a-let-variable-widens-handlername-to-plain-string' },
+    { label: 'DotPath Hits Infinite Recursion on Self-Reference', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' },
+    { label: 'A Single as Cast Defeats CSSVarName', route: '/typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product' },
+  ],
 };
 
 @Component({
