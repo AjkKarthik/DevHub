@@ -1592,7 +1592,7 @@ off here with a date.
 
 #### TypeScript — 20 topic pages
 
-- [ ] `/typescript/basics` — TypeScript Fundamentals
+- [x] `/typescript/basics` — TypeScript Fundamentals (2026-07-08 — 3 subtopics: testing-that-excess-property-checking-applies-to-function-arguments-too, demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added, testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any — first TypeScript hub topic; discovered and fixed a pre-existing site-wide CSS bug affecting all 132 SQL subtopic pages (see Current Work note below); SUBTOPICS map key hub-prefixed to 'ts-basics' due to collision with existing bare 'basics' key from /csharp/basics)
 - [ ] `/typescript/primitive-types` — Primitive & Literal Types
 - [ ] `/typescript/interfaces-types` — Interfaces & Type Aliases
 - [ ] `/typescript/unions` — Union & Intersection Types

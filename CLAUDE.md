@@ -580,6 +580,112 @@ Confirmed by direct file inspection before the ASP.NET pilot (`/aspnet/hosting-s
    `$tint: #ecfeff`) and the `.asp-page`/`.asp-icon`/`.asp-section` CSS classes (NOT C#'s
    purple/`.cs-page`), `tech="aspnet"` in `app-page-meta`. Icon content stays `ASP`.
 
+### CRITICAL — check whether a hub's `.<prefix>-page` wrapper class is GLOBAL or LOCAL
+before that hub's first subtopic set
+
+Confirmed via a real, live bug found and fixed across the ENTIRE SQL hub (2026-07-08, after
+all 44 SQL topics' subtopics were already built and pushed): Angular's, C#'s, and ASP.NET
+Core's `.ng-page` / `.cs-page` / `.asp-page` wrapper classes (max-width: 860px; margin: 0
+auto) are defined **globally** in `src/styles.scss` — global styles are NOT view-encapsulated,
+so they apply to every component's template, including a separate subtopic component's. SQL's
+`.sq-page` (and, discovered at the same time, TypeScript's `.ts-page`) are **not** in that
+global list — each main topic page defines its own wrapper rule inside its OWN scoped
+component stylesheet, which a separate subtopic component does NOT inherit.
+
+The result: every SQL subtopic page (132 pages, all 44 topics) rendered **full-bleed,
+uncapped width** on desktop viewports instead of the intended 860px reading column — verified
+860px on the main topic page vs. 1033px+ on its own subtopics at a 1600px viewport — because
+every subtopic's own `.scss` only ever defined `.subtopic-page { padding: ...; }` (per the
+"Wiring checklist" below) and never redefined the wrapper's own `max-width`/`margin`.
+
+**Before any new hub's first subtopic set**: grep `src/styles.scss` for that hub's
+`.<prefix>-page` class. If it's NOT there (confirmed so far: SQL, TypeScript — check every
+future hub before assuming either way), every subtopic `.scss` for that hub MUST include the
+full wrapper rule, not just `.subtopic-page`'s padding — e.g. for SQL/TypeScript:
+```scss
+$accent: #e05c00;   // hub's own accent
+$tint: #fff7ed;      // hub's own tint
+
+.sq-page { max-width: 860px; margin: 0 auto; }   // ← the line that was missing on all 132 pages
+
+.subtopic-page {
+  padding: 2rem 1.5rem 4rem;
+}
+```
+All 132 pre-existing SQL subtopic `.scss` files were bulk-fixed with this exact one-line
+insertion (verified safe because every one of them had byte-for-byte identical content before
+the fix) — if a similar gap is ever found on another hub, the same bulk-insert approach (find
+the uniform stale pattern, verify every file matches it exactly, one bulk replace) is far
+faster and safer than editing hundreds of files individually.
+
+### TypeScript/JavaScript-family hubs — DO get a live playground, with a different template
+
+Unlike the non-Angular hubs in the section above (C#, SQL, Python, Go — no in-browser
+runtime), TypeScript and JavaScript run natively in a browser, so their subtopic pages use
+`app-live-playground` fully, exactly like Angular's — just with StackBlitz's `'typescript'`
+project template (confirmed valid via the SDK's own `PROJECT_TEMPLATES`, and confirmed
+working end-to-end in the browser: `POST https://stackblitz.com/run?...&file=index.ts` → 200,
+StackBlitz editor loads, console output appears) instead of `'angular-cli'`.
+
+**Required: an `index.html` file in `liveDemoFiles`, even for pure-TypeScript examples with
+no DOM interaction.** The `'typescript'` EngineBlock template expects an HTML entry point —
+without one, the embedded editor loads with a visible "Import error, can't find file:
+/index.html" banner (confirmed via a real browser screenshot during the TypeScript pilot,
+`/typescript/basics`, 2026-07-08) even though the `.ts` file itself is present and correct.
+Minimum working file set for a TS-only (no DOM) demo:
+```ts
+liveDemoFiles: PlaygroundFile[] = [
+  {
+    path: 'index.html',
+    content: `<!doctype html>
+<html>
+  <head><title>…</title></head>
+  <body>
+    <p>Open the browser console (or the StackBlitz Console tab) to see output.</p>
+    <script type="module" src="index.ts"></script>
+  </body>
+</html>
+`,
+  },
+  { path: 'index.ts', content: `…` },
+];
+```
+`openFile="index.ts"` in the `<app-live-playground>` tag (not `index.html`) still correctly
+focuses the TS file in the editor on load — StackBlitz's file tabs work normally with this
+setup, `console.log` output appears in StackBlitz's own Console tab (confirmed: a badge
+showing the exact console.log call count appeared after loading).
+
+### TypeScript hub subtopic wiring — differs from C#/ASP.NET in one place, confirms the rest
+
+Confirmed via direct file inspection before the pilot (`/typescript/basics`, 2026-07-08):
+1. **`app.ts`'s flat `SUBTOPICS` map had a real bare-key collision**: TypeScript's first
+   topic slug, `basics`, was already taken by `/csharp/basics`. Grepped for `^  'basics':`
+   before adding — found the C# entry — so this hub's entry is hub-prefixed as `'ts-basics'`
+   or every future colliding TypeScript slug the same way, per the established
+   collision-resolution pattern (`aspnet-routing` etc.). **The nav accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) must then ALSO use `'ts-basics'`**,
+   not the bare slug — unlike the normal (collision-free) case, once a slug is hub-prefixed in
+   `SUBTOPICS`, every consumer of that key follows suit. Always grep the bare slug (unquoted
+   AND quoted forms) across the whole file before adding — do not assume TypeScript topic
+   slugs are collision-free just because this is the hub's first subtopic set.
+2. **Progress/search keys are `ts-` PREFIXED** (`ts-basics`), confirmed via the existing nav
+   markup (`progress.isDone('ts-basics')`) — this conveniently matches the SUBTOPICS map key
+   chosen for the collision above, but that is a coincidence of this specific slug, not a
+   rule; check the hub's actual prefix (`ts-` for TypeScript) independently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'typescript/basics'`, not bare `'basics'`)
+   — confirmed by finding the base entry ALREADY existed (unlike every SQL topic, which was
+   consistently missing its base sidebar entry — TypeScript topics do not have this gap).
+   Subtopic composite keys follow the same full-path convention:
+   `'typescript/basics/<subtopic-slug>'`.
+4. Breadcrumb `TYPESCRIPT_LABELS` map uses bare keys (`'basics'`), same as every other hub's
+   own dedicated labels map — composite subtopic keys there are bare too
+   (`'basics/<subtopic-slug>'`), confirmed via the same generic composite-key-first lookup
+   every hub shares in `breadcrumb.ts`.
+5. Theme: `$accent: #3178c6`, `$tint: #eff6ff`, `.ts-page`/`.ts-icon`/`.ts-section` CSS
+   classes, `tech="typescript"` in `app-page-meta` (auto-renders a TypeScript Playground
+   run-it link). Icon content stays `TS`. **`.ts-page`'s wrapper rule is NOT global — see the
+   max-width gotcha above; every TypeScript subtopic `.scss` must include it.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
