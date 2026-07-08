@@ -9793,6 +9793,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/primitive-types/testing-that-as-consts-readonly-is-compile-time-only-not-runtime': {
+    apis: ['as const', 'readonly', 'Object.freeze'],
+    related: [
+      { label: 'Narrowing to object Isn’t Enough — next', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' },
+      { label: 'Primitive & Literal Types (overview)', route: '/typescript/primitive-types' },
+    ],
+    tip: 'as const is a compile-time-only annotation — the underlying JS object is never frozen; use Object.freeze() for a genuine runtime guarantee.',
+    docs: [
+      { label: 'TypeScript const Assertions', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Any code path that bypasses the type checker (as any, untyped JS) can mutate an as const object with no error.',
+      'A code comment saying "Readonly — no mutation allowed" describes what the compiler enforces on your code, not the value itself.',
+    ],
+  },
+
+  'typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port': {
+    apis: ['typeof', 'in operator', 'type guard'],
+    related: [
+      { label: 'as const Is Compile-Time Only — previous', route: '/typescript/primitive-types/testing-that-as-consts-readonly-is-compile-time-only-not-runtime' },
+      { label: 'throw fail(...) Isn’t an Expression — next', route: '/typescript/primitive-types/testing-that-throw-fail-cannot-appear-in-an-expression-position' },
+      { label: 'Primitive & Literal Types (overview)', route: '/typescript/primitive-types' },
+    ],
+    tip: 'Narrowing unknown to the built-in object type gives you NO known properties — accessing any specific property still needs its own further narrowing step.',
+    docs: [
+      { label: 'TypeScript Narrowing', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A mistake-block "right" example that never actually accesses the property it claims to protect can hide an incomplete fix.',
+      'An `in` check or a type guard function is the minimal addition needed beyond typeof === \'object\'.',
+    ],
+  },
+
+  'typescript/primitive-types/testing-that-throw-fail-cannot-appear-in-an-expression-position': {
+    apis: ['never', 'throw statement', 'expression position'],
+    related: [
+      { label: 'Narrowing to object Isn’t Enough — previous', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' },
+      { label: 'Primitive & Literal Types (overview)', route: '/typescript/primitive-types' },
+    ],
+    tip: 'throw is a statement, not an expression — a never-typed function call (no throw keyword) is what can actually appear in any expression position.',
+    docs: [
+      { label: 'MDN throw statement', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      '"throw fail(\'msg\')" inside a ternary or other expression position is a syntax error, not a type error.',
+      'A function that throws internally needs no throw keyword at its own call sites — the exception propagates automatically.',
+    ],
+  },
+
   'typescript/interfaces-types': {
     apis: ['interface', 'type', 'extends', 'implements', 'readonly', '[key: string]: T', 'declaration merging', '&'],
     related: [

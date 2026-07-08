@@ -1109,6 +1109,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Exhaustiveness Check’s Exact Error', route: '/typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added' },
     { label: 'The “Fixed” Example Still Uses as any', route: '/typescript/basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any' },
   ],
+  'primitive-types': [
+    { label: 'as const Is Compile-Time Only', route: '/typescript/primitive-types/testing-that-as-consts-readonly-is-compile-time-only-not-runtime' },
+    { label: 'Narrowing to object Isn’t Enough', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' },
+    { label: 'throw fail(...) Isn’t an Expression', route: '/typescript/primitive-types/testing-that-throw-fail-cannot-appear-in-an-expression-position' },
+  ],
 };
 
 @Component({

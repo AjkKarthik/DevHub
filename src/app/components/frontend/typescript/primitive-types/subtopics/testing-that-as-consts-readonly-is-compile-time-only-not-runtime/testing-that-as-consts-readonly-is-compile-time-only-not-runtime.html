@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Primitive & Literal Types"
+    topicRoute="/typescript/primitive-types"
+    subtopicLabel="as const Is Compile-Time Only" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That as const's Readonly Is Compile-Time Only, Not Runtime</h1>
+  <p class="page-subtitle">
+    The main page's code comment says an as const object "is Readonly — no mutation allowed" with no
+    qualifier — but that guarantee only holds for code the TypeScript compiler actually checks.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="beginner" since="TypeScript 3.4+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Compare an <code>as const</code> object against an <code>Object.freeze()</code>'d one — bypass
+      TypeScript's type checking on both and see which one actually stops the mutation.
+    </p>
+    <app-live-playground
+      title="as const vs. Object.freeze — compile-time vs. runtime"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the same literal-type-narrowing behavior the main page introduces — the distinction that
+      matters here is scope: a compile-time guarantee only protects the code the compiler actually sees,
+      which is a different, narrower promise than a runtime one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Primitive & Literal Types"
+    topicRoute="/typescript/primitive-types"
+    [next]="{ label: 'Narrowing to object Still Isn’t Enough', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' }" />
+</div>

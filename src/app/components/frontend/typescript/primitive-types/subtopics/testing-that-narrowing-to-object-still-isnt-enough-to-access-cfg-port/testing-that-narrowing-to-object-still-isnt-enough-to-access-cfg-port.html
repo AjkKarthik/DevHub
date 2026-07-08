@@ -1,0 +1,49 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Primitive & Literal Types"
+    topicRoute="/typescript/primitive-types"
+    subtopicLabel="Narrowing to object Isn’t Enough" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Narrowing to object Still Isn't Enough to Access cfg.port</h1>
+  <p class="page-subtitle">
+    The main page's "right" fix for the any-vs-unknown mistake stops right before actually accessing the
+    property it's protecting — narrowing to object alone still leaves cfg.port inaccessible.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="beginner" since="TypeScript 3.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Uncomment the property access right after the main page's own narrowing check, read the exact error,
+      then compare against two working fixes that add the one missing step.
+    </p>
+    <app-live-playground
+      title="Narrowing unknown to object — completing the missing step"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This builds directly on the page's own <code>unknown</code> vs. <code>any</code> guidance — narrowing
+      is not a single step that unlocks everything at once; each additional property access needs its own
+      narrowing, all the way down to the exact shape you need.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Primitive & Literal Types"
+    topicRoute="/typescript/primitive-types"
+    [prev]="{ label: 'as const Is Compile-Time Only', route: '/typescript/primitive-types/testing-that-as-consts-readonly-is-compile-time-only-not-runtime' }"
+    [next]="{ label: 'throw fail(...) Can’t Appear in an Expression', route: '/typescript/primitive-types/testing-that-throw-fail-cannot-appear-in-an-expression-position' }" />
+</div>
