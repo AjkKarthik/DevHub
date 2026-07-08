@@ -1606,7 +1606,7 @@ off here with a date.
 - [x] `/typescript/template-literal-types` — Template Literal Types (2026-07-08 — 3 subtopics: testing-that-a-let-variable-widens-handlername-to-plain-string, testing-that-dotpath-hits-infinite-recursion-on-self-reference, testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product)
 - [x] `/typescript/classes` — Classes & Visibility (2026-07-08 — 3 subtopics: testing-that-typescript-private-is-still-included-in-json-stringify, testing-that-getstates-object-freeze-doesnt-stop-mutating-items, testing-that-object-create-bypasses-appconfigs-private-constructor)
 - [x] `/typescript/decorators` — Decorators (2026-07-08 — 3 subtopics: testing-that-celsius-field-decorator-only-validates-construction, testing-that-singleton-silently-ignores-second-calls-args, testing-that-describes-class-decorator-returns-an-unnamed-class)
-- [ ] `/typescript/tsconfig` — tsconfig Deep Dive
+- [x] `/typescript/tsconfig` — tsconfig Deep Dive (2026-07-08 — 3 subtopics: testing-that-strictpropertyinitialization-misses-a-private-helper, testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access, testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax — new pattern: playground includes a tsconfig.json PlaygroundFile to force the specific strict sub-flag under test)
 - [ ] `/typescript/modules` — Module System & Namespaces
 - [ ] `/typescript/declarations` — Declaration Files (d.ts)
 - [ ] `/typescript/frameworks` — TypeScript with Frameworks
