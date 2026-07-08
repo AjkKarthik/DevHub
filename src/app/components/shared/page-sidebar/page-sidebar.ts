@@ -9874,6 +9874,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/interfaces-types/testing-that-pluginregistry-never-verifies-name-matches-its-key': {
+    apis: ['generic constraint', 'keyof', 'Map'],
+    related: [
+      { label: 'Window Merging Needs declare global — next', route: '/typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file' },
+      { label: 'Interfaces & Type Aliases (overview)', route: '/typescript/interfaces-types' },
+    ],
+    tip: 'register<K extends keyof TMap & string>(plugin: TMap[K]) checks the plugin\'s SHAPE, not whether plugin.name actually equals K — the two can silently diverge at runtime.',
+    docs: [
+      { label: 'TypeScript Generics', url: 'https://www.typescriptlang.org/docs/handbook/2/generics.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A generic type parameter can never inspect or constrain a specific runtime string value inside its own argument.',
+      'The registry\'s type safety depends on a convention (plugin.name matches its key) that nothing structurally enforces.',
+    ],
+  },
+
+  'typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file': {
+    apis: ['declare global', 'module scope', 'top-level import/export'],
+    related: [
+      { label: 'PluginRegistry’s Unverified Name/Key Assumption — previous', route: '/typescript/interfaces-types/testing-that-pluginregistry-never-verifies-name-matches-its-key' },
+      { label: 'Conflicting Merges Are a Compile Error — next', route: '/typescript/interfaces-types/testing-that-conflicting-merged-properties-are-a-compile-error' },
+      { label: 'Interfaces & Type Aliases (overview)', route: '/typescript/interfaces-types' },
+    ],
+    tip: 'Any top-level import/export makes a file a module — a plain interface Window {...} then merges with that module\'s own scope, not the real global Window, unless wrapped in declare global.',
+    docs: [
+      { label: 'TypeScript Modules', url: 'https://www.typescriptlang.org/docs/handbook/2/modules.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This compiles with zero errors either way — the absence of an error does not confirm the merge actually reached the global type.',
+      'Almost every real-world TypeScript file is a module by default, making declare global the practically-needed pattern.',
+    ],
+  },
+
+  'typescript/interfaces-types/testing-that-conflicting-merged-properties-are-a-compile-error': {
+    apis: ['declaration merging', 'interface', 'type conflict'],
+    related: [
+      { label: 'Window Merging Needs declare global — previous', route: '/typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file' },
+      { label: 'Interfaces & Type Aliases (overview)', route: '/typescript/interfaces-types' },
+    ],
+    tip: 'Two same-named interfaces merge fine on disjoint or identical properties — but a genuine type conflict on a shared property name is a compile error, not a silent resolution.',
+    docs: [
+      { label: 'TypeScript Declaration Merging', url: 'https://www.typescriptlang.org/docs/handbook/declaration-merging.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'TypeScript never lets the "last declaration win" for a conflicting property — it refuses to compile instead.',
+      'This protects multi-file augmentation of the same interface from silent, order-dependent type conflicts.',
+    ],
+  },
+
   'typescript/unions': {
     apis: ['|', '&', 'discriminated union', 'in operator', 'typeof', 'instanceof', 'satisfies'],
     related: [

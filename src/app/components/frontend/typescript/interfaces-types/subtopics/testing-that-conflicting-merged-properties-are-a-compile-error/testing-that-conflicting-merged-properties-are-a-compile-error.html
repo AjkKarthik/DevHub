@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Interfaces & Type Aliases"
+    topicRoute="/typescript/interfaces-types"
+    subtopicLabel="Conflicting Merges Are a Compile Error" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Conflicting Merged Properties Are a Compile Error</h1>
+  <p class="page-subtitle">
+    The main page describes declaration merging as unconditionally combining properties — but two
+    declarations disagreeing on a shared property's type fail to compile, they don't silently combine.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Compare a disjoint-property merge (works), a conflicting-type merge (fails), and an
+      identical-type-repeated merge (works) side by side.
+    </p>
+    <app-live-playground
+      title="Declaration merging — testing the conflict boundary"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this closes out the theme: a generic constraint that
+      doesn't check what it sounds like it checks, an example that quietly assumes script scope, and now
+      an "always works" claim that has a real, compiler-enforced boundary.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Interfaces & Type Aliases"
+    topicRoute="/typescript/interfaces-types"
+    [prev]="{ label: 'Window Merging Needs declare global', route: '/typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file' }" />
+</div>

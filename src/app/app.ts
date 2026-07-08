@@ -1114,6 +1114,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Narrowing to object Isn’t Enough', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' },
     { label: 'throw fail(...) Isn’t an Expression', route: '/typescript/primitive-types/testing-that-throw-fail-cannot-appear-in-an-expression-position' },
   ],
+  'interfaces-types': [
+    { label: 'PluginRegistry’s Unverified Name/Key Assumption', route: '/typescript/interfaces-types/testing-that-pluginregistry-never-verifies-name-matches-its-key' },
+    { label: 'Window Merging Needs declare global', route: '/typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file' },
+    { label: 'Conflicting Merges Are a Compile Error', route: '/typescript/interfaces-types/testing-that-conflicting-merged-properties-are-a-compile-error' },
+  ],
 };
 
 @Component({

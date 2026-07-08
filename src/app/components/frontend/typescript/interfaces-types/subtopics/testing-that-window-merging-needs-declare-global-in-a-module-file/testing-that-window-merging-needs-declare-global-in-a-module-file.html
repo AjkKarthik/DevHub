@@ -1,0 +1,49 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Interfaces & Type Aliases"
+    topicRoute="/typescript/interfaces-types"
+    subtopicLabel="Window Merging Needs declare global" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Window Merging Needs declare global in a Module File</h1>
+  <p class="page-subtitle">
+    The main page's Window augmentation example only merges globally in a script file with no top-level
+    import/export — almost every real TypeScript file is a module, and needs declare global instead.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Run the main page's exact example inside a module file (one with a top-level <code>export</code>), then
+      compare against the same code wrapped in <code>declare global</code>.
+    </p>
+    <app-live-playground
+      title="Window merging — script scope vs. module scope"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the same declaration merging the main page introduces — the missing piece is that merging
+      with a truly GLOBAL type (as opposed to two interfaces merging within the same module) has an extra
+      precondition the main page's example quietly assumes but never states.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Interfaces & Type Aliases"
+    topicRoute="/typescript/interfaces-types"
+    [prev]="{ label: 'PluginRegistry’s Unverified Name/Key Assumption', route: '/typescript/interfaces-types/testing-that-pluginregistry-never-verifies-name-matches-its-key' }"
+    [next]="{ label: 'Conflicting Merged Properties Are a Compile Error', route: '/typescript/interfaces-types/testing-that-conflicting-merged-properties-are-a-compile-error' }" />
+</div>

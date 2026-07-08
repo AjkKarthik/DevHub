@@ -2069,7 +2069,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Type System</p>
-      <a routerLink="/typescript/interfaces-types" routerLinkActive="active"><span class="nl-text">Interfaces &amp; Types</span>@if(progress.isDone('ts-interfaces-types')){<span class="nl-done">✓</span>}@if(diff('ts-interfaces-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/interfaces-types" routerLinkActive="active">
+        <span class="nl-text">Interfaces &amp; Types</span>
+        @if (progress.isDone('ts-interfaces-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-interfaces-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('interfaces-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('interfaces-types')"
+                  (click)="toggleSubtopics('interfaces-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('interfaces-types'); as subs) {
+        @if (isSubtopicsExpanded('interfaces-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/unions"           routerLinkActive="active"><span class="nl-text">Union &amp; Intersection</span>@if(progress.isDone('ts-unions')){<span class="nl-done">✓</span>}@if(diff('ts-unions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/typescript/narrowing"        routerLinkActive="active"><span class="nl-text">Type Guards &amp; Narrowing</span>@if(progress.isDone('ts-narrowing')){<span class="nl-done">✓</span>}@if(diff('ts-narrowing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/typescript/enums-tuples"     routerLinkActive="active"><span class="nl-text">Enums &amp; Tuples</span>@if(progress.isDone('ts-enums-tuples')){<span class="nl-done">✓</span>}@if(diff('ts-enums-tuples');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
