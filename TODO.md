@@ -1607,7 +1607,7 @@ off here with a date.
 - [x] `/typescript/classes` — Classes & Visibility (2026-07-08 — 3 subtopics: testing-that-typescript-private-is-still-included-in-json-stringify, testing-that-getstates-object-freeze-doesnt-stop-mutating-items, testing-that-object-create-bypasses-appconfigs-private-constructor)
 - [x] `/typescript/decorators` — Decorators (2026-07-08 — 3 subtopics: testing-that-celsius-field-decorator-only-validates-construction, testing-that-singleton-silently-ignores-second-calls-args, testing-that-describes-class-decorator-returns-an-unnamed-class)
 - [x] `/typescript/tsconfig` — tsconfig Deep Dive (2026-07-08 — 3 subtopics: testing-that-strictpropertyinitialization-misses-a-private-helper, testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access, testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax — new pattern: playground includes a tsconfig.json PlaygroundFile to force the specific strict sub-flag under test)
-- [ ] `/typescript/modules` — Module System & Namespaces
+- [x] `/typescript/modules` — Module System & Namespaces (2026-07-08 — 3 subtopics: testing-that-circular-imports-work-fine-for-functions-not-consts, testing-that-a-barrel-import-runs-every-files-side-effects, testing-that-export-type-strips-the-value-even-for-a-class — SUBTOPICS map key left bare ('modules'); JS/Node.js/Go/Terraform hubs also route to 'modules' — MUST hub-prefix if any of them add subtopics to their own modules topic later)
 - [ ] `/typescript/declarations` — Declaration Files (d.ts)
 - [ ] `/typescript/frameworks` — TypeScript with Frameworks
 - [ ] `/typescript/strict-migration` — Strict Mode & Migration
