@@ -9955,6 +9955,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/unions/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing': {
+    apis: ['bigint', 'Boolean()', 'truthiness narrowing'],
+    related: [
+      { label: 'The “Safe” isUser Fix Still Uses as any — next', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' },
+      { label: 'Union & Intersection Types (overview)', route: '/typescript/unions' },
+    ],
+    tip: '0n (BigInt zero) is falsy, exactly like 0 — the main page\'s own list of falsy values omits it, even while warning specifically about the 0 pitfall.',
+    docs: [
+      { label: 'MDN BigInt', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'bigint is commonly used for large IDs beyond Number.MAX_SAFE_INTEGER — a genuine zero ID is a realistic value to accidentally treat as absent.',
+      'The fix is identical to the main page\'s own advice for plain 0: use !== null instead of bare truthiness.',
+    ],
+  },
+
+  'typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice': {
+    apis: ['type predicate', 'as any', 'in operator narrowing'],
+    related: [
+      { label: 'BigInt Zero Is Falsy Too — previous', route: '/typescript/unions/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing' },
+      { label: 'The Assertion Function Example Doesn’t Run — next', route: '/typescript/unions/testing-that-the-assertion-function-example-never-actually-runs' },
+      { label: 'Union & Intersection Types (overview)', route: '/typescript/unions' },
+    ],
+    tip: 'After \'id\' in val narrows val, val.id is directly accessible with no cast — (val as any).id is unnecessary and lets a property-name typo compile silently.',
+    docs: [
+      { label: 'TypeScript Type Predicates', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'TypeScript trusts a type predicate\'s return value unconditionally — a wrong implementation (or a typo hidden behind as any) silently corrupts types for every caller.',
+      'The main page\'s own "wrong" example crashes with "Cannot read properties of undefined" — this subtopic reproduces that exact error.',
+    ],
+  },
+
+  'typescript/unions/testing-that-the-assertion-function-example-never-actually-runs': {
+    apis: ['asserts x is T', 'Cannot find name', 'unknown'],
+    related: [
+      { label: 'The “Safe” isUser Fix Still Uses as any — previous', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' },
+      { label: 'Union & Intersection Types (overview)', route: '/typescript/unions' },
+    ],
+    tip: 'The main page\'s assertion function example calls fetchData(), which is never defined anywhere — copied as-is, it fails to compile with "Cannot find name" before ever exercising the assertion.',
+    docs: [
+      { label: 'TypeScript Assertion Functions', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      '"Cannot find name" is a name-resolution error, unrelated to type narrowing — always check what category an error actually belongs to.',
+      'An assertion function narrows a variable for all subsequent code in scope, with no if statement needed — unlike a type predicate, which only narrows inside the branch that calls it.',
+    ],
+  },
+
   'typescript/narrowing': {
     apis: ['typeof', 'instanceof', 'in', 'x is T (type predicate)', 'asserts x is T', 'satisfies never', 'Array.isArray()'],
     related: [

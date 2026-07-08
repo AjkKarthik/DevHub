@@ -1119,6 +1119,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Window Merging Needs declare global', route: '/typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file' },
     { label: 'Conflicting Merges Are a Compile Error', route: '/typescript/interfaces-types/testing-that-conflicting-merged-properties-are-a-compile-error' },
   ],
+  'unions': [
+    { label: 'BigInt Zero Is Falsy Too', route: '/typescript/unions/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing' },
+    { label: 'The “Safe” isUser Fix Still Uses as any', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' },
+    { label: 'The Assertion Function Example Doesn’t Run', route: '/typescript/unions/testing-that-the-assertion-function-example-never-actually-runs' },
+  ],
 };
 
 @Component({

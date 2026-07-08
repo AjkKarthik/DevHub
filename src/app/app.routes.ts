@@ -1388,7 +1388,12 @@ export const routes: Routes = [
       { path: 'testing-that-window-merging-needs-declare-global-in-a-module-file', loadComponent: () => import('./components/frontend/typescript/interfaces-types/subtopics/testing-that-window-merging-needs-declare-global-in-a-module-file/testing-that-window-merging-needs-declare-global-in-a-module-file').then(m => m.TestingThatWindowMergingNeedsDeclareGlobalInAModuleFileSubtopic) },
       { path: 'testing-that-conflicting-merged-properties-are-a-compile-error', loadComponent: () => import('./components/frontend/typescript/interfaces-types/subtopics/testing-that-conflicting-merged-properties-are-a-compile-error/testing-that-conflicting-merged-properties-are-a-compile-error').then(m => m.TestingThatConflictingMergedPropertiesAreACompileErrorSubtopic) },
     ] },
-    { path: 'unions',                  loadComponent: () => import('./components/frontend/typescript/unions/unions').then(m => m.TsUnions) },
+    { path: 'unions', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/unions/unions').then(m => m.TsUnions) },
+      { path: 'testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing', loadComponent: () => import('./components/frontend/typescript/unions/subtopics/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing').then(m => m.TestingThatBigintZeroIsFalsyAndSkippedByTruthinessNarrowingSubtopic) },
+      { path: 'testing-that-the-safe-isuser-fix-still-uses-as-any-twice', loadComponent: () => import('./components/frontend/typescript/unions/subtopics/testing-that-the-safe-isuser-fix-still-uses-as-any-twice/testing-that-the-safe-isuser-fix-still-uses-as-any-twice').then(m => m.TestingThatTheSafeIsuserFixStillUsesAsAnyTwiceSubtopic) },
+      { path: 'testing-that-the-assertion-function-example-never-actually-runs', loadComponent: () => import('./components/frontend/typescript/unions/subtopics/testing-that-the-assertion-function-example-never-actually-runs/testing-that-the-assertion-function-example-never-actually-runs').then(m => m.TestingThatTheAssertionFunctionExampleNeverActuallyRunsSubtopic) },
+    ] },
     { path: 'narrowing',               loadComponent: () => import('./components/frontend/typescript/narrowing/narrowing').then(m => m.TsNarrowing) },
     { path: 'enums-tuples',            loadComponent: () => import('./components/frontend/typescript/enums-tuples/enums-tuples').then(m => m.TsEnumsTuples) },
     { path: 'generics',                loadComponent: () => import('./components/frontend/typescript/generics/generics').then(m => m.TsGenerics) },

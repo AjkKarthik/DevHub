@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Union & Intersection Types"
+    topicRoute="/typescript/unions"
+    subtopicLabel="The “Safe” isUser Fix Still Uses as any" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That the "Safe" isUser Fix Still Uses as any Twice</h1>
+  <p class="page-subtitle">
+    The mistake block's own theory warns that a wrong type predicate "silently corrupts types" — its "right"
+    fix still casts twice with as any, reopening a smaller version of that exact risk.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="intermediate" since="TypeScript 3.7+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Reproduce the main page's own "runtime crash" claim for real, then compare a typo's fate in the
+      <code>as any</code> version versus a fully-checked version with no casts at all.
+    </p>
+    <app-live-playground
+      title="isUser predicate — reproducing the crash and testing the fix"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is a direct extension of the main page's own warning about type predicates being unconditionally
+      trusted — the same caution applies one level down, to how carefully the predicate's own body is typed.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Union & Intersection Types"
+    topicRoute="/typescript/unions"
+    [prev]="{ label: 'BigInt Zero Is Falsy Too', route: '/typescript/unions/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing' }"
+    [next]="{ label: 'The Assertion Function Example Never Actually Runs', route: '/typescript/unions/testing-that-the-assertion-function-example-never-actually-runs' }" />
+</div>
