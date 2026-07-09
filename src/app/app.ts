@@ -1239,6 +1239,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Child errorElement Bubbles Up and Replaces the Parent’s Whole Layout', route: '/react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout' },
     { label: 'NavLink’s end Prop Is Needed for Root, Would Break Nested Highlighting', route: '/react/router/testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere' },
   ],
+  'react-tanstack-query': [
+    { label: 'An Inline Object queryKey Does Not Actually Refetch on Re-render', route: '/react/tanstack-query/testing-that-an-inline-object-querykey-does-not-actually-refetch-on-rerender' },
+    { label: 'The Abort Signal Must Be Wired Into fetch to Actually Cancel', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' },
+    { label: 'initialData Skips the Immediate Fetch, placeholderData Always Triggers One', route: '/react/tanstack-query/testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one' },
+  ],
 };
 
 @Component({

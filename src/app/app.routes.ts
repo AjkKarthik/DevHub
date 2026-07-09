@@ -1537,7 +1537,12 @@ export const routes: Routes = [
       { path: 'testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout', loadComponent: () => import('./components/frontend/react/router/subtopics/child-errorelement-bubbles-up-replaces-parent-layout/child-errorelement-bubbles-up-replaces-parent-layout').then(m => m.ChildErrorelementBubblesUpReplacesParentLayoutSubtopic) },
       { path: 'testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere', loadComponent: () => import('./components/frontend/react/router/subtopics/navlink-end-prop-needed-for-root-breaks-nested-active/navlink-end-prop-needed-for-root-breaks-nested-active').then(m => m.NavlinkEndPropNeededForRootBreaksNestedActiveSubtopic) },
     ]},
-    { path: 'tanstack-query',   loadComponent: () => import('./components/frontend/react/tanstack-query/tanstack-query').then(m => m.ReactTanstackQuery) },
+    { path: 'tanstack-query', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/tanstack-query/tanstack-query').then(m => m.ReactTanstackQuery) },
+      { path: 'testing-that-an-inline-object-querykey-does-not-actually-refetch-on-rerender', loadComponent: () => import('./components/frontend/react/tanstack-query/subtopics/inline-object-querykey-does-not-refetch-on-rerender/inline-object-querykey-does-not-refetch-on-rerender').then(m => m.InlineObjectQuerykeyDoesNotRefetchOnRerenderSubtopic) },
+      { path: 'testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request', loadComponent: () => import('./components/frontend/react/tanstack-query/subtopics/abort-signal-must-be-wired-into-fetch-to-cancel/abort-signal-must-be-wired-into-fetch-to-cancel').then(m => m.AbortSignalMustBeWiredIntoFetchToCancelSubtopic) },
+      { path: 'testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one', loadComponent: () => import('./components/frontend/react/tanstack-query/subtopics/initialdata-skips-fetch-placeholderdata-always-fetches/initialdata-skips-fetch-placeholderdata-always-fetches').then(m => m.InitialdataSkipsFetchPlaceholderdataAlwaysFetchesSubtopic) },
+    ]},
     { path: 'performance',      loadComponent: () => import('./components/frontend/react/performance/performance').then(m => m.ReactPerformance) },
     { path: 'patterns',         loadComponent: () => import('./components/frontend/react/patterns/patterns').then(m => m.ReactPatterns) },
     { path: 'typescript',       loadComponent: () => import('./components/frontend/react/typescript/typescript').then(m => m.ReactTypescript) },

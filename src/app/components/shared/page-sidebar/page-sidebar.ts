@@ -12120,6 +12120,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/tanstack-query/testing-that-an-inline-object-querykey-does-not-actually-refetch-on-rerender': {
+    apis: ['queryKey', 'queryKeyHashFn', 'useQuery()'],
+    related: [
+      { label: 'TanStack Query (overview)', route: '/react/tanstack-query' },
+      { label: 'Abort Signal Wiring', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' },
+      { label: 'State Management', route: '/react/state-management' },
+    ],
+    tip: 'queryKey is hashed by a deterministic, sorted serialization of its VALUE — not by JS reference — so a fresh object literal with identical contents does not trigger a new cache entry.',
+    docs: [
+      { label: 'TanStack Query Docs — Query Keys', url: 'https://tanstack.com/query/latest/docs/framework/react/guides/query-keys' },
+    ],
+    resources: [
+      { label: 'TanStack/query', url: 'https://github.com/TanStack/query', badge: 'code' },
+    ],
+    gotchas: [
+      'This directly corroborates this page\'s own sidebar note above about key serialization — but contradicts Mistake #1\'s literal "refetches on every render" framing.',
+      'The real risk with object queryKeys is cache fragmentation from genuinely varying values, not per-render refetches.',
+      'Stable primitive keys are still good practice for readability and predictable cache shape.',
+    ],
+  },
+
+  'react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request': {
+    apis: ['AbortSignal', 'queryFn({ signal })', 'AbortController'],
+    related: [
+      { label: 'TanStack Query (overview)', route: '/react/tanstack-query' },
+      { label: 'Inline Object queryKey', route: '/react/tanstack-query/testing-that-an-inline-object-querykey-does-not-actually-refetch-on-rerender' },
+      { label: 'initialData vs placeholderData', route: '/react/tanstack-query/testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one' },
+    ],
+    tip: 'TanStack Query always aborts its own internal controller on unmount/key-change — but that only cancels the underlying request if queryFn actually passed signal into fetch or an equivalent cancelable call.',
+    docs: [
+      { label: 'TanStack Query Docs — Query Cancellation', url: 'https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation' },
+    ],
+    resources: [
+      { label: 'TanStack/query', url: 'https://github.com/TanStack/query', badge: 'code' },
+    ],
+    gotchas: [
+      'The visible app behavior is identical either way — the difference is invisible at the network/server level.',
+      'Skipping signal wiring wastes bandwidth and server compute, not a correctness bug in this specific scenario.',
+      'Always destructure and pass signal from queryFn\'s argument into fetch or any cancelable operation.',
+    ],
+  },
+
+  'react/tanstack-query/testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one': {
+    apis: ['initialData', 'placeholderData', 'staleTime'],
+    related: [
+      { label: 'TanStack Query (overview)', route: '/react/tanstack-query' },
+      { label: 'Abort Signal Wiring', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' },
+      { label: 'Advanced Hooks', route: '/react/hooks-advanced' },
+    ],
+    tip: 'initialData is written into the cache as if a real fetch happened, so it respects staleTime and can skip fetching entirely — placeholderData is never cached and always triggers a real fetch.',
+    docs: [
+      { label: 'TanStack Query Docs — Initial Query Data', url: 'https://tanstack.com/query/latest/docs/framework/react/guides/initial-query-data' },
+      { label: 'TanStack Query Docs — Placeholder Query Data', url: 'https://tanstack.com/query/latest/docs/framework/react/guides/placeholder-query-data' },
+    ],
+    resources: [
+      { label: 'TanStack/query', url: 'https://github.com/TanStack/query', badge: 'code' },
+    ],
+    gotchas: [
+      'Both options render something immediately with no initial loading state — the difference is only visible by checking isFetching or an actual fetch count.',
+      'staleTime has zero effect on placeholderData\'s fetch behavior, unlike initialData.',
+      'Use initialData when you trust the value as current; use placeholderData when you always want the real fetch to run.',
+    ],
+  },
+
   'react/performance': {
     apis: ['React.memo()', 'useMemo()', 'useCallback()', 'lazy()', '<Suspense>', 'FixedSizeList', 'useTransition()'],
     related: [

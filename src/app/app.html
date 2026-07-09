@@ -2616,7 +2616,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Ecosystem</p>
-      <a routerLink="/react/tanstack-query" routerLinkActive="active"><span class="nl-text">TanStack Query</span>@if(progress.isDone('react-tanstack-query')){<span class="nl-done">✓</span>}@if(diff('react-tanstack-query');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/tanstack-query" routerLinkActive="active">
+        <span class="nl-text">TanStack Query</span>
+        @if (progress.isDone('react-tanstack-query')) {<span class="nl-done">✓</span>}
+        @if (diff('react-tanstack-query'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('react-tanstack-query')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('react-tanstack-query')"
+                  (click)="toggleSubtopics('react-tanstack-query', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('react-tanstack-query'); as reactTsqSubs) {
+        @if (isSubtopicsExpanded('react-tanstack-query')) {
+          <div class="nav-subtopics">
+            @for (s of reactTsqSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/react/hook-form"      routerLinkActive="active"><span class="nl-text">React Hook Form</span>@if(progress.isDone('react-hook-form')){<span class="nl-done">✓</span>}@if(diff('react-hook-form');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/react/nextjs"         routerLinkActive="active"><span class="nl-text">Next.js App Router</span>@if(progress.isDone('react-nextjs')){<span class="nl-done">✓</span>}@if(diff('react-nextjs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/react/native"         routerLinkActive="active"><span class="nl-text">React Native</span>@if(progress.isDone('react-native')){<span class="nl-done">✓</span>}@if(diff('react-native');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

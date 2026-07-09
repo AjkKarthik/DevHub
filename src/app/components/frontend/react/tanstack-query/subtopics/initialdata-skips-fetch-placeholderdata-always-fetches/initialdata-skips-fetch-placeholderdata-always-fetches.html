@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TanStack Query"
+    topicRoute="/react/tanstack-query"
+    subtopicLabel="initialData Skips the Immediate Fetch, placeholderData Always Triggers One" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That initialData Skips the Immediate Fetch, But placeholderData Always Triggers One</h1>
+  <p class="page-subtitle">
+    The main page draws this distinction in a single sentence with no demonstration — this puts both halves
+    of the claim side by side with an identical staleTime and a fetch counter on each.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="TanStack Query v4+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two queries with the identical <code>staleTime: Infinity</code> — one using <code>initialData</code>,
+      one using <code>placeholderData</code>.
+    </p>
+    <app-live-playground
+      title="initialData vs placeholderData — fetch count"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own TanStack
+      Query claims — queryKey's real hashing behavior, the abort signal's opt-in nature, and now the
+      genuine fetch-triggering difference between two similar-looking cache options.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TanStack Query"
+    topicRoute="/react/tanstack-query"
+    [prev]="{ label: 'The Abort Signal Must Be Wired Into fetch to Actually Cancel', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' }" />
+</div>
