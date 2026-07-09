@@ -3002,7 +3002,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/arrays"        routerLinkActive="active"><span class="nl-text">Arrays &amp; Iteration</span>@if(progress.isDone('js-arrays')){<span class="nl-done">✓</span>}@if(diff('js-arrays');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/arrays" routerLinkActive="active">
+        <span class="nl-text">Arrays &amp; Iteration</span>
+        @if (progress.isDone('js-arrays')) {<span class="nl-done">✓</span>}
+        @if (diff('js-arrays'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('js-arrays')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('js-arrays')"
+                  (click)="toggleSubtopics('js-arrays', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('js-arrays'); as jsArraysSubs) {
+        @if (isSubtopicsExpanded('js-arrays')) {
+          <div class="nav-subtopics">
+            @for (s of jsArraysSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -1,0 +1,49 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Arrays &amp; Iteration"
+    topicRoute="/javascript/arrays"
+    subtopicLabel="sort() Is Genuinely Stable — Ties Keep Insertion Order" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Array.prototype.sort() Is Genuinely Stable — Elements With Equal Comparator Results Keep Their Original Order</h1>
+  <p class="page-subtitle">
+    The QnA states sort() is guaranteed stable in modern engines — this builds a real tie-breaking
+    scenario to confirm the original relative order survives among tied entries.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES2019" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      Five people, three sharing the same age, sorted by age — checking whether the three tied
+      entries keep their original relative order.
+    </p>
+    <app-live-playground
+      title="sort() stability — a real tie-breaking scenario"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This confirms a genuinely useful guarantee for multi-key sorting. The final subtopic moves to a
+      more dangerous claim: what "undefined behaviour" from mutating an array during map actually
+      looks like in practice.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Arrays &amp; Iteration"
+    topicRoute="/javascript/arrays"
+    [prev]="{ label: 'forEach’s Async Callback Is Never Awaited', route: '/javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do' }"
+    [next]="{ label: 'Mutating an Array During map() Really Does Skip Elements', route: '/javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements' }" />
+</div>

@@ -1391,7 +1391,12 @@ export const routes: Routes = [
       { path: 'testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens', loadComponent: () => import('./components/frontend/javascript/destructuring/subtopics/bare-destructuring-assignment-needs-parens-real-syntaxerror/bare-destructuring-assignment-needs-parens-real-syntaxerror').then(m => m.BareDestructuringAssignmentNeedsParensRealSyntaxerrorSubtopic) },
       { path: 'testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper', loadComponent: () => import('./components/frontend/javascript/destructuring/subtopics/one-level-default-doesnt-guard-a-deeper-nested-property/one-level-default-doesnt-guard-a-deeper-nested-property').then(m => m.OneLevelDefaultDoesntGuardADeeperNestedPropertySubtopic) },
     ] },
-    { path: 'arrays',         loadComponent: () => import('./components/frontend/javascript/arrays/arrays').then(m => m.JsArrays) },
+    { path: 'arrays', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/arrays/arrays').then(m => m.JsArrays) },
+      { path: 'testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do', loadComponent: () => import('./components/frontend/javascript/arrays/subtopics/foreach-async-callback-never-awaited-runs-out-of-order/foreach-async-callback-never-awaited-runs-out-of-order').then(m => m.ForeachAsyncCallbackNeverAwaitedRunsOutOfOrderSubtopic) },
+      { path: 'testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order', loadComponent: () => import('./components/frontend/javascript/arrays/subtopics/sort-is-genuinely-stable-ties-keep-insertion-order/sort-is-genuinely-stable-ties-keep-insertion-order').then(m => m.SortIsGenuinelyStableTiesKeepInsertionOrderSubtopic) },
+      { path: 'testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements', loadComponent: () => import('./components/frontend/javascript/arrays/subtopics/mutating-array-during-map-skips-real-elements/mutating-array-during-map-skips-real-elements').then(m => m.MutatingArrayDuringMapSkipsRealElementsSubtopic) },
+    ] },
     { path: 'promises',       loadComponent: () => import('./components/frontend/javascript/promises/promises').then(m => m.JsPromises) },
     { path: 'event-loop',     loadComponent: () => import('./components/frontend/javascript/event-loop/event-loop').then(m => m.JsEventLoop) },
     { path: 'error-handling', loadComponent: () => import('./components/frontend/javascript/error-handling/error-handling').then(m => m.JsErrorHandling) },

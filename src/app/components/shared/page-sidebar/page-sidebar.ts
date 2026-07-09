@@ -13521,6 +13521,90 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/arrays': {
+    apis: ['map()', 'sort()', 'forEach()', 'Promise.all()'],
+    related: [
+      { label: 'Promises & Async/Await', route: '/javascript/promises'   },
+      { label: 'Destructuring & Spread', route: '/javascript/destructuring' },
+      { label: 'Object Fundamentals',    route: '/javascript/objects'   },
+    ],
+    tip: 'forEach never awaits an async callback\'s returned Promise — use for...of with await (sequential) or Promise.all(arr.map(...)) (parallel) instead.',
+    docs: [
+      { label: 'MDN — Array.prototype.sort()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'forEach ignores anything its callback returns, including a Promise — the loop never actually waits.',
+      'sort() is genuinely stable in all modern engines — equal elements keep their original relative order.',
+      'Mutating the source array (e.g. splice) inside a map() callback deterministically skips real elements.',
+    ],
+  },
+
+  'javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do': {
+    apis: ['forEach()', 'for...of', 'Promise.all()'],
+    related: [
+      { label: 'Arrays & Iteration (overview)', route: '/javascript/arrays' },
+      { label: 'sort() Is Genuinely Stable', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' },
+      { label: 'Mutating During map() Skips Elements', route: '/javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements' },
+    ],
+    tip: 'for...of + await processes items sequentially; Promise.all(arr.map(...)) processes them in parallel — pick based on whether the operations can safely run concurrently.',
+    docs: [
+      { label: 'MDN — forEach()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'An async forEach callback\'s Promise is created and immediately discarded — forEach itself returns before any async work finishes.',
+      'Code after a forEach(async ...) call runs before the async work is actually done, not out of order relative to each other.',
+      'for...of + await and Promise.all(map) are NOT interchangeable — one is sequential, the other parallel.',
+    ],
+  },
+
+  'javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order': {
+    apis: ['Array.prototype.sort()', 'stable sort'],
+    related: [
+      { label: 'Arrays & Iteration (overview)', route: '/javascript/arrays' },
+      { label: 'forEach Never Awaits Async', route: '/javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do' },
+      { label: 'Mutating During map() Skips Elements', route: '/javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements' },
+    ],
+    tip: 'Sort by the secondary key first, then stable-sort the result by the primary key — the secondary order survives among primary-key ties, no combined comparator needed.',
+    docs: [
+      { label: 'MDN — Array.prototype.sort()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Stability is a guaranteed, specified behavior since ES2019 — safe to rely on in all modern engines.',
+      'Stability only guarantees order among elements comparing as EQUAL — it says nothing about a universal tiebreaker.',
+      'This enables a simple two-pass multi-key sort without writing a combined comparator function.',
+    ],
+  },
+
+  'javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements': {
+    apis: ['Array.prototype.map()', 'splice()'],
+    related: [
+      { label: 'Arrays & Iteration (overview)', route: '/javascript/arrays' },
+      { label: 'forEach Never Awaits Async', route: '/javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do' },
+      { label: 'sort() Is Genuinely Stable', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' },
+    ],
+    tip: 'The result is fully deterministic, not random — map reads the array\'s length once, then reads whatever is CURRENTLY at each index as it advances.',
+    docs: [
+      { label: 'MDN — Array.prototype.map()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'splice() shifts later elements down by one index — map then reads the shifted element, skipping the one that was truly next.',
+      'The elements that DO get visited are transformed correctly — the bug is specifically that some are skipped entirely.',
+      'The same class of bug applies to shift/unshift and length-changing mutations generally, not just splice.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

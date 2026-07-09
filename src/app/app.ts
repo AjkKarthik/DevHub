@@ -1346,6 +1346,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Bare Destructuring Assignment Needs Parens — a Real SyntaxError', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' },
     { label: 'One-Level Default Doesn’t Guard a Deeper Nested Property', route: '/javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper' },
   ],
+  // NOTE: keyed 'js-arrays', NOT bare 'arrays' — the C# hub's own
+  // /csharp/arrays topic already claims the bare key.
+  'js-arrays': [
+    { label: 'forEach’s Async Callback Is Never Awaited', route: '/javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do' },
+    { label: 'sort() Is Genuinely Stable — Ties Keep Insertion Order', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' },
+    { label: 'Mutating an Array During map() Really Does Skip Elements', route: '/javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements' },
+  ],
 };
 
 @Component({
