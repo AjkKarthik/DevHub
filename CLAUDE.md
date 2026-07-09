@@ -530,6 +530,25 @@ to the topic page, not its subtopics.
   on a file with `solution:`/`content:` fields, a quick sanity check is comparing total
   backtick count per file is even (`grep -o '`' file | wc -l`) — odd catches the obvious case,
   but even-but-still-broken (two internal pairs) needs eyeballing each `solution:` block.
+- **A straight apostrophe inside a single-quoted Angular binding string (`[prev]`/`[next]`
+  label text) breaks template parsing the same way a stray backtick breaks a TS template
+  literal — but the fix is different and it happens in the `.html` file, not the `.ts` file.**
+  Confirmed via a real catch during authoring (`/react/typescript`'s discriminated-union
+  subtopic, 2026-07-09): writing `[next]="{ label: 'Select's Runtime Coercion...' }"` — a
+  literal possessive apostrophe in "Select's" — prematurely closes the single-quoted `label`
+  string inside the double-quoted Angular attribute, the same category of bug as the
+  backtick-in-template-literal gotcha above (a delimiter character appearing literally inside
+  a string that uses that same delimiter). **Fix: use the typographic right single quote `’`
+  (U+2019) instead of a straight apostrophe `'` for every possessive/contraction inside a
+  `[prev]`/`[next]` label string** — this is already the established convention for every
+  other apostrophe in subtopic titles/labels throughout the project (confirmed safe since
+  `’` has no special meaning to the Angular expression parser), so the fix is consistency
+  with existing labels, not a new pattern. This is the SAME root cause as the backtick
+  gotcha (delimiter character leaking into delimited text) but manifests in `.html` files
+  specifically in `[prev]`/`[next]`, `topicLabel`, `subtopicLabel`, and any other
+  single-quoted-string-valued bound attribute — grep any new subtopic's bound attributes for
+  a bare `'` immediately preceded by a letter (a possessive/contraction pattern) before
+  building, the same way `@word` and brace gotchas are grepped for.
 
 ### Non-Angular hubs (C#, SQL, Python, Go, etc.) — the "See it run" section has no live playground
 
