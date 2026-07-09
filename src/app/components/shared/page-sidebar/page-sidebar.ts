@@ -12472,6 +12472,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library': {
+    apis: ['screen.getByRole()', 'screen.queryByRole()', 'render()'],
+    related: [
+      { label: 'Testing React (overview)', route: '/react/testing' },
+      { label: 'fireEvent vs userEvent Focus', route: '/react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does' },
+      { label: 'A Hook Setter Without act()', route: '/react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning' },
+    ],
+    tip: 'getBy throwing is a feature, not a nuisance — it fails your test immediately at the missing-element line instead of letting a later assertion fail with a confusing null-reference error.',
+    docs: [
+      { label: 'RTL Docs — Queries', url: 'https://testing-library.com/docs/queries/about' },
+    ],
+    resources: [
+      { label: 'testing-library/react', url: 'https://github.com/testing-library/react-testing-library', badge: 'code' },
+    ],
+    gotchas: [
+      'getBy* throws synchronously the moment it can\'t find a match — no need to wrap it in a try/catch for a normal "assert it exists" check.',
+      'queryBy* returning null is the entire point of the query — use it specifically for "assert this is absent" assertions.',
+      'Both queries run the exact same accessible-role matching logic — only their behavior on zero matches differs.',
+    ],
+  },
+
+  'react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does': {
+    apis: ['fireEvent.click()', 'userEvent.click()', 'userEvent.setup()'],
+    related: [
+      { label: 'Testing React (overview)', route: '/react/testing' },
+      { label: 'queryBy vs getBy', route: '/react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library' },
+      { label: 'A Hook Setter Without act()', route: '/react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning' },
+    ],
+    tip: 'userEvent.click() is asynchronous and must be awaited — its whole value is replaying the full real-browser event sequence, which unfolds over multiple microtasks.',
+    docs: [
+      { label: 'userEvent Docs', url: 'https://testing-library.com/docs/user-event/intro' },
+    ],
+    resources: [
+      { label: 'testing-library/user-event', url: 'https://github.com/testing-library/user-event', badge: 'code' },
+    ],
+    gotchas: [
+      'fireEvent.click dispatches exactly one click event — no pointerdown/mousedown/focus/pointerup/mouseup around it.',
+      'Any focus-dependent UI (focus rings, focus-triggered dropdowns) needs userEvent, not fireEvent, to test correctly.',
+      'There is no warning when fireEvent misses focus-dependent behavior — the click handler still runs normally.',
+    ],
+  },
+
+  'react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning': {
+    apis: ['renderHook()', 'act()', 'console.error'],
+    related: [
+      { label: 'Testing React (overview)', route: '/react/testing' },
+      { label: 'queryBy vs getBy', route: '/react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library' },
+      { label: 'fireEvent vs userEvent Focus', route: '/react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does' },
+    ],
+    tip: 'For async state updates (a fetch resolving, a timer firing), prefer await waitFor(...) over a manual act() wrap — waitFor already wraps act() internally and polls until the assertion passes.',
+    docs: [
+      { label: 'React Docs — act()', url: 'https://react.dev/reference/react/act' },
+    ],
+    resources: [
+      { label: 'testing-library/react', url: 'https://github.com/testing-library/react-testing-library', badge: 'code' },
+    ],
+    gotchas: [
+      'The warning is React itself detecting a race, not a linting suggestion — it can precede genuinely flaky, order-dependent tests.',
+      'render() and userEvent already wrap their own internals in act() — this warning mainly shows up with renderHook\'s raw result.current calls.',
+      'A test can "pass" without act() by accident of timing — that doesn\'t mean the update was actually observed correctly.',
+    ],
+  },
+
   'react/nextjs': {
     apis: ['"use client"', '"use server"', 'layout.tsx', 'loading.tsx', 'revalidatePath()', 'generateStaticParams()'],
     related: [

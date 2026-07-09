@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Testing React"
+    topicRoute="/react/testing"
+    subtopicLabel="fireEvent.click Skips Focus, userEvent.click Doesn’t" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That fireEvent.click Doesn't Trigger Focus, But userEvent.click Does</h1>
+  <p class="page-subtitle">
+    The main page states userEvent simulates a full event sequence including focus, while fireEvent
+    dispatches a single event — this builds a focus-dependent component and runs the real libraries to see
+    the concrete pass/fail consequence.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="Testing Library 14.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A button that only reacts to a real <code>focus</code> event, clicked with the real
+      <code>fireEvent.click</code> and the real <code>userEvent.click</code>.
+    </p>
+    <app-live-playground
+      title="fireEvent.click vs userEvent.click — real focus behavior"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This shows why the main page recommends userEvent over fireEvent as a concrete, observable
+      difference, before checking a related act() warning in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing React"
+    topicRoute="/react/testing"
+    [prev]="{ label: 'queryBy Returns null, getBy Throws — the Real Library', route: '/react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library' }"
+    [next]="{ label: 'A Hook Setter Without act() Produces a Real Console Warning', route: '/react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning' }" />
+</div>

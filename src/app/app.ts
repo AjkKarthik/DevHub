@@ -1269,6 +1269,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Discriminated Union Narrowing Gives Zero Runtime Protection', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' },
     { label: 'SimpleInput’s Optional onChange Can Create a Read-Only Controlled Input', route: '/react/typescript/testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input' },
   ],
+  // NOTE: keyed 'react-testing', NOT bare 'testing' — Angular's own
+  // /angular/testing topic already claims the bare key with its own
+  // subtopics.
+  'react-testing': [
+    { label: 'queryBy Returns null, getBy Throws — the Real Library', route: '/react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library' },
+    { label: 'fireEvent.click Skips Focus, userEvent.click Doesn’t', route: '/react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does' },
+    { label: 'A Hook Setter Without act() Produces a Real Console Warning', route: '/react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning' },
+  ],
 };
 
 @Component({

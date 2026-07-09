@@ -1561,7 +1561,12 @@ export const routes: Routes = [
       { path: 'testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data', loadComponent: () => import('./components/frontend/react/typescript/subtopics/discriminated-union-gives-zero-runtime-protection/discriminated-union-gives-zero-runtime-protection').then(m => m.DiscriminatedUnionGivesZeroRuntimeProtectionSubtopic) },
       { path: 'testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input', loadComponent: () => import('./components/frontend/react/typescript/subtopics/simpleinput-optional-onchange-creates-readonly-input/simpleinput-optional-onchange-creates-readonly-input').then(m => m.SimpleinputOptionalOnchangeCreatesReadonlyInputSubtopic) },
     ]},
-    { path: 'testing',          loadComponent: () => import('./components/frontend/react/testing/testing').then(m => m.ReactTesting) },
+    { path: 'testing', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/testing/testing').then(m => m.ReactTesting) },
+      { path: 'testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library', loadComponent: () => import('./components/frontend/react/testing/subtopics/queryby-returns-null-getby-throws-real-rtl/queryby-returns-null-getby-throws-real-rtl').then(m => m.QuerybyReturnsNullGetbyThrowsRealRtlSubtopic) },
+      { path: 'testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does', loadComponent: () => import('./components/frontend/react/testing/subtopics/fireevent-click-skips-focus-userevent-click-doesnt/fireevent-click-skips-focus-userevent-click-doesnt').then(m => m.FireeventClickSkipsFocusUsereventClickDoesntSubtopic) },
+      { path: 'testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning', loadComponent: () => import('./components/frontend/react/testing/subtopics/hook-setter-without-act-produces-real-console-warning/hook-setter-without-act-produces-real-console-warning').then(m => m.HookSetterWithoutActProducesRealConsoleWarningSubtopic) },
+    ] },
     { path: 'nextjs',           loadComponent: () => import('./components/frontend/react/nextjs/nextjs').then(m => m.ReactNextjs) },
     { path: 'native',           loadComponent: () => import('./components/frontend/react/native/native').then(m => m.ReactNative) },
     { path: 'hook-form',        loadComponent: () => import('./components/frontend/react/hook-form/hook-form').then(m => m.ReactHookForm) },

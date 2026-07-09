@@ -2703,7 +2703,26 @@
           </div>
         }
       }
-      <a routerLink="/react/testing"           routerLinkActive="active"><span class="nl-text">Testing React</span>@if(progress.isDone('react-testing')){<span class="nl-done">✓</span>}@if(diff('react-testing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/testing" routerLinkActive="active">
+        <span class="nl-text">Testing React</span>
+        @if (progress.isDone('react-testing')) {<span class="nl-done">✓</span>}
+        @if (diff('react-testing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('react-testing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('react-testing')"
+                  (click)="toggleSubtopics('react-testing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('react-testing'); as reactTestingSubs) {
+        @if (isSubtopicsExpanded('react-testing')) {
+          <div class="nav-subtopics">
+            @for (s of reactTestingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/react/security"          routerLinkActive="active"><span class="nl-text">Security</span>@if(progress.isDone('react-security')){<span class="nl-done">✓</span>}@if(diff('react-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
