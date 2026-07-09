@@ -830,6 +830,26 @@ Confirmed via direct file inspection and a live browser pilot before the first s
    `preview_screenshot` can time out while the WebContainer is actively installing packages
    (heavy CPU load in the iframe) — this resolves once the install finishes or the embed is
    collapsed again; it is a tooling/resource artifact, not a page bug.
+10. **`/react/nextjs` is the first React-hub topic to drop the live playground entirely,
+    falling back to a plain `<app-code-block>` "See it run" section** — confirmed via direct
+    review before writing (2026-07-09): Next.js's core App Router APIs (Server Components,
+    Server Actions, `revalidatePath`, file-based routing) require an actual Next.js server
+    process. None of the StackBlitz project templates the shared `LivePlaygroundComponent`
+    supports (`angular-cli`, `create-react-app`, `typescript`) can run one — `create-react-app`
+    compiles a client-only SPA with no server runtime at all. Rather than fake the behavior
+    with a client-only approximation (misleading) or risk an unverified `'node'`-template
+    Next-dev-server embed (untested, high risk of a silently broken iframe), these subtopics
+    follow the SAME "no live playground, plain code-block" pattern already established for
+    non-browser-runtime hubs (C#/SQL/Python) — see that section above for the exact markup
+    (`<section class="react-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" />
+    </section>`, no `LivePlaygroundComponent`/`PlaygroundFile` import at all). The `TryIt`
+    exercises for these subtopics also shift from "click a button and observe" to "predict the
+    outcome, then read the explained reasoning" — appropriate since there's no runnable demo to
+    click through. **Check any other planned React subtopic topic for this same server-only
+    constraint before assuming `create-react-app` + real npm deps (the normal React-hub
+    pattern) will work** — the deciding question is whether the page's core claims are about
+    something that runs in a plain client-side React app, or something that only exists because
+    an actual Next.js (or similar SSR framework) server process is involved.
 
 ## Current state (update when it changes!)
 
