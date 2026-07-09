@@ -13101,6 +13101,90 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/symbols': {
+    apis: ['Symbol()', 'Symbol.for()', 'Symbol.iterator', 'Symbol.toPrimitive'],
+    related: [
+      { label: 'Functions Deep Dive',  route: '/javascript/functions'   },
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes'  },
+      { label: 'Generators',           route: '/javascript/generators'  },
+    ],
+    tip: 'Symbols hide properties from enumeration (for...in, Object.keys, JSON.stringify), not from access — Object.getOwnPropertySymbols() can always read them if code has the object reference.',
+    docs: [
+      { label: 'MDN — Symbol', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Object.assign() and spread DO copy symbol-keyed properties — only for...in/Object.keys/JSON.stringify skip them.',
+      'Symbol.toPrimitive\'s hint is "string", "number", or "default" — binary + gets "default", not "number".',
+      'Symbol.hasInstance is called for every value on the left of instanceof, unfiltered — including primitives, objects, and null.',
+    ],
+  },
+
+  'javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them': {
+    apis: ['for...in', 'Object.keys()', 'JSON.stringify()', 'Object.assign()'],
+    related: [
+      { label: 'Symbols & Iterators (overview)', route: '/javascript/symbols' },
+      { label: 'toPrimitive Hint by Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' },
+      { label: 'hasInstance Overrides instanceof', route: '/javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values' },
+    ],
+    tip: 'The dividing line is enumeration vs copying — enumeration APIs were designed to skip symbol keys; copying operations transfer every own property regardless of key type.',
+    docs: [
+      { label: 'MDN — Object.getOwnPropertySymbols()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'for...in, Object.keys(), and JSON.stringify() all skip symbol-keyed properties.',
+      'Object.assign() and spread {...obj} both preserve symbol-keyed properties.',
+      'Object.getOwnPropertySymbols() and Reflect.ownKeys() are the way to actually see the symbol keys directly.',
+    ],
+  },
+
+  'javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts': {
+    apis: ['Symbol.toPrimitive', 'hint parameter', 'coercion'],
+    related: [
+      { label: 'Symbols & Iterators (overview)', route: '/javascript/symbols' },
+      { label: 'Which Operations See Symbol Keys', route: '/javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them' },
+      { label: 'hasInstance Overrides instanceof', route: '/javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values' },
+    ],
+    tip: 'Binary + receives "default", not "number" — it\'s ambiguous between numeric addition and string concatenation, unlike unary + or multiplication.',
+    docs: [
+      { label: 'MDN — Symbol.toPrimitive', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      '"string" hint: template literals, String(). "number" hint: unary +, multiplication, Number().',
+      '"default" hint: binary +, ==, and relational comparisons (<, >, <=, >=) — a genuinely distinct third value.',
+      'Most classes treat "default" the same as "number", but that\'s an implementation choice, not a spec requirement.',
+    ],
+  },
+
+  'javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values': {
+    apis: ['Symbol.hasInstance', 'instanceof'],
+    related: [
+      { label: 'Symbols & Iterators (overview)', route: '/javascript/symbols' },
+      { label: 'Which Operations See Symbol Keys', route: '/javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them' },
+      { label: 'toPrimitive Hint by Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' },
+    ],
+    tip: 'A custom Symbol.hasInstance implementation gets ZERO pre-filtering from instanceof — it must defensively type-check its own input, since primitives, null, and unrelated objects all reach it unchanged.',
+    docs: [
+      { label: 'MDN — Symbol.hasInstance', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Once a class defines Symbol.hasInstance, instanceof\'s default prototype-chain check is bypassed entirely.',
+      'The custom function is called for every left-hand value — strings, objects, arrays, null — with no fast-fail for "obviously wrong" types.',
+      'A robust implementation needs its own defensive typeof/type-guard check as its first line, since nothing else is filtering the input.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

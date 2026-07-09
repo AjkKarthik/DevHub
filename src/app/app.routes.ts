@@ -1361,7 +1361,12 @@ export const routes: Routes = [
       { path: 'testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward', loadComponent: () => import('./components/frontend/javascript/hoisting/subtopics/function-declaration-wins-hoisting-var-overwrites-after/function-declaration-wins-hoisting-var-overwrites-after').then(m => m.FunctionDeclarationWinsHoistingVarOverwritesAfterSubtopic) },
       { path: 'testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror', loadComponent: () => import('./components/frontend/javascript/hoisting/subtopics/duplicate-let-across-switch-cases-real-syntaxerror/duplicate-let-across-switch-cases-real-syntaxerror').then(m => m.DuplicateLetAcrossSwitchCasesRealSyntaxerrorSubtopic) },
     ] },
-    { path: 'symbols',        loadComponent: () => import('./components/frontend/javascript/symbols/symbols').then(m => m.JsSymbols) },
+    { path: 'symbols', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/symbols/symbols').then(m => m.JsSymbols) },
+      { path: 'testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them', loadComponent: () => import('./components/frontend/javascript/symbols/subtopics/which-operations-actually-see-symbol-keys/which-operations-actually-see-symbol-keys').then(m => m.WhichOperationsActuallySeeSymbolKeysSubtopic) },
+      { path: 'testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts', loadComponent: () => import('./components/frontend/javascript/symbols/subtopics/toprimitive-hint-differs-by-coercion-context/toprimitive-hint-differs-by-coercion-context').then(m => m.ToprimitiveHintDiffersByCoercionContextSubtopic) },
+      { path: 'testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values', loadComponent: () => import('./components/frontend/javascript/symbols/subtopics/hasinstance-overrides-instanceof-for-any-value/hasinstance-overrides-instanceof-for-any-value').then(m => m.HasinstanceOverridesInstanceofForAnyValueSubtopic) },
+    ] },
     { path: 'functions',      loadComponent: () => import('./components/frontend/javascript/functions/functions').then(m => m.JsFunctions) },
     { path: 'prototypes',     loadComponent: () => import('./components/frontend/javascript/prototypes/prototypes').then(m => m.JsPrototypes) },
     { path: 'objects',        loadComponent: () => import('./components/frontend/javascript/objects/objects').then(m => m.JsObjects) },

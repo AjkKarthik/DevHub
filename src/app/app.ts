@@ -1321,6 +1321,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Function Declaration Wins Hoisting, var Overwrites It After', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' },
     { label: 'Duplicate let Across Switch Cases Throws a Real SyntaxError', route: '/javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror' },
   ],
+  symbols: [
+    { label: 'Which Operations Actually See Symbol Keys', route: '/javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them' },
+    { label: 'Symbol.toPrimitive’s Hint Differs by Coercion Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' },
+    { label: 'Symbol.hasInstance Overrides instanceof for Any Value', route: '/javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values' },
+  ],
 };
 
 @Component({

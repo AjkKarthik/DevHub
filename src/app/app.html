@@ -2898,7 +2898,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/symbols"       routerLinkActive="active"><span class="nl-text">Symbols &amp; Iterators</span>@if(progress.isDone('js-symbols')){<span class="nl-done">✓</span>}@if(diff('js-symbols');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/symbols" routerLinkActive="active">
+        <span class="nl-text">Symbols &amp; Iterators</span>
+        @if (progress.isDone('js-symbols')) {<span class="nl-done">✓</span>}
+        @if (diff('js-symbols'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('symbols')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('symbols')"
+                  (click)="toggleSubtopics('symbols', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('symbols'); as jsSymbolsSubs) {
+        @if (isSubtopicsExpanded('symbols')) {
+          <div class="nav-subtopics">
+            @for (s of jsSymbolsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

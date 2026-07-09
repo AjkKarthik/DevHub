@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Symbols &amp; Iterators"
+    topicRoute="/javascript/symbols"
+    subtopicLabel="Symbol.hasInstance Overrides instanceof for Any Value" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Symbol.hasInstance Completely Overrides instanceof, Even for Completely Unrelated Values</h1>
+  <p class="page-subtitle">
+    The EvenNumber example only tests numbers — this runs instanceof against strings, objects,
+    arrays, and null to confirm hasInstance is called for literally every value, unfiltered.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      <code>instanceof EvenNumber</code> run against 7 values, including several a "reasonable"
+      hasInstance implementation was never designed to handle.
+    </p>
+    <app-live-playground
+      title="Symbol.hasInstance — called for every value, unfiltered"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the symbols subtopics: which operations see symbol keys, what hint value
+      Symbol.toPrimitive receives, and now how completely Symbol.hasInstance takes over instanceof's
+      normal behavior once defined.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Symbols &amp; Iterators"
+    topicRoute="/javascript/symbols"
+    [prev]="{ label: 'Symbol.toPrimitive’s Hint Differs by Coercion Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' }" />
+</div>
