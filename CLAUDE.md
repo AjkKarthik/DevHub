@@ -779,6 +779,25 @@ Confirmed via direct file inspection before the pilot (`/javascript/fundamentals
    `content: \`...\`` field — the Function constructor's body genuinely runs in sloppy mode
    even inside a strict-mode ES module, making it a real, working way to demonstrate both
    modes side by side in one file without needing a second StackBlitz project.
+7. **Multi-file ESM playgrounds**: `/javascript/modules`'s subtopics (live bindings, module
+   singletons, circular imports) needed genuinely SEPARATE files importing each other to
+   demonstrate cross-module behavior — a single `index.ts` can't show this. `PlaygroundFile`
+   supports adding extra `.ts` files (e.g. `counter.ts`, `store.ts`, `a.ts`/`b.ts`) alongside
+   `index.html`/`index.ts` in the same `liveDemoFiles` array; StackBlitz's `'typescript'`
+   template resolves the relative imports between them (`./counter.js` from `index.ts`, using
+   the `.js` extension per ESM's own resolution convention even though the source is `.ts`)
+   with no extra config needed. Confirmed working end-to-end in a live pilot.
+8. **`/javascript/bundlers` drops the live playground entirely** — the FIRST plain-JS-hub
+   topic (not React/Next.js/Native) to need this. Tree-shaking, `sideEffects` config, and
+   `dependencies`/`devDependencies` are all build-time/npm-install-time concepts with no
+   runtime behavior a browser JS console can demonstrate — there's no bundler process or
+   `npm ci` step inside a StackBlitz `'typescript'` template. Same fallback as the
+   non-Angular hubs and React's nextjs/native: drop `LivePlaygroundComponent`/`PlaygroundFile`,
+   use `<section class="js-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" />
+   </section>` instead, no `import { CodeBlockComponent, CodeTab } from
+   '.../shared/code-block/code-block'` component swapped in for the live-playground imports.
+   Check any future JS-hub topic for this same "is this actually runtime-observable in a
+   browser?" question before assuming every JS/TS topic gets a live playground by default.
 
 ### React hub subtopic wiring — first JS-framework hub; a real StackBlitz template gap
 
