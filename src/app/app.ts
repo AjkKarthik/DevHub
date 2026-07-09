@@ -1311,6 +1311,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Nullish Assignment Keeps 0, OR Overwrites It', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' },
     { label: 'Object.freeze() Throws in Strict Mode', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' },
   ],
+  closures: [
+    { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
+    { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
+    { label: 'Closure Over an Object Property vs a Destructured Primitive', route: '/javascript/closures/testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt' },
+  ],
 };
 
 @Component({

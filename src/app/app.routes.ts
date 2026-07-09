@@ -1349,7 +1349,12 @@ export const routes: Routes = [
       { path: 'testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it', loadComponent: () => import('./components/frontend/javascript/fundamentals/subtopics/nullish-assignment-keeps-zero-or-only-assigns/nullish-assignment-keeps-zero-or-only-assigns').then(m => m.NullishAssignmentKeepsZeroOrOnlyAssignsSubtopic) },
       { path: 'testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails', loadComponent: () => import('./components/frontend/javascript/fundamentals/subtopics/const-freeze-throws-in-strict-mode-not-silent/const-freeze-throws-in-strict-mode-not-silent').then(m => m.ConstFreezeThrowsInStrictModeNotSilentSubtopic) },
     ] },
-    { path: 'closures',       loadComponent: () => import('./components/frontend/javascript/closures/closures').then(m => m.JsClosures) },
+    { path: 'closures', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/closures/closures').then(m => m.JsClosures) },
+      { path: 'testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration', loadComponent: () => import('./components/frontend/javascript/closures/subtopics/var-shares-one-binding-let-creates-one-per-iteration/var-shares-one-binding-let-creates-one-per-iteration').then(m => m.VarSharesOneBindingLetCreatesOnePerIterationSubtopic) },
+      { path: 'testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches', loadComponent: () => import('./components/frontend/javascript/closures/subtopics/two-memoized-wrappers-dont-share-a-cache/two-memoized-wrappers-dont-share-a-cache').then(m => m.TwoMemoizedWrappersDontShareACacheSubtopic) },
+      { path: 'testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt', loadComponent: () => import('./components/frontend/javascript/closures/subtopics/closure-over-primitive-vs-object-property-mutation/closure-over-primitive-vs-object-property-mutation').then(m => m.ClosureOverPrimitiveVsObjectPropertyMutationSubtopic) },
+    ] },
     { path: 'hoisting',       loadComponent: () => import('./components/frontend/javascript/hoisting/hoisting').then(m => m.JsHoisting) },
     { path: 'symbols',        loadComponent: () => import('./components/frontend/javascript/symbols/symbols').then(m => m.JsSymbols) },
     { path: 'functions',      loadComponent: () => import('./components/frontend/javascript/functions/functions').then(m => m.JsFunctions) },

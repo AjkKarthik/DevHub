@@ -1,0 +1,49 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Scope & Closures"
+    topicRoute="/javascript/closures"
+    subtopicLabel="Two memoize() Wrappers Don’t Share a Cache" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Two Separate memoize() Wrappers of the Same Function Keep Genuinely Private Caches</h1>
+  <p class="page-subtitle">
+    The theory says "each memoized function gets its own private cache" — this verifies it with a real
+    call counter, calling the same input through two separate wrappers.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      Two separate <code>memoize(slowSquare)</code> wrappers, both called with the same input, with a
+      real counter tracking how many times the underlying function body actually runs.
+    </p>
+    <app-live-playground
+      title="memoize() — genuinely private caches, verified with a counter"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This confirms closures create genuinely isolated state per call, not shared state. The final
+      subtopic looks at the flip side — when a closure over a mutable object DOES see later changes,
+      versus when a closure over a primitive doesn't.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Scope & Closures"
+    topicRoute="/javascript/closures"
+    [prev]="{ label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' }"
+    [next]="{ label: 'A Closure Over an Object Property Sees Later Mutations, a Primitive Copy Doesn’t', route: '/javascript/closures/testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt' }" />
+</div>

@@ -12933,6 +12933,90 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/closures': {
+    apis: ['closure', 'lexical scope', 'IIFE', 'WeakMap'],
+    related: [
+      { label: 'JavaScript Fundamentals', route: '/javascript/fundamentals' },
+      { label: 'Hoisting & TDZ',          route: '/javascript/hoisting'     },
+      { label: 'Functions Deep Dive',     route: '/javascript/functions'    },
+    ],
+    tip: 'Closures capture variable bindings, not values — the same rule explains both "mutations are visible" and the "stale closure" bug, depending on whether you closed over a live reference or an already-copied primitive.',
+    docs: [
+      { label: 'MDN — Closures', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'var in a loop shares ONE binding across every closure — let creates a fresh binding per iteration.',
+      'Each call to memoize() creates a genuinely new, private cache — two wrappers never share state.',
+      'A closure over an object property sees later mutations; a closure over a destructured primitive does not.',
+    ],
+  },
+
+  'javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration': {
+    apis: ['var', 'let', 'block scope'],
+    related: [
+      { label: 'Scope & Closures (overview)', route: '/javascript/closures' },
+      { label: 'memoize() Private Caches', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
+      { label: 'Hoisting & TDZ', route: '/javascript/hoisting' },
+    ],
+    tip: 'The loop-with-var bug is about how many distinct bindings exist, not about async timing — it reproduces identically with zero setTimeout involved.',
+    docs: [
+      { label: 'MDN — let', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'var declares exactly one binding for the loop\'s entire lifetime — every closure references that same variable.',
+      'for(let...) is special-cased by the spec to create a fresh binding per iteration, copied from the previous one.',
+      'Storing closures in an array and calling them after the loop (no async) reproduces the exact same result.',
+    ],
+  },
+
+  'javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches': {
+    apis: ['memoize()', 'Map', 'closure'],
+    related: [
+      { label: 'Scope & Closures (overview)', route: '/javascript/closures' },
+      { label: 'var vs let Loop Bindings', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
+      { label: 'Object Property vs Primitive Copy', route: '/javascript/closures/testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt' },
+    ],
+    tip: 'The private-cache guarantee comes from WHERE "new Map()" sits — inside the outer function body, so it re-runs independently every time memoize() itself is called.',
+    docs: [
+      { label: 'MDN — Closures', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Two calls to memoize(fn) — even wrapping the same fn — each get their own separate Map instance.',
+      'A cache miss on a second wrapper for an already-cached input is correct, intended behavior, not a bug.',
+      'The cache\'s lifetime is scoped to one specific memoize() call, not the module.',
+    ],
+  },
+
+  'javascript/closures/testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt': {
+    apis: ['destructuring', 'object reference', 'primitive value'],
+    related: [
+      { label: 'Scope & Closures (overview)', route: '/javascript/closures' },
+      { label: 'var vs let Loop Bindings', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
+      { label: 'memoize() Private Caches', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
+    ],
+    tip: '"Closures capture by reference, not value" applies to the SPECIFIC binding referenced — a closure over an already-destructured primitive is a closure over an independent copy, not a live view.',
+    docs: [
+      { label: 'MDN — Destructuring assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Reading state.count fresh through the object always reflects the current value.',
+      'const {count} = state copies the primitive value once — later mutations to state.count never reach it.',
+      'The "stale closure" bug is plain JavaScript, not framework-specific — it happens whenever a primitive is copied out before a mutation.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Scope & Closures"
+    topicRoute="/javascript/closures"
+    subtopicLabel="Closure Over an Object Property vs a Destructured Primitive" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That a Closure Over an Object Property Sees Later Mutations, While a Destructured Primitive Copy Doesn't</h1>
+  <p class="page-subtitle">
+    Mistake #5 says mutations "ARE visible" but also describes a "stale closure" bug in the same
+    entry — this resolves the apparent contradiction with two closures side by side.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      One closure reads <code>state.count</code> fresh every call; another closes over a primitive
+      <code>count</code> destructured out at creation time. Both are called before and after a mutation.
+    </p>
+    <app-live-playground
+      title="Closure over live reference vs copied primitive"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the closures subtopics: the loop-binding mechanics, genuinely isolated
+      per-call state via memoize(), and now the exact boundary between "sees mutations" and "stale
+      forever" that both live inside the same closure-capture rule.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Scope & Closures"
+    topicRoute="/javascript/closures"
+    [prev]="{ label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' }" />
+</div>

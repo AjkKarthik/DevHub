@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Scope & Closures"
+    topicRoute="/javascript/closures"
+    subtopicLabel="var Shares One Binding, let Creates One Per Iteration" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That var Shares One Binding Across a Loop, While let Creates a Fresh One Per Iteration</h1>
+  <p class="page-subtitle">
+    Every example on the main page uses setTimeout to show this bug — this removes the async delay
+    entirely, storing closures and calling them only after the loop is fully finished.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      Closures stored in arrays during a <code>var</code> loop and a <code>let</code> loop, called only
+      after both loops have completely finished — no <code>setTimeout</code> involved.
+    </p>
+    <app-live-playground
+      title="var vs let loop bindings — no async involved"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This isolates the pure binding mechanics behind the classic loop bug. The next subtopic checks a
+      related claim: whether two separate memoize() wrappers of the same function actually share a
+      cache, or keep genuinely private state.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Scope & Closures"
+    topicRoute="/javascript/closures"
+    [next]="{ label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' }" />
+</div>
