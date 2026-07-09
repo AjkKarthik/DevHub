@@ -14005,6 +14005,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/events': {
+    apis: ['addEventListener()', 'CustomEvent', 'e.target', 'e.currentTarget', 'closest()'],
+    related: [
+      { label: 'DOM Manipulation', route: '/javascript/dom'          },
+      { label: 'Browser APIs',     route: '/javascript/browser-apis' },
+      { label: 'Error Handling',   route: '/javascript/error-handling' },
+    ],
+    tip: 'The capture sweep (outside-in) always completes fully before the bubble sweep (inside-out) begins — firing order depends on phase, not proximity to the click.',
+    docs: [
+      { label: 'MDN — EventTarget.addEventListener()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'CustomEvent defaults bubbles to false — the opposite of most native events — silently breaking delegation unless set explicitly.',
+      'closest() walks the real DOM ancestor chain regardless of element type, so it resolves correctly even when e.target is a deeply nested SVG <path>.',
+    ],
+  },
+
+  'javascript/events/capture-fires-before-bubble-in-strict-outside-in-order': {
+    apis: ['addEventListener()', '{ capture: true }'],
+    related: [
+      { label: 'Events & Custom Events (overview)', route: '/javascript/events' },
+      { label: 'Custom Events Don’t Bubble', route: '/javascript/events/custom-events-dont-bubble-by-default' },
+      { label: 'closest() Works With SVG Targets', route: '/javascript/events/closest-walks-up-through-nested-svg-targets-correctly' },
+    ],
+    tip: 'Capture and bubble are two separate sequential sweeps — the entire outside-in capture sweep finishes before the inside-out bubble sweep even starts.',
+    docs: [
+      { label: 'MDN — Event bubbling and capture', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Event/bubbles' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A capture-phase listener on a distant ancestor fires before a bubble-phase listener on a much closer element.',
+      'Attachment order in source code only breaks ties between multiple listeners on the SAME element in the SAME phase — it never decides order across different elements.',
+    ],
+  },
+
+  'javascript/events/custom-events-dont-bubble-by-default': {
+    apis: ['CustomEvent', 'dispatchEvent()', 'bubbles', 'composed'],
+    related: [
+      { label: 'Events & Custom Events (overview)', route: '/javascript/events' },
+      { label: 'Capture Fires Before Bubble', route: '/javascript/events/capture-fires-before-bubble-in-strict-outside-in-order' },
+      { label: 'closest() Works With SVG Targets', route: '/javascript/events/closest-walks-up-through-nested-svg-targets-correctly' },
+    ],
+    tip: 'CustomEvent defaults bubbles to false, the opposite of most native DOM events — a parent listener silently never fires unless bubbles: true is set explicitly.',
+    docs: [
+      { label: 'MDN — CustomEvent', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This fails with no error and no console warning — it looks identical to an ordinary listener bug from the outside.',
+      'bubbles: true alone does not cross shadow DOM boundaries — that also needs composed: true, a separate independent option.',
+    ],
+  },
+
+  'javascript/events/closest-walks-up-through-nested-svg-targets-correctly': {
+    apis: ['closest()', 'e.target', 'SVGElement'],
+    related: [
+      { label: 'Events & Custom Events (overview)', route: '/javascript/events' },
+      { label: 'Capture Fires Before Bubble', route: '/javascript/events/capture-fires-before-bubble-in-strict-outside-in-order' },
+      { label: 'Custom Events Don’t Bubble', route: '/javascript/events/custom-events-dont-bubble-by-default' },
+    ],
+    tip: 'A click on a nested SVG <path> sets e.target to that specific path, not the outer <svg> — closest() still resolves the right delegating ancestor regardless.',
+    docs: [
+      { label: 'MDN — Element.closest()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Element/closest' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'SVG child elements are real, individually-targetable DOM nodes — a click doesn\'t roll up to the outer <svg> as e.target.',
+      'A direct e.target equality check is more fragile than closest() here, since it depends on knowing exactly which descendant absorbed the click.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

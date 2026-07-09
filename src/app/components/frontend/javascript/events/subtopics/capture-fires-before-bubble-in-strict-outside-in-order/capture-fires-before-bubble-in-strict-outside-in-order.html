@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Events &amp; Custom Events" topicRoute="/javascript/events" subtopicLabel="Capture Fires Before Bubble, in Strict Outside-In Order" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Capture Fires Before Bubble, in Strict Outside-In Order</h1>
+  <p class="page-subtitle">The entire capture sweep completes before the bubble sweep even starts — firing order depends on phase, not on how close a listener's element is to the click.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="DOM Level 2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Five listeners across three nested elements — two capture, two bubble, one on the target — all fire from a single click. Predict the order, then run it to see the actual sequence.</p>
+    <app-live-playground title="Five listeners, one click, strict phase order" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/events">Events &amp; Custom Events</a> page's phase example in a live, timestamped demo. Next, see why custom events silently fail to reach parent listeners unless <code>bubbles: true</code> is set explicitly.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Events &amp; Custom Events"
+    topicRoute="/javascript/events"
+    [next]="{ label: 'Custom Events Don’t Bubble by Default', route: '/javascript/events/custom-events-dont-bubble-by-default' }"
+  />
+</div>

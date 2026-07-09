@@ -1427,7 +1427,12 @@ export const routes: Routes = [
       { path: 'innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners', loadComponent: () => import('./components/frontend/javascript/dom/subtopics/innerhtml-plus-equals-destroys-listeners/innerhtml-plus-equals-destroys-listeners').then(m => m.InnerHtmlPlusEqualsReparsesTheWholeContainerAndDestroysChildListenersSubtopic) },
       { path: 'queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection', loadComponent: () => import('./components/frontend/javascript/dom/subtopics/static-nodelist-vs-live-htmlcollection/static-nodelist-vs-live-htmlcollection').then(m => m.QuerySelectorAllIsStaticGetElementsByClassNameIsLiveSubtopic) },
     ] },
-    { path: 'events',         loadComponent: () => import('./components/frontend/javascript/events/events').then(m => m.JsEvents) },
+    { path: 'events', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/events/events').then(m => m.JsEvents) },
+      { path: 'capture-fires-before-bubble-in-strict-outside-in-order', loadComponent: () => import('./components/frontend/javascript/events/subtopics/capture-fires-before-bubble-in-strict-outside-in-order/capture-fires-before-bubble-in-strict-outside-in-order').then(m => m.CaptureFiresBeforeBubbleInStrictOutsideInOrderSubtopic) },
+      { path: 'custom-events-dont-bubble-by-default', loadComponent: () => import('./components/frontend/javascript/events/subtopics/custom-events-dont-bubble-by-default/custom-events-dont-bubble-by-default').then(m => m.CustomEventsDontBubbleByDefaultSubtopic) },
+      { path: 'closest-walks-up-through-nested-svg-targets-correctly', loadComponent: () => import('./components/frontend/javascript/events/subtopics/closest-walks-up-through-nested-svg-targets-correctly/closest-walks-up-through-nested-svg-targets-correctly').then(m => m.ClosestWalksUpThroughNestedSvgTargetsCorrectlySubtopic) },
+    ] },
     { path: 'browser-apis',   loadComponent: () => import('./components/frontend/javascript/browser-apis/browser-apis').then(m => m.JsBrowserApis) },
     { path: 'modules',        loadComponent: () => import('./components/frontend/javascript/modules/modules').then(m => m.JsModules) },
     { path: 'bundlers',       loadComponent: () => import('./components/frontend/javascript/bundlers/bundlers').then(m => m.JsBundlers) },

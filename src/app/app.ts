@@ -1378,6 +1378,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'innerHTML += Destroys Child Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' },
     { label: 'querySelectorAll Is Static, getElementsByClassName Is Live', route: '/javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection' },
   ],
+  events: [
+    { label: 'Capture Fires Before Bubble, Outside-In', route: '/javascript/events/capture-fires-before-bubble-in-strict-outside-in-order' },
+    { label: 'Custom Events Don’t Bubble by Default', route: '/javascript/events/custom-events-dont-bubble-by-default' },
+    { label: 'closest() Works Through Nested SVG Targets', route: '/javascript/events/closest-walks-up-through-nested-svg-targets-correctly' },
+  ],
 };
 
 @Component({
