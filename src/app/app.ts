@@ -1316,6 +1316,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
     { label: 'Closure Over an Object Property vs a Destructured Primitive', route: '/javascript/closures/testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt' },
   ],
+  hoisting: [
+    { label: 'typeof in the TDZ Throws ReferenceError', route: '/javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe' },
+    { label: 'Function Declaration Wins Hoisting, var Overwrites It After', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' },
+    { label: 'Duplicate let Across Switch Cases Throws a Real SyntaxError', route: '/javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror' },
+  ],
 };
 
 @Component({

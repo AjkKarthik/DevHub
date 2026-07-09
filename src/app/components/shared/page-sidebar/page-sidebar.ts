@@ -13017,6 +13017,90 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/hoisting': {
+    apis: ['var', 'let', 'const', 'TDZ', 'typeof'],
+    related: [
+      { label: 'Scope & Closures',    route: '/javascript/closures'    },
+      { label: 'JavaScript Fundamentals', route: '/javascript/fundamentals' },
+      { label: 'Functions Deep Dive', route: '/javascript/functions'   },
+    ],
+    tip: 'let/const ARE hoisted — the engine knows they exist. They\'re just uninitialized until their declaration line, which is what the TDZ actually is.',
+    docs: [
+      { label: 'MDN — Temporal Dead Zone', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Hoisting#temporal_dead_zone_tdz' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'typeof on a TDZ variable throws ReferenceError — unlike typeof on a truly undeclared variable, which stays safe.',
+      'Function declarations win the hoisting phase over a same-named var — but the var\'s own assignment still overwrites it afterward.',
+      'A switch statement\'s braces are ONE block scope shared by every case — duplicate let across cases needs its own per-case braces.',
+    ],
+  },
+
+  'javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe': {
+    apis: ['typeof', 'ReferenceError', 'TDZ'],
+    related: [
+      { label: 'Hoisting & TDZ (overview)', route: '/javascript/hoisting' },
+      { label: 'Function Decl Wins Hoisting', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' },
+      { label: 'Duplicate let in Switch Cases', route: '/javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror' },
+    ],
+    tip: 'typeof\'s safety guarantee is specifically for identifiers the engine has NO knowledge of — a TDZ variable is a known, hoisted identifier that just isn\'t initialized yet, which is a different case entirely.',
+    docs: [
+      { label: 'MDN — typeof', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'typeof on a genuinely undeclared identifier never throws — returns "undefined" safely.',
+      'typeof on a let/const in its own TDZ throws a real ReferenceError, not "undefined".',
+      'This is a realistic trap, not a contrived edge case — it can surface after code reordering or a refactor.',
+    ],
+  },
+
+  'javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward': {
+    apis: ['function declaration', 'var', 'hoisting'],
+    related: [
+      { label: 'Hoisting & TDZ (overview)', route: '/javascript/hoisting' },
+      { label: 'typeof TDZ Throws ReferenceError', route: '/javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe' },
+      { label: 'Duplicate let in Switch Cases', route: '/javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror' },
+    ],
+    tip: 'Two separate mechanisms, two separate times: the function wins hoisting (before any line runs); the var\'s own assignment statement overwrites it afterward, in its normal source-order position.',
+    docs: [
+      { label: 'MDN — Hoisting', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Hoisting' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Function declarations win over var at hoisting time, regardless of which one is written first in the source.',
+      'The var\'s assignment still runs at its normal position and overwrites the function afterward.',
+      'The final logged value looking like "var won" is misleading — it\'s actually two separate mechanisms at two separate times.',
+    ],
+  },
+
+  'javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror': {
+    apis: ['switch', 'block scope', 'SyntaxError'],
+    related: [
+      { label: 'Hoisting & TDZ (overview)', route: '/javascript/hoisting' },
+      { label: 'typeof TDZ Throws ReferenceError', route: '/javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe' },
+      { label: 'Function Decl Wins Hoisting', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' },
+    ],
+    tip: 'A genuine top-level SyntaxError can\'t be caught by try/catch in the same file — testing it live requires compiling the broken code at runtime with new Function(...).',
+    docs: [
+      { label: 'MDN — switch', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A switch statement\'s outer braces are ONE block shared by every case, unless a case wraps its own body in { }.',
+      'The error is the same ordinary "duplicate let in one block" rule as anywhere else — nothing switch-specific about the underlying cause.',
+      'Wrapping each case in its own { } gives each one a genuinely separate scope, fixing the collision.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

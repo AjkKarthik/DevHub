@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Hoisting &amp; TDZ"
+    topicRoute="/javascript/hoisting"
+    subtopicLabel="Duplicate let Across Switch Cases Throws a Real SyntaxError" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Declaring the Same let Name in Two Switch Cases Without Their Own Blocks Throws a Real SyntaxError</h1>
+  <p class="page-subtitle">
+    The main page's own broken example is commented out — this actually runs it (via new Function, so a
+    try/catch can catch it) to show the genuine error message, next to the working fixed version.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      The exact broken and fixed <code>switch</code> patterns from the main page's own code tab, each
+      compiled at runtime via <code>new Function(...)</code> so a real thrown error can be caught.
+    </p>
+    <app-live-playground
+      title="Duplicate let in switch cases — real SyntaxError vs fixed version"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the hoisting subtopics: the TDZ's typeof exception, the two-phase
+      function-vs-var collision, and now a block-scoping quirk specific to how switch statements
+      structure their braces.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Hoisting &amp; TDZ"
+    topicRoute="/javascript/hoisting"
+    [prev]="{ label: 'Function Declaration Wins Hoisting, var Overwrites It After', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' }" />
+</div>

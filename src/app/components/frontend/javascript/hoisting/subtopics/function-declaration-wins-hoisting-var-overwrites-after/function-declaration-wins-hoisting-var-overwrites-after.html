@@ -1,0 +1,49 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Hoisting &amp; TDZ"
+    topicRoute="/javascript/hoisting"
+    subtopicLabel="Function Declaration Wins Hoisting, var Overwrites It After" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That a Function Declaration Wins the Hoisting Race, But a Same-Named var Assignment Overwrites It Afterward</h1>
+  <p class="page-subtitle">
+    The main page's own code tab only logs the final result — this adds an earlier log call to catch
+    the function actually winning, before the var's own assignment line overwrites it.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      The exact <code>var double</code> / <code>function double</code> collision from the main page,
+      logged both before and after the <code>var</code> assignment line runs.
+    </p>
+    <app-live-playground
+      title="var vs function declaration — logged at two different moments"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This separates the two mechanisms — hoisting-time precedence and runtime assignment — that the
+      main page's single, later log call conflates. The final subtopic checks a related quirk: what
+      actually happens when two switch cases declare the same-named let without their own blocks.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Hoisting &amp; TDZ"
+    topicRoute="/javascript/hoisting"
+    [prev]="{ label: 'typeof in the TDZ Throws ReferenceError, Not undefined', route: '/javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe' }"
+    [next]="{ label: 'Duplicate let Across Switch Cases Throws a Real SyntaxError', route: '/javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror' }" />
+</div>

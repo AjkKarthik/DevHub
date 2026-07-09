@@ -1355,7 +1355,12 @@ export const routes: Routes = [
       { path: 'testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches', loadComponent: () => import('./components/frontend/javascript/closures/subtopics/two-memoized-wrappers-dont-share-a-cache/two-memoized-wrappers-dont-share-a-cache').then(m => m.TwoMemoizedWrappersDontShareACacheSubtopic) },
       { path: 'testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt', loadComponent: () => import('./components/frontend/javascript/closures/subtopics/closure-over-primitive-vs-object-property-mutation/closure-over-primitive-vs-object-property-mutation').then(m => m.ClosureOverPrimitiveVsObjectPropertyMutationSubtopic) },
     ] },
-    { path: 'hoisting',       loadComponent: () => import('./components/frontend/javascript/hoisting/hoisting').then(m => m.JsHoisting) },
+    { path: 'hoisting', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/hoisting/hoisting').then(m => m.JsHoisting) },
+      { path: 'testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe', loadComponent: () => import('./components/frontend/javascript/hoisting/subtopics/typeof-tdz-throws-referenceerror-not-undefined/typeof-tdz-throws-referenceerror-not-undefined').then(m => m.TypeofTdzThrowsReferenceerrorNotUndefinedSubtopic) },
+      { path: 'testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward', loadComponent: () => import('./components/frontend/javascript/hoisting/subtopics/function-declaration-wins-hoisting-var-overwrites-after/function-declaration-wins-hoisting-var-overwrites-after').then(m => m.FunctionDeclarationWinsHoistingVarOverwritesAfterSubtopic) },
+      { path: 'testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror', loadComponent: () => import('./components/frontend/javascript/hoisting/subtopics/duplicate-let-across-switch-cases-real-syntaxerror/duplicate-let-across-switch-cases-real-syntaxerror').then(m => m.DuplicateLetAcrossSwitchCasesRealSyntaxerrorSubtopic) },
+    ] },
     { path: 'symbols',        loadComponent: () => import('./components/frontend/javascript/symbols/symbols').then(m => m.JsSymbols) },
     { path: 'functions',      loadComponent: () => import('./components/frontend/javascript/functions/functions').then(m => m.JsFunctions) },
     { path: 'prototypes',     loadComponent: () => import('./components/frontend/javascript/prototypes/prototypes').then(m => m.JsPrototypes) },
