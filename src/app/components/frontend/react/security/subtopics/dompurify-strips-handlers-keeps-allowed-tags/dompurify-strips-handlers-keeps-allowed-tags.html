@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Security in React"
+    topicRoute="/react/security"
+    subtopicLabel="DOMPurify Strips Handlers, Keeps Allowed Tags" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That DOMPurify Strips Event Handlers and javascript: URLs, But Keeps Allowed Tags Intact</h1>
+  <p class="page-subtitle">
+    The main page shows the DOMPurify config but never the actual sanitized output — this runs it
+    against 4 crafted payloads to see exactly what survives and what gets removed.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="DOMPurify 3.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The exact <code>ALLOWED_TAGS</code>/<code>ALLOWED_ATTR</code> config from the main page's own code,
+      run against a script tag, an onclick handler, a javascript: URL, and a disallowed image tag.
+    </p>
+    <app-live-playground
+      title="DOMPurify.sanitize() — real output for 4 payloads"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes the loop on the two XSS defenses — JSX's structural safety and DOMPurify's surgical
+      sanitization. The final subtopic moves to a different vulnerability class entirely: how a naive
+      redirect-URL check can be bypassed by a protocol-relative URL.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Security in React"
+    topicRoute="/react/security"
+    [prev]="{ label: 'JSX Text Node vs Raw HTML — a Real DOM Check', route: '/react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element' }"
+    [next]="{ label: 'A Protocol-Relative URL Bypasses a Naive Redirect Check', route: '/react/security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check' }" />
+</div>

@@ -1591,7 +1591,12 @@ export const routes: Routes = [
       { path: 'testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does', loadComponent: () => import('./components/frontend/react/animations/subtopics/width-animation-reflows-siblings-transform-doesnt/width-animation-reflows-siblings-transform-doesnt').then(m => m.WidthAnimationReflowsSiblingsTransformDoesntSubtopic) },
       { path: 'testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry', loadComponent: () => import('./components/frontend/react/animations/subtopics/viewport-once-true-vs-repeating-scroll-animation/viewport-once-true-vs-repeating-scroll-animation').then(m => m.ViewportOnceTrueVsRepeatingScrollAnimationSubtopic) },
     ] },
-    { path: 'security',         loadComponent: () => import('./components/frontend/react/security/security').then(m => m.ReactSecurity) },
+    { path: 'security', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/security/security').then(m => m.ReactSecurity) },
+      { path: 'testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element', loadComponent: () => import('./components/frontend/react/security/subtopics/jsx-text-node-vs-raw-html-real-dom-check/jsx-text-node-vs-raw-html-real-dom-check').then(m => m.JsxTextNodeVsRawHtmlRealDomCheckSubtopic) },
+      { path: 'testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact', loadComponent: () => import('./components/frontend/react/security/subtopics/dompurify-strips-handlers-keeps-allowed-tags/dompurify-strips-handlers-keeps-allowed-tags').then(m => m.DompurifyStripsHandlersKeepsAllowedTagsSubtopic) },
+      { path: 'testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check', loadComponent: () => import('./components/frontend/react/security/subtopics/protocol-relative-url-bypasses-naive-redirect-check/protocol-relative-url-bypasses-naive-redirect-check').then(m => m.ProtocolRelativeUrlBypassesNaiveRedirectCheckSubtopic) },
+    ] },
     { path: 'cheatsheet',       loadComponent: () => import('./components/frontend/react/cheatsheet/cheatsheet').then(m => m.ReactCheatsheet) },
     { path: 'interview-prep',   loadComponent: () => import('./components/frontend/react/interview-prep/interview-prep').then(m => m.ReactInterviewPrep) },
   ] },

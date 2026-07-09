@@ -12785,6 +12785,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element': {
+    apis: ['createTextNode', 'dangerouslySetInnerHTML', 'JSX escaping'],
+    related: [
+      { label: 'Security in React (overview)', route: '/react/security' },
+      { label: 'DOMPurify Strips Handlers', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' },
+      { label: 'Testing React', route: '/react/testing' },
+    ],
+    tip: 'JSX text is safe not because React "filters" the string, but because the browser\'s HTML parser is never invoked at all — a Text node structurally cannot contain elements or handlers.',
+    docs: [
+      { label: 'React Docs — dangerouslySetInnerHTML', url: 'https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html' },
+    ],
+    resources: [
+      { label: 'cure53/DOMPurify', url: 'https://github.com/cure53/DOMPurify', badge: 'code' },
+    ],
+    gotchas: [
+      'A JSX Text node cannot contain a child element — this is a DOM-level structural guarantee, not a pattern-matching filter.',
+      'dangerouslySetInnerHTML goes through the browser\'s real HTML parser, which CAN create executable elements from a string.',
+      'Checking for an actual popup isn\'t a reliable XSS test — inspect the real DOM structure instead.',
+    ],
+  },
+
+  'react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact': {
+    apis: ['DOMPurify.sanitize()', 'ALLOWED_TAGS', 'ALLOWED_ATTR'],
+    related: [
+      { label: 'Security in React (overview)', route: '/react/security' },
+      { label: 'JSX Text Node vs Raw HTML', route: '/react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element' },
+      { label: 'Protocol-Relative Redirect Bypass', route: '/react/security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check' },
+    ],
+    tip: 'DOMPurify removes disallowed tags/attributes surgically, not the whole input — an allowed tag name doesn\'t mean every attribute VALUE (like a javascript: href) is trusted.',
+    docs: [
+      { label: 'DOMPurify Docs', url: 'https://github.com/cure53/DOMPurify#readme' },
+    ],
+    resources: [
+      { label: 'cure53/DOMPurify', url: 'https://github.com/cure53/DOMPurify', badge: 'code' },
+    ],
+    gotchas: [
+      'A disallowed tag (like <script> or <img>) is removed entirely — its safe siblings elsewhere in the string survive.',
+      'A disallowed attribute (like onclick) is stripped from an otherwise-allowed tag — the tag and its safe content remain.',
+      'javascript: URLs are neutralized even in an ALLOWED_ATTR attribute like href — the attribute name being allowed doesn\'t make every value safe.',
+    ],
+  },
+
+  'react/security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check': {
+    apis: ['String.startsWith()', 'router.push()', 'protocol-relative URL'],
+    related: [
+      { label: 'Security in React (overview)', route: '/react/security' },
+      { label: 'JSX Text Node vs Raw HTML', route: '/react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element' },
+      { label: 'DOMPurify Strips Handlers', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' },
+    ],
+    tip: 'A redirect-safety check needs BOTH startsWith(\'/\') AND !startsWith(\'//\') — the first condition alone is bypassed by a protocol-relative URL like //evil.com.',
+    docs: [
+      { label: 'MDN — Same-origin policy', url: 'https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy' },
+    ],
+    resources: [
+      { label: 'OWASP — Unvalidated Redirects', url: 'https://owasp.org/www-community/attacks/Unvalidated_Redirects_and_Forwards_Cheat_Sheet', badge: 'docs' },
+    ],
+    gotchas: [
+      '"//evil.com".startsWith(\'/\') is true — a single-condition check is silently bypassed by this exact pattern.',
+      'The browser resolves a protocol-relative URL by keeping the current page\'s scheme and using everything after // as a real, different host.',
+      'The redirect query parameter is attacker-controlled input by design — this isn\'t a rare or unlikely-to-be-exploited edge case.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

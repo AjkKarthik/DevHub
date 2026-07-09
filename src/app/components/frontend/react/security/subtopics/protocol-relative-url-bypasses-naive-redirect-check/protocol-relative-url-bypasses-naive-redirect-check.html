@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Security in React"
+    topicRoute="/react/security"
+    subtopicLabel="A Protocol-Relative URL Bypasses a Naive Redirect Check" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Protocol-Relative URL Bypasses a Naive startsWith("/") Open-Redirect Check</h1>
+  <p class="page-subtitle">
+    Mistake #5's own fix adds a second !startsWith("//") condition — this shows exactly which crafted
+    URL the simpler, single-condition version lets through.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="React 18" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A naive <code>startsWith('/')</code> check versus the main page's own two-condition fix, run
+      against 4 test URLs including a protocol-relative one.
+    </p>
+    <app-live-playground
+      title="Naive vs correct redirect validation — 4 test URLs"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the security subtopics: React's structural JSX safety, DOMPurify's surgical
+      sanitization, and now a subtle validation-logic gap in a security check that looks correct at a
+      glance but has a specific, exploitable edge case.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Security in React"
+    topicRoute="/react/security"
+    [prev]="{ label: 'DOMPurify Strips Handlers, Keeps Allowed Tags', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' }" />
+</div>

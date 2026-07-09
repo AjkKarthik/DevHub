@@ -1299,6 +1299,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Width Animation Reflows Siblings, transform Doesn’t', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' },
     { label: 'viewport.once Controls Repeat, Not Just the First Play', route: '/react/animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry' },
   ],
+  // NOTE: keyed 'react-security', NOT bare 'security' — the standalone
+  // Security & Auth hub already claims the bare key with its own subtopics.
+  'react-security': [
+    { label: 'JSX Text Node vs Raw HTML — a Real DOM Check', route: '/react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element' },
+    { label: 'DOMPurify Strips Handlers, Keeps Allowed Tags', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' },
+    { label: 'A Protocol-Relative URL Bypasses a Naive Redirect Check', route: '/react/security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check' },
+  ],
 };
 
 @Component({

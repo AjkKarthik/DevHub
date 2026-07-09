@@ -1014,6 +1014,9 @@ const REACT_LABELS: Record<string, string> = {
   'animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does': 'width vs transform Reflow',
   'animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry': 'viewport.once Controls Repeat',
   'security':          'Security',
+  'security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element': 'JSX Text Node vs Raw HTML',
+  'security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact': 'DOMPurify Strips Handlers',
+  'security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check': 'Protocol-Relative Redirect Bypass',
   'cheatsheet':        'Cheat Sheet',
   'interview-prep':    'Interview Prep',
 };

@@ -2799,7 +2799,26 @@
           </div>
         }
       }
-      <a routerLink="/react/security"          routerLinkActive="active"><span class="nl-text">Security</span>@if(progress.isDone('react-security')){<span class="nl-done">✓</span>}@if(diff('react-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/security" routerLinkActive="active">
+        <span class="nl-text">Security</span>
+        @if (progress.isDone('react-security')) {<span class="nl-done">✓</span>}
+        @if (diff('react-security'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('react-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('react-security')"
+                  (click)="toggleSubtopics('react-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('react-security'); as reactSecSubs) {
+        @if (isSubtopicsExpanded('react-security')) {
+          <div class="nav-subtopics">
+            @for (s of reactSecSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
