@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="JavaScript Fundamentals"
+    topicRoute="/javascript/fundamentals"
+    subtopicLabel="Number.isNaN() vs Global isNaN() — Real Coercion Differences" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Number.isNaN() and Global isNaN() Disagree on Empty Strings, Whitespace, and Garbage Text</h1>
+  <p class="page-subtitle">
+    Mistake #3 states isNaN("") and isNaN(" ") are both false — this runs both functions against 6
+    real inputs side by side to see exactly where and why they diverge.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ES5 / ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      A table comparing global <code>isNaN()</code> against <code>Number.isNaN()</code> for 6 test
+      values, printed to the console.
+    </p>
+    <app-live-playground
+      title="isNaN() vs Number.isNaN() — real comparison table"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three JavaScript Fundamentals subtopics — this one on numeric validation.
+      The next moves to the exact boundary between <code>||=</code> and <code>??=</code> for falsy-but-valid
+      values like <code>0</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="JavaScript Fundamentals"
+    topicRoute="/javascript/fundamentals"
+    [next]="{ label: 'Nullish Assignment Keeps 0, OR Assignment Overwrites It', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' }" />
+</div>

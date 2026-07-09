@@ -1343,7 +1343,12 @@ export const routes: Routes = [
   ] },
   { path: 'javascript', children: [
     { path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) },
-    { path: 'fundamentals',   loadComponent: () => import('./components/frontend/javascript/fundamentals/fundamentals').then(m => m.JsFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/fundamentals/fundamentals').then(m => m.JsFundamentals) },
+      { path: 'testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text', loadComponent: () => import('./components/frontend/javascript/fundamentals/subtopics/numberisnan-vs-global-isnan-real-coercion/numberisnan-vs-global-isnan-real-coercion').then(m => m.NumberisnanVsGlobalIsnanRealCoercionSubtopic) },
+      { path: 'testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it', loadComponent: () => import('./components/frontend/javascript/fundamentals/subtopics/nullish-assignment-keeps-zero-or-only-assigns/nullish-assignment-keeps-zero-or-only-assigns').then(m => m.NullishAssignmentKeepsZeroOrOnlyAssignsSubtopic) },
+      { path: 'testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails', loadComponent: () => import('./components/frontend/javascript/fundamentals/subtopics/const-freeze-throws-in-strict-mode-not-silent/const-freeze-throws-in-strict-mode-not-silent').then(m => m.ConstFreezeThrowsInStrictModeNotSilentSubtopic) },
+    ] },
     { path: 'closures',       loadComponent: () => import('./components/frontend/javascript/closures/closures').then(m => m.JsClosures) },
     { path: 'hoisting',       loadComponent: () => import('./components/frontend/javascript/hoisting/hoisting').then(m => m.JsHoisting) },
     { path: 'symbols',        loadComponent: () => import('./components/frontend/javascript/symbols/symbols').then(m => m.JsSymbols) },

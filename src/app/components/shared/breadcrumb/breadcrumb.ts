@@ -1023,6 +1023,9 @@ const REACT_LABELS: Record<string, string> = {
 
 const JAVASCRIPT_LABELS: Record<string, string> = {
   'fundamentals':   'JavaScript Fundamentals',
+  'fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text': 'Number.isNaN() vs Global isNaN()',
+  'fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it': 'Nullish Assignment Keeps 0',
+  'fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails': 'Object.freeze() Strict Mode Throw',
   'closures':       'Scope & Closures',
   'hoisting':       'Hoisting & TDZ',
   'symbols':        'Symbols & Iterators',

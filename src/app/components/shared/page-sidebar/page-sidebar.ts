@@ -12848,6 +12848,91 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/fundamentals': {
+    apis: ['typeof', 'Number.isNaN()', '??', '??=', 'Object.freeze()'],
+    related: [
+      { label: 'Scope & Closures', route: '/javascript/closures' },
+      { label: 'Hoisting & TDZ',   route: '/javascript/hoisting' },
+      { label: 'Functions Deep Dive', route: '/javascript/functions' },
+    ],
+    tip: 'Always use === and ?? over == and || — coercion and falsy-checking are the two biggest sources of subtle JavaScript bugs.',
+    docs: [
+      { label: 'MDN — Equality comparisons', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Equality_comparisons_and_sameness' },
+      { label: 'MDN — Nullish coalescing',   url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'typeof null === "object" is a historical bug — always check === null explicitly.',
+      '?? only checks null/undefined; || checks all falsy values including 0, "", and false.',
+      'const prevents rebinding, not mutation — use Object.freeze() for shallow immutability.',
+    ],
+  },
+
+  'javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text': {
+    apis: ['isNaN()', 'Number.isNaN()', 'Number()'],
+    related: [
+      { label: 'JavaScript Fundamentals (overview)', route: '/javascript/fundamentals' },
+      { label: 'Nullish Assignment Keeps 0', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' },
+      { label: 'Object.freeze() Strict Mode Throw', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' },
+    ],
+    tip: 'Neither isNaN() nor Number.isNaN() alone validates "is this string a valid number" — combine them: Number.isNaN(Number(input)).',
+    docs: [
+      { label: 'MDN — Number.isNaN()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Global isNaN(x) coerces x with Number(x) first — Number("") is 0, not NaN, so isNaN("") is false.',
+      'Number.isNaN(x) never coerces — it returns false for every string, even garbage like "abc".',
+      'Validating user input needs BOTH: convert explicitly, then check strictly.',
+    ],
+  },
+
+  'javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it': {
+    apis: ['||=', '??=', 'x ?? y'],
+    related: [
+      { label: 'JavaScript Fundamentals (overview)', route: '/javascript/fundamentals' },
+      { label: 'Number.isNaN() vs Global isNaN()', route: '/javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text' },
+      { label: 'Object.freeze() Strict Mode Throw', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' },
+    ],
+    tip: '||= is not a safer, modern version of || — it wraps the exact same falsy-check and has the identical 0/""/false blind spot.',
+    docs: [
+      { label: 'MDN — Logical nullish assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_nullish_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'x ||= value assigns whenever x is falsy — 0, "", and false all get overwritten, just like plain ||.',
+      'x ??= value assigns only when x is null or undefined — 0, "", and false are left untouched.',
+      '||= and ??= were both introduced in ES2021, but they wrap different underlying operators with different blind spots.',
+    ],
+  },
+
+  'javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails': {
+    apis: ['Object.freeze()', '"use strict"', 'TypeError'],
+    related: [
+      { label: 'JavaScript Fundamentals (overview)', route: '/javascript/fundamentals' },
+      { label: 'Number.isNaN() vs Global isNaN()', route: '/javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text' },
+      { label: 'Nullish Assignment Keeps 0', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' },
+    ],
+    tip: 'Every ES module (any file using import/export) is automatically strict mode — most modern JS/TS code gets the loud TypeError by default without writing "use strict" explicitly.',
+    docs: [
+      { label: 'MDN — Strict mode', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'In sloppy mode, assigning to a frozen object\'s property silently fails — no error, no change.',
+      'In strict mode, the identical assignment throws a real, catchable TypeError.',
+      'The Function constructor\'s body runs in sloppy mode by default, even inside a strict-mode module — a real way to compare both.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

@@ -1306,6 +1306,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DOMPurify Strips Handlers, Keeps Allowed Tags', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' },
     { label: 'A Protocol-Relative URL Bypasses a Naive Redirect Check', route: '/react/security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check' },
   ],
+  fundamentals: [
+    { label: 'Number.isNaN() vs Global isNaN()', route: '/javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text' },
+    { label: 'Nullish Assignment Keeps 0, OR Overwrites It', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' },
+    { label: 'Object.freeze() Throws in Strict Mode', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' },
+  ],
 };
 
 @Component({
