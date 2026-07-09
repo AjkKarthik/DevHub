@@ -1368,6 +1368,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'try/catch Never Catches a setTimeout Error', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' },
     { label: 'AggregateError Packages Every Rejection', route: '/javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first' },
   ],
+  generators: [
+    { label: 'Spread and for...of Ignore the Return Value', route: '/javascript/generators/spread-and-for-of-ignore-a-generators-return-value' },
+    { label: 'break Triggers generator.return() and finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' },
+    { label: 'yield* Forwards next() Values and throw()', route: '/javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator' },
+  ],
 };
 
 @Component({

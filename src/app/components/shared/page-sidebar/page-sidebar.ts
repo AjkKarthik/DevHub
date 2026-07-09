@@ -13845,6 +13845,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/generators': {
+    apis: ['function*', 'yield', 'yield*', 'gen.next()', 'gen.return()', 'gen.throw()', 'async function*'],
+    related: [
+      { label: 'Promises & Async/Await', route: '/javascript/promises'       },
+      { label: 'Error Handling',         route: '/javascript/error-handling' },
+      { label: 'Event Loop & Concurrency', route: '/javascript/event-loop'   },
+    ],
+    tip: 'A generator\'s return value is metadata attached to done: true, not a yielded item — spread and for...of silently drop it; only manual .next() or yield* recover it.',
+    docs: [
+      { label: 'MDN — function*', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'break in a for...of loop calls generator.return() automatically, running any enclosing finally block for cleanup.',
+      'yield* forwards .next(value) and .throw() into the delegated generator — a manual re-yield loop cannot replicate this.',
+    ],
+  },
+
+  'javascript/generators/spread-and-for-of-ignore-a-generators-return-value': {
+    apis: ['function*', 'return', 'yield*'],
+    related: [
+      { label: 'Generators (overview)', route: '/javascript/generators' },
+      { label: 'break Triggers return() and finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' },
+      { label: 'yield* Forwards next() and throw()', route: '/javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator' },
+    ],
+    tip: 'A generator\'s return value only surfaces via manual .next() calls or yield* delegation — spread, for...of, and Array.from all discard it at done: true.',
+    docs: [
+      { label: 'MDN — Iteration protocols', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This is universal iterator protocol behavior, not generator-specific — any custom iterable\'s final done: true value is dropped the same way.',
+      'yield* itself evaluates to the delegated generator\'s return value, which is why it can recover what spread/for...of cannot.',
+    ],
+  },
+
+  'javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally': {
+    apis: ['generator.return()', 'try/finally', 'for...of'],
+    related: [
+      { label: 'Generators (overview)', route: '/javascript/generators' },
+      { label: 'Spread Ignores Return Value', route: '/javascript/generators/spread-and-for-of-ignore-a-generators-return-value' },
+      { label: 'yield* Forwards next() and throw()', route: '/javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator' },
+    ],
+    tip: 'for...of automatically calls generator.return() on early exit (break or a thrown error) — this makes the paused yield behave like a return, running any enclosing finally.',
+    docs: [
+      { label: 'MDN — Generator.prototype.return()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator/return' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A manual loop that just stops calling .next() (without ever calling .return()) does NOT trigger cleanup — the generator is left permanently suspended.',
+      'The same cleanup mechanism fires for an uncaught exception thrown inside the loop body, not just an explicit break.',
+    ],
+  },
+
+  'javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator': {
+    apis: ['yield*', 'generator.next(value)', 'generator.throw()'],
+    related: [
+      { label: 'Generators (overview)', route: '/javascript/generators' },
+      { label: 'Spread Ignores Return Value', route: '/javascript/generators/spread-and-for-of-ignore-a-generators-return-value' },
+      { label: 'break Triggers return() and finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' },
+    ],
+    tip: 'yield* is not just "loop and re-yield" — it wires up full two-way communication with the inner generator that a hand-written for...of loop cannot replicate.',
+    docs: [
+      { label: 'MDN — yield*', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield*' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A manual re-yield loop only ever calls the inner generator\'s .next() with no argument — any value sent to the outer generator never reaches the inner one.',
+      'A .throw() on the outer generator inside a manual loop surfaces at the loop\'s own yield, never reaching the inner generator\'s try/catch.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

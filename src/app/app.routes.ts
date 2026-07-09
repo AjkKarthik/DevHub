@@ -1415,7 +1415,12 @@ export const routes: Routes = [
       { path: 'try-catch-never-catches-an-error-thrown-inside-settimeout', loadComponent: () => import('./components/frontend/javascript/error-handling/subtopics/try-catch-never-catches-an-error-thrown-inside-settimeout/try-catch-never-catches-an-error-thrown-inside-settimeout').then(m => m.TryCatchNeverCatchesAnErrorThrownInsideSetTimeoutSubtopic) },
       { path: 'aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first', loadComponent: () => import('./components/frontend/javascript/error-handling/subtopics/aggregateerror-promise-any-rejections/aggregateerror-promise-any-rejections').then(m => m.AggregateErrorFromPromiseAnyPackagesEveryRejectionNotJustTheFirstSubtopic) },
     ] },
-    { path: 'generators',     loadComponent: () => import('./components/frontend/javascript/generators/generators').then(m => m.JsGenerators) },
+    { path: 'generators', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/generators/generators').then(m => m.JsGenerators) },
+      { path: 'spread-and-for-of-ignore-a-generators-return-value', loadComponent: () => import('./components/frontend/javascript/generators/subtopics/spread-ignores-generator-return-value/spread-ignores-generator-return-value').then(m => m.SpreadAndForOfIgnoreAGeneratorsReturnValueSubtopic) },
+      { path: 'breaking-a-for-of-loop-triggers-generator-return-and-runs-finally', loadComponent: () => import('./components/frontend/javascript/generators/subtopics/break-triggers-generator-return-finally/break-triggers-generator-return-finally').then(m => m.BreakingAForOfLoopTriggersGeneratorReturnAndRunsFinallySubtopic) },
+      { path: 'yield-delegation-forwards-next-values-and-throw-into-the-inner-generator', loadComponent: () => import('./components/frontend/javascript/generators/subtopics/yield-delegation-forwards-next-and-throw/yield-delegation-forwards-next-and-throw').then(m => m.YieldDelegationForwardsNextValuesAndThrowIntoTheInnerGeneratorSubtopic) },
+    ] },
     { path: 'dom',            loadComponent: () => import('./components/frontend/javascript/dom/dom').then(m => m.JsDom) },
     { path: 'events',         loadComponent: () => import('./components/frontend/javascript/events/events').then(m => m.JsEvents) },
     { path: 'browser-apis',   loadComponent: () => import('./components/frontend/javascript/browser-apis/browser-apis').then(m => m.JsBrowserApis) },

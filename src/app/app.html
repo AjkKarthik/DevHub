@@ -3086,7 +3086,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/generators"    routerLinkActive="active"><span class="nl-text">Generators</span>@if(progress.isDone('js-generators')){<span class="nl-done">✓</span>}@if(diff('js-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/generators" routerLinkActive="active">
+        <span class="nl-text">Generators</span>
+        @if (progress.isDone('js-generators')) {<span class="nl-done">✓</span>}
+        @if (diff('js-generators'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('generators')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('generators')"
+                  (click)="toggleSubtopics('generators', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('generators'); as generatorsSubs) {
+        @if (isSubtopicsExpanded('generators')) {
+          <div class="nav-subtopics">
+            @for (s of generatorsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

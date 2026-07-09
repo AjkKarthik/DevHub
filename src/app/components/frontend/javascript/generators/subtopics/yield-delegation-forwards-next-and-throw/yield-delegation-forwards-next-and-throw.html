@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Generators" topicRoute="/javascript/generators" subtopicLabel="yield* Delegation Forwards next() Values and throw() Into the Inner Generator" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">yield* Delegation Forwards next() Values and throw() Into the Inner Generator</h1>
+  <p class="page-subtitle"><code>yield*</code> isn't just "loop and re-yield" — it wires up full two-way communication with the delegated generator that a manual loop can't replicate.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Two outer generators wrap the identical inner generator — one via <code>yield*</code>, one via a manual <code>for...of</code> re-yield loop. Send a value and an error into each and watch which one the inner generator actually receives.</p>
+    <app-live-playground title="yield* two-way delegation vs. a manual loop" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious generator mechanics — a dropped return value, cleanup on early exit, and now <code>yield*</code>'s hidden two-way communication. Return to the <a routerLink="/javascript/generators">Generators</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generators"
+    topicRoute="/javascript/generators"
+    [prev]="{ label: 'Breaking a for...of Loop Triggers generator.return() and Runs finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' }"
+  />
+</div>
