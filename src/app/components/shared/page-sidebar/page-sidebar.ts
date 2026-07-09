@@ -13269,6 +13269,90 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/prototypes': {
+    apis: ['Object.create()', 'prototype chain', 'static', 'class'],
+    related: [
+      { label: 'Functions Deep Dive', route: '/javascript/functions' },
+      { label: 'Object Fundamentals', route: '/javascript/objects' },
+      { label: 'Symbols & Iterators', route: '/javascript/symbols' },
+    ],
+    tip: 'Object.create(null) genuinely lacks every Object.prototype method — calling one throws, it isn\'t just hidden from enumeration the way symbol keys are.',
+    docs: [
+      { label: 'MDN — Object.create()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Object.create(null) has no prototype chain at all — Object.prototype methods are functionally absent, not hidden.',
+      'Static methods live only on the class itself — instances have no lookup path to reach them, and vice versa.',
+      'Prototype pollution via __proto__ reaches every plain object in the program, not just the one passed to the vulnerable function.',
+    ],
+  },
+
+  'javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration': {
+    apis: ['Object.create(null)', '[[Prototype]]', 'toString()'],
+    related: [
+      { label: 'Prototypes & Classes (overview)', route: '/javascript/prototypes' },
+      { label: 'Static Methods Don’t Exist on Instances', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' },
+      { label: 'Prototype Pollution Blast Radius', route: '/javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object' },
+    ],
+    tip: 'Object.create(null) is the safer choice for dictionaries with attacker-influenced keys, precisely because it has no inherited methods to accidentally shadow or invoke.',
+    docs: [
+      { label: 'MDN — Object.getPrototypeOf()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A plain {} inherits Object.prototype and all its methods; Object.create(null) inherits nothing at all.',
+      'Calling .toString() on a null-prototype object throws a real TypeError, not a silent no-op.',
+      'A null-prototype object CAN still have its own toString property set explicitly — that\'s unrelated to inheritance.',
+    ],
+  },
+
+  'javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning': {
+    apis: ['static', 'ClassName.prototype', 'TypeError'],
+    related: [
+      { label: 'Prototypes & Classes (overview)', route: '/javascript/prototypes' },
+      { label: 'Object.create(null) Has No Methods', route: '/javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration' },
+      { label: 'Prototype Pollution Blast Radius', route: '/javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object' },
+    ],
+    tip: 'Static methods live on the class constructor itself; instance methods live on ClassName.prototype — an instance\'s chain never includes the class object, so there\'s no lookup path either way.',
+    docs: [
+      { label: 'MDN — static', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'instance.staticMethod() throws a real TypeError — it is a hard limit, not a discouraged pattern.',
+      'ClassName.instanceMethod() also throws, for the symmetric reason — the class has no path to its own prototype\'s methods.',
+      'This is exactly why factory-pattern static methods must always be called via the class name.',
+    ],
+  },
+
+  'javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object': {
+    apis: ['for...in', '__proto__', 'Object.prototype'],
+    related: [
+      { label: 'Prototypes & Classes (overview)', route: '/javascript/prototypes' },
+      { label: 'Object.create(null) Has No Methods', route: '/javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration' },
+      { label: 'Static Methods Don’t Exist on Instances', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' },
+    ],
+    tip: 'Object.prototype is ONE single shared object every plain object inherits from — polluting it via a __proto__ key affects every plain object in the program, past and future.',
+    docs: [
+      { label: 'MDN — Object.prototype', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype' },
+    ],
+    resources: [
+      { label: 'OWASP — Prototype Pollution', url: 'https://owasp.org/www-community/vulnerabilities/Prototype_Pollution', badge: 'docs' },
+    ],
+    gotchas: [
+      'A completely unrelated object, never passed to the vulnerable function, still gets polluted.',
+      'Objects created AFTER the attack runs are polluted too — inheritance is looked up live, not baked in at creation time.',
+      'This is realistic, ordinary JSON.parse() of crafted input — no unusual setup required to trigger it.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

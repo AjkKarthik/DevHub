@@ -2942,7 +2942,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/prototypes"    routerLinkActive="active"><span class="nl-text">Prototypes &amp; Classes</span>@if(progress.isDone('js-prototypes')){<span class="nl-done">✓</span>}@if(diff('js-prototypes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/prototypes" routerLinkActive="active">
+        <span class="nl-text">Prototypes &amp; Classes</span>
+        @if (progress.isDone('js-prototypes')) {<span class="nl-done">✓</span>}
+        @if (diff('js-prototypes'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('prototypes')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('prototypes')"
+                  (click)="toggleSubtopics('prototypes', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('prototypes'); as jsProtoSubs) {
+        @if (isSubtopicsExpanded('prototypes')) {
+          <div class="nav-subtopics">
+            @for (s of jsProtoSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/javascript/objects"       routerLinkActive="active"><span class="nl-text">Object Fundamentals</span>@if(progress.isDone('js-objects')){<span class="nl-done">✓</span>}@if(diff('js-objects');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/javascript/destructuring" routerLinkActive="active"><span class="nl-text">Destructuring &amp; Spread</span>@if(progress.isDone('js-destructuring')){<span class="nl-done">✓</span>}@if(diff('js-destructuring');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/javascript/arrays"        routerLinkActive="active"><span class="nl-text">Arrays &amp; Iteration</span>@if(progress.isDone('js-arrays')){<span class="nl-done">✓</span>}@if(diff('js-arrays');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

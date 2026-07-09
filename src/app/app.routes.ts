@@ -1373,7 +1373,12 @@ export const routes: Routes = [
       { path: 'testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string', loadComponent: () => import('./components/frontend/javascript/functions/subtopics/default-param-only-triggers-on-undefined-not-other-falsy/default-param-only-triggers-on-undefined-not-other-falsy').then(m => m.DefaultParamOnlyTriggersOnUndefinedNotOtherFalsySubtopic) },
       { path: 'testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target', loadComponent: () => import('./components/frontend/javascript/functions/subtopics/new-overrides-even-an-explicitly-bound-function/new-overrides-even-an-explicitly-bound-function').then(m => m.NewOverridesEvenAnExplicitlyBoundFunctionSubtopic) },
     ] },
-    { path: 'prototypes',     loadComponent: () => import('./components/frontend/javascript/prototypes/prototypes').then(m => m.JsPrototypes) },
+    { path: 'prototypes', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/prototypes/prototypes').then(m => m.JsPrototypes) },
+      { path: 'testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration', loadComponent: () => import('./components/frontend/javascript/prototypes/subtopics/object-create-null-has-no-methods-not-just-hidden/object-create-null-has-no-methods-not-just-hidden').then(m => m.ObjectCreateNullHasNoMethodsNotJustHiddenSubtopic) },
+      { path: 'testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning', loadComponent: () => import('./components/frontend/javascript/prototypes/subtopics/static-methods-dont-exist-on-instances-at-all/static-methods-dont-exist-on-instances-at-all').then(m => m.StaticMethodsDontExistOnInstancesAtAllSubtopic) },
+      { path: 'testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object', loadComponent: () => import('./components/frontend/javascript/prototypes/subtopics/proto-pollution-contaminates-every-unrelated-object/proto-pollution-contaminates-every-unrelated-object').then(m => m.ProtoPollutionContaminatesEveryUnrelatedObjectSubtopic) },
+    ] },
     { path: 'objects',        loadComponent: () => import('./components/frontend/javascript/objects/objects').then(m => m.JsObjects) },
     { path: 'destructuring',  loadComponent: () => import('./components/frontend/javascript/destructuring/destructuring').then(m => m.JsDestructuring) },
     { path: 'arrays',         loadComponent: () => import('./components/frontend/javascript/arrays/arrays').then(m => m.JsArrays) },

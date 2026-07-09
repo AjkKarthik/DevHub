@@ -1,0 +1,14 @@
+$accent: #f7df1e;
+$tint:   #fefce8;
+
+.js-page { max-width: 860px; margin: 0 auto; }
+.page-header-icon.js-icon { background: $accent; color: #1a1a1a; font-weight: 800; }
+.js-section { margin: 2rem 0;
+  h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: #111827; }
+}
+.subtopic-page { padding: 2rem 1.5rem 4rem; }
+
+:host-context(body.dark) {
+  .page-header-icon.js-icon { background: #854d0e; color: #fde68a; }
+  .js-section h2 { color: #f9fafb; }
+}

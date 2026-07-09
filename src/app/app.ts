@@ -1331,6 +1331,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Default Parameter Only Triggers on undefined', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' },
     { label: 'new Overrides Even an Explicitly Bound Function', route: '/javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target' },
   ],
+  prototypes: [
+    { label: 'Object.create(null) Has No Methods, Not Just Hidden', route: '/javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration' },
+    { label: 'Static Methods Don’t Exist on Instances at All', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' },
+    { label: 'Prototype Pollution Contaminates Every Unrelated Object', route: '/javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object' },
+  ],
 };
 
 @Component({
