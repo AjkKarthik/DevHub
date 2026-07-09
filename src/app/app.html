@@ -3194,7 +3194,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/bundlers"      routerLinkActive="active"><span class="nl-text">Bundlers &amp; Build Tools</span>@if(progress.isDone('js-bundlers')){<span class="nl-done">✓</span>}@if(diff('js-bundlers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/bundlers" routerLinkActive="active">
+        <span class="nl-text">Bundlers &amp; Build Tools</span>
+        @if (progress.isDone('js-bundlers')) {<span class="nl-done">✓</span>}
+        @if (diff('js-bundlers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('bundlers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('bundlers')"
+                  (click)="toggleSubtopics('bundlers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('bundlers'); as bundlersSubs) {
+        @if (isSubtopicsExpanded('bundlers')) {
+          <div class="nav-subtopics">
+            @for (s of bundlersSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

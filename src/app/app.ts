@@ -1395,6 +1395,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Modules Are Singletons', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' },
     { label: 'Circular Import Binding Exists but Value Is Undefined', route: '/javascript/modules/circular-import-binding-exists-but-value-is-undefined' },
   ],
+  bundlers: [
+    { label: 'Tree-Shaking Only Works Reliably With ESM', route: '/javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs' },
+    { label: 'sideEffects: false Needs an Explicit File List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' },
+    { label: 'devDependencies Affects Production Install Size', route: '/javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size' },
+  ],
 };
 
 @Component({

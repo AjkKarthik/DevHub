@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bundlers &amp; Build Tools" topicRoute="/javascript/bundlers" subtopicLabel="devDependencies vs dependencies Affects Production Install Size" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">devDependencies vs dependencies Affects Production Install Size</h1>
+  <p class="page-subtitle"><code>npm ci --omit=dev</code> is the actual mechanism that turns a package.json classification into a real difference in what installs on a production server.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="npm 1.0" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>Code Examples</h2>
+    <p>A runtime logger mistakenly placed under <code>devDependencies</code> works fine locally but crashes production. Compare the broken classification against the fix, and the one-question test for classifying any package correctly.</p>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious build-time mechanics — static analysis enabling tree-shaking, the sideEffects promise's failure mode, and now the exact npm flag that makes dependency classification matter. Return to the <a routerLink="/javascript/bundlers">Bundlers &amp; Build Tools</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bundlers &amp; Build Tools"
+    topicRoute="/javascript/bundlers"
+    [prev]="{ label: 'sideEffects: false Needs an Explicit Side-Effect File List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' }"
+  />
+</div>

@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bundlers &amp; Build Tools" topicRoute="/javascript/bundlers" subtopicLabel="Tree-Shaking Only Works Reliably With ESM, Not CommonJS" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Tree-Shaking Only Works Reliably With ESM, Not CommonJS</h1>
+  <p class="page-subtitle">A bundler decides what to remove by reading import/export statements as text, without running any code — CommonJS's dynamic <code>require()</code> defeats that analysis.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>Code Examples</h2>
+    <p>Tree-shaking is a build-time, static-analysis decision — not something a browser console can demonstrate at runtime. Compare how a bundler reads statically-analyzable ESM versus dynamic CommonJS, and see how one CommonJS dependency can defeat tree-shaking for an otherwise-clean ESM project.</p>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/bundlers">Bundlers &amp; Build Tools</a> page's tree-shaking claim in exactly why ESM's static structure matters. Next, see why <code>"sideEffects": false</code> requires explicitly listing files that DO have real side effects, or tree-shaking silently breaks them.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bundlers &amp; Build Tools"
+    topicRoute="/javascript/bundlers"
+    [next]="{ label: 'sideEffects: false Needs an Explicit Side-Effect File List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' }"
+  />
+</div>

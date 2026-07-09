@@ -1445,7 +1445,12 @@ export const routes: Routes = [
       { path: 'modules-are-singletons-shared-state-across-importers', loadComponent: () => import('./components/frontend/javascript/modules/subtopics/modules-are-singletons-shared-state-across-importers/modules-are-singletons-shared-state-across-importers').then(m => m.ModulesAreSingletonsSharedStateAcrossImportersSubtopic) },
       { path: 'circular-import-binding-exists-but-value-is-undefined', loadComponent: () => import('./components/frontend/javascript/modules/subtopics/circular-import-binding-exists-but-value-is-undefined/circular-import-binding-exists-but-value-is-undefined').then(m => m.CircularImportBindingExistsButValueIsUndefinedSubtopic) },
     ] },
-    { path: 'bundlers',       loadComponent: () => import('./components/frontend/javascript/bundlers/bundlers').then(m => m.JsBundlers) },
+    { path: 'bundlers', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/bundlers/bundlers').then(m => m.JsBundlers) },
+      { path: 'tree-shaking-only-works-reliably-with-esm-not-commonjs', loadComponent: () => import('./components/frontend/javascript/bundlers/subtopics/tree-shaking-only-works-reliably-with-esm-not-commonjs/tree-shaking-only-works-reliably-with-esm-not-commonjs').then(m => m.TreeShakingOnlyWorksReliablyWithEsmNotCommonJsSubtopic) },
+      { path: 'sideeffects-false-requires-explicitly-listing-real-side-effect-files', loadComponent: () => import('./components/frontend/javascript/bundlers/subtopics/sideeffects-false-needs-explicit-side-effect-file-list/sideeffects-false-needs-explicit-side-effect-file-list').then(m => m.SideEffectsFalseRequiresExplicitlyListingRealSideEffectFilesSubtopic) },
+      { path: 'devdependencies-vs-dependencies-affects-production-install-size', loadComponent: () => import('./components/frontend/javascript/bundlers/subtopics/devdependencies-vs-dependencies-affects-production-install-size/devdependencies-vs-dependencies-affects-production-install-size').then(m => m.DevDependenciesVsDependenciesAffectsProductionInstallSizeSubtopic) },
+    ] },
     { path: 'patterns',       loadComponent: () => import('./components/frontend/javascript/patterns/patterns').then(m => m.JsPatterns) },
     { path: 'functional',     loadComponent: () => import('./components/frontend/javascript/functional/functional').then(m => m.JsFunctional) },
     { path: 'proxy',          loadComponent: () => import('./components/frontend/javascript/proxy/proxy').then(m => m.JsProxy) },

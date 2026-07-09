@@ -14245,6 +14245,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/bundlers': {
+    apis: ['import/export', 'require()', 'package.json', 'sideEffects'],
+    related: [
+      { label: 'ES Modules',           route: '/javascript/modules'   },
+      { label: 'Browser APIs',         route: '/javascript/browser-apis' },
+      { label: 'Design Patterns in JS', route: '/javascript/patterns'  },
+    ],
+    tip: 'Tree-shaking is a static-analysis decision made by reading import/export text, without running code — CommonJS\'s dynamic require() defeats it.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A blanket "sideEffects": false silently deletes files with real side effects (like CSS) unless they\'re explicitly listed.',
+      'npm ci --omit=dev is the actual mechanism that makes the dependencies/devDependencies split matter — plain npm install hides misclassification.',
+    ],
+  },
+
+  'javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs': {
+    apis: ['import/export', 'require()'],
+    related: [
+      { label: 'Bundlers & Build Tools (overview)', route: '/javascript/bundlers' },
+      { label: 'sideEffects: false Needs a List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' },
+      { label: 'devDependencies Affects Prod Size', route: '/javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size' },
+    ],
+    tip: 'A bundler decides what to remove by reading import/export statements as text — require() is a regular function call it cannot fully resolve without executing the code.',
+    docs: [
+      { label: 'MDN — Tree shaking', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Your own code being pure ESM doesn\'t guarantee tree-shaking — a single CommonJS dependency in the tree can silently bloat the bundle.',
+      'Tree-shaking is decided per module across the entire dependency graph, not as one project-wide switch.',
+    ],
+  },
+
+  'javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files': {
+    apis: ['package.json', 'sideEffects'],
+    related: [
+      { label: 'Bundlers & Build Tools (overview)', route: '/javascript/bundlers' },
+      { label: 'Tree-Shaking Needs ESM', route: '/javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs' },
+      { label: 'devDependencies Affects Prod Size', route: '/javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size' },
+    ],
+    tip: 'sideEffects: false is a promise the bundler trusts completely — a CSS import with no exported value gets silently deleted unless explicitly listed as an exception.',
+    docs: [
+      { label: 'MDN — Tree shaking', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This fails silently — no error, no warning, just missing styles or broken globals in production.',
+      'The array form ["*.css", ...] protects only the listed files; everything else still tree-shakes normally.',
+    ],
+  },
+
+  'javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size': {
+    apis: ['package.json', 'npm ci'],
+    related: [
+      { label: 'Bundlers & Build Tools (overview)', route: '/javascript/bundlers' },
+      { label: 'Tree-Shaking Needs ESM', route: '/javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs' },
+      { label: 'sideEffects: false Needs a List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' },
+    ],
+    tip: 'Plain npm install hides misclassification — only npm ci --omit=dev (what production pipelines actually run) enforces the dependencies/devDependencies split.',
+    docs: [
+      { label: 'npm Docs — package.json', url: 'https://docs.npmjs.com/cli/v10/configuring-npm/package-json' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A runtime package misclassified under devDependencies crashes production with "Cannot find module" — a hard failure, not just wasted disk space.',
+      'The one-question test: does the code that actually runs in production import or call this package directly?',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

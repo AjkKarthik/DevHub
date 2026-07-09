@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bundlers &amp; Build Tools" topicRoute="/javascript/bundlers" subtopicLabel="sideEffects: false Needs an Explicit Side-Effect File List" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">sideEffects: false Needs an Explicit Side-Effect File List</h1>
+  <p class="page-subtitle">A blanket <code>"sideEffects": false</code> is a promise the bundler trusts completely — files with real side effects, like CSS, must be explicitly listed or they get silently deleted.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="webpack 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>Code Examples</h2>
+    <p>A silent production bug: a CSS file gets stripped from the bundle because nothing imports a named export from it. Compare the broken blanket flag against the fix — explicitly listing real side-effect files.</p>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/bundlers">Bundlers &amp; Build Tools</a> page's sideEffects warning in the exact failure mode it causes. Next, see why putting build tools in <code>dependencies</code> instead of <code>devDependencies</code> actually affects what ships to production.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bundlers &amp; Build Tools"
+    topicRoute="/javascript/bundlers"
+    [prev]="{ label: 'Tree-Shaking Only Works Reliably With ESM, Not CommonJS', route: '/javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs' }"
+    [next]="{ label: 'devDependencies vs dependencies Affects Production Install Size', route: '/javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size' }"
+  />
+</div>
