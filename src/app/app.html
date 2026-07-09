@@ -3066,7 +3066,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('js-error-handling')){<span class="nl-done">✓</span>}@if(diff('js-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/error-handling" routerLinkActive="active">
+        <span class="nl-text">Error Handling</span>
+        @if (progress.isDone('js-error-handling')) {<span class="nl-done">✓</span>}
+        @if (diff('js-error-handling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('error-handling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('error-handling')"
+                  (click)="toggleSubtopics('error-handling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('error-handling'); as errorHandlingSubs) {
+        @if (isSubtopicsExpanded('error-handling')) {
+          <div class="nav-subtopics">
+            @for (s of errorHandlingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/javascript/generators"    routerLinkActive="active"><span class="nl-text">Generators</span>@if(progress.isDone('js-generators')){<span class="nl-done">✓</span>}@if(diff('js-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

@@ -13765,6 +13765,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/error-handling': {
+    apis: ['try/catch/finally', 'Error', 'AggregateError', 'window.onerror', 'unhandledrejection'],
+    related: [
+      { label: 'Promises & Async/Await',   route: '/javascript/promises'   },
+      { label: 'Event Loop & Concurrency', route: '/javascript/event-loop' },
+      { label: 'Generators',               route: '/javascript/generators' },
+    ],
+    tip: 'try/catch only protects synchronous code on the active call stack — errors thrown inside setTimeout, setInterval, or event listener callbacks always escape it.',
+    docs: [
+      { label: 'MDN — Error', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A return or throw inside finally silently overrides whatever try/catch already decided, with no warning.',
+      'AggregateError from Promise.any() preserves every rejection reason in .errors — unlike Promise.all, which keeps only the first.',
+    ],
+  },
+
+  'javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value': {
+    apis: ['try/catch/finally'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/javascript/error-handling' },
+      { label: 'try/catch Never Catches setTimeout', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' },
+      { label: 'AggregateError Packages Rejections', route: '/javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first' },
+    ],
+    tip: 'finally exists for cleanup side effects only — a return, throw, break, or continue inside it silently overrides whatever try/catch already decided.',
+    docs: [
+      { label: 'MDN — try...catch', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The override applies to thrown errors too, not just return values — a throw in finally erases the original error with no trace, not even as .cause.',
+      'An async cleanup call written as return cleanup() instead of await cleanup() is a real, easy way to trigger this by accident.',
+    ],
+  },
+
+  'javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout': {
+    apis: ['try/catch', 'setTimeout()', 'window.onerror'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/javascript/error-handling' },
+      { label: 'finally Overrides catch’s Return', route: '/javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value' },
+      { label: 'AggregateError Packages Rejections', route: '/javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first' },
+    ],
+    tip: 'Put try/catch INSIDE the async callback itself — wrapping the setTimeout() call only protects the synchronous scheduling call, not the callback body.',
+    docs: [
+      { label: 'MDN — setTimeout()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The error is not silently swallowed — it becomes a genuine uncaught exception, catchable globally via window.onerror.',
+      'This applies to every callback-based async API identically (setInterval, DOM listeners, requestAnimationFrame) — Promise-based async is the one exception, since rejections propagate through an awaited chain.',
+    ],
+  },
+
+  'javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first': {
+    apis: ['Promise.any()', 'AggregateError'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/javascript/error-handling' },
+      { label: 'finally Overrides catch’s Return', route: '/javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value' },
+      { label: 'try/catch Never Catches setTimeout', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' },
+    ],
+    tip: 'Promise.any() only rejects when EVERY promise fails — its AggregateError.errors array preserves every individual reason, in original order.',
+    docs: [
+      { label: 'MDN — AggregateError', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Promise.all(), by contrast, rejects with only the first failure reason — the rest are discarded entirely.',
+      'AggregateError is a regular constructible built-in — new AggregateError(errors, message) works anywhere, not just from Promise.any().',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

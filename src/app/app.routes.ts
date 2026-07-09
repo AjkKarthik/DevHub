@@ -1409,7 +1409,12 @@ export const routes: Routes = [
       { path: 'independent-promise-chains-interleave-one-microtask-at-a-time', loadComponent: () => import('./components/frontend/javascript/event-loop/subtopics/independent-promise-chains-interleave-one-microtask-at-a-time/independent-promise-chains-interleave-one-microtask-at-a-time').then(m => m.IndependentPromiseChainsInterleaveOneMicrotaskAtATimeSubtopic) },
       { path: 'synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends', loadComponent: () => import('./components/frontend/javascript/event-loop/subtopics/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends').then(m => m.SynchronousBusyLoopBlocksEveryPendingSetTimeoutUntilItEndsSubtopic) },
     ] },
-    { path: 'error-handling', loadComponent: () => import('./components/frontend/javascript/error-handling/error-handling').then(m => m.JsErrorHandling) },
+    { path: 'error-handling', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/error-handling/error-handling').then(m => m.JsErrorHandling) },
+      { path: 'finally-return-silently-overrides-the-catch-blocks-return-value', loadComponent: () => import('./components/frontend/javascript/error-handling/subtopics/finally-return-silently-overrides-the-catch-blocks-return-value/finally-return-silently-overrides-the-catch-blocks-return-value').then(m => m.FinallyReturnSilentlyOverridesTheCatchBlocksReturnValueSubtopic) },
+      { path: 'try-catch-never-catches-an-error-thrown-inside-settimeout', loadComponent: () => import('./components/frontend/javascript/error-handling/subtopics/try-catch-never-catches-an-error-thrown-inside-settimeout/try-catch-never-catches-an-error-thrown-inside-settimeout').then(m => m.TryCatchNeverCatchesAnErrorThrownInsideSetTimeoutSubtopic) },
+      { path: 'aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first', loadComponent: () => import('./components/frontend/javascript/error-handling/subtopics/aggregateerror-promise-any-rejections/aggregateerror-promise-any-rejections').then(m => m.AggregateErrorFromPromiseAnyPackagesEveryRejectionNotJustTheFirstSubtopic) },
+    ] },
     { path: 'generators',     loadComponent: () => import('./components/frontend/javascript/generators/generators').then(m => m.JsGenerators) },
     { path: 'dom',            loadComponent: () => import('./components/frontend/javascript/dom/dom').then(m => m.JsDom) },
     { path: 'events',         loadComponent: () => import('./components/frontend/javascript/events/events').then(m => m.JsEvents) },

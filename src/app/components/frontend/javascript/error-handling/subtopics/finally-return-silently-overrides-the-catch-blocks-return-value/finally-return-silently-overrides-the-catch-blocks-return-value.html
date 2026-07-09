@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/javascript/error-handling" subtopicLabel="finally's return Silently Overrides the catch Block's Return Value" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">finally's return Silently Overrides the catch Block's Return Value</h1>
+  <p class="page-subtitle">A <code>return</code> (or <code>throw</code>) inside <code>finally</code> doesn't run alongside <code>try</code>/<code>catch</code>'s own decision — it completely replaces it, with zero warning.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A broken version (finally has its own return) and a fixed version (finally only does cleanup) run side by side, plus a third example showing the same override applies to thrown errors, not just return values.</p>
+    <app-live-playground title="finally overriding catch's return and throw" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This extends the main <a routerLink="/javascript/error-handling">Error Handling</a> page's warning about <code>finally</code> and <code>return</code>. Next, see why a plain <code>try</code>/<code>catch</code> can never catch an error thrown inside a <code>setTimeout</code> callback, no matter how it's nested.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/javascript/error-handling"
+    [next]="{ label: 'try/catch Never Catches an Error Thrown Inside setTimeout', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' }"
+  />
+</div>

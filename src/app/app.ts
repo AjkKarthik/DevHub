@@ -1363,6 +1363,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Promise Chains Interleave One Microtask at a Time', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' },
     { label: 'A Busy-Loop Blocks Every Pending setTimeout', route: '/javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends' },
   ],
+  'error-handling': [
+    { label: 'finally’s return Overrides catch’s Return Value', route: '/javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value' },
+    { label: 'try/catch Never Catches a setTimeout Error', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' },
+    { label: 'AggregateError Packages Every Rejection', route: '/javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first' },
+  ],
 };
 
 @Component({
