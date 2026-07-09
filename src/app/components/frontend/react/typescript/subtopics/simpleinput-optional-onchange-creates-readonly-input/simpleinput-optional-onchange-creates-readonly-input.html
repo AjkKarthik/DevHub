@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TypeScript & React"
+    topicRoute="/react/typescript"
+    subtopicLabel="SimpleInput’s Optional onChange Can Create a Read-Only Controlled Input" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That SimpleInput's Optional onChange Can Silently Create a Read-Only Controlled Input</h1>
+  <p class="page-subtitle">
+    The main page marks SimpleInput's onChange as optional in its type — this checks whether that
+    type-level optionality is also safe at the React/DOM level when value is passed without it.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="React 16+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The main page's own <code>SimpleInput</code>, rendered with <code>value</code> but no
+      <code>onChange</code> — a combination its type fully permits.
+    </p>
+    <app-live-playground
+      title="SimpleInput — value without onChange"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundary between what TypeScript's type system
+      verifies and what only shows up at runtime — a type assertion's broken promise, a discriminated
+      union's compile-time-only guarantee, and now an optional prop with a React-level consequence
+      TypeScript can't see.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TypeScript & React"
+    topicRoute="/react/typescript"
+    [prev]="{ label: 'Discriminated Union Narrowing Gives Zero Runtime Protection', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' }" />
+</div>

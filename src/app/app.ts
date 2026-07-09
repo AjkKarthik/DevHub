@@ -1260,6 +1260,15 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
     { label: 'useCounter’s reset() Is Frozen to the Mount-Time initialCount', route: '/react/patterns/testing-that-usecounters-reset-is-frozen-to-the-mount-time-initialcount-ignoring-later-prop-changes' },
   ],
+  // NOTE: keyed 'react-typescript', NOT bare 'typescript' — the entire
+  // TypeScript hub's own top-level route slug is 'typescript', and any
+  // other hub's own "X & TypeScript" topic could plausibly claim the
+  // bare key too. Proactively hub-prefixed to avoid that collision.
+  'react-typescript': [
+    { label: 'Select’s Runtime Coercion Mishandles a Boolean-Typed T', route: '/react/typescript/testing-that-selects-runtime-coercion-silently-mishandles-a-boolean-typed-t' },
+    { label: 'Discriminated Union Narrowing Gives Zero Runtime Protection', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' },
+    { label: 'SimpleInput’s Optional onChange Can Create a Read-Only Controlled Input', route: '/react/typescript/testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input' },
+  ],
 };
 
 @Component({

@@ -1555,7 +1555,12 @@ export const routes: Routes = [
       { path: 'testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key', loadComponent: () => import('./components/frontend/react/patterns/subtopics/useproductsearch-shares-localstorage-across-instances/useproductsearch-shares-localstorage-across-instances').then(m => m.UseproductsearchSharesLocalstorageAcrossInstancesSubtopic) },
       { path: 'testing-that-usecounters-reset-is-frozen-to-the-mount-time-initialcount-ignoring-later-prop-changes', loadComponent: () => import('./components/frontend/react/patterns/subtopics/usecounter-reset-frozen-to-mount-time-initial-count/usecounter-reset-frozen-to-mount-time-initial-count').then(m => m.UsecounterResetFrozenToMountTimeInitialCountSubtopic) },
     ]},
-    { path: 'typescript',       loadComponent: () => import('./components/frontend/react/typescript/typescript').then(m => m.ReactTypescript) },
+    { path: 'typescript', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/typescript/typescript').then(m => m.ReactTypescript) },
+      { path: 'testing-that-selects-runtime-coercion-silently-mishandles-a-boolean-typed-t', loadComponent: () => import('./components/frontend/react/typescript/subtopics/select-runtime-coercion-mishandles-boolean-typed-t/select-runtime-coercion-mishandles-boolean-typed-t').then(m => m.SelectRuntimeCoercionMishandlesBooleanTypedTSubtopic) },
+      { path: 'testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data', loadComponent: () => import('./components/frontend/react/typescript/subtopics/discriminated-union-gives-zero-runtime-protection/discriminated-union-gives-zero-runtime-protection').then(m => m.DiscriminatedUnionGivesZeroRuntimeProtectionSubtopic) },
+      { path: 'testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input', loadComponent: () => import('./components/frontend/react/typescript/subtopics/simpleinput-optional-onchange-creates-readonly-input/simpleinput-optional-onchange-creates-readonly-input').then(m => m.SimpleinputOptionalOnchangeCreatesReadonlyInputSubtopic) },
+    ]},
     { path: 'testing',          loadComponent: () => import('./components/frontend/react/testing/testing').then(m => m.ReactTesting) },
     { path: 'nextjs',           loadComponent: () => import('./components/frontend/react/nextjs/nextjs').then(m => m.ReactNextjs) },
     { path: 'native',           loadComponent: () => import('./components/frontend/react/native/native').then(m => m.ReactNative) },

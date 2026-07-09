@@ -12383,6 +12383,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/typescript/testing-that-selects-runtime-coercion-silently-mishandles-a-boolean-typed-t': {
+    apis: ['as T', 'type assertion', 'typeof'],
+    related: [
+      { label: 'TypeScript & React (overview)', route: '/react/typescript' },
+      { label: 'Discriminated Union Runtime Gap', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' },
+      { label: 'State Management', route: '/react/state-management' },
+    ],
+    tip: 'A type assertion (as T) performs zero runtime conversion — the actual JS value is whatever the surrounding code computed, regardless of what the assertion claims.',
+    docs: [
+      { label: 'TypeScript Handbook — Type Assertions', url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'The coercion logic checks typeof value on the CURRENT value, not what T actually is — fragile the moment the type constraint widens.',
+      'The bug is invisible in the UI — the dropdown looks and behaves normally, only the onChange payload is wrong.',
+      'This is one constraint-widening change (adding boolean to string | number) away from silently breaking.',
+    ],
+  },
+
+  'react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data': {
+    apis: ['discriminated union', 'type narrowing', 'JSON.parse'],
+    related: [
+      { label: 'TypeScript & React (overview)', route: '/react/typescript' },
+      { label: 'Select Boolean Coercion Gap', route: '/react/typescript/testing-that-selects-runtime-coercion-silently-mishandles-a-boolean-typed-t' },
+      { label: 'SimpleInput onChange Gap', route: '/react/typescript/testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input' },
+    ],
+    tip: 'Discriminated union narrowing is a compile-time analysis of authored code — it cannot verify the actual shape of a value that arrives from outside TypeScript\'s own type-checking, like JSON.parse.',
+    docs: [
+      { label: 'TypeScript Handbook — Discriminated Unions', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Types are fully erased at runtime — neither React nor JavaScript has any concept of the union once the code is running.',
+      'Real runtime validation (a schema library like Zod, or manual checks) is a separate concern the type system cannot substitute for.',
+      'This protection is real and valuable for code authored within TypeScript — it just doesn\'t extend past that boundary.',
+    ],
+  },
+
+  'react/typescript/testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input': {
+    apis: ['controlled input', 'optional prop', 'React DOM warning'],
+    related: [
+      { label: 'TypeScript & React (overview)', route: '/react/typescript' },
+      { label: 'Discriminated Union Runtime Gap', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' },
+      { label: 'React Forms', route: '/react/forms' },
+    ],
+    tip: 'Marking onChange optional in the type is a purely type-level decision — React\'s own controlled-input rule (a value prop needs a working onChange) is a completely separate, unrelated contract the type system has no visibility into.',
+    docs: [
+      { label: 'React Docs — Controlled Components', url: 'https://react.dev/reference/react-dom/components/input' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'TypeScript type-checks the call successfully — the bug only surfaces as a real React console warning at runtime.',
+      'The rendered input looks interactive but silently reverts every keystroke.',
+      'The warning fires regardless of how many wrapper components sit between the JSX author and the final <input>.',
+    ],
+  },
+
   'react/testing': {
     apis: ['render()', 'screen.getByRole()', 'userEvent.setup()', 'renderHook()', 'act()', 'setupServer()'],
     related: [
