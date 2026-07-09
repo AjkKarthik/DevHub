@@ -1367,7 +1367,12 @@ export const routes: Routes = [
       { path: 'testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts', loadComponent: () => import('./components/frontend/javascript/symbols/subtopics/toprimitive-hint-differs-by-coercion-context/toprimitive-hint-differs-by-coercion-context').then(m => m.ToprimitiveHintDiffersByCoercionContextSubtopic) },
       { path: 'testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values', loadComponent: () => import('./components/frontend/javascript/symbols/subtopics/hasinstance-overrides-instanceof-for-any-value/hasinstance-overrides-instanceof-for-any-value').then(m => m.HasinstanceOverridesInstanceofForAnyValueSubtopic) },
     ] },
-    { path: 'functions',      loadComponent: () => import('./components/frontend/javascript/functions/functions').then(m => m.JsFunctions) },
+    { path: 'functions', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/functions/functions').then(m => m.JsFunctions) },
+      { path: 'testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it', loadComponent: () => import('./components/frontend/javascript/functions/subtopics/bind-is-permanent-a-second-bind-or-call-cant-override/bind-is-permanent-a-second-bind-or-call-cant-override').then(m => m.BindIsPermanentASecondBindOrCallCantOverrideSubtopic) },
+      { path: 'testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string', loadComponent: () => import('./components/frontend/javascript/functions/subtopics/default-param-only-triggers-on-undefined-not-other-falsy/default-param-only-triggers-on-undefined-not-other-falsy').then(m => m.DefaultParamOnlyTriggersOnUndefinedNotOtherFalsySubtopic) },
+      { path: 'testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target', loadComponent: () => import('./components/frontend/javascript/functions/subtopics/new-overrides-even-an-explicitly-bound-function/new-overrides-even-an-explicitly-bound-function').then(m => m.NewOverridesEvenAnExplicitlyBoundFunctionSubtopic) },
+    ] },
     { path: 'prototypes',     loadComponent: () => import('./components/frontend/javascript/prototypes/prototypes').then(m => m.JsPrototypes) },
     { path: 'objects',        loadComponent: () => import('./components/frontend/javascript/objects/objects').then(m => m.JsObjects) },
     { path: 'destructuring',  loadComponent: () => import('./components/frontend/javascript/destructuring/destructuring').then(m => m.JsDestructuring) },

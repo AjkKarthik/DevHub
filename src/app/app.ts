@@ -1326,6 +1326,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Symbol.toPrimitive’s Hint Differs by Coercion Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' },
     { label: 'Symbol.hasInstance Overrides instanceof for Any Value', route: '/javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values' },
   ],
+  functions: [
+    { label: 'bind() Is Permanent — call/apply/bind Can’t Override It', route: '/javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it' },
+    { label: 'Default Parameter Only Triggers on undefined', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' },
+    { label: 'new Overrides Even an Explicitly Bound Function', route: '/javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target' },
+  ],
 };
 
 @Component({

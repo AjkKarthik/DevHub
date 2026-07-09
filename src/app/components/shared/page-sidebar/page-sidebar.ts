@@ -13185,6 +13185,90 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/functions': {
+    apis: ['call()', 'apply()', 'bind()', 'default parameters'],
+    related: [
+      { label: 'Scope & Closures',     route: '/javascript/closures'   },
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes' },
+      { label: 'Hoisting & TDZ',       route: '/javascript/hoisting'   },
+    ],
+    tip: 'this-binding priority: new > explicit (call/apply/bind) > method call > default — but bind() is permanent against every OTHER later call/apply/bind, new is the sole exception.',
+    docs: [
+      { label: 'MDN — Function.prototype.bind()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A bound function ignores any this passed via a later call(), apply(), or even a second bind().',
+      'Default parameters trigger ONLY on undefined — not null, 0, false, or "".',
+      'new is the one invocation style that can override an already-bound this — it always constructs a fresh object.',
+    ],
+  },
+
+  'javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it': {
+    apis: ['Function.prototype.bind()', 'call()', 'apply()'],
+    related: [
+      { label: 'Functions Deep Dive (overview)', route: '/javascript/functions' },
+      { label: 'Default Param Only Triggers on undefined', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' },
+      { label: 'new Overrides bind()', route: '/javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target' },
+    ],
+    tip: 'bind() creates a genuinely new "bound function exotic object" that hardwires this internally — later call()/apply() attempts to override it are simply discarded.',
+    docs: [
+      { label: 'MDN — Function.prototype.bind()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'call()/apply() on an already-bound function silently ignore the new this argument — no error, no warning.',
+      'A second .bind() call still ultimately delegates to the original bound function, so the original binding wins.',
+      'This is a realistic trap when a function was bound once, deep inside a library or earlier codebase, unbeknownst to later code.',
+    ],
+  },
+
+  'javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string': {
+    apis: ['default parameters', 'undefined', '??'],
+    related: [
+      { label: 'Functions Deep Dive (overview)', route: '/javascript/functions' },
+      { label: 'bind() Is Permanent', route: '/javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it' },
+      { label: 'new Overrides bind()', route: '/javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target' },
+    ],
+    tip: 'Default parameters are the narrowest of JS\'s three "defaulting" mechanisms — only undefined triggers them, unlike ?? (null + undefined) or || (every falsy value).',
+    docs: [
+      { label: 'MDN — Default parameters', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Omitting an argument and explicitly passing undefined are treated identically — both trigger the default.',
+      'null, 0, false, and "" all pass through as their literal value — none of them trigger the default.',
+      'Conflating default parameters with ?? or || is exactly the source of this class of bug.',
+    ],
+  },
+
+  'javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target': {
+    apis: ['new', 'Function.prototype.bind()', '[[Construct]]'],
+    related: [
+      { label: 'Functions Deep Dive (overview)', route: '/javascript/functions' },
+      { label: 'bind() Is Permanent', route: '/javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it' },
+      { label: 'Default Param Only Triggers on undefined', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' },
+    ],
+    tip: 'new is the ONE invocation style that bypasses an existing bind() — the spec deliberately discards the bound this for [[Construct]], since new must always create a fresh object.',
+    docs: [
+      { label: 'MDN — new operator', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'new BoundFn() ignores the bound this entirely — it constructs against the ORIGINAL, un-bound function.',
+      'The resulting instance is a genuinely new object, not the bound target — they are never the same object.',
+      'Pre-bound ARGUMENTS (partial application) are still respected by new — only the bound this is discarded.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [
