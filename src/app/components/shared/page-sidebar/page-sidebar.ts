@@ -14085,6 +14085,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/browser-apis': {
+    apis: ['fetch()', 'Response', 'AbortController', 'localStorage', 'URL'],
+    related: [
+      { label: 'DOM Manipulation',           route: '/javascript/dom'    },
+      { label: 'Events & Custom Events',     route: '/javascript/events' },
+      { label: 'Promises & Async/Await',     route: '/javascript/promises' },
+    ],
+    tip: 'fetch() only rejects on network-level failures — a 404 or 500 still resolves successfully, so response.ok must always be checked manually.',
+    docs: [
+      { label: 'MDN — Fetch API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A Response body is a ReadableStream — it can only be consumed once; res.clone() only helps if called before the first read.',
+      'Threading the same AbortController signal through every retry attempt lets one abort() call cancel the whole operation, not just the in-flight request.',
+    ],
+  },
+
+  'javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects': {
+    apis: ['fetch()', 'Response.ok', 'Response.status'],
+    related: [
+      { label: 'Browser APIs (overview)', route: '/javascript/browser-apis' },
+      { label: 'Response Body Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' },
+      { label: 'AbortController Stops Retries', route: '/javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately' },
+    ],
+    tip: 'Getting any response back — even a 404 or 500 — counts as success from fetch()\'s own perspective. Only a true network failure makes the promise reject.',
+    docs: [
+      { label: 'MDN — Response.ok', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Response/ok' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Skipping response.ok often produces a misleading parse error instead of a missing one, obscuring the real root cause.',
+      'This is the opposite default from most other HTTP client libraries (like Axios), which throw automatically on non-2xx status.',
+    ],
+  },
+
+  'javascript/browser-apis/response-body-can-only-be-consumed-once': {
+    apis: ['Response.json()', 'Response.text()', 'Response.clone()', 'ReadableStream'],
+    related: [
+      { label: 'Browser APIs (overview)', route: '/javascript/browser-apis' },
+      { label: 'fetch() Resolves on 4xx/5xx', route: '/javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects' },
+      { label: 'AbortController Stops Retries', route: '/javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately' },
+    ],
+    tip: 'clone() must be called BEFORE the first body read, while the stream is still untouched — cloning after a read just copies an already-empty stream.',
+    docs: [
+      { label: 'MDN — Response.clone()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Response/clone' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The error happens regardless of which body-reading methods are mixed — .json(), .text(), .blob(), and .arrayBuffer() all draw from the same single stream.',
+      'A Response body is fundamentally different from a plain property — it cannot be read repeatedly with no side effects.',
+    ],
+  },
+
+  'javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately': {
+    apis: ['AbortController', 'AbortSignal', 'fetch()'],
+    related: [
+      { label: 'Browser APIs (overview)', route: '/javascript/browser-apis' },
+      { label: 'fetch() Resolves on 4xx/5xx', route: '/javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects' },
+      { label: 'Response Body Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' },
+    ],
+    tip: 'Threading the SAME AbortController signal through every retry attempt lets a single abort() call cancel both the in-flight request and every future attempt.',
+    docs: [
+      { label: 'MDN — AbortController', url: 'https://developer.mozilla.org/en-US/docs/Web/API/AbortController' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A retry loop must explicitly check for AbortError and re-throw/exit — otherwise it can keep pointlessly retrying after an abort, since every future attempt rejects with the same error.',
+      'A fresh AbortController per retry attempt would defeat the purpose — aborting one wouldn\'t affect the others.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

@@ -1383,6 +1383,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Custom Events Don’t Bubble by Default', route: '/javascript/events/custom-events-dont-bubble-by-default' },
     { label: 'closest() Works Through Nested SVG Targets', route: '/javascript/events/closest-walks-up-through-nested-svg-targets-correctly' },
   ],
+  'browser-apis': [
+    { label: 'fetch() Resolves on 4xx/5xx — Never Rejects', route: '/javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects' },
+    { label: 'A Response Body Can Only Be Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' },
+    { label: 'AbortController Stops Every Pending Retry', route: '/javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately' },
+  ],
 };
 
 @Component({

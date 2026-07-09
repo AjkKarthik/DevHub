@@ -3150,7 +3150,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/browser-apis"  routerLinkActive="active"><span class="nl-text">Browser APIs</span>@if(progress.isDone('js-browser-apis')){<span class="nl-done">✓</span>}@if(diff('js-browser-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/browser-apis" routerLinkActive="active">
+        <span class="nl-text">Browser APIs</span>
+        @if (progress.isDone('js-browser-apis')) {<span class="nl-done">✓</span>}
+        @if (diff('js-browser-apis'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('browser-apis')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('browser-apis')"
+                  (click)="toggleSubtopics('browser-apis', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('browser-apis'); as browserApisSubs) {
+        @if (isSubtopicsExpanded('browser-apis')) {
+          <div class="nav-subtopics">
+            @for (s of browserApisSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

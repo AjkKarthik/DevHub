@@ -1433,7 +1433,12 @@ export const routes: Routes = [
       { path: 'custom-events-dont-bubble-by-default', loadComponent: () => import('./components/frontend/javascript/events/subtopics/custom-events-dont-bubble-by-default/custom-events-dont-bubble-by-default').then(m => m.CustomEventsDontBubbleByDefaultSubtopic) },
       { path: 'closest-walks-up-through-nested-svg-targets-correctly', loadComponent: () => import('./components/frontend/javascript/events/subtopics/closest-walks-up-through-nested-svg-targets-correctly/closest-walks-up-through-nested-svg-targets-correctly').then(m => m.ClosestWalksUpThroughNestedSvgTargetsCorrectlySubtopic) },
     ] },
-    { path: 'browser-apis',   loadComponent: () => import('./components/frontend/javascript/browser-apis/browser-apis').then(m => m.JsBrowserApis) },
+    { path: 'browser-apis', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/browser-apis/browser-apis').then(m => m.JsBrowserApis) },
+      { path: 'fetch-resolves-on-4xx-5xx-never-rejects', loadComponent: () => import('./components/frontend/javascript/browser-apis/subtopics/fetch-resolves-on-4xx-5xx-never-rejects/fetch-resolves-on-4xx-5xx-never-rejects').then(m => m.FetchResolvesOn4xx5xxNeverRejectsSubtopic) },
+      { path: 'response-body-can-only-be-consumed-once', loadComponent: () => import('./components/frontend/javascript/browser-apis/subtopics/response-body-can-only-be-consumed-once/response-body-can-only-be-consumed-once').then(m => m.ResponseBodyCanOnlyBeConsumedOnceSubtopic) },
+      { path: 'abort-signal-stops-all-pending-retries-immediately', loadComponent: () => import('./components/frontend/javascript/browser-apis/subtopics/abort-signal-stops-all-pending-retries-immediately/abort-signal-stops-all-pending-retries-immediately').then(m => m.AbortSignalStopsAllPendingRetriesImmediatelySubtopic) },
+    ] },
     { path: 'modules',        loadComponent: () => import('./components/frontend/javascript/modules/modules').then(m => m.JsModules) },
     { path: 'bundlers',       loadComponent: () => import('./components/frontend/javascript/bundlers/bundlers').then(m => m.JsBundlers) },
     { path: 'patterns',       loadComponent: () => import('./components/frontend/javascript/patterns/patterns').then(m => m.JsPatterns) },

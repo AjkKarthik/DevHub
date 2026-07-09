@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Browser APIs" topicRoute="/javascript/browser-apis" subtopicLabel="fetch() Resolves on 4xx/5xx — It Never Rejects for HTTP Errors" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">fetch() Resolves on 4xx/5xx — It Never Rejects for HTTP Errors</h1>
+  <p class="page-subtitle">Getting any response back — even a 404 or 500 — counts as success from <code>fetch()</code>'s own perspective. Only a true network failure makes the promise reject.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A real fetch against a genuine 404 URL resolves without throwing. Compare the "wrong" pattern (skipping <code>response.ok</code>) against the "right" pattern, then contrast both with a true network-level failure.</p>
+    <app-live-playground title="fetch resolving on 404 vs. a real network failure" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/browser-apis">Browser APIs</a> page's first mistake in a live network call. Next, see why a <code>Response</code> body can only be read once — and how <code>res.clone()</code> is the actual fix, not a workaround.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Browser APIs"
+    topicRoute="/javascript/browser-apis"
+    [next]="{ label: 'A Response Body Can Only Be Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' }"
+  />
+</div>
