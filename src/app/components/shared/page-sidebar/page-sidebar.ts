@@ -12810,6 +12810,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item': {
+    apis: ['<AnimatePresence>', 'key', 'exit'],
+    related: [
+      { label: 'Animations (overview)', route: '/react/animations' },
+      { label: 'width vs transform Reflow', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' },
+      { label: 'viewport.once Controls Repeat', route: '/react/animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry' },
+    ],
+    tip: 'Index keys have the same positional-matching problem as no key at all — always use a stable id from your data, never the array index, for AnimatePresence list children.',
+    docs: [
+      { label: 'Framer Motion Docs — AnimatePresence', url: 'https://www.framer.com/motion/animate-presence/' },
+    ],
+    resources: [
+      { label: 'framer/motion', url: 'https://github.com/framer/motion', badge: 'code' },
+    ],
+    gotchas: [
+      'Without a stable key, React matches by position — removing a middle item misattributes which item "exits".',
+      'The visible symptom looks like a totally different bug (wrong item vanishing), not an obviously missing animation.',
+      'The underlying React state is correct — only the visual exit-animation targeting is wrong.',
+    ],
+  },
+
+  'react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does': {
+    apis: ['transform', 'scaleX', 'width', 'transformOrigin'],
+    related: [
+      { label: 'Animations (overview)', route: '/react/animations' },
+      { label: 'Missing Key Breaks Exit Item', route: '/react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item' },
+      { label: 'React Performance', route: '/react/performance' },
+    ],
+    tip: 'scaleX doesn\'t reserve new layout space the way a real width change does — it\'s a safe drop-in only when nothing else needs to react to the size change.',
+    docs: [
+      { label: 'Framer Motion Docs — Animation', url: 'https://www.framer.com/motion/animation/' },
+    ],
+    resources: [
+      { label: 'framer/motion', url: 'https://github.com/framer/motion', badge: 'code' },
+    ],
+    gotchas: [
+      'width is a layout property — the browser must recompute every affected sibling\'s position on every frame.',
+      'transform is applied after layout is calculated — it never triggers reflow, so siblings never move.',
+      'A scaleX box can visually grow to the identical final size as a width animation, with zero layout cost.',
+    ],
+  },
+
+  'react/animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry': {
+    apis: ['whileInView', 'viewport.once', 'IntersectionObserver'],
+    related: [
+      { label: 'Animations (overview)', route: '/react/animations' },
+      { label: 'Missing Key Breaks Exit Item', route: '/react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item' },
+      { label: 'width vs transform Reflow', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' },
+    ],
+    tip: 'The default (once unset) replays on every scroll re-entry — for a typical one-time "fade in on scroll" reveal, add viewport={once: true} explicitly.',
+    docs: [
+      { label: 'Framer Motion Docs — Gestures', url: 'https://www.framer.com/motion/gestures/' },
+    ],
+    resources: [
+      { label: 'framer/motion', url: 'https://github.com/framer/motion', badge: 'code' },
+    ],
+    gotchas: [
+      'Without once: true, the animation reverses on scroll-out and replays on every re-entry — a very common real scenario, not an edge case.',
+      'A user briefly scrolling up to re-read content and back down will retrigger every unguarded whileInView animation on the page.',
+      'once controls whether the observer keeps firing after the first entry — it doesn\'t control whether the observer exists at all.',
+    ],
+  },
+
   'react/hook-form': {
     apis: ['useForm()', 'register()', 'handleSubmit()', '<Controller>', 'useFieldArray()', 'zodResolver()'],
     related: [

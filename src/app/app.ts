@@ -1292,6 +1292,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Index Keys Show the Wrong Value After remove()', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' },
     { label: 'Missing valueAsNumber Breaks Arithmetic Silently', route: '/react/hook-form/testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings' },
   ],
+  // NOTE: keyed 'react-animations', NOT bare 'animations' — Angular's
+  // own /angular/animations topic already claims the bare key.
+  'react-animations': [
+    { label: 'Missing Key Breaks Exit for the Wrong List Item', route: '/react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item' },
+    { label: 'Width Animation Reflows Siblings, transform Doesn’t', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' },
+    { label: 'viewport.once Controls Repeat, Not Just the First Play', route: '/react/animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry' },
+  ],
 };
 
 @Component({

@@ -1585,7 +1585,12 @@ export const routes: Routes = [
       { path: 'testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove', loadComponent: () => import('./components/frontend/react/hook-form/subtopics/index-key-shows-wrong-value-after-fieldarray-remove/index-key-shows-wrong-value-after-fieldarray-remove').then(m => m.IndexKeyShowsWrongValueAfterFieldarrayRemoveSubtopic) },
       { path: 'testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings', loadComponent: () => import('./components/frontend/react/hook-form/subtopics/missing-valueasnumber-breaks-arithmetic-silently/missing-valueasnumber-breaks-arithmetic-silently').then(m => m.MissingValueasnumberBreaksArithmeticSilentlySubtopic) },
     ] },
-    { path: 'animations',       loadComponent: () => import('./components/frontend/react/animations/animations').then(m => m.ReactAnimations) },
+    { path: 'animations', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/animations/animations').then(m => m.ReactAnimations) },
+      { path: 'testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item', loadComponent: () => import('./components/frontend/react/animations/subtopics/missing-key-breaks-exit-for-list-items/missing-key-breaks-exit-for-list-items').then(m => m.MissingKeyBreaksExitForListItemsSubtopic) },
+      { path: 'testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does', loadComponent: () => import('./components/frontend/react/animations/subtopics/width-animation-reflows-siblings-transform-doesnt/width-animation-reflows-siblings-transform-doesnt').then(m => m.WidthAnimationReflowsSiblingsTransformDoesntSubtopic) },
+      { path: 'testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry', loadComponent: () => import('./components/frontend/react/animations/subtopics/viewport-once-true-vs-repeating-scroll-animation/viewport-once-true-vs-repeating-scroll-animation').then(m => m.ViewportOnceTrueVsRepeatingScrollAnimationSubtopic) },
+    ] },
     { path: 'security',         loadComponent: () => import('./components/frontend/react/security/security').then(m => m.ReactSecurity) },
     { path: 'cheatsheet',       loadComponent: () => import('./components/frontend/react/cheatsheet/cheatsheet').then(m => m.ReactCheatsheet) },
     { path: 'interview-prep',   loadComponent: () => import('./components/frontend/react/interview-prep/interview-prep').then(m => m.ReactInterviewPrep) },

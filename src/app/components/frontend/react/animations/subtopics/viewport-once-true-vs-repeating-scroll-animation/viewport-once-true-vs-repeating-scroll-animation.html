@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Animations (Framer Motion)"
+    topicRoute="/react/animations"
+    subtopicLabel="viewport.once Controls Repeat, Not Just the First Play" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That viewport.once True Stops the whileInView Animation From Repeating on Every Scroll Re-entry</h1>
+  <p class="page-subtitle">
+    The theory says a scroll animation "repeats on every re-entry" without once — this scrolls two real
+    boxes in and out of view repeatedly to confirm the default is genuinely a repeat, not a one-time play.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Framer Motion 11.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A tall scrollable page with two <code>whileInView</code> boxes — one with
+      <code>viewport=&#123;once: true&#125;</code>, one without it. Scroll them in and out repeatedly.
+    </p>
+    <app-live-playground
+      title="viewport.once — repeated scroll in/out"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the animations subtopics: a data-attribution bug from missing keys, a real layout
+      vs. paint distinction for width vs. transform, and now a default-behavior gotcha in scroll-triggered
+      reveals that's easy to ship without noticing.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Animations (Framer Motion)"
+    topicRoute="/react/animations"
+    [prev]="{ label: 'Width Animation Reflows Siblings, transform Doesn’t', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' }" />
+</div>
