@@ -1403,7 +1403,12 @@ export const routes: Routes = [
       { path: 'forgetting-return-in-then-breaks-the-chained-value', loadComponent: () => import('./components/frontend/javascript/promises/subtopics/forgetting-return-in-then-breaks-the-chained-value/forgetting-return-in-then-breaks-the-chained-value').then(m => m.ForgettingReturnInThenBreaksTheChainedValueSubtopic) },
       { path: 'async-function-always-wraps-return-value-in-a-promise', loadComponent: () => import('./components/frontend/javascript/promises/subtopics/async-function-always-wraps-return-value-in-a-promise/async-function-always-wraps-return-value-in-a-promise').then(m => m.AsyncFunctionAlwaysWrapsReturnValueInAPromiseSubtopic) },
     ] },
-    { path: 'event-loop',     loadComponent: () => import('./components/frontend/javascript/event-loop/event-loop').then(m => m.JsEventLoop) },
+    { path: 'event-loop', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/event-loop/event-loop').then(m => m.JsEventLoop) },
+      { path: 'microtask-loop-delays-a-macrotask-scheduled-before-it', loadComponent: () => import('./components/frontend/javascript/event-loop/subtopics/microtask-loop-delays-a-macrotask-scheduled-before-it/microtask-loop-delays-a-macrotask-scheduled-before-it').then(m => m.MicrotaskLoopDelaysAMacrotaskScheduledBeforeItSubtopic) },
+      { path: 'independent-promise-chains-interleave-one-microtask-at-a-time', loadComponent: () => import('./components/frontend/javascript/event-loop/subtopics/independent-promise-chains-interleave-one-microtask-at-a-time/independent-promise-chains-interleave-one-microtask-at-a-time').then(m => m.IndependentPromiseChainsInterleaveOneMicrotaskAtATimeSubtopic) },
+      { path: 'synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends', loadComponent: () => import('./components/frontend/javascript/event-loop/subtopics/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends').then(m => m.SynchronousBusyLoopBlocksEveryPendingSetTimeoutUntilItEndsSubtopic) },
+    ] },
     { path: 'error-handling', loadComponent: () => import('./components/frontend/javascript/error-handling/error-handling').then(m => m.JsErrorHandling) },
     { path: 'generators',     loadComponent: () => import('./components/frontend/javascript/generators/generators').then(m => m.JsGenerators) },
     { path: 'dom',            loadComponent: () => import('./components/frontend/javascript/dom/dom').then(m => m.JsDom) },

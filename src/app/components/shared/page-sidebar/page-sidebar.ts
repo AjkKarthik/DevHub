@@ -13685,6 +13685,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/event-loop': {
+    apis: ['setTimeout()', 'queueMicrotask()', 'Promise', 'requestAnimationFrame()', 'Web Worker'],
+    related: [
+      { label: 'Promises & Async/Await', route: '/javascript/promises'       },
+      { label: 'Error Handling',         route: '/javascript/error-handling' },
+      { label: 'Generators',             route: '/javascript/generators'     },
+    ],
+    tip: 'Microtasks (Promise callbacks) always drain completely before the next macrotask (setTimeout) runs — registration order across the two queues never matters, only queue order does.',
+    docs: [
+      { label: 'MDN — Event loop', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A microtask chain that keeps re-enqueuing itself can starve every macrotask and repaint indefinitely — there is no time budget on the microtask queue.',
+      'setTimeout(fn, ms) is a minimum wait, never a guarantee — a busy call stack delays it for however long the stack stays occupied.',
+    ],
+  },
+
+  'javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it': {
+    apis: ['Promise.resolve()', 'setTimeout()'],
+    related: [
+      { label: 'Event Loop & Concurrency (overview)', route: '/javascript/event-loop' },
+      { label: 'Promise Chains Interleave', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' },
+      { label: 'Busy-Loop Blocks Every Timer', route: '/javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends' },
+    ],
+    tip: 'Registration order across queues never matters — a setTimeout registered first still waits behind the entire microtask queue, however long it takes to drain.',
+    docs: [
+      { label: 'MDN — Microtask guide', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The microtask queue has no time budget — the spec requires it to drain completely before any macrotask or repaint can happen.',
+      'This pattern occurs naturally in poll/retry code that recursively re-schedules itself via .then().',
+    ],
+  },
+
+  'javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time': {
+    apis: ['Promise.resolve()', '.then()'],
+    related: [
+      { label: 'Event Loop & Concurrency (overview)', route: '/javascript/event-loop' },
+      { label: 'Microtask Loop Delays a Macrotask', route: '/javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it' },
+      { label: 'Busy-Loop Blocks Every Timer', route: '/javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends' },
+    ],
+    tip: 'Every .then() callback from every chain shares one single FIFO microtask queue — unrelated chains interleave one step per pass instead of running depth-first.',
+    docs: [
+      { label: 'MDN — Promise', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The interleaving order is fully deterministic — it depends only on attachment order, never randomness.',
+      'A newly scheduled continuation always joins the back of the queue, never jumping ahead of an already-waiting unrelated chain.',
+    ],
+  },
+
+  'javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends': {
+    apis: ['setTimeout()', 'performance.now()'],
+    related: [
+      { label: 'Event Loop & Concurrency (overview)', route: '/javascript/event-loop' },
+      { label: 'Microtask Loop Delays a Macrotask', route: '/javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it' },
+      { label: 'Promise Chains Interleave', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' },
+    ],
+    tip: 'A setTimeout delay only controls when a callback becomes ELIGIBLE to run — it still needs an empty call stack before it can actually execute.',
+    docs: [
+      { label: 'MDN — setTimeout()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Overdue timers are never dropped — every one that became eligible during a busy stack still fires, all in a burst, once the stack clears.',
+      'A busy call stack blocks timers, promise callbacks, DOM events, AND browser repaints all at once — they all wait on the same empty stack.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

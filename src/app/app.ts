@@ -1358,6 +1358,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Forgetting return in .then() Breaks the Chained Value', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' },
     { label: 'async Functions Always Wrap Their Return Value', route: '/javascript/promises/async-function-always-wraps-return-value-in-a-promise' },
   ],
+  'event-loop': [
+    { label: 'A Microtask Loop Delays an Earlier setTimeout', route: '/javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it' },
+    { label: 'Promise Chains Interleave One Microtask at a Time', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' },
+    { label: 'A Busy-Loop Blocks Every Pending setTimeout', route: '/javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Loop &amp; Concurrency" topicRoute="/javascript/event-loop" subtopicLabel="Independent Promise Chains Interleave One Microtask at a Time" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Independent Promise Chains Interleave One Microtask at a Time</h1>
+  <p class="page-subtitle">Two unrelated Promise chains share the exact same microtask queue — they don't run one after the other, they ping-pong, one step per pass.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Two 4-step Promise chains are attached back to back with no relationship between them. Predict the console output order, then run it to see the actual round-robin interleaving.</p>
+    <app-live-playground title="Two independent Promise chains interleaving" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This is the exact mechanism behind the main <a routerLink="/javascript/event-loop">Event Loop &amp; Concurrency</a> page's "Predict the Output" challenge (Snippet 3). Next, see how a synchronous busy-loop blocks every pending <code>setTimeout</code> — a related but distinct way the queue can appear to "stall."</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Event Loop &amp; Concurrency"
+    topicRoute="/javascript/event-loop"
+    [prev]="{ label: 'A Microtask Loop Delays a Macrotask Scheduled Before It', route: '/javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it' }"
+    [next]="{ label: 'A Synchronous Busy-Loop Blocks Every Pending setTimeout', route: '/javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends' }"
+  />
+</div>
