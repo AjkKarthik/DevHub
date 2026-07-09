@@ -1336,6 +1336,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Static Methods Don’t Exist on Instances at All', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' },
     { label: 'Prototype Pollution Contaminates Every Unrelated Object', route: '/javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object' },
   ],
+  objects: [
+    { label: 'Integer Keys Sort First, Regardless of Insertion Order', route: '/javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys' },
+    { label: 'Object.assign Invokes Setters, Spread Doesn’t', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' },
+    { label: 'structuredClone Strips Class Prototype, Throws on Functions', route: '/javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function' },
+  ],
 };
 
 @Component({

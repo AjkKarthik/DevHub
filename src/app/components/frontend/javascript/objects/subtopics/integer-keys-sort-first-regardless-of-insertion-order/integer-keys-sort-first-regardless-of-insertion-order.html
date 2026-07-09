@@ -1,0 +1,47 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Object Fundamentals"
+    topicRoute="/javascript/objects"
+    subtopicLabel="Integer Keys Sort First, Regardless of Insertion Order" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Integer-Like Keys Sort First in Every Enumeration Method, Not Just Object.keys()</h1>
+  <p class="page-subtitle">
+    Mistake #6 only tests Object.keys() — this runs the same mixed-key object through for...in,
+    JSON.stringify, and spread to confirm all four agree on the same reordered sequence.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      One object with mixed string and integer-like keys, enumerated 4 different ways.
+    </p>
+    <app-live-playground
+      title="Integer key ordering — 4 enumeration methods, one order"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three object subtopics — this one on enumeration order. The next moves to
+      a related distinction: whether Object.assign and spread actually behave identically when a
+      setter is involved.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Object Fundamentals"
+    topicRoute="/javascript/objects"
+    [next]="{ label: 'Object.assign Invokes Setters, Spread Doesn’t', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' }" />
+</div>

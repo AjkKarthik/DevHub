@@ -13353,6 +13353,90 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/objects': {
+    apis: ['Object.keys()', 'Object.assign()', 'structuredClone()'],
+    related: [
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes' },
+      { label: 'Destructuring & Spread', route: '/javascript/destructuring' },
+      { label: 'Functions Deep Dive', route: '/javascript/functions' },
+    ],
+    tip: 'structuredClone() is excellent for plain data, but it strips class identity and throws on functions — it is not a general-purpose "clone anything" tool.',
+    docs: [
+      { label: 'MDN — structuredClone()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/structuredClone' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Integer-like keys always sort first, numerically — consistently across Object.keys, for...in, JSON.stringify, and spread.',
+      'Object.assign invokes setters on the target; spread never does, since it builds a brand-new object.',
+      'structuredClone strips a class instance down to a plain object and throws on any nested function.',
+    ],
+  },
+
+  'javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys': {
+    apis: ['[[OwnPropertyKeys]]', 'Object.keys()', 'for...in'],
+    related: [
+      { label: 'Object Fundamentals (overview)', route: '/javascript/objects' },
+      { label: 'Object.assign Invokes Setters', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' },
+      { label: 'structuredClone Limits', route: '/javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function' },
+    ],
+    tip: 'Every enumeration mechanism (Object.keys, for...in, JSON.stringify, spread) reads from the SAME canonical property order — the reordering is a property of the object, not any one function.',
+    docs: [
+      { label: 'MDN — Object.keys()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Integer-like keys (whether written as bare numbers or quoted strings) always sort numerically first.',
+      'String keys retain their insertion order, but only after every integer-like key.',
+      'Spreading an object preserves the source\'s canonical order — it doesn\'t reset to a different one.',
+    ],
+  },
+
+  'javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead': {
+    apis: ['Object.assign()', 'spread', '[[Set]]', '[[DefineOwnProperty]]'],
+    related: [
+      { label: 'Object Fundamentals (overview)', route: '/javascript/objects' },
+      { label: 'Integer Keys Sort First', route: '/javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys' },
+      { label: 'structuredClone Limits', route: '/javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function' },
+    ],
+    tip: 'If a target object\'s setter logic genuinely needs to run (validation, reactivity), Object.assign is the one that achieves it — spread silently bypasses it entirely.',
+    docs: [
+      { label: 'MDN — Object.assign()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Object.assign performs a real [[Set]] assignment against the target — any setter fires exactly as a hand-written assignment would.',
+      'Spread builds a brand-new object via [[DefineOwnProperty]] — no setter from any source object is ever invoked.',
+      'A spread copy of an object with a getter/setter pair loses the reactive behavior — the new object only has a static value.',
+    ],
+  },
+
+  'javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function': {
+    apis: ['structuredClone()', 'DataCloneError', 'HTML Structured Clone Algorithm'],
+    related: [
+      { label: 'Object Fundamentals (overview)', route: '/javascript/objects' },
+      { label: 'Integer Keys Sort First', route: '/javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys' },
+      { label: 'Object.assign Invokes Setters', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' },
+    ],
+    tip: 'structuredClone is built on the postMessage() serialization algorithm — it has a fixed set of cloneable types, and neither functions nor class identity are on that list.',
+    docs: [
+      { label: 'MDN — Structured clone algorithm', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A cloned class instance is instanceof Object only — its original prototype (and all its methods) is gone.',
+      'Cloning any object containing a function throws a real DataCloneError, aborting the entire clone.',
+      'Only OWN, plain data properties survive — this is not a general-purpose deep-clone-anything tool.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

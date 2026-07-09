@@ -1379,7 +1379,12 @@ export const routes: Routes = [
       { path: 'testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning', loadComponent: () => import('./components/frontend/javascript/prototypes/subtopics/static-methods-dont-exist-on-instances-at-all/static-methods-dont-exist-on-instances-at-all').then(m => m.StaticMethodsDontExistOnInstancesAtAllSubtopic) },
       { path: 'testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object', loadComponent: () => import('./components/frontend/javascript/prototypes/subtopics/proto-pollution-contaminates-every-unrelated-object/proto-pollution-contaminates-every-unrelated-object').then(m => m.ProtoPollutionContaminatesEveryUnrelatedObjectSubtopic) },
     ] },
-    { path: 'objects',        loadComponent: () => import('./components/frontend/javascript/objects/objects').then(m => m.JsObjects) },
+    { path: 'objects', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/objects/objects').then(m => m.JsObjects) },
+      { path: 'testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys', loadComponent: () => import('./components/frontend/javascript/objects/subtopics/integer-keys-sort-first-regardless-of-insertion-order/integer-keys-sort-first-regardless-of-insertion-order').then(m => m.IntegerKeysSortFirstRegardlessOfInsertionOrderSubtopic) },
+      { path: 'testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead', loadComponent: () => import('./components/frontend/javascript/objects/subtopics/object-assign-invokes-setters-spread-does-not/object-assign-invokes-setters-spread-does-not').then(m => m.ObjectAssignInvokesSettersSpreadDoesNotSubtopic) },
+      { path: 'testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function', loadComponent: () => import('./components/frontend/javascript/objects/subtopics/structuredclone-strips-class-prototype-throws-on-functions/structuredclone-strips-class-prototype-throws-on-functions').then(m => m.StructuredcloneStripsClassPrototypeThrowsOnFunctionsSubtopic) },
+    ] },
     { path: 'destructuring',  loadComponent: () => import('./components/frontend/javascript/destructuring/destructuring').then(m => m.JsDestructuring) },
     { path: 'arrays',         loadComponent: () => import('./components/frontend/javascript/arrays/arrays').then(m => m.JsArrays) },
     { path: 'promises',       loadComponent: () => import('./components/frontend/javascript/promises/promises').then(m => m.JsPromises) },

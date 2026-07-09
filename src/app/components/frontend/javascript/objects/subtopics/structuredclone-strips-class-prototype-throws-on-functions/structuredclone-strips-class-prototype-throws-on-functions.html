@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Object Fundamentals"
+    topicRoute="/javascript/objects"
+    subtopicLabel="structuredClone Strips Class Prototype, Throws on Functions" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That structuredClone Strips a Class Instance's Prototype, and Throws on a Nested Function</h1>
+  <p class="page-subtitle">
+    The QnA states both limits in prose, but neither is ever actually run — this clones a real class
+    instance and a function-containing object to see the genuine results.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="2022" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>Point</code> class instance cloned with <code>structuredClone()</code>, checked for
+      <code>instanceof</code> and its method — then a function-containing object cloned to catch the
+      real thrown error.
+    </p>
+    <app-live-playground
+      title="structuredClone() — real limits, run directly"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the object fundamentals subtopics: enumeration order, the assign/spread
+      setter distinction, and now the exact scope of what structuredClone can and can't preserve.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Object Fundamentals"
+    topicRoute="/javascript/objects"
+    [prev]="{ label: 'Object.assign Invokes Setters, Spread Doesn’t', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' }" />
+</div>
