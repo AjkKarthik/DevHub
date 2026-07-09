@@ -1573,7 +1573,12 @@ export const routes: Routes = [
       { path: 'testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state', loadComponent: () => import('./components/frontend/react/nextjs/subtopics/revalidatepath-is-cache-not-push/revalidatepath-is-cache-not-push').then(m => m.RevalidatepathIsCacheNotPushSubtopic) },
       { path: 'testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment', loadComponent: () => import('./components/frontend/react/nextjs/subtopics/suspense-required-usesearchparams/suspense-required-usesearchparams').then(m => m.SuspenseRequiredUsesearchparamsSubtopic) },
     ] },
-    { path: 'native',           loadComponent: () => import('./components/frontend/react/native/native').then(m => m.ReactNative) },
+    { path: 'native', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/native/native').then(m => m.ReactNative) },
+      { path: 'testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go', loadComponent: () => import('./components/frontend/react/native/subtopics/text-in-view-crashes-only-in-production/text-in-view-crashes-only-in-production').then(m => m.TextInViewCrashesOnlyInProductionSubtopic) },
+      { path: 'testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary', loadComponent: () => import('./components/frontend/react/native/subtopics/getitemlayout-assumes-uniform-row-height/getitemlayout-assumes-uniform-row-height').then(m => m.GetitemlayoutAssumesUniformRowHeightSubtopic) },
+      { path: 'testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo', loadComponent: () => import('./components/frontend/react/native/subtopics/stylesheet-create-doesnt-replace-react-memo/stylesheet-create-doesnt-replace-react-memo').then(m => m.StylesheetCreateDoesntReplaceReactMemoSubtopic) },
+    ] },
     { path: 'hook-form',        loadComponent: () => import('./components/frontend/react/hook-form/hook-form').then(m => m.ReactHookForm) },
     { path: 'animations',       loadComponent: () => import('./components/frontend/react/animations/animations').then(m => m.ReactAnimations) },
     { path: 'security',         loadComponent: () => import('./components/frontend/react/security/security').then(m => m.ReactSecurity) },

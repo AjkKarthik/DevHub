@@ -12650,6 +12650,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go': {
+    apis: ['<View>', '<Text>', 'eslint-plugin-react-native', 'EAS Build'],
+    related: [
+      { label: 'React Native (overview)', route: '/react/native' },
+      { label: 'getItemLayout Uniform Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' },
+      { label: 'StyleSheet.create() vs React.memo', route: '/react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo' },
+    ],
+    tip: 'Expo Go and local dev clients run a DEVELOPMENT build — the exact configuration this bug can hide in. Only an actual production-profile build (or a static lint rule) reliably catches it.',
+    docs: [
+      { label: 'React Native Docs — Text', url: 'https://reactnative.dev/docs/text' },
+    ],
+    resources: [
+      { label: 'facebook/react-native', url: 'https://github.com/facebook/react-native', badge: 'code' },
+    ],
+    gotchas: [
+      'The crash is specific to PRODUCTION builds — dev builds and Expo Go can be lenient, sometimes with no visible warning at all.',
+      '{count && <Text>{count}</Text>} renders a literal "0" as a bare text node when count is 0 — use count > 0 instead.',
+      'eslint-plugin-react-native\'s no-raw-text rule catches this statically, without needing any build at all.',
+    ],
+  },
+
+  'react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary': {
+    apis: ['getItemLayout()', 'FlatList', 'scrollToIndex()'],
+    related: [
+      { label: 'React Native (overview)', route: '/react/native' },
+      { label: 'Text-in-View Production Crash', route: '/react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go' },
+      { label: 'StyleSheet.create() vs React.memo', route: '/react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo' },
+    ],
+    tip: 'getItemLayout is safe only when you can name a concrete reason every row is really the same height — not whenever it "looks roughly consistent" in a quick check.',
+    docs: [
+      { label: 'React Native Docs — FlatList', url: 'https://reactnative.dev/docs/flatlist' },
+    ],
+    resources: [
+      { label: 'facebook/react-native', url: 'https://github.com/facebook/react-native', badge: 'code' },
+    ],
+    gotchas: [
+      'FlatList performs zero validation of getItemLayout — a wrong formula is trusted completely, with no runtime warning.',
+      'The offset calculation compounds across every prior row — a small, rare height variation still produces increasingly wrong positions deeper into the list.',
+      'For genuinely variable-height content (chat messages, wrapping text), drop getItemLayout entirely rather than trying to hand-compute it.',
+    ],
+  },
+
+  'react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo': {
+    apis: ['StyleSheet.create()', 'React.memo', 'useCallback'],
+    related: [
+      { label: 'React Native (overview)', route: '/react/native' },
+      { label: 'Text-in-View Production Crash', route: '/react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go' },
+      { label: 'getItemLayout Uniform Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' },
+    ],
+    tip: 'React.memo needs EVERY prop to be reference-stable to skip a re-render — a stable StyleSheet.create() style sitting next to one unstable prop still fails the whole comparison.',
+    docs: [
+      { label: 'React Docs — memo', url: 'https://react.dev/reference/react/memo' },
+    ],
+    resources: [
+      { label: 'facebook/react-native', url: 'https://github.com/facebook/react-native', badge: 'code' },
+    ],
+    gotchas: [
+      'StyleSheet.create()\'s stable ID is consumed by the NATIVE layout engine — a separate layer from React\'s own reconciliation.',
+      'A fresh inline function, array, or object prop anywhere else on the component defeats React.memo regardless of how stable the style prop is.',
+      'Primitive props (strings, numbers) are naturally reference-stable via Object.is — that stability isn\'t something StyleSheet.create() provided.',
+    ],
+  },
+
   'react/interview-prep': {
     apis: ['useState', 'useEffect', 'useReducer', 'React.memo', 'Suspense', 'Fiber', 'Server Components'],
     related: [

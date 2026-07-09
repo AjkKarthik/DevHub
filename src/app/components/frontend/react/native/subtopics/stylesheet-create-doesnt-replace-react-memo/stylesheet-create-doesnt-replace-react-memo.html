@@ -1,0 +1,40 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Native"
+    topicRoute="/react/native"
+    subtopicLabel="StyleSheet.create() Doesn’t Replace React.memo" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That StyleSheet.create() Optimizes Native Layout, Not React Reconciliation — Unlike React.memo</h1>
+  <p class="page-subtitle">
+    A stable style ID and a memo-safe component are two different claims — this checks whether a
+    StyleSheet.create() style alone is enough to make React.memo actually skip a re-render.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="React Native 0.60+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the React Native subtopics: a crash that only appears in production, a
+      performance prop that fails silently when its assumption breaks, and now a stability
+      optimization that operates at a completely different layer than the one you might assume.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Native"
+    topicRoute="/react/native"
+    [prev]="{ label: 'getItemLayout Assumes Every Row Is the Same Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' }" />
+</div>

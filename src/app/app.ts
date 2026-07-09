@@ -1282,6 +1282,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'revalidatePath Is Cache Invalidation, Not a Live Push', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' },
     { label: 'useSearchParams Without Suspense Forces the Whole Page Dynamic', route: '/react/nextjs/testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment' },
   ],
+  native: [
+    { label: 'Text-in-View Crashes Only in Production Builds', route: '/react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go' },
+    { label: 'getItemLayout Assumes Every Row Is the Same Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' },
+    { label: 'StyleSheet.create() Doesn’t Replace React.memo', route: '/react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo' },
+  ],
 };
 
 @Component({

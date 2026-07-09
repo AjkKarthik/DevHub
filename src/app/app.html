@@ -2676,7 +2676,26 @@
           </div>
         }
       }
-      <a routerLink="/react/native"         routerLinkActive="active"><span class="nl-text">React Native</span>@if(progress.isDone('react-native')){<span class="nl-done">✓</span>}@if(diff('react-native');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/native" routerLinkActive="active">
+        <span class="nl-text">React Native</span>
+        @if (progress.isDone('react-native')) {<span class="nl-done">✓</span>}
+        @if (diff('react-native'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('native')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('native')"
+                  (click)="toggleSubtopics('native', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('native'); as reactNativeSubs) {
+        @if (isSubtopicsExpanded('native')) {
+          <div class="nav-subtopics">
+            @for (s of reactNativeSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/react/animations"     routerLinkActive="active"><span class="nl-text">Animations</span>@if(progress.isDone('react-animations')){<span class="nl-done">✓</span>}@if(diff('react-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
