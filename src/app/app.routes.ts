@@ -1397,7 +1397,12 @@ export const routes: Routes = [
       { path: 'testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order', loadComponent: () => import('./components/frontend/javascript/arrays/subtopics/sort-is-genuinely-stable-ties-keep-insertion-order/sort-is-genuinely-stable-ties-keep-insertion-order').then(m => m.SortIsGenuinelyStableTiesKeepInsertionOrderSubtopic) },
       { path: 'testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements', loadComponent: () => import('./components/frontend/javascript/arrays/subtopics/mutating-array-during-map-skips-real-elements/mutating-array-during-map-skips-real-elements').then(m => m.MutatingArrayDuringMapSkipsRealElementsSubtopic) },
     ] },
-    { path: 'promises',       loadComponent: () => import('./components/frontend/javascript/promises/promises').then(m => m.JsPromises) },
+    { path: 'promises', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/promises/promises').then(m => m.JsPromises) },
+      { path: 'promise-all-rejection-doesnt-cancel-other-pending-promises', loadComponent: () => import('./components/frontend/javascript/promises/subtopics/promise-all-rejection-doesnt-cancel-other-pending-promises/promise-all-rejection-doesnt-cancel-other-pending-promises').then(m => m.PromiseAllRejectionDoesntCancelOtherPendingPromisesSubtopic) },
+      { path: 'forgetting-return-in-then-breaks-the-chained-value', loadComponent: () => import('./components/frontend/javascript/promises/subtopics/forgetting-return-in-then-breaks-the-chained-value/forgetting-return-in-then-breaks-the-chained-value').then(m => m.ForgettingReturnInThenBreaksTheChainedValueSubtopic) },
+      { path: 'async-function-always-wraps-return-value-in-a-promise', loadComponent: () => import('./components/frontend/javascript/promises/subtopics/async-function-always-wraps-return-value-in-a-promise/async-function-always-wraps-return-value-in-a-promise').then(m => m.AsyncFunctionAlwaysWrapsReturnValueInAPromiseSubtopic) },
+    ] },
     { path: 'event-loop',     loadComponent: () => import('./components/frontend/javascript/event-loop/event-loop').then(m => m.JsEventLoop) },
     { path: 'error-handling', loadComponent: () => import('./components/frontend/javascript/error-handling/error-handling').then(m => m.JsErrorHandling) },
     { path: 'generators',     loadComponent: () => import('./components/frontend/javascript/generators/generators').then(m => m.JsGenerators) },

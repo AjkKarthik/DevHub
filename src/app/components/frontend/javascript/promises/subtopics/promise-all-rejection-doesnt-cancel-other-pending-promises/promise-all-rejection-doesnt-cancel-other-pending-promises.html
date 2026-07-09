@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Promises &amp; Async/Await" topicRoute="/javascript/promises" subtopicLabel="Promise.all Rejection Doesn't Cancel Other Pending Promises" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Promise.all Rejection Doesn't Cancel Other Pending Promises</h1>
+  <p class="page-subtitle">When one promise in a <code>Promise.all</code> array rejects, the call rejects immediately — but the other promises keep running to completion in the background, with their side effects still happening.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>This demo starts three async tasks: one fails fast, two succeed slowly with a logged side effect when they finish. Watch the order the console logs appear in — the side effects from the "cancelled" tasks show up well after the catch block already ran.</p>
+    <app-live-playground title="Promise.all rejection vs. background tasks" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This directly extends the main <a routerLink="/javascript/promises">Promises &amp; Async/Await</a> page's discussion of <code>Promise.all</code> and error propagation. If forgetting to <code>return</code> inside a <code>.then()</code> callback is a subtler chaining mistake worth knowing next, see the next subtopic below.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Promises &amp; Async/Await"
+    topicRoute="/javascript/promises"
+    [next]="{ label: 'Forgetting return in .then() Breaks the Chained Value', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' }"
+  />
+</div>

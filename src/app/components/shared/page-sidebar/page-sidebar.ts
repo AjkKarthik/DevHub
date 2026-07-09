@@ -13605,6 +13605,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/promises': {
+    apis: ['Promise', 'async/await', 'Promise.all()', 'Promise.allSettled()', '.then()', '.catch()'],
+    related: [
+      { label: 'Arrays & Iteration',   route: '/javascript/arrays'       },
+      { label: 'Event Loop & Concurrency', route: '/javascript/event-loop' },
+      { label: 'Error Handling',       route: '/javascript/error-handling' },
+    ],
+    tip: 'Promise.all fails fast on the first rejection, but never cancels the other promises — they keep running to completion with their side effects intact.',
+    docs: [
+      { label: 'MDN — Promise', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A rejected Promise.all never cancels the other array entries — they keep running and their side effects still happen.',
+      'Forgetting return inside a .then() callback silently breaks the chain — the next step receives undefined instead of the real value.',
+    ],
+  },
+
+  'javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises': {
+    apis: ['Promise.all()', 'setTimeout'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/javascript/promises' },
+      { label: 'Missing return Breaks .then() Chain', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' },
+      { label: 'async Always Returns a Promise', route: '/javascript/promises/async-function-always-wraps-return-value-in-a-promise' },
+    ],
+    tip: 'Promise.all rejecting is an observer settling early, not a cancellation signal — the underlying work (timers, requests) has no idea it happened.',
+    docs: [
+      { label: 'MDN — Promise.all()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Only AbortController (for fetch) or manually clearing a timer ID actually stops in-flight work — a rejected Promise.all does not.',
+      'Side effects from the "losing" promises still occur in full, just after your catch block has already moved on.',
+    ],
+  },
+
+  'javascript/promises/forgetting-return-in-then-breaks-the-chained-value': {
+    apis: ['.then()', 'Promise chaining'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/javascript/promises' },
+      { label: 'Promise.all Doesn’t Cancel Others', route: '/javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises' },
+      { label: 'async Always Returns a Promise', route: '/javascript/promises/async-function-always-wraps-return-value-in-a-promise' },
+    ],
+    tip: 'A multi-statement .then() callback with curly braces never implicitly returns its last expression — only a single-expression arrow body does that automatically.',
+    docs: [
+      { label: 'MDN — Promise.prototype.then()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Forgetting to return a promise (not just a value) also breaks timing — a later .then() can run before the "forgotten" async work finishes.',
+      'No error is thrown — undefined just silently propagates down every remaining step in the chain.',
+    ],
+  },
+
+  'javascript/promises/async-function-always-wraps-return-value-in-a-promise': {
+    apis: ['async function', 'await', 'Promise'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/javascript/promises' },
+      { label: 'Promise.all Doesn’t Cancel Others', route: '/javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises' },
+      { label: 'Missing return Breaks .then() Chain', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' },
+    ],
+    tip: 'Marking a function async is a real contract change, not a stylistic choice — every existing caller must start awaiting it or it silently receives a Promise instead of the value.',
+    docs: [
+      { label: 'MDN — async function', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Adding 1 to an un-awaited async result doesn\'t throw — it silently stringifies the Promise, producing "[object Promise]1".',
+      'This wrapping happens unconditionally, even when the function body has zero real asynchronous work inside it.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

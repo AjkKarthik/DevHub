@@ -3026,7 +3026,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Async &amp; Concurrency</p>
-      <a routerLink="/javascript/promises"      routerLinkActive="active"><span class="nl-text">Promises &amp; Async/Await</span>@if(progress.isDone('js-promises')){<span class="nl-done">✓</span>}@if(diff('js-promises');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/promises" routerLinkActive="active">
+        <span class="nl-text">Promises &amp; Async/Await</span>
+        @if (progress.isDone('js-promises')) {<span class="nl-done">✓</span>}
+        @if (diff('js-promises'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('promises')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('promises')"
+                  (click)="toggleSubtopics('promises', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('promises'); as promisesSubs) {
+        @if (isSubtopicsExpanded('promises')) {
+          <div class="nav-subtopics">
+            @for (s of promisesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/javascript/event-loop"    routerLinkActive="active"><span class="nl-text">Event Loop</span>@if(progress.isDone('js-event-loop')){<span class="nl-done">✓</span>}@if(diff('js-event-loop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/javascript/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('js-error-handling')){<span class="nl-done">✓</span>}@if(diff('js-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/javascript/generators"    routerLinkActive="active"><span class="nl-text">Generators</span>@if(progress.isDone('js-generators')){<span class="nl-done">✓</span>}@if(diff('js-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

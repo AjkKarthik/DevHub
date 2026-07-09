@@ -1353,6 +1353,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'sort() Is Genuinely Stable — Ties Keep Insertion Order', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' },
     { label: 'Mutating an Array During map() Really Does Skip Elements', route: '/javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements' },
   ],
+  promises: [
+    { label: 'Promise.all Rejection Doesn’t Cancel Other Pending Promises', route: '/javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises' },
+    { label: 'Forgetting return in .then() Breaks the Chained Value', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' },
+    { label: 'async Functions Always Wrap Their Return Value', route: '/javascript/promises/async-function-always-wraps-return-value-in-a-promise' },
+  ],
 };
 
 @Component({
