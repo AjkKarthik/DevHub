@@ -3218,7 +3218,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Patterns</p>
-      <a routerLink="/javascript/patterns"      routerLinkActive="active"><span class="nl-text">Design Patterns</span>@if(progress.isDone('js-patterns')){<span class="nl-done">✓</span>}@if(diff('js-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/patterns" routerLinkActive="active">
+        <span class="nl-text">Design Patterns</span>
+        @if (progress.isDone('js-patterns')) {<span class="nl-done">✓</span>}
+        @if (diff('js-patterns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('js-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('js-patterns')"
+                  (click)="toggleSubtopics('js-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('js-patterns'); as jsPatternsSubs) {
+        @if (isSubtopicsExpanded('js-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of jsPatternsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/javascript/functional"    routerLinkActive="active"><span class="nl-text">Functional JS</span>@if(progress.isDone('js-functional')){<span class="nl-done">✓</span>}@if(diff('js-functional');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/javascript/proxy"         routerLinkActive="active"><span class="nl-text">Proxy &amp; Reflect</span>@if(progress.isDone('js-proxy')){<span class="nl-done">✓</span>}@if(diff('js-proxy');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/javascript/weakrefs"      routerLinkActive="active"><span class="nl-text">WeakMap &amp; WeakRef</span>@if(progress.isDone('js-weakrefs')){<span class="nl-done">✓</span>}@if(diff('js-weakrefs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

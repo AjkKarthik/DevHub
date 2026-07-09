@@ -1451,7 +1451,12 @@ export const routes: Routes = [
       { path: 'sideeffects-false-requires-explicitly-listing-real-side-effect-files', loadComponent: () => import('./components/frontend/javascript/bundlers/subtopics/sideeffects-false-needs-explicit-side-effect-file-list/sideeffects-false-needs-explicit-side-effect-file-list').then(m => m.SideEffectsFalseRequiresExplicitlyListingRealSideEffectFilesSubtopic) },
       { path: 'devdependencies-vs-dependencies-affects-production-install-size', loadComponent: () => import('./components/frontend/javascript/bundlers/subtopics/devdependencies-vs-dependencies-affects-production-install-size/devdependencies-vs-dependencies-affects-production-install-size').then(m => m.DevDependenciesVsDependenciesAffectsProductionInstallSizeSubtopic) },
     ] },
-    { path: 'patterns',       loadComponent: () => import('./components/frontend/javascript/patterns/patterns').then(m => m.JsPatterns) },
+    { path: 'patterns', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/patterns/patterns').then(m => m.JsPatterns) },
+      { path: 'memoize-uses-reference-equality-object-args-always-miss', loadComponent: () => import('./components/frontend/javascript/patterns/subtopics/memoize-uses-reference-equality-object-args-always-miss/memoize-uses-reference-equality-object-args-always-miss').then(m => m.MemoizeWithObjectArgumentsUsingReferenceEqualitySubtopic) },
+      { path: 'spreading-a-prototype-in-a-mixin-breaks-instanceof', loadComponent: () => import('./components/frontend/javascript/patterns/subtopics/spreading-a-prototype-in-a-mixin-breaks-instanceof/spreading-a-prototype-in-a-mixin-breaks-instanceof').then(m => m.SpreadingAPrototypeInAMixinBreaksInstanceofSubtopic) },
+      { path: 'middleware-short-circuits-when-a-handler-never-calls-next', loadComponent: () => import('./components/frontend/javascript/patterns/subtopics/middleware-short-circuits-when-a-handler-never-calls-next/middleware-short-circuits-when-a-handler-never-calls-next').then(m => m.MiddlewareShortCircuitsWhenAHandlerNeverCallsNextSubtopic) },
+    ] },
     { path: 'functional',     loadComponent: () => import('./components/frontend/javascript/functional/functional').then(m => m.JsFunctional) },
     { path: 'proxy',          loadComponent: () => import('./components/frontend/javascript/proxy/proxy').then(m => m.JsProxy) },
     { path: 'weakrefs',       loadComponent: () => import('./components/frontend/javascript/weakrefs/weakrefs').then(m => m.JsWeakrefs) },

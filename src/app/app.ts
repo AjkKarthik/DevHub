@@ -1252,9 +1252,10 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'useDeferredValue Needs memo on the Child', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' },
     { label: 'Duplicate Dynamic import() Calls Are Deduplicated, Not Refetched', route: '/react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched' },
   ],
-  // 'patterns' is collision-free for now — JS and Go hubs also route to
-  // 'patterns' but neither has added subtopics yet. Hub-prefix to
-  // 'react-patterns' if either of them claims the bare key later.
+  // React keeps the bare 'patterns' key (claimed it first). The JavaScript
+  // hub's own /javascript/patterns topic is hub-prefixed to 'js-patterns'
+  // below. Go hub still routes to 'patterns' too — hub-prefix it as
+  // 'go-patterns' if it ever claims subtopics.
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
@@ -1399,6 +1400,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Tree-Shaking Only Works Reliably With ESM', route: '/javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs' },
     { label: 'sideEffects: false Needs an Explicit File List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' },
     { label: 'devDependencies Affects Production Install Size', route: '/javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size' },
+  ],
+  // NOTE: keyed 'js-patterns', NOT bare 'patterns' — the React hub's own
+  // /react/patterns topic already claims the bare key.
+  'js-patterns': [
+    { label: 'Memoize With Objects Uses Reference Equality', route: '/javascript/patterns/memoize-uses-reference-equality-object-args-always-miss' },
+    { label: 'Spreading a Prototype in a Mixin Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' },
+    { label: 'Middleware Short-Circuits Without next()', route: '/javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next' },
   ],
 };
 

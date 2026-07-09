@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design Patterns in JS" topicRoute="/javascript/patterns" subtopicLabel="Middleware Short-Circuits When a Handler Never Calls next()" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Middleware Short-Circuits When a Handler Never Calls next()</h1>
+  <p class="page-subtitle">A pipeline only advances when the current middleware explicitly calls <code>next()</code> — simply not calling it is itself sufficient to halt every remaining handler.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>The main page's own <code>authMiddleware</code>/<code>logMiddleware</code>/<code>handlerMiddleware</code> pipeline runs with and without a user. Watch which middlewares' logs actually appear in each case.</p>
+    <app-live-playground title="A middleware pipeline that short-circuits on missing auth" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious pattern mechanics — reference-equality cache misses, mixin-breaking prototype spreads, and now middleware short-circuiting. Return to the <a routerLink="/javascript/patterns">Design Patterns in JS</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Design Patterns in JS"
+    topicRoute="/javascript/patterns"
+    [prev]="{ label: 'Spreading a Prototype in a Mixin Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' }"
+  />
+</div>

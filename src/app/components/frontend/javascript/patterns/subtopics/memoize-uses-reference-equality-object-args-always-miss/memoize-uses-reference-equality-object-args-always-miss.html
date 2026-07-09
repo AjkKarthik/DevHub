@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design Patterns in JS" topicRoute="/javascript/patterns" subtopicLabel="Memoize With Object Arguments Uses Reference Equality" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Memoize With Object Arguments Uses Reference Equality</h1>
+  <p class="page-subtitle">A plain <code>Map</code> cache compares object keys by identity, not content — two separate but identical-looking object literals always miss the cache.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A naive memoized function is called with two separate <code>&#123; id: 1 &#125;</code> literals, then with the same reference twice, then with the <code>JSON.stringify</code> fix. Watch which calls actually recompute.</p>
+    <app-live-playground title="Naive memoize vs. reference equality vs. the fix" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/patterns">Design Patterns in JS</a> page's memoization warning in a direct comparison. Next, see why spreading a prototype in a mixin breaks the <code>instanceof</code> chain, unlike <code>Object.assign</code> onto the existing prototype.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Design Patterns in JS"
+    topicRoute="/javascript/patterns"
+    [next]="{ label: 'Spreading a Prototype in a Mixin Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' }"
+  />
+</div>

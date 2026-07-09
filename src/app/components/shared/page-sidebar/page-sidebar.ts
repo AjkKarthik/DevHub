@@ -14325,6 +14325,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/patterns': {
+    apis: ['Map', 'Object.assign()', 'Proxy', 'EventTarget'],
+    related: [
+      { label: 'Functional JS',       route: '/javascript/functional' },
+      { label: 'Proxy & Reflect API', route: '/javascript/proxy'      },
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes' },
+    ],
+    tip: 'A plain Map compares object keys by reference, not content — memoizing with object arguments needs JSON.stringify(args) or every call misses the cache.',
+    docs: [
+      { label: 'MDN — Object.assign()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Replacing a class prototype with a spread breaks instanceof for existing instances and silently drops non-enumerable class methods.',
+      'A middleware pipeline only advances when the current handler explicitly calls next() — not calling it is itself sufficient to halt the chain.',
+    ],
+  },
+
+  'javascript/patterns/memoize-uses-reference-equality-object-args-always-miss': {
+    apis: ['Map', 'JSON.stringify()'],
+    related: [
+      { label: 'Design Patterns in JS (overview)', route: '/javascript/patterns' },
+      { label: 'Mixin Spread Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' },
+      { label: 'Middleware Short-Circuits', route: '/javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next' },
+    ],
+    tip: 'A Map compares object keys by identity — two separate object literals with identical properties are always different keys unless serialized to a string first.',
+    docs: [
+      { label: 'MDN — Map', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'JSON.stringify() has real limits — it throws on circular references, drops functions, and produces different strings for differently-ordered properties.',
+      'This is a general property of JavaScript object comparison, not memoization-specific — === and Object.is() behave the same way.',
+    ],
+  },
+
+  'javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof': {
+    apis: ['Object.assign()', 'prototype', 'instanceof'],
+    related: [
+      { label: 'Design Patterns in JS (overview)', route: '/javascript/patterns' },
+      { label: 'Memoize Reference Equality', route: '/javascript/patterns/memoize-uses-reference-equality-object-args-always-miss' },
+      { label: 'Middleware Short-Circuits', route: '/javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next' },
+    ],
+    tip: 'Object.assign(prototype, mixin) mutates the existing prototype in place — a spread reassignment creates a new object and severs existing instances\' link to it.',
+    docs: [
+      { label: 'MDN — Object.assign()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Class methods are non-enumerable by default — a spread of a prototype silently drops them, not just the constructor link.',
+      'Existing instances keep their [[Prototype]] link to whatever object was the prototype when they were constructed, regardless of later reassignment.',
+    ],
+  },
+
+  'javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next': {
+    apis: ['closures', 'higher-order functions'],
+    related: [
+      { label: 'Design Patterns in JS (overview)', route: '/javascript/patterns' },
+      { label: 'Memoize Reference Equality', route: '/javascript/patterns/memoize-uses-reference-equality-object-args-always-miss' },
+      { label: 'Mixin Spread Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' },
+    ],
+    tip: 'A pipeline only advances when the current middleware explicitly calls next() — this is exactly how auth guards work in Express, Angular interceptors, and Redux middleware.',
+    docs: [
+      { label: 'Express — Writing middleware', url: 'https://expressjs.com/en/guide/writing-middleware.html' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A forgotten next() call (a genuine bug, not a guard) produces no error — the request silently stops with no indication of which middleware failed.',
+      'Code written after a next() call resumes once the rest of the chain has fully finished, unlike a guard that returns without calling it at all.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [
