@@ -794,6 +794,23 @@ Confirmed via direct file inspection and a live browser pilot before the first s
    fix already documented above. Computing the exact planned path length with a quick shell
    check before `mkdir`/`Write` (not just before `git add`) avoids a rename cycle after the
    fact.
+9. **StackBlitz's WebContainer npm install can transiently fail with "Can't find package"
+   for a correctly-declared dependency, unrelated to the code.** Confirmed on `/react/router`'s
+   `errorElement` subtopic (`react-router-dom` in `package.json`, 2026-07-09): the embed loaded
+   the correct file tree and editor content, but the in-browser npm install step failed once
+   with "Can't find package: 'react-router-dom'" and a "Retry Installer" button — a real
+   StackBlitz-side transient (network/registry hiccup inside the WebContainer sandbox), not a
+   version-pin or config problem, since the identical `package.json` shape (deps as direct
+   entries, no separate `[dependencies]` input) had already worked for `react-hook-form`,
+   `zod`, `zustand`, `@reduxjs/toolkit`, and `jotai` in prior subtopics with no issue. A second
+   load attempt showed the same transient state; the underlying page (breadcrumb, sidebar,
+   nav accordion, build) all verified correct independent of the sandbox demo itself. **Do not
+   treat one StackBlitz install failure as a signal the `package.json`/dependency choice is
+   wrong** — verify the static page and build first (those are deterministic), and treat the
+   live sandbox as best-effort verification, retrying once before moving on. Also noted:
+   `preview_screenshot` can time out while the WebContainer is actively installing packages
+   (heavy CPU load in the iframe) — this resolves once the install finishes or the embed is
+   collapsed again; it is a tooling/resource artifact, not a page bug.
 
 ## Current state (update when it changes!)
 

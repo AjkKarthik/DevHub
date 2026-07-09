@@ -1531,7 +1531,12 @@ export const routes: Routes = [
       { path: 'testing-that-mutating-a-useselector-value-directly-fails-silently', loadComponent: () => import('./components/frontend/react/state-management/subtopics/rtk-mutating-useselector-value-directly-fails-silently/rtk-mutating-useselector-value-directly-fails-silently').then(m => m.RtkMutatingUseselectorValueDirectlyFailsSilentlySubtopic) },
       { path: 'testing-that-jotais-atomfamily-shares-state-for-the-same-id', loadComponent: () => import('./components/frontend/react/state-management/subtopics/jotai-atomfamily-shares-state-for-same-id/jotai-atomfamily-shares-state-for-same-id').then(m => m.JotaiAtomfamilySharesStateForSameIdSubtopic) },
     ]},
-    { path: 'router',           loadComponent: () => import('./components/frontend/react/router/router').then(m => m.ReactRouter) },
+    { path: 'router', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/router/router').then(m => m.ReactRouter) },
+      { path: 'testing-that-usefetcher-revalidates-the-current-routes-loader', loadComponent: () => import('./components/frontend/react/router/subtopics/usefetcher-revalidates-the-current-routes-loader/usefetcher-revalidates-the-current-routes-loader').then(m => m.UsefetcherRevalidatesTheCurrentRoutesLoaderSubtopic) },
+      { path: 'testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout', loadComponent: () => import('./components/frontend/react/router/subtopics/child-errorelement-bubbles-up-replaces-parent-layout/child-errorelement-bubbles-up-replaces-parent-layout').then(m => m.ChildErrorelementBubblesUpReplacesParentLayoutSubtopic) },
+      { path: 'testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere', loadComponent: () => import('./components/frontend/react/router/subtopics/navlink-end-prop-needed-for-root-breaks-nested-active/navlink-end-prop-needed-for-root-breaks-nested-active').then(m => m.NavlinkEndPropNeededForRootBreaksNestedActiveSubtopic) },
+    ]},
     { path: 'tanstack-query',   loadComponent: () => import('./components/frontend/react/tanstack-query/tanstack-query').then(m => m.ReactTanstackQuery) },
     { path: 'performance',      loadComponent: () => import('./components/frontend/react/performance/performance').then(m => m.ReactPerformance) },
     { path: 'patterns',         loadComponent: () => import('./components/frontend/react/patterns/patterns').then(m => m.ReactPatterns) },

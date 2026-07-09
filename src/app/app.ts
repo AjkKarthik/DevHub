@@ -1234,6 +1234,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Mutating a useSelector Value Directly Fails Silently', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' },
     { label: 'Jotai’s atomFamily Shares State for the Same ID', route: '/react/state-management/testing-that-jotais-atomfamily-shares-state-for-the-same-id' },
   ],
+  'router': [
+    { label: 'useFetcher Revalidates the Current Route’s Loader', route: '/react/router/testing-that-usefetcher-revalidates-the-current-routes-loader' },
+    { label: 'A Child errorElement Bubbles Up and Replaces the Parent’s Whole Layout', route: '/react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout' },
+    { label: 'NavLink’s end Prop Is Needed for Root, Would Break Nested Highlighting', route: '/react/router/testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Router"
+    topicRoute="/react/router"
+    subtopicLabel="NavLink’s end Prop Is Needed for Root, Would Break Nested Highlighting Elsewhere" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That NavLink's end Prop Is Needed for Root, But Would Break Nested Active Highlighting Elsewhere</h1>
+  <p class="page-subtitle">
+    The main page's own first example applies the end prop to Home but not to Users or Settings, with no
+    explanation — this checks exactly what breaks if that asymmetry gets "corrected" either direction.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="React Router 6+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A "Users" section link without <code>end</code> compared against an identical "Users (strict)" link
+      that adds <code>end</code>, both tested against a nested detail route.
+    </p>
+    <app-live-playground
+      title="NavLink end prop — root vs section-level links"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own router
+      claims — useFetcher's real revalidation behavior, errorElement's true blast radius, and now why the
+      end prop is applied asymmetrically in its very first example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Router"
+    topicRoute="/react/router"
+    [prev]="{ label: 'A Child errorElement Bubbles Up and Replaces the Parent’s Whole Layout', route: '/react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout' }" />
+</div>

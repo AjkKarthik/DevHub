@@ -12032,6 +12032,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/router/testing-that-usefetcher-revalidates-the-current-routes-loader': {
+    apis: ['useFetcher()', 'fetcher.Form', 'useLoaderData()'],
+    related: [
+      { label: 'React Router (overview)', route: '/react/router' },
+      { label: 'errorElement Bubbling', route: '/react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout' },
+      { label: 'React Forms', route: '/react/forms' },
+    ],
+    tip: 'useFetcher skips navigation, not revalidation — any successful action, fetcher-submitted or not, re-runs every currently active route\'s loader.',
+    docs: [
+      { label: 'React Router Docs — useFetcher', url: 'https://reactrouter.com/en/main/hooks/use-fetcher' },
+      { label: 'React Router Docs — Revalidation', url: 'https://reactrouter.com/en/main/guides/data-libraries' },
+    ],
+    resources: [
+      { label: 'remix-run/react-router', url: 'https://github.com/remix-run/react-router', badge: 'code' },
+    ],
+    gotchas: [
+      'This is exactly why useFetcher is the right tool for inline mutations that shouldn\'t change the URL.',
+      'No manual refetch or state update is needed after a fetcher action — useLoaderData() reflects fresh data automatically.',
+      'The revalidation trigger is a successful action completing, not which component submitted it.',
+    ],
+  },
+
+  'react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout': {
+    apis: ['errorElement', 'useRouteError()', '<Outlet />'],
+    related: [
+      { label: 'React Router (overview)', route: '/react/router' },
+      { label: 'useFetcher Revalidation', route: '/react/router/testing-that-usefetcher-revalidates-the-current-routes-loader' },
+      { label: 'NavLink end Prop', route: '/react/router/testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere' },
+    ],
+    tip: 'A missing child errorElement bubbles to the nearest ancestor that has one — and that ancestor\'s WHOLE element gets replaced, not just its Outlet, taking down nav bars and layout chrome too.',
+    docs: [
+      { label: 'React Router Docs — errorElement', url: 'https://reactrouter.com/en/main/route/error-element' },
+    ],
+    resources: [
+      { label: 'remix-run/react-router', url: 'https://github.com/remix-run/react-router', badge: 'code' },
+    ],
+    gotchas: [
+      'Giving every route its own errorElement (as the main page\'s examples do) is a deliberate scoping choice, not redundant boilerplate.',
+      'A single top-level errorElement technically catches everything, but at the cost of the whole layout on any failure.',
+      'Attach errorElement to the specific route (or an intermediate one) whose failures should stay visually contained.',
+    ],
+  },
+
+  'react/router/testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere': {
+    apis: ['<NavLink>', 'end prop', 'isActive'],
+    related: [
+      { label: 'React Router (overview)', route: '/react/router' },
+      { label: 'errorElement Bubbling', route: '/react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout' },
+      { label: 'React Patterns', route: '/react/patterns' },
+    ],
+    tip: 'end forces exact-path matching — needed for "/" (a prefix of every route), but applying it to section-root links breaks their nested-child active highlighting.',
+    docs: [
+      { label: 'React Router Docs — NavLink', url: 'https://reactrouter.com/en/main/components/nav-link' },
+    ],
+    resources: [
+      { label: 'remix-run/react-router', url: 'https://github.com/remix-run/react-router', badge: 'code' },
+    ],
+    gotchas: [
+      'Prefix matching (no end) is the correct default for most section-level nav links, not a bug to fix.',
+      'Any route whose path is a literal prefix of another route needs this same consideration, not just "/".',
+      'The main page\'s first code tab applies end asymmetrically on purpose, even though it never explains why.',
+    ],
+  },
+
   'react/tanstack-query': {
     apis: ['useQuery()', 'useMutation()', 'queryClient.invalidateQueries()', 'useInfiniteQuery()', 'QueryClient'],
     related: [
