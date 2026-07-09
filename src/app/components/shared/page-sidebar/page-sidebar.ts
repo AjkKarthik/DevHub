@@ -13925,6 +13925,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/dom': {
+    apis: ['querySelector()', 'querySelectorAll()', 'createElement()', 'MutationObserver', 'IntersectionObserver'],
+    related: [
+      { label: 'Events & Custom Events', route: '/javascript/events'       },
+      { label: 'Browser APIs',           route: '/javascript/browser-apis' },
+      { label: 'Error Handling',         route: '/javascript/error-handling' },
+    ],
+    tip: 'Layout thrashing is triggered by ANY write between two layout reads, even one hidden inside a third-party function call — not just writes in your own code.',
+    docs: [
+      { label: 'MDN — Document Object Model', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'innerHTML += reparses the entire container, destroying every existing child\'s event listeners, not just the newly added part.',
+      'querySelectorAll returns a static NodeList; getElementsByClassName/getElementsByTagName return a live HTMLCollection that keeps growing if you mutate the DOM mid-loop.',
+    ],
+  },
+
+  'javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing': {
+    apis: ['offsetHeight', 'performance.now()'],
+    related: [
+      { label: 'DOM Manipulation (overview)', route: '/javascript/dom' },
+      { label: 'innerHTML += Destroys Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' },
+      { label: 'Static NodeList vs Live Collection', route: '/javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection' },
+    ],
+    tip: 'The browser tracks only whether ANY write happened between two layout reads — not whose code performed it. A write buried in a library call is just as costly.',
+    docs: [
+      { label: 'MDN — Reflow', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Reflow' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A code review of your own read/write ordering can miss this entirely if the write is hidden inside a called function\'s internals.',
+      'The DevTools Performance panel\'s "Forced reflow" warning catches this regardless of where the write originates.',
+    ],
+  },
+
+  'javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners': {
+    apis: ['innerHTML', 'createElement()', 'append()'],
+    related: [
+      { label: 'DOM Manipulation (overview)', route: '/javascript/dom' },
+      { label: 'Hidden Write Causes Thrashing', route: '/javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing' },
+      { label: 'Static NodeList vs Live Collection', route: '/javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection' },
+    ],
+    tip: 'innerHTML += is shorthand for serialize-concatenate-reparse-the-whole-subtree — every existing child becomes a brand new node with no listeners attached.',
+    docs: [
+      { label: 'MDN — Element.innerHTML', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A node fetched again by ID right after innerHTML += looks identical but is a completely different object — old listeners are gone.',
+      'EVERY existing child loses listeners, not just ones near the newly added content — the whole subtree is destroyed and recreated.',
+    ],
+  },
+
+  'javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection': {
+    apis: ['querySelectorAll()', 'getElementsByClassName()', 'HTMLCollection', 'NodeList'],
+    related: [
+      { label: 'DOM Manipulation (overview)', route: '/javascript/dom' },
+      { label: 'Hidden Write Causes Thrashing', route: '/javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing' },
+      { label: 'innerHTML += Destroys Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' },
+    ],
+    tip: 'querySelectorAll is a frozen snapshot; getElementsByClassName/getElementsByTagName stay continuously synced with the live DOM, no re-query needed.',
+    docs: [
+      { label: 'MDN — HTMLCollection', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Iterating a live collection while adding matching elements mid-loop can skip elements, double-process them, or run far more iterations than expected.',
+      'element.children and form.elements are also live HTMLCollections, not just the getElementsBy* methods.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

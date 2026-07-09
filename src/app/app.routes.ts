@@ -1421,7 +1421,12 @@ export const routes: Routes = [
       { path: 'breaking-a-for-of-loop-triggers-generator-return-and-runs-finally', loadComponent: () => import('./components/frontend/javascript/generators/subtopics/break-triggers-generator-return-finally/break-triggers-generator-return-finally').then(m => m.BreakingAForOfLoopTriggersGeneratorReturnAndRunsFinallySubtopic) },
       { path: 'yield-delegation-forwards-next-values-and-throw-into-the-inner-generator', loadComponent: () => import('./components/frontend/javascript/generators/subtopics/yield-delegation-forwards-next-and-throw/yield-delegation-forwards-next-and-throw').then(m => m.YieldDelegationForwardsNextValuesAndThrowIntoTheInnerGeneratorSubtopic) },
     ] },
-    { path: 'dom',            loadComponent: () => import('./components/frontend/javascript/dom/dom').then(m => m.JsDom) },
+    { path: 'dom', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/dom/dom').then(m => m.JsDom) },
+      { path: 'hidden-write-inside-a-third-party-call-still-causes-layout-thrashing', loadComponent: () => import('./components/frontend/javascript/dom/subtopics/hidden-write-causes-layout-thrashing/hidden-write-causes-layout-thrashing').then(m => m.HiddenWriteInThirdPartyCallStillCausesLayoutThrashingSubtopic) },
+      { path: 'innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners', loadComponent: () => import('./components/frontend/javascript/dom/subtopics/innerhtml-plus-equals-destroys-listeners/innerhtml-plus-equals-destroys-listeners').then(m => m.InnerHtmlPlusEqualsReparsesTheWholeContainerAndDestroysChildListenersSubtopic) },
+      { path: 'queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection', loadComponent: () => import('./components/frontend/javascript/dom/subtopics/static-nodelist-vs-live-htmlcollection/static-nodelist-vs-live-htmlcollection').then(m => m.QuerySelectorAllIsStaticGetElementsByClassNameIsLiveSubtopic) },
+    ] },
     { path: 'events',         loadComponent: () => import('./components/frontend/javascript/events/events').then(m => m.JsEvents) },
     { path: 'browser-apis',   loadComponent: () => import('./components/frontend/javascript/browser-apis/browser-apis').then(m => m.JsBrowserApis) },
     { path: 'modules',        loadComponent: () => import('./components/frontend/javascript/modules/modules').then(m => m.JsModules) },

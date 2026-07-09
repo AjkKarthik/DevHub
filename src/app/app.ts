@@ -1373,6 +1373,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'break Triggers generator.return() and finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' },
     { label: 'yield* Forwards next() Values and throw()', route: '/javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator' },
   ],
+  dom: [
+    { label: 'A Hidden Write Still Causes Layout Thrashing', route: '/javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing' },
+    { label: 'innerHTML += Destroys Child Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' },
+    { label: 'querySelectorAll Is Static, getElementsByClassName Is Live', route: '/javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection' },
+  ],
 };
 
 @Component({

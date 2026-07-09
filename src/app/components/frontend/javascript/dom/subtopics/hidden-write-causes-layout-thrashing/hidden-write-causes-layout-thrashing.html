@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DOM Manipulation" topicRoute="/javascript/dom" subtopicLabel="A Hidden Write Inside a Third-Party Call Still Causes Layout Thrashing" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">A Hidden Write Inside a Third-Party Call Still Causes Layout Thrashing</h1>
+  <p class="page-subtitle">Layout thrashing depends on whether ANY write happened between two reads — not on whose code wrote it. A write buried inside an opaque function call is just as costly.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Two scenarios read <code>offsetHeight</code> twice, with different code running in between — one calls an "innocent-looking" function that secretly writes a class, the other does pure computation. Compare the timing of the second read in each.</p>
+    <app-live-playground title="Hidden write vs. no write between two layout reads" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/dom">DOM Manipulation</a> page's closing QnA in a measurable demo. Next, see how <code>innerHTML +=</code> silently destroys event listeners on every existing child, not just the newly added content.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DOM Manipulation"
+    topicRoute="/javascript/dom"
+    [next]="{ label: 'innerHTML += Reparses the Whole Container and Destroys Child Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' }"
+  />
+</div>

@@ -3110,7 +3110,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">DOM &amp; Browser</p>
-      <a routerLink="/javascript/dom"           routerLinkActive="active"><span class="nl-text">DOM Manipulation</span>@if(progress.isDone('js-dom')){<span class="nl-done">✓</span>}@if(diff('js-dom');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/dom" routerLinkActive="active">
+        <span class="nl-text">DOM Manipulation</span>
+        @if (progress.isDone('js-dom')) {<span class="nl-done">✓</span>}
+        @if (diff('js-dom'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('dom')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dom')"
+                  (click)="toggleSubtopics('dom', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dom'); as domSubs) {
+        @if (isSubtopicsExpanded('dom')) {
+          <div class="nav-subtopics">
+            @for (s of domSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/javascript/events"        routerLinkActive="active"><span class="nl-text">Events &amp; Custom Events</span>@if(progress.isDone('js-events')){<span class="nl-done">✓</span>}@if(diff('js-events');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/javascript/browser-apis"  routerLinkActive="active"><span class="nl-text">Browser APIs</span>@if(progress.isDone('js-browser-apis')){<span class="nl-done">✓</span>}@if(diff('js-browser-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

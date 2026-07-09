@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DOM Manipulation" topicRoute="/javascript/dom" subtopicLabel="querySelectorAll Is Static, getElementsByClassName Is Live" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">querySelectorAll Is Static, getElementsByClassName Is Live</h1>
+  <p class="page-subtitle">A NodeList from <code>querySelectorAll</code> is a frozen snapshot — an HTMLCollection from <code>getElementsByClassName</code> continuously reflects the current DOM, with no re-query needed.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="DOM Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Both a static NodeList and a live HTMLCollection are captured before a new matching element is added to the DOM. Compare their lengths afterward — then see the practical danger of iterating a live collection while mutating the DOM mid-loop.</p>
+    <app-live-playground title="Static NodeList vs. live HTMLCollection" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious DOM mechanics — a hidden write causing layout thrashing, <code>innerHTML +=</code> destroying listeners, and now static versus live collections. Return to the <a routerLink="/javascript/dom">DOM Manipulation</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DOM Manipulation"
+    topicRoute="/javascript/dom"
+    [prev]="{ label: 'innerHTML += Reparses the Whole Container and Destroys Child Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' }"
+  />
+</div>
