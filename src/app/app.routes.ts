@@ -1549,7 +1549,12 @@ export const routes: Routes = [
       { path: 'testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway', loadComponent: () => import('./components/frontend/react/performance/subtopics/usedeferredvalue-needs-memo-on-the-child/usedeferredvalue-needs-memo-on-the-child').then(m => m.UsedeferredvalueNeedsMemoOnTheChildSubtopic) },
       { path: 'testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched', loadComponent: () => import('./components/frontend/react/performance/subtopics/duplicate-import-calls-are-deduplicated-not-refetched/duplicate-import-calls-are-deduplicated-not-refetched').then(m => m.DuplicateImportCallsAreDeduplicatedNotRefetchedSubtopic) },
     ]},
-    { path: 'patterns',         loadComponent: () => import('./components/frontend/react/patterns/patterns').then(m => m.ReactPatterns) },
+    { path: 'patterns', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/patterns/patterns').then(m => m.ReactPatterns) },
+      { path: 'testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition', loadComponent: () => import('./components/frontend/react/patterns/subtopics/gettogglerprops-overwrites-consumers-own-id/gettogglerprops-overwrites-consumers-own-id').then(m => m.GettogglerpropsOverwritesConsumersOwnIdSubtopic) },
+      { path: 'testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key', loadComponent: () => import('./components/frontend/react/patterns/subtopics/useproductsearch-shares-localstorage-across-instances/useproductsearch-shares-localstorage-across-instances').then(m => m.UseproductsearchSharesLocalstorageAcrossInstancesSubtopic) },
+      { path: 'testing-that-usecounters-reset-is-frozen-to-the-mount-time-initialcount-ignoring-later-prop-changes', loadComponent: () => import('./components/frontend/react/patterns/subtopics/usecounter-reset-frozen-to-mount-time-initial-count/usecounter-reset-frozen-to-mount-time-initial-count').then(m => m.UsecounterResetFrozenToMountTimeInitialCountSubtopic) },
+    ]},
     { path: 'typescript',       loadComponent: () => import('./components/frontend/react/typescript/typescript').then(m => m.ReactTypescript) },
     { path: 'testing',          loadComponent: () => import('./components/frontend/react/testing/testing').then(m => m.ReactTesting) },
     { path: 'nextjs',           loadComponent: () => import('./components/frontend/react/nextjs/nextjs').then(m => m.ReactNextjs) },

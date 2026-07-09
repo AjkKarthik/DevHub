@@ -1252,6 +1252,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'useDeferredValue Needs memo on the Child', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' },
     { label: 'Duplicate Dynamic import() Calls Are Deduplicated, Not Refetched', route: '/react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched' },
   ],
+  // 'patterns' is collision-free for now — JS and Go hubs also route to
+  // 'patterns' but neither has added subtopics yet. Hub-prefix to
+  // 'react-patterns' if either of them claims the bare key later.
+  'patterns': [
+    { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
+    { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
+    { label: 'useCounter’s reset() Is Frozen to the Mount-Time initialCount', route: '/react/patterns/testing-that-usecounters-reset-is-frozen-to-the-mount-time-initialcount-ignoring-later-prop-changes' },
+  ],
 };
 
 @Component({

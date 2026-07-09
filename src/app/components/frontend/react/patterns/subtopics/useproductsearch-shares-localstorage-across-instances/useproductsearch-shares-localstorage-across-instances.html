@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Patterns"
+    topicRoute="/react/patterns"
+    subtopicLabel="useProductSearch Shares localStorage Across Every Instance" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That useProductSearch Shares localStorage Across Every Component Instance via Its Hardcoded Key</h1>
+  <p class="page-subtitle">
+    The main page's composed useProductSearch hook hardcodes a 'lastSearch' localStorage key — this checks
+    whether two unrelated components calling it independently silently interfere with each other.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="React 18" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two separate <code>SearchWidget</code> components, each calling the main page's own
+      <code>useProductSearch()</code> independently.
+    </p>
+    <app-live-playground
+      title="useProductSearch — cross-instance localStorage leak"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends "custom hooks don't share state" to a case where they genuinely can, before checking a
+      related freeze in the state initializer pattern's reset() function in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Patterns"
+    topicRoute="/react/patterns"
+    [prev]="{ label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' }"
+    [next]="{ label: 'useCounter’s reset() Is Frozen to the Mount-Time initialCount', route: '/react/patterns/testing-that-usecounters-reset-is-frozen-to-the-mount-time-initialcount-ignoring-later-prop-changes' }" />
+</div>

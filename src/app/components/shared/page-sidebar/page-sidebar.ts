@@ -12296,6 +12296,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition': {
+    apis: ['prop getter', 'useId()', 'object literal field order'],
+    related: [
+      { label: 'React Patterns (overview)', route: '/react/patterns' },
+      { label: 'useProductSearch localStorage Leak', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
+      { label: 'React.memo and Object Props (React Fundamentals)', route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
+    ],
+    tip: 'A prop getter needs composition logic per field — onClick correctly merges the consumer\'s handler with the internal one, but a bare id field placed after ...rest silently overwrites whatever the consumer passed.',
+    docs: [
+      { label: 'React Docs — useId', url: 'https://react.dev/reference/react/useId' },
+    ],
+    resources: [
+      { label: 'kentcdodds/downshift', url: 'https://github.com/downshift-js/downshift', badge: 'code' },
+    ],
+    gotchas: [
+      'Object literal field order determines the winner when the same key appears twice — last write wins, silently.',
+      'This happens with zero errors or warnings — only checking the actual rendered attribute reveals it.',
+      'id is a realistic field for a consumer to want to override, for accessibility linking or test selectors.',
+    ],
+  },
+
+  'react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key': {
+    apis: ['localStorage', 'custom hooks', 'useLocalStorage(key, value)'],
+    related: [
+      { label: 'React Patterns (overview)', route: '/react/patterns' },
+      { label: 'getTogglerProps id Overwrite', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
+      { label: 'Module-Level Hook Leak (Advanced Hooks)', route: '/react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances' },
+    ],
+    tip: 'localStorage is a single global store, not scoped per component — a hardcoded key inside a reusable hook makes every call site read and write the same physical slot.',
+    docs: [
+      { label: 'MDN — Window.localStorage', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'query and debouncedQuery stay correctly isolated per instance — only the localStorage-backed savedQuery leaks.',
+      'This is a different mechanism from the module-level-variable hook leak — the storage itself is external to JS memory entirely.',
+      'The fix is parameterizing the storage key, not avoiding localStorage inside hooks altogether.',
+    ],
+  },
+
+  'react/patterns/testing-that-usecounters-reset-is-frozen-to-the-mount-time-initialcount-ignoring-later-prop-changes': {
+    apis: ['useRef()', 'state initializer pattern', 'reset()'],
+    related: [
+      { label: 'React Patterns (overview)', route: '/react/patterns' },
+      { label: 'useProductSearch localStorage Leak', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
+      { label: 'Advanced Hooks', route: '/react/hooks-advanced' },
+    ],
+    tip: 'useRef\'s argument is only read on the very first render — reset() always restores to the value at mount time, not whatever the initial-value argument currently is.',
+    docs: [
+      { label: 'React Docs — useRef', url: 'https://react.dev/reference/react/useRef' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'This is a realistic scenario whenever the initial value is derived from a prop, URL param, or user selection.',
+      'The fix requires an explicit useEffect syncing the ref to the latest argument, if that behavior is actually wanted.',
+      'The pattern LOOKS like it tracks "the initial value" but actually tracks "the value at first mount."',
+    ],
+  },
+
   'react/typescript': {
     apis: ['React.ReactNode', 'React.FC', 'React.ChangeEvent<T>', 'forwardRef<RefType,Props>', 'ComponentPropsWithoutRef<T>'],
     related: [
