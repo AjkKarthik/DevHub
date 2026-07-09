@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ES Modules" topicRoute="/javascript/modules" subtopicLabel="Modules Are Singletons — Shared State Across Every Importer" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Modules Are Singletons — Shared State Across Every Importer</h1>
+  <p class="page-subtitle">A module's file is evaluated exactly once, no matter how many other files import it — every importer shares the exact same instance.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A shared <code>store.ts</code> module is imported from three separate files. Watch how many times its top-level log actually prints, and confirm mutations from one file's import are visible through every other file's import.</p>
+    <app-live-playground title="A module shared across three separate importers" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/modules">ES Modules</a> page's singleton claim in real cross-file behavior — and it's exactly the guarantee that makes circular imports coherent at all. Next, see what happens when two modules import each other and one reads the other's export too early.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="ES Modules"
+    topicRoute="/javascript/modules"
+    [prev]="{ label: 'ESM Imports Are Live Bindings, Not Value Copies', route: '/javascript/modules/esm-imports-are-live-bindings-not-value-copies' }"
+    [next]="{ label: 'A Circular Import’s Binding Exists but Its Value Is Undefined', route: '/javascript/modules/circular-import-binding-exists-but-value-is-undefined' }"
+  />
+</div>

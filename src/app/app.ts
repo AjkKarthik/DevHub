@@ -1388,6 +1388,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Response Body Can Only Be Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' },
     { label: 'AbortController Stops Every Pending Retry', route: '/javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately' },
   ],
+  // NOTE: keyed 'js-modules', NOT bare 'modules' — the TypeScript hub's own
+  // /typescript/modules topic already claims the bare key.
+  'js-modules': [
+    { label: 'ESM Imports Are Live Bindings', route: '/javascript/modules/esm-imports-are-live-bindings-not-value-copies' },
+    { label: 'Modules Are Singletons', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' },
+    { label: 'Circular Import Binding Exists but Value Is Undefined', route: '/javascript/modules/circular-import-binding-exists-but-value-is-undefined' },
+  ],
 };
 
 @Component({

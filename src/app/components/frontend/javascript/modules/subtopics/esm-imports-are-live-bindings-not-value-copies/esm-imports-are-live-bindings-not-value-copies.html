@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ES Modules" topicRoute="/javascript/modules" subtopicLabel="ESM Imports Are Live Bindings, Not Value Copies" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">ESM Imports Are Live Bindings, Not Value Copies</h1>
+  <p class="page-subtitle">An imported binding stays connected to the exporting module's own variable — when it changes there, every importer sees the new value automatically, with no re-import needed.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A real two-file ESM setup — <code>counter.ts</code> exports a mutable count, <code>index.ts</code> imports it and watches it update after each <code>increment()</code> call, contrasted with a plain value-copy destructure.</p>
+    <app-live-playground title="Live ESM binding vs. a plain value copy" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/modules">ES Modules</a> page's live-binding claim in real cross-file behavior. Next, see how modules are singletons — evaluated once and sharing state across every importer, no matter how many files import them.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="ES Modules"
+    topicRoute="/javascript/modules"
+    [next]="{ label: 'Modules Are Singletons — Shared State Across Every Importer', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' }"
+  />
+</div>

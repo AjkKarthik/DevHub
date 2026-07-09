@@ -14165,6 +14165,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/modules': {
+    apis: ['import', 'export', 'import()', 'import.meta'],
+    related: [
+      { label: 'Bundlers & Build Tools', route: '/javascript/bundlers'    },
+      { label: 'Browser APIs',           route: '/javascript/browser-apis' },
+      { label: 'Design Patterns in JS',  route: '/javascript/patterns'    },
+    ],
+    tip: 'ESM imports are live bindings, not value copies — if the exporting module updates a value later, every importer sees the change automatically.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A module\'s file is evaluated exactly once, no matter how many files import it — every importer shares the same singleton instance.',
+      'A circular import\'s binding exists but its value can be undefined if read at a module\'s own top level before the exporting module finishes.',
+    ],
+  },
+
+  'javascript/modules/esm-imports-are-live-bindings-not-value-copies': {
+    apis: ['export', 'import', 'live binding'],
+    related: [
+      { label: 'ES Modules (overview)', route: '/javascript/modules' },
+      { label: 'Modules Are Singletons', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' },
+      { label: 'Circular Import Binding Undefined', route: '/javascript/modules/circular-import-binding-exists-but-value-is-undefined' },
+    ],
+    tip: 'An import is a live connection to the exporting module\'s own binding, not a snapshot copied at import time — this applies even to primitive values.',
+    docs: [
+      { label: 'MDN — import', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'CommonJS require() copies the value at require-time — later reassignment in the exporting module is invisible to earlier requirers.',
+      'An imported binding is read-only from the importer\'s side — only the exporting module can reassign it.',
+    ],
+  },
+
+  'javascript/modules/modules-are-singletons-shared-state-across-importers': {
+    apis: ['import', 'module singleton'],
+    related: [
+      { label: 'ES Modules (overview)', route: '/javascript/modules' },
+      { label: 'ESM Live Bindings', route: '/javascript/modules/esm-imports-are-live-bindings-not-value-copies' },
+      { label: 'Circular Import Binding Undefined', route: '/javascript/modules/circular-import-binding-exists-but-value-is-undefined' },
+    ],
+    tip: 'A module\'s top-level code runs exactly once, the first time it\'s needed — every import statement anywhere in the graph resolves to that same instance.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This is what makes circular imports coherent at all — if a module re-ran on every import, a cycle would either infinite-loop or produce inconsistent state.',
+      'A factory function that returns a new object per call is the opposite pattern — each caller gets independent state, not shared state.',
+    ],
+  },
+
+  'javascript/modules/circular-import-binding-exists-but-value-is-undefined': {
+    apis: ['import', 'export', 'circular dependency'],
+    related: [
+      { label: 'ES Modules (overview)', route: '/javascript/modules' },
+      { label: 'ESM Live Bindings', route: '/javascript/modules/esm-imports-are-live-bindings-not-value-copies' },
+      { label: 'Modules Are Singletons', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' },
+    ],
+    tip: 'Reading a circularly-imported value at a module\'s own top level can see undefined — deferring the read into a function body (called later) sees the real value.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A circular import never throws or fails outright — the binding is wired up correctly, only its value is temporarily unset.',
+      'The fix is restructuring shared values into a third, non-circular module, or deferring the read until after the whole graph settles.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

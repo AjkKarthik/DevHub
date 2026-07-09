@@ -1439,7 +1439,12 @@ export const routes: Routes = [
       { path: 'response-body-can-only-be-consumed-once', loadComponent: () => import('./components/frontend/javascript/browser-apis/subtopics/response-body-can-only-be-consumed-once/response-body-can-only-be-consumed-once').then(m => m.ResponseBodyCanOnlyBeConsumedOnceSubtopic) },
       { path: 'abort-signal-stops-all-pending-retries-immediately', loadComponent: () => import('./components/frontend/javascript/browser-apis/subtopics/abort-signal-stops-all-pending-retries-immediately/abort-signal-stops-all-pending-retries-immediately').then(m => m.AbortSignalStopsAllPendingRetriesImmediatelySubtopic) },
     ] },
-    { path: 'modules',        loadComponent: () => import('./components/frontend/javascript/modules/modules').then(m => m.JsModules) },
+    { path: 'modules', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/modules/modules').then(m => m.JsModules) },
+      { path: 'esm-imports-are-live-bindings-not-value-copies', loadComponent: () => import('./components/frontend/javascript/modules/subtopics/esm-imports-are-live-bindings-not-value-copies/esm-imports-are-live-bindings-not-value-copies').then(m => m.EsmImportsAreLiveBindingsNotValueCopiesSubtopic) },
+      { path: 'modules-are-singletons-shared-state-across-importers', loadComponent: () => import('./components/frontend/javascript/modules/subtopics/modules-are-singletons-shared-state-across-importers/modules-are-singletons-shared-state-across-importers').then(m => m.ModulesAreSingletonsSharedStateAcrossImportersSubtopic) },
+      { path: 'circular-import-binding-exists-but-value-is-undefined', loadComponent: () => import('./components/frontend/javascript/modules/subtopics/circular-import-binding-exists-but-value-is-undefined/circular-import-binding-exists-but-value-is-undefined').then(m => m.CircularImportBindingExistsButValueIsUndefinedSubtopic) },
+    ] },
     { path: 'bundlers',       loadComponent: () => import('./components/frontend/javascript/bundlers/bundlers').then(m => m.JsBundlers) },
     { path: 'patterns',       loadComponent: () => import('./components/frontend/javascript/patterns/patterns').then(m => m.JsPatterns) },
     { path: 'functional',     loadComponent: () => import('./components/frontend/javascript/functional/functional').then(m => m.JsFunctional) },
