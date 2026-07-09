@@ -1385,7 +1385,12 @@ export const routes: Routes = [
       { path: 'testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead', loadComponent: () => import('./components/frontend/javascript/objects/subtopics/object-assign-invokes-setters-spread-does-not/object-assign-invokes-setters-spread-does-not').then(m => m.ObjectAssignInvokesSettersSpreadDoesNotSubtopic) },
       { path: 'testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function', loadComponent: () => import('./components/frontend/javascript/objects/subtopics/structuredclone-strips-class-prototype-throws-on-functions/structuredclone-strips-class-prototype-throws-on-functions').then(m => m.StructuredcloneStripsClassPrototypeThrowsOnFunctionsSubtopic) },
     ] },
-    { path: 'destructuring',  loadComponent: () => import('./components/frontend/javascript/destructuring/destructuring').then(m => m.JsDestructuring) },
+    { path: 'destructuring', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/destructuring/destructuring').then(m => m.JsDestructuring) },
+      { path: 'testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt', loadComponent: () => import('./components/frontend/javascript/destructuring/subtopics/destructured-method-loses-this-context/destructured-method-loses-this-context').then(m => m.DestructuredMethodLosesThisContextSubtopic) },
+      { path: 'testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens', loadComponent: () => import('./components/frontend/javascript/destructuring/subtopics/bare-destructuring-assignment-needs-parens-real-syntaxerror/bare-destructuring-assignment-needs-parens-real-syntaxerror').then(m => m.BareDestructuringAssignmentNeedsParensRealSyntaxerrorSubtopic) },
+      { path: 'testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper', loadComponent: () => import('./components/frontend/javascript/destructuring/subtopics/one-level-default-doesnt-guard-a-deeper-nested-property/one-level-default-doesnt-guard-a-deeper-nested-property').then(m => m.OneLevelDefaultDoesntGuardADeeperNestedPropertySubtopic) },
+    ] },
     { path: 'arrays',         loadComponent: () => import('./components/frontend/javascript/arrays/arrays').then(m => m.JsArrays) },
     { path: 'promises',       loadComponent: () => import('./components/frontend/javascript/promises/promises').then(m => m.JsPromises) },
     { path: 'event-loop',     loadComponent: () => import('./components/frontend/javascript/event-loop/event-loop').then(m => m.JsEventLoop) },

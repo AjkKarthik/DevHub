@@ -1341,6 +1341,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Object.assign Invokes Setters, Spread Doesn’t', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' },
     { label: 'structuredClone Strips Class Prototype, Throws on Functions', route: '/javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function' },
   ],
+  destructuring: [
+    { label: 'A Destructured Method Loses Its this Context', route: '/javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt' },
+    { label: 'Bare Destructuring Assignment Needs Parens — a Real SyntaxError', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' },
+    { label: 'One-Level Default Doesn’t Guard a Deeper Nested Property', route: '/javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper' },
+  ],
 };
 
 @Component({

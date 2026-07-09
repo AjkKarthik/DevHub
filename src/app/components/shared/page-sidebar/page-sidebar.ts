@@ -13437,6 +13437,90 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/destructuring': {
+    apis: ['destructuring', 'spread', 'rest'],
+    related: [
+      { label: 'Object Fundamentals',  route: '/javascript/objects'   },
+      { label: 'Functions Deep Dive',  route: '/javascript/functions' },
+      { label: 'Arrays & Iteration',   route: '/javascript/arrays'    },
+    ],
+    tip: 'A nested destructuring pattern is only as safe as its least-defaulted level — every level that might be missing needs its own = {} default, not just the outermost one.',
+    docs: [
+      { label: 'MDN — Destructuring assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Extracting a method via destructuring loses its this — the call site, not the destructuring, is what breaks it.',
+      'A bare object destructuring ASSIGNMENT (not declaration) needs parens — the parser reads a leading { as a block otherwise.',
+      'Each nesting level\'s default only protects that level — a default at level 1 does nothing for a missing level 2.',
+    ],
+  },
+
+  'javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt': {
+    apis: ['this', 'implicit binding', 'Function.prototype.bind()'],
+    related: [
+      { label: 'Destructuring & Spread (overview)', route: '/javascript/destructuring' },
+      { label: 'Bare Assignment Needs Parens', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' },
+      { label: 'One-Level Default Doesn’t Guard Deeper', route: '/javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper' },
+    ],
+    tip: 'obj.method() always works via implicit binding, on any object reference — the failure specifically requires pulling the FUNCTION VALUE itself into a bare variable and calling it with no object prefix.',
+    docs: [
+      { label: 'MDN — this', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Destructuring itself does nothing wrong — the function value copied out is completely normal at that point.',
+      'The failure happens at the CALL, not the destructure — calling the bare function with no object prefix triggers default binding.',
+      '.bind(obj) permanently fixes this, independent of how the resulting function is later called.',
+    ],
+  },
+
+  'javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens': {
+    apis: ['destructuring assignment', 'block statement', 'SyntaxError'],
+    related: [
+      { label: 'Destructuring & Spread (overview)', route: '/javascript/destructuring' },
+      { label: 'Destructured Method Loses this', route: '/javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt' },
+      { label: 'One-Level Default Doesn’t Guard Deeper', route: '/javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper' },
+    ],
+    tip: 'const {x} = obj never needs parens — the leading const/let/var already rules out the block-statement interpretation before the parser reaches the {.',
+    docs: [
+      { label: 'MDN — Destructuring assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A statement starting with a bare { is always parsed as a block opener first — this is a hard grammar rule, not a style preference.',
+      'Wrapping in (...) forces expression context, since there\'s no such thing as a "parenthesized block statement".',
+      'Array destructuring assignment ([a,b] = arr) does NOT need parens — a leading [ has no competing block interpretation.',
+    ],
+  },
+
+  'javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper': {
+    apis: ['nested destructuring', 'default values', 'optional chaining'],
+    related: [
+      { label: 'Destructuring & Spread (overview)', route: '/javascript/destructuring' },
+      { label: 'Destructured Method Loses this', route: '/javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt' },
+      { label: 'Bare Assignment Needs Parens', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' },
+    ],
+    tip: 'A nested pattern is only as safe as its least-defaulted level — an outer default resolving fine says nothing about whether a deeper level will also be present.',
+    docs: [
+      { label: 'MDN — Destructuring assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Each nesting level\'s default is evaluated independently — it has no awareness of what happens deeper in the pattern.',
+      'A missing intermediate level with no default of its own throws, even if every OTHER level has a default.',
+      'A genuinely deep pattern needs the same = {} treatment repeated at every additional level, not just the outermost one.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

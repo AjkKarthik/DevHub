@@ -1,0 +1,49 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Destructuring &amp; Spread"
+    topicRoute="/javascript/destructuring"
+    subtopicLabel="Bare Destructuring Assignment Needs Parens" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That a Bare Destructuring Assignment to Existing Variables Throws a Real SyntaxError Without Parens</h1>
+  <p class="page-subtitle">
+    The QnA explains the parser sees a leading brace as a block — this actually runs the broken
+    pattern via new Function() to catch the real SyntaxError, next to the working parenthesized version.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      The same object destructuring assignment, run once bare (no parens) and once wrapped in
+      <code>(...)</code>, both compiled at runtime to catch the real result.
+    </p>
+    <app-live-playground
+      title="Bare destructuring assignment — the real SyntaxError"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is a pure parsing quirk specific to bare object destructuring assignment. The final
+      subtopic returns to a semantic gotcha: why a default at one level of nesting doesn't protect a
+      deeper property.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Destructuring &amp; Spread"
+    topicRoute="/javascript/destructuring"
+    [prev]="{ label: 'A Destructured Method Loses Its this Context', route: '/javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt' }"
+    [next]="{ label: 'One-Level Default Doesn’t Guard a Deeper Nested Property', route: '/javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper' }" />
+</div>
