@@ -1579,7 +1579,12 @@ export const routes: Routes = [
       { path: 'testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary', loadComponent: () => import('./components/frontend/react/native/subtopics/getitemlayout-assumes-uniform-row-height/getitemlayout-assumes-uniform-row-height').then(m => m.GetitemlayoutAssumesUniformRowHeightSubtopic) },
       { path: 'testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo', loadComponent: () => import('./components/frontend/react/native/subtopics/stylesheet-create-doesnt-replace-react-memo/stylesheet-create-doesnt-replace-react-memo').then(m => m.StylesheetCreateDoesntReplaceReactMemoSubtopic) },
     ] },
-    { path: 'hook-form',        loadComponent: () => import('./components/frontend/react/hook-form/hook-form').then(m => m.ReactHookForm) },
+    { path: 'hook-form', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/hook-form/hook-form').then(m => m.ReactHookForm) },
+      { path: 'testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field', loadComponent: () => import('./components/frontend/react/hook-form/subtopics/watch-rerenders-whole-component-every-keystroke/watch-rerenders-whole-component-every-keystroke').then(m => m.WatchRerendersWholeComponentEveryKeystrokeSubtopic) },
+      { path: 'testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove', loadComponent: () => import('./components/frontend/react/hook-form/subtopics/index-key-shows-wrong-value-after-fieldarray-remove/index-key-shows-wrong-value-after-fieldarray-remove').then(m => m.IndexKeyShowsWrongValueAfterFieldarrayRemoveSubtopic) },
+      { path: 'testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings', loadComponent: () => import('./components/frontend/react/hook-form/subtopics/missing-valueasnumber-breaks-arithmetic-silently/missing-valueasnumber-breaks-arithmetic-silently').then(m => m.MissingValueasnumberBreaksArithmeticSilentlySubtopic) },
+    ] },
     { path: 'animations',       loadComponent: () => import('./components/frontend/react/animations/animations').then(m => m.ReactAnimations) },
     { path: 'security',         loadComponent: () => import('./components/frontend/react/security/security').then(m => m.ReactSecurity) },
     { path: 'cheatsheet',       loadComponent: () => import('./components/frontend/react/cheatsheet/cheatsheet').then(m => m.ReactCheatsheet) },

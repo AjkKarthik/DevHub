@@ -2655,7 +2655,26 @@
           </div>
         }
       }
-      <a routerLink="/react/hook-form"      routerLinkActive="active"><span class="nl-text">React Hook Form</span>@if(progress.isDone('react-hook-form')){<span class="nl-done">✓</span>}@if(diff('react-hook-form');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/hook-form" routerLinkActive="active">
+        <span class="nl-text">React Hook Form</span>
+        @if (progress.isDone('react-hook-form')) {<span class="nl-done">✓</span>}
+        @if (diff('react-hook-form'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('hook-form')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('hook-form')"
+                  (click)="toggleSubtopics('hook-form', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('hook-form'); as reactHookFormSubs) {
+        @if (isSubtopicsExpanded('hook-form')) {
+          <div class="nav-subtopics">
+            @for (s of reactHookFormSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/react/nextjs" routerLinkActive="active">
         <span class="nl-text">Next.js App Router</span>
         @if (progress.isDone('react-nextjs')) {<span class="nl-done">✓</span>}

@@ -1287,6 +1287,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'getItemLayout Assumes Every Row Is the Same Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' },
     { label: 'StyleSheet.create() Doesn’t Replace React.memo', route: '/react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo' },
   ],
+  'hook-form': [
+    { label: 'watch() Re-renders the Whole Component', route: '/react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field' },
+    { label: 'Index Keys Show the Wrong Value After remove()', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' },
+    { label: 'Missing valueAsNumber Breaks Arithmetic Silently', route: '/react/hook-form/testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings' },
+  ],
 };
 
 @Component({

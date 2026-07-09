@@ -12835,6 +12835,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field': {
+    apis: ['watch()', 'getValues()', 'useWatch()'],
+    related: [
+      { label: 'React Hook Form (overview)', route: '/react/hook-form' },
+      { label: 'Index Keys Show Wrong Value', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' },
+      { label: 'React Performance', route: '/react/performance' },
+    ],
+    tip: 'For a watch() call that\'s only needed by a small piece of UI, isolate it into its own child component (or use useWatch, which subscribes independently of the parent) to contain the re-render cost.',
+    docs: [
+      { label: 'RHF Docs — watch', url: 'https://react-hook-form.com/docs/useform/watch' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+    ],
+    gotchas: [
+      'watch() re-renders the WHOLE component, not just the field it names — typing in any other field also triggers it.',
+      'A single watch() call anywhere in a component undoes RHF\'s zero-re-render refs-based design for that entire component.',
+      'getValues() reads current values without subscribing to changes — ideal for one-shot reads inside event handlers.',
+    ],
+  },
+
+  'react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove': {
+    apis: ['useFieldArray()', 'field.id', 'remove()'],
+    related: [
+      { label: 'React Hook Form (overview)', route: '/react/hook-form' },
+      { label: 'watch() Re-renders Whole Component', route: '/react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field' },
+      { label: 'Missing valueAsNumber Breaks Math', route: '/react/hook-form/testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings' },
+    ],
+    tip: 'Because RHF inputs are uncontrolled, a wrong key causes React to reuse the wrong DOM node WITHOUT resetting its physical value — worse than the same bug in a controlled list.',
+    docs: [
+      { label: 'RHF Docs — useFieldArray', url: 'https://react-hook-form.com/docs/usefieldarray' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+    ],
+    gotchas: [
+      'field.id is RHF\'s own stable identifier — generated specifically to be used as the React key, not the array index.',
+      'The bug is deterministic, not a rare edge case — it happens every time an item is removed/reordered from the middle of an index-keyed list.',
+      'The wrong value appears with no re-render needed to cause it — it\'s a direct consequence of DOM node reuse plus uncontrolled inputs.',
+    ],
+  },
+
+  'react/hook-form/testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings': {
+    apis: ['valueAsNumber', 'z.coerce.number()', 'register()'],
+    related: [
+      { label: 'React Hook Form (overview)', route: '/react/hook-form' },
+      { label: 'watch() Re-renders Whole Component', route: '/react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field' },
+      { label: 'Index Keys Show Wrong Value', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' },
+    ],
+    tip: 'type="number" is a browser UI hint only — it never changes the JavaScript type RHF captures. Only valueAsNumber or z.coerce.number() produce a real number.',
+    docs: [
+      { label: 'RHF Docs — register', url: 'https://react-hook-form.com/docs/useform/register' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+    ],
+    gotchas: [
+      '"42" + "8" evaluates to "428" (string concatenation), not 50 — JavaScript\'s + operator, not a bug in RHF itself.',
+      'There is no error, warning, or NaN to signal the mistake — the wrong result looks like a plausible number.',
+      'z.number() alone REJECTS a string with a validation error — it doesn\'t silently coerce it the way valueAsNumber or z.coerce.number() does.',
+    ],
+  },
+
   // ════════════════════════════════════════════════════════════════════════════
   // ASP.NET CORE PAGES
   // ════════════════════════════════════════════════════════════════════════════

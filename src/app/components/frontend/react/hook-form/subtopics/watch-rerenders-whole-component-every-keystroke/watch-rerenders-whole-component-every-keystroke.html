@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Hook Form"
+    topicRoute="/react/hook-form"
+    subtopicLabel="watch() Re-renders the Whole Component, Not Just the Field" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That watch() Re-renders the Whole Component on Every Keystroke, Not Just the Watched Field</h1>
+  <p class="page-subtitle">
+    Mistake #1 says watch() causes a re-render on every change — this makes the blast radius explicit
+    with a real render counter, comparing a watched field against a completely unrelated one.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="React Hook Form 7.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two forms side by side — one calls <code>watch('name')</code>, the other reads values only via
+      <code>getValues()</code>. Both show a live render counter.
+    </p>
+    <app-live-playground
+      title="watch() vs getValues() — real render counts"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the performance angle on RHF's core design. The next subtopic moves to correctness: what
+      happens to a field's typed value when useFieldArray items are removed and the wrong React key is
+      used.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Hook Form"
+    topicRoute="/react/hook-form"
+    [next]="{ label: 'Index Keys Show the Wrong Value After useFieldArray remove()', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' }" />
+</div>
