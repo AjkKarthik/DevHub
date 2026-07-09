@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Performance"
+    topicRoute="/react/performance"
+    subtopicLabel="Duplicate Dynamic import() Calls Are Deduplicated, Not Refetched" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Duplicate Dynamic import() Calls Are Deduplicated, Not Double-Fetched</h1>
+  <p class="page-subtitle">
+    The main page's preload-on-hover pattern creates a second import() call to the same module
+    React.lazy already calls internally — this checks whether that causes a duplicate fetch and
+    evaluation, or resolves from a shared cache.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="React 16.6+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A preload-on-hover <code>import()</code> call and <code>React.lazy</code>'s own separate
+      <code>import()</code> call to the identical module, with a top-level eval counter.
+    </p>
+    <app-live-playground
+      title="Duplicate import() calls — one module, one evaluation"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own performance
+      claims — memo's real blind spot with children, useDeferredValue's hard dependency on memo, and now
+      the preload pattern's actual (safe) interaction with React.lazy.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Performance"
+    topicRoute="/react/performance"
+    [prev]="{ label: 'useDeferredValue Needs memo on the Child', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' }" />
+</div>

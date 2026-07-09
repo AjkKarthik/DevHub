@@ -1543,7 +1543,12 @@ export const routes: Routes = [
       { path: 'testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request', loadComponent: () => import('./components/frontend/react/tanstack-query/subtopics/abort-signal-must-be-wired-into-fetch-to-cancel/abort-signal-must-be-wired-into-fetch-to-cancel').then(m => m.AbortSignalMustBeWiredIntoFetchToCancelSubtopic) },
       { path: 'testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one', loadComponent: () => import('./components/frontend/react/tanstack-query/subtopics/initialdata-skips-fetch-placeholderdata-always-fetches/initialdata-skips-fetch-placeholderdata-always-fetches').then(m => m.InitialdataSkipsFetchPlaceholderdataAlwaysFetchesSubtopic) },
     ]},
-    { path: 'performance',      loadComponent: () => import('./components/frontend/react/performance/performance').then(m => m.ReactPerformance) },
+    { path: 'performance', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/performance/performance').then(m => m.ReactPerformance) },
+      { path: 'testing-that-children-is-a-fresh-reference-every-render-defeating-memo-even-with-identical-jsx', loadComponent: () => import('./components/frontend/react/performance/subtopics/children-prop-is-a-fresh-reference-every-render/children-prop-is-a-fresh-reference-every-render').then(m => m.ChildrenPropIsAFreshReferenceEveryRenderSubtopic) },
+      { path: 'testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway', loadComponent: () => import('./components/frontend/react/performance/subtopics/usedeferredvalue-needs-memo-on-the-child/usedeferredvalue-needs-memo-on-the-child').then(m => m.UsedeferredvalueNeedsMemoOnTheChildSubtopic) },
+      { path: 'testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched', loadComponent: () => import('./components/frontend/react/performance/subtopics/duplicate-import-calls-are-deduplicated-not-refetched/duplicate-import-calls-are-deduplicated-not-refetched').then(m => m.DuplicateImportCallsAreDeduplicatedNotRefetchedSubtopic) },
+    ]},
     { path: 'patterns',         loadComponent: () => import('./components/frontend/react/patterns/patterns').then(m => m.ReactPatterns) },
     { path: 'typescript',       loadComponent: () => import('./components/frontend/react/typescript/typescript').then(m => m.ReactTypescript) },
     { path: 'testing',          loadComponent: () => import('./components/frontend/react/testing/testing').then(m => m.ReactTesting) },

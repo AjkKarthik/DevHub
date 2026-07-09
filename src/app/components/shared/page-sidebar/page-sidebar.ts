@@ -12209,6 +12209,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/performance/testing-that-children-is-a-fresh-reference-every-render-defeating-memo-even-with-identical-jsx': {
+    apis: ['React.memo()', 'children prop', 'JSX element identity'],
+    related: [
+      { label: 'React Performance (overview)', route: '/react/performance' },
+      { label: 'useDeferredValue and memo', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' },
+      { label: 'React.memo and Object Props (React Fundamentals)', route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
+    ],
+    tip: 'JSX compiles to a function call that allocates a new element object on every render — children created inline always has a fresh reference, regardless of how static it looks in the source.',
+    docs: [
+      { label: 'React Docs — memo', url: 'https://react.dev/reference/react/memo' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'This is exactly why the main page notes components receiving children are usually not worth wrapping in memo.',
+      'Hoisting genuinely static children to a module-level constant is the idiomatic fix, not wrapping the JSX in useMemo.',
+      'memo still adds real comparison overhead here even though it never actually skips a render.',
+    ],
+  },
+
+  'react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway': {
+    apis: ['useDeferredValue()', 'React.memo()'],
+    related: [
+      { label: 'React Performance (overview)', route: '/react/performance' },
+      { label: 'children Fresh Reference', route: '/react/performance/testing-that-children-is-a-fresh-reference-every-render-defeating-memo-even-with-identical-jsx' },
+      { label: 'Duplicate import() Calls', route: '/react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched' },
+    ],
+    tip: 'useDeferredValue only computes a lagging value — memo is what actually lets a component skip a render when that value hasn\'t caught up yet.',
+    docs: [
+      { label: 'React Docs — useDeferredValue', url: 'https://react.dev/reference/react/useDeferredValue' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Without memo on the consumer, the deferred value is computed correctly but nothing in the tree benefits from it.',
+      'The component calling useDeferredValue itself still re-renders at full speed — the optimization target is the child, not the caller.',
+      'This is a hard requirement, not a stylistic pairing — dropping memo eliminates the benefit entirely.',
+    ],
+  },
+
+  'react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched': {
+    apis: ['import()', 'React.lazy()', 'module specifier cache'],
+    related: [
+      { label: 'React Performance (overview)', route: '/react/performance' },
+      { label: 'useDeferredValue and memo', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' },
+      { label: 'Next.js App Router', route: '/react/nextjs' },
+    ],
+    tip: 'The module loader caches by resolved specifier, independent of React — a second import() call to the same path reuses the existing module record instead of re-fetching.',
+    docs: [
+      { label: 'React Docs — lazy', url: 'https://react.dev/reference/react/lazy' },
+      { label: 'MDN — import()',    url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'No coordination is needed between a preload call and React.lazy\'s own internal import() call.',
+      'This is a JS module-system property, not something React or a specific bundler implements.',
+      'The module\'s top-level code runs exactly once regardless of how many places call import() on it.',
+    ],
+  },
+
   'react/patterns': {
     apis: ['createContext()', 'React.memo()', 'forwardRef()', 'React.Children', 'render prop', 'HOC'],
     related: [

@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Performance"
+    topicRoute="/react/performance"
+    subtopicLabel="useDeferredValue Needs memo on the Child" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That useDeferredValue Needs memo on the Child, or It Re-renders Immediately Anyway</h1>
+  <p class="page-subtitle">
+    The main page shows useDeferredValue paired with memo as if it were a stylistic combo — this checks
+    whether memo is actually required for the deferral to have any visible effect at all.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="React 18" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two identical child components, both fed the exact same deferred value — one wrapped in
+      <code>memo</code>, one not.
+    </p>
+    <app-live-playground
+      title="useDeferredValue — memoized vs unmemoized consumer"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This confirms memo is a hard dependency for useDeferredValue's benefit, before checking a related
+      question about duplicate dynamic imports in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Performance"
+    topicRoute="/react/performance"
+    [prev]="{ label: 'children Is a Fresh Reference Every Render', route: '/react/performance/testing-that-children-is-a-fresh-reference-every-render-defeating-memo-even-with-identical-jsx' }"
+    [next]="{ label: 'Duplicate Dynamic import() Calls Are Deduplicated, Not Refetched', route: '/react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched' }" />
+</div>

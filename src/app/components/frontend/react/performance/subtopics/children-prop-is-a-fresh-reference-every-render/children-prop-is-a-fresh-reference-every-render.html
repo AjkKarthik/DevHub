@@ -1,0 +1,47 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Performance"
+    topicRoute="/react/performance"
+    subtopicLabel="children Is a Fresh Reference Every Render, Defeating memo" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That children Is a Fresh Reference Every Render, Defeating memo</h1>
+  <p class="page-subtitle">
+    The main page mentions in passing that "children is always a new reference" — this checks it directly
+    with a memoized wrapper whose only prop is visually static children JSX.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="React 16.6+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>memo</code>-wrapped component whose only prop is <code>children</code>, fed identical-looking
+      JSX from a re-rendering parent.
+    </p>
+    <app-live-playground
+      title="children as a fresh reference — memo's blind spot"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This grounds the main page's brief "children is not worth memoizing" note in an actual render count,
+      before checking a related requirement for useDeferredValue in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Performance"
+    topicRoute="/react/performance"
+    [next]="{ label: 'useDeferredValue Needs memo on the Child', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' }" />
+</div>

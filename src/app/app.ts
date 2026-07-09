@@ -1244,6 +1244,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Abort Signal Must Be Wired Into fetch to Actually Cancel', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' },
     { label: 'initialData Skips the Immediate Fetch, placeholderData Always Triggers One', route: '/react/tanstack-query/testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one' },
   ],
+  // NOTE: keyed 'react-performance', NOT bare 'performance' — ASP.NET,
+  // SQL, HTML, Blazor, Node.js, GraphQL, and Service Mesh hubs all
+  // share that same route slug and could claim the bare key later.
+  'react-performance': [
+    { label: 'children Is a Fresh Reference Every Render', route: '/react/performance/testing-that-children-is-a-fresh-reference-every-render-defeating-memo-even-with-identical-jsx' },
+    { label: 'useDeferredValue Needs memo on the Child', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' },
+    { label: 'Duplicate Dynamic import() Calls Are Deduplicated, Not Refetched', route: '/react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched' },
+  ],
 };
 
 @Component({
