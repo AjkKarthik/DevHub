@@ -12560,6 +12560,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components': {
+    apis: ['"use client"', 'client reference manifest'],
+    related: [
+      { label: 'Next.js App Router (overview)', route: '/react/nextjs' },
+      { label: 'revalidatePath Cache Scope', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' },
+      { label: 'TypeScript & React', route: '/react/typescript' },
+    ],
+    tip: 'Place "use client" as low in the component tree as possible — a shared utility used by both server and client code ships client-side the moment ANY client file imports it.',
+    docs: [
+      { label: 'Next.js Docs — Client Components', url: 'https://nextjs.org/docs/app/building-your-application/rendering/client-components' },
+    ],
+    resources: [
+      { label: 'vercel/next.js', url: 'https://github.com/vercel/next.js', badge: 'code' },
+    ],
+    gotchas: [
+      'Bundling is graph-based, not usage-based — the bundler never checks whether a function actually needs the browser.',
+      'A single "use client" importer is enough to pull a shared utility into the client bundle, even if every other importer is server-only.',
+      'This is a build-time concept — there\'s no interactive browser demo for it, unlike most React hub subtopics.',
+    ],
+  },
+
+  'react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state': {
+    apis: ['revalidatePath()', 'redirect()', 'router.refresh()'],
+    related: [
+      { label: 'Next.js App Router (overview)', route: '/react/nextjs' },
+      { label: 'use client Import Scope', route: '/react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components' },
+      { label: 'useSearchParams Suspense Scope', route: '/react/nextjs/testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment' },
+    ],
+    tip: 'revalidatePath alone never updates an already-open tab — pair it with redirect() (or a client-side router.refresh()) to actually force a new request in the tab that needs fresh data.',
+    docs: [
+      { label: 'Next.js Docs — revalidatePath', url: 'https://nextjs.org/docs/app/api-reference/functions/revalidatePath' },
+    ],
+    resources: [
+      { label: 'vercel/next.js', url: 'https://github.com/vercel/next.js', badge: 'code' },
+    ],
+    gotchas: [
+      'revalidatePath only marks a server-side cache entry stale — it has no channel to push updates to any browser tab.',
+      'Without redirect() or router.refresh(), even the tab that just submitted the mutation stays on its old, unrefreshed render.',
+      'A second, already-open tab stays stale until it independently makes a new request.',
+    ],
+  },
+
+  'react/nextjs/testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment': {
+    apis: ['useSearchParams()', 'Suspense', 'static rendering'],
+    related: [
+      { label: 'Next.js App Router (overview)', route: '/react/nextjs' },
+      { label: 'use client Import Scope', route: '/react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components' },
+      { label: 'revalidatePath Cache Scope', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' },
+    ],
+    tip: 'Wrap only the smallest piece that actually calls useSearchParams — a page-wide Suspense boundary avoids the warning but also stops the whole page from statically pre-rendering.',
+    docs: [
+      { label: 'Next.js Docs — useSearchParams', url: 'https://nextjs.org/docs/app/api-reference/functions/use-search-params' },
+    ],
+    resources: [
+      { label: 'vercel/next.js', url: 'https://github.com/vercel/next.js', badge: 'code' },
+    ],
+    gotchas: [
+      'Without any Suspense boundary, Next.js can\'t statically pre-render ANY part of the page — not just the useSearchParams consumer.',
+      'A Suspense boundary is what draws the line between the static shell and the dynamic, per-request part.',
+      'This is the same React Suspense mechanism used elsewhere — Next.js layers static/dynamic rendering decisions on top of it.',
+    ],
+  },
+
   'react/native': {
     apis: ['<View>', '<Text>', '<FlatList>', 'StyleSheet.create()', 'useNavigation()', 'Platform.OS'],
     related: [

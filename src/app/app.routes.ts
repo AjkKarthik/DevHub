@@ -1567,7 +1567,12 @@ export const routes: Routes = [
       { path: 'testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does', loadComponent: () => import('./components/frontend/react/testing/subtopics/fireevent-click-skips-focus-userevent-click-doesnt/fireevent-click-skips-focus-userevent-click-doesnt').then(m => m.FireeventClickSkipsFocusUsereventClickDoesntSubtopic) },
       { path: 'testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning', loadComponent: () => import('./components/frontend/react/testing/subtopics/hook-setter-without-act-produces-real-console-warning/hook-setter-without-act-produces-real-console-warning').then(m => m.HookSetterWithoutActProducesRealConsoleWarningSubtopic) },
     ] },
-    { path: 'nextjs',           loadComponent: () => import('./components/frontend/react/nextjs/nextjs').then(m => m.ReactNextjs) },
+    { path: 'nextjs', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/nextjs/nextjs').then(m => m.ReactNextjs) },
+      { path: 'testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components', loadComponent: () => import('./components/frontend/react/nextjs/subtopics/use-client-propagates-to-utils/use-client-propagates-to-utils').then(m => m.UseClientPropagatesToUtilsSubtopic) },
+      { path: 'testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state', loadComponent: () => import('./components/frontend/react/nextjs/subtopics/revalidatepath-is-cache-not-push/revalidatepath-is-cache-not-push').then(m => m.RevalidatepathIsCacheNotPushSubtopic) },
+      { path: 'testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment', loadComponent: () => import('./components/frontend/react/nextjs/subtopics/suspense-required-usesearchparams/suspense-required-usesearchparams').then(m => m.SuspenseRequiredUsesearchparamsSubtopic) },
+    ] },
     { path: 'native',           loadComponent: () => import('./components/frontend/react/native/native').then(m => m.ReactNative) },
     { path: 'hook-form',        loadComponent: () => import('./components/frontend/react/hook-form/hook-form').then(m => m.ReactHookForm) },
     { path: 'animations',       loadComponent: () => import('./components/frontend/react/animations/animations').then(m => m.ReactAnimations) },

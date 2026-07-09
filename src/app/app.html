@@ -2656,7 +2656,26 @@
         }
       }
       <a routerLink="/react/hook-form"      routerLinkActive="active"><span class="nl-text">React Hook Form</span>@if(progress.isDone('react-hook-form')){<span class="nl-done">✓</span>}@if(diff('react-hook-form');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/react/nextjs"         routerLinkActive="active"><span class="nl-text">Next.js App Router</span>@if(progress.isDone('react-nextjs')){<span class="nl-done">✓</span>}@if(diff('react-nextjs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/nextjs" routerLinkActive="active">
+        <span class="nl-text">Next.js App Router</span>
+        @if (progress.isDone('react-nextjs')) {<span class="nl-done">✓</span>}
+        @if (diff('react-nextjs'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('nextjs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('nextjs')"
+                  (click)="toggleSubtopics('nextjs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('nextjs'); as reactNextjsSubs) {
+        @if (isSubtopicsExpanded('nextjs')) {
+          <div class="nav-subtopics">
+            @for (s of reactNextjsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/react/native"         routerLinkActive="active"><span class="nl-text">React Native</span>@if(progress.isDone('react-native')){<span class="nl-done">✓</span>}@if(diff('react-native');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/react/animations"     routerLinkActive="active"><span class="nl-text">Animations</span>@if(progress.isDone('react-animations')){<span class="nl-done">✓</span>}@if(diff('react-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

@@ -1,0 +1,42 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Next.js App Router"
+    topicRoute="/react/nextjs"
+    subtopicLabel="revalidatePath Is Cache Invalidation, Not a Live Push" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That revalidatePath Only Refreshes the Server Cache, Not Already-Rendered Client State</h1>
+  <p class="page-subtitle">
+    The QnA section says the route "stays cached until the next request" — this makes the consequence
+    explicit for an already-open browser tab that never makes that next request on its own.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Next.js 13.4+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      Like the previous subtopic, this is a server-infrastructure behavior with no client-side sandbox
+      to click through — the reasoning here comes from the documented, real behavior of Next.js's cache
+      APIs. The final subtopic looks at streaming: why <code>useSearchParams</code> specifically needs a
+      Suspense boundary, and what happens to the rest of the page if you skip it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Next.js App Router"
+    topicRoute="/react/nextjs"
+    [prev]="{ label: '&quot;use client&quot; Propagates to Every Import', route: '/react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components' }"
+    [next]="{ label: 'useSearchParams Without Suspense Forces the Whole Page Dynamic', route: '/react/nextjs/testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment' }" />
+</div>

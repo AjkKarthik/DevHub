@@ -1277,6 +1277,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'fireEvent.click Skips Focus, userEvent.click Doesn’t', route: '/react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does' },
     { label: 'A Hook Setter Without act() Produces a Real Console Warning', route: '/react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning' },
   ],
+  nextjs: [
+    { label: 'use client Propagates to Every Import', route: '/react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components' },
+    { label: 'revalidatePath Is Cache Invalidation, Not a Live Push', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' },
+    { label: 'useSearchParams Without Suspense Forces the Whole Page Dynamic', route: '/react/nextjs/testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment' },
+  ],
 };
 
 @Component({
