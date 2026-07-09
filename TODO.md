@@ -1635,7 +1635,7 @@ off here with a date.
 
 #### JavaScript — 22 topic pages
 
-- [ ] `/javascript/fundamentals` — JavaScript Fundamentals
+- [x] `/javascript/fundamentals` — JavaScript Fundamentals (2026-07-09 — 3 subtopics: testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text, testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it, testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails — first JavaScript hub subtopic set, see CLAUDE.md for the hub's conventions (js- prefix, full-path sidebar keys, solid-fill icon, 'typescript' StackBlitz template); SUBTOPICS map key left bare ('fundamentals'), collision-free; fixed a pre-existing gap where NO JavaScript hub page had a sidebar entry at all)
 - [ ] `/javascript/closures` — Scope & Closures
 - [ ] `/javascript/hoisting` — Hoisting & TDZ
 - [ ] `/javascript/symbols` — Symbols & Iterators

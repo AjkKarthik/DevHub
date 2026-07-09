@@ -740,6 +740,46 @@ Confirmed via direct file inspection before the pilot (`/typescript/basics`, 202
    run-it link). Icon content stays `TS`. **`.ts-page`'s wrapper rule is NOT global — see the
    max-width gotcha above; every TypeScript subtopic `.scss` must include it.**
 
+### JavaScript hub subtopic wiring — first subtopic set for this hub, no base sidebar entries existed at all
+
+Confirmed via direct file inspection before the pilot (`/javascript/fundamentals`, 2026-07-09):
+1. **No bare-key collision**: `fundamentals` was not already claimed anywhere in `app.ts`'s flat
+   `SUBTOPICS` map — left as the bare key, unlike TypeScript/React's own first-topic slug
+   collisions (both happened to be `basics`). Do not assume every new hub's first topic collides
+   — always grep first, but the outcome varies per hub.
+2. **Progress/search keys are `js-` PREFIXED** (`js-fundamentals`), confirmed via the existing
+   nav markup (`progress.isDone('js-fundamentals')`).
+3. **`SIDEBAR_MAP` had NO entry at all for ANY JavaScript hub topic** — not even a base entry
+   for the main `/javascript/fundamentals` page, confirmed by grepping `'javascript/` with zero
+   results anywhere in `page-sidebar.ts`. Every JS hub page was silently falling back to
+   `DEFAULT` sidebar content before this. Added a tailored BASE entry (`'javascript/fundamentals'`)
+   alongside the 3 required composite subtopic entries (`'javascript/fundamentals/<slug>'`),
+   following the full-path convention established by React/TypeScript (the other newer hubs) —
+   this fixes a real, pre-existing gap rather than just avoiding a new one. **Check whether a
+   hub's main topic pages already have base sidebar entries before assuming DEFAULT fallback is
+   an intentional, acceptable state** — for a hub with dozens of topic pages this is worth
+   flagging to the user as a separate follow-up rather than silently fixing one page at a time.
+4. Breadcrumb `JAVASCRIPT_LABELS` map uses bare keys (`'fundamentals'`), same generic pattern
+   every hub shares — composite subtopic keys there are bare too (`'fundamentals/<slug>'`).
+5. Theme: `$accent: #f7df1e`, `.js-page`/`.js-icon`/`.js-section` CSS classes, `tech="javascript"`
+   in `app-page-meta`. **The JS hub's icon is SOLID FILL, not light tint** — despite
+   `styles.scss`'s documented default for "SQL, TypeScript, React, JavaScript" being light tint,
+   the actual `fundamentals.scss` uses `background: $accent; color: #1a1a1a;` (solid yellow bg,
+   near-black text) — confirmed by reading the real file rather than trusting the earlier
+   documented default. Dark mode: `background: #854d0e; color: #fde68a;`. **Always check the
+   actual main-page `.scss` file for a hub's true icon convention before assuming the documented
+   generation-pattern table applies** — it can be stale or the hub can be an exception.
+   `.js-page`'s wrapper rule is NOT global (confirmed absent from `src/styles.scss`, same
+   situation as SQL/TypeScript/React) — every JS subtopic `.scss` must include the full
+   `.js-page { max-width: 860px; margin: 0 auto; }` rule.
+6. Live playground: uses the same `'typescript'` StackBlitz template as the TypeScript hub
+   (plain browser JS/TS, no framework needed) — `index.html` + `index.ts` minimum file set,
+   `openFile="index.ts"`. A subtopic needing to compare strict vs. sloppy mode used
+   `new Function(...)` with an ESCAPED NESTED template literal (`\`...\``) inside the outer
+   `content: \`...\`` field — the Function constructor's body genuinely runs in sloppy mode
+   even inside a strict-mode ES module, making it a real, working way to demonstrate both
+   modes side by side in one file without needing a second StackBlitz project.
+
 ### React hub subtopic wiring — first JS-framework hub; a real StackBlitz template gap
 
 Confirmed via direct file inspection and a live browser pilot before the first subtopic set
