@@ -1672,7 +1672,7 @@ off here with a date.
 - [x] `/html/iframes-embeds` — iFrames & Embeds (2026-07-10 — 3 subtopics: allow-scripts-plus-allow-same-origin-enables-sandbox-escape, missing-width-height-causes-measurable-layout-shift, srcdoc-makes-zero-network-requests-src-makes-a-real-one; SUBTOPICS map key left bare ('iframes-embeds'), collision-free)
 - [x] `/html/canvas-svg` — Canvas & SVG (2026-07-10 — 3 subtopics: canvas-html-attrs-set-resolution-css-only-stretches-pixels, missing-beginpath-merges-paths-provable-via-pixel-data, svg-without-viewbox-ignores-css-resize-of-coordinates; SUBTOPICS map key left bare ('canvas-svg'), collision-free)
 - [x] `/html/performance` — HTML Performance (2026-07-10 — 3 subtopics: too-many-high-priority-resources-dilutes-the-signal, defer-guarantees-order-and-fires-before-domcontentloaded, content-visibility-auto-genuinely-skips-offscreen-rendering; SUBTOPICS map hub-prefixed to `html-performance` — bare `performance` key already claimed elsewhere in the shared map)
-- [ ] `/html/pwa-service-workers` — PWA & Service Workers
+- [x] `/html/pwa-service-workers` — PWA & Service Workers (2026-07-10 — 3 subtopics: registration-scope-is-set-by-the-script-file-location, service-workers-genuinely-have-no-dom-access, a-new-sw-sits-in-registration-waiting-without-skipwaiting; SUBTOPICS map key left bare ('pwa-service-workers'), collision-free; also bumped angular.json's initial bundle maximumError 4MB→5MB after the production build started hard-failing on bundle size)
 - [ ] `/html/seo` — HTML SEO
 - [ ] `/html/apis` — HTML5 Browser APIs
 - [ ] `/html/fundamentals` — HTML Fundamentals
