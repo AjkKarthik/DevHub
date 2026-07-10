@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functional JS" topicRoute="/javascript/functional" subtopicLabel="Missing return in a pipe() Stage Passes undefined Downstream" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Missing return in a pipe() Stage Passes undefined Downstream</h1>
+  <p class="page-subtitle">A missing <code>return</code> in one stage doesn't just break the next step — <code>undefined</code> keeps propagating through every remaining stage in the pipeline.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A three-stage pipeline's first stage forgets its <code>return</code>. Trace <code>undefined</code> as it propagates through the second AND third stages, then compare against the one-line fix.</p>
+    <app-live-playground title="A missing return cascading through a pipeline" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious functional mechanics — shallow freezing, <code>fn.length</code> miscounting parameters, and now a missing return's cascading effect. Return to the <a routerLink="/javascript/functional">Functional JS</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functional JS"
+    topicRoute="/javascript/functional"
+    [prev]="{ label: 'curry()’s fn.length Check Miscounts Default and Rest Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' }"
+  />
+</div>

@@ -1457,7 +1457,12 @@ export const routes: Routes = [
       { path: 'spreading-a-prototype-in-a-mixin-breaks-instanceof', loadComponent: () => import('./components/frontend/javascript/patterns/subtopics/spreading-a-prototype-in-a-mixin-breaks-instanceof/spreading-a-prototype-in-a-mixin-breaks-instanceof').then(m => m.SpreadingAPrototypeInAMixinBreaksInstanceofSubtopic) },
       { path: 'middleware-short-circuits-when-a-handler-never-calls-next', loadComponent: () => import('./components/frontend/javascript/patterns/subtopics/middleware-short-circuits-when-a-handler-never-calls-next/middleware-short-circuits-when-a-handler-never-calls-next').then(m => m.MiddlewareShortCircuitsWhenAHandlerNeverCallsNextSubtopic) },
     ] },
-    { path: 'functional',     loadComponent: () => import('./components/frontend/javascript/functional/functional').then(m => m.JsFunctional) },
+    { path: 'functional', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/functional/functional').then(m => m.JsFunctional) },
+      { path: 'object-freeze-is-only-shallow-nested-objects-stay-mutable', loadComponent: () => import('./components/frontend/javascript/functional/subtopics/object-freeze-is-only-shallow-nested-objects-stay-mutable/object-freeze-is-only-shallow-nested-objects-stay-mutable').then(m => m.ObjectFreezeIsOnlyShallowNestedObjectsStayMutableSubtopic) },
+      { path: 'curry-fn-length-miscounts-default-and-rest-parameters', loadComponent: () => import('./components/frontend/javascript/functional/subtopics/curry-fn-length-miscounts-default-and-rest-parameters/curry-fn-length-miscounts-default-and-rest-parameters').then(m => m.CurryFnLengthMiscountsDefaultAndRestParametersSubtopic) },
+      { path: 'missing-return-in-a-pipe-stage-passes-undefined-downstream', loadComponent: () => import('./components/frontend/javascript/functional/subtopics/missing-return-in-a-pipe-stage-passes-undefined-downstream/missing-return-in-a-pipe-stage-passes-undefined-downstream').then(m => m.MissingReturnInPipeComposeChainVoidFunctionsSubtopic) },
+    ] },
     { path: 'proxy',          loadComponent: () => import('./components/frontend/javascript/proxy/proxy').then(m => m.JsProxy) },
     { path: 'weakrefs',       loadComponent: () => import('./components/frontend/javascript/weakrefs/weakrefs').then(m => m.JsWeakrefs) },
     { path: 'cheatsheet',     loadComponent: () => import('./components/frontend/javascript/cheatsheet/cheatsheet').then(m => m.JsCheatsheet) },

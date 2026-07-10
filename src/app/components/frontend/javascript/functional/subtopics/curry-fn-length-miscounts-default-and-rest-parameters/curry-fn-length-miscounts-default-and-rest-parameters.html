@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functional JS" topicRoute="/javascript/functional" subtopicLabel="curry()'s fn.length Check Miscounts Default and Rest Parameters" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">curry()'s fn.length Check Miscounts Default and Rest Parameters</h1>
+  <p class="page-subtitle"><code>Function.prototype.length</code> only counts required parameters before the first default or rest parameter — <code>curry()</code>'s <code>fn.length</code> check silently breaks on either.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>The main page's own <code>curry()</code> utility, unmodified, is applied to a function with a default parameter and one with a rest parameter. Watch it invoke each too early, compared against a plain-parameter function where it works correctly.</p>
+    <app-live-playground title="curry() breaking on default and rest parameters" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This extends the main <a routerLink="/javascript/functional">Functional JS</a> page's own <code>curry()</code> example past its unstated assumption. Next, see how a missing <code>return</code> in a <code>pipe()</code> stage passes <code>undefined</code> to every step downstream.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functional JS"
+    topicRoute="/javascript/functional"
+    [prev]="{ label: 'Object.freeze() Is Only Shallow — Nested Objects Stay Mutable', route: '/javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable' }"
+    [next]="{ label: 'Missing return in a pipe() Stage Passes undefined Downstream', route: '/javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream' }"
+  />
+</div>

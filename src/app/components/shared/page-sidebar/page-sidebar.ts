@@ -14405,6 +14405,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/functional': {
+    apis: ['Object.freeze()', 'Function.prototype.length', 'reduce()'],
+    related: [
+      { label: 'Design Patterns in JS', route: '/javascript/patterns'    },
+      { label: 'Proxy & Reflect API',   route: '/javascript/proxy'      },
+      { label: 'Arrays & Iteration',    route: '/javascript/arrays'     },
+    ],
+    tip: 'Object.freeze() only protects the object it\'s called on directly — nested objects stored in its properties remain completely mutable unless recursively frozen too.',
+    docs: [
+      { label: 'MDN — Object.freeze()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Function.prototype.length only counts parameters before the first default or rest parameter — a generic curry() using it can invoke too early.',
+      'A missing return in one pipe() stage propagates undefined through every remaining stage, not just the next one.',
+    ],
+  },
+
+  'javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable': {
+    apis: ['Object.freeze()', 'Object.isFrozen()'],
+    related: [
+      { label: 'Functional JS (overview)', route: '/javascript/functional' },
+      { label: 'curry() Miscounts Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' },
+      { label: 'Missing return in pipe()', route: '/javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream' },
+    ],
+    tip: 'A recursive deepFreeze() is the only way to actually protect a nested object tree — a single Object.freeze() call stops exactly one level deep.',
+    docs: [
+      { label: 'MDN — Object.freeze()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A nested mutation succeeds completely silently, even in strict mode — only top-level reassignment attempts throw.',
+      'Object.isFrozen() only reports the status of the specific object it\'s called on, not the whole tree beneath it.',
+    ],
+  },
+
+  'javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters': {
+    apis: ['Function.prototype.length', 'default parameters', 'rest parameters'],
+    related: [
+      { label: 'Functional JS (overview)', route: '/javascript/functional' },
+      { label: 'Object.freeze() Is Shallow', route: '/javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable' },
+      { label: 'Missing return in pipe()', route: '/javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream' },
+    ],
+    tip: 'Function.prototype.length only counts required parameters before the first default value or rest parameter — it represents "required count," not "total count."',
+    docs: [
+      { label: 'MDN — Function.length', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'For a rest parameter, curry() invoking early means the rest parameter can never actually be filled, no matter how many further calls are chained.',
+      'The early invocation often produces a plausible-looking result, giving no obvious signal that the intended later call was skipped.',
+    ],
+  },
+
+  'javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream': {
+    apis: ['pipe()', 'reduce()', 'arrow functions'],
+    related: [
+      { label: 'Functional JS (overview)', route: '/javascript/functional' },
+      { label: 'Object.freeze() Is Shallow', route: '/javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable' },
+      { label: 'curry() Miscounts Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' },
+    ],
+    tip: 'pipe()\'s reduce threads each stage\'s return value into the next — undefined from one missing return keeps propagating until something specifically recovers from it.',
+    docs: [
+      { label: 'MDN — Array.prototype.reduce()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This only affects multi-statement arrow functions with curly braces — a single-expression arrow body never needs an explicit return.',
+      'Later stages may return a plausible-looking fallback instead of crashing, making the missing return easy to miss without tracing each stage.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

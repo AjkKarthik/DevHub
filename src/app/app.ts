@@ -1408,6 +1408,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Spreading a Prototype in a Mixin Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' },
     { label: 'Middleware Short-Circuits Without next()', route: '/javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next' },
   ],
+  functional: [
+    { label: 'Object.freeze() Is Only Shallow', route: '/javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable' },
+    { label: 'curry() Miscounts Default and Rest Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' },
+    { label: 'Missing return in pipe() Passes undefined Downstream', route: '/javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream' },
+  ],
 };
 
 @Component({
