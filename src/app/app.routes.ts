@@ -1378,7 +1378,12 @@ export const routes: Routes = [
       { path: 'navigator-share-feature-detection-prevents-a-real-typeerror', loadComponent: () => import('./components/frontend/html/apis/subtopics/navigator-share-feature-detection-prevents-a-real-typeerror/navigator-share-feature-detection-prevents-a-real-typeerror').then(m => m.NavigatorShareFeatureDetectionPreventsARealTypeErrorSubtopic) },
       { path: 'notification-permission-is-readable-anytime-construction-never-throws', loadComponent: () => import('./components/frontend/html/apis/subtopics/notification-permission-is-readable-anytime-construction-never-throws/notification-permission-is-readable-anytime-construction-never-throws').then(m => m.NotificationPermissionIsReadableAnytimeConstructionNeverThrowsSubtopic) },
     ] },
-    { path: 'fundamentals',        loadComponent: () => import('./components/frontend/html/fundamentals/fundamentals').then(m => m.HtmlFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/fundamentals/fundamentals').then(m => m.HtmlFundamentals) },
+      { path: 'attribute-vs-property-input-value-genuinely-diverges', loadComponent: () => import('./components/frontend/html/fundamentals/subtopics/attribute-vs-property-input-value-genuinely-diverges/attribute-vs-property-input-value-genuinely-diverges').then(m => m.AttributeVsPropertyInputValueGenuinelyDivergesSubtopic) },
+      { path: 'unknown-elements-fall-back-to-anonymous-inline-rendering', loadComponent: () => import('./components/frontend/html/fundamentals/subtopics/unknown-elements-fall-back-to-anonymous-inline-rendering/unknown-elements-fall-back-to-anonymous-inline-rendering').then(m => m.UnknownElementsFallBackToAnonymousInlineRenderingSubtopic) },
+      { path: 'a-stray-br-end-tag-inserts-a-second-line-break', loadComponent: () => import('./components/frontend/html/fundamentals/subtopics/a-stray-br-end-tag-inserts-a-second-line-break/a-stray-br-end-tag-inserts-a-second-line-break').then(m => m.AStrayBrEndTagInsertsASecondLineBreakSubtopic) },
+    ] },
     { path: 'headings-paragraphs', loadComponent: () => import('./components/frontend/html/headings-paragraphs/headings-paragraphs').then(m => m.HtmlHeadingsParagraphs) },
     { path: 'input-types',         loadComponent: () => import('./components/frontend/html/input-types/input-types').then(m => m.HtmlInputTypes) },
     { path: 'landmark-elements',   loadComponent: () => import('./components/frontend/html/landmark-elements/landmark-elements').then(m => m.HtmlLandmarkElements) },

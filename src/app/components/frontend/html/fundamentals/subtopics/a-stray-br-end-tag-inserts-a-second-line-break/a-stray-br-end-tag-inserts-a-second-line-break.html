@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML Fundamentals" topicRoute="/html/fundamentals" subtopicLabel="A Stray br End Tag Inserts a Second Line Break" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A Stray br End Tag Inserts a Second Line Break</h1>
+  <p class="page-subtitle">"&lt;/br&gt; is an error" doesn't mean it's discarded. The parsing spec specifically reacts to it by inserting a genuine second &lt;br&gt; element — &lt;br&gt;&lt;/br&gt; renders as two line breaks.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A paragraph written with <code>&lt;br&gt;&lt;/br&gt;</code>. Count the actual <code>&lt;br&gt;</code> elements the parser produced.</p>
+    <app-live-playground title="counting br elements after a stray end tag" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious parsing and DOM mechanics — attribute/property divergence, unknown-tag fallback rendering, and now a specific, spec-mandated error-recovery quirk. Return to the <a routerLink="/html/fundamentals">HTML Fundamentals</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML Fundamentals"
+    topicRoute="/html/fundamentals"
+    [prev]="{ label: 'Unknown Elements Fall Back to Anonymous Inline Rendering', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' }"
+  />
+</div>

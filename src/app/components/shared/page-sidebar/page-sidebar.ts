@@ -23282,6 +23282,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/fundamentals/attribute-vs-property-input-value-genuinely-diverges': {
+    apis: ['getAttribute()', 'HTMLInputElement.value', 'setAttribute()'],
+    related: [
+      { label: 'HTML Fundamentals (overview)', route: '/html/fundamentals' },
+      { label: 'Unknown Elements Fall Back to Inline', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' },
+      { label: 'Stray br End Tag Inserts a Second Break', route: '/html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break' },
+    ],
+    tip: 'getAttribute(\'value\') stays frozen at the original HTML string forever — the .value property is live, current state that real typing changes independently.',
+    docs: [
+      { label: 'MDN — HTMLInputElement', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement' },
+    ],
+    resources: [
+      { label: 'MDN — Attribute vs property', url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/DOM_scripting#html_attributes_and_dom_properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'Once a user types anything, the attribute and property permanently diverge for the rest of that element\'s lifetime.',
+      'setAttribute(\'value\', ...) after user interaction updates the attribute, not the live displayed value.',
+    ],
+  },
+
+  'html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering': {
+    apis: ['querySelector()', 'getComputedStyle()', 'customElements.define()'],
+    related: [
+      { label: 'HTML Fundamentals (overview)', route: '/html/fundamentals' },
+      { label: 'Attribute vs Property Divergence', route: '/html/fundamentals/attribute-vs-property-input-value-genuinely-diverges' },
+      { label: 'Stray br End Tag Inserts a Second Break', route: '/html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break' },
+    ],
+    tip: 'A made-up tag name is never rejected by the parser — it becomes a real DOM element defaulting to display: inline, exactly like an unstyled span.',
+    docs: [
+      { label: 'MDN — Unknown elements', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML Living Standard', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is the exact mechanism that makes Custom Elements possible — customElements.define() upgrades an already-existing generic element.',
+      'The fallback default is display: inline, not display: none — unknown elements render normally, just without special layout behavior.',
+    ],
+  },
+
+  'html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break': {
+    apis: ['<br>', 'querySelectorAll()', 'HTML parsing spec'],
+    related: [
+      { label: 'HTML Fundamentals (overview)', route: '/html/fundamentals' },
+      { label: 'Attribute vs Property Divergence', route: '/html/fundamentals/attribute-vs-property-input-value-genuinely-diverges' },
+      { label: 'Unknown Elements Fall Back to Inline', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' },
+    ],
+    tip: 'A </br> end tag isn\'t discarded — the parsing spec specifically reacts to it by inserting a genuine second <br> element, doubling the line break.',
+    docs: [
+      { label: 'WHATWG — br end tag parsing', url: 'https://html.spec.whatwg.org/multipage/parsing.html#parsing-main-inbody' },
+    ],
+    resources: [
+      { label: 'MDN — <br>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is a deliberate, spec-mandated compatibility rule, not a browser-specific bug — every spec-compliant browser handles it identically.',
+      'Other void elements\' stray end tags are typically just ignored as ordinary parse errors — br specifically gets this "treat as start tag" recovery.',
+    ],
+  },
+
   'html/headings-paragraphs': {
     apis: ['<h1>–<h6>', '<p>', '<br>', '<strong>', '<em>', '<b>', '<i>', '<small>', '<mark>', '<abbr>', '<blockquote>', '<cite>'],
     related: [

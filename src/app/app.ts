@@ -1504,6 +1504,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'navigator.share Feature Detection', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' },
     { label: 'Notification.permission Never Throws', route: '/html/apis/notification-permission-is-readable-anytime-construction-never-throws' },
   ],
+  // NOTE: keyed 'html-fundamentals', NOT bare 'fundamentals' — the
+  // JavaScript hub's own /javascript/fundamentals topic already claims
+  // the bare key.
+  'html-fundamentals': [
+    { label: 'Attribute vs Property Divergence', route: '/html/fundamentals/attribute-vs-property-input-value-genuinely-diverges' },
+    { label: 'Unknown Elements Fall Back to Inline', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' },
+    { label: 'Stray br End Tag Inserts a Second Break', route: '/html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break' },
+  ],
 };
 
 @Component({
