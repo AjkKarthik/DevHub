@@ -1,0 +1,42 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Native"
+    topicRoute="/react/native"
+    subtopicLabel="getItemLayout Assumes Every Row Is the Same Height" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That getItemLayout Assumes Uniform Row Height, and Silently Corrupts Scroll Position If Rows Vary</h1>
+  <p class="page-subtitle">
+    The main page's own code comment admits "fixed height" but never shows what breaks when that
+    assumption fails — this traces exactly what happens when a row's real height varies.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="React Native 0.60+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the second FlatList-adjacent gotcha after the raw-text crash — a purely
+      performance-optimization prop that fails silently rather than loudly. The final subtopic checks a
+      related misconception: whether StyleSheet.create() gives the same re-render protection as
+      React.memo.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Native"
+    topicRoute="/react/native"
+    [prev]="{ label: 'Text-in-View Crashes Only in Production Builds', route: '/react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go' }"
+    [next]="{ label: 'StyleSheet.create() Doesn’t Replace React.memo', route: '/react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo' }" />
+</div>

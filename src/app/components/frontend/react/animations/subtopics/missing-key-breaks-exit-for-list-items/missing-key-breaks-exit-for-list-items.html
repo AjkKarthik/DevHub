@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Animations (Framer Motion)"
+    topicRoute="/react/animations"
+    subtopicLabel="Missing Key Breaks Exit for the Wrong List Item" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Missing Key Makes AnimatePresence Exit-Animate the Wrong List Item</h1>
+  <p class="page-subtitle">
+    Mistake #2 says exit animations "never play" without a key — this shows the actual visible
+    consequence: the wrong item appears to vanish, not just a missing animation.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Framer Motion 11.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two identical 3-item lists inside <code>AnimatePresence</code> — one with no key on
+      <code>motion.li</code>, one with a stable <code>key=&#123;item.id&#125;</code>.
+    </p>
+    <app-live-playground
+      title="AnimatePresence key — removing the middle item"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is a correctness bug hiding inside an animation mistake. The next subtopic moves to a
+      performance claim: why the main page recommends animating transform/opacity over layout
+      properties like width.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Animations (Framer Motion)"
+    topicRoute="/react/animations"
+    [next]="{ label: 'Width Animation Reflows Siblings, transform Doesn’t', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' }" />
+</div>

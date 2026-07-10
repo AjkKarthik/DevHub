@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/javascript/error-handling" subtopicLabel="try/catch Never Catches an Error Thrown Inside setTimeout" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">try/catch Never Catches an Error Thrown Inside setTimeout</h1>
+  <p class="page-subtitle">A <code>try/catch</code> only protects code running while its own call stack frame is active — by the time a scheduled callback runs, that frame is long gone.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="ES3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A global <code>window.onerror</code> handler proves the "escaped" error is real by catching it — while the local <code>catch</code> block wrapping the <code>setTimeout()</code> call never fires at all.</p>
+    <app-live-playground title="try/catch vs. a setTimeout callback's error" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/javascript/error-handling">Error Handling</a> page's claim that try/catch can't catch async callback errors. Next, see how <code>AggregateError</code> from <code>Promise.any()</code> packages every rejection reason, not just the first.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/javascript/error-handling"
+    [prev]="{ label: 'finally’s return Silently Overrides the catch Block’s Return Value', route: '/javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value' }"
+    [next]="{ label: 'AggregateError Packages Every Promise.any() Rejection, Not Just the First', route: '/javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first' }"
+  />
+</div>

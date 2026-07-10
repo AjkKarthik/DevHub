@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Prototypes &amp; Classes"
+    topicRoute="/javascript/prototypes"
+    subtopicLabel="Object.create(null) Has No Methods, Not Just Hidden" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Object.create(null) Genuinely Has No Methods, Not Just Hidden From Enumeration</h1>
+  <p class="page-subtitle">
+    The main page's own demo sets toString before testing it — this tests the genuinely empty case,
+    calling toString() on an object that never had it set, to confirm it's really absent.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      A plain <code>&#123;&#125;</code> object and an <code>Object.create(null)</code> object, both tested for
+      <code>typeof .toString</code> and an actual call to <code>.toString()</code>.
+    </p>
+    <app-live-playground
+      title="Object.create(null) — genuinely no methods"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This establishes what a null prototype genuinely removes. The next subtopic moves to static
+      methods — confirming they don't exist on instances at all, not just that they're less
+      convenient to call there.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Prototypes &amp; Classes"
+    topicRoute="/javascript/prototypes"
+    [next]="{ label: 'Static Methods Don’t Exist on Instances at All', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' }" />
+</div>

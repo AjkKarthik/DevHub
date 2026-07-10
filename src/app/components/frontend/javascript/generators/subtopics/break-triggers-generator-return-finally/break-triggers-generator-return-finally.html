@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Generators" topicRoute="/javascript/generators" subtopicLabel="Breaking a for...of Loop Triggers generator.return() and Runs finally" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Breaking a for...of Loop Triggers generator.return() and Runs finally</h1>
+  <p class="page-subtitle">A <code>break</code> statement doesn't just abandon a generator — <code>for...of</code> automatically calls <code>.return()</code> on it, immediately running any enclosing <code>finally</code> block.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A generator wrapping a "resource" with <code>try/finally</code> is consumed three ways — an early <code>break</code>, a manual <code>.return()</code> call, and an exception thrown from the loop body. Watch exactly when the cleanup log fires in each case.</p>
+    <app-live-playground title="Generator cleanup on early exit" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/javascript/generators">Generators</a> page's QnA about safe resource cleanup. Next, see how <code>yield*</code> delegation forwards two-way communication — <code>.next(value)</code> and <code>.throw()</code> — into the inner generator, something a manual loop could never replicate.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generators"
+    topicRoute="/javascript/generators"
+    [prev]="{ label: 'Spread and for...of Ignore a Generator’s Return Value', route: '/javascript/generators/spread-and-for-of-ignore-a-generators-return-value' }"
+    [next]="{ label: 'yield* Delegation Forwards next() Values and throw() Into the Inner Generator', route: '/javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator' }"
+  />
+</div>

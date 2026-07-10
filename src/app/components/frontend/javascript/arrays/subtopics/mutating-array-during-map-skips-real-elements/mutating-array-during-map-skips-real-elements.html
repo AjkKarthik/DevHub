@@ -1,0 +1,47 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Arrays &amp; Iteration"
+    topicRoute="/javascript/arrays"
+    subtopicLabel="Mutating an Array During map() Really Does Skip Elements" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Mutating the Source Array With splice() Inside a map() Callback Actually Skips Real Elements</h1>
+  <p class="page-subtitle">
+    Mistake #4 calls this "undefined behaviour" — this runs the exact scenario to show it's fully
+    deterministic: specific elements are skipped, not randomly corrupted.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      The exact Mistake #4 scenario — <code>splice()</code> called inside a <code>map()</code>
+      callback — compared against the correct, non-mutating result.
+    </p>
+    <app-live-playground
+      title="Mutating during map() — the real, deterministic result"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the array subtopics: forEach's async blind spot, sort()'s stability guarantee,
+      and now the precise, deterministic mechanism behind "never mutate the array you're iterating."
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Arrays &amp; Iteration"
+    topicRoute="/javascript/arrays"
+    [prev]="{ label: 'sort() Is Genuinely Stable — Ties Keep Insertion Order', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' }" />
+</div>

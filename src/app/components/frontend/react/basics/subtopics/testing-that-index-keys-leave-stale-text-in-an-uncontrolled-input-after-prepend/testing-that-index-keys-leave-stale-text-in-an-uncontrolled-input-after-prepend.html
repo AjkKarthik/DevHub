@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Fundamentals"
+    topicRoute="/react/basics"
+    subtopicLabel="Index Keys Leave Stale Text After Prepend" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Index Keys Leave Stale Text in an Uncontrolled Input After Prepend</h1>
+  <p class="page-subtitle">
+    The main page's own Common Mistake pairs index-based keys with "stale input values" but never shows it
+    happening — this makes the exact failure visible with a two-item list and a prepend button.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="React 16+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The same two-item list rendered twice — once with <code>key=&#123;i&#125;</code>, once with
+      <code>key=&#123;item.id&#125;</code> — each with an uncontrolled text input.
+    </p>
+    <app-live-playground
+      title="Index keys and stale uncontrolled input text"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This makes the main page's own key-identity warning directly observable, before checking a related
+      re-render gotcha around object-literal props in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Fundamentals"
+    topicRoute="/react/basics"
+    [prev]="{ label: 'Batching Applies to Native Event Listeners', route: '/react/basics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick' }"
+    [next]="{ label: 'React.memo Alone Doesn’t Stop a Fresh Object Prop', route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' }" />
+</div>

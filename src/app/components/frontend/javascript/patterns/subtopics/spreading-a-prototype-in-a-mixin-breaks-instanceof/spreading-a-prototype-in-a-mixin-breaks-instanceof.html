@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design Patterns in JS" topicRoute="/javascript/patterns" subtopicLabel="Spreading a Prototype in a Mixin Breaks instanceof" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Spreading a Prototype in a Mixin Breaks instanceof</h1>
+  <p class="page-subtitle">Replacing a prototype with a spread creates a new object and severs existing instances' link to it — and since class methods are non-enumerable, the spread silently drops them too.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>The same mixin is applied two ways — a broken spread-based reassignment and the correct <code>Object.assign</code> mutation. Watch <code>instanceof</code> and the original class's own methods before and after.</p>
+    <app-live-playground title="Mixin via spread (broken) vs. Object.assign (correct)" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/javascript/patterns">Design Patterns in JS</a> page's mixin warning and reveals an even deeper trap than described. Next, see how the middleware pattern's <code>next()</code> function lets a handler short-circuit the entire pipeline just by not calling it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Design Patterns in JS"
+    topicRoute="/javascript/patterns"
+    [prev]="{ label: 'Memoize With Object Arguments Uses Reference Equality', route: '/javascript/patterns/memoize-uses-reference-equality-object-args-always-miss' }"
+    [next]="{ label: 'Middleware Short-Circuits When a Handler Never Calls next()', route: '/javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next' }"
+  />
+</div>

@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Strict Mode &amp; Migration"
+    topicRoute="/typescript/strict-migration"
+    subtopicLabel="A Leaf Module’s Untyped Import Leaks any" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That a Leaf Module's Untyped Import Leaks any</h1>
+  <p class="page-subtitle">
+    "No internal dependencies" doesn't mean "no dependencies" — a leaf module calling into an untyped
+    external library silently leaks any through its own inferred return type.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Build a leaf module exactly like the main page's own <code>utils/dates.ts</code> example, but have it
+      call into a genuinely untyped external library.
+    </p>
+    <app-live-playground
+      title="External leaks in a leaf module — testing the bottom-up migration guarantee"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the strict migration topic by extending the main page's own "leaf module" guarantee to
+      a gap it never considers — external, not internal, dependencies.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Strict Mode &amp; Migration"
+    topicRoute="/typescript/strict-migration"
+    [prev]="{ label: 'noImplicitAny Doesn’t Restrict Explicit any', route: '/typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any' }" />
+</div>

@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Forms & Validation"
+    topicRoute="/react/forms"
+    subtopicLabel="refine()’s path Option Only Flags confirm, Not password Too" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That refine()'s path Option Only Flags confirm, Not password Too</h1>
+  <p class="page-subtitle">
+    The main page's exact cross-field refine example lists only path: ['confirm'] — this checks whether
+    the equally-responsible password field gets flagged too, or shows nothing at all.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="React Hook Form 7+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The main page's exact password/confirm refine schema, wired to React Hook Form with both fields'
+      individual error states displayed.
+    </p>
+    <app-live-playground
+      title="refine() path and which field actually gets flagged"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This clarifies exactly how one-sided the main page's own cross-field validation example is, before
+      checking a related re-render cost trade-off in real-time validation mode in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Forms & Validation"
+    topicRoute="/react/forms"
+    [prev]="{ label: 'z.coerce.number() Converts an Empty String to Zero', route: '/react/forms/testing-that-z-coerce-number-converts-an-empty-string-to-zero-not-nan' }"
+    [next]="{ label: 'Real-Time Validation Mode Reintroduces Per-Keystroke Re-renders', route: '/react/forms/testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf' }" />
+</div>

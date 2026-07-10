@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Symbols &amp; Iterators"
+    topicRoute="/javascript/symbols"
+    subtopicLabel="Which Operations Actually See Symbol Keys" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing Which Operations Actually See Symbol-Keyed Properties, and Which Silently Skip Them</h1>
+  <p class="page-subtitle">
+    Mistake #5 lists 5 different operations' behavior in prose — this runs all 5 against the same
+    object in one place, as a real, directly observable comparison.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      One symbol-keyed object, run through <code>for...in</code>, <code>Object.keys()</code>,
+      <code>JSON.stringify()</code>, <code>Object.assign()</code>, and spread.
+    </p>
+    <app-live-playground
+      title="Symbol keys — 5 operations, one object"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This establishes symbols as unique keys with enumeration-hiding, not access-control. The next
+      subtopic moves to well-known symbols — what hint value Symbol.toPrimitive actually receives in
+      different coercion contexts.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Symbols &amp; Iterators"
+    topicRoute="/javascript/symbols"
+    [next]="{ label: 'Symbol.toPrimitive’s Hint Differs by Coercion Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' }" />
+</div>

@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functional JS" topicRoute="/javascript/functional" subtopicLabel="Object.freeze() Is Only Shallow — Nested Objects Stay Mutable" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Object.freeze() Is Only Shallow — Nested Objects Stay Mutable</h1>
+  <p class="page-subtitle"><code>Object.freeze()</code> protects only the object it's called on directly — any nested object stored inside its properties remains exactly as mutable as before.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A frozen state object rejects a top-level reassignment but silently accepts a nested mutation two levels deep. Compare against a recursive <code>deepFreeze()</code> that closes the gap.</p>
+    <app-live-playground title="Object.freeze() shallow vs. deepFreeze()" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/functional">Functional JS</a> page's immutability warning in a live comparison. Next, see how a generic <code>curry()</code> utility's <code>fn.length</code> check can miscount a function's real parameter list.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functional JS"
+    topicRoute="/javascript/functional"
+    [next]="{ label: 'curry()’s fn.length Check Miscounts Default and Rest Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' }"
+  />
+</div>

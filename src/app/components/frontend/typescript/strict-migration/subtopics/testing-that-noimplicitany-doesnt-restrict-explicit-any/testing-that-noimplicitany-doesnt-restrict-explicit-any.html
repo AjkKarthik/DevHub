@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Strict Mode &amp; Migration"
+    topicRoute="/typescript/strict-migration"
+    subtopicLabel="noImplicitAny Doesn’t Restrict Explicit any" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That noImplicitAny Doesn't Restrict Explicit any</h1>
+  <p class="page-subtitle">
+    The main page's own fix always replaces implicit any with a real type — writing data: any on purpose
+    satisfies noImplicitAny just as completely, with zero type safety gained.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Compare the main page's own implicit-<code>any</code> error against a version that explicitly writes
+      <code>: any</code> on purpose.
+    </p>
+    <app-live-playground
+      title="Implicit vs explicit any — testing noImplicitAny's real scope"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This clarifies exactly what the main page's noImplicitAny fix protects against, before checking a
+      related gap in the "migrate bottom-up" strategy in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Strict Mode &amp; Migration"
+    topicRoute="/typescript/strict-migration"
+    [prev]="{ label: '@ts-expect-error Doesn’t Check Which Error', route: '/typescript/strict-migration/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses' }"
+    [next]="{ label: 'A Leaf Module’s Untyped Import Leaks any', route: '/typescript/strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any' }" />
+</div>

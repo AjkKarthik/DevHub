@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Decorators"
+    topicRoute="/typescript/decorators"
+    subtopicLabel="Singleton Silently Ignores the Second Call’s Args" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Singleton Silently Ignores the Second Call's Args</h1>
+  <p class="page-subtitle">
+    The main page's Database example has no constructor arguments to reveal this — add one, and the second
+    new Database(...) call's argument vanishes with zero warning.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 4.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Add a <code>url: string</code> constructor parameter to the main page's own <code>&#64;Singleton</code>
+      example, then call <code>new Database(...)</code> twice with different values.
+    </p>
+    <app-live-playground
+      title="Discarded constructor args — testing the Singleton legacy decorator"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own Singleton example past the one case (zero constructor args) that
+      never exercises this gap, before checking a related class-decorator naming quirk.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Decorators"
+    topicRoute="/typescript/decorators"
+    [prev]="{ label: 'Field Decorator Only Validates Construction', route: '/typescript/decorators/testing-that-celsius-field-decorator-only-validates-construction' }"
+    [next]="{ label: 'describe’s Class Decorator Returns an Unnamed Class', route: '/typescript/decorators/testing-that-describes-class-decorator-returns-an-unnamed-class' }" />
+</div>

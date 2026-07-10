@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Proxy &amp; Reflect API" topicRoute="/javascript/proxy" subtopicLabel="Lying About a Frozen Property's Value Throws an Invariant Violation" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Lying About a Frozen Property's Value Throws an Invariant Violation</h1>
+  <p class="page-subtitle">A <code>get</code> trap can transform most values freely, but for a non-configurable, non-writable property, it must return the real value — or the engine throws at read time.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A <code>get</code> trap that always returns <code>42</code> is applied to a frozen object. Watch exactly when the invariant-violation TypeError fires — at construction, or at read — and compare against the same trap on a non-frozen object.</p>
+    <app-live-playground title="Invariant violation on a frozen property" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious Proxy mechanics — the set trap's boolean contract, nested proxy caching, and now invariant enforcement on frozen properties. Return to the <a routerLink="/javascript/proxy">Proxy &amp; Reflect API</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Proxy &amp; Reflect API"
+    topicRoute="/javascript/proxy"
+    [prev]="{ label: 'A New Proxy Per Nested get Breaks Referential Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' }"
+  />
+</div>

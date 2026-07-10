@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Hook Form"
+    topicRoute="/react/hook-form"
+    subtopicLabel="Index Keys Show the Wrong Value After useFieldArray remove()" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Index Keys Show the Wrong Typed Value After useFieldArray remove()</h1>
+  <p class="page-subtitle">
+    Mistake #2 claims index keys cause "wrong values" on removal — this walks through the exact
+    type-then-remove sequence side by side against field.id to see it happen.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="React Hook Form 7.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two identical 3-row forms — one keyed by array index, one keyed by RHF's own <code>field.id</code>.
+      Type distinct text into each row, then remove the middle one.
+    </p>
+    <app-live-playground
+      title="Index key vs field.id — useFieldArray remove()"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is a correctness bug, not just a performance one — unlike watch()'s cost, this one silently
+      corrupts data. The final subtopic checks a related, equally silent gotcha: what type a number
+      input's submitted value actually has without valueAsNumber.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Hook Form"
+    topicRoute="/react/hook-form"
+    [prev]="{ label: 'watch() Re-renders the Whole Component, Not Just the Field', route: '/react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field' }"
+    [next]="{ label: 'Missing valueAsNumber Breaks Arithmetic Silently', route: '/react/hook-form/testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings' }" />
+</div>

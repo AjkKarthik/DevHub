@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Forms &amp; Input" topicRoute="/html/forms" subtopicLabel="name, Not id, Determines the Submitted FormData Key" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">name, Not id, Determines the Submitted FormData Key</h1>
+  <p class="page-subtitle">An input with an <code>id</code> but no <code>name</code> renders and behaves completely normally — then silently, completely vanishes from the submitted data.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Three fields render and fill in identically, but one has only an <code>id</code>, no <code>name</code>. Inspect the actual <code>FormData</code> the form would submit to see which field silently disappears.</p>
+    <app-live-playground title="A field with id but no name vanishes from FormData" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/html/forms">Forms &amp; Input</a> page's name-vs-id warning in a real, inspectable <code>FormData</code> object. Next, see what <code>novalidate</code> actually disables — and what it deliberately leaves working.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Forms &amp; Input"
+    topicRoute="/html/forms"
+    [next]="{ label: 'novalidate Disables Blocking, But checkValidity() Still Works', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' }"
+  />
+</div>

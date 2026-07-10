@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ES Modules" topicRoute="/javascript/modules" subtopicLabel="A Circular Import's Binding Exists but Its Value Is Undefined" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">A Circular Import's Binding Exists but Its Value Is Undefined</h1>
+  <p class="page-subtitle">A circular import doesn't fail — the live binding is wired up correctly, but reading it too early, at a module's own top level, sees <code>undefined</code> until the exporting module finishes.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Two real files, <code>a.ts</code> and <code>b.ts</code>, import each other. Compare a top-level read of a circularly-imported value against the same read deferred inside a function called after everything settles.</p>
+    <app-live-playground title="A real circular import, read too early vs. deferred" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious module mechanics — live bindings, singleton evaluation, and now the circular-import edge case where those two mechanisms collide. Return to the <a routerLink="/javascript/modules">ES Modules</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="ES Modules"
+    topicRoute="/javascript/modules"
+    [prev]="{ label: 'Modules Are Singletons — Shared State Across Every Importer', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' }"
+  />
+</div>

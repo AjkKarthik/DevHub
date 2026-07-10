@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Forms &amp; Input" topicRoute="/html/forms" subtopicLabel="enctype Only Affects Native Submission, Not the FormData API" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">enctype Only Affects Native Submission, Not the FormData API</h1>
+  <p class="page-subtitle"><code>new FormData(formElement)</code> reads a file input's real <code>File</code> object straight from the DOM — the form's <code>enctype</code> attribute is never consulted in this path at all.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A form with NO <code>enctype</code> attribute (defaulting to the "loses file content" value) still produces a <code>FormData</code> object whose file entry has its full, real content intact. Confirm it, then see why <code>fetch()</code> doesn't need <code>enctype</code> either.</p>
+    <app-live-playground title="enctype's missing effect on the FormData API" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious form mechanics — <code>name</code> vs <code>id</code>, <code>novalidate</code>'s narrow scope, and now <code>enctype</code>'s submission-path-specific meaning. Return to the <a routerLink="/html/forms">Forms &amp; Input</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Forms &amp; Input"
+    topicRoute="/html/forms"
+    [prev]="{ label: 'novalidate Disables Blocking, But checkValidity() Still Works', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' }"
+  />
+</div>

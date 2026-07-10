@@ -1,0 +1,47 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Arrays &amp; Iteration"
+    topicRoute="/javascript/arrays"
+    subtopicLabel="forEach's Async Callback Is Never Awaited" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That forEach Never Awaits an Async Callback, While for...of and Promise.all(map) Genuinely Do</h1>
+  <p class="page-subtitle">
+    The QnA states forEach ignores a callback's returned Promise — this runs all three approaches on
+    the same staggered-delay task to see the actual, timestamped difference.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      The same three async tasks run through <code>forEach</code>, <code>for...of</code> with
+      <code>await</code>, and <code>Promise.all(arr.map(...))</code>.
+    </p>
+    <app-live-playground
+      title="forEach vs for...of vs Promise.all — real async timing"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three array subtopics — this one on async iteration. The next moves to a
+      claim from a different QnA entry: whether sort() is genuinely stable for tied comparisons.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Arrays &amp; Iteration"
+    topicRoute="/javascript/arrays"
+    [next]="{ label: 'sort() Is Genuinely Stable — Ties Keep Insertion Order', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' }" />
+</div>

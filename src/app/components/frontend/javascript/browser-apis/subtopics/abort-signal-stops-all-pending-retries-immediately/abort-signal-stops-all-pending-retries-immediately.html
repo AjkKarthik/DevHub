@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Browser APIs" topicRoute="/javascript/browser-apis" subtopicLabel="AbortController Stops Every Pending Retry Immediately" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">AbortController Stops Every Pending Retry Immediately</h1>
+  <p class="page-subtitle">Threading the same signal through every retry attempt means one <code>.abort()</code> call cancels the in-flight request AND prevents every future attempt in the loop from ever starting.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES2020" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A simulated retry loop allows up to 10 attempts, but <code>abort()</code> fires partway through. Watch the attempt counter to confirm the loop genuinely stops early instead of running to completion.</p>
+    <app-live-playground title="AbortController cancelling an in-progress retry loop" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious fetch mechanics — resolving on HTTP errors, single-use response bodies, and now abort semantics across a retry loop. Return to the <a routerLink="/javascript/browser-apis">Browser APIs</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Browser APIs"
+    topicRoute="/javascript/browser-apis"
+    [prev]="{ label: 'A Response Body Can Only Be Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' }"
+  />
+</div>

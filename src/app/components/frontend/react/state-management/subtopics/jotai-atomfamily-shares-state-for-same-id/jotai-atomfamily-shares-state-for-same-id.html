@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="State Management"
+    topicRoute="/react/state-management"
+    subtopicLabel="Jotai’s atomFamily Shares State for the Same ID" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Jotai's atomFamily Shares State for the Same ID</h1>
+  <p class="page-subtitle">
+    The main page's atomFamily example only ever shows one call site per id — this checks whether two
+    separate components calling it with the same id actually share state, or each get their own copy.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="Jotai 2.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Four <code>TodoItem</code> instances — two with different ids, and two separate instances sharing
+      the exact same id.
+    </p>
+    <app-live-playground
+      title="Jotai atomFamily — shared state across component instances"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's state-management
+      claims — a Zustand selector's real re-render cost, RTK's mutation boundary, and now atomFamily's
+      caching guarantee.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="State Management"
+    topicRoute="/react/state-management"
+    [prev]="{ label: 'Mutating a useSelector Value Directly Fails Silently', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' }" />
+</div>

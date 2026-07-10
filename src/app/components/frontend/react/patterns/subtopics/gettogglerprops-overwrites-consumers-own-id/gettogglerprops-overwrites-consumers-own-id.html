@@ -1,0 +1,47 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Patterns"
+    topicRoute="/react/patterns"
+    subtopicLabel="getTogglerProps Overwrites a Consumer’s Own id" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That getTogglerProps Silently Overwrites a Consumer's Own id, Unlike Its onClick Composition</h1>
+  <p class="page-subtitle">
+    Mistake #4 teaches that prop getters must compose, not overwrite — this checks whether the main page's
+    own getTogglerProps example actually follows that rule for every field it returns, not just onClick.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="React 18" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The main page's own <code>useToggle</code>/<code>getTogglerProps</code>, with a consumer explicitly
+      requesting a custom <code>id</code>.
+    </p>
+    <app-live-playground
+      title="getTogglerProps — onClick composes, id doesn't"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This shows composition has to be checked field-by-field, not assumed uniform across a prop getter,
+      before checking a related shared-state gap in the composed custom hook example in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Patterns"
+    topicRoute="/react/patterns"
+    [next]="{ label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' }" />
+</div>

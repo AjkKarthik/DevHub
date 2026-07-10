@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Testing React"
+    topicRoute="/react/testing"
+    subtopicLabel="A Hook Setter Without act() Produces a Real Console Warning" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Calling a Hook's Setter Without act() Produces a Real Console Warning</h1>
+  <p class="page-subtitle">
+    Mistake #6 warns that forgetting act() produces a warning and possibly stale state — this renders
+    the real hook with renderHook and act from &#64;testing-library/react to capture the actual warning text.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Testing Library 14.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A counter hook mounted with the real <code>renderHook</code>, with its setter called both outside
+      and inside a real <code>act()</code> boundary — the captured <code>console.error</code> output for
+      each is shown below.
+    </p>
+    <app-live-playground
+      title="renderHook + act() — real console warning capture"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the testing subtopics: query priority (queryBy vs getBy), realistic event
+      simulation (fireEvent vs userEvent), and now the act() boundary that keeps hook state assertions
+      race-free — the three most common sources of confusing failures in React component tests.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing React"
+    topicRoute="/react/testing"
+    [prev]="{ label: 'fireEvent.click Skips Focus, userEvent.click Doesn’t', route: '/react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does' }" />
+</div>

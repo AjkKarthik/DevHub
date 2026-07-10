@@ -1,0 +1,47 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TypeScript & React"
+    topicRoute="/react/typescript"
+    subtopicLabel="Select's Runtime Coercion Mishandles a Boolean-Typed T" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That the Generic Select's Runtime Coercion Silently Mishandles a Boolean-Typed T</h1>
+  <p class="page-subtitle">
+    The main page's generic Select uses `as T` after a typeof-based coercion — this checks what actually
+    reaches onChange when T is a type the coercion logic's typeof check was never written to handle.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TypeScript 4.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The main page's own coercion logic, fed a boolean-typed value instead of the string/number cases it
+      was written for.
+    </p>
+    <app-live-playground
+      title="Generic Select — coercion and a boolean-typed value"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This shows a type assertion is a compiler-only promise with no runtime backing, before checking a
+      related gap in discriminated union protection in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TypeScript & React"
+    topicRoute="/react/typescript"
+    [next]="{ label: 'Discriminated Union Narrowing Gives Zero Runtime Protection', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' }" />
+</div>

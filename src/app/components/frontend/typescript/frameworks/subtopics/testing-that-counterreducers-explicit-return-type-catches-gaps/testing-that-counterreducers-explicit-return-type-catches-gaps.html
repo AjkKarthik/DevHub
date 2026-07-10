@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TypeScript with Frameworks"
+    topicRoute="/typescript/frameworks"
+    subtopicLabel="counterReducer’s Return Type Catches Gaps" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That counterReducer's Explicit Return Type Catches Gaps</h1>
+  <p class="page-subtitle">
+    The main page's reducer has no default case and no exhaustiveness pattern — its explicit : number return
+    type alone is what catches a newly-added, unhandled action.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Add a fourth action to the main page's own <code>CounterAction</code> union without a matching
+      <code>case</code>, and compare the annotated reducer against an unannotated version.
+    </p>
+    <app-live-playground
+      title="Explicit return types as exhaustiveness checks — testing counterReducer"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This shows the main page's own reducer already has a real safety net beyond what its code comments
+      call out, before checking a gap in a different pattern from the same tab in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TypeScript with Frameworks"
+    topicRoute="/typescript/frameworks"
+    [next]="{ label: 'ApiResponse Still Requires data on an Error Status', route: '/typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status' }" />
+</div>

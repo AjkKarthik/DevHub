@@ -1,0 +1,41 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Next.js App Router"
+    topicRoute="/react/nextjs"
+    subtopicLabel="&quot;use client&quot; Propagates to Every Import" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That "use client" Propagates to Every Plain Utility Import, Not Just Components</h1>
+  <p class="page-subtitle">
+    The theory section says the client boundary propagates to all imports — this isolates exactly what
+    that means for a plain, hook-free utility function that ends up shipped to the browser anyway.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Next.js 13.4+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This bundling mechanism is a build-time, server-infrastructure concept — unlike most React hub
+      subtopics, it can't be demonstrated with a runnable browser sandbox, since there's no client-side
+      bundler introspection to click through. The next subtopic moves to a genuinely stateful concern:
+      what <code>revalidatePath</code> actually invalidates, and what it does not.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Next.js App Router"
+    topicRoute="/react/nextjs"
+    [next]="{ label: 'revalidatePath Is Cache Invalidation, Not a Live Push', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' }" />
+</div>

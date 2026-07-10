@@ -1,0 +1,49 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Functions Deep Dive"
+    topicRoute="/javascript/functions"
+    subtopicLabel="Default Parameter Only Triggers on undefined" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That a Default Parameter Only Triggers on undefined, Not null, Zero, False, or Empty String</h1>
+  <p class="page-subtitle">
+    Mistake #3 only tests null — this runs 6 different inputs to confirm the ONE trigger condition
+    against the four falsy values that don't count.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      One default-parameter function, called with no argument, <code>undefined</code>,
+      <code>null</code>, <code>0</code>, <code>false</code>, and <code>""</code>.
+    </p>
+    <app-live-playground
+      title="Default parameters — 6 inputs, one real trigger condition"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the narrowest of JavaScript's three "defaulting" mechanisms (||, ??, default
+      parameters) made concrete. The final subtopic returns to this-binding, checking whether new can
+      override even a function that was already explicitly bound.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functions Deep Dive"
+    topicRoute="/javascript/functions"
+    [prev]="{ label: 'bind() Is Permanent — call/apply/bind Can’t Override It', route: '/javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it' }"
+    [next]="{ label: 'new Overrides Even an Explicitly Bound Function', route: '/javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target' }" />
+</div>

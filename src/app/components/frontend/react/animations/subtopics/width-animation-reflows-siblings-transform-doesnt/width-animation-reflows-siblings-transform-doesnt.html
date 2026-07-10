@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Animations (Framer Motion)"
+    topicRoute="/react/animations"
+    subtopicLabel="Width Animation Reflows Siblings, transform Doesn’t" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Animating width Reflows Sibling Elements, But Animating transform Never Does</h1>
+  <p class="page-subtitle">
+    Mistake #3 calls width animation "layout thrashing" — this makes the claim directly visible: does a
+    neighboring box actually move, with no profiler needed.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Framer Motion 11.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two rows, each with an animating box next to a fixed red sibling — one animates
+      <code>width</code>, the other animates <code>scaleX</code> to the same visual final size.
+    </p>
+    <app-live-playground
+      title="width vs scaleX — does the sibling move?"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This makes the GPU-vs-layout distinction concrete without needing a profiler. The final subtopic
+      checks a related scroll-driven claim: what viewport.once actually controls when an element
+      repeatedly scrolls in and out of view.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Animations (Framer Motion)"
+    topicRoute="/react/animations"
+    [prev]="{ label: 'Missing Key Breaks Exit for the Wrong List Item', route: '/react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item' }"
+    [next]="{ label: 'viewport.once Controls Repeat, Not Just the First Play', route: '/react/animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry' }" />
+</div>

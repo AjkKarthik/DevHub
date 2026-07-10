@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DOM Manipulation" topicRoute="/javascript/dom" subtopicLabel="innerHTML += Reparses the Whole Container and Destroys Child Listeners" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">innerHTML += Reparses the Whole Container and Destroys Child Listeners</h1>
+  <p class="page-subtitle"><code>innerHTML +=</code> isn't an efficient append — it serializes, reparses, and rebuilds every existing child node from scratch, silently detaching every listener along the way.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="DOM Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A button with a click listener is clicked, some HTML is appended via <code>innerHTML +=</code>, and the same button is clicked again. Watch whether the listener still fires — and whether the button is even the same node object.</p>
+    <app-live-playground title="innerHTML += vs. append() and event listeners" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/javascript/dom">DOM Manipulation</a> page's warning about <code>innerHTML +=</code>. Next, see how <code>querySelectorAll</code>'s static NodeList differs from a live <code>HTMLCollection</code> when the DOM changes after the fact.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DOM Manipulation"
+    topicRoute="/javascript/dom"
+    [prev]="{ label: 'A Hidden Write Inside a Third-Party Call Still Causes Layout Thrashing', route: '/javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing' }"
+    [next]="{ label: 'querySelectorAll Is Static, getElementsByClassName Is Live', route: '/javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection' }"
+  />
+</div>

@@ -1,0 +1,47 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Hook Form"
+    topicRoute="/react/hook-form"
+    subtopicLabel="Missing valueAsNumber Breaks Arithmetic Silently" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That Missing valueAsNumber Turns Submitted Numbers Into Concatenated Strings</h1>
+  <p class="page-subtitle">
+    Mistake #6 says the string bug "breaks arithmetic" — this shows the exact wrong result: "42" + "8"
+    silently becomes "428", not 50, with no error anywhere.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="React Hook Form 7.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two identical forms adding two number inputs — one without <code>valueAsNumber</code>, one with it.
+    </p>
+    <app-live-playground
+      title="valueAsNumber — real string concatenation vs real addition"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the React Hook Form subtopics: a re-render cost from watch(), a data-corruption
+      bug from wrong keys, and now a silent type bug from an HTML input attribute that looks like it
+      should already guarantee the right type but doesn't.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Hook Form"
+    topicRoute="/react/hook-form"
+    [prev]="{ label: 'Index Keys Show the Wrong Value After useFieldArray remove()', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' }" />
+</div>

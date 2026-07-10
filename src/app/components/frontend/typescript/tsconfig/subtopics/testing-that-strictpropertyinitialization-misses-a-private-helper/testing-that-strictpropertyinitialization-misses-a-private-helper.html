@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="tsconfig Deep Dive"
+    topicRoute="/typescript/tsconfig"
+    subtopicLabel="strictPropertyInitialization Misses a Private Helper" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That strictPropertyInitialization Misses a Private Helper</h1>
+  <p class="page-subtitle">
+    The main page shows three direct-assignment patterns that satisfy strictPropertyInitialization — a
+    private helper method that genuinely initializes the field doesn't count, and still errors.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 2.7+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Initialize a field through a private helper method called from the constructor, and check whether
+      <code>strictPropertyInitialization</code> still flags it.
+    </p>
+    <app-live-playground
+      title="Syntactic vs semantic checking — testing strictPropertyInitialization"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own strict-mode sub-flag examples to a pattern it never covers, before
+      testing a related indexed-access flag in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="tsconfig Deep Dive"
+    topicRoute="/typescript/tsconfig"
+    [next]="{ label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' }" />
+</div>

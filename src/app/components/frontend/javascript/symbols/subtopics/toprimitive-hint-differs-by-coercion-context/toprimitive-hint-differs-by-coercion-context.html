@@ -1,0 +1,49 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Symbols &amp; Iterators"
+    topicRoute="/javascript/symbols"
+    subtopicLabel="Symbol.toPrimitive’s Hint Differs by Coercion Context" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Symbol.toPrimitive's hint Parameter Differs Across String, Number, and Default Coercion Contexts</h1>
+  <p class="page-subtitle">
+    The Money example shows three outputs but never the raw hint value — this logs it directly across
+    8 different operations to map exactly which context sends which hint.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      A class that logs the raw <code>hint</code> value on every <code>[Symbol.toPrimitive]</code>
+      call, triggered by 8 different real coercion contexts.
+    </p>
+    <app-live-playground
+      title="Symbol.toPrimitive — hint value across 8 real operations"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out one well-known symbol's behavior in detail. The final subtopic checks another —
+      whether Symbol.hasInstance genuinely overrides instanceof for every possible value, not just
+      typical ones.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Symbols &amp; Iterators"
+    topicRoute="/javascript/symbols"
+    [prev]="{ label: 'Which Operations Actually See Symbol Keys', route: '/javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them' }"
+    [next]="{ label: 'Symbol.hasInstance Overrides instanceof for Any Value', route: '/javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values' }" />
+</div>

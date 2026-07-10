@@ -1,0 +1,14 @@
+$accent: #0ea5e9;
+$tint:   #f0f9ff;
+
+.react-page { max-width: 860px; padding: 1rem; margin: 0 auto; }
+.page-header-icon.react-icon { background: $tint; color: $accent; border: 1px solid rgba(14,165,233,.25); font-size: 1.8rem; }
+.react-section { margin: 2rem 0;
+  h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: #111827; }
+}
+.subtopic-page { padding: 2rem 1.5rem 4rem; }
+
+:host-context(body.dark) {
+  .page-header-icon.react-icon { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.2); }
+  .react-section h2 { color: #f9fafb; }
+}

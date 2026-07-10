@@ -1,0 +1,50 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TanStack Query"
+    topicRoute="/react/tanstack-query"
+    subtopicLabel="The Abort Signal Must Be Wired Into fetch to Actually Cancel" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That the Abort Signal Must Be Explicitly Wired Into fetch to Actually Cancel the Request</h1>
+  <p class="page-subtitle">
+    The main page's QnA says TanStack Query "automatically" cancels requests while also instructing you to
+    pass the signal to fetch — this checks what actually happens to the underlying request if that step is
+    skipped.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TanStack Query v4+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two queries unmounted mid-flight — one whose <code>queryFn</code> wires the signal into its request,
+      one that ignores it entirely.
+    </p>
+    <app-live-playground
+      title="AbortSignal — wired vs ignored"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This draws the exact line between what TanStack Query does automatically and what still requires
+      developer wiring, before checking a related gap in initialData vs placeholderData in the final
+      subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TanStack Query"
+    topicRoute="/react/tanstack-query"
+    [prev]="{ label: 'An Inline Object queryKey Does Not Actually Refetch on Re-render', route: '/react/tanstack-query/testing-that-an-inline-object-querykey-does-not-actually-refetch-on-rerender' }"
+    [next]="{ label: 'initialData Skips the Immediate Fetch, placeholderData Always Triggers One', route: '/react/tanstack-query/testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one' }" />
+</div>

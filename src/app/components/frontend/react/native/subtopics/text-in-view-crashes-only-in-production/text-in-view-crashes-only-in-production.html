@@ -1,0 +1,40 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Native"
+    topicRoute="/react/native"
+    subtopicLabel="Text-in-View Crashes Only in Production Builds" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Bare Text Node in View Crashes Only in Production, Not in Dev/Expo Go</h1>
+  <p class="page-subtitle">
+    Mistake #6 warns "dev mode may be lenient but production builds will crash" — this makes the
+    consequence explicit: testing thoroughly in Expo Go can never catch this bug at all.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="React Native 0.60+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      Like the Next.js hub, React Native subtopics use a static code-block instead of a live playground —
+      there's no in-browser mobile runtime to click through. The next subtopic moves to FlatList's
+      getItemLayout optimization, and what happens when its core assumption is violated.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Native"
+    topicRoute="/react/native"
+    [next]="{ label: 'getItemLayout Assumes Every Row Is the Same Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' }" />
+</div>

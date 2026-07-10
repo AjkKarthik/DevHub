@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Promises &amp; Async/Await" topicRoute="/javascript/promises" subtopicLabel="Forgetting return in .then() Breaks the Chained Value" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Forgetting return in .then() Breaks the Chained Value</h1>
+  <p class="page-subtitle">A <code>.then()</code> callback's return value becomes the next step's input — leave off <code>return</code> and every following <code>.then()</code> silently receives <code>undefined</code> instead.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Two identical chains run side by side — one with a missing <code>return</code>, one fixed. Compare the console output step by step to see exactly where the real value gets lost.</p>
+    <app-live-playground title="Broken vs. fixed .then() chain" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This is a companion mistake to the previous subtopic on <code>Promise.all</code> not cancelling background work — both are cases where a chain or combinator keeps running fine on the surface while quietly doing the wrong thing underneath. Next, see how <code>async</code> functions always wrap their return value in a Promise, even for plain synchronous code.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Promises &amp; Async/Await"
+    topicRoute="/javascript/promises"
+    [prev]="{ label: 'Promise.all Rejection Doesn’t Cancel Other Pending Promises', route: '/javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises' }"
+    [next]="{ label: 'async Functions Always Wrap Their Return Value in a Promise', route: '/javascript/promises/async-function-always-wraps-return-value-in-a-promise' }"
+  />
+</div>

@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Destructuring &amp; Spread"
+    topicRoute="/javascript/destructuring"
+    subtopicLabel="One-Level Default Doesn’t Guard a Deeper Nested Property" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That a Default Value at One Nesting Level Doesn't Protect a Property Two Levels Deeper</h1>
+  <p class="page-subtitle">
+    Mistake #1's fix only goes one level deep — this builds a 3-level pattern and removes the
+    level-2 default specifically, to confirm each level needs its own guard.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      Three variations of the same 3-level nested destructure, testing which specific level's
+      default is doing the protecting.
+    </p>
+    <app-live-playground
+      title="Nested destructuring defaults — each level is independent"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the destructuring subtopics: where this-binding breaks on extraction, a bare
+      parser ambiguity specific to object assignment, and now the exact scope of what a nested
+      default actually protects.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Destructuring &amp; Spread"
+    topicRoute="/javascript/destructuring"
+    [prev]="{ label: 'Bare Destructuring Assignment Needs Parens — a Real SyntaxError', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' }" />
+</div>

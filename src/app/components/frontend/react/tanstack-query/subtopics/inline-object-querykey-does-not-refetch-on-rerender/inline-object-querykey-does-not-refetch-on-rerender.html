@@ -1,0 +1,47 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TanStack Query"
+    topicRoute="/react/tanstack-query"
+    subtopicLabel="An Inline Object queryKey Does Not Actually Refetch on Re-render" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That an Inline Object queryKey Does Not Actually Refetch on Re-render</h1>
+  <p class="page-subtitle">
+    Mistake #1's wrong example claims an inline object queryKey "refetches on every render" — this runs
+    that exact example with a fetch counter to check whether it actually does.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TanStack Query v5" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The main page's own <code>['user', &#123; filter: &#123; active: true &#125; &#125;]</code> pattern, with a
+      queryFn call counter and a button that forces re-renders.
+    </p>
+    <app-live-playground
+      title="queryKey hashing — object literal re-renders vs actual fetches"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This corrects the exact mechanism behind Mistake #1, before checking a related gap in the abort
+      signal claim in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TanStack Query"
+    topicRoute="/react/tanstack-query"
+    [next]="{ label: 'The Abort Signal Must Be Wired Into fetch to Actually Cancel', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' }" />
+</div>

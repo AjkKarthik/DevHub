@@ -1,0 +1,47 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Core Hooks"
+    topicRoute="/react/hooks-core"
+    subtopicLabel="StrictMode Double-Invokes the Lazy Initializer, Not Just Effects" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That StrictMode Double-Invokes the Lazy Initializer, Not Just Effects</h1>
+  <p class="page-subtitle">
+    The main page only ever ties Strict Mode's double-invocation to effects — this checks whether the
+    useState lazy initializer, described elsewhere as running "once on mount only," is also affected.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="React 18" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A module-level counter incremented inside a <code>useState</code> lazy initializer, rendered inside
+      <code>StrictMode</code>.
+    </p>
+    <app-live-playground
+      title="StrictMode and the lazy initializer"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own effects-focused Strict Mode discussion to the render phase, before
+      checking a related subtlety in useContext's default value in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Core Hooks"
+    topicRoute="/react/hooks-core"
+    [next]="{ label: 'useContext’s defaultValue Is Skipped by an Explicit undefined Provider', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' }" />
+</div>

@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Promises &amp; Async/Await" topicRoute="/javascript/promises" subtopicLabel="async Functions Always Wrap Their Return Value in a Promise" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">async Functions Always Wrap Their Return Value in a Promise</h1>
+  <p class="page-subtitle">The <code>async</code> keyword changes a function's return type unconditionally — even a function with zero real asynchronous work still returns a <code>Promise</code>, never the raw value.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="ES2017" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Two functions with the identical body — one plain, one <code>async</code> — are called three different ways. Watch how <code>typeof</code> and simple arithmetic behave differently depending on whether the Promise is unwrapped.</p>
+    <app-live-playground title="async return type vs. sync return type" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's async pitfalls — background work that keeps running after <code>Promise.all</code> rejects, chains silently breaking on a missing <code>return</code>, and now the unconditional Promise-wrapping <code>async</code> applies to every function it's attached to. Return to the <a routerLink="/javascript/promises">Promises &amp; Async/Await</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Promises &amp; Async/Await"
+    topicRoute="/javascript/promises"
+    [prev]="{ label: 'Forgetting return in .then() Breaks the Chained Value', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' }"
+  />
+</div>

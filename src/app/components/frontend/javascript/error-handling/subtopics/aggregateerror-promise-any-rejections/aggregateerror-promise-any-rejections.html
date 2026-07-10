@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/javascript/error-handling" subtopicLabel="AggregateError Packages Every Promise.any() Rejection, Not Just the First" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">AggregateError Packages Every Promise.any() Rejection, Not Just the First</h1>
+  <p class="page-subtitle">When every promise in a <code>Promise.any()</code> call rejects, the thrown <code>AggregateError</code>'s <code>.errors</code> array preserves every individual failure reason — unlike <code>Promise.all()</code>, which discards all but the first.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2021" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Three checks all fail. Compare what <code>Promise.any()</code>'s <code>AggregateError.errors</code> preserves against what <code>Promise.all()</code>'s single caught error loses — then see the same pattern used manually for multi-field validation.</p>
+    <app-live-playground title="AggregateError vs. Promise.all's single-error loss" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious error-handling mechanics — <code>finally</code> silently overriding return values, async callback errors escaping a sync <code>try/catch</code>, and now a dedicated error type for combinator failures. Return to the <a routerLink="/javascript/error-handling">Error Handling</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/javascript/error-handling"
+    [prev]="{ label: 'try/catch Never Catches an Error Thrown Inside setTimeout', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' }"
+  />
+</div>

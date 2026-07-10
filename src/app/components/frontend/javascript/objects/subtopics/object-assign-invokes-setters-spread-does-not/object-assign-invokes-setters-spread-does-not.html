@@ -1,0 +1,49 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Object Fundamentals"
+    topicRoute="/javascript/objects"
+    subtopicLabel="Object.assign Invokes Setters, Spread Doesn’t" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Object.assign Invokes a Target Setter, While Spread Creates a Plain Property Instead</h1>
+  <p class="page-subtitle">
+    The QnA states this as fact but never shows a setter actually firing — this defines one with a
+    visible side effect and compares both approaches directly.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      A target object with a value-doubling setter, merged the same source data via
+      <code>Object.assign()</code> and via spread — with the setter's own log line as the tell.
+    </p>
+    <app-live-playground
+      title="Object.assign vs spread — does the setter fire?"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is a real, functional difference beyond "mutates vs. doesn't." The final subtopic checks
+      structuredClone()'s own stated limits — what actually happens to a function and a class
+      instance's prototype when cloned.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Object Fundamentals"
+    topicRoute="/javascript/objects"
+    [prev]="{ label: 'Integer Keys Sort First, Regardless of Insertion Order', route: '/javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys' }"
+    [next]="{ label: 'structuredClone Strips Class Prototype, Throws on Functions', route: '/javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function' }" />
+</div>

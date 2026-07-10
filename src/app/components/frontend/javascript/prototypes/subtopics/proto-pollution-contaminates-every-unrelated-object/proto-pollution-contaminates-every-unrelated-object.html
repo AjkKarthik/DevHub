@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Prototypes &amp; Classes"
+    topicRoute="/javascript/prototypes"
+    subtopicLabel="Prototype Pollution Contaminates Every Unrelated Object" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That a Naive for...in Merge Lets Prototype Pollution Contaminate a Completely Unrelated, Freshly-Created Object</h1>
+  <p class="page-subtitle">
+    Mistake #5 says pollution reaches "ALL objects" — this checks an object that was never anywhere
+    near the vulnerable merge() call to confirm that claim is literal, not exaggerated.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      The exact naive <code>merge()</code> from the main page, run against a crafted
+      <code>__proto__</code> payload — checked against an innocent object it never touched.
+    </p>
+    <app-live-playground
+      title="Prototype pollution — the real blast radius"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the prototypes subtopics: what a null prototype genuinely removes, the hard
+      separation between static and instance methods, and now how far a single shared
+      Object.prototype's contamination actually spreads.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Prototypes &amp; Classes"
+    topicRoute="/javascript/prototypes"
+    [prev]="{ label: 'Static Methods Don’t Exist on Instances at All', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' }" />
+</div>

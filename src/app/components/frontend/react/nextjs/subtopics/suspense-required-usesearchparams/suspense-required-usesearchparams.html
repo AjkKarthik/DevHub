@@ -1,0 +1,41 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Next.js App Router"
+    topicRoute="/react/nextjs"
+    subtopicLabel="useSearchParams Without Suspense Forces the Whole Page Dynamic" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That useSearchParams Without Suspense Forces the Entire Page Dynamic, Not Just That Segment</h1>
+  <p class="page-subtitle">
+    The quiz explanation names the mechanism but not its scope — this makes explicit that skipping the
+    Suspense boundary opts the WHOLE page into dynamic rendering, not just the component calling the hook.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Next.js 13.4+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Next.js subtopics: how "use client" scopes the client bundle, what
+      revalidatePath actually invalidates, and now how a Suspense boundary scopes static-vs-dynamic
+      rendering — three separate boundary mechanisms that all shape what actually reaches the browser
+      and when.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Next.js App Router"
+    topicRoute="/react/nextjs"
+    [prev]="{ label: 'revalidatePath Is Cache Invalidation, Not a Live Push', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' }" />
+</div>

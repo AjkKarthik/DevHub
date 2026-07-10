@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Functions Deep Dive"
+    topicRoute="/javascript/functions"
+    subtopicLabel="new Overrides Even an Explicitly Bound Function" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Calling new on an Already-Bound Function Creates a Fresh Object, Not the Bound Target</h1>
+  <p class="page-subtitle">
+    The priority list says "new > explicit binding" — this resolves the apparent tension with the
+    previous subtopic's "bind() is permanent" finding by testing new directly on a bound function.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      A constructor function bound to a specific object, called once as a plain function and once
+      with <code>new</code>, comparing what <code>this</code> resolves to each time.
+    </p>
+    <app-live-playground
+      title="new vs bind() — the one exception to bind's permanence"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the functions subtopics: bind()'s permanence against ordinary calls, the exact
+      trigger condition for default parameters, and now the one specific, spec-mandated exception that
+      lets new bypass an existing bind() after all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functions Deep Dive"
+    topicRoute="/javascript/functions"
+    [prev]="{ label: 'Default Parameter Only Triggers on undefined', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' }" />
+</div>

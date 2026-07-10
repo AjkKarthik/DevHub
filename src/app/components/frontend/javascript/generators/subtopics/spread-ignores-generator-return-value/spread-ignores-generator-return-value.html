@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Generators" topicRoute="/javascript/generators" subtopicLabel="Spread and for...of Ignore a Generator's Return Value" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Spread and for...of Ignore a Generator's Return Value</h1>
+  <p class="page-subtitle">A generator's <code>return</code> value isn't part of the yielded sequence — spread and <code>for...of</code> stop the moment they see <code>done: true</code> and discard it entirely.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>The same generator with a <code>return 3;</code> statement is consumed four different ways — spread, <code>for...of</code>, manual <code>.next()</code> calls, and <code>yield*</code> delegation. Watch which ones actually surface the <code>3</code>.</p>
+    <app-live-playground title="Four ways to consume a generator's return value" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/generators">Generators</a> page's warning about dropped return values in a direct comparison. Next, see what actually happens to a generator's resources when a consuming <code>for...of</code> loop breaks early.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generators"
+    topicRoute="/javascript/generators"
+    [next]="{ label: 'Breaking a for...of Loop Triggers generator.return() and Runs finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' }"
+  />
+</div>

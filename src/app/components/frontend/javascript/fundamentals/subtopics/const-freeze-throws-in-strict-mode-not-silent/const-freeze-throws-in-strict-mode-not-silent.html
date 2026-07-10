@@ -1,0 +1,47 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="JavaScript Fundamentals"
+    topicRoute="/javascript/fundamentals"
+    subtopicLabel="Object.freeze() Throws in Strict Mode, Doesn’t Fail Silently" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Mutating a Frozen Object Throws in Strict Mode (ES Modules), Not Silently Fails</h1>
+  <p class="page-subtitle">
+    Mistake #5's fix comment says "throws in strict mode" — this compares the exact same mutation
+    attempt in strict and sloppy mode to see the loud TypeError versus the silent no-op.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      The same <code>Object.freeze()</code> mutation attempt, run once in an explicit
+      <code>"use strict"</code> function and once in a genuinely sloppy-mode function.
+    </p>
+    <app-live-playground
+      title="Object.freeze() — strict mode throw vs sloppy mode silent fail"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the JavaScript Fundamentals subtopics: numeric validation, falsy-value
+      assignment operators, and now the strict-mode boundary behind one of the page's own fix comments.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="JavaScript Fundamentals"
+    topicRoute="/javascript/fundamentals"
+    [prev]="{ label: 'Nullish Assignment Keeps 0, OR Assignment Overwrites It', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' }" />
+</div>

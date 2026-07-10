@@ -1,0 +1,47 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Hoisting &amp; TDZ"
+    topicRoute="/javascript/hoisting"
+    subtopicLabel="typeof in the TDZ Throws ReferenceError, Not undefined" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That typeof on a TDZ Variable Throws ReferenceError, While a Truly Undeclared Variable Stays Safe</h1>
+  <p class="page-subtitle">
+    The QnA calls this "a common misconception" but never shows the real error text — this catches
+    both outcomes and displays exactly what each one actually throws (or doesn't).
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      <code>typeof</code> run on a genuinely undeclared identifier and on a <code>let</code> variable
+      accessed before its own declaration line, both wrapped in try/catch.
+    </p>
+    <app-live-playground
+      title="typeof — undeclared vs TDZ, real thrown errors"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the TDZ half of hoisting. The next subtopic moves to the var/function-declaration side —
+      what happens, in actual execution order, when a var and a function declaration share the same name.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Hoisting &amp; TDZ"
+    topicRoute="/javascript/hoisting"
+    [next]="{ label: 'Function Declaration Wins Hoisting, var Overwrites It After', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' }" />
+</div>

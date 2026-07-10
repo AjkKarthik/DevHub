@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Proxy &amp; Reflect API" topicRoute="/javascript/proxy" subtopicLabel="The set Trap Must Return true or Strict Mode Throws" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">The set Trap Must Return true or Strict Mode Throws</h1>
+  <p class="page-subtitle">A falsy return from the <code>set</code> trap throws a TypeError, even if the trap's own internal logic correctly stored the value on the target.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A broken <code>set</code> trap stores the value correctly but never returns <code>true</code>. Watch the assignment throw anyway, then compare against two fixed versions.</p>
+    <app-live-playground title="set trap return value vs. internal assignment" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/proxy">Proxy &amp; Reflect API</a> page's first mistake in a live thrown error. Next, see why creating a new proxy on every nested property read breaks referential equality, and how a <code>WeakMap</code> fixes it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Proxy &amp; Reflect API"
+    topicRoute="/javascript/proxy"
+    [next]="{ label: 'A New Proxy Per Nested get Breaks Referential Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' }"
+  />
+</div>

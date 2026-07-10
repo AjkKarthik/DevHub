@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Destructuring &amp; Spread"
+    topicRoute="/javascript/destructuring"
+    subtopicLabel="A Destructured Method Loses Its this Context" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing Exactly Where a Destructured Method Loses Its this Context — and Where It Doesn't</h1>
+  <p class="page-subtitle">
+    Mistake #3's own "wrong" example has a working first call and a failing second one — this isolates
+    the exact boundary with three calls back to back.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      The same method called via <code>obj.greet()</code>, a bare destructured <code>greet()</code>,
+      and a <code>.bind(obj)</code> version — three calls, one clear boundary.
+    </p>
+    <app-live-playground
+      title="Destructured method — where this breaks, and where it doesn't"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three destructuring subtopics — this one on method extraction. The next
+      moves to a related parser quirk: why bare destructuring ASSIGNMENT (not declaration) needs
+      parentheses.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Destructuring &amp; Spread"
+    topicRoute="/javascript/destructuring"
+    [next]="{ label: 'Bare Destructuring Assignment Needs Parens — a Real SyntaxError', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' }" />
+</div>

@@ -10679,6 +10679,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/classes/testing-that-typescript-private-is-still-included-in-json-stringify': {
+    apis: ['JSON.stringify', 'Object.keys', '#privateField'],
+    related: [
+      { label: 'getState’s Object.freeze Doesn’t Stop Array Mutation — next', route: '/typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items' },
+      { label: 'Classes & Visibility (overview)', route: '/typescript/classes' },
+    ],
+    tip: 'TS private compiles to an ordinary enumerable property — JSON.stringify, Object.keys, and spread all see it exactly like a public field, no cast required to leak it.',
+    docs: [
+      { label: 'MDN Private Class Fields', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'No explicit cast is needed for this leak — ordinary API-response serialization code triggers it.',
+      '# fields are genuinely invisible to JSON.stringify, Object.keys, and spread, unlike TS private.',
+    ],
+  },
+
+  'typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items': {
+    apis: ['Object.freeze', 'shallow copy', 'spread operator'],
+    related: [
+      { label: 'private Still Leaks Via JSON.stringify — previous', route: '/typescript/classes/testing-that-typescript-private-is-still-included-in-json-stringify' },
+      { label: 'Object.create Bypasses the Private Constructor — next', route: '/typescript/classes/testing-that-object-create-bypasses-appconfigs-private-constructor' },
+      { label: 'Classes & Visibility (overview)', route: '/typescript/classes' },
+    ],
+    tip: 'Object.freeze({ ...state }) only locks the top-level wrapper — nested arrays like items are the same reference as the live internal state, fully mutable and bypassing setState entirely.',
+    docs: [
+      { label: 'MDN Object.freeze()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Mutating the array directly skips setState entirely — subscribers never get notified, silently going stale.',
+      'A correct fix needs a deep freeze or defensively-copied nested values, not just a frozen wrapper.',
+    ],
+  },
+
+  'typescript/classes/testing-that-object-create-bypasses-appconfigs-private-constructor': {
+    apis: ['Object.create', 'private constructor', 'prototype chain'],
+    related: [
+      { label: 'getState’s Object.freeze Doesn’t Stop Array Mutation — previous', route: '/typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items' },
+      { label: 'Classes & Visibility (overview)', route: '/typescript/classes' },
+    ],
+    tip: 'Object.create(AppConfig.prototype) never calls the constructor at all — parameter properties like env are never assigned, producing a malformed instance that still passes instanceof.',
+    docs: [
+      { label: 'MDN Object.create()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the same private-is-erased-at-runtime pattern already shown for fields, applied to constructors instead.',
+      'Module-scoped singletons (a non-exported variable) have no equivalent bypass, unlike a private constructor.',
+    ],
+  },
+
   'typescript/decorators': {
     apis: ['@decorator', 'ClassDecorator', 'MethodDecorator', 'PropertyDecorator', 'ParameterDecorator', 'DecoratorContext (TS 5)', 'experimentalDecorators'],
     related: [
@@ -10700,6 +10758,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TS 5.0 decorators and experimentalDecorators are INCOMPATIBLE — you cannot mix them in the same file.',
       'Angular still uses experimental decorators internally — enable experimentalDecorators in Angular projects.',
       'Class decorators receive the class constructor; method decorators receive the method and its descriptor — the APIs differ between experimental and TC39 Stage 3.',
+    ],
+  },
+
+  'typescript/decorators/testing-that-celsius-field-decorator-only-validates-construction': {
+    apis: ['ClassFieldDecoratorContext', 'field initializer', 'accessor keyword'],
+    related: [
+      { label: 'Singleton Silently Ignores the Second Call’s Args — next', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' },
+      { label: 'Decorators (overview)', route: '/typescript/decorators' },
+    ],
+    tip: 'A field decorator\'s returned function only runs once, as the field\'s initializer at construction — reassigning the field afterward bypasses it entirely, unlike an accessor decorator.',
+    docs: [
+      { label: 'TC39 Decorators Proposal', url: 'https://github.com/tc39/proposal-decorators' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This corrects the main page\'s own inline comment for this exact code example.',
+      'Use the accessor keyword instead of a plain field when every assignment needs validation.',
+    ],
+  },
+
+  'typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args': {
+    apis: ['class decorator (legacy)', 'constructor wrapping', 'singleton pattern'],
+    related: [
+      { label: 'Field Decorator Only Validates Construction — previous', route: '/typescript/decorators/testing-that-celsius-field-decorator-only-validates-construction' },
+      { label: 'describe’s Class Decorator Returns an Unnamed Class — next', route: '/typescript/decorators/testing-that-describes-class-decorator-returns-an-unnamed-class' },
+      { label: 'Decorators (overview)', route: '/typescript/decorators' },
+    ],
+    tip: 'Only the first new Database(...) call\'s arguments ever reach the real constructor — every later call\'s arguments are silently discarded, with zero compiler warning since the type signature still advertises them.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The main page\'s own Database example has no constructor arguments, which is exactly why this gap stays invisible there.',
+      'TypeScript\'s type checker only verifies the call matches the signature — it cannot see that the decorator discards the arguments at runtime.',
+    ],
+  },
+
+  'typescript/decorators/testing-that-describes-class-decorator-returns-an-unnamed-class': {
+    apis: ['ClassDecoratorContext', 'NamedEvaluation', 'constructor.name'],
+    related: [
+      { label: 'Singleton Silently Ignores the Second Call’s Args — previous', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' },
+      { label: 'Decorators (overview)', route: '/typescript/decorators' },
+    ],
+    tip: 'A class decorator that returns class extends target { ... } preserves the prototype chain (instanceof still works) but the anonymous class expression\'s own .name is empty, not "BankAccount".',
+    docs: [
+      { label: 'MDN Function.name', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'instanceof and .name are unrelated mechanisms — one checks the prototype chain, the other reads how the class expression was written.',
+      'Object.defineProperty(replacement, "name", { value: target.name }) is the fix — plain assignment silently fails since .name is non-writable but configurable.',
     ],
   },
 
@@ -10727,6 +10843,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/tsconfig/testing-that-strictpropertyinitialization-misses-a-private-helper': {
+    apis: ['strictPropertyInitialization', 'definite assignment (!)', 'syntactic analysis'],
+    related: [
+      { label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples — next', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' },
+      { label: 'tsconfig Deep Dive (overview)', route: '/typescript/tsconfig' },
+    ],
+    tip: 'strictPropertyInitialization only recognizes a direct this.field = value assignment written literally in the constructor — initialization via a called private helper method is invisible to the check, even when it always runs.',
+    docs: [
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig/#strictPropertyInitialization' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a false positive, not a real bug — the check is syntactic, not a full control-flow trace.',
+      'The definite-assignment assertion (!) is the standard fix for genuinely-safe helper-method initialization.',
+    ],
+  },
+
+  'typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access': {
+    apis: ['noUncheckedIndexedAccess', 'tuple type', 'literal index'],
+    related: [
+      { label: 'strictPropertyInitialization Misses a Private Helper — previous', route: '/typescript/tsconfig/testing-that-strictpropertyinitialization-misses-a-private-helper' },
+      { label: 'strictFunctionTypes Doesn’t Apply to Methods — next', route: '/typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax' },
+      { label: 'tsconfig Deep Dive (overview)', route: '/typescript/tsconfig' },
+    ],
+    tip: 'A tuple accessed with a literal, in-bounds index (pair[0]) is exempt from noUncheckedIndexedAccess — the same tuple accessed with a computed number index falls back to | undefined, just like a plain array.',
+    docs: [
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The exemption is specifically about literal, provably-in-bounds indices, not about tuples in general.',
+      'The main page\'s own single example is a plain array — this gap only surfaces with a tuple.',
+    ],
+  },
+
+  'typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax': {
+    apis: ['strictFunctionTypes', 'method syntax', 'bivariant checking'],
+    related: [
+      { label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples — previous', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' },
+      { label: 'tsconfig Deep Dive (overview)', route: '/typescript/tsconfig' },
+    ],
+    tip: 'strictFunctionTypes only checks property-typed functions (handle: (e: MouseEvent) => void) contravariantly — the identical substitution written as a method (handle(e: MouseEvent): void) stays bivariant, a deliberate exemption for OOP compatibility.',
+    docs: [
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig/#strictFunctionTypes' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a documented, intentional design decision, not a bug awaiting a fix.',
+      'Method syntax and property-function syntax look nearly identical in an interface but are checked by different rules.',
+    ],
+  },
+
   'typescript/modules': {
     apis: ['import', 'export', 'export default', 'import type', 'require()', 'namespace', 'declare module', 'module resolution'],
     related: [
@@ -10747,6 +10921,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A file with no import/export is a script — its declarations are global; add export {} to make it a module.',
       'namespace (internal modules) is legacy — use ES modules and import/export in all new code.',
       'esModuleInterop: true allows default imports from CommonJS modules — without it you need import * as React from "react".',
+    ],
+  },
+
+  'typescript/modules/testing-that-circular-imports-work-fine-for-functions-not-consts': {
+    apis: ['function hoisting', 'live bindings', 'module evaluation order'],
+    related: [
+      { label: 'A Barrel Import Runs Every File’s Side Effects — next', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' },
+      { label: 'Module System (overview)', route: '/typescript/modules' },
+    ],
+    tip: 'Circular imports only break when one module reads a value from the other at top-level, module-evaluation time — function declarations, hoisted and only called later, sidestep the problem entirely.',
+    docs: [
+      { label: 'MDN import declaration', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The "extract to a third module" fix is specifically needed for circular value dependencies, not circular function dependencies.',
+      'ES module bindings are live references, but a hoisted function exists before any top-level code in its module has run.',
+    ],
+  },
+
+  'typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects': {
+    apis: ['module graph evaluation', 'export * from', 'tree-shaking'],
+    related: [
+      { label: 'Circular Imports Work Fine for Functions — previous', route: '/typescript/modules/testing-that-circular-imports-work-fine-for-functions-not-consts' },
+      { label: 'export type Strips the Value, Even for a Class — next', route: '/typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class' },
+      { label: 'Module System (overview)', route: '/typescript/modules' },
+    ],
+    tip: 'Importing one name from a barrel forces the JS engine to evaluate every re-exported file in full — any top-level side effect in an unrelated file fires regardless of what you actually use.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Tree-shaking is a build-time bundle optimization — it does not change what runs during ordinary dev-mode module evaluation.',
+      'This is a runtime cost separate from the main page\'s own compile-speed warning about deep barrel chains.',
+    ],
+  },
+
+  'typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class': {
+    apis: ['export type', 'type facet vs value facet', 'import type'],
+    related: [
+      { label: 'A Barrel Import Runs Every File’s Side Effects — previous', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' },
+      { label: 'Module System (overview)', route: '/typescript/modules' },
+    ],
+    tip: 'export type { Vector } strips the value facet from that specific re-export — a class re-exported this way can be used as a type but not constructed with new through that import path.',
+    docs: [
+      { label: 'TypeScript 3.8 Release Notes', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The restriction is scoped to the specific import path — the same class remains fully constructible through any ordinary import.',
+      'This is invisible for plain interfaces (which only ever had a type facet) but very real for classes.',
     ],
   },
 
@@ -10771,6 +11003,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A .d.ts without any exports is an ambient global declaration — add export {} if you only want to augment an existing module.',
       '@types packages belong in devDependencies — they are erased at runtime and should not appear in your production bundle.',
       'declare module "lib" {} creates a completely new shape — use import type and interface merging to augment without clobbering existing types.',
+    ],
+  },
+
+  'typescript/declarations/testing-that-interface-and-type-alias-with-the-same-name-conflict': {
+    apis: ['declaration merging', 'interface', 'type alias'],
+    related: [
+      { label: 'Merging Ignores Generic Parameter Names — next', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' },
+      { label: 'Declaration Files (overview)', route: '/typescript/declarations' },
+    ],
+    tip: 'Merging only combines declarations of the exact same kind — an interface and a type alias sharing a name is a hard "Duplicate identifier" error, not a partial merge.',
+    docs: [
+      { label: 'Declaration Merging (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/declaration-merging.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the same underlying rule as "duplicate type aliases always error" — just applied across two different declaration kinds.',
+      'If a name needs to stay mergeable (for module augmentation), it must be an interface everywhere, consistently.',
+    ],
+  },
+
+  'typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names': {
+    apis: ['generic interface', 'declaration merging', 'type parameter arity'],
+    related: [
+      { label: 'interface and type alias Conflict, Not Merge — previous', route: '/typescript/declarations/testing-that-interface-and-type-alias-with-the-same-name-conflict' },
+      { label: 'A Hand-Written .d.ts Doesn’t Verify the Real JS — next', route: '/typescript/declarations/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js' },
+      { label: 'Declaration Files (overview)', route: '/typescript/declarations' },
+    ],
+    tip: 'Box<T> and Box<U> merge cleanly — only the number of type parameters (arity) has to match, not the names used for them.',
+    docs: [
+      { label: 'Declaration Merging (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/declaration-merging.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Relevant for augmenting an already-generic library interface — you never need to match the library\'s internal parameter naming.',
+      'The merge remains fully type-safe — the generic substitution threads through every merged member correctly.',
+    ],
+  },
+
+  'typescript/declarations/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js': {
+    apis: ['declare module', 'ambient declaration', 'DefinitelyTyped'],
+    related: [
+      { label: 'Merging Ignores Generic Parameter Names — previous', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' },
+      { label: 'Declaration Files (overview)', route: '/typescript/declarations' },
+    ],
+    tip: 'A hand-written .d.ts is a pure assertion with zero connection to the real JS it describes — a wrong parameter type compiles cleanly and produces nonsensical runtime behavior with no warning anywhere.',
+    docs: [
+      { label: 'Declaration Files (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html' },
+    ],
+    resources: [
+      { label: 'DefinitelyTyped', url: 'https://github.com/DefinitelyTyped/DefinitelyTyped', badge: 'code' },
+    ],
+    gotchas: [
+      'Compiler-generated .d.ts files (via declaration: true) do not carry this risk — they are mechanically derived from real, running source.',
+      'This is exactly why @types/xxx (community-vetted) is preferred over writing your own declarations from scratch.',
     ],
   },
 
@@ -10800,6 +11090,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/frameworks/testing-that-counterreducers-explicit-return-type-catches-gaps': {
+    apis: ['explicit return type', 'discriminated union', 'switch exhaustiveness'],
+    related: [
+      { label: 'ApiResponse Still Requires data on Error — next', route: '/typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status' },
+      { label: 'TS with Frameworks (overview)', route: '/typescript/frameworks' },
+    ],
+    tip: 'The reducer\'s explicit : number return type is what catches a newly-added, unhandled action — remove the annotation and the same gap becomes silent (return type widens to include undefined).',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'No satisfies never pattern is needed here — the explicit return type alone provides the exhaustiveness check.',
+      'Removing the annotation silently removes this protection, since the inferred type just widens.',
+    ],
+  },
+
+  'typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status': {
+    apis: ['discriminated union', 'flat interface', 'z.discriminatedUnion'],
+    related: [
+      { label: 'counterReducer’s Return Type Catches Gaps — previous', route: '/typescript/frameworks/testing-that-counterreducers-explicit-return-type-catches-gaps' },
+      { label: 'setTimeout’s Return Type Depends on Node Types — next', route: '/typescript/frameworks/testing-that-settimeouts-return-type-depends-on-node-types' },
+      { label: 'TS with Frameworks (overview)', route: '/typescript/frameworks' },
+    ],
+    tip: 'ApiResponse<T> is one flat interface, not a genuine discriminated union — an "error" status response still needs a meaningless placeholder value for data, since nothing connects status to data\'s optionality.',
+    docs: [
+      { label: 'Zod discriminatedUnion', url: 'https://zod.dev/?id=discriminated-unions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A status-like field alone does not give a type discriminated-union narrowing — the type needs to genuinely be a union of separate shapes.',
+      'The page\'s own Zod section shows the correct pattern (discriminatedUnion) right next to this un-discriminated example.',
+    ],
+  },
+
+  'typescript/frameworks/testing-that-settimeouts-return-type-depends-on-node-types': {
+    apis: ['ReturnType<typeof setTimeout>', 'lib.dom.d.ts', '@types/node'],
+    related: [
+      { label: 'ApiResponse Still Requires data on Error — previous', route: '/typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status' },
+      { label: 'TS with Frameworks (overview)', route: '/typescript/frameworks' },
+    ],
+    tip: 'setTimeout resolves to lib.dom\'s number in a browser project but to NodeJS.Timeout if @types/node is present anywhere in scope — the same code\'s type can silently diverge from its actual runtime value.',
+    docs: [
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig/#types' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is exactly why the main page uses ReturnType<typeof setTimeout> instead of a hardcoded type — though that indirection only stays self-consistent, not necessarily runtime-accurate.',
+      '@types/node pulled in for build tooling (Vite config, test setup) can affect global types project-wide, even for browser-only files.',
+    ],
+  },
+
   'typescript/strict-migration': {
     apis: ['strict', 'noImplicitAny', 'strictNullChecks', 'allowJs', 'checkJs', '--noEmit', 'ts-migrate'],
     related: [
@@ -10824,6 +11172,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/strict-migration/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses': {
+    apis: ['@ts-expect-error', 'diagnostic suppression', 'unused directive'],
+    related: [
+      { label: 'noImplicitAny Doesn’t Restrict Explicit any — next', route: '/typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any' },
+      { label: 'Strict Mode & Migration (overview)', route: '/typescript/strict-migration' },
+    ],
+    tip: '@ts-expect-error only verifies "an error is present" on the next line — it has no memory of which specific error it originally suppressed, so a swapped, unrelated error satisfies it just as well.',
+    docs: [
+      { label: 'TypeScript 3.9 Release Notes', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#-ts-expect-error-comments' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a narrower guarantee than "the original bug is fixed" — code review is still needed on suppressed lines.',
+      'It does catch the specific case the main page describes: the suppression becoming entirely unnecessary.',
+    ],
+  },
+
+  'typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any': {
+    apis: ['noImplicitAny', 'explicit any', '@typescript-eslint/no-explicit-any'],
+    related: [
+      { label: '@ts-expect-error Doesn’t Check Which Error — previous', route: '/typescript/strict-migration/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses' },
+      { label: 'A Leaf Module’s Untyped Import Leaks any — next', route: '/typescript/strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any' },
+      { label: 'Strict Mode & Migration (overview)', route: '/typescript/strict-migration' },
+    ],
+    tip: 'noImplicitAny only checks that SOME annotation is present — an explicit data: any satisfies it exactly as well as a real type, providing zero actual type safety.',
+    docs: [
+      { label: 'no-explicit-any (ESLint)', url: 'https://typescript-eslint.io/rules/no-explicit-any/' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Banning explicit any requires the separate @typescript-eslint/no-explicit-any lint rule, not a compiler flag.',
+      'A codebase with strict: true and no compile errors can still be full of deliberate any annotations.',
+    ],
+  },
+
+  'typescript/strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any': {
+    apis: ['leaf module', 'implicit any', 'return type inference'],
+    related: [
+      { label: 'noImplicitAny Doesn’t Restrict Explicit any — previous', route: '/typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any' },
+      { label: 'Strict Mode & Migration (overview)', route: '/typescript/strict-migration' },
+    ],
+    tip: '"No internal dependencies" does not mean "no dependencies" — a leaf module calling into an untyped external library can silently leak any through its own inferred return type.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a different source than the page\'s own "cascading any" mistake — an external leak, not an internal migration-order problem.',
+      'The fix is explicitly annotating return types for functions that call into untyped external code, even in simple leaf modules.',
+    ],
+  },
+
   'typescript/ts-performance': {
     apis: ['composite: true', 'incremental: true', 'isolatedModules: true', 'skipLibCheck: true', '--listFiles', '--diagnostics', 'project references'],
     related: [
@@ -10844,6 +11250,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'isolatedModules: true requires each file to be transpilable in isolation — const enum and ambient type-only re-exports fail.',
       'skipLibCheck skips type errors in .d.ts files — it speeds up compilation but may hide real errors from dependencies.',
       'Deeply recursive conditional types and mapped types on large unions are the most common causes of slow compilation.',
+    ],
+  },
+
+  'typescript/ts-performance/testing-that-deeppartials-depth-counter-makes-deep-fields-required': {
+    apis: ['D extends number = 5', 'Prev[D]', 'conditional types', 'mapped types'],
+    related: [
+      { label: 'TypeScript Performance (overview)', route: '/typescript/ts-performance' },
+      { label: 'as const Union Fragility',           route: '/typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string' },
+      { label: 'Conditional Types',                  route: '/typescript/conditional-types' },
+    ],
+    tip: 'A depth-bounded recursive type trades correctness at the boundary for speed — fields past the limit come back exactly as originally declared, required or not.',
+    docs: [
+      { label: 'Conditional Types', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html' },
+      { label: 'Performance Wiki',  url: 'https://github.com/microsoft/TypeScript/wiki/Performance' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'The base case `D extends 0 ? T : ...` returns T completely unchanged — no mapped type runs at that level or any level beneath it.',
+      'A depth-5 counter still makes 5 levels of nesting optional (D=5,4,3,2,1); the 6th level is where the guarantee silently stops.',
+      'Raising the depth counter to cover deeper objects reintroduces the exact language-server cost the fix was written to solve.',
+    ],
+  },
+
+  'typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string': {
+    apis: ['as const', 'typeof', 'indexed access types', '[number]'],
+    related: [
+      { label: 'TypeScript Performance (overview)', route: '/typescript/ts-performance' },
+      { label: 'DeepPartial Depth Counter',          route: '/typescript/ts-performance/testing-that-deeppartials-depth-counter-makes-deep-fields-required' },
+      { label: 'skipLibCheck Extension Rule',        route: '/typescript/ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content' },
+    ],
+    tip: 'Without as const, an array literal of strings infers as string[] — typeof arr[number] then resolves to plain string, not a literal union.',
+    docs: [
+      { label: 'const Assertions', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions' },
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Dropping as const from the array produces no compile error anywhere — the resulting type just silently widens to string.',
+      'A call site that relied on the narrow union to catch typos loses that protection completely, with the code still "looking" type-safe.',
+      'This is easy to trigger accidentally during a refactor that copies the array literal without noticing the trailing as const.',
+    ],
+  },
+
+  'typescript/ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content': {
+    apis: ['skipLibCheck', '.d.ts', 'declare'],
+    related: [
+      { label: 'TypeScript Performance (overview)', route: '/typescript/ts-performance' },
+      { label: 'as const Union Fragility',           route: '/typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string' },
+      { label: 'Declaration Files',                  route: '/typescript/declarations' },
+    ],
+    tip: 'skipLibCheck keys strictly on the .d.ts file extension — a .ts file with identical declare-only content gets zero exemption.',
+    docs: [
+      { label: 'TSConfig Reference — skipLibCheck', url: 'https://www.typescriptlang.org/tsconfig/#skipLibCheck' },
+      { label: 'Declaration Files Handbook',         url: 'https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'A stray declare block placed in a regular .ts file (instead of a proper .d.ts file) is fully type-checked, not exempted.',
+      'The exact same undefined-type-name error is silent in a .d.ts file but fully reported in a .ts file with identical content.',
+      'Moving declarations out of a .d.ts file during a reorganization can turn a clean build into a failing one with no code logic changed.',
     ],
   },
 
@@ -11025,6 +11497,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/basics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick': {
+    apis: ['createRoot()', 'addEventListener', 'useEffect()', 'automatic batching'],
+    related: [
+      { label: 'React Fundamentals (overview)', route: '/react/basics' },
+      { label: 'Index Keys Leave Stale Text',    route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' },
+      { label: 'Core Hooks',                     route: '/react/hooks-core' },
+    ],
+    tip: 'React 18 batching is keyed off the JS task/microtask boundary, not off React\'s own synthetic event dispatcher — it reaches native listeners, timeouts, and promises too.',
+    docs: [
+      { label: 'React 18 Automatic Batching', url: 'https://react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching' },
+      { label: 'React.dev Quick Start',        url: 'https://react.dev/learn' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Pre-React 18, batching only worked inside React\'s own synthetic event dispatcher — a raw addEventListener callback caused one render per setState call.',
+      'unstable_batchedUpdates is no longer necessary in React 18 for this case — automatic batching already covers native listeners.',
+      'This matters directly for third-party libraries that call your state setters from their own DOM listeners.',
+    ],
+  },
+
+  'react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend': {
+    apis: ['key', 'defaultValue', 'reconciliation', 'uncontrolled components'],
+    related: [
+      { label: 'React Fundamentals (overview)', route: '/react/basics' },
+      { label: 'Batching and Native Listeners',  route: '/react/basics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick' },
+      { label: 'React.memo and Object Props',    route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
+    ],
+    tip: 'key={index} makes React identify list items by position, not identity — an uncontrolled input\'s live DOM value stays behind on the wrong reused node after a prepend or reorder.',
+    docs: [
+      { label: 'React Docs — Rendering Lists', url: 'https://react.dev/learn/rendering-lists' },
+      { label: 'Controlled vs Uncontrolled Components', url: 'https://react.dev/reference/react-dom/components/input' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'The rendered label text is correct — it is specifically the uncontrolled input\'s live DOM value that stays behind, mismatched with its label.',
+      'key={index} is only safe for a genuinely static list that never reorders, inserts, or removes items.',
+      'The same root cause also explains lost focus and animation glitches the main page mentions alongside stale input values.',
+    ],
+  },
+
+  'react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render': {
+    apis: ['React.memo()', 'useMemo()', 'Object.is', 'shallow comparison'],
+    related: [
+      { label: 'React Fundamentals (overview)', route: '/react/basics' },
+      { label: 'Index Keys Leave Stale Text',    route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' },
+      { label: 'React Performance',              route: '/react/performance' },
+    ],
+    tip: 'React.memo shallow-compares props with Object.is — it cannot see inside a freshly allocated object to notice the field values are unchanged; the reference itself must be stabilized upstream with useMemo.',
+    docs: [
+      { label: 'React Docs — memo', url: 'https://react.dev/reference/react/memo' },
+      { label: 'React Docs — useMemo', url: 'https://react.dev/reference/react/useMemo' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Wrapping a component in memo() without also stabilizing its object/array/function props buys nothing — the child still re-renders every time.',
+      'memo does support a custom second-argument comparator for deep/custom equality, but the main page\'s fix uses useMemo instead, which is usually simpler.',
+      'memo adds a shallow-comparison cost on every parent render — applying it to components that always receive fresh inline props is pure overhead.',
+    ],
+  },
+
   'react/hooks-core': {
     apis: ['useState()', 'useEffect()', 'useRef()', 'useContext()', 'Rules of Hooks'],
     related: [
@@ -11047,6 +11585,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Never call hooks conditionally or inside loops — hooks must run in the same order on every render.',
       'Stale closure: useEffect captures props/state at the time it ran. Use the functional updater setState(prev => ...) to avoid staleness.',
       'useEffect with an empty [] dep array runs once — but its cleanup still runs on unmount.',
+    ],
+  },
+
+  'react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects': {
+    apis: ['useState(() => init)', 'StrictMode', 'lazy initializer'],
+    related: [
+      { label: 'Core Hooks (overview)', route: '/react/hooks-core' },
+      { label: 'useContext defaultValue', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
+      { label: 'React Fundamentals',     route: '/react/basics' },
+    ],
+    tip: 'StrictMode double-invokes more than effects — the component body and the useState/useReducer lazy initializer also run twice on the initial mount in development.',
+    docs: [
+      { label: 'React Docs — StrictMode', url: 'https://react.dev/reference/react/StrictMode' },
+      { label: 'useState Reference',      url: 'https://react.dev/reference/react/useState' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'React keeps only the second call\'s result — the state value itself is correct either way, only side effects inside the initializer are visibly doubled.',
+      'This is unproblematic for a pure initializer; it only surfaces bugs when the initializer has an observable side effect.',
+      'Production builds never double-invoke — this behavior only ever appears in development under StrictMode.',
+    ],
+  },
+
+  'react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined': {
+    apis: ['createContext()', 'useContext()', 'Context.Provider'],
+    related: [
+      { label: 'Core Hooks (overview)', route: '/react/hooks-core' },
+      { label: 'StrictMode Lazy Initializer', route: '/react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects' },
+      { label: 'Context API',            route: '/react/context' },
+    ],
+    tip: 'defaultValue is a "no Provider found" fallback, not a "falsy value" fallback — a present Provider\'s value, however falsy, always wins over defaultValue.',
+    docs: [
+      { label: 'React Docs — createContext', url: 'https://react.dev/reference/react/createContext' },
+      { label: 'React Docs — useContext',    url: 'https://react.dev/reference/react/useContext' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'A Provider passing value={undefined} is still "present" from useContext\'s perspective — defaultValue is never consulted in that case.',
+      'This is exactly why the "throw if ctx is undefined" required-context pattern works reliably.',
+      'Only a consumer with literally no Provider ancestor anywhere above it falls back to defaultValue.',
+    ],
+  },
+
+  'react/hooks-core/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop': {
+    apis: ['setState(prev => next)', 'useEffect()', 'exhaustive-deps'],
+    related: [
+      { label: 'Core Hooks (overview)', route: '/react/hooks-core' },
+      { label: 'useContext defaultValue', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
+      { label: 'React Patterns',          route: '/react/patterns' },
+    ],
+    tip: 'A functional update only avoids reading its OWN state from the closure — every other value the same effect references still needs correct dependencies.',
+    docs: [
+      { label: 'React Docs — useState',  url: 'https://react.dev/reference/react/useState' },
+      { label: 'React Docs — useEffect', url: 'https://react.dev/reference/react/useEffect' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'setCount(prev => prev + 1) works because React hands the current value directly to the callback — no closure read needed for that value specifically.',
+      'A prop or other state referenced in the same effect is still read from the closure the effect captured on creation.',
+      'react-hooks/exhaustive-deps still applies to every value NOT covered by a functional update.',
     ],
   },
 
@@ -11074,6 +11678,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/hooks-advanced/testing-that-usereducers-lazy-init-is-strictmode-double-invoked-too': {
+    apis: ['useReducer(reducer, arg, init)', 'StrictMode'],
+    related: [
+      { label: 'Advanced Hooks (overview)', route: '/react/hooks-advanced' },
+      { label: 'Context Selector Memo',     route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
+      { label: 'StrictMode Lazy Initializer', route: '/react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects' },
+    ],
+    tip: 'useReducer(reducer, arg, init) is React-documented as equivalent to useState(() => init(arg)) — that equivalence extends to StrictMode double-invoking init() on mount too.',
+    docs: [
+      { label: 'React Docs — useReducer', url: 'https://react.dev/reference/react/useReducer' },
+      { label: 'React Docs — StrictMode',  url: 'https://react.dev/reference/react/StrictMode' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Only the second call\'s result is kept as real state — the resulting state value is correct either way.',
+      'This only matters if init() has an observable side effect beyond its return value.',
+      'Production builds never double-invoke — this is development-only behavior.',
+    ],
+  },
+
+  'react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering': {
+    apis: ['useContext()', 'useMemo()', 'Context.Provider'],
+    related: [
+      { label: 'Advanced Hooks (overview)', route: '/react/hooks-advanced' },
+      { label: 'useReducer Lazy Init StrictMode', route: '/react/hooks-advanced/testing-that-usereducers-lazy-init-is-strictmode-double-invoked-too' },
+      { label: 'Module-Level Hook Leak',    route: '/react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances' },
+    ],
+    tip: 'useContext re-renders its calling component on any Provider value change, before useMemo ever runs — memoizing a derived value only stabilizes that value\'s reference, not the render count.',
+    docs: [
+      { label: 'React Docs — useContext', url: 'https://react.dev/reference/react/useContext' },
+      { label: 'React Docs — useMemo',    url: 'https://react.dev/reference/react/useMemo' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'A memoized derived value IS useful for a memoized child or a dependency array — just not for the calling component\'s own render count.',
+      'Actually reducing re-render frequency requires splitting the context by update frequency or a selector library.',
+      'This is easy to misread from a comment like "stable when only X changes" — stable refers to the reference, not the render.',
+    ],
+  },
+
+  'react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances': {
+    apis: ['useState()', 'useEffect()', 'custom hooks'],
+    related: [
+      { label: 'Advanced Hooks (overview)', route: '/react/hooks-advanced' },
+      { label: 'Context Selector Memo',     route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
+      { label: 'Custom Hooks (Core Hooks)', route: '/react/hooks-core' },
+    ],
+    tip: 'State isolation between custom hook instances comes from useState/useReducer/useRef attaching to the calling component\'s own Fiber node — not from the "use" naming convention itself.',
+    docs: [
+      { label: 'React Docs — Reusing Logic with Custom Hooks', url: 'https://react.dev/learn/reusing-logic-with-custom-hooks' },
+      { label: 'React Docs — useState',                        url: 'https://react.dev/reference/react/useState' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'A hook that calls a React hook internally is not automatically safe — isolation applies per piece of state, not per function.',
+      'Module-level state inside a custom hook is a common shortcut for a cache or singleton pattern that silently breaks isolation.',
+      'This passes any "starts with use" lint check while behaving nothing like a normal isolated hook.',
+    ],
+  },
+
   'react/forms': {
     apis: ['controlled input', 'useRef for uncontrolled', 'React Hook Form', 'zodResolver', 'useFieldArray'],
     related: [
@@ -11097,6 +11767,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/forms/testing-that-z-coerce-number-converts-an-empty-string-to-zero-not-nan': {
+    apis: ['z.coerce.number()', 'Number()', 'safeParse()'],
+    related: [
+      { label: 'Forms & Validation (overview)', route: '/react/forms' },
+      { label: 'refine() Path Placement', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' },
+      { label: 'Advanced Hooks', route: '/react/hooks-advanced' },
+    ],
+    tip: 'Number("") is 0 in JavaScript — z.coerce.number() inherits this, so an empty numeric field coerces to a valid 0 unless the schema\'s bounds happen to exclude it.',
+    docs: [
+      { label: 'Zod Docs — Coercion', url: 'https://zod.dev/?id=coercion-for-primitives' },
+      { label: 'Zod Docs',            url: 'https://zod.dev' },
+    ],
+    resources: [
+      { label: 'colinhacks/zod', url: 'https://github.com/colinhacks/zod', badge: 'code' },
+    ],
+    gotchas: [
+      'min(0) or no minimum at all silently accepts an empty field as a valid zero.',
+      'A genuinely required numeric field needs an explicit non-empty check, not just numeric bounds.',
+      'z.string().min(1).pipe(z.coerce.number()) is one way to reject the empty case before coercion.',
+    ],
+  },
+
+  'react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too': {
+    apis: ['.refine()', 'path option', 'formState.errors'],
+    related: [
+      { label: 'Forms & Validation (overview)', route: '/react/forms' },
+      { label: 'z.coerce.number() Empty String', route: '/react/forms/testing-that-z-coerce-number-converts-an-empty-string-to-zero-not-nan' },
+      { label: 'Real-Time Validation Re-renders', route: '/react/forms/testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf' },
+    ],
+    tip: 'path in .refine() is a manual, one-sided assignment — only the listed field(s) receive the error, regardless of how many fields are logically involved in the check.',
+    docs: [
+      { label: 'Zod Docs — refine', url: 'https://zod.dev/?id=refine' },
+      { label: 'RHF Docs — Errors', url: 'https://react-hook-form.com/docs/useform/formstate' },
+    ],
+    resources: [
+      { label: 'colinhacks/zod', url: 'https://github.com/colinhacks/zod', badge: 'code' },
+    ],
+    gotchas: [
+      'password shows no error at all in the main page\'s own exact confirm-password example.',
+      'Listing multiple fields in path flags all of them; omitting path attaches the error to the schema root instead.',
+      'An empty formState.errors.<field> only proves that field passed its OWN rule, not every cross-field check.',
+    ],
+  },
+
+  'react/forms/testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf': {
+    apis: ['mode: \'onChange\'', 'formState.isValid', 'useForm()'],
+    related: [
+      { label: 'Forms & Validation (overview)', route: '/react/forms' },
+      { label: 'refine() Path Placement', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' },
+      { label: 'Context Selector Memo (Advanced Hooks)', route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
+    ],
+    tip: 'RHF\'s default mode avoids per-keystroke re-renders — switching to mode: \'onChange\' for real-time validation reintroduces a re-render on every keystroke for any component reading formState.',
+    docs: [
+      { label: 'RHF Docs — useForm mode', url: 'https://react-hook-form.com/docs/useform' },
+      { label: 'RHF Docs — formState',    url: 'https://react-hook-form.com/docs/useform/formstate' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+    ],
+    gotchas: [
+      'formState is a single object covering the whole form — reading any part of it re-renders on every validity change, not just for the field being typed into.',
+      'The "no re-render per keystroke" pitch is specific to the default onSubmit mode.',
+      'This is a real trade-off, not a reason to avoid real-time validation — just something to budget for.',
+    ],
+  },
+
   'react/context': {
     apis: ['createContext()', 'useContext()', 'Context.Provider', 'useReducer + Context'],
     related: [
@@ -11116,6 +11852,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Every context consumer re-renders when the Provider\'s value reference changes — memoize the value object.',
       'Context is not a state manager — it is a dependency injector. Pair with useReducer for complex state.',
+    ],
+  },
+
+  'react/context/testing-that-createcontexts-numeric-default-works-with-zero-providers': {
+    apis: ['createContext()', 'useContext()'],
+    related: [
+      { label: 'Context API (overview)', route: '/react/context' },
+      { label: 'Mega-Context Re-renders', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
+      { label: 'useContext defaultValue (Core Hooks)', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
+    ],
+    tip: 'A context\'s default value is a design choice, not a fixed behavior — a real usable value (like 0 for nesting depth) works fine with zero Providers; null is only an error sentinel because the consuming hook treats it as one.',
+    docs: [
+      { label: 'React Docs — createContext', url: 'https://react.dev/reference/react/createContext' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'createContext behaves identically either way — the difference is entirely in the consuming code\'s guard, not the API.',
+      'Mixing conventions within one app is fine as long as each context\'s intent is clear from its default value.',
+      'A throwing custom hook is only appropriate when the default truly can never be a legitimate value.',
+    ],
+  },
+
+  'react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields': {
+    apis: ['useContext()', 'Context.Provider', 'Object.is'],
+    related: [
+      { label: 'Context API (overview)', route: '/react/context' },
+      { label: 'Numeric Default vs Sentinel', route: '/react/context/testing-that-createcontexts-numeric-default-works-with-zero-providers' },
+      { label: 'Toast Container Placement', route: '/react/context/testing-that-a-toast-container-outside-the-provider-cant-access-notifications' },
+    ],
+    tip: 'useContext subscribes to the whole value object, not to individual destructured fields — splitting contexts by concern is the only real fix.',
+    docs: [
+      { label: 'React Docs — useContext', url: 'https://react.dev/reference/react/useContext' },
+      { label: 'React Docs — Scaling Up with Reducer and Context', url: 'https://react.dev/learn/scaling-up-with-reducer-and-context' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Destructuring only the fields you need is cosmetic — it does not narrow the subscription.',
+      'The mechanism is the same for a single consumer or hundreds — it\'s about blast radius, not a threshold.',
+      'Wrapping the mega-context value in useMemo does not help if the object genuinely changes on every relevant update.',
+    ],
+  },
+
+  'react/context/testing-that-a-toast-container-outside-the-provider-cant-access-notifications': {
+    apis: ['useContext()', 'Context.Provider', 'component tree'],
+    related: [
+      { label: 'Context API (overview)', route: '/react/context' },
+      { label: 'Mega-Context Re-renders', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
+      { label: 'Advanced Hooks', route: '/react/hooks-advanced' },
+    ],
+    tip: 'useContext only finds Providers by walking up the render tree — a sibling in JSX, however close in the source, is not an ancestor and shares no context.',
+    docs: [
+      { label: 'React Docs — Passing Data Deeply with Context', url: 'https://react.dev/learn/passing-data-deeply-with-context' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      '"Provider goes as low as possible" is about narrowing scope within the app tree, not excluding dependent infrastructure components.',
+      'Any component reading the context must render inside the Provider\'s own subtree, full stop.',
+      'This is exactly why the original Notification System challenge places ToastContainer next to {children}, not outside the Provider.',
     ],
   },
 
@@ -11143,6 +11943,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/state-management/testing-that-a-zustand-computed-selector-rerenders-on-every-store-update': {
+    apis: ['useStore(selector)', 'zustand/shallow', 'Object.is'],
+    related: [
+      { label: 'State Management (overview)', route: '/react/state-management' },
+      { label: 'useSelector Mutation Boundary', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' },
+      { label: 'Context Mega-Context Re-renders', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
+    ],
+    tip: 'A selector that computes a new array/object (like .filter()) defeats Zustand\'s default Object.is comparison — pair it with zustand/shallow or memoize the derivation.',
+    docs: [
+      { label: 'Zustand Docs — Selecting state', url: 'https://zustand-demo.pmnd.rs/' },
+      { label: 'Zustand Docs — shallow',          url: 'https://github.com/pmndrs/zustand/blob/main/docs/guides/prevent-rerenders-with-use-shallow.md' },
+    ],
+    resources: [
+      { label: 'pmndrs/zustand', url: 'https://github.com/pmndrs/zustand', badge: 'code' },
+    ],
+    gotchas: [
+      'This is a general selector-based-state pattern, not unique to Zustand — Redux\'s useSelector has the identical trap.',
+      'The fix is a shallow-equality comparator or memoization, not avoiding selectors entirely.',
+      'A plain field selector is unaffected — only computed/derived selectors need this care.',
+    ],
+  },
+
+  'react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently': {
+    apis: ['useSelector()', 'createSlice()', 'Immer draft'],
+    related: [
+      { label: 'State Management (overview)', route: '/react/state-management' },
+      { label: 'Zustand Computed Selector', route: '/react/state-management/testing-that-a-zustand-computed-selector-rerenders-on-every-store-update' },
+      { label: 'Jotai atomFamily Sharing', route: '/react/state-management/testing-that-jotais-atomfamily-shares-state-for-the-same-id' },
+    ],
+    tip: 'Immer\'s "mutate directly" safety only exists inside a reducer\'s draft Proxy — the plain object useSelector returns has no such tracking, and mutating it directly desyncs the UI silently.',
+    docs: [
+      { label: 'Redux Toolkit Docs — createSlice', url: 'https://redux-toolkit.js.org/api/createslice' },
+      { label: 'Immer Docs',                        url: 'https://immerjs.github.io/immer/' },
+    ],
+    resources: [
+      { label: 'reduxjs/redux-toolkit', url: 'https://github.com/reduxjs/redux-toolkit', badge: 'code' },
+    ],
+    gotchas: [
+      'The mutation genuinely happens at the JS level — the bug is React never learning about it, not the data being wrong.',
+      'A later unrelated re-render can make the stale UI suddenly "catch up," disguising the bug as a timing issue.',
+      'Never mutate a value obtained from useSelector, getState(), or any already-resolved state read.',
+    ],
+  },
+
+  'react/state-management/testing-that-jotais-atomfamily-shares-state-for-the-same-id': {
+    apis: ['atomFamily()', 'atom()', 'useAtom()'],
+    related: [
+      { label: 'State Management (overview)', route: '/react/state-management' },
+      { label: 'useSelector Mutation Boundary', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' },
+      { label: 'Context API', route: '/react/context' },
+    ],
+    tip: 'atomFamily caches by parameter value — two unrelated components calling atomFamily(5) share the exact same atom, not just two atoms that start out looking similar.',
+    docs: [
+      { label: 'Jotai Docs — atomFamily', url: 'https://jotai.org/docs/utilities/family' },
+      { label: 'Jotai Docs',               url: 'https://jotai.org/docs/introduction' },
+    ],
+    resources: [
+      { label: 'pmndrs/jotai', url: 'https://github.com/pmndrs/jotai', badge: 'code' },
+    ],
+    gotchas: [
+      'This differs from useState, which is always scoped per component instance regardless of any argument passed.',
+      'Sharing is by design here — it is what makes atomFamily useful for "one atom per row" patterns that must stay in sync across usages.',
+      'Two separate atom() calls (not atomFamily) would NOT share state, even with identical initial values.',
+    ],
+  },
+
   'react/router': {
     apis: ['createBrowserRouter()', 'loader', 'action', '<Outlet />', 'useFetcher()', 'useNavigate()'],
     related: [
@@ -11163,6 +12029,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'loader errors bubble to the nearest errorElement — always add one to prevent blank screens.',
       'navigate() in a loader/action is not the same as redirect() — use redirect() from react-router-dom for server-like redirects.',
+    ],
+  },
+
+  'react/router/testing-that-usefetcher-revalidates-the-current-routes-loader': {
+    apis: ['useFetcher()', 'fetcher.Form', 'useLoaderData()'],
+    related: [
+      { label: 'React Router (overview)', route: '/react/router' },
+      { label: 'errorElement Bubbling', route: '/react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout' },
+      { label: 'React Forms', route: '/react/forms' },
+    ],
+    tip: 'useFetcher skips navigation, not revalidation — any successful action, fetcher-submitted or not, re-runs every currently active route\'s loader.',
+    docs: [
+      { label: 'React Router Docs — useFetcher', url: 'https://reactrouter.com/en/main/hooks/use-fetcher' },
+      { label: 'React Router Docs — Revalidation', url: 'https://reactrouter.com/en/main/guides/data-libraries' },
+    ],
+    resources: [
+      { label: 'remix-run/react-router', url: 'https://github.com/remix-run/react-router', badge: 'code' },
+    ],
+    gotchas: [
+      'This is exactly why useFetcher is the right tool for inline mutations that shouldn\'t change the URL.',
+      'No manual refetch or state update is needed after a fetcher action — useLoaderData() reflects fresh data automatically.',
+      'The revalidation trigger is a successful action completing, not which component submitted it.',
+    ],
+  },
+
+  'react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout': {
+    apis: ['errorElement', 'useRouteError()', '<Outlet />'],
+    related: [
+      { label: 'React Router (overview)', route: '/react/router' },
+      { label: 'useFetcher Revalidation', route: '/react/router/testing-that-usefetcher-revalidates-the-current-routes-loader' },
+      { label: 'NavLink end Prop', route: '/react/router/testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere' },
+    ],
+    tip: 'A missing child errorElement bubbles to the nearest ancestor that has one — and that ancestor\'s WHOLE element gets replaced, not just its Outlet, taking down nav bars and layout chrome too.',
+    docs: [
+      { label: 'React Router Docs — errorElement', url: 'https://reactrouter.com/en/main/route/error-element' },
+    ],
+    resources: [
+      { label: 'remix-run/react-router', url: 'https://github.com/remix-run/react-router', badge: 'code' },
+    ],
+    gotchas: [
+      'Giving every route its own errorElement (as the main page\'s examples do) is a deliberate scoping choice, not redundant boilerplate.',
+      'A single top-level errorElement technically catches everything, but at the cost of the whole layout on any failure.',
+      'Attach errorElement to the specific route (or an intermediate one) whose failures should stay visually contained.',
+    ],
+  },
+
+  'react/router/testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere': {
+    apis: ['<NavLink>', 'end prop', 'isActive'],
+    related: [
+      { label: 'React Router (overview)', route: '/react/router' },
+      { label: 'errorElement Bubbling', route: '/react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout' },
+      { label: 'React Patterns', route: '/react/patterns' },
+    ],
+    tip: 'end forces exact-path matching — needed for "/" (a prefix of every route), but applying it to section-root links breaks their nested-child active highlighting.',
+    docs: [
+      { label: 'React Router Docs — NavLink', url: 'https://reactrouter.com/en/main/components/nav-link' },
+    ],
+    resources: [
+      { label: 'remix-run/react-router', url: 'https://github.com/remix-run/react-router', badge: 'code' },
+    ],
+    gotchas: [
+      'Prefix matching (no end) is the correct default for most section-level nav links, not a bug to fix.',
+      'Any route whose path is a literal prefix of another route needs this same consideration, not just "/".',
+      'The main page\'s first code tab applies end asymmetrically on purpose, even though it never explains why.',
     ],
   },
 
@@ -11187,6 +12117,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Query keys are serialised — objects with the same properties in different orders are the same key.',
       'onSuccess/onError callbacks in useMutation run once; use queryClient.invalidateQueries in onSuccess for cache consistency.',
+    ],
+  },
+
+  'react/tanstack-query/testing-that-an-inline-object-querykey-does-not-actually-refetch-on-rerender': {
+    apis: ['queryKey', 'queryKeyHashFn', 'useQuery()'],
+    related: [
+      { label: 'TanStack Query (overview)', route: '/react/tanstack-query' },
+      { label: 'Abort Signal Wiring', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' },
+      { label: 'State Management', route: '/react/state-management' },
+    ],
+    tip: 'queryKey is hashed by a deterministic, sorted serialization of its VALUE — not by JS reference — so a fresh object literal with identical contents does not trigger a new cache entry.',
+    docs: [
+      { label: 'TanStack Query Docs — Query Keys', url: 'https://tanstack.com/query/latest/docs/framework/react/guides/query-keys' },
+    ],
+    resources: [
+      { label: 'TanStack/query', url: 'https://github.com/TanStack/query', badge: 'code' },
+    ],
+    gotchas: [
+      'This directly corroborates this page\'s own sidebar note above about key serialization — but contradicts Mistake #1\'s literal "refetches on every render" framing.',
+      'The real risk with object queryKeys is cache fragmentation from genuinely varying values, not per-render refetches.',
+      'Stable primitive keys are still good practice for readability and predictable cache shape.',
+    ],
+  },
+
+  'react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request': {
+    apis: ['AbortSignal', 'queryFn({ signal })', 'AbortController'],
+    related: [
+      { label: 'TanStack Query (overview)', route: '/react/tanstack-query' },
+      { label: 'Inline Object queryKey', route: '/react/tanstack-query/testing-that-an-inline-object-querykey-does-not-actually-refetch-on-rerender' },
+      { label: 'initialData vs placeholderData', route: '/react/tanstack-query/testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one' },
+    ],
+    tip: 'TanStack Query always aborts its own internal controller on unmount/key-change — but that only cancels the underlying request if queryFn actually passed signal into fetch or an equivalent cancelable call.',
+    docs: [
+      { label: 'TanStack Query Docs — Query Cancellation', url: 'https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation' },
+    ],
+    resources: [
+      { label: 'TanStack/query', url: 'https://github.com/TanStack/query', badge: 'code' },
+    ],
+    gotchas: [
+      'The visible app behavior is identical either way — the difference is invisible at the network/server level.',
+      'Skipping signal wiring wastes bandwidth and server compute, not a correctness bug in this specific scenario.',
+      'Always destructure and pass signal from queryFn\'s argument into fetch or any cancelable operation.',
+    ],
+  },
+
+  'react/tanstack-query/testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one': {
+    apis: ['initialData', 'placeholderData', 'staleTime'],
+    related: [
+      { label: 'TanStack Query (overview)', route: '/react/tanstack-query' },
+      { label: 'Abort Signal Wiring', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' },
+      { label: 'Advanced Hooks', route: '/react/hooks-advanced' },
+    ],
+    tip: 'initialData is written into the cache as if a real fetch happened, so it respects staleTime and can skip fetching entirely — placeholderData is never cached and always triggers a real fetch.',
+    docs: [
+      { label: 'TanStack Query Docs — Initial Query Data', url: 'https://tanstack.com/query/latest/docs/framework/react/guides/initial-query-data' },
+      { label: 'TanStack Query Docs — Placeholder Query Data', url: 'https://tanstack.com/query/latest/docs/framework/react/guides/placeholder-query-data' },
+    ],
+    resources: [
+      { label: 'TanStack/query', url: 'https://github.com/TanStack/query', badge: 'code' },
+    ],
+    gotchas: [
+      'Both options render something immediately with no initial loading state — the difference is only visible by checking isFetching or an actual fetch count.',
+      'staleTime has zero effect on placeholderData\'s fetch behavior, unlike initialData.',
+      'Use initialData when you trust the value as current; use placeholderData when you always want the real fetch to run.',
     ],
   },
 
@@ -11215,6 +12209,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/performance/testing-that-children-is-a-fresh-reference-every-render-defeating-memo-even-with-identical-jsx': {
+    apis: ['React.memo()', 'children prop', 'JSX element identity'],
+    related: [
+      { label: 'React Performance (overview)', route: '/react/performance' },
+      { label: 'useDeferredValue and memo', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' },
+      { label: 'React.memo and Object Props (React Fundamentals)', route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
+    ],
+    tip: 'JSX compiles to a function call that allocates a new element object on every render — children created inline always has a fresh reference, regardless of how static it looks in the source.',
+    docs: [
+      { label: 'React Docs — memo', url: 'https://react.dev/reference/react/memo' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'This is exactly why the main page notes components receiving children are usually not worth wrapping in memo.',
+      'Hoisting genuinely static children to a module-level constant is the idiomatic fix, not wrapping the JSX in useMemo.',
+      'memo still adds real comparison overhead here even though it never actually skips a render.',
+    ],
+  },
+
+  'react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway': {
+    apis: ['useDeferredValue()', 'React.memo()'],
+    related: [
+      { label: 'React Performance (overview)', route: '/react/performance' },
+      { label: 'children Fresh Reference', route: '/react/performance/testing-that-children-is-a-fresh-reference-every-render-defeating-memo-even-with-identical-jsx' },
+      { label: 'Duplicate import() Calls', route: '/react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched' },
+    ],
+    tip: 'useDeferredValue only computes a lagging value — memo is what actually lets a component skip a render when that value hasn\'t caught up yet.',
+    docs: [
+      { label: 'React Docs — useDeferredValue', url: 'https://react.dev/reference/react/useDeferredValue' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Without memo on the consumer, the deferred value is computed correctly but nothing in the tree benefits from it.',
+      'The component calling useDeferredValue itself still re-renders at full speed — the optimization target is the child, not the caller.',
+      'This is a hard requirement, not a stylistic pairing — dropping memo eliminates the benefit entirely.',
+    ],
+  },
+
+  'react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched': {
+    apis: ['import()', 'React.lazy()', 'module specifier cache'],
+    related: [
+      { label: 'React Performance (overview)', route: '/react/performance' },
+      { label: 'useDeferredValue and memo', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' },
+      { label: 'Next.js App Router', route: '/react/nextjs' },
+    ],
+    tip: 'The module loader caches by resolved specifier, independent of React — a second import() call to the same path reuses the existing module record instead of re-fetching.',
+    docs: [
+      { label: 'React Docs — lazy', url: 'https://react.dev/reference/react/lazy' },
+      { label: 'MDN — import()',    url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'No coordination is needed between a preload call and React.lazy\'s own internal import() call.',
+      'This is a JS module-system property, not something React or a specific bundler implements.',
+      'The module\'s top-level code runs exactly once regardless of how many places call import() on it.',
+    ],
+  },
+
   'react/patterns': {
     apis: ['createContext()', 'React.memo()', 'forwardRef()', 'React.Children', 'render prop', 'HOC'],
     related: [
@@ -11235,6 +12293,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Compound components via cloneElement only work for direct children — Context-based compound components work at any depth.',
       'HOC display names must be set manually — omitting them makes DevTools show "Unknown" or the wrong name.',
+    ],
+  },
+
+  'react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition': {
+    apis: ['prop getter', 'useId()', 'object literal field order'],
+    related: [
+      { label: 'React Patterns (overview)', route: '/react/patterns' },
+      { label: 'useProductSearch localStorage Leak', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
+      { label: 'React.memo and Object Props (React Fundamentals)', route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
+    ],
+    tip: 'A prop getter needs composition logic per field — onClick correctly merges the consumer\'s handler with the internal one, but a bare id field placed after ...rest silently overwrites whatever the consumer passed.',
+    docs: [
+      { label: 'React Docs — useId', url: 'https://react.dev/reference/react/useId' },
+    ],
+    resources: [
+      { label: 'kentcdodds/downshift', url: 'https://github.com/downshift-js/downshift', badge: 'code' },
+    ],
+    gotchas: [
+      'Object literal field order determines the winner when the same key appears twice — last write wins, silently.',
+      'This happens with zero errors or warnings — only checking the actual rendered attribute reveals it.',
+      'id is a realistic field for a consumer to want to override, for accessibility linking or test selectors.',
+    ],
+  },
+
+  'react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key': {
+    apis: ['localStorage', 'custom hooks', 'useLocalStorage(key, value)'],
+    related: [
+      { label: 'React Patterns (overview)', route: '/react/patterns' },
+      { label: 'getTogglerProps id Overwrite', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
+      { label: 'Module-Level Hook Leak (Advanced Hooks)', route: '/react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances' },
+    ],
+    tip: 'localStorage is a single global store, not scoped per component — a hardcoded key inside a reusable hook makes every call site read and write the same physical slot.',
+    docs: [
+      { label: 'MDN — Window.localStorage', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'query and debouncedQuery stay correctly isolated per instance — only the localStorage-backed savedQuery leaks.',
+      'This is a different mechanism from the module-level-variable hook leak — the storage itself is external to JS memory entirely.',
+      'The fix is parameterizing the storage key, not avoiding localStorage inside hooks altogether.',
+    ],
+  },
+
+  'react/patterns/testing-that-usecounters-reset-is-frozen-to-the-mount-time-initialcount-ignoring-later-prop-changes': {
+    apis: ['useRef()', 'state initializer pattern', 'reset()'],
+    related: [
+      { label: 'React Patterns (overview)', route: '/react/patterns' },
+      { label: 'useProductSearch localStorage Leak', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
+      { label: 'Advanced Hooks', route: '/react/hooks-advanced' },
+    ],
+    tip: 'useRef\'s argument is only read on the very first render — reset() always restores to the value at mount time, not whatever the initial-value argument currently is.',
+    docs: [
+      { label: 'React Docs — useRef', url: 'https://react.dev/reference/react/useRef' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'This is a realistic scenario whenever the initial value is derived from a prop, URL param, or user selection.',
+      'The fix requires an explicit useEffect syncing the ref to the latest argument, if that behavior is actually wanted.',
+      'The pattern LOOKS like it tracks "the initial value" but actually tracks "the value at first mount."',
     ],
   },
 
@@ -11259,6 +12380,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'forwardRef<RefType, PropsType> — RefType comes first. Swapping them silently assigns wrong types.',
       'Generic arrow functions in TSX need a trailing comma <T,> to avoid JSX-tag ambiguity.',
       'ComponentPropsWithoutRef<"button"> is equivalent to React.ButtonHTMLAttributes<HTMLButtonElement> — use either consistently.',
+    ],
+  },
+
+  'react/typescript/testing-that-selects-runtime-coercion-silently-mishandles-a-boolean-typed-t': {
+    apis: ['as T', 'type assertion', 'typeof'],
+    related: [
+      { label: 'TypeScript & React (overview)', route: '/react/typescript' },
+      { label: 'Discriminated Union Runtime Gap', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' },
+      { label: 'State Management', route: '/react/state-management' },
+    ],
+    tip: 'A type assertion (as T) performs zero runtime conversion — the actual JS value is whatever the surrounding code computed, regardless of what the assertion claims.',
+    docs: [
+      { label: 'TypeScript Handbook — Type Assertions', url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'The coercion logic checks typeof value on the CURRENT value, not what T actually is — fragile the moment the type constraint widens.',
+      'The bug is invisible in the UI — the dropdown looks and behaves normally, only the onChange payload is wrong.',
+      'This is one constraint-widening change (adding boolean to string | number) away from silently breaking.',
+    ],
+  },
+
+  'react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data': {
+    apis: ['discriminated union', 'type narrowing', 'JSON.parse'],
+    related: [
+      { label: 'TypeScript & React (overview)', route: '/react/typescript' },
+      { label: 'Select Boolean Coercion Gap', route: '/react/typescript/testing-that-selects-runtime-coercion-silently-mishandles-a-boolean-typed-t' },
+      { label: 'SimpleInput onChange Gap', route: '/react/typescript/testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input' },
+    ],
+    tip: 'Discriminated union narrowing is a compile-time analysis of authored code — it cannot verify the actual shape of a value that arrives from outside TypeScript\'s own type-checking, like JSON.parse.',
+    docs: [
+      { label: 'TypeScript Handbook — Discriminated Unions', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Types are fully erased at runtime — neither React nor JavaScript has any concept of the union once the code is running.',
+      'Real runtime validation (a schema library like Zod, or manual checks) is a separate concern the type system cannot substitute for.',
+      'This protection is real and valuable for code authored within TypeScript — it just doesn\'t extend past that boundary.',
+    ],
+  },
+
+  'react/typescript/testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input': {
+    apis: ['controlled input', 'optional prop', 'React DOM warning'],
+    related: [
+      { label: 'TypeScript & React (overview)', route: '/react/typescript' },
+      { label: 'Discriminated Union Runtime Gap', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' },
+      { label: 'React Forms', route: '/react/forms' },
+    ],
+    tip: 'Marking onChange optional in the type is a purely type-level decision — React\'s own controlled-input rule (a value prop needs a working onChange) is a completely separate, unrelated contract the type system has no visibility into.',
+    docs: [
+      { label: 'React Docs — Controlled Components', url: 'https://react.dev/reference/react-dom/components/input' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'TypeScript type-checks the call successfully — the bug only surfaces as a real React console warning at runtime.',
+      'The rendered input looks interactive but silently reverts every keystroke.',
+      'The warning fires regardless of how many wrapper components sit between the JSX author and the final <input>.',
     ],
   },
 
@@ -11288,6 +12472,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library': {
+    apis: ['screen.getByRole()', 'screen.queryByRole()', 'render()'],
+    related: [
+      { label: 'Testing React (overview)', route: '/react/testing' },
+      { label: 'fireEvent vs userEvent Focus', route: '/react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does' },
+      { label: 'A Hook Setter Without act()', route: '/react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning' },
+    ],
+    tip: 'getBy throwing is a feature, not a nuisance — it fails your test immediately at the missing-element line instead of letting a later assertion fail with a confusing null-reference error.',
+    docs: [
+      { label: 'RTL Docs — Queries', url: 'https://testing-library.com/docs/queries/about' },
+    ],
+    resources: [
+      { label: 'testing-library/react', url: 'https://github.com/testing-library/react-testing-library', badge: 'code' },
+    ],
+    gotchas: [
+      'getBy* throws synchronously the moment it can\'t find a match — no need to wrap it in a try/catch for a normal "assert it exists" check.',
+      'queryBy* returning null is the entire point of the query — use it specifically for "assert this is absent" assertions.',
+      'Both queries run the exact same accessible-role matching logic — only their behavior on zero matches differs.',
+    ],
+  },
+
+  'react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does': {
+    apis: ['fireEvent.click()', 'userEvent.click()', 'userEvent.setup()'],
+    related: [
+      { label: 'Testing React (overview)', route: '/react/testing' },
+      { label: 'queryBy vs getBy', route: '/react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library' },
+      { label: 'A Hook Setter Without act()', route: '/react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning' },
+    ],
+    tip: 'userEvent.click() is asynchronous and must be awaited — its whole value is replaying the full real-browser event sequence, which unfolds over multiple microtasks.',
+    docs: [
+      { label: 'userEvent Docs', url: 'https://testing-library.com/docs/user-event/intro' },
+    ],
+    resources: [
+      { label: 'testing-library/user-event', url: 'https://github.com/testing-library/user-event', badge: 'code' },
+    ],
+    gotchas: [
+      'fireEvent.click dispatches exactly one click event — no pointerdown/mousedown/focus/pointerup/mouseup around it.',
+      'Any focus-dependent UI (focus rings, focus-triggered dropdowns) needs userEvent, not fireEvent, to test correctly.',
+      'There is no warning when fireEvent misses focus-dependent behavior — the click handler still runs normally.',
+    ],
+  },
+
+  'react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning': {
+    apis: ['renderHook()', 'act()', 'console.error'],
+    related: [
+      { label: 'Testing React (overview)', route: '/react/testing' },
+      { label: 'queryBy vs getBy', route: '/react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library' },
+      { label: 'fireEvent vs userEvent Focus', route: '/react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does' },
+    ],
+    tip: 'For async state updates (a fetch resolving, a timer firing), prefer await waitFor(...) over a manual act() wrap — waitFor already wraps act() internally and polls until the assertion passes.',
+    docs: [
+      { label: 'React Docs — act()', url: 'https://react.dev/reference/react/act' },
+    ],
+    resources: [
+      { label: 'testing-library/react', url: 'https://github.com/testing-library/react-testing-library', badge: 'code' },
+    ],
+    gotchas: [
+      'The warning is React itself detecting a race, not a linting suggestion — it can precede genuinely flaky, order-dependent tests.',
+      'render() and userEvent already wrap their own internals in act() — this warning mainly shows up with renderHook\'s raw result.current calls.',
+      'A test can "pass" without act() by accident of timing — that doesn\'t mean the update was actually observed correctly.',
+    ],
+  },
+
   'react/nextjs': {
     apis: ['"use client"', '"use server"', 'layout.tsx', 'loading.tsx', 'revalidatePath()', 'generateStaticParams()'],
     related: [
@@ -11310,6 +12557,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '"use client" propagates — all imports from a "use client" file are also client code.',
       'Cannot import a Server Component into a Client Component — pass it as children from a Server parent.',
       'useSearchParams() requires a Suspense boundary wrapper — omitting it causes a build warning.',
+    ],
+  },
+
+  'react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components': {
+    apis: ['"use client"', 'client reference manifest'],
+    related: [
+      { label: 'Next.js App Router (overview)', route: '/react/nextjs' },
+      { label: 'revalidatePath Cache Scope', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' },
+      { label: 'TypeScript & React', route: '/react/typescript' },
+    ],
+    tip: 'Place "use client" as low in the component tree as possible — a shared utility used by both server and client code ships client-side the moment ANY client file imports it.',
+    docs: [
+      { label: 'Next.js Docs — Client Components', url: 'https://nextjs.org/docs/app/building-your-application/rendering/client-components' },
+    ],
+    resources: [
+      { label: 'vercel/next.js', url: 'https://github.com/vercel/next.js', badge: 'code' },
+    ],
+    gotchas: [
+      'Bundling is graph-based, not usage-based — the bundler never checks whether a function actually needs the browser.',
+      'A single "use client" importer is enough to pull a shared utility into the client bundle, even if every other importer is server-only.',
+      'This is a build-time concept — there\'s no interactive browser demo for it, unlike most React hub subtopics.',
+    ],
+  },
+
+  'react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state': {
+    apis: ['revalidatePath()', 'redirect()', 'router.refresh()'],
+    related: [
+      { label: 'Next.js App Router (overview)', route: '/react/nextjs' },
+      { label: 'use client Import Scope', route: '/react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components' },
+      { label: 'useSearchParams Suspense Scope', route: '/react/nextjs/testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment' },
+    ],
+    tip: 'revalidatePath alone never updates an already-open tab — pair it with redirect() (or a client-side router.refresh()) to actually force a new request in the tab that needs fresh data.',
+    docs: [
+      { label: 'Next.js Docs — revalidatePath', url: 'https://nextjs.org/docs/app/api-reference/functions/revalidatePath' },
+    ],
+    resources: [
+      { label: 'vercel/next.js', url: 'https://github.com/vercel/next.js', badge: 'code' },
+    ],
+    gotchas: [
+      'revalidatePath only marks a server-side cache entry stale — it has no channel to push updates to any browser tab.',
+      'Without redirect() or router.refresh(), even the tab that just submitted the mutation stays on its old, unrefreshed render.',
+      'A second, already-open tab stays stale until it independently makes a new request.',
+    ],
+  },
+
+  'react/nextjs/testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment': {
+    apis: ['useSearchParams()', 'Suspense', 'static rendering'],
+    related: [
+      { label: 'Next.js App Router (overview)', route: '/react/nextjs' },
+      { label: 'use client Import Scope', route: '/react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components' },
+      { label: 'revalidatePath Cache Scope', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' },
+    ],
+    tip: 'Wrap only the smallest piece that actually calls useSearchParams — a page-wide Suspense boundary avoids the warning but also stops the whole page from statically pre-rendering.',
+    docs: [
+      { label: 'Next.js Docs — useSearchParams', url: 'https://nextjs.org/docs/app/api-reference/functions/use-search-params' },
+    ],
+    resources: [
+      { label: 'vercel/next.js', url: 'https://github.com/vercel/next.js', badge: 'code' },
+    ],
+    gotchas: [
+      'Without any Suspense boundary, Next.js can\'t statically pre-render ANY part of the page — not just the useSearchParams consumer.',
+      'A Suspense boundary is what draws the line between the static shell and the dynamic, per-request part.',
+      'This is the same React Suspense mechanism used elsewhere — Next.js layers static/dynamic rendering decisions on top of it.',
     ],
   },
 
@@ -11337,6 +12647,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'All text strings must be wrapped in <Text> — placing raw text in <View> crashes production builds.',
       'AsyncStorage is plain text on disk — always use expo-secure-store for tokens and passwords.',
       'FlatList needs keyExtractor returning a stable unique string — index keys cause incorrect reconciliation.',
+    ],
+  },
+
+  'react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go': {
+    apis: ['<View>', '<Text>', 'eslint-plugin-react-native', 'EAS Build'],
+    related: [
+      { label: 'React Native (overview)', route: '/react/native' },
+      { label: 'getItemLayout Uniform Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' },
+      { label: 'StyleSheet.create() vs React.memo', route: '/react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo' },
+    ],
+    tip: 'Expo Go and local dev clients run a DEVELOPMENT build — the exact configuration this bug can hide in. Only an actual production-profile build (or a static lint rule) reliably catches it.',
+    docs: [
+      { label: 'React Native Docs — Text', url: 'https://reactnative.dev/docs/text' },
+    ],
+    resources: [
+      { label: 'facebook/react-native', url: 'https://github.com/facebook/react-native', badge: 'code' },
+    ],
+    gotchas: [
+      'The crash is specific to PRODUCTION builds — dev builds and Expo Go can be lenient, sometimes with no visible warning at all.',
+      '{count && <Text>{count}</Text>} renders a literal "0" as a bare text node when count is 0 — use count > 0 instead.',
+      'eslint-plugin-react-native\'s no-raw-text rule catches this statically, without needing any build at all.',
+    ],
+  },
+
+  'react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary': {
+    apis: ['getItemLayout()', 'FlatList', 'scrollToIndex()'],
+    related: [
+      { label: 'React Native (overview)', route: '/react/native' },
+      { label: 'Text-in-View Production Crash', route: '/react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go' },
+      { label: 'StyleSheet.create() vs React.memo', route: '/react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo' },
+    ],
+    tip: 'getItemLayout is safe only when you can name a concrete reason every row is really the same height — not whenever it "looks roughly consistent" in a quick check.',
+    docs: [
+      { label: 'React Native Docs — FlatList', url: 'https://reactnative.dev/docs/flatlist' },
+    ],
+    resources: [
+      { label: 'facebook/react-native', url: 'https://github.com/facebook/react-native', badge: 'code' },
+    ],
+    gotchas: [
+      'FlatList performs zero validation of getItemLayout — a wrong formula is trusted completely, with no runtime warning.',
+      'The offset calculation compounds across every prior row — a small, rare height variation still produces increasingly wrong positions deeper into the list.',
+      'For genuinely variable-height content (chat messages, wrapping text), drop getItemLayout entirely rather than trying to hand-compute it.',
+    ],
+  },
+
+  'react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo': {
+    apis: ['StyleSheet.create()', 'React.memo', 'useCallback'],
+    related: [
+      { label: 'React Native (overview)', route: '/react/native' },
+      { label: 'Text-in-View Production Crash', route: '/react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go' },
+      { label: 'getItemLayout Uniform Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' },
+    ],
+    tip: 'React.memo needs EVERY prop to be reference-stable to skip a re-render — a stable StyleSheet.create() style sitting next to one unstable prop still fails the whole comparison.',
+    docs: [
+      { label: 'React Docs — memo', url: 'https://react.dev/reference/react/memo' },
+    ],
+    resources: [
+      { label: 'facebook/react-native', url: 'https://github.com/facebook/react-native', badge: 'code' },
+    ],
+    gotchas: [
+      'StyleSheet.create()\'s stable ID is consumed by the NATIVE layout engine — a separate layer from React\'s own reconciliation.',
+      'A fresh inline function, array, or object prop anywhere else on the component defeats React.memo regardless of how stable the style prop is.',
+      'Primitive props (strings, numbers) are naturally reference-stable via Object.is — that stability isn\'t something StyleSheet.create() provided.',
     ],
   },
 
@@ -11412,6 +12785,1866 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element': {
+    apis: ['createTextNode', 'dangerouslySetInnerHTML', 'JSX escaping'],
+    related: [
+      { label: 'Security in React (overview)', route: '/react/security' },
+      { label: 'DOMPurify Strips Handlers', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' },
+      { label: 'Testing React', route: '/react/testing' },
+    ],
+    tip: 'JSX text is safe not because React "filters" the string, but because the browser\'s HTML parser is never invoked at all — a Text node structurally cannot contain elements or handlers.',
+    docs: [
+      { label: 'React Docs — dangerouslySetInnerHTML', url: 'https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html' },
+    ],
+    resources: [
+      { label: 'cure53/DOMPurify', url: 'https://github.com/cure53/DOMPurify', badge: 'code' },
+    ],
+    gotchas: [
+      'A JSX Text node cannot contain a child element — this is a DOM-level structural guarantee, not a pattern-matching filter.',
+      'dangerouslySetInnerHTML goes through the browser\'s real HTML parser, which CAN create executable elements from a string.',
+      'Checking for an actual popup isn\'t a reliable XSS test — inspect the real DOM structure instead.',
+    ],
+  },
+
+  'react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact': {
+    apis: ['DOMPurify.sanitize()', 'ALLOWED_TAGS', 'ALLOWED_ATTR'],
+    related: [
+      { label: 'Security in React (overview)', route: '/react/security' },
+      { label: 'JSX Text Node vs Raw HTML', route: '/react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element' },
+      { label: 'Protocol-Relative Redirect Bypass', route: '/react/security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check' },
+    ],
+    tip: 'DOMPurify removes disallowed tags/attributes surgically, not the whole input — an allowed tag name doesn\'t mean every attribute VALUE (like a javascript: href) is trusted.',
+    docs: [
+      { label: 'DOMPurify Docs', url: 'https://github.com/cure53/DOMPurify#readme' },
+    ],
+    resources: [
+      { label: 'cure53/DOMPurify', url: 'https://github.com/cure53/DOMPurify', badge: 'code' },
+    ],
+    gotchas: [
+      'A disallowed tag (like <script> or <img>) is removed entirely — its safe siblings elsewhere in the string survive.',
+      'A disallowed attribute (like onclick) is stripped from an otherwise-allowed tag — the tag and its safe content remain.',
+      'javascript: URLs are neutralized even in an ALLOWED_ATTR attribute like href — the attribute name being allowed doesn\'t make every value safe.',
+    ],
+  },
+
+  'react/security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check': {
+    apis: ['String.startsWith()', 'router.push()', 'protocol-relative URL'],
+    related: [
+      { label: 'Security in React (overview)', route: '/react/security' },
+      { label: 'JSX Text Node vs Raw HTML', route: '/react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element' },
+      { label: 'DOMPurify Strips Handlers', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' },
+    ],
+    tip: 'A redirect-safety check needs BOTH startsWith(\'/\') AND !startsWith(\'//\') — the first condition alone is bypassed by a protocol-relative URL like //evil.com.',
+    docs: [
+      { label: 'MDN — Same-origin policy', url: 'https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy' },
+    ],
+    resources: [
+      { label: 'OWASP — Unvalidated Redirects', url: 'https://owasp.org/www-community/attacks/Unvalidated_Redirects_and_Forwards_Cheat_Sheet', badge: 'docs' },
+    ],
+    gotchas: [
+      '"//evil.com".startsWith(\'/\') is true — a single-condition check is silently bypassed by this exact pattern.',
+      'The browser resolves a protocol-relative URL by keeping the current page\'s scheme and using everything after // as a real, different host.',
+      'The redirect query parameter is attacker-controlled input by design — this isn\'t a rare or unlikely-to-be-exploited edge case.',
+    ],
+  },
+
+  'javascript/fundamentals': {
+    apis: ['typeof', 'Number.isNaN()', '??', '??=', 'Object.freeze()'],
+    related: [
+      { label: 'Scope & Closures', route: '/javascript/closures' },
+      { label: 'Hoisting & TDZ',   route: '/javascript/hoisting' },
+      { label: 'Functions Deep Dive', route: '/javascript/functions' },
+    ],
+    tip: 'Always use === and ?? over == and || — coercion and falsy-checking are the two biggest sources of subtle JavaScript bugs.',
+    docs: [
+      { label: 'MDN — Equality comparisons', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Equality_comparisons_and_sameness' },
+      { label: 'MDN — Nullish coalescing',   url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'typeof null === "object" is a historical bug — always check === null explicitly.',
+      '?? only checks null/undefined; || checks all falsy values including 0, "", and false.',
+      'const prevents rebinding, not mutation — use Object.freeze() for shallow immutability.',
+    ],
+  },
+
+  'javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text': {
+    apis: ['isNaN()', 'Number.isNaN()', 'Number()'],
+    related: [
+      { label: 'JavaScript Fundamentals (overview)', route: '/javascript/fundamentals' },
+      { label: 'Nullish Assignment Keeps 0', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' },
+      { label: 'Object.freeze() Strict Mode Throw', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' },
+    ],
+    tip: 'Neither isNaN() nor Number.isNaN() alone validates "is this string a valid number" — combine them: Number.isNaN(Number(input)).',
+    docs: [
+      { label: 'MDN — Number.isNaN()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Global isNaN(x) coerces x with Number(x) first — Number("") is 0, not NaN, so isNaN("") is false.',
+      'Number.isNaN(x) never coerces — it returns false for every string, even garbage like "abc".',
+      'Validating user input needs BOTH: convert explicitly, then check strictly.',
+    ],
+  },
+
+  'javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it': {
+    apis: ['||=', '??=', 'x ?? y'],
+    related: [
+      { label: 'JavaScript Fundamentals (overview)', route: '/javascript/fundamentals' },
+      { label: 'Number.isNaN() vs Global isNaN()', route: '/javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text' },
+      { label: 'Object.freeze() Strict Mode Throw', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' },
+    ],
+    tip: '||= is not a safer, modern version of || — it wraps the exact same falsy-check and has the identical 0/""/false blind spot.',
+    docs: [
+      { label: 'MDN — Logical nullish assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_nullish_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'x ||= value assigns whenever x is falsy — 0, "", and false all get overwritten, just like plain ||.',
+      'x ??= value assigns only when x is null or undefined — 0, "", and false are left untouched.',
+      '||= and ??= were both introduced in ES2021, but they wrap different underlying operators with different blind spots.',
+    ],
+  },
+
+  'javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails': {
+    apis: ['Object.freeze()', '"use strict"', 'TypeError'],
+    related: [
+      { label: 'JavaScript Fundamentals (overview)', route: '/javascript/fundamentals' },
+      { label: 'Number.isNaN() vs Global isNaN()', route: '/javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text' },
+      { label: 'Nullish Assignment Keeps 0', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' },
+    ],
+    tip: 'Every ES module (any file using import/export) is automatically strict mode — most modern JS/TS code gets the loud TypeError by default without writing "use strict" explicitly.',
+    docs: [
+      { label: 'MDN — Strict mode', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'In sloppy mode, assigning to a frozen object\'s property silently fails — no error, no change.',
+      'In strict mode, the identical assignment throws a real, catchable TypeError.',
+      'The Function constructor\'s body runs in sloppy mode by default, even inside a strict-mode module — a real way to compare both.',
+    ],
+  },
+
+  'javascript/closures': {
+    apis: ['closure', 'lexical scope', 'IIFE', 'WeakMap'],
+    related: [
+      { label: 'JavaScript Fundamentals', route: '/javascript/fundamentals' },
+      { label: 'Hoisting & TDZ',          route: '/javascript/hoisting'     },
+      { label: 'Functions Deep Dive',     route: '/javascript/functions'    },
+    ],
+    tip: 'Closures capture variable bindings, not values — the same rule explains both "mutations are visible" and the "stale closure" bug, depending on whether you closed over a live reference or an already-copied primitive.',
+    docs: [
+      { label: 'MDN — Closures', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'var in a loop shares ONE binding across every closure — let creates a fresh binding per iteration.',
+      'Each call to memoize() creates a genuinely new, private cache — two wrappers never share state.',
+      'A closure over an object property sees later mutations; a closure over a destructured primitive does not.',
+    ],
+  },
+
+  'javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration': {
+    apis: ['var', 'let', 'block scope'],
+    related: [
+      { label: 'Scope & Closures (overview)', route: '/javascript/closures' },
+      { label: 'memoize() Private Caches', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
+      { label: 'Hoisting & TDZ', route: '/javascript/hoisting' },
+    ],
+    tip: 'The loop-with-var bug is about how many distinct bindings exist, not about async timing — it reproduces identically with zero setTimeout involved.',
+    docs: [
+      { label: 'MDN — let', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'var declares exactly one binding for the loop\'s entire lifetime — every closure references that same variable.',
+      'for(let...) is special-cased by the spec to create a fresh binding per iteration, copied from the previous one.',
+      'Storing closures in an array and calling them after the loop (no async) reproduces the exact same result.',
+    ],
+  },
+
+  'javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches': {
+    apis: ['memoize()', 'Map', 'closure'],
+    related: [
+      { label: 'Scope & Closures (overview)', route: '/javascript/closures' },
+      { label: 'var vs let Loop Bindings', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
+      { label: 'Object Property vs Primitive Copy', route: '/javascript/closures/testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt' },
+    ],
+    tip: 'The private-cache guarantee comes from WHERE "new Map()" sits — inside the outer function body, so it re-runs independently every time memoize() itself is called.',
+    docs: [
+      { label: 'MDN — Closures', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Two calls to memoize(fn) — even wrapping the same fn — each get their own separate Map instance.',
+      'A cache miss on a second wrapper for an already-cached input is correct, intended behavior, not a bug.',
+      'The cache\'s lifetime is scoped to one specific memoize() call, not the module.',
+    ],
+  },
+
+  'javascript/closures/testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt': {
+    apis: ['destructuring', 'object reference', 'primitive value'],
+    related: [
+      { label: 'Scope & Closures (overview)', route: '/javascript/closures' },
+      { label: 'var vs let Loop Bindings', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
+      { label: 'memoize() Private Caches', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
+    ],
+    tip: '"Closures capture by reference, not value" applies to the SPECIFIC binding referenced — a closure over an already-destructured primitive is a closure over an independent copy, not a live view.',
+    docs: [
+      { label: 'MDN — Destructuring assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Reading state.count fresh through the object always reflects the current value.',
+      'const {count} = state copies the primitive value once — later mutations to state.count never reach it.',
+      'The "stale closure" bug is plain JavaScript, not framework-specific — it happens whenever a primitive is copied out before a mutation.',
+    ],
+  },
+
+  'javascript/hoisting': {
+    apis: ['var', 'let', 'const', 'TDZ', 'typeof'],
+    related: [
+      { label: 'Scope & Closures',    route: '/javascript/closures'    },
+      { label: 'JavaScript Fundamentals', route: '/javascript/fundamentals' },
+      { label: 'Functions Deep Dive', route: '/javascript/functions'   },
+    ],
+    tip: 'let/const ARE hoisted — the engine knows they exist. They\'re just uninitialized until their declaration line, which is what the TDZ actually is.',
+    docs: [
+      { label: 'MDN — Temporal Dead Zone', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Hoisting#temporal_dead_zone_tdz' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'typeof on a TDZ variable throws ReferenceError — unlike typeof on a truly undeclared variable, which stays safe.',
+      'Function declarations win the hoisting phase over a same-named var — but the var\'s own assignment still overwrites it afterward.',
+      'A switch statement\'s braces are ONE block scope shared by every case — duplicate let across cases needs its own per-case braces.',
+    ],
+  },
+
+  'javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe': {
+    apis: ['typeof', 'ReferenceError', 'TDZ'],
+    related: [
+      { label: 'Hoisting & TDZ (overview)', route: '/javascript/hoisting' },
+      { label: 'Function Decl Wins Hoisting', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' },
+      { label: 'Duplicate let in Switch Cases', route: '/javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror' },
+    ],
+    tip: 'typeof\'s safety guarantee is specifically for identifiers the engine has NO knowledge of — a TDZ variable is a known, hoisted identifier that just isn\'t initialized yet, which is a different case entirely.',
+    docs: [
+      { label: 'MDN — typeof', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'typeof on a genuinely undeclared identifier never throws — returns "undefined" safely.',
+      'typeof on a let/const in its own TDZ throws a real ReferenceError, not "undefined".',
+      'This is a realistic trap, not a contrived edge case — it can surface after code reordering or a refactor.',
+    ],
+  },
+
+  'javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward': {
+    apis: ['function declaration', 'var', 'hoisting'],
+    related: [
+      { label: 'Hoisting & TDZ (overview)', route: '/javascript/hoisting' },
+      { label: 'typeof TDZ Throws ReferenceError', route: '/javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe' },
+      { label: 'Duplicate let in Switch Cases', route: '/javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror' },
+    ],
+    tip: 'Two separate mechanisms, two separate times: the function wins hoisting (before any line runs); the var\'s own assignment statement overwrites it afterward, in its normal source-order position.',
+    docs: [
+      { label: 'MDN — Hoisting', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Hoisting' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Function declarations win over var at hoisting time, regardless of which one is written first in the source.',
+      'The var\'s assignment still runs at its normal position and overwrites the function afterward.',
+      'The final logged value looking like "var won" is misleading — it\'s actually two separate mechanisms at two separate times.',
+    ],
+  },
+
+  'javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror': {
+    apis: ['switch', 'block scope', 'SyntaxError'],
+    related: [
+      { label: 'Hoisting & TDZ (overview)', route: '/javascript/hoisting' },
+      { label: 'typeof TDZ Throws ReferenceError', route: '/javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe' },
+      { label: 'Function Decl Wins Hoisting', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' },
+    ],
+    tip: 'A genuine top-level SyntaxError can\'t be caught by try/catch in the same file — testing it live requires compiling the broken code at runtime with new Function(...).',
+    docs: [
+      { label: 'MDN — switch', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A switch statement\'s outer braces are ONE block shared by every case, unless a case wraps its own body in { }.',
+      'The error is the same ordinary "duplicate let in one block" rule as anywhere else — nothing switch-specific about the underlying cause.',
+      'Wrapping each case in its own { } gives each one a genuinely separate scope, fixing the collision.',
+    ],
+  },
+
+  'javascript/symbols': {
+    apis: ['Symbol()', 'Symbol.for()', 'Symbol.iterator', 'Symbol.toPrimitive'],
+    related: [
+      { label: 'Functions Deep Dive',  route: '/javascript/functions'   },
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes'  },
+      { label: 'Generators',           route: '/javascript/generators'  },
+    ],
+    tip: 'Symbols hide properties from enumeration (for...in, Object.keys, JSON.stringify), not from access — Object.getOwnPropertySymbols() can always read them if code has the object reference.',
+    docs: [
+      { label: 'MDN — Symbol', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Object.assign() and spread DO copy symbol-keyed properties — only for...in/Object.keys/JSON.stringify skip them.',
+      'Symbol.toPrimitive\'s hint is "string", "number", or "default" — binary + gets "default", not "number".',
+      'Symbol.hasInstance is called for every value on the left of instanceof, unfiltered — including primitives, objects, and null.',
+    ],
+  },
+
+  'javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them': {
+    apis: ['for...in', 'Object.keys()', 'JSON.stringify()', 'Object.assign()'],
+    related: [
+      { label: 'Symbols & Iterators (overview)', route: '/javascript/symbols' },
+      { label: 'toPrimitive Hint by Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' },
+      { label: 'hasInstance Overrides instanceof', route: '/javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values' },
+    ],
+    tip: 'The dividing line is enumeration vs copying — enumeration APIs were designed to skip symbol keys; copying operations transfer every own property regardless of key type.',
+    docs: [
+      { label: 'MDN — Object.getOwnPropertySymbols()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'for...in, Object.keys(), and JSON.stringify() all skip symbol-keyed properties.',
+      'Object.assign() and spread {...obj} both preserve symbol-keyed properties.',
+      'Object.getOwnPropertySymbols() and Reflect.ownKeys() are the way to actually see the symbol keys directly.',
+    ],
+  },
+
+  'javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts': {
+    apis: ['Symbol.toPrimitive', 'hint parameter', 'coercion'],
+    related: [
+      { label: 'Symbols & Iterators (overview)', route: '/javascript/symbols' },
+      { label: 'Which Operations See Symbol Keys', route: '/javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them' },
+      { label: 'hasInstance Overrides instanceof', route: '/javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values' },
+    ],
+    tip: 'Binary + receives "default", not "number" — it\'s ambiguous between numeric addition and string concatenation, unlike unary + or multiplication.',
+    docs: [
+      { label: 'MDN — Symbol.toPrimitive', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      '"string" hint: template literals, String(). "number" hint: unary +, multiplication, Number().',
+      '"default" hint: binary +, ==, and relational comparisons (<, >, <=, >=) — a genuinely distinct third value.',
+      'Most classes treat "default" the same as "number", but that\'s an implementation choice, not a spec requirement.',
+    ],
+  },
+
+  'javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values': {
+    apis: ['Symbol.hasInstance', 'instanceof'],
+    related: [
+      { label: 'Symbols & Iterators (overview)', route: '/javascript/symbols' },
+      { label: 'Which Operations See Symbol Keys', route: '/javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them' },
+      { label: 'toPrimitive Hint by Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' },
+    ],
+    tip: 'A custom Symbol.hasInstance implementation gets ZERO pre-filtering from instanceof — it must defensively type-check its own input, since primitives, null, and unrelated objects all reach it unchanged.',
+    docs: [
+      { label: 'MDN — Symbol.hasInstance', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Once a class defines Symbol.hasInstance, instanceof\'s default prototype-chain check is bypassed entirely.',
+      'The custom function is called for every left-hand value — strings, objects, arrays, null — with no fast-fail for "obviously wrong" types.',
+      'A robust implementation needs its own defensive typeof/type-guard check as its first line, since nothing else is filtering the input.',
+    ],
+  },
+
+  'javascript/functions': {
+    apis: ['call()', 'apply()', 'bind()', 'default parameters'],
+    related: [
+      { label: 'Scope & Closures',     route: '/javascript/closures'   },
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes' },
+      { label: 'Hoisting & TDZ',       route: '/javascript/hoisting'   },
+    ],
+    tip: 'this-binding priority: new > explicit (call/apply/bind) > method call > default — but bind() is permanent against every OTHER later call/apply/bind, new is the sole exception.',
+    docs: [
+      { label: 'MDN — Function.prototype.bind()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A bound function ignores any this passed via a later call(), apply(), or even a second bind().',
+      'Default parameters trigger ONLY on undefined — not null, 0, false, or "".',
+      'new is the one invocation style that can override an already-bound this — it always constructs a fresh object.',
+    ],
+  },
+
+  'javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it': {
+    apis: ['Function.prototype.bind()', 'call()', 'apply()'],
+    related: [
+      { label: 'Functions Deep Dive (overview)', route: '/javascript/functions' },
+      { label: 'Default Param Only Triggers on undefined', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' },
+      { label: 'new Overrides bind()', route: '/javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target' },
+    ],
+    tip: 'bind() creates a genuinely new "bound function exotic object" that hardwires this internally — later call()/apply() attempts to override it are simply discarded.',
+    docs: [
+      { label: 'MDN — Function.prototype.bind()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'call()/apply() on an already-bound function silently ignore the new this argument — no error, no warning.',
+      'A second .bind() call still ultimately delegates to the original bound function, so the original binding wins.',
+      'This is a realistic trap when a function was bound once, deep inside a library or earlier codebase, unbeknownst to later code.',
+    ],
+  },
+
+  'javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string': {
+    apis: ['default parameters', 'undefined', '??'],
+    related: [
+      { label: 'Functions Deep Dive (overview)', route: '/javascript/functions' },
+      { label: 'bind() Is Permanent', route: '/javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it' },
+      { label: 'new Overrides bind()', route: '/javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target' },
+    ],
+    tip: 'Default parameters are the narrowest of JS\'s three "defaulting" mechanisms — only undefined triggers them, unlike ?? (null + undefined) or || (every falsy value).',
+    docs: [
+      { label: 'MDN — Default parameters', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Omitting an argument and explicitly passing undefined are treated identically — both trigger the default.',
+      'null, 0, false, and "" all pass through as their literal value — none of them trigger the default.',
+      'Conflating default parameters with ?? or || is exactly the source of this class of bug.',
+    ],
+  },
+
+  'javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target': {
+    apis: ['new', 'Function.prototype.bind()', '[[Construct]]'],
+    related: [
+      { label: 'Functions Deep Dive (overview)', route: '/javascript/functions' },
+      { label: 'bind() Is Permanent', route: '/javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it' },
+      { label: 'Default Param Only Triggers on undefined', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' },
+    ],
+    tip: 'new is the ONE invocation style that bypasses an existing bind() — the spec deliberately discards the bound this for [[Construct]], since new must always create a fresh object.',
+    docs: [
+      { label: 'MDN — new operator', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'new BoundFn() ignores the bound this entirely — it constructs against the ORIGINAL, un-bound function.',
+      'The resulting instance is a genuinely new object, not the bound target — they are never the same object.',
+      'Pre-bound ARGUMENTS (partial application) are still respected by new — only the bound this is discarded.',
+    ],
+  },
+
+  'javascript/prototypes': {
+    apis: ['Object.create()', 'prototype chain', 'static', 'class'],
+    related: [
+      { label: 'Functions Deep Dive', route: '/javascript/functions' },
+      { label: 'Object Fundamentals', route: '/javascript/objects' },
+      { label: 'Symbols & Iterators', route: '/javascript/symbols' },
+    ],
+    tip: 'Object.create(null) genuinely lacks every Object.prototype method — calling one throws, it isn\'t just hidden from enumeration the way symbol keys are.',
+    docs: [
+      { label: 'MDN — Object.create()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Object.create(null) has no prototype chain at all — Object.prototype methods are functionally absent, not hidden.',
+      'Static methods live only on the class itself — instances have no lookup path to reach them, and vice versa.',
+      'Prototype pollution via __proto__ reaches every plain object in the program, not just the one passed to the vulnerable function.',
+    ],
+  },
+
+  'javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration': {
+    apis: ['Object.create(null)', '[[Prototype]]', 'toString()'],
+    related: [
+      { label: 'Prototypes & Classes (overview)', route: '/javascript/prototypes' },
+      { label: 'Static Methods Don’t Exist on Instances', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' },
+      { label: 'Prototype Pollution Blast Radius', route: '/javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object' },
+    ],
+    tip: 'Object.create(null) is the safer choice for dictionaries with attacker-influenced keys, precisely because it has no inherited methods to accidentally shadow or invoke.',
+    docs: [
+      { label: 'MDN — Object.getPrototypeOf()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A plain {} inherits Object.prototype and all its methods; Object.create(null) inherits nothing at all.',
+      'Calling .toString() on a null-prototype object throws a real TypeError, not a silent no-op.',
+      'A null-prototype object CAN still have its own toString property set explicitly — that\'s unrelated to inheritance.',
+    ],
+  },
+
+  'javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning': {
+    apis: ['static', 'ClassName.prototype', 'TypeError'],
+    related: [
+      { label: 'Prototypes & Classes (overview)', route: '/javascript/prototypes' },
+      { label: 'Object.create(null) Has No Methods', route: '/javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration' },
+      { label: 'Prototype Pollution Blast Radius', route: '/javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object' },
+    ],
+    tip: 'Static methods live on the class constructor itself; instance methods live on ClassName.prototype — an instance\'s chain never includes the class object, so there\'s no lookup path either way.',
+    docs: [
+      { label: 'MDN — static', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'instance.staticMethod() throws a real TypeError — it is a hard limit, not a discouraged pattern.',
+      'ClassName.instanceMethod() also throws, for the symmetric reason — the class has no path to its own prototype\'s methods.',
+      'This is exactly why factory-pattern static methods must always be called via the class name.',
+    ],
+  },
+
+  'javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object': {
+    apis: ['for...in', '__proto__', 'Object.prototype'],
+    related: [
+      { label: 'Prototypes & Classes (overview)', route: '/javascript/prototypes' },
+      { label: 'Object.create(null) Has No Methods', route: '/javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration' },
+      { label: 'Static Methods Don’t Exist on Instances', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' },
+    ],
+    tip: 'Object.prototype is ONE single shared object every plain object inherits from — polluting it via a __proto__ key affects every plain object in the program, past and future.',
+    docs: [
+      { label: 'MDN — Object.prototype', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype' },
+    ],
+    resources: [
+      { label: 'OWASP — Prototype Pollution', url: 'https://owasp.org/www-community/vulnerabilities/Prototype_Pollution', badge: 'docs' },
+    ],
+    gotchas: [
+      'A completely unrelated object, never passed to the vulnerable function, still gets polluted.',
+      'Objects created AFTER the attack runs are polluted too — inheritance is looked up live, not baked in at creation time.',
+      'This is realistic, ordinary JSON.parse() of crafted input — no unusual setup required to trigger it.',
+    ],
+  },
+
+  'javascript/objects': {
+    apis: ['Object.keys()', 'Object.assign()', 'structuredClone()'],
+    related: [
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes' },
+      { label: 'Destructuring & Spread', route: '/javascript/destructuring' },
+      { label: 'Functions Deep Dive', route: '/javascript/functions' },
+    ],
+    tip: 'structuredClone() is excellent for plain data, but it strips class identity and throws on functions — it is not a general-purpose "clone anything" tool.',
+    docs: [
+      { label: 'MDN — structuredClone()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/structuredClone' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Integer-like keys always sort first, numerically — consistently across Object.keys, for...in, JSON.stringify, and spread.',
+      'Object.assign invokes setters on the target; spread never does, since it builds a brand-new object.',
+      'structuredClone strips a class instance down to a plain object and throws on any nested function.',
+    ],
+  },
+
+  'javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys': {
+    apis: ['[[OwnPropertyKeys]]', 'Object.keys()', 'for...in'],
+    related: [
+      { label: 'Object Fundamentals (overview)', route: '/javascript/objects' },
+      { label: 'Object.assign Invokes Setters', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' },
+      { label: 'structuredClone Limits', route: '/javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function' },
+    ],
+    tip: 'Every enumeration mechanism (Object.keys, for...in, JSON.stringify, spread) reads from the SAME canonical property order — the reordering is a property of the object, not any one function.',
+    docs: [
+      { label: 'MDN — Object.keys()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Integer-like keys (whether written as bare numbers or quoted strings) always sort numerically first.',
+      'String keys retain their insertion order, but only after every integer-like key.',
+      'Spreading an object preserves the source\'s canonical order — it doesn\'t reset to a different one.',
+    ],
+  },
+
+  'javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead': {
+    apis: ['Object.assign()', 'spread', '[[Set]]', '[[DefineOwnProperty]]'],
+    related: [
+      { label: 'Object Fundamentals (overview)', route: '/javascript/objects' },
+      { label: 'Integer Keys Sort First', route: '/javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys' },
+      { label: 'structuredClone Limits', route: '/javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function' },
+    ],
+    tip: 'If a target object\'s setter logic genuinely needs to run (validation, reactivity), Object.assign is the one that achieves it — spread silently bypasses it entirely.',
+    docs: [
+      { label: 'MDN — Object.assign()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Object.assign performs a real [[Set]] assignment against the target — any setter fires exactly as a hand-written assignment would.',
+      'Spread builds a brand-new object via [[DefineOwnProperty]] — no setter from any source object is ever invoked.',
+      'A spread copy of an object with a getter/setter pair loses the reactive behavior — the new object only has a static value.',
+    ],
+  },
+
+  'javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function': {
+    apis: ['structuredClone()', 'DataCloneError', 'HTML Structured Clone Algorithm'],
+    related: [
+      { label: 'Object Fundamentals (overview)', route: '/javascript/objects' },
+      { label: 'Integer Keys Sort First', route: '/javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys' },
+      { label: 'Object.assign Invokes Setters', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' },
+    ],
+    tip: 'structuredClone is built on the postMessage() serialization algorithm — it has a fixed set of cloneable types, and neither functions nor class identity are on that list.',
+    docs: [
+      { label: 'MDN — Structured clone algorithm', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A cloned class instance is instanceof Object only — its original prototype (and all its methods) is gone.',
+      'Cloning any object containing a function throws a real DataCloneError, aborting the entire clone.',
+      'Only OWN, plain data properties survive — this is not a general-purpose deep-clone-anything tool.',
+    ],
+  },
+
+  'javascript/destructuring': {
+    apis: ['destructuring', 'spread', 'rest'],
+    related: [
+      { label: 'Object Fundamentals',  route: '/javascript/objects'   },
+      { label: 'Functions Deep Dive',  route: '/javascript/functions' },
+      { label: 'Arrays & Iteration',   route: '/javascript/arrays'    },
+    ],
+    tip: 'A nested destructuring pattern is only as safe as its least-defaulted level — every level that might be missing needs its own = {} default, not just the outermost one.',
+    docs: [
+      { label: 'MDN — Destructuring assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Extracting a method via destructuring loses its this — the call site, not the destructuring, is what breaks it.',
+      'A bare object destructuring ASSIGNMENT (not declaration) needs parens — the parser reads a leading { as a block otherwise.',
+      'Each nesting level\'s default only protects that level — a default at level 1 does nothing for a missing level 2.',
+    ],
+  },
+
+  'javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt': {
+    apis: ['this', 'implicit binding', 'Function.prototype.bind()'],
+    related: [
+      { label: 'Destructuring & Spread (overview)', route: '/javascript/destructuring' },
+      { label: 'Bare Assignment Needs Parens', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' },
+      { label: 'One-Level Default Doesn’t Guard Deeper', route: '/javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper' },
+    ],
+    tip: 'obj.method() always works via implicit binding, on any object reference — the failure specifically requires pulling the FUNCTION VALUE itself into a bare variable and calling it with no object prefix.',
+    docs: [
+      { label: 'MDN — this', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Destructuring itself does nothing wrong — the function value copied out is completely normal at that point.',
+      'The failure happens at the CALL, not the destructure — calling the bare function with no object prefix triggers default binding.',
+      '.bind(obj) permanently fixes this, independent of how the resulting function is later called.',
+    ],
+  },
+
+  'javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens': {
+    apis: ['destructuring assignment', 'block statement', 'SyntaxError'],
+    related: [
+      { label: 'Destructuring & Spread (overview)', route: '/javascript/destructuring' },
+      { label: 'Destructured Method Loses this', route: '/javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt' },
+      { label: 'One-Level Default Doesn’t Guard Deeper', route: '/javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper' },
+    ],
+    tip: 'const {x} = obj never needs parens — the leading const/let/var already rules out the block-statement interpretation before the parser reaches the {.',
+    docs: [
+      { label: 'MDN — Destructuring assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A statement starting with a bare { is always parsed as a block opener first — this is a hard grammar rule, not a style preference.',
+      'Wrapping in (...) forces expression context, since there\'s no such thing as a "parenthesized block statement".',
+      'Array destructuring assignment ([a,b] = arr) does NOT need parens — a leading [ has no competing block interpretation.',
+    ],
+  },
+
+  'javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper': {
+    apis: ['nested destructuring', 'default values', 'optional chaining'],
+    related: [
+      { label: 'Destructuring & Spread (overview)', route: '/javascript/destructuring' },
+      { label: 'Destructured Method Loses this', route: '/javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt' },
+      { label: 'Bare Assignment Needs Parens', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' },
+    ],
+    tip: 'A nested pattern is only as safe as its least-defaulted level — an outer default resolving fine says nothing about whether a deeper level will also be present.',
+    docs: [
+      { label: 'MDN — Destructuring assignment', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Each nesting level\'s default is evaluated independently — it has no awareness of what happens deeper in the pattern.',
+      'A missing intermediate level with no default of its own throws, even if every OTHER level has a default.',
+      'A genuinely deep pattern needs the same = {} treatment repeated at every additional level, not just the outermost one.',
+    ],
+  },
+
+  'javascript/arrays': {
+    apis: ['map()', 'sort()', 'forEach()', 'Promise.all()'],
+    related: [
+      { label: 'Promises & Async/Await', route: '/javascript/promises'   },
+      { label: 'Destructuring & Spread', route: '/javascript/destructuring' },
+      { label: 'Object Fundamentals',    route: '/javascript/objects'   },
+    ],
+    tip: 'forEach never awaits an async callback\'s returned Promise — use for...of with await (sequential) or Promise.all(arr.map(...)) (parallel) instead.',
+    docs: [
+      { label: 'MDN — Array.prototype.sort()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'forEach ignores anything its callback returns, including a Promise — the loop never actually waits.',
+      'sort() is genuinely stable in all modern engines — equal elements keep their original relative order.',
+      'Mutating the source array (e.g. splice) inside a map() callback deterministically skips real elements.',
+    ],
+  },
+
+  'javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do': {
+    apis: ['forEach()', 'for...of', 'Promise.all()'],
+    related: [
+      { label: 'Arrays & Iteration (overview)', route: '/javascript/arrays' },
+      { label: 'sort() Is Genuinely Stable', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' },
+      { label: 'Mutating During map() Skips Elements', route: '/javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements' },
+    ],
+    tip: 'for...of + await processes items sequentially; Promise.all(arr.map(...)) processes them in parallel — pick based on whether the operations can safely run concurrently.',
+    docs: [
+      { label: 'MDN — forEach()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'An async forEach callback\'s Promise is created and immediately discarded — forEach itself returns before any async work finishes.',
+      'Code after a forEach(async ...) call runs before the async work is actually done, not out of order relative to each other.',
+      'for...of + await and Promise.all(map) are NOT interchangeable — one is sequential, the other parallel.',
+    ],
+  },
+
+  'javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order': {
+    apis: ['Array.prototype.sort()', 'stable sort'],
+    related: [
+      { label: 'Arrays & Iteration (overview)', route: '/javascript/arrays' },
+      { label: 'forEach Never Awaits Async', route: '/javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do' },
+      { label: 'Mutating During map() Skips Elements', route: '/javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements' },
+    ],
+    tip: 'Sort by the secondary key first, then stable-sort the result by the primary key — the secondary order survives among primary-key ties, no combined comparator needed.',
+    docs: [
+      { label: 'MDN — Array.prototype.sort()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Stability is a guaranteed, specified behavior since ES2019 — safe to rely on in all modern engines.',
+      'Stability only guarantees order among elements comparing as EQUAL — it says nothing about a universal tiebreaker.',
+      'This enables a simple two-pass multi-key sort without writing a combined comparator function.',
+    ],
+  },
+
+  'javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements': {
+    apis: ['Array.prototype.map()', 'splice()'],
+    related: [
+      { label: 'Arrays & Iteration (overview)', route: '/javascript/arrays' },
+      { label: 'forEach Never Awaits Async', route: '/javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do' },
+      { label: 'sort() Is Genuinely Stable', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' },
+    ],
+    tip: 'The result is fully deterministic, not random — map reads the array\'s length once, then reads whatever is CURRENTLY at each index as it advances.',
+    docs: [
+      { label: 'MDN — Array.prototype.map()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'splice() shifts later elements down by one index — map then reads the shifted element, skipping the one that was truly next.',
+      'The elements that DO get visited are transformed correctly — the bug is specifically that some are skipped entirely.',
+      'The same class of bug applies to shift/unshift and length-changing mutations generally, not just splice.',
+    ],
+  },
+
+  'javascript/promises': {
+    apis: ['Promise', 'async/await', 'Promise.all()', 'Promise.allSettled()', '.then()', '.catch()'],
+    related: [
+      { label: 'Arrays & Iteration',   route: '/javascript/arrays'       },
+      { label: 'Event Loop & Concurrency', route: '/javascript/event-loop' },
+      { label: 'Error Handling',       route: '/javascript/error-handling' },
+    ],
+    tip: 'Promise.all fails fast on the first rejection, but never cancels the other promises — they keep running to completion with their side effects intact.',
+    docs: [
+      { label: 'MDN — Promise', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A rejected Promise.all never cancels the other array entries — they keep running and their side effects still happen.',
+      'Forgetting return inside a .then() callback silently breaks the chain — the next step receives undefined instead of the real value.',
+    ],
+  },
+
+  'javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises': {
+    apis: ['Promise.all()', 'setTimeout'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/javascript/promises' },
+      { label: 'Missing return Breaks .then() Chain', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' },
+      { label: 'async Always Returns a Promise', route: '/javascript/promises/async-function-always-wraps-return-value-in-a-promise' },
+    ],
+    tip: 'Promise.all rejecting is an observer settling early, not a cancellation signal — the underlying work (timers, requests) has no idea it happened.',
+    docs: [
+      { label: 'MDN — Promise.all()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Only AbortController (for fetch) or manually clearing a timer ID actually stops in-flight work — a rejected Promise.all does not.',
+      'Side effects from the "losing" promises still occur in full, just after your catch block has already moved on.',
+    ],
+  },
+
+  'javascript/promises/forgetting-return-in-then-breaks-the-chained-value': {
+    apis: ['.then()', 'Promise chaining'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/javascript/promises' },
+      { label: 'Promise.all Doesn’t Cancel Others', route: '/javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises' },
+      { label: 'async Always Returns a Promise', route: '/javascript/promises/async-function-always-wraps-return-value-in-a-promise' },
+    ],
+    tip: 'A multi-statement .then() callback with curly braces never implicitly returns its last expression — only a single-expression arrow body does that automatically.',
+    docs: [
+      { label: 'MDN — Promise.prototype.then()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Forgetting to return a promise (not just a value) also breaks timing — a later .then() can run before the "forgotten" async work finishes.',
+      'No error is thrown — undefined just silently propagates down every remaining step in the chain.',
+    ],
+  },
+
+  'javascript/promises/async-function-always-wraps-return-value-in-a-promise': {
+    apis: ['async function', 'await', 'Promise'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/javascript/promises' },
+      { label: 'Promise.all Doesn’t Cancel Others', route: '/javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises' },
+      { label: 'Missing return Breaks .then() Chain', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' },
+    ],
+    tip: 'Marking a function async is a real contract change, not a stylistic choice — every existing caller must start awaiting it or it silently receives a Promise instead of the value.',
+    docs: [
+      { label: 'MDN — async function', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Adding 1 to an un-awaited async result doesn\'t throw — it silently stringifies the Promise, producing "[object Promise]1".',
+      'This wrapping happens unconditionally, even when the function body has zero real asynchronous work inside it.',
+    ],
+  },
+
+  'javascript/event-loop': {
+    apis: ['setTimeout()', 'queueMicrotask()', 'Promise', 'requestAnimationFrame()', 'Web Worker'],
+    related: [
+      { label: 'Promises & Async/Await', route: '/javascript/promises'       },
+      { label: 'Error Handling',         route: '/javascript/error-handling' },
+      { label: 'Generators',             route: '/javascript/generators'     },
+    ],
+    tip: 'Microtasks (Promise callbacks) always drain completely before the next macrotask (setTimeout) runs — registration order across the two queues never matters, only queue order does.',
+    docs: [
+      { label: 'MDN — Event loop', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A microtask chain that keeps re-enqueuing itself can starve every macrotask and repaint indefinitely — there is no time budget on the microtask queue.',
+      'setTimeout(fn, ms) is a minimum wait, never a guarantee — a busy call stack delays it for however long the stack stays occupied.',
+    ],
+  },
+
+  'javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it': {
+    apis: ['Promise.resolve()', 'setTimeout()'],
+    related: [
+      { label: 'Event Loop & Concurrency (overview)', route: '/javascript/event-loop' },
+      { label: 'Promise Chains Interleave', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' },
+      { label: 'Busy-Loop Blocks Every Timer', route: '/javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends' },
+    ],
+    tip: 'Registration order across queues never matters — a setTimeout registered first still waits behind the entire microtask queue, however long it takes to drain.',
+    docs: [
+      { label: 'MDN — Microtask guide', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The microtask queue has no time budget — the spec requires it to drain completely before any macrotask or repaint can happen.',
+      'This pattern occurs naturally in poll/retry code that recursively re-schedules itself via .then().',
+    ],
+  },
+
+  'javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time': {
+    apis: ['Promise.resolve()', '.then()'],
+    related: [
+      { label: 'Event Loop & Concurrency (overview)', route: '/javascript/event-loop' },
+      { label: 'Microtask Loop Delays a Macrotask', route: '/javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it' },
+      { label: 'Busy-Loop Blocks Every Timer', route: '/javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends' },
+    ],
+    tip: 'Every .then() callback from every chain shares one single FIFO microtask queue — unrelated chains interleave one step per pass instead of running depth-first.',
+    docs: [
+      { label: 'MDN — Promise', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The interleaving order is fully deterministic — it depends only on attachment order, never randomness.',
+      'A newly scheduled continuation always joins the back of the queue, never jumping ahead of an already-waiting unrelated chain.',
+    ],
+  },
+
+  'javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends': {
+    apis: ['setTimeout()', 'performance.now()'],
+    related: [
+      { label: 'Event Loop & Concurrency (overview)', route: '/javascript/event-loop' },
+      { label: 'Microtask Loop Delays a Macrotask', route: '/javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it' },
+      { label: 'Promise Chains Interleave', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' },
+    ],
+    tip: 'A setTimeout delay only controls when a callback becomes ELIGIBLE to run — it still needs an empty call stack before it can actually execute.',
+    docs: [
+      { label: 'MDN — setTimeout()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Overdue timers are never dropped — every one that became eligible during a busy stack still fires, all in a burst, once the stack clears.',
+      'A busy call stack blocks timers, promise callbacks, DOM events, AND browser repaints all at once — they all wait on the same empty stack.',
+    ],
+  },
+
+  'javascript/error-handling': {
+    apis: ['try/catch/finally', 'Error', 'AggregateError', 'window.onerror', 'unhandledrejection'],
+    related: [
+      { label: 'Promises & Async/Await',   route: '/javascript/promises'   },
+      { label: 'Event Loop & Concurrency', route: '/javascript/event-loop' },
+      { label: 'Generators',               route: '/javascript/generators' },
+    ],
+    tip: 'try/catch only protects synchronous code on the active call stack — errors thrown inside setTimeout, setInterval, or event listener callbacks always escape it.',
+    docs: [
+      { label: 'MDN — Error', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A return or throw inside finally silently overrides whatever try/catch already decided, with no warning.',
+      'AggregateError from Promise.any() preserves every rejection reason in .errors — unlike Promise.all, which keeps only the first.',
+    ],
+  },
+
+  'javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value': {
+    apis: ['try/catch/finally'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/javascript/error-handling' },
+      { label: 'try/catch Never Catches setTimeout', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' },
+      { label: 'AggregateError Packages Rejections', route: '/javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first' },
+    ],
+    tip: 'finally exists for cleanup side effects only — a return, throw, break, or continue inside it silently overrides whatever try/catch already decided.',
+    docs: [
+      { label: 'MDN — try...catch', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The override applies to thrown errors too, not just return values — a throw in finally erases the original error with no trace, not even as .cause.',
+      'An async cleanup call written as return cleanup() instead of await cleanup() is a real, easy way to trigger this by accident.',
+    ],
+  },
+
+  'javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout': {
+    apis: ['try/catch', 'setTimeout()', 'window.onerror'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/javascript/error-handling' },
+      { label: 'finally Overrides catch’s Return', route: '/javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value' },
+      { label: 'AggregateError Packages Rejections', route: '/javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first' },
+    ],
+    tip: 'Put try/catch INSIDE the async callback itself — wrapping the setTimeout() call only protects the synchronous scheduling call, not the callback body.',
+    docs: [
+      { label: 'MDN — setTimeout()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The error is not silently swallowed — it becomes a genuine uncaught exception, catchable globally via window.onerror.',
+      'This applies to every callback-based async API identically (setInterval, DOM listeners, requestAnimationFrame) — Promise-based async is the one exception, since rejections propagate through an awaited chain.',
+    ],
+  },
+
+  'javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first': {
+    apis: ['Promise.any()', 'AggregateError'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/javascript/error-handling' },
+      { label: 'finally Overrides catch’s Return', route: '/javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value' },
+      { label: 'try/catch Never Catches setTimeout', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' },
+    ],
+    tip: 'Promise.any() only rejects when EVERY promise fails — its AggregateError.errors array preserves every individual reason, in original order.',
+    docs: [
+      { label: 'MDN — AggregateError', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Promise.all(), by contrast, rejects with only the first failure reason — the rest are discarded entirely.',
+      'AggregateError is a regular constructible built-in — new AggregateError(errors, message) works anywhere, not just from Promise.any().',
+    ],
+  },
+
+  'javascript/generators': {
+    apis: ['function*', 'yield', 'yield*', 'gen.next()', 'gen.return()', 'gen.throw()', 'async function*'],
+    related: [
+      { label: 'Promises & Async/Await', route: '/javascript/promises'       },
+      { label: 'Error Handling',         route: '/javascript/error-handling' },
+      { label: 'Event Loop & Concurrency', route: '/javascript/event-loop'   },
+    ],
+    tip: 'A generator\'s return value is metadata attached to done: true, not a yielded item — spread and for...of silently drop it; only manual .next() or yield* recover it.',
+    docs: [
+      { label: 'MDN — function*', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'break in a for...of loop calls generator.return() automatically, running any enclosing finally block for cleanup.',
+      'yield* forwards .next(value) and .throw() into the delegated generator — a manual re-yield loop cannot replicate this.',
+    ],
+  },
+
+  'javascript/generators/spread-and-for-of-ignore-a-generators-return-value': {
+    apis: ['function*', 'return', 'yield*'],
+    related: [
+      { label: 'Generators (overview)', route: '/javascript/generators' },
+      { label: 'break Triggers return() and finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' },
+      { label: 'yield* Forwards next() and throw()', route: '/javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator' },
+    ],
+    tip: 'A generator\'s return value only surfaces via manual .next() calls or yield* delegation — spread, for...of, and Array.from all discard it at done: true.',
+    docs: [
+      { label: 'MDN — Iteration protocols', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This is universal iterator protocol behavior, not generator-specific — any custom iterable\'s final done: true value is dropped the same way.',
+      'yield* itself evaluates to the delegated generator\'s return value, which is why it can recover what spread/for...of cannot.',
+    ],
+  },
+
+  'javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally': {
+    apis: ['generator.return()', 'try/finally', 'for...of'],
+    related: [
+      { label: 'Generators (overview)', route: '/javascript/generators' },
+      { label: 'Spread Ignores Return Value', route: '/javascript/generators/spread-and-for-of-ignore-a-generators-return-value' },
+      { label: 'yield* Forwards next() and throw()', route: '/javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator' },
+    ],
+    tip: 'for...of automatically calls generator.return() on early exit (break or a thrown error) — this makes the paused yield behave like a return, running any enclosing finally.',
+    docs: [
+      { label: 'MDN — Generator.prototype.return()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator/return' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A manual loop that just stops calling .next() (without ever calling .return()) does NOT trigger cleanup — the generator is left permanently suspended.',
+      'The same cleanup mechanism fires for an uncaught exception thrown inside the loop body, not just an explicit break.',
+    ],
+  },
+
+  'javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator': {
+    apis: ['yield*', 'generator.next(value)', 'generator.throw()'],
+    related: [
+      { label: 'Generators (overview)', route: '/javascript/generators' },
+      { label: 'Spread Ignores Return Value', route: '/javascript/generators/spread-and-for-of-ignore-a-generators-return-value' },
+      { label: 'break Triggers return() and finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' },
+    ],
+    tip: 'yield* is not just "loop and re-yield" — it wires up full two-way communication with the inner generator that a hand-written for...of loop cannot replicate.',
+    docs: [
+      { label: 'MDN — yield*', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield*' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A manual re-yield loop only ever calls the inner generator\'s .next() with no argument — any value sent to the outer generator never reaches the inner one.',
+      'A .throw() on the outer generator inside a manual loop surfaces at the loop\'s own yield, never reaching the inner generator\'s try/catch.',
+    ],
+  },
+
+  'javascript/dom': {
+    apis: ['querySelector()', 'querySelectorAll()', 'createElement()', 'MutationObserver', 'IntersectionObserver'],
+    related: [
+      { label: 'Events & Custom Events', route: '/javascript/events'       },
+      { label: 'Browser APIs',           route: '/javascript/browser-apis' },
+      { label: 'Error Handling',         route: '/javascript/error-handling' },
+    ],
+    tip: 'Layout thrashing is triggered by ANY write between two layout reads, even one hidden inside a third-party function call — not just writes in your own code.',
+    docs: [
+      { label: 'MDN — Document Object Model', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'innerHTML += reparses the entire container, destroying every existing child\'s event listeners, not just the newly added part.',
+      'querySelectorAll returns a static NodeList; getElementsByClassName/getElementsByTagName return a live HTMLCollection that keeps growing if you mutate the DOM mid-loop.',
+    ],
+  },
+
+  'javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing': {
+    apis: ['offsetHeight', 'performance.now()'],
+    related: [
+      { label: 'DOM Manipulation (overview)', route: '/javascript/dom' },
+      { label: 'innerHTML += Destroys Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' },
+      { label: 'Static NodeList vs Live Collection', route: '/javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection' },
+    ],
+    tip: 'The browser tracks only whether ANY write happened between two layout reads — not whose code performed it. A write buried in a library call is just as costly.',
+    docs: [
+      { label: 'MDN — Reflow', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Reflow' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A code review of your own read/write ordering can miss this entirely if the write is hidden inside a called function\'s internals.',
+      'The DevTools Performance panel\'s "Forced reflow" warning catches this regardless of where the write originates.',
+    ],
+  },
+
+  'javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners': {
+    apis: ['innerHTML', 'createElement()', 'append()'],
+    related: [
+      { label: 'DOM Manipulation (overview)', route: '/javascript/dom' },
+      { label: 'Hidden Write Causes Thrashing', route: '/javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing' },
+      { label: 'Static NodeList vs Live Collection', route: '/javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection' },
+    ],
+    tip: 'innerHTML += is shorthand for serialize-concatenate-reparse-the-whole-subtree — every existing child becomes a brand new node with no listeners attached.',
+    docs: [
+      { label: 'MDN — Element.innerHTML', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A node fetched again by ID right after innerHTML += looks identical but is a completely different object — old listeners are gone.',
+      'EVERY existing child loses listeners, not just ones near the newly added content — the whole subtree is destroyed and recreated.',
+    ],
+  },
+
+  'javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection': {
+    apis: ['querySelectorAll()', 'getElementsByClassName()', 'HTMLCollection', 'NodeList'],
+    related: [
+      { label: 'DOM Manipulation (overview)', route: '/javascript/dom' },
+      { label: 'Hidden Write Causes Thrashing', route: '/javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing' },
+      { label: 'innerHTML += Destroys Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' },
+    ],
+    tip: 'querySelectorAll is a frozen snapshot; getElementsByClassName/getElementsByTagName stay continuously synced with the live DOM, no re-query needed.',
+    docs: [
+      { label: 'MDN — HTMLCollection', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Iterating a live collection while adding matching elements mid-loop can skip elements, double-process them, or run far more iterations than expected.',
+      'element.children and form.elements are also live HTMLCollections, not just the getElementsBy* methods.',
+    ],
+  },
+
+  'javascript/events': {
+    apis: ['addEventListener()', 'CustomEvent', 'e.target', 'e.currentTarget', 'closest()'],
+    related: [
+      { label: 'DOM Manipulation', route: '/javascript/dom'          },
+      { label: 'Browser APIs',     route: '/javascript/browser-apis' },
+      { label: 'Error Handling',   route: '/javascript/error-handling' },
+    ],
+    tip: 'The capture sweep (outside-in) always completes fully before the bubble sweep (inside-out) begins — firing order depends on phase, not proximity to the click.',
+    docs: [
+      { label: 'MDN — EventTarget.addEventListener()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'CustomEvent defaults bubbles to false — the opposite of most native events — silently breaking delegation unless set explicitly.',
+      'closest() walks the real DOM ancestor chain regardless of element type, so it resolves correctly even when e.target is a deeply nested SVG <path>.',
+    ],
+  },
+
+  'javascript/events/capture-fires-before-bubble-in-strict-outside-in-order': {
+    apis: ['addEventListener()', '{ capture: true }'],
+    related: [
+      { label: 'Events & Custom Events (overview)', route: '/javascript/events' },
+      { label: 'Custom Events Don’t Bubble', route: '/javascript/events/custom-events-dont-bubble-by-default' },
+      { label: 'closest() Works With SVG Targets', route: '/javascript/events/closest-walks-up-through-nested-svg-targets-correctly' },
+    ],
+    tip: 'Capture and bubble are two separate sequential sweeps — the entire outside-in capture sweep finishes before the inside-out bubble sweep even starts.',
+    docs: [
+      { label: 'MDN — Event bubbling and capture', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Event/bubbles' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A capture-phase listener on a distant ancestor fires before a bubble-phase listener on a much closer element.',
+      'Attachment order in source code only breaks ties between multiple listeners on the SAME element in the SAME phase — it never decides order across different elements.',
+    ],
+  },
+
+  'javascript/events/custom-events-dont-bubble-by-default': {
+    apis: ['CustomEvent', 'dispatchEvent()', 'bubbles', 'composed'],
+    related: [
+      { label: 'Events & Custom Events (overview)', route: '/javascript/events' },
+      { label: 'Capture Fires Before Bubble', route: '/javascript/events/capture-fires-before-bubble-in-strict-outside-in-order' },
+      { label: 'closest() Works With SVG Targets', route: '/javascript/events/closest-walks-up-through-nested-svg-targets-correctly' },
+    ],
+    tip: 'CustomEvent defaults bubbles to false, the opposite of most native DOM events — a parent listener silently never fires unless bubbles: true is set explicitly.',
+    docs: [
+      { label: 'MDN — CustomEvent', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This fails with no error and no console warning — it looks identical to an ordinary listener bug from the outside.',
+      'bubbles: true alone does not cross shadow DOM boundaries — that also needs composed: true, a separate independent option.',
+    ],
+  },
+
+  'javascript/events/closest-walks-up-through-nested-svg-targets-correctly': {
+    apis: ['closest()', 'e.target', 'SVGElement'],
+    related: [
+      { label: 'Events & Custom Events (overview)', route: '/javascript/events' },
+      { label: 'Capture Fires Before Bubble', route: '/javascript/events/capture-fires-before-bubble-in-strict-outside-in-order' },
+      { label: 'Custom Events Don’t Bubble', route: '/javascript/events/custom-events-dont-bubble-by-default' },
+    ],
+    tip: 'A click on a nested SVG <path> sets e.target to that specific path, not the outer <svg> — closest() still resolves the right delegating ancestor regardless.',
+    docs: [
+      { label: 'MDN — Element.closest()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Element/closest' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'SVG child elements are real, individually-targetable DOM nodes — a click doesn\'t roll up to the outer <svg> as e.target.',
+      'A direct e.target equality check is more fragile than closest() here, since it depends on knowing exactly which descendant absorbed the click.',
+    ],
+  },
+
+  'javascript/browser-apis': {
+    apis: ['fetch()', 'Response', 'AbortController', 'localStorage', 'URL'],
+    related: [
+      { label: 'DOM Manipulation',           route: '/javascript/dom'    },
+      { label: 'Events & Custom Events',     route: '/javascript/events' },
+      { label: 'Promises & Async/Await',     route: '/javascript/promises' },
+    ],
+    tip: 'fetch() only rejects on network-level failures — a 404 or 500 still resolves successfully, so response.ok must always be checked manually.',
+    docs: [
+      { label: 'MDN — Fetch API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A Response body is a ReadableStream — it can only be consumed once; res.clone() only helps if called before the first read.',
+      'Threading the same AbortController signal through every retry attempt lets one abort() call cancel the whole operation, not just the in-flight request.',
+    ],
+  },
+
+  'javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects': {
+    apis: ['fetch()', 'Response.ok', 'Response.status'],
+    related: [
+      { label: 'Browser APIs (overview)', route: '/javascript/browser-apis' },
+      { label: 'Response Body Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' },
+      { label: 'AbortController Stops Retries', route: '/javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately' },
+    ],
+    tip: 'Getting any response back — even a 404 or 500 — counts as success from fetch()\'s own perspective. Only a true network failure makes the promise reject.',
+    docs: [
+      { label: 'MDN — Response.ok', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Response/ok' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Skipping response.ok often produces a misleading parse error instead of a missing one, obscuring the real root cause.',
+      'This is the opposite default from most other HTTP client libraries (like Axios), which throw automatically on non-2xx status.',
+    ],
+  },
+
+  'javascript/browser-apis/response-body-can-only-be-consumed-once': {
+    apis: ['Response.json()', 'Response.text()', 'Response.clone()', 'ReadableStream'],
+    related: [
+      { label: 'Browser APIs (overview)', route: '/javascript/browser-apis' },
+      { label: 'fetch() Resolves on 4xx/5xx', route: '/javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects' },
+      { label: 'AbortController Stops Retries', route: '/javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately' },
+    ],
+    tip: 'clone() must be called BEFORE the first body read, while the stream is still untouched — cloning after a read just copies an already-empty stream.',
+    docs: [
+      { label: 'MDN — Response.clone()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Response/clone' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The error happens regardless of which body-reading methods are mixed — .json(), .text(), .blob(), and .arrayBuffer() all draw from the same single stream.',
+      'A Response body is fundamentally different from a plain property — it cannot be read repeatedly with no side effects.',
+    ],
+  },
+
+  'javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately': {
+    apis: ['AbortController', 'AbortSignal', 'fetch()'],
+    related: [
+      { label: 'Browser APIs (overview)', route: '/javascript/browser-apis' },
+      { label: 'fetch() Resolves on 4xx/5xx', route: '/javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects' },
+      { label: 'Response Body Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' },
+    ],
+    tip: 'Threading the SAME AbortController signal through every retry attempt lets a single abort() call cancel both the in-flight request and every future attempt.',
+    docs: [
+      { label: 'MDN — AbortController', url: 'https://developer.mozilla.org/en-US/docs/Web/API/AbortController' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A retry loop must explicitly check for AbortError and re-throw/exit — otherwise it can keep pointlessly retrying after an abort, since every future attempt rejects with the same error.',
+      'A fresh AbortController per retry attempt would defeat the purpose — aborting one wouldn\'t affect the others.',
+    ],
+  },
+
+  'javascript/modules': {
+    apis: ['import', 'export', 'import()', 'import.meta'],
+    related: [
+      { label: 'Bundlers & Build Tools', route: '/javascript/bundlers'    },
+      { label: 'Browser APIs',           route: '/javascript/browser-apis' },
+      { label: 'Design Patterns in JS',  route: '/javascript/patterns'    },
+    ],
+    tip: 'ESM imports are live bindings, not value copies — if the exporting module updates a value later, every importer sees the change automatically.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A module\'s file is evaluated exactly once, no matter how many files import it — every importer shares the same singleton instance.',
+      'A circular import\'s binding exists but its value can be undefined if read at a module\'s own top level before the exporting module finishes.',
+    ],
+  },
+
+  'javascript/modules/esm-imports-are-live-bindings-not-value-copies': {
+    apis: ['export', 'import', 'live binding'],
+    related: [
+      { label: 'ES Modules (overview)', route: '/javascript/modules' },
+      { label: 'Modules Are Singletons', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' },
+      { label: 'Circular Import Binding Undefined', route: '/javascript/modules/circular-import-binding-exists-but-value-is-undefined' },
+    ],
+    tip: 'An import is a live connection to the exporting module\'s own binding, not a snapshot copied at import time — this applies even to primitive values.',
+    docs: [
+      { label: 'MDN — import', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'CommonJS require() copies the value at require-time — later reassignment in the exporting module is invisible to earlier requirers.',
+      'An imported binding is read-only from the importer\'s side — only the exporting module can reassign it.',
+    ],
+  },
+
+  'javascript/modules/modules-are-singletons-shared-state-across-importers': {
+    apis: ['import', 'module singleton'],
+    related: [
+      { label: 'ES Modules (overview)', route: '/javascript/modules' },
+      { label: 'ESM Live Bindings', route: '/javascript/modules/esm-imports-are-live-bindings-not-value-copies' },
+      { label: 'Circular Import Binding Undefined', route: '/javascript/modules/circular-import-binding-exists-but-value-is-undefined' },
+    ],
+    tip: 'A module\'s top-level code runs exactly once, the first time it\'s needed — every import statement anywhere in the graph resolves to that same instance.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This is what makes circular imports coherent at all — if a module re-ran on every import, a cycle would either infinite-loop or produce inconsistent state.',
+      'A factory function that returns a new object per call is the opposite pattern — each caller gets independent state, not shared state.',
+    ],
+  },
+
+  'javascript/modules/circular-import-binding-exists-but-value-is-undefined': {
+    apis: ['import', 'export', 'circular dependency'],
+    related: [
+      { label: 'ES Modules (overview)', route: '/javascript/modules' },
+      { label: 'ESM Live Bindings', route: '/javascript/modules/esm-imports-are-live-bindings-not-value-copies' },
+      { label: 'Modules Are Singletons', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' },
+    ],
+    tip: 'Reading a circularly-imported value at a module\'s own top level can see undefined — deferring the read into a function body (called later) sees the real value.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A circular import never throws or fails outright — the binding is wired up correctly, only its value is temporarily unset.',
+      'The fix is restructuring shared values into a third, non-circular module, or deferring the read until after the whole graph settles.',
+    ],
+  },
+
+  'javascript/bundlers': {
+    apis: ['import/export', 'require()', 'package.json', 'sideEffects'],
+    related: [
+      { label: 'ES Modules',           route: '/javascript/modules'   },
+      { label: 'Browser APIs',         route: '/javascript/browser-apis' },
+      { label: 'Design Patterns in JS', route: '/javascript/patterns'  },
+    ],
+    tip: 'Tree-shaking is a static-analysis decision made by reading import/export text, without running code — CommonJS\'s dynamic require() defeats it.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A blanket "sideEffects": false silently deletes files with real side effects (like CSS) unless they\'re explicitly listed.',
+      'npm ci --omit=dev is the actual mechanism that makes the dependencies/devDependencies split matter — plain npm install hides misclassification.',
+    ],
+  },
+
+  'javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs': {
+    apis: ['import/export', 'require()'],
+    related: [
+      { label: 'Bundlers & Build Tools (overview)', route: '/javascript/bundlers' },
+      { label: 'sideEffects: false Needs a List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' },
+      { label: 'devDependencies Affects Prod Size', route: '/javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size' },
+    ],
+    tip: 'A bundler decides what to remove by reading import/export statements as text — require() is a regular function call it cannot fully resolve without executing the code.',
+    docs: [
+      { label: 'MDN — Tree shaking', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Your own code being pure ESM doesn\'t guarantee tree-shaking — a single CommonJS dependency in the tree can silently bloat the bundle.',
+      'Tree-shaking is decided per module across the entire dependency graph, not as one project-wide switch.',
+    ],
+  },
+
+  'javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files': {
+    apis: ['package.json', 'sideEffects'],
+    related: [
+      { label: 'Bundlers & Build Tools (overview)', route: '/javascript/bundlers' },
+      { label: 'Tree-Shaking Needs ESM', route: '/javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs' },
+      { label: 'devDependencies Affects Prod Size', route: '/javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size' },
+    ],
+    tip: 'sideEffects: false is a promise the bundler trusts completely — a CSS import with no exported value gets silently deleted unless explicitly listed as an exception.',
+    docs: [
+      { label: 'MDN — Tree shaking', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This fails silently — no error, no warning, just missing styles or broken globals in production.',
+      'The array form ["*.css", ...] protects only the listed files; everything else still tree-shakes normally.',
+    ],
+  },
+
+  'javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size': {
+    apis: ['package.json', 'npm ci'],
+    related: [
+      { label: 'Bundlers & Build Tools (overview)', route: '/javascript/bundlers' },
+      { label: 'Tree-Shaking Needs ESM', route: '/javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs' },
+      { label: 'sideEffects: false Needs a List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' },
+    ],
+    tip: 'Plain npm install hides misclassification — only npm ci --omit=dev (what production pipelines actually run) enforces the dependencies/devDependencies split.',
+    docs: [
+      { label: 'npm Docs — package.json', url: 'https://docs.npmjs.com/cli/v10/configuring-npm/package-json' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A runtime package misclassified under devDependencies crashes production with "Cannot find module" — a hard failure, not just wasted disk space.',
+      'The one-question test: does the code that actually runs in production import or call this package directly?',
+    ],
+  },
+
+  'javascript/patterns': {
+    apis: ['Map', 'Object.assign()', 'Proxy', 'EventTarget'],
+    related: [
+      { label: 'Functional JS',       route: '/javascript/functional' },
+      { label: 'Proxy & Reflect API', route: '/javascript/proxy'      },
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes' },
+    ],
+    tip: 'A plain Map compares object keys by reference, not content — memoizing with object arguments needs JSON.stringify(args) or every call misses the cache.',
+    docs: [
+      { label: 'MDN — Object.assign()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Replacing a class prototype with a spread breaks instanceof for existing instances and silently drops non-enumerable class methods.',
+      'A middleware pipeline only advances when the current handler explicitly calls next() — not calling it is itself sufficient to halt the chain.',
+    ],
+  },
+
+  'javascript/patterns/memoize-uses-reference-equality-object-args-always-miss': {
+    apis: ['Map', 'JSON.stringify()'],
+    related: [
+      { label: 'Design Patterns in JS (overview)', route: '/javascript/patterns' },
+      { label: 'Mixin Spread Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' },
+      { label: 'Middleware Short-Circuits', route: '/javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next' },
+    ],
+    tip: 'A Map compares object keys by identity — two separate object literals with identical properties are always different keys unless serialized to a string first.',
+    docs: [
+      { label: 'MDN — Map', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'JSON.stringify() has real limits — it throws on circular references, drops functions, and produces different strings for differently-ordered properties.',
+      'This is a general property of JavaScript object comparison, not memoization-specific — === and Object.is() behave the same way.',
+    ],
+  },
+
+  'javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof': {
+    apis: ['Object.assign()', 'prototype', 'instanceof'],
+    related: [
+      { label: 'Design Patterns in JS (overview)', route: '/javascript/patterns' },
+      { label: 'Memoize Reference Equality', route: '/javascript/patterns/memoize-uses-reference-equality-object-args-always-miss' },
+      { label: 'Middleware Short-Circuits', route: '/javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next' },
+    ],
+    tip: 'Object.assign(prototype, mixin) mutates the existing prototype in place — a spread reassignment creates a new object and severs existing instances\' link to it.',
+    docs: [
+      { label: 'MDN — Object.assign()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Class methods are non-enumerable by default — a spread of a prototype silently drops them, not just the constructor link.',
+      'Existing instances keep their [[Prototype]] link to whatever object was the prototype when they were constructed, regardless of later reassignment.',
+    ],
+  },
+
+  'javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next': {
+    apis: ['closures', 'higher-order functions'],
+    related: [
+      { label: 'Design Patterns in JS (overview)', route: '/javascript/patterns' },
+      { label: 'Memoize Reference Equality', route: '/javascript/patterns/memoize-uses-reference-equality-object-args-always-miss' },
+      { label: 'Mixin Spread Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' },
+    ],
+    tip: 'A pipeline only advances when the current middleware explicitly calls next() — this is exactly how auth guards work in Express, Angular interceptors, and Redux middleware.',
+    docs: [
+      { label: 'Express — Writing middleware', url: 'https://expressjs.com/en/guide/writing-middleware.html' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A forgotten next() call (a genuine bug, not a guard) produces no error — the request silently stops with no indication of which middleware failed.',
+      'Code written after a next() call resumes once the rest of the chain has fully finished, unlike a guard that returns without calling it at all.',
+    ],
+  },
+
+  'javascript/functional': {
+    apis: ['Object.freeze()', 'Function.prototype.length', 'reduce()'],
+    related: [
+      { label: 'Design Patterns in JS', route: '/javascript/patterns'    },
+      { label: 'Proxy & Reflect API',   route: '/javascript/proxy'      },
+      { label: 'Arrays & Iteration',    route: '/javascript/arrays'     },
+    ],
+    tip: 'Object.freeze() only protects the object it\'s called on directly — nested objects stored in its properties remain completely mutable unless recursively frozen too.',
+    docs: [
+      { label: 'MDN — Object.freeze()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Function.prototype.length only counts parameters before the first default or rest parameter — a generic curry() using it can invoke too early.',
+      'A missing return in one pipe() stage propagates undefined through every remaining stage, not just the next one.',
+    ],
+  },
+
+  'javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable': {
+    apis: ['Object.freeze()', 'Object.isFrozen()'],
+    related: [
+      { label: 'Functional JS (overview)', route: '/javascript/functional' },
+      { label: 'curry() Miscounts Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' },
+      { label: 'Missing return in pipe()', route: '/javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream' },
+    ],
+    tip: 'A recursive deepFreeze() is the only way to actually protect a nested object tree — a single Object.freeze() call stops exactly one level deep.',
+    docs: [
+      { label: 'MDN — Object.freeze()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A nested mutation succeeds completely silently, even in strict mode — only top-level reassignment attempts throw.',
+      'Object.isFrozen() only reports the status of the specific object it\'s called on, not the whole tree beneath it.',
+    ],
+  },
+
+  'javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters': {
+    apis: ['Function.prototype.length', 'default parameters', 'rest parameters'],
+    related: [
+      { label: 'Functional JS (overview)', route: '/javascript/functional' },
+      { label: 'Object.freeze() Is Shallow', route: '/javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable' },
+      { label: 'Missing return in pipe()', route: '/javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream' },
+    ],
+    tip: 'Function.prototype.length only counts required parameters before the first default value or rest parameter — it represents "required count," not "total count."',
+    docs: [
+      { label: 'MDN — Function.length', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'For a rest parameter, curry() invoking early means the rest parameter can never actually be filled, no matter how many further calls are chained.',
+      'The early invocation often produces a plausible-looking result, giving no obvious signal that the intended later call was skipped.',
+    ],
+  },
+
+  'javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream': {
+    apis: ['pipe()', 'reduce()', 'arrow functions'],
+    related: [
+      { label: 'Functional JS (overview)', route: '/javascript/functional' },
+      { label: 'Object.freeze() Is Shallow', route: '/javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable' },
+      { label: 'curry() Miscounts Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' },
+    ],
+    tip: 'pipe()\'s reduce threads each stage\'s return value into the next — undefined from one missing return keeps propagating until something specifically recovers from it.',
+    docs: [
+      { label: 'MDN — Array.prototype.reduce()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This only affects multi-statement arrow functions with curly braces — a single-expression arrow body never needs an explicit return.',
+      'Later stages may return a plausible-looking fallback instead of crashing, making the missing return easy to miss without tracing each stage.',
+    ],
+  },
+
+  'javascript/proxy': {
+    apis: ['Proxy', 'Reflect', 'get trap', 'set trap'],
+    related: [
+      { label: 'Functional JS',      route: '/javascript/functional' },
+      { label: 'WeakMap & WeakRef',  route: '/javascript/weakrefs'   },
+      { label: 'Design Patterns in JS', route: '/javascript/patterns' },
+    ],
+    tip: 'The set trap must return true (or a Reflect.set() boolean) — a falsy return throws a TypeError in strict mode, even if the value was genuinely stored.',
+    docs: [
+      { label: 'MDN — Proxy', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Creating a new nested proxy on every get breaks referential equality — cache with a WeakMap keyed by the target.',
+      'A get trap must return the real value for non-configurable, non-writable (frozen) properties, or the engine throws an invariant violation at read time.',
+    ],
+  },
+
+  'javascript/proxy/set-trap-must-return-true-or-strict-mode-throws': {
+    apis: ['set trap', 'Reflect.set()'],
+    related: [
+      { label: 'Proxy & Reflect API (overview)', route: '/javascript/proxy' },
+      { label: 'Nested Proxy Breaks Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' },
+      { label: 'Frozen Property Invariant', route: '/javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation' },
+    ],
+    tip: 'A falsy return from the set trap throws in strict mode regardless of whether the trap\'s internal logic actually stored the value — always return Reflect.set()\'s own boolean.',
+    docs: [
+      { label: 'MDN — Proxy handler.set()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/set' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'ES modules are always strict mode at the top level — this is a live, commonly-hit mistake, not a rare "use strict" edge case.',
+      'A plain property setter has no such return-value contract — this behavior is specific to Proxy traps.',
+    ],
+  },
+
+  'javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality': {
+    apis: ['Proxy', 'WeakMap', 'get trap'],
+    related: [
+      { label: 'Proxy & Reflect API (overview)', route: '/javascript/proxy' },
+      { label: 'set Trap Must Return true', route: '/javascript/proxy/set-trap-must-return-true-or-strict-mode-throws' },
+      { label: 'Frozen Property Invariant', route: '/javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation' },
+    ],
+    tip: 'Cache nested proxies in a WeakMap keyed by the target object — the same target always produces the same cached proxy instance on every subsequent read.',
+    docs: [
+      { label: 'MDN — WeakMap', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Broken referential equality fools React-style === change detection into reporting a change that never actually happened.',
+      'A WeakMap (not a regular Map) avoids leaking memory, since it holds only weak references to its target keys.',
+    ],
+  },
+
+  'javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation': {
+    apis: ['Object.freeze()', 'get trap', 'invariants'],
+    related: [
+      { label: 'Proxy & Reflect API (overview)', route: '/javascript/proxy' },
+      { label: 'set Trap Must Return true', route: '/javascript/proxy/set-trap-must-return-true-or-strict-mode-throws' },
+      { label: 'Nested Proxy Breaks Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' },
+    ],
+    tip: 'A get trap must return the real value for non-configurable, non-writable properties — Object.freeze() makes every property both, triggering this restriction.',
+    docs: [
+      { label: 'MDN — Proxy invariants', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#invariants' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The violation is only detected at read time, not at Proxy construction — the engine can\'t statically analyze what a trap will return.',
+      'This restriction applies per-property — a get trap remains free to transform any property that isn\'t itself frozen.',
+    ],
+  },
+
+  'javascript/weakrefs': {
+    apis: ['WeakMap', 'WeakSet', 'WeakRef', 'FinalizationRegistry'],
+    related: [
+      { label: 'Proxy & Reflect API', route: '/javascript/proxy'      },
+      { label: 'Functional JS',       route: '/javascript/functional' },
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes' },
+    ],
+    tip: 'Only objects — and, since ES2023, unregistered Symbol() values — can be WeakMap keys, since the GC needs genuine identity to track for automatic cleanup.',
+    docs: [
+      { label: 'MDN — WeakMap', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'WeakMap/WeakSet are permanently non-iterable — allowing iteration would make GC timing observable, a determinism and security concern.',
+      'FinalizationRegistry.register() throws immediately if heldValue is the same value as target — that reference would keep target alive forever.',
+    ],
+  },
+
+  'javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror': {
+    apis: ['WeakMap', 'Symbol()', 'Symbol.for()'],
+    related: [
+      { label: 'WeakMap, WeakSet & WeakRef (overview)', route: '/javascript/weakrefs' },
+      { label: 'WeakMap Non-Iterable', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' },
+      { label: 'register() Same-Value Restriction', route: '/javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target' },
+    ],
+    tip: 'Primitives are value-typed and have no identity for the GC to track — only objects and unregistered Symbol() values are valid WeakMap keys.',
+    docs: [
+      { label: 'MDN — WeakMap', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A registered symbol from Symbol.for() is still excluded, despite being type "symbol" — it\'s a shared, non-unique value, unlike a plain Symbol().',
+      'Attempting a disallowed key type throws an immediate TypeError — there is no silent fallback or conversion.',
+    ],
+  },
+
+  'javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design': {
+    apis: ['WeakMap', 'WeakSet', 'Symbol.iterator'],
+    related: [
+      { label: 'WeakMap, WeakSet & WeakRef (overview)', route: '/javascript/weakrefs' },
+      { label: 'WeakMap Object-Only Keys', route: '/javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror' },
+      { label: 'register() Same-Value Restriction', route: '/javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target' },
+    ],
+    tip: 'If WeakMap were iterable, you could watch its entry count change over time — effectively observing exactly when the GC runs, which the spec deliberately hides.',
+    docs: [
+      { label: 'MDN — WeakMap', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'wm.size and for...of fail differently — .size silently returns undefined (a missing property), while for...of throws a real TypeError (missing iterator protocol).',
+      'Object.keys(wm) doesn\'t throw but reveals nothing — WeakMap entries aren\'t stored as normal enumerable properties.',
+    ],
+  },
+
+  'javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target': {
+    apis: ['FinalizationRegistry', 'register()', 'unregister()'],
+    related: [
+      { label: 'WeakMap, WeakSet & WeakRef (overview)', route: '/javascript/weakrefs' },
+      { label: 'WeakMap Object-Only Keys', route: '/javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror' },
+      { label: 'WeakMap Non-Iterable', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' },
+    ],
+    tip: 'heldValue is held with a strong reference by the registry — if it could be target itself, that reference would permanently prevent target from ever being collected.',
+    docs: [
+      { label: 'MDN — FinalizationRegistry', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This is a hard, spec-mandated TypeError, not a lint recommendation — the engine enforces it immediately at the register() call.',
+      'The restriction applies only to heldValue — the optional unregisterToken parameter has no such rule.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [
@@ -11437,6 +14670,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item': {
+    apis: ['<AnimatePresence>', 'key', 'exit'],
+    related: [
+      { label: 'Animations (overview)', route: '/react/animations' },
+      { label: 'width vs transform Reflow', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' },
+      { label: 'viewport.once Controls Repeat', route: '/react/animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry' },
+    ],
+    tip: 'Index keys have the same positional-matching problem as no key at all — always use a stable id from your data, never the array index, for AnimatePresence list children.',
+    docs: [
+      { label: 'Framer Motion Docs — AnimatePresence', url: 'https://www.framer.com/motion/animate-presence/' },
+    ],
+    resources: [
+      { label: 'framer/motion', url: 'https://github.com/framer/motion', badge: 'code' },
+    ],
+    gotchas: [
+      'Without a stable key, React matches by position — removing a middle item misattributes which item "exits".',
+      'The visible symptom looks like a totally different bug (wrong item vanishing), not an obviously missing animation.',
+      'The underlying React state is correct — only the visual exit-animation targeting is wrong.',
+    ],
+  },
+
+  'react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does': {
+    apis: ['transform', 'scaleX', 'width', 'transformOrigin'],
+    related: [
+      { label: 'Animations (overview)', route: '/react/animations' },
+      { label: 'Missing Key Breaks Exit Item', route: '/react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item' },
+      { label: 'React Performance', route: '/react/performance' },
+    ],
+    tip: 'scaleX doesn\'t reserve new layout space the way a real width change does — it\'s a safe drop-in only when nothing else needs to react to the size change.',
+    docs: [
+      { label: 'Framer Motion Docs — Animation', url: 'https://www.framer.com/motion/animation/' },
+    ],
+    resources: [
+      { label: 'framer/motion', url: 'https://github.com/framer/motion', badge: 'code' },
+    ],
+    gotchas: [
+      'width is a layout property — the browser must recompute every affected sibling\'s position on every frame.',
+      'transform is applied after layout is calculated — it never triggers reflow, so siblings never move.',
+      'A scaleX box can visually grow to the identical final size as a width animation, with zero layout cost.',
+    ],
+  },
+
+  'react/animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry': {
+    apis: ['whileInView', 'viewport.once', 'IntersectionObserver'],
+    related: [
+      { label: 'Animations (overview)', route: '/react/animations' },
+      { label: 'Missing Key Breaks Exit Item', route: '/react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item' },
+      { label: 'width vs transform Reflow', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' },
+    ],
+    tip: 'The default (once unset) replays on every scroll re-entry — for a typical one-time "fade in on scroll" reveal, add viewport={once: true} explicitly.',
+    docs: [
+      { label: 'Framer Motion Docs — Gestures', url: 'https://www.framer.com/motion/gestures/' },
+    ],
+    resources: [
+      { label: 'framer/motion', url: 'https://github.com/framer/motion', badge: 'code' },
+    ],
+    gotchas: [
+      'Without once: true, the animation reverses on scroll-out and replays on every re-entry — a very common real scenario, not an edge case.',
+      'A user briefly scrolling up to re-read content and back down will retrigger every unguarded whileInView animation on the page.',
+      'once controls whether the observer keeps firing after the first entry — it doesn\'t control whether the observer exists at all.',
+    ],
+  },
+
   'react/hook-form': {
     apis: ['useForm()', 'register()', 'handleSubmit()', '<Controller>', 'useFieldArray()', 'zodResolver()'],
     related: [
@@ -11459,6 +14755,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Add noValidate to <form> — without it, browser native validation fires before RHF and shows unstyled popups.',
       'Number inputs return strings — add { valueAsNumber: true } to register() or use z.coerce.number() in Zod.',
       'In useFieldArray, use field.id as the React key — never the array index.',
+    ],
+  },
+
+  'react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field': {
+    apis: ['watch()', 'getValues()', 'useWatch()'],
+    related: [
+      { label: 'React Hook Form (overview)', route: '/react/hook-form' },
+      { label: 'Index Keys Show Wrong Value', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' },
+      { label: 'React Performance', route: '/react/performance' },
+    ],
+    tip: 'For a watch() call that\'s only needed by a small piece of UI, isolate it into its own child component (or use useWatch, which subscribes independently of the parent) to contain the re-render cost.',
+    docs: [
+      { label: 'RHF Docs — watch', url: 'https://react-hook-form.com/docs/useform/watch' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+    ],
+    gotchas: [
+      'watch() re-renders the WHOLE component, not just the field it names — typing in any other field also triggers it.',
+      'A single watch() call anywhere in a component undoes RHF\'s zero-re-render refs-based design for that entire component.',
+      'getValues() reads current values without subscribing to changes — ideal for one-shot reads inside event handlers.',
+    ],
+  },
+
+  'react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove': {
+    apis: ['useFieldArray()', 'field.id', 'remove()'],
+    related: [
+      { label: 'React Hook Form (overview)', route: '/react/hook-form' },
+      { label: 'watch() Re-renders Whole Component', route: '/react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field' },
+      { label: 'Missing valueAsNumber Breaks Math', route: '/react/hook-form/testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings' },
+    ],
+    tip: 'Because RHF inputs are uncontrolled, a wrong key causes React to reuse the wrong DOM node WITHOUT resetting its physical value — worse than the same bug in a controlled list.',
+    docs: [
+      { label: 'RHF Docs — useFieldArray', url: 'https://react-hook-form.com/docs/usefieldarray' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+    ],
+    gotchas: [
+      'field.id is RHF\'s own stable identifier — generated specifically to be used as the React key, not the array index.',
+      'The bug is deterministic, not a rare edge case — it happens every time an item is removed/reordered from the middle of an index-keyed list.',
+      'The wrong value appears with no re-render needed to cause it — it\'s a direct consequence of DOM node reuse plus uncontrolled inputs.',
+    ],
+  },
+
+  'react/hook-form/testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings': {
+    apis: ['valueAsNumber', 'z.coerce.number()', 'register()'],
+    related: [
+      { label: 'React Hook Form (overview)', route: '/react/hook-form' },
+      { label: 'watch() Re-renders Whole Component', route: '/react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field' },
+      { label: 'Index Keys Show Wrong Value', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' },
+    ],
+    tip: 'type="number" is a browser UI hint only — it never changes the JavaScript type RHF captures. Only valueAsNumber or z.coerce.number() produce a real number.',
+    docs: [
+      { label: 'RHF Docs — register', url: 'https://react-hook-form.com/docs/useform/register' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+    ],
+    gotchas: [
+      '"42" + "8" evaluates to "428" (string concatenation), not 50 — JavaScript\'s + operator, not a bug in RHF itself.',
+      'There is no error, warning, or NaN to signal the mistake — the wrong result looks like a plausible number.',
+      'z.number() alone REJECTS a string with a validation error — it doesn\'t silently coerce it the way valueAsNumber or z.coerce.number() does.',
     ],
   },
 
@@ -18616,6 +21975,248 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'flex items have min-width: auto by default — add min-width: 0 to allow shrinking below content size.',
       'align-content only takes effect when flex-wrap: wrap is set and there are multiple rows.',
+    ],
+  },
+
+  // ── HTML: Document Structure ─────────────────────────────────────────────
+  'html/document-structure': {
+    apis: ['DOCTYPE', '<html lang>', 'defer', 'async', 'document.compatMode'],
+    related: [
+      { label: 'Head & Metadata',        route: '/html/head-metadata'     },
+      { label: 'Semantic Elements',      route: '/html/semantic-elements' },
+      { label: 'HTML Performance',       route: '/html/performance'       },
+    ],
+    tip: 'defer scripts run after HTML parsing completes, strictly in document order — async scripts run the instant they download, with zero ordering guarantee.',
+    docs: [
+      { label: 'MDN — <!DOCTYPE>', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Doctype' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML spec', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A missing DOCTYPE triggers permanent quirks mode for the document\'s entire lifetime — checkable via document.compatMode, never fixable after parsing.',
+      'A duplicate <head> tag is silently ignored by the parser — its content ends up inside <body> instead, breaking metadata with no visible error.',
+    ],
+  },
+
+  'html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready': {
+    apis: ['<script defer>', '<script async>', 'DOMContentLoaded'],
+    related: [
+      { label: 'Document Structure (overview)', route: '/html/document-structure' },
+      { label: 'Missing DOCTYPE Quirks Mode', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' },
+      { label: 'Duplicate head Moves to body', route: '/html/document-structure/a-duplicate-head-elements-content-is-moved-into-body' },
+    ],
+    tip: 'defer gives two guarantees async doesn\'t: runs after parsing completes, and runs in strict document order relative to other defer scripts.',
+    docs: [
+      { label: 'MDN — <script>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML spec', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'async can execute WHILE HTML is still parsing if its download finishes fast enough — it has no relationship to parsing completion at all.',
+      'async is reserved for genuinely independent scripts (analytics, ads) precisely because its timing is unpredictable by design.',
+    ],
+  },
+
+  'html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it': {
+    apis: ['document.compatMode', 'DOCTYPE'],
+    related: [
+      { label: 'Document Structure (overview)', route: '/html/document-structure' },
+      { label: 'defer vs async Order', route: '/html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready' },
+      { label: 'Duplicate head Moves to body', route: '/html/document-structure/a-duplicate-head-elements-content-is-moved-into-body' },
+    ],
+    tip: 'document.compatMode reports exactly "CSS1Compat" (standards mode) or "BackCompat" (quirks mode) — a real, checkable API, not an abstract concept.',
+    docs: [
+      { label: 'MDN — document.compatMode', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/compatMode' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML spec', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Rendering mode is determined once, essentially at the start of parsing — there is no API to switch an already-loaded document out of quirks mode.',
+      'Quirks mode reimplements specific, documented legacy bugs (box model, table sizing, vertical alignment) — not just a vague "less strict" mode.',
+    ],
+  },
+
+  'html/document-structure/a-duplicate-head-elements-content-is-moved-into-body': {
+    apis: ['document.head', 'document.body', 'HTML parsing spec'],
+    related: [
+      { label: 'Document Structure (overview)', route: '/html/document-structure' },
+      { label: 'defer vs async Order', route: '/html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready' },
+      { label: 'Missing DOCTYPE Quirks Mode', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' },
+    ],
+    tip: 'A second <head> start tag is never treated as opening a real head section — the parser silently ignores it, and everything after lands inside the single, real <body>.',
+    docs: [
+      { label: 'WHATWG — Parsing errors', url: 'https://html.spec.whatwg.org/multipage/parsing.html#parse-errors' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML spec', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'There is no console error or visual sign anything went wrong — metadata like a stylesheet or SEO description silently fails to take effect.',
+      'document.getElementsByTagName("head").length and "body".length are always exactly 1, no matter how many start tags appeared in the source.',
+    ],
+  },
+
+  // ── HTML: Semantic Elements ───────────────────────────────────────────────
+  'html/semantic-elements': {
+    apis: ['<main>', '<section>', '<time datetime>', 'HTMLTimeElement.dateTime'],
+    related: [
+      { label: 'Document Structure',       route: '/html/document-structure' },
+      { label: 'Landmark Elements',        route: '/html/landmark-elements'  },
+      { label: 'Accessibility & ARIA',     route: '/html/accessibility'      },
+    ],
+    tip: '"Exactly one main" and "a section needs a heading" are content-model rules, not parsing rules — the browser renders violations with zero errors, only external tools catch them.',
+    docs: [
+      { label: 'MDN — Sectioning content', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#sectioning_content' },
+    ],
+    resources: [
+      { label: 'W3C Nu Html Checker', url: 'https://validator.w3.org/nu/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A time element\'s datetime attribute and its own visible text are never cross-checked — every machine consumer trusts datetime completely, even if it\'s wrong.',
+      'Catching these violations requires writing your own DOM audit — the same technique real accessibility tools (axe, Lighthouse) use under the hood.',
+    ],
+  },
+
+  'html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error': {
+    apis: ['<main>', 'querySelectorAll()'],
+    related: [
+      { label: 'Semantic Elements (overview)', route: '/html/semantic-elements' },
+      { label: 'Heading-Less section Is Valid', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' },
+      { label: 'time datetime Can Diverge', route: '/html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text' },
+    ],
+    tip: '"Exactly one main per page" is a content-model rule the parser never checks — two mains render fine, but accessibility trees typically only expose the first as the landmark.',
+    docs: [
+      { label: 'MDN — <main>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main' },
+    ],
+    resources: [
+      { label: 'W3C Nu Html Checker', url: 'https://validator.w3.org/nu/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A page looking and functioning normally for a sighted user says nothing about whether the underlying structure is correct for screen reader users.',
+      'HTML validators and accessibility auditors (axe, Lighthouse) explicitly flag this — the browser\'s own parser never does.',
+    ],
+  },
+
+  'html/semantic-elements/a-heading-less-section-is-valid-parseable-html': {
+    apis: ['<section>', 'querySelector()'],
+    related: [
+      { label: 'Semantic Elements (overview)', route: '/html/semantic-elements' },
+      { label: 'Second main Silently Allowed', route: '/html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error' },
+      { label: 'time datetime Can Diverge', route: '/html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text' },
+    ],
+    tip: 'If you genuinely can\'t write a short, meaningful heading for a piece of content, that\'s a signal it isn\'t a semantic "section" — use div instead.',
+    docs: [
+      { label: 'MDN — <section>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section' },
+    ],
+    resources: [
+      { label: 'W3C Nu Html Checker', url: 'https://validator.w3.org/nu/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The fix for a failing audit is rarely "add a hidden heading" — it\'s usually recognizing the content was never a real section, so div was correct all along.',
+      'Catching this requires the same DOM-walking technique any developer already knows — no special browser API is involved.',
+    ],
+  },
+
+  'html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text': {
+    apis: ['<time datetime>', 'HTMLTimeElement.dateTime'],
+    related: [
+      { label: 'Semantic Elements (overview)', route: '/html/semantic-elements' },
+      { label: 'Second main Silently Allowed', route: '/html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error' },
+      { label: 'Heading-Less section Is Valid', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' },
+    ],
+    tip: 'A time element with no datetime attribute returns an empty string from .dateTime, not undefined or an error — machines get literally nothing usable from it.',
+    docs: [
+      { label: 'MDN — <time>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/time' },
+    ],
+    resources: [
+      { label: 'W3C Nu Html Checker', url: 'https://validator.w3.org/nu/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A mismatch is invisible to sighted users — it only manifests in non-visual consumption (screen readers, search engine snippets, calendar integrations).',
+      'Templating engines and CMS platforms must derive both datetime and the visible text from the exact same underlying value, never set independently.',
+    ],
+  },
+
+  'html/forms': {
+    apis: ['FormData', 'HTMLFormElement', 'checkValidity()', 'name attribute'],
+    related: [
+      { label: 'Semantic Elements',   route: '/html/semantic-elements' },
+      { label: 'Input Types',         route: '/html/input-types'       },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility'    },
+    ],
+    tip: 'FormData is keyed entirely by the name attribute — an input with only an id is completely invisible to a native form submission.',
+    docs: [
+      { label: 'MDN — FormData', url: 'https://developer.mozilla.org/en-US/docs/Web/API/FormData' },
+    ],
+    resources: [
+      { label: 'MDN — Constraint validation', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation', badge: 'docs' },
+    ],
+    gotchas: [
+      'novalidate only disables the browser\'s own blocking popups — checkValidity() and the underlying constraint state still work exactly as before.',
+      'enctype only changes how the browser encodes a native submission — it has zero effect on new FormData(formElement), which reads File objects straight from the DOM either way.',
+    ],
+  },
+
+  'html/forms/name-not-id-determines-the-submitted-formdata-key': {
+    apis: ['FormData', 'name attribute', 'HTMLInputElement'],
+    related: [
+      { label: 'Forms & Input (overview)', route: '/html/forms' },
+      { label: 'novalidate vs checkValidity', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' },
+      { label: 'enctype and FormData', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' },
+    ],
+    tip: 'id is for CSS/JS/label targeting; name is the ONLY attribute FormData and native submission ever look at.',
+    docs: [
+      { label: 'MDN — FormData', url: 'https://developer.mozilla.org/en-US/docs/Web/API/FormData' },
+    ],
+    resources: [
+      { label: 'MDN — <input> name', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name', badge: 'docs' },
+    ],
+    gotchas: [
+      'An input with id but no name renders and behaves normally on screen — the missing data only shows up once you inspect the actual submitted payload.',
+      'This is a very common beginner mistake because id and name look interchangeable everywhere except in form submission.',
+    ],
+  },
+
+  'html/forms/novalidate-disables-blocking-but-checkvalidity-still-works': {
+    apis: ['novalidate', 'checkValidity()', 'HTMLFormElement'],
+    related: [
+      { label: 'Forms & Input (overview)', route: '/html/forms' },
+      { label: 'name vs id', route: '/html/forms/name-not-id-determines-the-submitted-formdata-key' },
+      { label: 'enctype and FormData', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' },
+    ],
+    tip: 'novalidate turns off the browser\'s automatic popup-and-block behavior only — every constraint attribute (required, pattern, min, etc.) keeps working as a queryable hint for your own JS.',
+    docs: [
+      { label: 'MDN — Constraint validation', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation' },
+    ],
+    resources: [
+      { label: 'MDN — novalidate', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#novalidate', badge: 'docs' },
+    ],
+    gotchas: [
+      'A novalidate form still fires submit — your handler must call checkValidity() itself if it wants to stop anything.',
+      'Removing novalidate does not remove the constraint attributes either — the two are fully independent controls.',
+    ],
+  },
+
+  'html/forms/enctype-only-affects-native-submission-not-formdata-api': {
+    apis: ['enctype', 'FormData', 'File', 'DataTransfer'],
+    related: [
+      { label: 'Forms & Input (overview)', route: '/html/forms' },
+      { label: 'name vs id', route: '/html/forms/name-not-id-determines-the-submitted-formdata-key' },
+      { label: 'novalidate vs checkValidity', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' },
+    ],
+    tip: 'enctype only governs how a browser-native form submission encodes the body over the wire — new FormData(formElement) reads live DOM state and was never routed through enctype at all.',
+    docs: [
+      { label: 'MDN — enctype', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#enctype' },
+    ],
+    resources: [
+      { label: 'MDN — FormData', url: 'https://developer.mozilla.org/en-US/docs/Web/API/FormData', badge: 'docs' },
+    ],
+    gotchas: [
+      'fetch(url, { body: new FormData(form) }) correctly sends real file content with no enctype attribute needed anywhere.',
+      'The classic "add multipart/form-data or files break" advice applies ONLY to plain native <form> submission, not to any JS-driven FormData usage.',
     ],
   },
 

@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Events &amp; Custom Events" topicRoute="/javascript/events" subtopicLabel="closest() Walks Up Correctly Through Nested SVG Targets" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">closest() Walks Up Correctly Through Nested SVG Targets</h1>
+  <p class="page-subtitle">A click on a deeply nested SVG <code>&lt;path&gt;</code> sets <code>e.target</code> to that specific path, not the outer <code>&lt;svg&gt;</code> — but <code>closest()</code> still resolves the right delegating ancestor.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="DOM Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A click is dispatched directly on a nested <code>&lt;path&gt;</code> inside an SVG icon, three levels deep inside a delegating <code>.item</code>. Check what <code>e.target</code> actually reports and whether <code>closest()</code> still finds the right element.</p>
+    <app-live-playground title="closest() delegation with a nested SVG target" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious event mechanics — phase ordering, custom event bubbling, and now delegation robustness across unusual target types. Return to the <a routerLink="/javascript/events">Events &amp; Custom Events</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Events &amp; Custom Events"
+    topicRoute="/javascript/events"
+    [prev]="{ label: 'Custom Events Don’t Bubble by Default', route: '/javascript/events/custom-events-dont-bubble-by-default' }"
+  />
+</div>

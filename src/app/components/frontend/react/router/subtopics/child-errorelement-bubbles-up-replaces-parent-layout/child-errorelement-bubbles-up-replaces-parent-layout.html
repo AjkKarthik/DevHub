@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Router"
+    topicRoute="/react/router"
+    subtopicLabel="A Child errorElement Bubbles Up and Replaces the Parent’s Whole Layout" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Missing Child errorElement Bubbles Up and Replaces the Parent's Whole Layout</h1>
+  <p class="page-subtitle">
+    Every code example on the main page gives every route its own errorElement — this checks what actually
+    happens when a child route doesn't have one, and how much of the page the bubbled-up error takes down.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="React Router 6.4+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A layout with a visible nav bar wrapping <code>&lt;Outlet /&gt;</code>, and a child route that
+      throws with no <code>errorElement</code> of its own.
+    </p>
+    <app-live-playground
+      title="errorElement bubbling and layout chrome"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This clarifies why the main page gives every route its own errorElement rather than relying on one at
+      the top, before checking a related NavLink matching subtlety in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Router"
+    topicRoute="/react/router"
+    [prev]="{ label: 'useFetcher Revalidates the Current Route’s Loader', route: '/react/router/testing-that-usefetcher-revalidates-the-current-routes-loader' }"
+    [next]="{ label: 'NavLink’s end Prop Is Needed for Root, Would Break Nested Highlighting', route: '/react/router/testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere' }" />
+</div>

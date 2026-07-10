@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Declaration Files (d.ts)"
+    topicRoute="/typescript/declarations"
+    subtopicLabel="A Hand-Written .d.ts Doesn’t Verify the Real JS" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That a Hand-Written .d.ts Doesn't Verify the Real JS</h1>
+  <p class="page-subtitle">
+    The main page's chart-lite and date-utils declarations are never checked against real code — pairing a
+    genuine untyped .js file with a deliberately wrong .d.ts shows TypeScript catches nothing.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Pair a real, running <code>.js</code> file with a hand-written <code>.d.ts</code> that has a
+      deliberately wrong parameter type, and see whether anything catches the mismatch.
+    </p>
+    <app-live-playground
+      title="Assertion, not verification — testing a wrong hand-written .d.ts"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the declarations topic by making concrete the central risk implicit in every
+      hand-written-declaration example on the main page, and why compiler-generated .d.ts files avoid it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Declaration Files (d.ts)"
+    topicRoute="/typescript/declarations"
+    [prev]="{ label: 'Declaration Merging Ignores Generic Parameter Names', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' }" />
+</div>

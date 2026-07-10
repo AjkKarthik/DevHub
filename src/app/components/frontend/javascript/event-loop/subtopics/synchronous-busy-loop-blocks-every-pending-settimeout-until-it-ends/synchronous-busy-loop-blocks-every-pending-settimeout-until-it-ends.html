@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Loop &amp; Concurrency" topicRoute="/javascript/event-loop" subtopicLabel="A Synchronous Busy-Loop Blocks Every Pending setTimeout" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">A Synchronous Busy-Loop Blocks Every Pending setTimeout</h1>
+  <p class="page-subtitle">A <code>setTimeout</code> delay is a minimum wait, never a guarantee — a busy call stack delays every overdue timer until it clears, then fires them all in one burst.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Five timers are scheduled 200ms apart, then a genuinely blocking 2-second busy-loop runs. Watch real elapsed timestamps to see exactly when the timers actually fire versus when they were scheduled to fire.</p>
+    <app-live-playground title="Busy-loop delaying five scheduled timers" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's queue mechanics — a self-terminating microtask loop delaying an earlier-scheduled timer, two independent Promise chains interleaving on the same queue, and now a busy call stack delaying every pending timer at once. Return to the <a routerLink="/javascript/event-loop">Event Loop &amp; Concurrency</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Event Loop &amp; Concurrency"
+    topicRoute="/javascript/event-loop"
+    [prev]="{ label: 'Independent Promise Chains Interleave One Microtask at a Time', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' }"
+  />
+</div>

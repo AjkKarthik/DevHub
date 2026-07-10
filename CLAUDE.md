@@ -510,6 +510,45 @@ to the topic page, not its subtopics.
   (SUBTOPICS map, breadcrumb, sidebar, search index, nav labels) keep using the long,
   descriptive route string unchanged. Run `git add -A` before considering a subtopic batch
   done — a successful build does NOT catch this, only `git add` does.
+- **A markdown-style inline-code backtick inside a `solution:` (or any backtick-delimited
+  `content:`) TS template literal breaks the build with a confusing cascade of unrelated
+  parser errors, not an obvious "unterminated string" message.** Confirmed via a real build
+  failure (`/react/context`'s mega-context subtopic, 2026-07-08): writing `` destructuring
+  only `theme` in ThemeDisplay's own code `` inside a `solution: \`...\`` block used a bare
+  backtick around "theme" for emphasis (a habit carried over from writing prose in this same
+  file's `misconceptions`/`theory` fields, which use SINGLE-QUOTED strings where a backtick
+  is just a literal character) — the backtick prematurely closed the outer template literal,
+  and everything after it was parsed as loose top-level code, producing unrelated errors like
+  `TS2339: Property 'misconceptions' does not exist`, `TS2693: 'Misconception' only refers to
+  a type`, and `Unexpected "]"` scattered across the rest of the class body — none of which
+  point at the actual backtick. **Fix: never use backtick-wrapped inline code inside a
+  `solution:`/`content:` field's own backtick-delimited string — use plain text or double
+  quotes for emphasis instead** (backticks are completely safe inside the SINGLE-quoted
+  `thought:`/`reality:`/`prompt:`/`hint:` fields elsewhere in the same file, since those use
+  `'...'` not `` `...` ``, so this is specific to which delimiter a given field uses, not a
+  blanket "no backticks in subtopic files" rule). Before trusting a "no errors" build result
+  on a file with `solution:`/`content:` fields, a quick sanity check is comparing total
+  backtick count per file is even (`grep -o '`' file | wc -l`) — odd catches the obvious case,
+  but even-but-still-broken (two internal pairs) needs eyeballing each `solution:` block.
+- **A straight apostrophe inside a single-quoted Angular binding string (`[prev]`/`[next]`
+  label text) breaks template parsing the same way a stray backtick breaks a TS template
+  literal — but the fix is different and it happens in the `.html` file, not the `.ts` file.**
+  Confirmed via a real catch during authoring (`/react/typescript`'s discriminated-union
+  subtopic, 2026-07-09): writing `[next]="{ label: 'Select's Runtime Coercion...' }"` — a
+  literal possessive apostrophe in "Select's" — prematurely closes the single-quoted `label`
+  string inside the double-quoted Angular attribute, the same category of bug as the
+  backtick-in-template-literal gotcha above (a delimiter character appearing literally inside
+  a string that uses that same delimiter). **Fix: use the typographic right single quote `’`
+  (U+2019) instead of a straight apostrophe `'` for every possessive/contraction inside a
+  `[prev]`/`[next]` label string** — this is already the established convention for every
+  other apostrophe in subtopic titles/labels throughout the project (confirmed safe since
+  `’` has no special meaning to the Angular expression parser), so the fix is consistency
+  with existing labels, not a new pattern. This is the SAME root cause as the backtick
+  gotcha (delimiter character leaking into delimited text) but manifests in `.html` files
+  specifically in `[prev]`/`[next]`, `topicLabel`, `subtopicLabel`, and any other
+  single-quoted-string-valued bound attribute — grep any new subtopic's bound attributes for
+  a bare `'` immediately preceded by a letter (a possessive/contraction pattern) before
+  building, the same way `@word` and brace gotchas are grepped for.
 
 ### Non-Angular hubs (C#, SQL, Python, Go, etc.) — the "See it run" section has no live playground
 
@@ -700,6 +739,215 @@ Confirmed via direct file inspection before the pilot (`/typescript/basics`, 202
    classes, `tech="typescript"` in `app-page-meta` (auto-renders a TypeScript Playground
    run-it link). Icon content stays `TS`. **`.ts-page`'s wrapper rule is NOT global — see the
    max-width gotcha above; every TypeScript subtopic `.scss` must include it.**
+
+### JavaScript hub subtopic wiring — first subtopic set for this hub, no base sidebar entries existed at all
+
+Confirmed via direct file inspection before the pilot (`/javascript/fundamentals`, 2026-07-09):
+1. **No bare-key collision**: `fundamentals` was not already claimed anywhere in `app.ts`'s flat
+   `SUBTOPICS` map — left as the bare key, unlike TypeScript/React's own first-topic slug
+   collisions (both happened to be `basics`). Do not assume every new hub's first topic collides
+   — always grep first, but the outcome varies per hub.
+2. **Progress/search keys are `js-` PREFIXED** (`js-fundamentals`), confirmed via the existing
+   nav markup (`progress.isDone('js-fundamentals')`).
+3. **`SIDEBAR_MAP` had NO entry at all for ANY JavaScript hub topic** — not even a base entry
+   for the main `/javascript/fundamentals` page, confirmed by grepping `'javascript/` with zero
+   results anywhere in `page-sidebar.ts`. Every JS hub page was silently falling back to
+   `DEFAULT` sidebar content before this. Added a tailored BASE entry (`'javascript/fundamentals'`)
+   alongside the 3 required composite subtopic entries (`'javascript/fundamentals/<slug>'`),
+   following the full-path convention established by React/TypeScript (the other newer hubs) —
+   this fixes a real, pre-existing gap rather than just avoiding a new one. **Check whether a
+   hub's main topic pages already have base sidebar entries before assuming DEFAULT fallback is
+   an intentional, acceptable state** — for a hub with dozens of topic pages this is worth
+   flagging to the user as a separate follow-up rather than silently fixing one page at a time.
+4. Breadcrumb `JAVASCRIPT_LABELS` map uses bare keys (`'fundamentals'`), same generic pattern
+   every hub shares — composite subtopic keys there are bare too (`'fundamentals/<slug>'`).
+5. Theme: `$accent: #f7df1e`, `.js-page`/`.js-icon`/`.js-section` CSS classes, `tech="javascript"`
+   in `app-page-meta`. **The JS hub's icon is SOLID FILL, not light tint** — despite
+   `styles.scss`'s documented default for "SQL, TypeScript, React, JavaScript" being light tint,
+   the actual `fundamentals.scss` uses `background: $accent; color: #1a1a1a;` (solid yellow bg,
+   near-black text) — confirmed by reading the real file rather than trusting the earlier
+   documented default. Dark mode: `background: #854d0e; color: #fde68a;`. **Always check the
+   actual main-page `.scss` file for a hub's true icon convention before assuming the documented
+   generation-pattern table applies** — it can be stale or the hub can be an exception.
+   `.js-page`'s wrapper rule is NOT global (confirmed absent from `src/styles.scss`, same
+   situation as SQL/TypeScript/React) — every JS subtopic `.scss` must include the full
+   `.js-page { max-width: 860px; margin: 0 auto; }` rule.
+6. Live playground: uses the same `'typescript'` StackBlitz template as the TypeScript hub
+   (plain browser JS/TS, no framework needed) — `index.html` + `index.ts` minimum file set,
+   `openFile="index.ts"`. A subtopic needing to compare strict vs. sloppy mode used
+   `new Function(...)` with an ESCAPED NESTED template literal (`\`...\``) inside the outer
+   `content: \`...\`` field — the Function constructor's body genuinely runs in sloppy mode
+   even inside a strict-mode ES module, making it a real, working way to demonstrate both
+   modes side by side in one file without needing a second StackBlitz project.
+7. **Multi-file ESM playgrounds**: `/javascript/modules`'s subtopics (live bindings, module
+   singletons, circular imports) needed genuinely SEPARATE files importing each other to
+   demonstrate cross-module behavior — a single `index.ts` can't show this. `PlaygroundFile`
+   supports adding extra `.ts` files (e.g. `counter.ts`, `store.ts`, `a.ts`/`b.ts`) alongside
+   `index.html`/`index.ts` in the same `liveDemoFiles` array; StackBlitz's `'typescript'`
+   template resolves the relative imports between them (`./counter.js` from `index.ts`, using
+   the `.js` extension per ESM's own resolution convention even though the source is `.ts`)
+   with no extra config needed. Confirmed working end-to-end in a live pilot.
+8. **`/javascript/bundlers` drops the live playground entirely** — the FIRST plain-JS-hub
+   topic (not React/Next.js/Native) to need this. Tree-shaking, `sideEffects` config, and
+   `dependencies`/`devDependencies` are all build-time/npm-install-time concepts with no
+   runtime behavior a browser JS console can demonstrate — there's no bundler process or
+   `npm ci` step inside a StackBlitz `'typescript'` template. Same fallback as the
+   non-Angular hubs and React's nextjs/native: drop `LivePlaygroundComponent`/`PlaygroundFile`,
+   use `<section class="js-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" />
+   </section>` instead, no `import { CodeBlockComponent, CodeTab } from
+   '.../shared/code-block/code-block'` component swapped in for the live-playground imports.
+   Check any future JS-hub topic for this same "is this actually runtime-observable in a
+   browser?" question before assuming every JS/TS topic gets a live playground by default.
+
+### React hub subtopic wiring — first JS-framework hub; a real StackBlitz template gap
+
+Confirmed via direct file inspection and a live browser pilot before the first subtopic set
+(`/react/basics`, 2026-07-08):
+1. **`app.ts`'s flat `SUBTOPICS` map had a real bare-key collision**: React's first topic
+   slug, `basics`, was already taken by `/csharp/basics`. Hub-prefixed to `'react-basics'`,
+   per the established pattern — the three nav-accordion helper calls in `app.html`
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) all use `'react-basics'` too, not
+   the bare slug. Always grep the bare slug (unquoted AND quoted) before adding a new hub's
+   first SUBTOPICS entry — this is now the THIRD hub in a row (TS, and now React) whose first
+   topic slug happened to be `basics`, already taken by C#.
+2. Progress/search keys are `react-` PREFIXED (`react-basics`), confirmed via existing nav
+   markup. `SIDEBAR_MAP` keys are FULL-PATH PREFIXED (`'react/basics'`, confirmed the base
+   entry already existed) — subtopic composite keys follow suit: `'react/basics/<slug>'`.
+   Breadcrumb `REACT_LABELS` uses bare keys (`'basics'`) with bare composite subtopic keys
+   (`'basics/<slug>'`), same generic pattern every hub shares.
+3. Theme: `$accent: #0ea5e9`, `$tint: #f0f9ff`, `.react-page`/`.react-icon`/`.react-section`
+   CSS classes, icon content `⚛` at `font-size: 1.8rem` (not text — see the icon pattern
+   rules above), `tech="react"` in `app-page-meta`. **`.react-page`'s wrapper rule is NOT
+   global** (confirmed absent from `src/styles.scss`, same situation as SQL/TypeScript) —
+   every React subtopic `.scss` must include the full `.react-page { max-width: 860px;
+   margin: 0 auto; }` rule, not just `.subtopic-page`'s padding.
+4. **React runs natively in the browser, so its subtopics use `app-live-playground` fully
+   — but with a StackBlitz template neither Angular's nor TypeScript's own subtopic recipes
+   cover.** `PROJECT_TEMPLATES` (from `@stackblitz/sdk`'s own type definitions,
+   `node_modules/@stackblitz/sdk/types/constants.d.ts`) is a fixed union: `"angular-cli" |
+   "create-react-app" | "html" | "javascript" | "node" | "polymer" | "typescript" | "vue"`
+   — there is no `"react-ts"` or similar; **`"create-react-app"` is the correct template**
+   for a plain-JS React demo. Confirmed working end-to-end in a live pilot (StackBlitz editor
+   loaded with the correct file tree, no import-error banner) with this minimum file set in
+   `liveDemoFiles`:
+   ```
+   package.json      — { dependencies: { react, react-dom, react-scripts }, scripts: { start } }
+   public/index.html — <div id="root"></div>
+   src/index.js       — createRoot(document.getElementById('root')).render(<App />)
+   src/App.js         — the actual demo component
+   ```
+   Unlike the TypeScript-hub `'typescript'` template (which only strictly needed
+   `index.html` + `index.ts`), the `create-react-app` template needs the FULL CRA-shaped
+   file set including an explicit `package.json` — omitting it was not tested but is not
+   worth risking given how cheap it is to include. `openFile` should point at `src/App.js`
+   (the file readers actually care about), not `src/index.js` or `public/index.html`.
+5. React demo files are `.js`, not `.ts`/`.tsx` — the main React hub's own topic-page code
+   examples use `language: 'typescript'` (TSX) for the static `<app-code-block>` tabs, but
+   the LIVE playground demos use plain JS to avoid needing TypeScript-specific CRA
+   dependencies (`@types/react`, a `tsconfig.json`, etc.) that were never verified to work
+   with this template. If a future React subtopic genuinely needs TypeScript in the live
+   demo, verify a `.tsx` + `tsconfig.json` file set in this same template works before
+   assuming it does — this was not tested in the pilot.
+6. React subtopics can lean on ACTUAL RUNTIME behavior in a way most TypeScript-hub
+   subtopics couldn't (those were largely static compile-error demonstrations) — e.g. a
+   render-count `useRef` counter displayed in the UI, or typing into an input and clicking a
+   button to observe a real DOM consequence. Prefer this where the main page's own claim is
+   about runtime behavior (batching, reconciliation, memoization) rather than type-checking.
+7. **Real npm packages (not stubs) work fine in the `create-react-app` template — just add
+   them directly to the `liveDemoFiles` `package.json`'s own `dependencies` field.** Confirmed
+   with `react-hook-form`, `@hookform/resolvers`, and `zod` (`/react/forms`, 2026-07-08) — no
+   separate `[dependencies]` Angular-input mechanism needed, since a full `package.json` is
+   already hand-written for every React subtopic (unlike Angular's `angular-cli` template,
+   which auto-generates one). This is the OPPOSITE of the TypeScript hub's own established
+   practice (declare-stub interfaces to avoid needing real `@types/react`/`zod` packages) —
+   the difference is that TypeScript-hub subtopics only need to typecheck, while React-hub
+   subtopics need to actually RUN the real library's behavior (e.g. Zod's real coercion
+   rules, RHF's real re-render timing) to make a runtime claim demonstrable at all.
+8. **Windows MAX_PATH risk is proportionally higher for the React hub** — its longer topic
+   folder names (`hooks-advanced`, `context`, `state-management`) combined with descriptive
+   subtopic slugs push paths close to 260 chars more often than shorter hub names did. From
+   `/react/hooks-core` onward, default to a SHORT folder/file name (~30-45 chars) chosen
+   BEFORE writing files, rather than the full descriptive slug — keep the full descriptive
+   slug only in the route `path:` and every other wiring touchpoint, per the general MAX_PATH
+   fix already documented above. Computing the exact planned path length with a quick shell
+   check before `mkdir`/`Write` (not just before `git add`) avoids a rename cycle after the
+   fact.
+9. **StackBlitz's WebContainer npm install can transiently fail with "Can't find package"
+   for a correctly-declared dependency, unrelated to the code.** Confirmed on `/react/router`'s
+   `errorElement` subtopic (`react-router-dom` in `package.json`, 2026-07-09): the embed loaded
+   the correct file tree and editor content, but the in-browser npm install step failed once
+   with "Can't find package: 'react-router-dom'" and a "Retry Installer" button — a real
+   StackBlitz-side transient (network/registry hiccup inside the WebContainer sandbox), not a
+   version-pin or config problem, since the identical `package.json` shape (deps as direct
+   entries, no separate `[dependencies]` input) had already worked for `react-hook-form`,
+   `zod`, `zustand`, `@reduxjs/toolkit`, and `jotai` in prior subtopics with no issue. A second
+   load attempt showed the same transient state; the underlying page (breadcrumb, sidebar,
+   nav accordion, build) all verified correct independent of the sandbox demo itself. **Do not
+   treat one StackBlitz install failure as a signal the `package.json`/dependency choice is
+   wrong** — verify the static page and build first (those are deterministic), and treat the
+   live sandbox as best-effort verification, retrying once before moving on. Also noted:
+   `preview_screenshot` can time out while the WebContainer is actively installing packages
+   (heavy CPU load in the iframe) — this resolves once the install finishes or the embed is
+   collapsed again; it is a tooling/resource artifact, not a page bug.
+10. **`/react/nextjs` is the first React-hub topic to drop the live playground entirely,
+    falling back to a plain `<app-code-block>` "See it run" section** — confirmed via direct
+    review before writing (2026-07-09): Next.js's core App Router APIs (Server Components,
+    Server Actions, `revalidatePath`, file-based routing) require an actual Next.js server
+    process. None of the StackBlitz project templates the shared `LivePlaygroundComponent`
+    supports (`angular-cli`, `create-react-app`, `typescript`) can run one — `create-react-app`
+    compiles a client-only SPA with no server runtime at all. Rather than fake the behavior
+    with a client-only approximation (misleading) or risk an unverified `'node'`-template
+    Next-dev-server embed (untested, high risk of a silently broken iframe), these subtopics
+    follow the SAME "no live playground, plain code-block" pattern already established for
+    non-browser-runtime hubs (C#/SQL/Python) — see that section above for the exact markup
+    (`<section class="react-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" />
+    </section>`, no `LivePlaygroundComponent`/`PlaygroundFile` import at all). The `TryIt`
+    exercises for these subtopics also shift from "click a button and observe" to "predict the
+    outcome, then read the explained reasoning" — appropriate since there's no runnable demo to
+    click through. **Check any other planned React subtopic topic for this same server-only
+    constraint before assuming `create-react-app` + real npm deps (the normal React-hub
+    pattern) will work** — the deciding question is whether the page's core claims are about
+    something that runs in a plain client-side React app, or something that only exists because
+    an actual Next.js (or similar SSR framework) server process is involved.
+
+### HTML hub subtopic wiring — first non-JS-family hub with its own live playground pattern
+
+Confirmed via direct file inspection before the first subtopic set (`/html/document-structure`,
+2026-07-10):
+1. Progress/search keys are `html-` PREFIXED (`html-document-structure`), confirmed via existing
+   nav markup. `SIDEBAR_MAP` keys are FULL-PATH PREFIXED (`'html/document-structure'`) — matching
+   ASP.NET/TypeScript/React, not C#'s bare-key convention. **No base sidebar entry existed for
+   `document-structure` before this** (same gap pattern as the JavaScript hub's first topic) —
+   added one alongside the 3 composite subtopic entries.
+2. Breadcrumb `HTML_LABELS` map uses bare keys (`'document-structure'`), composite subtopic keys
+   are bare too (`'document-structure/<slug>'`) — the same generic pattern every hub shares.
+3. **`.html-page`'s wrapper rule IS global** in `src/styles.scss` (confirmed: `.html-page {
+   max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; box-sizing: border-box; }`) —
+   unlike SQL/TypeScript/React/JavaScript, so subtopic `.scss` files do NOT strictly need to
+   redefine it, but included it anyway (harmless, matches the main topic page's own `.scss`
+   pattern of redundantly re-declaring the global rule). Padding value is `2rem 1.5rem 4rem`
+   (note: `1.5rem` horizontal, not JS hub's `1.25rem`) — confirmed from the real main-page `.scss`.
+4. **Icon is LIGHT TINT** (`background: $tint; color: $accent;`), confirmed from the real
+   `document-structure.scss` — matches the documented default table for this hub, unlike the
+   JavaScript hub which turned out to be an exception. Icon content is the literal text `</>`.
+5. `tech="javascript"` in `app-page-meta` (HTML hub shares the JS hub's external run-it links —
+   PlayCode/CodePen — since there's no dedicated HTML-only playground service worth linking).
+6. **Live playground uses the `'typescript'` StackBlitz template, but the DEMO'S OWN `index.html`
+   IS the document under test** — a genuinely different pattern from every JS/TS-family subtopic
+   before it. Where JS/TS subtopics always used a fixed, generic `index.html` shell plus a
+   separate `index.ts` doing the actual demonstrated logic, HTML-hub subtopics whose claim is
+   about HTML PARSING ITSELF (missing DOCTYPE, duplicate `<head>`, script loading order) instead
+   write the INTERESTING markup directly into `index.html` (omitting the DOCTYPE entirely, adding
+   a genuine second `<head>`/`<body>` pair, using real `<script defer>`/`<script async>` tags),
+   with `index.ts` only doing the OBSERVATION (`document.compatMode`, `document.head.contains()`,
+   `performance.now()` timestamps) rather than the demonstration itself. `openFile` in these cases
+   points at `index.html` (not `index.ts`), since that's the file whose content the reader actually
+   needs to see. Confirmed working end-to-end in a live pilot — StackBlitz's `'typescript'`
+   template serves arbitrary plain `.js` files referenced by classic (non-module) `<script src>`
+   tags without issue, alongside its usual ESM `.ts` module resolution.
+7. No `SUBTOPICS` map bare-key collision for `document-structure` (checked, confirmed collision-free)
+   — but this hub is entering a `SUBTOPICS` map already shared by 8+ other hubs, so the standard
+   grep-before-adding discipline still applies to every future HTML-hub topic.
 
 ## Current state (update when it changes!)
 

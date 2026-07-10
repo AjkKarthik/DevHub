@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Semantic Elements" topicRoute="/html/semantic-elements" subtopicLabel="A Second main Element Is Silently Allowed, With No Thrown Error" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A Second main Element Is Silently Allowed, With No Thrown Error</h1>
+  <p class="page-subtitle">"Exactly one <code>&lt;main&gt;</code> per page" is a content-model rule, not a parsing rule — the browser renders two of them with zero errors, warnings, or visible signs anything is wrong.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A document with two <code>&lt;main&gt;</code> elements loads and renders completely normally. Check <code>document.querySelectorAll('main').length</code> directly, then see a small "audit" function that catches what the browser itself won't flag.</p>
+    <app-live-playground title="Two main elements, zero errors" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/html/semantic-elements">Semantic Elements</a> page's "exactly one main" rule in real, checkable browser behavior. Next, see that a <code>&lt;section&gt;</code> with no heading is equally valid, parseable HTML — the browser never checks for the heading either.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Semantic Elements"
+    topicRoute="/html/semantic-elements"
+    [next]="{ label: 'A Heading-Less section Is Valid, Parseable HTML', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' }"
+  />
+</div>

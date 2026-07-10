@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="tsconfig Deep Dive"
+    topicRoute="/typescript/tsconfig"
+    subtopicLabel="strictFunctionTypes Doesn’t Apply to Methods" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That strictFunctionTypes Doesn't Apply to Method Syntax</h1>
+  <p class="page-subtitle">
+    The main page's example uses a property-typed function, correctly rejected. The identical substitution
+    written as a method compiles with zero error — a deliberate exemption.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="TypeScript 2.6+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Compare the main page's own property-typed <code>Handler</code> rejection against the identical
+      substitution written using method syntax in an interface.
+    </p>
+    <app-live-playground
+      title="Property vs method function types — testing strictFunctionTypes"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the tsconfig topic by extending the page's own strict-mode sub-flag example to a
+      syntactic variant with genuinely different type-checking behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="tsconfig Deep Dive"
+    topicRoute="/typescript/tsconfig"
+    [prev]="{ label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' }" />
+</div>

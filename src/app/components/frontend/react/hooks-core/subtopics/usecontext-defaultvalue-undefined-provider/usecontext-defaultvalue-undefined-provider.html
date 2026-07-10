@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Core Hooks"
+    topicRoute="/react/hooks-core"
+    subtopicLabel="useContext’s defaultValue Is Skipped by an Explicit undefined Provider" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That useContext's defaultValue Is Skipped by a Provider Passing undefined</h1>
+  <p class="page-subtitle">
+    The main page says defaultValue is used "outside any Provider" and separately recommends passing
+    undefined for required contexts — this checks exactly which of the two actually triggers the fallback.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="React 16.3+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two consumers of the same context — one with no Provider ancestor at all, one inside a Provider that
+      explicitly passes <code>value=&#123;undefined&#125;</code>.
+    </p>
+    <app-live-playground
+      title="useContext defaultValue vs an explicit undefined Provider"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This resolves exactly how the main page's own "required contexts" throw-if-undefined pattern can
+      work reliably, before checking a related gap in the stale-closure fix in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Core Hooks"
+    topicRoute="/react/hooks-core"
+    [prev]="{ label: 'StrictMode Double-Invokes the Lazy Initializer', route: '/react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects' }"
+    [next]="{ label: 'Functional Update Fixes Stale State, Not a Stale Prop', route: '/react/hooks-core/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop' }" />
+</div>

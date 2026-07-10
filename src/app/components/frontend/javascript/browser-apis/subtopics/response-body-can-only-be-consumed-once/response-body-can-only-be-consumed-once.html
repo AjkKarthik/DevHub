@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Browser APIs" topicRoute="/javascript/browser-apis" subtopicLabel="A Response Body Can Only Be Consumed Once" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">A Response Body Can Only Be Consumed Once</h1>
+  <p class="page-subtitle">A <code>Response</code> body is a <code>ReadableStream</code> — a second body-reading call throws once the first has drained it. <code>res.clone()</code> only helps if called before the first read.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Three attempts read a fake JSON response's body twice — once with no cloning (fails), once cloning before the first read (works), and once cloning after the first read (still fails). Compare the outcomes.</p>
+    <app-live-playground title="Reading a Response body twice, with and without clone()" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/javascript/browser-apis">Browser APIs</a> page's warning about single-use response bodies. Next, see why an <code>AbortController</code> stops every pending retry immediately, not just the current one in flight.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Browser APIs"
+    topicRoute="/javascript/browser-apis"
+    [prev]="{ label: 'fetch() Resolves on 4xx/5xx — It Never Rejects for HTTP Errors', route: '/javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects' }"
+    [next]="{ label: 'AbortController Stops Every Pending Retry Immediately', route: '/javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately' }"
+  />
+</div>

@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Functions Deep Dive"
+    topicRoute="/javascript/functions"
+    subtopicLabel="bind() Is Permanent — call/apply/bind Can’t Override It" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That bind() Is Permanent — a Later call(), apply(), or Second bind() Can't Override It</h1>
+  <p class="page-subtitle">
+    The QnA calls bind() "permanently bound" — this tests whether that word is literal by trying to
+    override it three different ways after the fact.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      A function bound to <code>objA</code>, then tested against <code>.call(objB)</code>,
+      <code>.apply(objB)</code>, and a second <code>.bind(objB)</code> call.
+    </p>
+    <app-live-playground
+      title="bind() permanence — call/apply/bind can't override it"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the explicit-binding half of the this-binding priority chain. The next subtopic checks
+      the OTHER end of that priority — whether the highest-priority rule, new, can override even an
+      explicit bind().
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functions Deep Dive"
+    topicRoute="/javascript/functions"
+    [next]="{ label: 'Default Parameter Only Triggers on undefined, Not Other Falsy Values', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' }" />
+</div>

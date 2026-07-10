@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Events &amp; Custom Events" topicRoute="/javascript/events" subtopicLabel="Custom Events Don't Bubble by Default" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Custom Events Don't Bubble by Default</h1>
+  <p class="page-subtitle">Unlike most native DOM events, <code>CustomEvent</code> defaults <code>bubbles</code> to <code>false</code> — a parent listener silently never fires unless you opt in explicitly.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="DOM Level 3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>The same parent listens for two custom events dispatched from an identical child — one without <code>bubbles: true</code>, one with it — plus a native <code>click</code> for contrast. Watch which ones the parent actually hears.</p>
+    <app-live-playground title="Custom event bubbling vs. native event bubbling" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/javascript/events">Events &amp; Custom Events</a> page's warning about custom event bubbling. Next, see why <code>closest()</code> still correctly finds a delegating ancestor even when a click lands on a deeply nested SVG <code>&lt;path&gt;</code>.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Events &amp; Custom Events"
+    topicRoute="/javascript/events"
+    [prev]="{ label: 'Capture Fires Before Bubble, in Strict Outside-In Order', route: '/javascript/events/capture-fires-before-bubble-in-strict-outside-in-order' }"
+    [next]="{ label: 'closest() Walks Up Correctly Through Nested SVG Targets', route: '/javascript/events/closest-walks-up-through-nested-svg-targets-correctly' }"
+  />
+</div>

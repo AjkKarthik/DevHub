@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Core Hooks"
+    topicRoute="/react/hooks-core"
+    subtopicLabel="Functional Update Fixes Stale State, Not a Stale Prop" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Functional Update Fixes Stale State, But Not a Stale Prop in the Same Closure</h1>
+  <p class="page-subtitle">
+    The main page's stale-closure fix only ever reads one value from the effect's closure — this checks
+    whether it also protects a second, unrelated prop referenced in the same interval callback.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="React 16.8+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A ticking interval that updates <code>count</code> via a functional update, while also logging an
+      unrelated <code>multiplier</code> prop from the same closure.
+    </p>
+    <app-live-playground
+      title="Functional update vs a stale prop in the same closure"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own hook
+      patterns — Strict Mode's real reach, useContext's Provider-presence rule, and now precisely what a
+      functional update does and doesn't fix.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Core Hooks"
+    topicRoute="/react/hooks-core"
+    [prev]="{ label: 'useContext’s defaultValue Is Skipped by an Explicit undefined Provider', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' }" />
+</div>

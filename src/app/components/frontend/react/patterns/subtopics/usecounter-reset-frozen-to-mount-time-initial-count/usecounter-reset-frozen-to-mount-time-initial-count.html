@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="React Patterns"
+    topicRoute="/react/patterns"
+    subtopicLabel="useCounter’s reset() Is Frozen to the Mount-Time initialCount" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That useCounter's reset() Is Frozen to the Mount-Time initialCount, Ignoring Later Prop Changes</h1>
+  <p class="page-subtitle">
+    The state initializer pattern's description never says what happens if the caller's initial-value
+    argument changes after mount — this checks whether reset() picks up that new value or stays frozen.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="React 16.8+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The main page's own <code>useCounter</code>, fed a <code>startAt</code> value that changes after
+      mount, then reset.
+    </p>
+    <app-live-playground
+      title="useCounter's reset() and a changing initial value"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own pattern
+      claims — a prop getter's inconsistent field composition, a composed hook's hidden shared storage,
+      and now the state initializer pattern's mount-time-only semantics.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="React Patterns"
+    topicRoute="/react/patterns"
+    [prev]="{ label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' }" />
+</div>

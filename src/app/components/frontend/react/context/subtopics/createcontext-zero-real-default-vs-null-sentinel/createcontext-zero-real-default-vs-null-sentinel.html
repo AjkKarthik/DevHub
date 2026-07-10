@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Context API"
+    topicRoute="/react/context"
+    subtopicLabel="createContext's Numeric Default Works With Zero Providers" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That createContext's Numeric Default Works With Zero Providers</h1>
+  <p class="page-subtitle">
+    The main page uses two opposite defaultValue strategies across its own examples — a real usable
+    fallback for LevelContext, an error sentinel for UserContext — this checks what each one actually does
+    with no Provider at all.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="React 16.3+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The main page's own <code>LevelContext</code> pattern rendered with zero wrapping Sections,
+      alongside its own <code>UserContext</code> throw-on-null pattern.
+    </p>
+    <app-live-playground
+      title="createContext default value — usable fallback vs error sentinel"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This clarifies that a context's default value is a design choice, not a fixed React behavior, before
+      checking a related re-render cost of the main page's own mega-context anti-pattern in the next
+      subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Context API"
+    topicRoute="/react/context"
+    [next]="{ label: 'A Mega-Context Re-renders Consumers of Unrelated Fields', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' }" />
+</div>

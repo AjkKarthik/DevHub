@@ -1,0 +1,49 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Prototypes &amp; Classes"
+    topicRoute="/javascript/prototypes"
+    subtopicLabel="Static Methods Don’t Exist on Instances at All" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Calling a Static Method on an Instance Throws a Real TypeError, Not Just a Lint Warning</h1>
+  <p class="page-subtitle">
+    The theory says static methods "can't be called" on instances — this actually attempts the call
+    (and its mirror image) to confirm both throw real errors, not just discouraged patterns.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES6" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      A class with one static method and one instance method — both called on the "wrong" side to
+      see the actual thrown error.
+    </p>
+    <app-live-playground
+      title="Static vs instance methods — real TypeErrors both ways"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This confirms static/instance separation is a hard prototype-chain limit, not convention. The
+      final subtopic returns to a security-relevant scenario: how far prototype pollution's blast
+      radius actually reaches.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Prototypes &amp; Classes"
+    topicRoute="/javascript/prototypes"
+    [prev]="{ label: 'Object.create(null) Has No Methods, Not Just Hidden', route: '/javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration' }"
+    [next]="{ label: 'Prototype Pollution Contaminates Every Unrelated Object', route: '/javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object' }" />
+</div>

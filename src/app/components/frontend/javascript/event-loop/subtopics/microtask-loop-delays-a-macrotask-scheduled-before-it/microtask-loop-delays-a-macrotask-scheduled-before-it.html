@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Loop &amp; Concurrency" topicRoute="/javascript/event-loop" subtopicLabel="A Microtask Loop Delays a Macrotask Scheduled Before It" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">A Microtask Loop Delays a Macrotask Scheduled Before It</h1>
+  <p class="page-subtitle">Registration order between queues doesn't matter — a <code>setTimeout</code> registered first still waits behind the entire microtask queue, however long that queue takes to drain.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A <code>setTimeout(fn, 0)</code> is registered first, then a self-terminating chain of 20,000 microtasks starts right after. Watch the real timestamps to see which one actually finishes first.</p>
+    <app-live-playground title="Microtask chain vs. an earlier-registered setTimeout" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/event-loop">Event Loop &amp; Concurrency</a> page's warning about infinite microtask loops in a real, measurable demo. Next, see how two independent Promise chains actually interleave on the microtask queue, one step at a time.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Event Loop &amp; Concurrency"
+    topicRoute="/javascript/event-loop"
+    [next]="{ label: 'Independent Promise Chains Interleave One Microtask at a Time', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' }"
+  />
+</div>

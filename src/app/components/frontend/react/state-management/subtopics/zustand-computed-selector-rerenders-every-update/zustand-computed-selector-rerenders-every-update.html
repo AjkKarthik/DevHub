@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="State Management"
+    topicRoute="/react/state-management"
+    subtopicLabel="A Zustand Computed Selector Re-renders on Every Store Update" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Zustand Computed Selector Re-renders on Every Store Update</h1>
+  <p class="page-subtitle">
+    The main page's Challenge hint suggests filtering directly inside a Zustand selector — this checks
+    whether that computed selector still gets the "re-renders only when that slice changes" guarantee the
+    theory section describes for plain field selectors.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="Zustand 4.x" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>ProductList</code> selecting a <code>.filter()</code>-computed array, re-rendered by a
+      slider that changes a completely unrelated store field.
+    </p>
+    <app-live-playground
+      title="Zustand computed selector — re-render count"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This clarifies exactly what "pass a selector" does and doesn't guarantee, before checking a related
+      Redux/Immer mutation boundary in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="State Management"
+    topicRoute="/react/state-management"
+    [next]="{ label: 'Mutating a useSelector Value Directly Fails Silently', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' }" />
+</div>

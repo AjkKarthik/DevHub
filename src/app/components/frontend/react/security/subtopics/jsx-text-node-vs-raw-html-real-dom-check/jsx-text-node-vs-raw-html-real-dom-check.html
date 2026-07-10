@@ -1,0 +1,47 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Security in React"
+    topicRoute="/react/security"
+    subtopicLabel="JSX Text Node vs Raw HTML — a Real DOM Check" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That JSX Renders a Real Text Node, While Unsanitized dangerouslySetInnerHTML Creates a Real Element</h1>
+  <p class="page-subtitle">
+    The theory says JSX text "cannot execute as markup" — this inspects the actual DOM React produced,
+    not just whether a popup appeared, to confirm exactly why.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="React 18" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The same XSS-test payload string rendered two ways — as plain <code>&#123;text&#125;</code> in JSX,
+      and via unsanitized <code>dangerouslySetInnerHTML</code> — inspecting the real DOM each one produces.
+    </p>
+    <app-live-playground
+      title="JSX text node vs raw HTML — real DOM inspection"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This establishes the structural reason JSX is safe by default. The next subtopic moves to the
+      other side: once you DO need dangerouslySetInnerHTML, what exactly DOMPurify strips versus keeps.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Security in React"
+    topicRoute="/react/security"
+    [next]="{ label: 'DOMPurify Strips Handlers, Keeps Allowed Tags', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' }" />
+</div>

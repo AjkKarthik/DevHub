@@ -1164,6 +1164,282 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DotPath Hits Infinite Recursion on Self-Reference', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' },
     { label: 'A Single as Cast Defeats CSSVarName', route: '/typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product' },
   ],
+  'classes': [
+    { label: 'private Still Leaks Via JSON.stringify', route: '/typescript/classes/testing-that-typescript-private-is-still-included-in-json-stringify' },
+    { label: 'getState’s Object.freeze Doesn’t Stop Array Mutation', route: '/typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items' },
+    { label: 'Object.create Bypasses the Private Constructor', route: '/typescript/classes/testing-that-object-create-bypasses-appconfigs-private-constructor' },
+  ],
+  'decorators': [
+    { label: 'Field Decorator Only Validates Construction', route: '/typescript/decorators/testing-that-celsius-field-decorator-only-validates-construction' },
+    { label: 'Singleton Silently Ignores the Second Call’s Args', route: '/typescript/decorators/testing-that-singleton-silently-ignores-second-calls-args' },
+    { label: 'describe’s Class Decorator Returns an Unnamed Class', route: '/typescript/decorators/testing-that-describes-class-decorator-returns-an-unnamed-class' },
+  ],
+  'tsconfig': [
+    { label: 'strictPropertyInitialization Misses a Private Helper', route: '/typescript/tsconfig/testing-that-strictpropertyinitialization-misses-a-private-helper' },
+    { label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' },
+    { label: 'strictFunctionTypes Doesn’t Apply to Methods', route: '/typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax' },
+  ],
+  'modules': [
+    { label: 'Circular Imports Work Fine for Functions', route: '/typescript/modules/testing-that-circular-imports-work-fine-for-functions-not-consts' },
+    { label: 'A Barrel Import Runs Every File’s Side Effects', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' },
+    { label: 'export type Strips the Value, Even for a Class', route: '/typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class' },
+  ],
+  'declarations': [
+    { label: 'interface and type alias Conflict, Not Merge', route: '/typescript/declarations/testing-that-interface-and-type-alias-with-the-same-name-conflict' },
+    { label: 'Merging Ignores Generic Parameter Names', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' },
+    { label: 'A Hand-Written .d.ts Doesn’t Verify the Real JS', route: '/typescript/declarations/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js' },
+  ],
+  'frameworks': [
+    { label: 'counterReducer’s Return Type Catches Gaps', route: '/typescript/frameworks/testing-that-counterreducers-explicit-return-type-catches-gaps' },
+    { label: 'ApiResponse Still Requires data on Error', route: '/typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status' },
+    { label: 'setTimeout’s Return Type Depends on Node Types', route: '/typescript/frameworks/testing-that-settimeouts-return-type-depends-on-node-types' },
+  ],
+  'strict-migration': [
+    { label: '@ts-expect-error Doesn’t Check Which Error', route: '/typescript/strict-migration/testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses' },
+    { label: 'noImplicitAny Doesn’t Restrict Explicit any', route: '/typescript/strict-migration/testing-that-noimplicitany-doesnt-restrict-explicit-any' },
+    { label: 'A Leaf Module’s Untyped Import Leaks any', route: '/typescript/strict-migration/testing-that-a-leaf-modules-untyped-import-leaks-any' },
+  ],
+  'ts-performance': [
+    { label: 'DeepPartial’s Depth Counter Makes Deep Fields Required', route: '/typescript/ts-performance/testing-that-deeppartials-depth-counter-makes-deep-fields-required' },
+    { label: 'Forgetting as const Collapses the Color Union', route: '/typescript/ts-performance/testing-that-forgetting-as-const-collapses-the-color-union-to-string' },
+    { label: 'skipLibCheck Only Skips .d.ts, Not Content', route: '/typescript/ts-performance/testing-that-skiplibcheck-only-skips-d-ts-extension-not-content' },
+  ],
+  'react-basics': [
+    { label: 'Batching Applies to Native Event Listeners', route: '/react/basics/testing-that-batching-applies-to-native-event-listeners-not-just-onclick' },
+    { label: 'Index Keys Leave Stale Text After Prepend', route: '/react/basics/testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend' },
+    { label: 'React.memo Alone Doesn’t Stop a Fresh Object Prop', route: '/react/basics/testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render' },
+  ],
+  'hooks-core': [
+    { label: 'StrictMode Double-Invokes the Lazy Initializer', route: '/react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects' },
+    { label: 'useContext’s defaultValue Is Skipped by an Explicit undefined Provider', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
+    { label: 'Functional Update Fixes Stale State, Not a Stale Prop', route: '/react/hooks-core/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop' },
+  ],
+  'hooks-advanced': [
+    { label: 'useReducer’s Lazy Init Is StrictMode Double-Invoked Too', route: '/react/hooks-advanced/testing-that-usereducers-lazy-init-is-strictmode-double-invoked-too' },
+    { label: 'Memoizing a Context Selector Doesn’t Stop the Consumer Re-rendering', route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
+    { label: 'A Module-Level Variable Leaks State Across Custom Hook Instances', route: '/react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances' },
+  ],
+  'react-forms': [
+    { label: 'z.coerce.number() Converts an Empty String to Zero', route: '/react/forms/testing-that-z-coerce-number-converts-an-empty-string-to-zero-not-nan' },
+    { label: 'refine()’s path Option Only Flags confirm, Not password Too', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' },
+    { label: 'Real-Time Validation Mode Reintroduces Per-Keystroke Re-renders', route: '/react/forms/testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf' },
+  ],
+  'context': [
+    { label: 'createContext’s Numeric Default Works With Zero Providers', route: '/react/context/testing-that-createcontexts-numeric-default-works-with-zero-providers' },
+    { label: 'A Mega-Context Re-renders Consumers of Unrelated Fields', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
+    { label: 'A Toast Container Outside the Provider Can’t Access Notifications', route: '/react/context/testing-that-a-toast-container-outside-the-provider-cant-access-notifications' },
+  ],
+  'state-management': [
+    { label: 'A Zustand Computed Selector Re-renders on Every Store Update', route: '/react/state-management/testing-that-a-zustand-computed-selector-rerenders-on-every-store-update' },
+    { label: 'Mutating a useSelector Value Directly Fails Silently', route: '/react/state-management/testing-that-mutating-a-useselector-value-directly-fails-silently' },
+    { label: 'Jotai’s atomFamily Shares State for the Same ID', route: '/react/state-management/testing-that-jotais-atomfamily-shares-state-for-the-same-id' },
+  ],
+  'router': [
+    { label: 'useFetcher Revalidates the Current Route’s Loader', route: '/react/router/testing-that-usefetcher-revalidates-the-current-routes-loader' },
+    { label: 'A Child errorElement Bubbles Up and Replaces the Parent’s Whole Layout', route: '/react/router/testing-that-a-child-errorelement-bubbles-up-and-replaces-the-parents-whole-layout' },
+    { label: 'NavLink’s end Prop Is Needed for Root, Would Break Nested Highlighting', route: '/react/router/testing-that-navlinks-end-prop-is-needed-for-root-but-would-break-nested-active-highlighting-elsewhere' },
+  ],
+  'react-tanstack-query': [
+    { label: 'An Inline Object queryKey Does Not Actually Refetch on Re-render', route: '/react/tanstack-query/testing-that-an-inline-object-querykey-does-not-actually-refetch-on-rerender' },
+    { label: 'The Abort Signal Must Be Wired Into fetch to Actually Cancel', route: '/react/tanstack-query/testing-that-the-abort-signal-must-be-explicitly-wired-into-fetch-to-actually-cancel-the-request' },
+    { label: 'initialData Skips the Immediate Fetch, placeholderData Always Triggers One', route: '/react/tanstack-query/testing-that-initialdata-skips-the-immediate-fetch-but-placeholderdata-always-triggers-one' },
+  ],
+  // NOTE: keyed 'react-performance', NOT bare 'performance' — ASP.NET,
+  // SQL, HTML, Blazor, Node.js, GraphQL, and Service Mesh hubs all
+  // share that same route slug and could claim the bare key later.
+  'react-performance': [
+    { label: 'children Is a Fresh Reference Every Render', route: '/react/performance/testing-that-children-is-a-fresh-reference-every-render-defeating-memo-even-with-identical-jsx' },
+    { label: 'useDeferredValue Needs memo on the Child', route: '/react/performance/testing-that-usedeferredvalue-needs-memo-on-the-child-or-it-rerenders-immediately-anyway' },
+    { label: 'Duplicate Dynamic import() Calls Are Deduplicated, Not Refetched', route: '/react/performance/testing-that-duplicate-import-calls-are-deduplicated-not-double-fetched' },
+  ],
+  // React keeps the bare 'patterns' key (claimed it first). The JavaScript
+  // hub's own /javascript/patterns topic is hub-prefixed to 'js-patterns'
+  // below. Go hub still routes to 'patterns' too — hub-prefix it as
+  // 'go-patterns' if it ever claims subtopics.
+  'patterns': [
+    { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
+    { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
+    { label: 'useCounter’s reset() Is Frozen to the Mount-Time initialCount', route: '/react/patterns/testing-that-usecounters-reset-is-frozen-to-the-mount-time-initialcount-ignoring-later-prop-changes' },
+  ],
+  // NOTE: keyed 'react-typescript', NOT bare 'typescript' — the entire
+  // TypeScript hub's own top-level route slug is 'typescript', and any
+  // other hub's own "X & TypeScript" topic could plausibly claim the
+  // bare key too. Proactively hub-prefixed to avoid that collision.
+  'react-typescript': [
+    { label: 'Select’s Runtime Coercion Mishandles a Boolean-Typed T', route: '/react/typescript/testing-that-selects-runtime-coercion-silently-mishandles-a-boolean-typed-t' },
+    { label: 'Discriminated Union Narrowing Gives Zero Runtime Protection', route: '/react/typescript/testing-that-discriminated-union-narrowing-gives-zero-runtime-protection-against-mismatched-data' },
+    { label: 'SimpleInput’s Optional onChange Can Create a Read-Only Controlled Input', route: '/react/typescript/testing-that-simpleinputs-optional-onchange-can-silently-create-a-readonly-controlled-input' },
+  ],
+  // NOTE: keyed 'react-testing', NOT bare 'testing' — Angular's own
+  // /angular/testing topic already claims the bare key with its own
+  // subtopics.
+  'react-testing': [
+    { label: 'queryBy Returns null, getBy Throws — the Real Library', route: '/react/testing/testing-that-queryby-returns-null-and-getby-throws-using-the-real-testing-library' },
+    { label: 'fireEvent.click Skips Focus, userEvent.click Doesn’t', route: '/react/testing/testing-that-fireevent-click-doesnt-trigger-focus-but-userevent-click-does' },
+    { label: 'A Hook Setter Without act() Produces a Real Console Warning', route: '/react/testing/testing-that-calling-a-hooks-setter-without-act-produces-a-real-console-warning' },
+  ],
+  nextjs: [
+    { label: 'use client Propagates to Every Import', route: '/react/nextjs/testing-that-use-client-propagates-to-every-plain-utility-import-not-just-components' },
+    { label: 'revalidatePath Is Cache Invalidation, Not a Live Push', route: '/react/nextjs/testing-that-revalidatepath-only-refreshes-the-server-cache-not-already-rendered-client-state' },
+    { label: 'useSearchParams Without Suspense Forces the Whole Page Dynamic', route: '/react/nextjs/testing-that-usesearchparams-without-suspense-forces-the-entire-page-dynamic-not-just-that-segment' },
+  ],
+  native: [
+    { label: 'Text-in-View Crashes Only in Production Builds', route: '/react/native/testing-that-text-directly-in-view-crashes-only-in-production-builds-not-in-dev-or-expo-go' },
+    { label: 'getItemLayout Assumes Every Row Is the Same Height', route: '/react/native/testing-that-getitemlayout-assumes-uniform-row-height-and-corrupts-scroll-position-if-rows-vary' },
+    { label: 'StyleSheet.create() Doesn’t Replace React.memo', route: '/react/native/testing-that-stylesheetcreate-optimizes-native-layout-not-react-reconciliation-unlike-reactmemo' },
+  ],
+  'hook-form': [
+    { label: 'watch() Re-renders the Whole Component', route: '/react/hook-form/testing-that-watch-rerenders-the-whole-component-on-every-keystroke-not-just-the-watched-field' },
+    { label: 'Index Keys Show the Wrong Value After remove()', route: '/react/hook-form/testing-that-index-keys-show-the-wrong-typed-value-after-usefieldarray-remove' },
+    { label: 'Missing valueAsNumber Breaks Arithmetic Silently', route: '/react/hook-form/testing-that-missing-valueasnumber-turns-submitted-numbers-into-concatenated-strings' },
+  ],
+  // NOTE: keyed 'react-animations', NOT bare 'animations' — Angular's
+  // own /angular/animations topic already claims the bare key.
+  'react-animations': [
+    { label: 'Missing Key Breaks Exit for the Wrong List Item', route: '/react/animations/testing-that-a-missing-key-makes-animatepresence-exit-animate-the-wrong-list-item' },
+    { label: 'Width Animation Reflows Siblings, transform Doesn’t', route: '/react/animations/testing-that-animating-width-reflows-sibling-elements-but-animating-transform-never-does' },
+    { label: 'viewport.once Controls Repeat, Not Just the First Play', route: '/react/animations/testing-that-viewport-once-true-stops-the-whileinview-animation-from-repeating-on-every-scroll-reentry' },
+  ],
+  // NOTE: keyed 'react-security', NOT bare 'security' — the standalone
+  // Security & Auth hub already claims the bare key with its own subtopics.
+  'react-security': [
+    { label: 'JSX Text Node vs Raw HTML — a Real DOM Check', route: '/react/security/testing-that-jsx-renders-a-real-text-node-while-unsanitized-dangerouslysetinnerhtml-creates-a-real-element' },
+    { label: 'DOMPurify Strips Handlers, Keeps Allowed Tags', route: '/react/security/testing-that-dompurify-strips-event-handlers-and-javascript-urls-but-keeps-allowed-tags-intact' },
+    { label: 'A Protocol-Relative URL Bypasses a Naive Redirect Check', route: '/react/security/testing-that-a-protocol-relative-url-bypasses-a-naive-starts-with-slash-open-redirect-check' },
+  ],
+  fundamentals: [
+    { label: 'Number.isNaN() vs Global isNaN()', route: '/javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text' },
+    { label: 'Nullish Assignment Keeps 0, OR Overwrites It', route: '/javascript/fundamentals/testing-that-nullish-assignment-keeps-zero-while-or-assignment-silently-overwrites-it' },
+    { label: 'Object.freeze() Throws in Strict Mode', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' },
+  ],
+  closures: [
+    { label: 'var Shares One Binding, let Creates One Per Iteration', route: '/javascript/closures/testing-that-var-shares-one-binding-across-a-loop-while-let-creates-a-fresh-one-per-iteration' },
+    { label: 'Two memoize() Wrappers Don’t Share a Cache', route: '/javascript/closures/testing-that-two-separate-memoize-wrappers-of-the-same-function-keep-genuinely-private-caches' },
+    { label: 'Closure Over an Object Property vs a Destructured Primitive', route: '/javascript/closures/testing-that-a-closure-over-an-object-property-sees-later-mutations-while-a-destructured-primitive-copy-doesnt' },
+  ],
+  hoisting: [
+    { label: 'typeof in the TDZ Throws ReferenceError', route: '/javascript/hoisting/testing-that-typeof-on-a-tdz-variable-throws-referenceerror-while-a-truly-undeclared-variable-stays-safe' },
+    { label: 'Function Declaration Wins Hoisting, var Overwrites It After', route: '/javascript/hoisting/testing-that-a-function-declaration-wins-the-hoisting-race-but-a-same-named-var-assignment-overwrites-it-afterward' },
+    { label: 'Duplicate let Across Switch Cases Throws a Real SyntaxError', route: '/javascript/hoisting/testing-that-declaring-the-same-let-name-in-two-switch-cases-without-their-own-blocks-throws-a-real-syntaxerror' },
+  ],
+  symbols: [
+    { label: 'Which Operations Actually See Symbol Keys', route: '/javascript/symbols/testing-which-operations-actually-see-symbol-keyed-properties-and-which-silently-skip-them' },
+    { label: 'Symbol.toPrimitive’s Hint Differs by Coercion Context', route: '/javascript/symbols/testing-that-symboltoprimitives-hint-parameter-differs-across-string-number-and-default-coercion-contexts' },
+    { label: 'Symbol.hasInstance Overrides instanceof for Any Value', route: '/javascript/symbols/testing-that-symbolhasinstance-completely-overrides-instanceof-even-for-completely-unrelated-values' },
+  ],
+  functions: [
+    { label: 'bind() Is Permanent — call/apply/bind Can’t Override It', route: '/javascript/functions/testing-that-bind-is-permanent-a-later-call-apply-or-second-bind-cant-override-it' },
+    { label: 'Default Parameter Only Triggers on undefined', route: '/javascript/functions/testing-that-a-default-parameter-only-triggers-on-undefined-not-null-zero-false-or-empty-string' },
+    { label: 'new Overrides Even an Explicitly Bound Function', route: '/javascript/functions/testing-that-calling-new-on-an-already-bound-function-creates-a-fresh-object-not-the-bound-target' },
+  ],
+  prototypes: [
+    { label: 'Object.create(null) Has No Methods, Not Just Hidden', route: '/javascript/prototypes/testing-that-object-create-null-genuinely-has-no-methods-not-just-hidden-from-enumeration' },
+    { label: 'Static Methods Don’t Exist on Instances at All', route: '/javascript/prototypes/testing-that-calling-a-static-method-on-an-instance-throws-a-real-typeerror-not-just-a-lint-warning' },
+    { label: 'Prototype Pollution Contaminates Every Unrelated Object', route: '/javascript/prototypes/testing-that-a-naive-for-in-merge-lets-prototype-pollution-contaminate-a-completely-unrelated-freshly-created-object' },
+  ],
+  objects: [
+    { label: 'Integer Keys Sort First, Regardless of Insertion Order', route: '/javascript/objects/testing-that-integer-like-keys-sort-first-in-every-enumeration-method-not-just-object-keys' },
+    { label: 'Object.assign Invokes Setters, Spread Doesn’t', route: '/javascript/objects/testing-that-object-assign-invokes-a-target-setter-while-spread-creates-a-plain-property-instead' },
+    { label: 'structuredClone Strips Class Prototype, Throws on Functions', route: '/javascript/objects/testing-that-structuredclone-strips-a-class-instances-prototype-and-throws-on-a-nested-function' },
+  ],
+  destructuring: [
+    { label: 'A Destructured Method Loses Its this Context', route: '/javascript/destructuring/testing-exactly-where-a-destructured-method-loses-its-this-context-and-where-it-doesnt' },
+    { label: 'Bare Destructuring Assignment Needs Parens — a Real SyntaxError', route: '/javascript/destructuring/testing-that-a-bare-destructuring-assignment-to-existing-variables-throws-a-real-syntaxerror-without-parens' },
+    { label: 'One-Level Default Doesn’t Guard a Deeper Nested Property', route: '/javascript/destructuring/testing-that-a-default-value-at-one-nesting-level-doesnt-protect-a-property-two-levels-deeper' },
+  ],
+  // NOTE: keyed 'js-arrays', NOT bare 'arrays' — the C# hub's own
+  // /csharp/arrays topic already claims the bare key.
+  'js-arrays': [
+    { label: 'forEach’s Async Callback Is Never Awaited', route: '/javascript/arrays/testing-that-foreach-never-awaits-an-async-callback-while-for-of-and-promise-all-map-genuinely-do' },
+    { label: 'sort() Is Genuinely Stable — Ties Keep Insertion Order', route: '/javascript/arrays/testing-that-array-prototype-sort-is-genuinely-stable-elements-with-equal-comparator-results-keep-their-original-order' },
+    { label: 'Mutating an Array During map() Really Does Skip Elements', route: '/javascript/arrays/testing-that-mutating-the-source-array-with-splice-inside-a-map-callback-actually-skips-real-elements' },
+  ],
+  promises: [
+    { label: 'Promise.all Rejection Doesn’t Cancel Other Pending Promises', route: '/javascript/promises/promise-all-rejection-doesnt-cancel-other-pending-promises' },
+    { label: 'Forgetting return in .then() Breaks the Chained Value', route: '/javascript/promises/forgetting-return-in-then-breaks-the-chained-value' },
+    { label: 'async Functions Always Wrap Their Return Value', route: '/javascript/promises/async-function-always-wraps-return-value-in-a-promise' },
+  ],
+  'event-loop': [
+    { label: 'A Microtask Loop Delays an Earlier setTimeout', route: '/javascript/event-loop/microtask-loop-delays-a-macrotask-scheduled-before-it' },
+    { label: 'Promise Chains Interleave One Microtask at a Time', route: '/javascript/event-loop/independent-promise-chains-interleave-one-microtask-at-a-time' },
+    { label: 'A Busy-Loop Blocks Every Pending setTimeout', route: '/javascript/event-loop/synchronous-busy-loop-blocks-every-pending-settimeout-until-it-ends' },
+  ],
+  'error-handling': [
+    { label: 'finally’s return Overrides catch’s Return Value', route: '/javascript/error-handling/finally-return-silently-overrides-the-catch-blocks-return-value' },
+    { label: 'try/catch Never Catches a setTimeout Error', route: '/javascript/error-handling/try-catch-never-catches-an-error-thrown-inside-settimeout' },
+    { label: 'AggregateError Packages Every Rejection', route: '/javascript/error-handling/aggregateerror-from-promise-any-packages-every-rejection-not-just-the-first' },
+  ],
+  generators: [
+    { label: 'Spread and for...of Ignore the Return Value', route: '/javascript/generators/spread-and-for-of-ignore-a-generators-return-value' },
+    { label: 'break Triggers generator.return() and finally', route: '/javascript/generators/breaking-a-for-of-loop-triggers-generator-return-and-runs-finally' },
+    { label: 'yield* Forwards next() Values and throw()', route: '/javascript/generators/yield-delegation-forwards-next-values-and-throw-into-the-inner-generator' },
+  ],
+  dom: [
+    { label: 'A Hidden Write Still Causes Layout Thrashing', route: '/javascript/dom/hidden-write-inside-a-third-party-call-still-causes-layout-thrashing' },
+    { label: 'innerHTML += Destroys Child Listeners', route: '/javascript/dom/innerhtml-plus-equals-reparses-the-whole-container-and-destroys-child-listeners' },
+    { label: 'querySelectorAll Is Static, getElementsByClassName Is Live', route: '/javascript/dom/queryselectorall-is-a-static-nodelist-getelementsbyclassname-is-a-live-htmlcollection' },
+  ],
+  events: [
+    { label: 'Capture Fires Before Bubble, Outside-In', route: '/javascript/events/capture-fires-before-bubble-in-strict-outside-in-order' },
+    { label: 'Custom Events Don’t Bubble by Default', route: '/javascript/events/custom-events-dont-bubble-by-default' },
+    { label: 'closest() Works Through Nested SVG Targets', route: '/javascript/events/closest-walks-up-through-nested-svg-targets-correctly' },
+  ],
+  'browser-apis': [
+    { label: 'fetch() Resolves on 4xx/5xx — Never Rejects', route: '/javascript/browser-apis/fetch-resolves-on-4xx-5xx-never-rejects' },
+    { label: 'A Response Body Can Only Be Consumed Once', route: '/javascript/browser-apis/response-body-can-only-be-consumed-once' },
+    { label: 'AbortController Stops Every Pending Retry', route: '/javascript/browser-apis/abort-signal-stops-all-pending-retries-immediately' },
+  ],
+  // NOTE: keyed 'js-modules', NOT bare 'modules' — the TypeScript hub's own
+  // /typescript/modules topic already claims the bare key.
+  'js-modules': [
+    { label: 'ESM Imports Are Live Bindings', route: '/javascript/modules/esm-imports-are-live-bindings-not-value-copies' },
+    { label: 'Modules Are Singletons', route: '/javascript/modules/modules-are-singletons-shared-state-across-importers' },
+    { label: 'Circular Import Binding Exists but Value Is Undefined', route: '/javascript/modules/circular-import-binding-exists-but-value-is-undefined' },
+  ],
+  bundlers: [
+    { label: 'Tree-Shaking Only Works Reliably With ESM', route: '/javascript/bundlers/tree-shaking-only-works-reliably-with-esm-not-commonjs' },
+    { label: 'sideEffects: false Needs an Explicit File List', route: '/javascript/bundlers/sideeffects-false-requires-explicitly-listing-real-side-effect-files' },
+    { label: 'devDependencies Affects Production Install Size', route: '/javascript/bundlers/devdependencies-vs-dependencies-affects-production-install-size' },
+  ],
+  // NOTE: keyed 'js-patterns', NOT bare 'patterns' — the React hub's own
+  // /react/patterns topic already claims the bare key.
+  'js-patterns': [
+    { label: 'Memoize With Objects Uses Reference Equality', route: '/javascript/patterns/memoize-uses-reference-equality-object-args-always-miss' },
+    { label: 'Spreading a Prototype in a Mixin Breaks instanceof', route: '/javascript/patterns/spreading-a-prototype-in-a-mixin-breaks-instanceof' },
+    { label: 'Middleware Short-Circuits Without next()', route: '/javascript/patterns/middleware-short-circuits-when-a-handler-never-calls-next' },
+  ],
+  functional: [
+    { label: 'Object.freeze() Is Only Shallow', route: '/javascript/functional/object-freeze-is-only-shallow-nested-objects-stay-mutable' },
+    { label: 'curry() Miscounts Default and Rest Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' },
+    { label: 'Missing return in pipe() Passes undefined Downstream', route: '/javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream' },
+  ],
+  proxy: [
+    { label: 'set Trap Must Return true', route: '/javascript/proxy/set-trap-must-return-true-or-strict-mode-throws' },
+    { label: 'New Proxy Per Nested get Breaks Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' },
+    { label: 'Lying About a Frozen Property Throws', route: '/javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation' },
+  ],
+  weakrefs: [
+    { label: 'WeakMap Keys Must Be Objects', route: '/javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror' },
+    { label: 'WeakMap/WeakSet Are Non-Iterable', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' },
+    { label: 'register() Rejects heldValue === target', route: '/javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target' },
+  ],
+  'document-structure': [
+    { label: 'defer Runs in Order, async Runs Whenever Ready', route: '/html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready' },
+    { label: 'A Missing DOCTYPE Triggers Quirks Mode', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' },
+    { label: 'A Duplicate head Element’s Content Moves to body', route: '/html/document-structure/a-duplicate-head-elements-content-is-moved-into-body' },
+  ],
+  'semantic-elements': [
+    { label: 'A Second main Is Silently Allowed', route: '/html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error' },
+    { label: 'A Heading-Less section Is Valid HTML', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' },
+    { label: 'time’s datetime Can Diverge From Its Text', route: '/html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text' },
+  ],
+  // NOTE: keyed 'html-forms', NOT bare 'forms' — the Angular hub's own
+  // /angular/forms topic already claims the bare key.
+  'html-forms': [
+    { label: 'name, Not id, Determines the FormData Key', route: '/html/forms/name-not-id-determines-the-submitted-formdata-key' },
+    { label: 'novalidate Disables Blocking, Not checkValidity()', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' },
+    { label: 'enctype Only Affects Native Submission', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' },
+  ],
 };
 
 @Component({

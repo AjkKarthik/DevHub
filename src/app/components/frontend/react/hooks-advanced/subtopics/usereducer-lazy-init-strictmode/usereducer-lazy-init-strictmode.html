@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Advanced Hooks"
+    topicRoute="/react/hooks-advanced"
+    subtopicLabel="useReducer’s Lazy Init Is StrictMode Double-Invoked Too" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That useReducer's Lazy Init Is StrictMode Double-Invoked Too</h1>
+  <p class="page-subtitle">
+    The main page describes useReducer's third-argument init function as equivalent to useState's lazy
+    initializer, "both call the function once on mount" — this checks whether that equivalence extends to
+    Strict Mode's double-invocation too.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="React 18" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A module-level counter incremented inside <code>useReducer</code>'s <code>init</code> function,
+      rendered inside <code>StrictMode</code>.
+    </p>
+    <app-live-playground
+      title="useReducer's lazy init and StrictMode"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the Core Hooks topic's StrictMode finding to useReducer's own lazy-init mechanism,
+      before checking a related subtlety in the context-selector memoization fix in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Advanced Hooks"
+    topicRoute="/react/hooks-advanced"
+    [next]="{ label: 'Memoizing a Context Selector Doesn’t Stop the Consumer Re-rendering', route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' }" />
+</div>

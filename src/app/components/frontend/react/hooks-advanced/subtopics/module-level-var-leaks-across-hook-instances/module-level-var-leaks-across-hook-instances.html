@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Advanced Hooks"
+    topicRoute="/react/hooks-advanced"
+    subtopicLabel="A Module-Level Variable Leaks State Across Custom Hook Instances" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Module-Level Variable Leaks State Across Custom Hook Instances</h1>
+  <p class="page-subtitle">
+    The main page states custom hook state isolation as an unconditional property — this checks whether a
+    hook that skips useState in favor of a module-level variable keeps that guarantee, or breaks it entirely.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="React 16.8+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      Two custom counter hooks, each rendered as two separate instances — one built on
+      <code>useState</code>, one built on a module-level variable.
+    </p>
+    <app-live-playground
+      title="Module-level state and custom hook isolation"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own hook
+      claims — Strict Mode's reach into useReducer, what a context-memoization fix actually stabilizes,
+      and now what actually provides custom hook isolation.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Advanced Hooks"
+    topicRoute="/react/hooks-advanced"
+    [prev]="{ label: 'Memoizing a Context Selector Doesn’t Stop the Consumer Re-rendering', route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' }" />
+</div>

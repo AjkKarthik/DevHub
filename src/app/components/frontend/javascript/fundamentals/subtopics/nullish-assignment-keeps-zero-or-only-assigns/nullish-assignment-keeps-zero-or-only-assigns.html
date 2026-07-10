@@ -1,0 +1,48 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="JavaScript Fundamentals"
+    topicRoute="/javascript/fundamentals"
+    subtopicLabel="Nullish Assignment Keeps 0, OR Assignment Overwrites It" />
+
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Testing That Nullish Assignment (??=) Keeps 0, While OR Assignment (||=) Silently Overwrites It</h1>
+  <p class="page-subtitle">
+    The main page introduces ||=/??= but never connects them to Mistake #4's 0-clobbering bug — this
+    runs both against 5 falsy values to see exactly which ones each operator overwrites.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="ES2021" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>
+      <code>x ||= 99</code> and <code>x ??= 99</code> run against 5 starting values — 0, empty string,
+      false, null, and undefined — with the results printed to the console.
+    </p>
+    <app-live-playground
+      title="||= vs ??= — real results for 5 falsy values"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the || vs ?? distinction from plain operators to their assignment forms. The final
+      subtopic returns to a different Mistake — the exact boundary of what const actually protects.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="JavaScript Fundamentals"
+    topicRoute="/javascript/fundamentals"
+    [prev]="{ label: 'Number.isNaN() vs Global isNaN() — Real Coercion Differences', route: '/javascript/fundamentals/testing-that-numberisnan-and-global-isnan-disagree-on-empty-strings-whitespace-and-garbage-text' }"
+    [next]="{ label: 'Object.freeze() Throws in Strict Mode, Doesn’t Fail Silently', route: '/javascript/fundamentals/testing-that-mutating-a-frozen-object-throws-in-strict-mode-es-modules-not-silently-fails' }" />
+</div>
