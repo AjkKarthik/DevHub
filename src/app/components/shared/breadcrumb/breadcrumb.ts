@@ -1107,6 +1107,9 @@ const JAVASCRIPT_LABELS: Record<string, string> = {
   'proxy/new-proxy-per-nested-get-breaks-referential-equality': 'Nested Proxy Breaks Equality',
   'proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation': 'Frozen Property Invariant',
   'weakrefs':       'WeakMap, WeakSet & WeakRef',
+  'weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror': 'WeakMap Object-Only Keys',
+  'weakrefs/weakmap-and-weakset-are-non-iterable-by-design': 'WeakMap Non-Iterable',
+  'weakrefs/register-throws-if-held-value-is-the-same-as-target': 'register() Same-Value Restriction',
   'cheatsheet':     'Cheat Sheet',
   'interview-prep': 'Interview Prep',
 };

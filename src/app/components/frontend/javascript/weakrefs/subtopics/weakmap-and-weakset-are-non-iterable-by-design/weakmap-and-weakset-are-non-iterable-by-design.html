@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WeakMap, WeakSet &amp; WeakRef" topicRoute="/javascript/weakrefs" subtopicLabel="WeakMap and WeakSet Are Non-Iterable by Design" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">WeakMap and WeakSet Are Non-Iterable by Design</h1>
+  <p class="page-subtitle">Iteration would make garbage collection timing observable — a permanent, deliberate spec restriction, not a missing feature.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>Every common way of inspecting a collection's contents — <code>.size</code>, <code>for...of</code>, spread, <code>Array.from</code>, <code>Object.keys</code> — is tried against a WeakMap. Compare which ones throw, which return nothing useful, and which work fine on a regular Map.</p>
+    <app-live-playground title="WeakMap's non-iterability across every inspection method" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/javascript/weakrefs">WeakMap, WeakSet &amp; WeakRef</a> page's warning about iteration. Next, see a real, spec-enforced restriction on <code>FinalizationRegistry.register()</code> that prevents a common footgun.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WeakMap, WeakSet &amp; WeakRef"
+    topicRoute="/javascript/weakrefs"
+    [prev]="{ label: 'WeakMap Keys Must Be Objects — Primitives Throw a TypeError', route: '/javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror' }"
+    [next]="{ label: 'register() Throws if heldValue Is the Same as target', route: '/javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target' }"
+  />
+</div>

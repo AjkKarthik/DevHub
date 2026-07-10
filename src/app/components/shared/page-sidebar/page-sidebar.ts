@@ -14565,6 +14565,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/weakrefs': {
+    apis: ['WeakMap', 'WeakSet', 'WeakRef', 'FinalizationRegistry'],
+    related: [
+      { label: 'Proxy & Reflect API', route: '/javascript/proxy'      },
+      { label: 'Functional JS',       route: '/javascript/functional' },
+      { label: 'Prototypes & Classes', route: '/javascript/prototypes' },
+    ],
+    tip: 'Only objects — and, since ES2023, unregistered Symbol() values — can be WeakMap keys, since the GC needs genuine identity to track for automatic cleanup.',
+    docs: [
+      { label: 'MDN — WeakMap', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'WeakMap/WeakSet are permanently non-iterable — allowing iteration would make GC timing observable, a determinism and security concern.',
+      'FinalizationRegistry.register() throws immediately if heldValue is the same value as target — that reference would keep target alive forever.',
+    ],
+  },
+
+  'javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror': {
+    apis: ['WeakMap', 'Symbol()', 'Symbol.for()'],
+    related: [
+      { label: 'WeakMap, WeakSet & WeakRef (overview)', route: '/javascript/weakrefs' },
+      { label: 'WeakMap Non-Iterable', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' },
+      { label: 'register() Same-Value Restriction', route: '/javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target' },
+    ],
+    tip: 'Primitives are value-typed and have no identity for the GC to track — only objects and unregistered Symbol() values are valid WeakMap keys.',
+    docs: [
+      { label: 'MDN — WeakMap', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'A registered symbol from Symbol.for() is still excluded, despite being type "symbol" — it\'s a shared, non-unique value, unlike a plain Symbol().',
+      'Attempting a disallowed key type throws an immediate TypeError — there is no silent fallback or conversion.',
+    ],
+  },
+
+  'javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design': {
+    apis: ['WeakMap', 'WeakSet', 'Symbol.iterator'],
+    related: [
+      { label: 'WeakMap, WeakSet & WeakRef (overview)', route: '/javascript/weakrefs' },
+      { label: 'WeakMap Object-Only Keys', route: '/javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror' },
+      { label: 'register() Same-Value Restriction', route: '/javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target' },
+    ],
+    tip: 'If WeakMap were iterable, you could watch its entry count change over time — effectively observing exactly when the GC runs, which the spec deliberately hides.',
+    docs: [
+      { label: 'MDN — WeakMap', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'wm.size and for...of fail differently — .size silently returns undefined (a missing property), while for...of throws a real TypeError (missing iterator protocol).',
+      'Object.keys(wm) doesn\'t throw but reveals nothing — WeakMap entries aren\'t stored as normal enumerable properties.',
+    ],
+  },
+
+  'javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target': {
+    apis: ['FinalizationRegistry', 'register()', 'unregister()'],
+    related: [
+      { label: 'WeakMap, WeakSet & WeakRef (overview)', route: '/javascript/weakrefs' },
+      { label: 'WeakMap Object-Only Keys', route: '/javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror' },
+      { label: 'WeakMap Non-Iterable', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' },
+    ],
+    tip: 'heldValue is held with a strong reference by the registry — if it could be target itself, that reference would permanently prevent target from ever being collected.',
+    docs: [
+      { label: 'MDN — FinalizationRegistry', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'This is a hard, spec-mandated TypeError, not a lint recommendation — the engine enforces it immediately at the register() call.',
+      'The restriction applies only to heldValue — the optional unregisterToken parameter has no such rule.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

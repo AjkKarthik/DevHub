@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WeakMap, WeakSet &amp; WeakRef" topicRoute="/javascript/weakrefs" subtopicLabel="register() Throws if heldValue Is the Same as target" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">register() Throws if heldValue Is the Same as target</h1>
+  <p class="page-subtitle"><code>heldValue</code> is held with a strong reference — if it could be <code>target</code> itself, that reference would permanently prevent <code>target</code> from ever being collected.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="ES2021" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A registration with <code>heldValue</code> set to the same object as <code>target</code> is attempted, then compared against a correctly-shaped registration and the separate <code>unregisterToken</code> parameter.</p>
+    <app-live-playground title="FinalizationRegistry.register()'s same-value restriction" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious weak-reference mechanics — WeakMap's object-only keys, its non-iterability, and now a real spec guard rail in <code>FinalizationRegistry</code>. Return to the <a routerLink="/javascript/weakrefs">WeakMap, WeakSet &amp; WeakRef</a> overview for the full picture, and to the <a routerLink="/javascript">JavaScript hub</a> for everything else.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WeakMap, WeakSet &amp; WeakRef"
+    topicRoute="/javascript/weakrefs"
+    [prev]="{ label: 'WeakMap and WeakSet Are Non-Iterable by Design', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' }"
+  />
+</div>

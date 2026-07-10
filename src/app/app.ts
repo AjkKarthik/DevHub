@@ -1418,6 +1418,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'New Proxy Per Nested get Breaks Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' },
     { label: 'Lying About a Frozen Property Throws', route: '/javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation' },
   ],
+  weakrefs: [
+    { label: 'WeakMap Keys Must Be Objects', route: '/javascript/weakrefs/weakmap-keys-must-be-objects-primitives-throw-typeerror' },
+    { label: 'WeakMap/WeakSet Are Non-Iterable', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' },
+    { label: 'register() Rejects heldValue === target', route: '/javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target' },
+  ],
 };
 
 @Component({

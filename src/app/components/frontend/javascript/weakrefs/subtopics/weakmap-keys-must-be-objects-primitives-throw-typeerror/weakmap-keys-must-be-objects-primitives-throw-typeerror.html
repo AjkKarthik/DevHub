@@ -1,0 +1,30 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WeakMap, WeakSet &amp; WeakRef" topicRoute="/javascript/weakrefs" subtopicLabel="WeakMap Keys Must Be Objects — Primitives Throw a TypeError" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">WeakMap Keys Must Be Objects — Primitives Throw a TypeError</h1>
+  <p class="page-subtitle">Only objects — and, since ES2023, unregistered <code>Symbol()</code> values — can be WeakMap keys, since the GC needs genuine identity to track for automatic cleanup.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>A string, number, boolean, plain <code>Symbol()</code>, registered <code>Symbol.for()</code>, and plain object are each attempted as a WeakMap key. Watch which ones throw and which succeed.</p>
+    <app-live-playground title="WeakMap key type restrictions" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/javascript/weakrefs">WeakMap, WeakSet &amp; WeakRef</a> page's QnA on WeakMap key restrictions in real thrown errors. Next, see why WeakMap and WeakSet are deliberately non-iterable — even for objects that ARE valid keys.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WeakMap, WeakSet &amp; WeakRef"
+    topicRoute="/javascript/weakrefs"
+    [next]="{ label: 'WeakMap and WeakSet Are Non-Iterable by Design', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' }"
+  />
+</div>

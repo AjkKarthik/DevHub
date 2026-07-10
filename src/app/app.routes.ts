@@ -1469,7 +1469,12 @@ export const routes: Routes = [
       { path: 'new-proxy-per-nested-get-breaks-referential-equality', loadComponent: () => import('./components/frontend/javascript/proxy/subtopics/new-proxy-per-nested-get-breaks-referential-equality/new-proxy-per-nested-get-breaks-referential-equality').then(m => m.CreatingANewProxyWrapperOnEveryNestedPropertyAccessSubtopic) },
       { path: 'lying-about-a-frozen-propertys-value-throws-invariant-violation', loadComponent: () => import('./components/frontend/javascript/proxy/subtopics/lying-about-a-frozen-propertys-value-throws-invariant-violation/lying-about-a-frozen-propertys-value-throws-invariant-violation').then(m => m.ProxyingNonConfigurablePropertiesIncorrectlySubtopic) },
     ] },
-    { path: 'weakrefs',       loadComponent: () => import('./components/frontend/javascript/weakrefs/weakrefs').then(m => m.JsWeakrefs) },
+    { path: 'weakrefs', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/weakrefs/weakrefs').then(m => m.JsWeakrefs) },
+      { path: 'weakmap-keys-must-be-objects-primitives-throw-typeerror', loadComponent: () => import('./components/frontend/javascript/weakrefs/subtopics/weakmap-keys-must-be-objects-primitives-throw-typeerror/weakmap-keys-must-be-objects-primitives-throw-typeerror').then(m => m.CanYouUseNonObjectKeysInWeakMapSubtopic) },
+      { path: 'weakmap-and-weakset-are-non-iterable-by-design', loadComponent: () => import('./components/frontend/javascript/weakrefs/subtopics/weakmap-and-weakset-are-non-iterable-by-design/weakmap-and-weakset-are-non-iterable-by-design').then(m => m.TryingToIterateAWeakMapOrWeakSetSubtopic) },
+      { path: 'register-throws-if-held-value-is-the-same-as-target', loadComponent: () => import('./components/frontend/javascript/weakrefs/subtopics/register-throws-if-held-value-is-the-same-as-target/register-throws-if-held-value-is-the-same-as-target').then(m => m.UsingFinalizationRegistryForCriticalCleanupSubtopic) },
+    ] },
     { path: 'cheatsheet',     loadComponent: () => import('./components/frontend/javascript/cheatsheet/cheatsheet').then(m => m.JsCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/frontend/javascript/interview-prep/interview-prep').then(m => m.JsInterviewPrep) },
   ] },

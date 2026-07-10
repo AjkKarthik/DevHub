@@ -3278,7 +3278,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/weakrefs"      routerLinkActive="active"><span class="nl-text">WeakMap &amp; WeakRef</span>@if(progress.isDone('js-weakrefs')){<span class="nl-done">✓</span>}@if(diff('js-weakrefs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/weakrefs" routerLinkActive="active">
+        <span class="nl-text">WeakMap &amp; WeakRef</span>
+        @if (progress.isDone('js-weakrefs')) {<span class="nl-done">✓</span>}
+        @if (diff('js-weakrefs'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('weakrefs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('weakrefs')"
+                  (click)="toggleSubtopics('weakrefs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('weakrefs'); as weakrefsSubs) {
+        @if (isSubtopicsExpanded('weakrefs')) {
+          <div class="nav-subtopics">
+            @for (s of weakrefsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
