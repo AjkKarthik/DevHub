@@ -14485,6 +14485,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'javascript/proxy': {
+    apis: ['Proxy', 'Reflect', 'get trap', 'set trap'],
+    related: [
+      { label: 'Functional JS',      route: '/javascript/functional' },
+      { label: 'WeakMap & WeakRef',  route: '/javascript/weakrefs'   },
+      { label: 'Design Patterns in JS', route: '/javascript/patterns' },
+    ],
+    tip: 'The set trap must return true (or a Reflect.set() boolean) — a falsy return throws a TypeError in strict mode, even if the value was genuinely stored.',
+    docs: [
+      { label: 'MDN — Proxy', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Creating a new nested proxy on every get breaks referential equality — cache with a WeakMap keyed by the target.',
+      'A get trap must return the real value for non-configurable, non-writable (frozen) properties, or the engine throws an invariant violation at read time.',
+    ],
+  },
+
+  'javascript/proxy/set-trap-must-return-true-or-strict-mode-throws': {
+    apis: ['set trap', 'Reflect.set()'],
+    related: [
+      { label: 'Proxy & Reflect API (overview)', route: '/javascript/proxy' },
+      { label: 'Nested Proxy Breaks Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' },
+      { label: 'Frozen Property Invariant', route: '/javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation' },
+    ],
+    tip: 'A falsy return from the set trap throws in strict mode regardless of whether the trap\'s internal logic actually stored the value — always return Reflect.set()\'s own boolean.',
+    docs: [
+      { label: 'MDN — Proxy handler.set()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/set' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'ES modules are always strict mode at the top level — this is a live, commonly-hit mistake, not a rare "use strict" edge case.',
+      'A plain property setter has no such return-value contract — this behavior is specific to Proxy traps.',
+    ],
+  },
+
+  'javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality': {
+    apis: ['Proxy', 'WeakMap', 'get trap'],
+    related: [
+      { label: 'Proxy & Reflect API (overview)', route: '/javascript/proxy' },
+      { label: 'set Trap Must Return true', route: '/javascript/proxy/set-trap-must-return-true-or-strict-mode-throws' },
+      { label: 'Frozen Property Invariant', route: '/javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation' },
+    ],
+    tip: 'Cache nested proxies in a WeakMap keyed by the target object — the same target always produces the same cached proxy instance on every subsequent read.',
+    docs: [
+      { label: 'MDN — WeakMap', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'Broken referential equality fools React-style === change detection into reporting a change that never actually happened.',
+      'A WeakMap (not a regular Map) avoids leaking memory, since it holds only weak references to its target keys.',
+    ],
+  },
+
+  'javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation': {
+    apis: ['Object.freeze()', 'get trap', 'invariants'],
+    related: [
+      { label: 'Proxy & Reflect API (overview)', route: '/javascript/proxy' },
+      { label: 'set Trap Must Return true', route: '/javascript/proxy/set-trap-must-return-true-or-strict-mode-throws' },
+      { label: 'Nested Proxy Breaks Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' },
+    ],
+    tip: 'A get trap must return the real value for non-configurable, non-writable properties — Object.freeze() makes every property both, triggering this restriction.',
+    docs: [
+      { label: 'MDN — Proxy invariants', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#invariants' },
+    ],
+    resources: [
+      { label: 'tc39/ecma262', url: 'https://github.com/tc39/ecma262', badge: 'code' },
+    ],
+    gotchas: [
+      'The violation is only detected at read time, not at Proxy construction — the engine can\'t statically analyze what a trap will return.',
+      'This restriction applies per-property — a get trap remains free to transform any property that isn\'t itself frozen.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

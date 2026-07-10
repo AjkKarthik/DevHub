@@ -3258,7 +3258,26 @@
           </div>
         }
       }
-      <a routerLink="/javascript/proxy"         routerLinkActive="active"><span class="nl-text">Proxy &amp; Reflect</span>@if(progress.isDone('js-proxy')){<span class="nl-done">✓</span>}@if(diff('js-proxy');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/proxy" routerLinkActive="active">
+        <span class="nl-text">Proxy &amp; Reflect</span>
+        @if (progress.isDone('js-proxy')) {<span class="nl-done">✓</span>}
+        @if (diff('js-proxy'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('proxy')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('proxy')"
+                  (click)="toggleSubtopics('proxy', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('proxy'); as proxySubs) {
+        @if (isSubtopicsExpanded('proxy')) {
+          <div class="nav-subtopics">
+            @for (s of proxySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/javascript/weakrefs"      routerLinkActive="active"><span class="nl-text">WeakMap &amp; WeakRef</span>@if(progress.isDone('js-weakrefs')){<span class="nl-done">✓</span>}@if(diff('js-weakrefs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

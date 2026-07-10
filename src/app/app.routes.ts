@@ -1463,7 +1463,12 @@ export const routes: Routes = [
       { path: 'curry-fn-length-miscounts-default-and-rest-parameters', loadComponent: () => import('./components/frontend/javascript/functional/subtopics/curry-fn-length-miscounts-default-and-rest-parameters/curry-fn-length-miscounts-default-and-rest-parameters').then(m => m.CurryFnLengthMiscountsDefaultAndRestParametersSubtopic) },
       { path: 'missing-return-in-a-pipe-stage-passes-undefined-downstream', loadComponent: () => import('./components/frontend/javascript/functional/subtopics/missing-return-in-a-pipe-stage-passes-undefined-downstream/missing-return-in-a-pipe-stage-passes-undefined-downstream').then(m => m.MissingReturnInPipeComposeChainVoidFunctionsSubtopic) },
     ] },
-    { path: 'proxy',          loadComponent: () => import('./components/frontend/javascript/proxy/proxy').then(m => m.JsProxy) },
+    { path: 'proxy', children: [
+      { path: '', loadComponent: () => import('./components/frontend/javascript/proxy/proxy').then(m => m.JsProxy) },
+      { path: 'set-trap-must-return-true-or-strict-mode-throws', loadComponent: () => import('./components/frontend/javascript/proxy/subtopics/set-trap-must-return-true-or-strict-mode-throws/set-trap-must-return-true-or-strict-mode-throws').then(m => m.ForgettingToReturnTrueFromTheSetTrapSubtopic) },
+      { path: 'new-proxy-per-nested-get-breaks-referential-equality', loadComponent: () => import('./components/frontend/javascript/proxy/subtopics/new-proxy-per-nested-get-breaks-referential-equality/new-proxy-per-nested-get-breaks-referential-equality').then(m => m.CreatingANewProxyWrapperOnEveryNestedPropertyAccessSubtopic) },
+      { path: 'lying-about-a-frozen-propertys-value-throws-invariant-violation', loadComponent: () => import('./components/frontend/javascript/proxy/subtopics/lying-about-a-frozen-propertys-value-throws-invariant-violation/lying-about-a-frozen-propertys-value-throws-invariant-violation').then(m => m.ProxyingNonConfigurablePropertiesIncorrectlySubtopic) },
+    ] },
     { path: 'weakrefs',       loadComponent: () => import('./components/frontend/javascript/weakrefs/weakrefs').then(m => m.JsWeakrefs) },
     { path: 'cheatsheet',     loadComponent: () => import('./components/frontend/javascript/cheatsheet/cheatsheet').then(m => m.JsCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/frontend/javascript/interview-prep/interview-prep').then(m => m.JsInterviewPrep) },

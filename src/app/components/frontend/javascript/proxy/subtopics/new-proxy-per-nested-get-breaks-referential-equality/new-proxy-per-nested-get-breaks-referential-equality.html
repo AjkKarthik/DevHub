@@ -1,0 +1,31 @@
+<div class="js-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Proxy &amp; Reflect API" topicRoute="/javascript/proxy" subtopicLabel="A New Proxy Per Nested get Breaks Referential Equality" />
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">A New Proxy Per Nested get Breaks Referential Equality</h1>
+  <p class="page-subtitle">Wrapping a nested property with <code>new Proxy(val, handler)</code> on every read produces a different object each time — a <code>WeakMap</code> cache keyed by the target fixes it.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ES2015" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>See it run</h2>
+    <p>The same nested property is read twice from a broken reactive proxy and a fixed, <code>WeakMap</code>-cached one. Compare the <code>===</code> result in each case, and its effect on a simple change-detection check.</p>
+    <app-live-playground title="Nested proxy caching vs. no caching" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="js-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/javascript/proxy">Proxy &amp; Reflect API</a> page's warning about nested proxy caching. Next, see how a Proxy that lies about a frozen property's value throws an invariant-violation TypeError specifically when that property is read.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Proxy &amp; Reflect API"
+    topicRoute="/javascript/proxy"
+    [prev]="{ label: 'The set Trap Must Return true or Strict Mode Throws', route: '/javascript/proxy/set-trap-must-return-true-or-strict-mode-throws' }"
+    [next]="{ label: 'Lying About a Frozen Property’s Value Throws an Invariant Violation', route: '/javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation' }"
+  />
+</div>

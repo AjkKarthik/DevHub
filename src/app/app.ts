@@ -1413,6 +1413,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'curry() Miscounts Default and Rest Parameters', route: '/javascript/functional/curry-fn-length-miscounts-default-and-rest-parameters' },
     { label: 'Missing return in pipe() Passes undefined Downstream', route: '/javascript/functional/missing-return-in-a-pipe-stage-passes-undefined-downstream' },
   ],
+  proxy: [
+    { label: 'set Trap Must Return true', route: '/javascript/proxy/set-trap-must-return-true-or-strict-mode-throws' },
+    { label: 'New Proxy Per Nested get Breaks Equality', route: '/javascript/proxy/new-proxy-per-nested-get-breaks-referential-equality' },
+    { label: 'Lying About a Frozen Property Throws', route: '/javascript/proxy/lying-about-a-frozen-propertys-value-throws-invariant-violation' },
+  ],
 };
 
 @Component({
