@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML Performance" topicRoute="/html/performance" subtopicLabel="Too Many High-Priority Resources Dilutes the Signal" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Too Many High-Priority Resources Dilutes the Signal</h1>
+  <p class="page-subtitle">fetchpriority="high" only means "prioritize this over other same-type resources." Mark everything high and the browser is back to guessing among equals.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two scenarios: one image marked high among four unmarked, versus all five marked high. Compare the real spread between their Resource Timing <code>fetchStart</code> values.</p>
+    <app-live-playground title="fetchpriority dilution measured via fetchStart spread" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a resource-hint mistake specific to images. The next subtopic turns to script loading — the equally consequential defer-vs-async distinction — before the final subtopic covers rendering cost itself. Return to the <a routerLink="/html/performance">HTML Performance</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML Performance"
+    topicRoute="/html/performance"
+    [next]="{ label: 'defer Guarantees Order and Fires Before DOMContentLoaded', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' }"
+  />
+</div>

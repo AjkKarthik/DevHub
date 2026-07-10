@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML Performance" topicRoute="/html/performance" subtopicLabel="defer Guarantees Order and Fires Before DOMContentLoaded" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">defer Guarantees Order and Fires Before DOMContentLoaded</h1>
+  <p class="page-subtitle">defer scripts always execute in document order, always before DOMContentLoaded — a hard spec guarantee regardless of which file downloads fastest. async makes no such promise.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Three deferred scripts, declared out of alphabetical order (C, A, B). Log their actual execution order and compare each timestamp against when DOMContentLoaded fires.</p>
+    <app-live-playground title="defer order and DOMContentLoaded timing proof" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a script-loading guarantee, distinct from the image-priority mistake in the previous subtopic. The final subtopic turns to rendering cost itself — whether off-screen content actually gets painted at all. Return to the <a routerLink="/html/performance">HTML Performance</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML Performance"
+    topicRoute="/html/performance"
+    [prev]="{ label: 'Too Many High-Priority Resources Dilutes the Signal', route: '/html/performance/too-many-high-priority-resources-dilutes-the-signal' }"
+    [next]="{ label: 'content-visibility: auto Genuinely Skips Off-Screen Rendering', route: '/html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering' }"
+  />
+</div>

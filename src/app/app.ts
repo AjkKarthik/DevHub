@@ -1482,6 +1482,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Missing beginPath() Merges Paths', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' },
     { label: 'SVG Without viewBox Ignores CSS Resize', route: '/html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates' },
   ],
+  // NOTE: keyed 'html-performance', NOT bare 'performance' — that bare key
+  // is already claimed elsewhere in this shared map.
+  'html-performance': [
+    { label: 'Too Many High-Priority Resources Dilutes It', route: '/html/performance/too-many-high-priority-resources-dilutes-the-signal' },
+    { label: 'defer Guarantees Order + DOMContentLoaded Timing', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' },
+    { label: 'content-visibility: auto Genuinely Skips Rendering', route: '/html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering' },
+  ],
 };
 
 @Component({

@@ -1354,7 +1354,12 @@ export const routes: Routes = [
       { path: 'missing-beginpath-merges-paths-provable-via-pixel-data', loadComponent: () => import('./components/frontend/html/canvas-svg/subtopics/missing-beginpath-merges-paths-provable-via-pixel-data/missing-beginpath-merges-paths-provable-via-pixel-data').then(m => m.MissingBeginPathMergesPathsProvableViaPixelDataSubtopic) },
       { path: 'svg-without-viewbox-ignores-css-resize-of-coordinates', loadComponent: () => import('./components/frontend/html/canvas-svg/subtopics/svg-without-viewbox-ignores-css-resize-of-coordinates/svg-without-viewbox-ignores-css-resize-of-coordinates').then(m => m.SvgWithoutViewboxIgnoresCssResizeOfCoordinatesSubtopic) },
     ] },
-    { path: 'performance',         loadComponent: () => import('./components/frontend/html/performance/performance').then(m => m.HtmlPerformance) },
+    { path: 'performance', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/performance/performance').then(m => m.HtmlPerformance) },
+      { path: 'too-many-high-priority-resources-dilutes-the-signal', loadComponent: () => import('./components/frontend/html/performance/subtopics/too-many-high-priority-resources-dilutes-the-signal/too-many-high-priority-resources-dilutes-the-signal').then(m => m.TooManyHighPriorityResourcesDilutesTheSignalSubtopic) },
+      { path: 'defer-guarantees-order-and-fires-before-domcontentloaded', loadComponent: () => import('./components/frontend/html/performance/subtopics/defer-guarantees-order-and-fires-before-domcontentloaded/defer-guarantees-order-and-fires-before-domcontentloaded').then(m => m.DeferGuaranteesOrderAndFiresBeforeDomcontentloadedSubtopic) },
+      { path: 'content-visibility-auto-genuinely-skips-offscreen-rendering', loadComponent: () => import('./components/frontend/html/performance/subtopics/content-visibility-auto-genuinely-skips-offscreen-rendering/content-visibility-auto-genuinely-skips-offscreen-rendering').then(m => m.ContentVisibilityAutoGenuinelySkipsOffscreenRenderingSubtopic) },
+    ] },
     { path: 'pwa-service-workers', loadComponent: () => import('./components/frontend/html/pwa-service-workers/pwa-service-workers').then(m => m.HtmlPwaServiceWorkers) },
     { path: 'seo',                 loadComponent: () => import('./components/frontend/html/seo/seo').then(m => m.HtmlSeo) },
     { path: 'apis',                loadComponent: () => import('./components/frontend/html/apis/apis').then(m => m.HtmlApis) },

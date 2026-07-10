@@ -22765,6 +22765,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/performance/too-many-high-priority-resources-dilutes-the-signal': {
+    apis: ['fetchpriority', 'PerformanceResourceTiming.fetchStart'],
+    related: [
+      { label: 'HTML Performance (overview)', route: '/html/performance' },
+      { label: 'defer Guarantees Order + DOMContentLoaded Timing', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' },
+      { label: 'content-visibility: auto Genuinely Skips Rendering', route: '/html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering' },
+    ],
+    tip: 'fetchpriority only means "prioritize this over other same-type resources" — mark everything high and the browser is back to guessing among equals.',
+    docs: [
+      { label: 'web.dev — fetchpriority', url: 'https://web.dev/articles/fetch-priority' },
+    ],
+    resources: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'fetchpriority only influences when a fetch STARTS, never its finish time — network conditions still decide who actually loads first.',
+      'Reserve fetchpriority="high" for the single resource that actually determines a Core Web Vital, not every important-looking element.',
+    ],
+  },
+
+  'html/performance/defer-guarantees-order-and-fires-before-domcontentloaded': {
+    apis: ['defer', 'async', 'DOMContentLoaded'],
+    related: [
+      { label: 'HTML Performance (overview)', route: '/html/performance' },
+      { label: 'Too Many High-Priority Resources Dilutes It', route: '/html/performance/too-many-high-priority-resources-dilutes-the-signal' },
+      { label: 'content-visibility: auto Genuinely Skips Rendering', route: '/html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering' },
+    ],
+    tip: 'defer scripts always execute in document order, always before DOMContentLoaded — a hard spec guarantee, independent of which file downloads fastest.',
+    docs: [
+      { label: 'MDN — <script> defer', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#defer' },
+    ],
+    resources: [
+      { label: 'MDN — DOMContentLoaded', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event', badge: 'docs' },
+    ],
+    gotchas: [
+      'async scripts execute the moment their OWN download finishes — with zero regard for other scripts\' document position.',
+      'DOMContentLoaded is spec-guaranteed to wait until every deferred script has finished executing.',
+    ],
+  },
+
+  'html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering': {
+    apis: ['content-visibility', 'contentvisibilityautostatechange', 'contain-intrinsic-size'],
+    related: [
+      { label: 'HTML Performance (overview)', route: '/html/performance' },
+      { label: 'Too Many High-Priority Resources Dilutes It', route: '/html/performance/too-many-high-priority-resources-dilutes-the-signal' },
+      { label: 'defer Guarantees Order + DOMContentLoaded Timing', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' },
+    ],
+    tip: 'content-visibility: auto genuinely skips layout, style, and paint for off-screen descendants — the contentvisibilityautostatechange event reports the skipped state directly, no profiling needed.',
+    docs: [
+      { label: 'MDN — content-visibility', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility' },
+    ],
+    resources: [
+      { label: 'MDN — contentvisibilityautostatechange', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Element/contentvisibilityautostatechange_event', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is a real skip of rendering work, not a visual trick like opacity: 0 — the descendants are never laid out or painted while off-screen.',
+      'The element itself still reserves layout space (via contain-intrinsic-size) — only its descendants\' rendering is skipped.',
+    ],
+  },
+
   'html/canvas-svg': {
     apis: ['getContext("2d")', 'fillRect()', 'beginPath()', 'arc()', 'fillText()', 'drawImage()', 'requestAnimationFrame()', 'save()/restore()', 'SVG viewBox', '<path d="">'],
     related: [
