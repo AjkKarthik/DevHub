@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Document Structure" topicRoute="/html/document-structure" subtopicLabel="defer Runs in Order After Parse — async Runs Whenever Ready" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">defer Runs in Order After Parse — async Runs Whenever Ready</h1>
+  <p class="page-subtitle"><code>defer</code> scripts always run after HTML parsing completes, strictly in document order. <code>async</code> scripts run the instant they download, with zero ordering guarantee.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two deferred scripts and one tiny (fast-downloading) async script are loaded together. Watch real timestamps to see which ordering guarantees actually hold and which don't.</p>
+    <app-live-playground title="defer vs. async execution order" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/html/document-structure">Document Structure</a> page's script-loading theory in real, timestamped execution. Next, see what a missing <code>DOCTYPE</code> actually does to the browser's parsing mode — checkable directly via <code>document.compatMode</code>.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Document Structure"
+    topicRoute="/html/document-structure"
+    [next]="{ label: 'A Missing DOCTYPE Triggers Quirks Mode — compatMode Reveals It', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' }"
+  />
+</div>

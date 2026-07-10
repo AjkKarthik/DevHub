@@ -1423,6 +1423,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'WeakMap/WeakSet Are Non-Iterable', route: '/javascript/weakrefs/weakmap-and-weakset-are-non-iterable-by-design' },
     { label: 'register() Rejects heldValue === target', route: '/javascript/weakrefs/register-throws-if-held-value-is-the-same-as-target' },
   ],
+  'document-structure': [
+    { label: 'defer Runs in Order, async Runs Whenever Ready', route: '/html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready' },
+    { label: 'A Missing DOCTYPE Triggers Quirks Mode', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' },
+    { label: 'A Duplicate head Element’s Content Moves to body', route: '/html/document-structure/a-duplicate-head-elements-content-is-moved-into-body' },
+  ],
 };
 
 @Component({

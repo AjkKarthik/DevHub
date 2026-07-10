@@ -21978,6 +21978,87 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── HTML: Document Structure ─────────────────────────────────────────────
+  'html/document-structure': {
+    apis: ['DOCTYPE', '<html lang>', 'defer', 'async', 'document.compatMode'],
+    related: [
+      { label: 'Head & Metadata',        route: '/html/head-metadata'     },
+      { label: 'Semantic Elements',      route: '/html/semantic-elements' },
+      { label: 'HTML Performance',       route: '/html/performance'       },
+    ],
+    tip: 'defer scripts run after HTML parsing completes, strictly in document order — async scripts run the instant they download, with zero ordering guarantee.',
+    docs: [
+      { label: 'MDN — <!DOCTYPE>', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Doctype' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML spec', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A missing DOCTYPE triggers permanent quirks mode for the document\'s entire lifetime — checkable via document.compatMode, never fixable after parsing.',
+      'A duplicate <head> tag is silently ignored by the parser — its content ends up inside <body> instead, breaking metadata with no visible error.',
+    ],
+  },
+
+  'html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready': {
+    apis: ['<script defer>', '<script async>', 'DOMContentLoaded'],
+    related: [
+      { label: 'Document Structure (overview)', route: '/html/document-structure' },
+      { label: 'Missing DOCTYPE Quirks Mode', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' },
+      { label: 'Duplicate head Moves to body', route: '/html/document-structure/a-duplicate-head-elements-content-is-moved-into-body' },
+    ],
+    tip: 'defer gives two guarantees async doesn\'t: runs after parsing completes, and runs in strict document order relative to other defer scripts.',
+    docs: [
+      { label: 'MDN — <script>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML spec', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'async can execute WHILE HTML is still parsing if its download finishes fast enough — it has no relationship to parsing completion at all.',
+      'async is reserved for genuinely independent scripts (analytics, ads) precisely because its timing is unpredictable by design.',
+    ],
+  },
+
+  'html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it': {
+    apis: ['document.compatMode', 'DOCTYPE'],
+    related: [
+      { label: 'Document Structure (overview)', route: '/html/document-structure' },
+      { label: 'defer vs async Order', route: '/html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready' },
+      { label: 'Duplicate head Moves to body', route: '/html/document-structure/a-duplicate-head-elements-content-is-moved-into-body' },
+    ],
+    tip: 'document.compatMode reports exactly "CSS1Compat" (standards mode) or "BackCompat" (quirks mode) — a real, checkable API, not an abstract concept.',
+    docs: [
+      { label: 'MDN — document.compatMode', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/compatMode' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML spec', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Rendering mode is determined once, essentially at the start of parsing — there is no API to switch an already-loaded document out of quirks mode.',
+      'Quirks mode reimplements specific, documented legacy bugs (box model, table sizing, vertical alignment) — not just a vague "less strict" mode.',
+    ],
+  },
+
+  'html/document-structure/a-duplicate-head-elements-content-is-moved-into-body': {
+    apis: ['document.head', 'document.body', 'HTML parsing spec'],
+    related: [
+      { label: 'Document Structure (overview)', route: '/html/document-structure' },
+      { label: 'defer vs async Order', route: '/html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready' },
+      { label: 'Missing DOCTYPE Quirks Mode', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' },
+    ],
+    tip: 'A second <head> start tag is never treated as opening a real head section — the parser silently ignores it, and everything after lands inside the single, real <body>.',
+    docs: [
+      { label: 'WHATWG — Parsing errors', url: 'https://html.spec.whatwg.org/multipage/parsing.html#parse-errors' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML spec', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'There is no console error or visual sign anything went wrong — metadata like a stylesheet or SEO description silently fails to take effect.',
+      'document.getElementsByTagName("head").length and "body".length are always exactly 1, no matter how many start tags appeared in the source.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],

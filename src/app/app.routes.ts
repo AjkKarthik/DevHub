@@ -1288,7 +1288,12 @@ export const routes: Routes = [
   // ── Frontend Hubs ─────────────────────────────────────────────────────────
   { path: 'html', children: [
     { path: '', loadComponent: () => import('./components/frontend/html/home/home').then(m => m.HtmlHome) },
-    { path: 'document-structure',  loadComponent: () => import('./components/frontend/html/document-structure/document-structure').then(m => m.HtmlDocumentStructure) },
+    { path: 'document-structure', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/document-structure/document-structure').then(m => m.HtmlDocumentStructure) },
+      { path: 'defer-runs-in-order-after-parse-async-runs-whenever-ready', loadComponent: () => import('./components/frontend/html/document-structure/subtopics/defer-runs-in-order-after-parse-async-runs-whenever-ready/defer-runs-in-order-after-parse-async-runs-whenever-ready').then(m => m.ScriptDeferVsAsyncExecutionOrderSubtopic) },
+      { path: 'missing-doctype-triggers-quirks-mode-compatmode-reveals-it', loadComponent: () => import('./components/frontend/html/document-structure/subtopics/missing-doctype-triggers-quirks-mode-compatmode-reveals-it/missing-doctype-triggers-quirks-mode-compatmode-reveals-it').then(m => m.MissingDOCTYPESubtopic) },
+      { path: 'a-duplicate-head-elements-content-is-moved-into-body', loadComponent: () => import('./components/frontend/html/document-structure/subtopics/a-duplicate-head-elements-content-is-moved-into-body/a-duplicate-head-elements-content-is-moved-into-body').then(m => m.IsItOkayToHaveTwoHeadElementsSubtopic) },
+    ] },
     { path: 'semantic-elements',   loadComponent: () => import('./components/frontend/html/semantic-elements/semantic-elements').then(m => m.HtmlSemanticElements) },
     { path: 'forms',               loadComponent: () => import('./components/frontend/html/forms/forms').then(m => m.HtmlForms) },
     { path: 'media',               loadComponent: () => import('./components/frontend/html/media/media').then(m => m.HtmlMedia) },

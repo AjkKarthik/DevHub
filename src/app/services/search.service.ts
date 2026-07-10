@@ -1475,6 +1475,9 @@ export const SEARCH_INDEX: SearchEntry[] = [
 
   // ── HTML ──────────────────────────────────────────────────────────────────
   { route: 'html-document-structure', title: 'Document Structure',    section: 'HTML',          difficulty: 'beginner',     keywords: 'html doctype lang charset viewport head body defer async script meta title link structure' },
+  { route: 'html-document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready', title: 'defer vs async Order', section: 'HTML', difficulty: 'beginner', keywords: 'html script defer async execution order dom content loaded' },
+  { route: 'html-document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it', title: 'Missing DOCTYPE Quirks Mode', section: 'HTML', difficulty: 'beginner', keywords: 'html doctype quirks mode compatmode standards backcompat' },
+  { route: 'html-document-structure/a-duplicate-head-elements-content-is-moved-into-body', title: 'Duplicate head Moves to body', section: 'HTML', difficulty: 'intermediate', keywords: 'html duplicate head body parser error correction metadata' },
   { route: 'html-semantic-elements',  title: 'Semantic Elements',     section: 'HTML',          difficulty: 'beginner',     keywords: 'html semantic main article section aside nav header footer figure time address mark details summary' },
   { route: 'html-forms',              title: 'Forms & Input',         section: 'HTML',          difficulty: 'beginner',     keywords: 'html form input label fieldset legend select textarea button required pattern validation enctype method action' },
   { route: 'html-media',              title: 'Media Elements',        section: 'HTML',          difficulty: 'beginner',     keywords: 'html img alt srcset sizes picture video audio track source loading lazy eager fetchpriority responsive' },

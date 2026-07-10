@@ -1116,6 +1116,9 @@ const JAVASCRIPT_LABELS: Record<string, string> = {
 
 const HTML_LABELS: Record<string, string> = {
   'document-structure': 'Document Structure',
+  'document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready': 'defer vs async Order',
+  'document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it': 'Missing DOCTYPE Quirks Mode',
+  'document-structure/a-duplicate-head-elements-content-is-moved-into-body': 'Duplicate head Moves to body',
   'semantic-elements':  'Semantic Elements',
   'forms':              'Forms & Input',
   'media':              'Media Elements',

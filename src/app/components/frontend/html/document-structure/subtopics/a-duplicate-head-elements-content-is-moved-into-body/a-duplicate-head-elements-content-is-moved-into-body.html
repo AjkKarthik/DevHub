@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Document Structure" topicRoute="/html/document-structure" subtopicLabel="A Duplicate &lt;head&gt; Element's Content Is Moved Into &lt;body&gt;" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A Duplicate &lt;head&gt; Element's Content Is Moved Into &lt;body&gt;</h1>
+  <p class="page-subtitle">The parser never rejects a second <code>&lt;head&gt;</code> tag — it silently treats the tag as meaningless, so everything after it lands inside the single, real <code>&lt;body&gt;</code>.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML Living Standard" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A source document with a second <code>&lt;head&gt;</code> and second <code>&lt;body&gt;</code> tag is loaded. Inspect <code>document.head</code>, <code>document.body</code>, and the element counts to see exactly where the "duplicate" content actually ended up.</p>
+    <app-live-playground title="Parser correction for a duplicate head/body" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious document-parsing mechanics — script loading order, quirks mode detection, and now parser error-correction for malformed structure. Return to the <a routerLink="/html/document-structure">Document Structure</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Document Structure"
+    topicRoute="/html/document-structure"
+    [prev]="{ label: 'A Missing DOCTYPE Triggers Quirks Mode — compatMode Reveals It', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' }"
+  />
+</div>

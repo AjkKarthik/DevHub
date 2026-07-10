@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Document Structure" topicRoute="/html/document-structure" subtopicLabel="A Missing DOCTYPE Triggers Quirks Mode — compatMode Reveals It" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A Missing DOCTYPE Triggers Quirks Mode — compatMode Reveals It</h1>
+  <p class="page-subtitle"><code>document.compatMode</code> reports <code>"BackCompat"</code> for a document with no valid <code>DOCTYPE</code> — a real, checkable rendering mode, not an abstract concept.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>An <code>index.html</code> with no <code>&lt;!DOCTYPE html&gt;</code> line at all is loaded, then <code>document.compatMode</code> is checked directly to confirm quirks mode is genuinely active.</p>
+    <app-live-playground title="document.compatMode with a missing DOCTYPE" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/html/document-structure">Document Structure</a> page's quirks-mode warning with a real, checkable API. Next, see what actually happens to a duplicate <code>&lt;head&gt;</code> element — the parser doesn't reject it, it silently moves the content into <code>&lt;body&gt;</code>.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Document Structure"
+    topicRoute="/html/document-structure"
+    [prev]="{ label: 'defer Runs in Order After Parse — async Runs Whenever Ready', route: '/html/document-structure/defer-runs-in-order-after-parse-async-runs-whenever-ready' }"
+    [next]="{ label: 'A Duplicate &lt;head&gt; Element’s Content Is Moved Into &lt;body&gt;', route: '/html/document-structure/a-duplicate-head-elements-content-is-moved-into-body' }"
+  />
+</div>

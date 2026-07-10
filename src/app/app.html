@@ -3318,7 +3318,26 @@
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
       <a routerLink="/html/fundamentals"       routerLinkActive="active"><span class="nl-text">HTML Fundamentals</span>@if(progress.isDone('html-fundamentals')){<span class="nl-done">✓</span>}@if(diff('html-fundamentals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/document-structure" routerLinkActive="active"><span class="nl-text">Document Structure</span>@if(progress.isDone('html-document-structure')){<span class="nl-done">✓</span>}@if(diff('html-document-structure');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/document-structure" routerLinkActive="active">
+        <span class="nl-text">Document Structure</span>
+        @if (progress.isDone('html-document-structure')) {<span class="nl-done">✓</span>}
+        @if (diff('html-document-structure'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('document-structure')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('document-structure')"
+                  (click)="toggleSubtopics('document-structure', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('document-structure'); as documentStructureSubs) {
+        @if (isSubtopicsExpanded('document-structure')) {
+          <div class="nav-subtopics">
+            @for (s of documentStructureSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/html/semantic-elements"  routerLinkActive="active"><span class="nl-text">Semantic Elements</span>@if(progress.isDone('html-semantic-elements')){<span class="nl-done">✓</span>}@if(diff('html-semantic-elements');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
