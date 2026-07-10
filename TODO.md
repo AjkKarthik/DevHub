@@ -1662,7 +1662,7 @@ off here with a date.
 
 - [x] `/html/document-structure` — Document Structure (2026-07-10 — 3 subtopics: defer-runs-in-order-after-parse-async-runs-whenever-ready, missing-doctype-triggers-quirks-mode-compatmode-reveals-it, a-duplicate-head-elements-content-is-moved-into-body — FIRST HTML hub subtopic set, established conventions documented in CLAUDE.md (search/progress prefix html-, full-path sidebar keys, bare breadcrumb keys, light-tint icon, .html-page wrapper already global so no scss override needed); SUBTOPICS map key left bare ('document-structure'), collision-free)
 - [x] `/html/semantic-elements` — Semantic Elements (2026-07-10 — 3 subtopics: a-second-main-is-silently-allowed-with-no-thrown-error, a-heading-less-section-is-valid-parseable-html, times-datetime-property-can-diverge-from-its-own-text — recurring theme across all three: these are content-model rules the browser's parser never enforces, so each demo builds a small DOM-audit function (the same technique real a11y tools use) to actually catch the violation; SUBTOPICS map key left bare ('semantic-elements'), collision-free; fixed a pre-existing gap where no base sidebar entry existed for this topic)
-- [ ] `/html/forms` — Forms & Input
+- [x] `/html/forms` — Forms & Input (2026-07-10 — 3 subtopics: name-not-id-determines-the-submitted-formdata-key, novalidate-disables-blocking-but-checkvalidity-still-works, enctype-only-affects-native-submission-not-formdata-api; SUBTOPICS map hub-prefixed to `html-forms` — collision with the Angular hub's own bare `forms` key; fixed a pre-existing gap where no base sidebar entry existed for this topic)
 - [ ] `/html/media` — Media Elements
 - [ ] `/html/tables` — Tables
 - [ ] `/html/links-navigation` — Links & Navigation
