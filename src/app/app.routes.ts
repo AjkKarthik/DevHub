@@ -1348,7 +1348,12 @@ export const routes: Routes = [
       { path: 'missing-width-height-causes-measurable-layout-shift', loadComponent: () => import('./components/frontend/html/iframes-embeds/subtopics/missing-width-height-causes-measurable-layout-shift/missing-width-height-causes-measurable-layout-shift').then(m => m.MissingWidthHeightCausesMeasurableLayoutShiftSubtopic) },
       { path: 'srcdoc-makes-zero-network-requests-src-makes-a-real-one', loadComponent: () => import('./components/frontend/html/iframes-embeds/subtopics/srcdoc-makes-zero-network-requests-src-makes-a-real-one/srcdoc-makes-zero-network-requests-src-makes-a-real-one').then(m => m.SrcdocMakesZeroNetworkRequestsSrcMakesARealOneSubtopic) },
     ] },
-    { path: 'canvas-svg',          loadComponent: () => import('./components/frontend/html/canvas-svg/canvas-svg').then(m => m.HtmlCanvasSvg) },
+    { path: 'canvas-svg', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/canvas-svg/canvas-svg').then(m => m.HtmlCanvasSvg) },
+      { path: 'canvas-html-attrs-set-resolution-css-only-stretches-pixels', loadComponent: () => import('./components/frontend/html/canvas-svg/subtopics/canvas-html-attrs-set-resolution-css-only-stretches-pixels/canvas-html-attrs-set-resolution-css-only-stretches-pixels').then(m => m.CanvasHtmlAttrsSetResolutionCssOnlyStretchesPixelsSubtopic) },
+      { path: 'missing-beginpath-merges-paths-provable-via-pixel-data', loadComponent: () => import('./components/frontend/html/canvas-svg/subtopics/missing-beginpath-merges-paths-provable-via-pixel-data/missing-beginpath-merges-paths-provable-via-pixel-data').then(m => m.MissingBeginPathMergesPathsProvableViaPixelDataSubtopic) },
+      { path: 'svg-without-viewbox-ignores-css-resize-of-coordinates', loadComponent: () => import('./components/frontend/html/canvas-svg/subtopics/svg-without-viewbox-ignores-css-resize-of-coordinates/svg-without-viewbox-ignores-css-resize-of-coordinates').then(m => m.SvgWithoutViewboxIgnoresCssResizeOfCoordinatesSubtopic) },
+    ] },
     { path: 'performance',         loadComponent: () => import('./components/frontend/html/performance/performance').then(m => m.HtmlPerformance) },
     { path: 'pwa-service-workers', loadComponent: () => import('./components/frontend/html/pwa-service-workers/pwa-service-workers').then(m => m.HtmlPwaServiceWorkers) },
     { path: 'seo',                 loadComponent: () => import('./components/frontend/html/seo/seo').then(m => m.HtmlSeo) },

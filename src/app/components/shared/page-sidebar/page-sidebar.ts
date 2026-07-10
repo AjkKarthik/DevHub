@@ -22789,6 +22789,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels': {
+    apis: ['canvas.width', 'canvas.height', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Canvas & SVG (overview)', route: '/html/canvas-svg' },
+      { label: 'Missing beginPath() Merges Paths', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' },
+      { label: 'SVG Without viewBox Ignores CSS Resize', route: '/html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates' },
+    ],
+    tip: 'canvas.width/height set the real internal pixel buffer; CSS width/height only stretch that fixed buffer — mismatch them and the browser has to interpolate.',
+    docs: [
+      { label: 'MDN — Canvas API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API' },
+    ],
+    resources: [
+      { label: 'web.dev — Canvas tutorial', url: 'https://web.dev/articles/canvas-performance', badge: 'blog' },
+    ],
+    gotchas: [
+      'The blur ratio is precisely computable — displayPixelArea ÷ bufferPixelArea — not a subjective visual impression.',
+      'For HiDPI screens, multiply the HTML width/height attributes by devicePixelRatio, then scale the context back down.',
+    ],
+  },
+
+  'html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data': {
+    apis: ['beginPath()', 'stroke()', 'fill()', 'getImageData()'],
+    related: [
+      { label: 'Canvas & SVG (overview)', route: '/html/canvas-svg' },
+      { label: 'Canvas Resolution vs CSS Display Size', route: '/html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels' },
+      { label: 'SVG Without viewBox Ignores CSS Resize', route: '/html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates' },
+    ],
+    tip: 'A canvas path never auto-resets — every arc()/lineTo()/moveTo() appends to the SAME current path until beginPath() starts a fresh one.',
+    docs: [
+      { label: 'MDN — CanvasRenderingContext2D.beginPath()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/beginPath' },
+    ],
+    resources: [
+      { label: 'MDN — getImageData()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData', badge: 'docs' },
+    ],
+    gotchas: [
+      'stroke()/fill() never clear the current path — they only render whatever it currently contains, however large it has grown.',
+      'getImageData() gives an objective, numeric proof of merged paths — a real pixel appearing where neither shape\'s own outline should reach.',
+    ],
+  },
+
+  'html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates': {
+    apis: ['viewBox', 'width', 'height', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Canvas & SVG (overview)', route: '/html/canvas-svg' },
+      { label: 'Canvas Resolution vs CSS Display Size', route: '/html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels' },
+      { label: 'Missing beginPath() Merges Paths', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' },
+    ],
+    tip: 'width/height set the SVG element\'s own box. Only viewBox tells its CONTENT to scale proportionally when that box is later resized via CSS.',
+    docs: [
+      { label: 'MDN — viewBox', url: 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox' },
+    ],
+    resources: [
+      { label: 'CSS-Tricks — Understanding SVG viewBox', url: 'https://css-tricks.com/scale-svg/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Without viewBox, the SVG\'s own box resizes with CSS fine — it\'s the CONTENT inside that keeps its literal, unscaled coordinates.',
+      'This can make content vanish off-canvas or become disproportionate in any responsively-sized icon or illustration, not just a cosmetic nuance.',
+    ],
+  },
+
   // ── HTML: Web Components ───────────────────────────────────────────────────
   'html/custom-elements': {
     apis: ['customElements.define()', 'attachShadow()', '<template>', '<slot>', 'connectedCallback()', 'observedAttributes'],

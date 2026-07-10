@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Canvas &amp; SVG" topicRoute="/html/canvas-svg" subtopicLabel="Missing beginPath() Merges Paths — Provable via Pixel Data" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Missing beginPath() Merges Paths — Provable via Pixel Data</h1>
+  <p class="page-subtitle">Canvas paths never auto-reset. Skip beginPath() between shapes and the browser draws a real, straight connecting line between them — provable with getImageData(), not just a screenshot.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two circles, drawn with and without an intervening <code>beginPath()</code>. Read the actual pixel data at a point between them that neither circle's own outline should ever touch.</p>
+    <app-live-playground title="proving merged paths with getImageData()" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Both this and the previous subtopic are Canvas-specific raster mistakes. The final subtopic turns to SVG's own very different scaling model — a coordinate-system mistake, not a pixel one. Return to the <a routerLink="/html/canvas-svg">Canvas &amp; SVG</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Canvas &amp; SVG"
+    topicRoute="/html/canvas-svg"
+    [prev]="{ label: 'Canvas HTML Attributes Set Resolution, CSS Only Stretches Pixels', route: '/html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels' }"
+    [next]="{ label: 'SVG Without viewBox Ignores CSS Resize of Its Coordinates', route: '/html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates' }"
+  />
+</div>

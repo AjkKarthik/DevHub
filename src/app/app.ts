@@ -1477,6 +1477,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Missing width/height Causes Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' },
     { label: 'srcdoc vs src Network Requests', route: '/html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one' },
   ],
+  'canvas-svg': [
+    { label: 'Canvas Resolution vs CSS Display Size', route: '/html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels' },
+    { label: 'Missing beginPath() Merges Paths', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' },
+    { label: 'SVG Without viewBox Ignores CSS Resize', route: '/html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates' },
+  ],
 };
 
 @Component({
