@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML5 Browser APIs" topicRoute="/html/apis" subtopicLabel="navigator.share Feature Detection Prevents a Real TypeError" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">navigator.share Feature Detection Prevents a Real TypeError</h1>
+  <p class="page-subtitle">On an unsupported browser, navigator.share is genuinely undefined — calling it unconditionally throws synchronously, before any Promise ever exists to catch.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Check <code>'share' in navigator</code>, then observe what an unguarded call actually throws when the API isn't available.</p>
+    <app-live-playground title="navigator.share existence check and the real failure mode" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Both this and the previous subtopic cover an API that might not be callable — one because of thread scope, one because of browser support. The final subtopic covers a different failure mode entirely: an API that's always callable but doesn't behave the way its name suggests. Return to the <a routerLink="/html/apis">HTML5 Browser APIs</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML5 Browser APIs"
+    topicRoute="/html/apis"
+    [prev]="{ label: 'FileReaderSync Only Exists Inside a Real Web Worker', route: '/html/apis/filereadersync-only-exists-inside-a-real-web-worker' }"
+    [next]="{ label: 'Notification.permission Is Readable Anytime, Construction Never Throws', route: '/html/apis/notification-permission-is-readable-anytime-construction-never-throws' }"
+  />
+</div>

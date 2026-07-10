@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML5 Browser APIs" topicRoute="/html/apis" subtopicLabel="Notification.permission Is Readable Anytime, Construction Never Throws" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Notification.permission Is Readable Anytime, Construction Never Throws</h1>
+  <p class="page-subtitle">new Notification() without checking permission first doesn't throw — it silently succeeds and returns a real object, but nothing ever displays if permission isn't already granted.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Read <code>Notification.permission</code> instantly, then construct a Notification WITHOUT checking or requesting permission first — confirm construction never throws.</p>
+    <app-live-playground title="Notification.permission and the silent-failure constructor" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious API mechanics — a constructor that doesn't exist in a given scope, a method that isn't a function on an unsupported browser, and now a constructor that always succeeds regardless of whether its real-world effect actually happens. Return to the <a routerLink="/html/apis">HTML5 Browser APIs</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML5 Browser APIs"
+    topicRoute="/html/apis"
+    [prev]="{ label: 'navigator.share Feature Detection Prevents a Real TypeError', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' }"
+  />
+</div>

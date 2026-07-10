@@ -22693,6 +22693,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/apis/filereadersync-only-exists-inside-a-real-web-worker': {
+    apis: ['FileReaderSync', 'FileReader', 'Worker', 'WorkerGlobalScope'],
+    related: [
+      { label: 'HTML5 Browser APIs (overview)', route: '/html/apis' },
+      { label: 'navigator.share Feature Detection', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' },
+      { label: 'Notification.permission Never Throws', route: '/html/apis/notification-permission-is-readable-anytime-construction-never-throws' },
+    ],
+    tip: 'FileReaderSync is defined ONLY on WorkerGlobalScope — typeof FileReaderSync is "undefined" on the main thread, "function" inside a real Worker.',
+    docs: [
+      { label: 'MDN — FileReaderSync', url: 'https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync' },
+    ],
+    resources: [
+      { label: 'MDN — Web Workers API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is a genuine scope restriction, not a deprecated or permission-gated API — the constructor simply was never defined on Window.',
+      'FileReader (async) works in both contexts; only its synchronous counterpart is worker-only.',
+    ],
+  },
+
+  'html/apis/navigator-share-feature-detection-prevents-a-real-typeerror': {
+    apis: ['navigator.share()', "'share' in navigator", 'TypeError'],
+    related: [
+      { label: 'HTML5 Browser APIs (overview)', route: '/html/apis' },
+      { label: 'FileReaderSync Only Exists in Workers', route: '/html/apis/filereadersync-only-exists-inside-a-real-web-worker' },
+      { label: 'Notification.permission Never Throws', route: '/html/apis/notification-permission-is-readable-anytime-construction-never-throws' },
+    ],
+    tip: 'On an unsupported browser, navigator.share is genuinely undefined — calling it throws a synchronous TypeError, not a rejected Promise.',
+    docs: [
+      { label: 'MDN — Navigator.share()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share' },
+    ],
+    resources: [
+      { label: 'MDN — Web Share API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Share_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'A rejected Promise implies the function exists and started running — "not supported" fails one full step earlier, at the call itself.',
+      "'share' in navigator is a safe, throw-free existence check to run before ever calling the method.",
+    ],
+  },
+
+  'html/apis/notification-permission-is-readable-anytime-construction-never-throws': {
+    apis: ['Notification.permission', 'new Notification()', 'Notification.requestPermission()'],
+    related: [
+      { label: 'HTML5 Browser APIs (overview)', route: '/html/apis' },
+      { label: 'FileReaderSync Only Exists in Workers', route: '/html/apis/filereadersync-only-exists-inside-a-real-web-worker' },
+      { label: 'navigator.share Feature Detection', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' },
+    ],
+    tip: 'Notification.permission is a plain synchronous string, readable anytime with zero prompt — new Notification() never throws for a permission problem, it just silently fails to display.',
+    docs: [
+      { label: 'MDN — Notification()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification' },
+    ],
+    resources: [
+      { label: 'MDN — Notifications API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'The constructor succeeds and returns a real object regardless of permission state — only the ACTUAL DISPLAY depends on permission being "granted".',
+      'The constructor never triggers the permission prompt itself — that is a separate, required call to Notification.requestPermission().',
+    ],
+  },
+
   'html/seo': {
     apis: ['<title>', '<meta name="description">', '<link rel="canonical">', '<meta name="robots">', 'JSON-LD <script>', 'og:title / og:image', 'twitter:card', 'hreflang', 'sitemap.xml', 'Core Web Vitals'],
     related: [

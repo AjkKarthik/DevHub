@@ -1372,7 +1372,12 @@ export const routes: Routes = [
       { path: 'malformed-json-ld-renders-fine-but-fails-to-parse', loadComponent: () => import('./components/frontend/html/seo/subtopics/malformed-json-ld-renders-fine-but-fails-to-parse/malformed-json-ld-renders-fine-but-fails-to-parse').then(m => m.MalformedJsonLdRendersFineButFailsToParseSubtopic) },
       { path: 'og-image-dimensions-are-checkable-live-via-the-image-api', loadComponent: () => import('./components/frontend/html/seo/subtopics/og-image-dimensions-are-checkable-live-via-the-image-api/og-image-dimensions-are-checkable-live-via-the-image-api').then(m => m.OgImageDimensionsAreCheckableLiveViaTheImageApiSubtopic) },
     ] },
-    { path: 'apis',                loadComponent: () => import('./components/frontend/html/apis/apis').then(m => m.HtmlApis) },
+    { path: 'apis', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/apis/apis').then(m => m.HtmlApis) },
+      { path: 'filereadersync-only-exists-inside-a-real-web-worker', loadComponent: () => import('./components/frontend/html/apis/subtopics/filereadersync-only-exists-inside-a-real-web-worker/filereadersync-only-exists-inside-a-real-web-worker').then(m => m.FileReaderSyncOnlyExistsInsideARealWebWorkerSubtopic) },
+      { path: 'navigator-share-feature-detection-prevents-a-real-typeerror', loadComponent: () => import('./components/frontend/html/apis/subtopics/navigator-share-feature-detection-prevents-a-real-typeerror/navigator-share-feature-detection-prevents-a-real-typeerror').then(m => m.NavigatorShareFeatureDetectionPreventsARealTypeErrorSubtopic) },
+      { path: 'notification-permission-is-readable-anytime-construction-never-throws', loadComponent: () => import('./components/frontend/html/apis/subtopics/notification-permission-is-readable-anytime-construction-never-throws/notification-permission-is-readable-anytime-construction-never-throws').then(m => m.NotificationPermissionIsReadableAnytimeConstructionNeverThrowsSubtopic) },
+    ] },
     { path: 'fundamentals',        loadComponent: () => import('./components/frontend/html/fundamentals/fundamentals').then(m => m.HtmlFundamentals) },
     { path: 'headings-paragraphs', loadComponent: () => import('./components/frontend/html/headings-paragraphs/headings-paragraphs').then(m => m.HtmlHeadingsParagraphs) },
     { path: 'input-types',         loadComponent: () => import('./components/frontend/html/input-types/input-types').then(m => m.HtmlInputTypes) },

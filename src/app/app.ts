@@ -1499,6 +1499,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Malformed JSON-LD Renders Fine, Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' },
     { label: 'og:image Dimensions Checkable via Image API', route: '/html/seo/og-image-dimensions-are-checkable-live-via-the-image-api' },
   ],
+  apis: [
+    { label: 'FileReaderSync Only Exists in Workers', route: '/html/apis/filereadersync-only-exists-inside-a-real-web-worker' },
+    { label: 'navigator.share Feature Detection', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' },
+    { label: 'Notification.permission Never Throws', route: '/html/apis/notification-permission-is-readable-anytime-construction-never-throws' },
+  ],
 };
 
 @Component({

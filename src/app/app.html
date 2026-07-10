@@ -3539,7 +3539,26 @@
           </div>
         }
       }
-      <a routerLink="/html/apis"               routerLinkActive="active"><span class="nl-text">HTML5 APIs</span>@if(progress.isDone('html-apis')){<span class="nl-done">✓</span>}@if(diff('html-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/apis" routerLinkActive="active">
+        <span class="nl-text">HTML5 APIs</span>
+        @if (progress.isDone('html-apis')) {<span class="nl-done">✓</span>}
+        @if (diff('html-apis'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('apis')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('apis')"
+                  (click)="toggleSubtopics('apis', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('apis'); as htmlApisSubs) {
+        @if (isSubtopicsExpanded('apis')) {
+          <div class="nav-subtopics">
+            @for (s of htmlApisSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/html/storage-apis"       routerLinkActive="active"><span class="nl-text">Storage APIs</span>@if(progress.isDone('html-storage-apis')){<span class="nl-done">✓</span>}@if(diff('html-storage-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/html/drag-drop"          routerLinkActive="active"><span class="nl-text">Drag &amp; Drop</span>@if(progress.isDone('html-drag-drop')){<span class="nl-done">✓</span>}@if(diff('html-drag-drop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/html/canvas-svg" routerLinkActive="active">
