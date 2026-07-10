@@ -441,6 +441,43 @@ to the topic page, not its subtopics.
 
 ### Gotchas specific to subtopic pages
 
+- **A literal void-element end tag (e.g. `</br>`) as bare TEXT in a `.html` template's own
+  markup is parsed by the Angular compiler as an actual (invalid) end tag, not literal text**,
+  and fails the build with `NG5002: Void elements do not have end tags "br"`. Confirmed via a
+  real build failure on `/html/fundamentals`'s own `</br>` subtopic (2026-07-10) — the
+  `page-subtitle` prose literally described the `</br>` mistake using the raw characters,
+  which the HTML template parser tried to parse as a real tag. **Fix: HTML-entity-escape it**
+  — `&lt;/br&gt;` — the same treatment as the pre-existing brace/`@word` gotchas below, just
+  for a different trigger character sequence. Only applies to bare TEXT nodes in the `.html`
+  file itself; the exact same raw `</br>` characters are completely safe inside a TS string
+  field (`theory.points`, `misconceptions`, etc.) since those never pass through the template
+  parser at all — confirmed by every OTHER occurrence in the same file's `.ts` needing no
+  escaping.
+- **Inside a `[innerHTML]`-bound TS string field (`theory.points`, `misconceptions.thought`/
+  `.reality`, `try-it.prompt`/`.hint`), a literal raw HTML tag you intend to appear as VISIBLE
+  TEXT (e.g. writing `<br>` or `<span>` to literally talk ABOUT that tag) is instead parsed
+  and rendered as a REAL element** — an empty `<span>` renders invisibly, a bare `<br>` inserts
+  an actual line break, silently swallowing the very text meant to describe it. Confirmed via
+  two real instances caught during browser verification (not the build, which stayed green) on
+  the same `/html/fundamentals` batch: a misconception's `reality` string discussing `<br>` and
+  `<br></br>`, and another discussing `<span>` — both needed the standard `<code>&lt;br&gt;</code>`-
+  style entity-escaping treatment already used everywhere else in the same files. **Fix: always
+  wrap literal tag-name text meant for display inside `[innerHTML]`-bound fields in
+  `<code>&lt;tag&gt;</code>`, exactly like every other reference to a tag name in this codebase**
+  — never leave a bare `<tag>` as raw text there. This is the OPPOSITE of the `heading` field on
+  the same `TheoryPoint` object, which binds via plain `{{ }}` interpolation (not `[innerHTML]`)
+  and therefore must NOT use `<code>`/entity-escaping — raw literal characters display correctly
+  as-is there (confirmed by a THIRD instance in the same batch: a `<code>&lt;br&gt;...</code>`-
+  wrapped `heading` string rendered its own `<code>` tags and un-decoded `&lt;`/`&gt;` entities
+  as ugly literal text, since interpolation never parses or decodes the string content at all —
+  removing the `<code>`/entity-wrapping and using bare `</br>`-style characters directly, matching
+  every other `heading` string in the same file, fixed it). **Net rule per shared-component field:
+  `heading` (plain interpolation) → raw characters, no entities, no tags; `points`/`thought`/
+  `reality`/`prompt`/`hint` (`[innerHTML]`) → wrap tag-name mentions in `<code>&lt;tag&gt;</code>`;
+  `solution` (plain interpolation inside `<pre><code>`) → raw characters, no entities, no tags** —
+  check which binding a shared component actually uses (grep its own `.ts` template) rather than
+  assuming based on a sibling field in the same data shape.
+
 - **Literal `@word` text (anywhere — `<h1>`, `<p>`, `<code>`, etc.) in the `.html` template**
   must be escaped as `&#64;word` — writing a literal `@if`/`@defer`/`@placeholder`/etc. as TEXT
   CONTENT between tags is parsed by the Angular compiler as the start of a control-flow/defer
