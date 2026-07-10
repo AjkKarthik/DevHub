@@ -1669,7 +1669,7 @@ off here with a date.
 - [x] `/html/accessibility` — Accessibility & ARIA (2026-07-10 — 3 subtopics: aria-labelledby-concatenates-in-listed-order-skips-missing-ids, aria-hidden-removes-from-a11y-tree-not-tab-order, native-button-translates-enter-space-div-role-button-does-not; SUBTOPICS map hub-prefixed to `html-accessibility` — collision with the Angular hub's own bare `accessibility` key)
 - [x] `/html/head-metadata` — Head & Metadata (2026-07-10 — 3 subtopics: font-preload-without-crossorigin-fetches-twice, preload-without-as-is-silently-ignored, relative-canonical-resolves-differently-per-page; SUBTOPICS map key left bare ('head-metadata'), collision-free)
 - [x] `/html/custom-elements` — Web Components & Custom Elements (2026-07-10 — 3 subtopics: clonenode-required-appendchild-consumes-the-template, composed-true-required-to-cross-the-shadow-boundary, attributechangedcallback-fires-before-connectedcallback; SUBTOPICS map key left bare ('custom-elements'), collision-free)
-- [ ] `/html/iframes-embeds` — iFrames & Embeds
+- [x] `/html/iframes-embeds` — iFrames & Embeds (2026-07-10 — 3 subtopics: allow-scripts-plus-allow-same-origin-enables-sandbox-escape, missing-width-height-causes-measurable-layout-shift, srcdoc-makes-zero-network-requests-src-makes-a-real-one; SUBTOPICS map key left bare ('iframes-embeds'), collision-free)
 - [ ] `/html/canvas-svg` — Canvas & SVG
 - [ ] `/html/performance` — HTML Performance
 - [ ] `/html/pwa-service-workers` — PWA & Service Workers
