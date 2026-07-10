@@ -1667,7 +1667,7 @@ off here with a date.
 - [x] `/html/tables` — Tables (2026-07-10 — 3 subtopics: rowspan-covered-cells-shift-every-later-cell, table-layout-fixed-sizes-columns-from-first-row, col-only-supports-background-border-visibility-width; SUBTOPICS map key left bare ('tables'), collision-free; fixed a pre-existing gap where no base sidebar entry existed for this topic)
 - [x] `/html/links-navigation` — Links & Navigation (2026-07-10 — 3 subtopics: rel-noopener-genuinely-nulls-window-opener, href-less-anchor-is-skipped-by-tab-navigation, lvhfa-source-order-decides-the-equal-specificity-winner; SUBTOPICS map key left bare ('links-navigation'), collision-free; fixed a pre-existing gap where no base sidebar entry existed for this topic)
 - [x] `/html/accessibility` — Accessibility & ARIA (2026-07-10 — 3 subtopics: aria-labelledby-concatenates-in-listed-order-skips-missing-ids, aria-hidden-removes-from-a11y-tree-not-tab-order, native-button-translates-enter-space-div-role-button-does-not; SUBTOPICS map hub-prefixed to `html-accessibility` — collision with the Angular hub's own bare `accessibility` key)
-- [ ] `/html/head-metadata` — Head & Metadata
+- [x] `/html/head-metadata` — Head & Metadata (2026-07-10 — 3 subtopics: font-preload-without-crossorigin-fetches-twice, preload-without-as-is-silently-ignored, relative-canonical-resolves-differently-per-page; SUBTOPICS map key left bare ('head-metadata'), collision-free)
 - [ ] `/html/custom-elements` — Web Components & Custom Elements
 - [ ] `/html/iframes-embeds` — iFrames & Embeds
 - [ ] `/html/canvas-svg` — Canvas & SVG
