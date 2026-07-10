@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Semantic Elements" topicRoute="/html/semantic-elements" subtopicLabel="A Heading-Less section Is Valid, Parseable HTML" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A Heading-Less section Is Valid, Parseable HTML</h1>
+  <p class="page-subtitle">"A section needs a heading" is a semantic best-practice, not a parser rule — catching a violation requires writing your own DOM audit, exactly like real accessibility tools do.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A page with a correctly-headed <code>&lt;section&gt;</code>, a heading-less one, and a correctly-used <code>&lt;div&gt;</code> loads with zero errors. Then a small audit function walks the DOM to catch what the browser itself won't flag.</p>
+    <app-live-playground title="Auditing sections for missing headings" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This confirms the main <a routerLink="/html/semantic-elements">Semantic Elements</a> page's warning about heading-less sections, using the same "browser silently allows it, only external tools catch it" pattern as the previous subtopic. Next, see how a <code>&lt;time&gt;</code> element's <code>datetime</code> property can diverge completely from its own visible text.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Semantic Elements"
+    topicRoute="/html/semantic-elements"
+    [prev]="{ label: 'A Second main Element Is Silently Allowed, With No Thrown Error', route: '/html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error' }"
+    [next]="{ label: 'time’s datetime Property Can Diverge From Its Own Visible Text', route: '/html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text' }"
+  />
+</div>

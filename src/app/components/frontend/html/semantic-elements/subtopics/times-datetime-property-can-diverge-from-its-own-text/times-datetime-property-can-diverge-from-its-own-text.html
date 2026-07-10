@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Semantic Elements" topicRoute="/html/semantic-elements" subtopicLabel="time's datetime Property Can Diverge From Its Own Visible Text" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">time's datetime Property Can Diverge From Its Own Visible Text</h1>
+  <p class="page-subtitle">The browser never cross-checks <code>datetime</code> against a <code>&lt;time&gt;</code> element's own displayed text — every machine consumer trusts <code>datetime</code> completely, even if it's wrong.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A <code>&lt;time&gt;</code> element deliberately has a <code>datetime</code> attribute that disagrees with its own visible text. Confirm the browser never flags it, then see what a calendar integration or search engine would actually use.</p>
+    <app-live-playground title="A mismatched time datetime vs. visible text" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's "the browser is more forgiving than you'd expect" theme — multiple mains, heading-less sections, and now an untrusted-but-unvalidated <code>datetime</code>. Return to the <a routerLink="/html/semantic-elements">Semantic Elements</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Semantic Elements"
+    topicRoute="/html/semantic-elements"
+    [prev]="{ label: 'A Heading-Less section Is Valid, Parseable HTML', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' }"
+  />
+</div>

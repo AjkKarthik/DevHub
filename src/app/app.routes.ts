@@ -1294,7 +1294,12 @@ export const routes: Routes = [
       { path: 'missing-doctype-triggers-quirks-mode-compatmode-reveals-it', loadComponent: () => import('./components/frontend/html/document-structure/subtopics/missing-doctype-triggers-quirks-mode-compatmode-reveals-it/missing-doctype-triggers-quirks-mode-compatmode-reveals-it').then(m => m.MissingDOCTYPESubtopic) },
       { path: 'a-duplicate-head-elements-content-is-moved-into-body', loadComponent: () => import('./components/frontend/html/document-structure/subtopics/a-duplicate-head-elements-content-is-moved-into-body/a-duplicate-head-elements-content-is-moved-into-body').then(m => m.IsItOkayToHaveTwoHeadElementsSubtopic) },
     ] },
-    { path: 'semantic-elements',   loadComponent: () => import('./components/frontend/html/semantic-elements/semantic-elements').then(m => m.HtmlSemanticElements) },
+    { path: 'semantic-elements', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/semantic-elements/semantic-elements').then(m => m.HtmlSemanticElements) },
+      { path: 'a-second-main-is-silently-allowed-with-no-thrown-error', loadComponent: () => import('./components/frontend/html/semantic-elements/subtopics/a-second-main-is-silently-allowed-with-no-thrown-error/a-second-main-is-silently-allowed-with-no-thrown-error').then(m => m.MultipleMainElementsOnOnePageSubtopic) },
+      { path: 'a-heading-less-section-is-valid-parseable-html', loadComponent: () => import('./components/frontend/html/semantic-elements/subtopics/a-heading-less-section-is-valid-parseable-html/a-heading-less-section-is-valid-parseable-html').then(m => m.UsingSectionAsAGenericWrapperSubtopic) },
+      { path: 'times-datetime-property-can-diverge-from-its-own-text', loadComponent: () => import('./components/frontend/html/semantic-elements/subtopics/times-datetime-property-can-diverge-from-its-own-text/times-datetime-property-can-diverge-from-its-own-text').then(m => m.OmittingDatetimeOnTimeSubtopic) },
+    ] },
     { path: 'forms',               loadComponent: () => import('./components/frontend/html/forms/forms').then(m => m.HtmlForms) },
     { path: 'media',               loadComponent: () => import('./components/frontend/html/media/media').then(m => m.HtmlMedia) },
     { path: 'tables',              loadComponent: () => import('./components/frontend/html/tables/tables').then(m => m.HtmlTables) },

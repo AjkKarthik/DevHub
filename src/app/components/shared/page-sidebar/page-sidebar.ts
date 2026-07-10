@@ -22059,6 +22059,87 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── HTML: Semantic Elements ───────────────────────────────────────────────
+  'html/semantic-elements': {
+    apis: ['<main>', '<section>', '<time datetime>', 'HTMLTimeElement.dateTime'],
+    related: [
+      { label: 'Document Structure',       route: '/html/document-structure' },
+      { label: 'Landmark Elements',        route: '/html/landmark-elements'  },
+      { label: 'Accessibility & ARIA',     route: '/html/accessibility'      },
+    ],
+    tip: '"Exactly one main" and "a section needs a heading" are content-model rules, not parsing rules — the browser renders violations with zero errors, only external tools catch them.',
+    docs: [
+      { label: 'MDN — Sectioning content', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#sectioning_content' },
+    ],
+    resources: [
+      { label: 'W3C Nu Html Checker', url: 'https://validator.w3.org/nu/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A time element\'s datetime attribute and its own visible text are never cross-checked — every machine consumer trusts datetime completely, even if it\'s wrong.',
+      'Catching these violations requires writing your own DOM audit — the same technique real accessibility tools (axe, Lighthouse) use under the hood.',
+    ],
+  },
+
+  'html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error': {
+    apis: ['<main>', 'querySelectorAll()'],
+    related: [
+      { label: 'Semantic Elements (overview)', route: '/html/semantic-elements' },
+      { label: 'Heading-Less section Is Valid', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' },
+      { label: 'time datetime Can Diverge', route: '/html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text' },
+    ],
+    tip: '"Exactly one main per page" is a content-model rule the parser never checks — two mains render fine, but accessibility trees typically only expose the first as the landmark.',
+    docs: [
+      { label: 'MDN — <main>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main' },
+    ],
+    resources: [
+      { label: 'W3C Nu Html Checker', url: 'https://validator.w3.org/nu/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A page looking and functioning normally for a sighted user says nothing about whether the underlying structure is correct for screen reader users.',
+      'HTML validators and accessibility auditors (axe, Lighthouse) explicitly flag this — the browser\'s own parser never does.',
+    ],
+  },
+
+  'html/semantic-elements/a-heading-less-section-is-valid-parseable-html': {
+    apis: ['<section>', 'querySelector()'],
+    related: [
+      { label: 'Semantic Elements (overview)', route: '/html/semantic-elements' },
+      { label: 'Second main Silently Allowed', route: '/html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error' },
+      { label: 'time datetime Can Diverge', route: '/html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text' },
+    ],
+    tip: 'If you genuinely can\'t write a short, meaningful heading for a piece of content, that\'s a signal it isn\'t a semantic "section" — use div instead.',
+    docs: [
+      { label: 'MDN — <section>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section' },
+    ],
+    resources: [
+      { label: 'W3C Nu Html Checker', url: 'https://validator.w3.org/nu/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The fix for a failing audit is rarely "add a hidden heading" — it\'s usually recognizing the content was never a real section, so div was correct all along.',
+      'Catching this requires the same DOM-walking technique any developer already knows — no special browser API is involved.',
+    ],
+  },
+
+  'html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text': {
+    apis: ['<time datetime>', 'HTMLTimeElement.dateTime'],
+    related: [
+      { label: 'Semantic Elements (overview)', route: '/html/semantic-elements' },
+      { label: 'Second main Silently Allowed', route: '/html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error' },
+      { label: 'Heading-Less section Is Valid', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' },
+    ],
+    tip: 'A time element with no datetime attribute returns an empty string from .dateTime, not undefined or an error — machines get literally nothing usable from it.',
+    docs: [
+      { label: 'MDN — <time>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/time' },
+    ],
+    resources: [
+      { label: 'W3C Nu Html Checker', url: 'https://validator.w3.org/nu/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A mismatch is invisible to sighted users — it only manifests in non-visual consumption (screen readers, search engine snippets, calendar integrations).',
+      'Templating engines and CMS platforms must derive both datetime and the visible text from the exact same underlying value, never set independently.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],

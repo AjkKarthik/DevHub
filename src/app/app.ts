@@ -1428,6 +1428,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Missing DOCTYPE Triggers Quirks Mode', route: '/html/document-structure/missing-doctype-triggers-quirks-mode-compatmode-reveals-it' },
     { label: 'A Duplicate head Element’s Content Moves to body', route: '/html/document-structure/a-duplicate-head-elements-content-is-moved-into-body' },
   ],
+  'semantic-elements': [
+    { label: 'A Second main Is Silently Allowed', route: '/html/semantic-elements/a-second-main-is-silently-allowed-with-no-thrown-error' },
+    { label: 'A Heading-Less section Is Valid HTML', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' },
+    { label: 'time’s datetime Can Diverge From Its Text', route: '/html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text' },
+  ],
 };
 
 @Component({
