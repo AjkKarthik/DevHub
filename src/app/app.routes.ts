@@ -1342,7 +1342,12 @@ export const routes: Routes = [
       { path: 'composed-true-required-to-cross-the-shadow-boundary', loadComponent: () => import('./components/frontend/html/custom-elements/subtopics/composed-true-required-to-cross-the-shadow-boundary/composed-true-required-to-cross-the-shadow-boundary').then(m => m.ComposedTrueRequiredToCrossTheShadowBoundarySubtopic) },
       { path: 'attributechangedcallback-fires-before-connectedcallback', loadComponent: () => import('./components/frontend/html/custom-elements/subtopics/attributechangedcallback-fires-before-connectedcallback/attributechangedcallback-fires-before-connectedcallback').then(m => m.AttributeChangedCallbackFiresBeforeConnectedCallbackSubtopic) },
     ] },
-    { path: 'iframes-embeds',      loadComponent: () => import('./components/frontend/html/iframes-embeds/iframes-embeds').then(m => m.HtmlIframesEmbeds) },
+    { path: 'iframes-embeds', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/iframes-embeds/iframes-embeds').then(m => m.HtmlIframesEmbeds) },
+      { path: 'allow-scripts-plus-allow-same-origin-enables-sandbox-escape', loadComponent: () => import('./components/frontend/html/iframes-embeds/subtopics/allow-scripts-plus-allow-same-origin-enables-sandbox-escape/allow-scripts-plus-allow-same-origin-enables-sandbox-escape').then(m => m.AllowScriptsPlusAllowSameOriginEnablesSandboxEscapeSubtopic) },
+      { path: 'missing-width-height-causes-measurable-layout-shift', loadComponent: () => import('./components/frontend/html/iframes-embeds/subtopics/missing-width-height-causes-measurable-layout-shift/missing-width-height-causes-measurable-layout-shift').then(m => m.MissingWidthHeightCausesMeasurableLayoutShiftSubtopic) },
+      { path: 'srcdoc-makes-zero-network-requests-src-makes-a-real-one', loadComponent: () => import('./components/frontend/html/iframes-embeds/subtopics/srcdoc-makes-zero-network-requests-src-makes-a-real-one/srcdoc-makes-zero-network-requests-src-makes-a-real-one').then(m => m.SrcdocMakesZeroNetworkRequestsSrcMakesARealOneSubtopic) },
+    ] },
     { path: 'canvas-svg',          loadComponent: () => import('./components/frontend/html/canvas-svg/canvas-svg').then(m => m.HtmlCanvasSvg) },
     { path: 'performance',         loadComponent: () => import('./components/frontend/html/performance/performance').then(m => m.HtmlPerformance) },
     { path: 'pwa-service-workers', loadComponent: () => import('./components/frontend/html/pwa-service-workers/pwa-service-workers').then(m => m.HtmlPwaServiceWorkers) },

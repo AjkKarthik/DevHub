@@ -3525,7 +3525,26 @@
           </div>
         }
       }
-      <a routerLink="/html/iframes-embeds"     routerLinkActive="active"><span class="nl-text">iFrames &amp; Embeds</span>@if(progress.isDone('html-iframes-embeds')){<span class="nl-done">✓</span>}@if(diff('html-iframes-embeds');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/iframes-embeds" routerLinkActive="active">
+        <span class="nl-text">iFrames &amp; Embeds</span>
+        @if (progress.isDone('html-iframes-embeds')) {<span class="nl-done">✓</span>}
+        @if (diff('html-iframes-embeds'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('iframes-embeds')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('iframes-embeds')"
+                  (click)="toggleSubtopics('iframes-embeds', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('iframes-embeds'); as htmlIframesSubs) {
+        @if (isSubtopicsExpanded('iframes-embeds')) {
+          <div class="nav-subtopics">
+            @for (s of htmlIframesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/html/pwa-service-workers" routerLinkActive="active"><span class="nl-text">PWA &amp; Service Workers</span>@if(progress.isDone('html-pwa-service-workers')){<span class="nl-done">✓</span>}@if(diff('html-pwa-service-workers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

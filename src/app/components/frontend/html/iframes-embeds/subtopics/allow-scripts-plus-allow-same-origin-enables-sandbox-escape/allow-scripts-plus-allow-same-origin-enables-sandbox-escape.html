@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="iFrames &amp; Embeds" topicRoute="/html/iframes-embeds" subtopicLabel="allow-scripts + allow-same-origin Enables a Real Sandbox Escape" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">allow-scripts + allow-same-origin Enables a Real Sandbox Escape</h1>
+  <p class="page-subtitle">Combining both tokens gives a sandboxed script a genuine window.frameElement reference — enough to call removeAttribute('sandbox') on itself and defeat the sandbox entirely.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>An iframe starts sandboxed with both risky tokens. Its own script calls <code>frameElement.removeAttribute('sandbox')</code> — watch the parent's own DOM confirm the attribute is genuinely gone.</p>
+    <app-live-playground title="a sandboxed script removing its own sandbox attribute" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Sandboxing is a security concern; the next two subtopics turn to performance — how missing dimensions cause a measurable layout shift, and how srcdoc's lack of a network request differs from a real src navigation. Return to the <a routerLink="/html/iframes-embeds">iFrames &amp; Embeds</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="iFrames &amp; Embeds"
+    topicRoute="/html/iframes-embeds"
+    [next]="{ label: 'Missing width/height Causes a Measurable Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' }"
+  />
+</div>

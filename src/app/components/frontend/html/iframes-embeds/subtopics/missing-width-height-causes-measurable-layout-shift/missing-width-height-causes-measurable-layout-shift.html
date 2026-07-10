@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="iFrames &amp; Embeds" topicRoute="/html/iframes-embeds" subtopicLabel="Missing width/height Causes a Measurable Layout Shift" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Missing width/height Causes a Measurable Layout Shift</h1>
+  <p class="page-subtitle">An unsized iframe starts at a browser-default box, not zero — and any mismatch with its real content shows up as a genuine, measurable LayoutShift entry.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two iframes with identical content — one sized, one not. Observe real <code>layout-shift</code> performance entries as both load.</p>
+    <app-live-playground title="measuring layout shift with and without iframe dimensions" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a rendering-cost concern, distinct from the sandbox-escape security mechanic in the previous subtopic. The final subtopic turns to a loading-cost concern: whether the embed even makes a network request at all. Return to the <a routerLink="/html/iframes-embeds">iFrames &amp; Embeds</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="iFrames &amp; Embeds"
+    topicRoute="/html/iframes-embeds"
+    [prev]="{ label: 'allow-scripts + allow-same-origin Enables a Real Sandbox Escape', route: '/html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape' }"
+    [next]="{ label: 'srcdoc Makes Zero Network Requests, src Makes a Real One', route: '/html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one' }"
+  />
+</div>

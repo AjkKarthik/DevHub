@@ -1472,6 +1472,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'composed:true Crosses the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' },
     { label: 'attributeChangedCallback Before connectedCallback', route: '/html/custom-elements/attributechangedcallback-fires-before-connectedcallback' },
   ],
+  'iframes-embeds': [
+    { label: 'allow-scripts + allow-same-origin Sandbox Escape', route: '/html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape' },
+    { label: 'Missing width/height Causes Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' },
+    { label: 'srcdoc vs src Network Requests', route: '/html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one' },
+  ],
 };
 
 @Component({

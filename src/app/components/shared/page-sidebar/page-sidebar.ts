@@ -22570,6 +22570,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape': {
+    apis: ['window.frameElement', 'removeAttribute()', 'sandbox'],
+    related: [
+      { label: 'iFrames & Embeds (overview)', route: '/html/iframes-embeds' },
+      { label: 'Missing width/height Causes Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' },
+      { label: 'srcdoc vs src Network Requests', route: '/html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one' },
+    ],
+    tip: 'allow-same-origin gives a sandboxed script a real window.frameElement reference — combined with allow-scripts, that\'s enough to remove its own sandbox attribute.',
+    docs: [
+      { label: 'MDN — iframe sandbox', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox' },
+    ],
+    resources: [
+      { label: 'OWASP Clickjacking Guide', url: 'https://owasp.org/www-community/attacks/Clickjacking', badge: 'docs' },
+    ],
+    gotchas: [
+      'Neither token alone enables this escape — it is specifically the combination that grants both execution and a same-origin DOM reference.',
+      'The removal is a genuine, permanent DOM mutation on the parent\'s own element, not a one-time bypass.',
+    ],
+  },
+
+  'html/iframes-embeds/missing-width-height-causes-measurable-layout-shift': {
+    apis: ['width', 'height', 'PerformanceObserver', 'layout-shift'],
+    related: [
+      { label: 'iFrames & Embeds (overview)', route: '/html/iframes-embeds' },
+      { label: 'allow-scripts + allow-same-origin Sandbox Escape', route: '/html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape' },
+      { label: 'srcdoc vs src Network Requests', route: '/html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one' },
+    ],
+    tip: 'An unsized iframe still gets a browser-default box (not 0×0) — the shift comes from the mismatch between that default and the real content\'s eventual size.',
+    docs: [
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [
+      { label: 'web.dev — Cumulative Layout Shift', url: 'https://web.dev/articles/cls', badge: 'blog' },
+    ],
+    gotchas: [
+      'CSS-only sizing can still cause an initial shift — HTML width/height attributes are what let the browser reserve space during the very first layout pass.',
+      'LayoutShift is a real, numeric PerformanceObserver entry type — the same underlying data behind the Cumulative Layout Shift Core Web Vital.',
+    ],
+  },
+
+  'html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one': {
+    apis: ['srcdoc', 'src', 'performance.getEntriesByType()'],
+    related: [
+      { label: 'iFrames & Embeds (overview)', route: '/html/iframes-embeds' },
+      { label: 'allow-scripts + allow-same-origin Sandbox Escape', route: '/html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape' },
+      { label: 'Missing width/height Causes Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' },
+    ],
+    tip: 'srcdoc content is already sitting in the attribute value — there is no URL for a network request to ever target, unlike a data: URL which still navigates through the URL pipeline.',
+    docs: [
+      { label: 'MDN — srcdoc', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#srcdoc' },
+    ],
+    resources: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'srcdoc combined with an empty sandbox is the recommended pattern for previewing untrusted, user-generated HTML — nothing ever leaves the current page context.',
+      'Resource Timing entries never appear for srcdoc content, confirmed directly via performance.getEntriesByType(\'resource\').',
+    ],
+  },
+
   'html/cheatsheet': {
     apis: ['<!DOCTYPE html>', '<meta charset>', '<link rel>', 'defer/async', 'aria-*', 'data-*', 'loading="lazy"', 'fetchpriority'],
     related: [

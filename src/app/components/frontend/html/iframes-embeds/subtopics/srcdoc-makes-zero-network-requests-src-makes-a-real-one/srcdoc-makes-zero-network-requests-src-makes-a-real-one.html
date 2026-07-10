@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="iFrames &amp; Embeds" topicRoute="/html/iframes-embeds" subtopicLabel="srcdoc Makes Zero Network Requests, src Makes a Real One" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">srcdoc Makes Zero Network Requests, src Makes a Real One</h1>
+  <p class="page-subtitle">srcdoc content is already sitting in the HTML attribute — there's no URL for a request to target. src always triggers a genuine, measurable network navigation.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two iframes — one with a real <code>src</code> URL, one with inline <code>srcdoc</code> content. Inspect the Resource Timing entries to confirm which one actually hit the network.</p>
+    <app-live-playground title="counting network requests for src vs srcdoc" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious iframe mechanics — a sandbox combination that can be escaped from the inside, a missing-dimensions bug that costs real layout stability, and now a content-source choice that costs (or saves) a real network request. Return to the <a routerLink="/html/iframes-embeds">iFrames &amp; Embeds</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="iFrames &amp; Embeds"
+    topicRoute="/html/iframes-embeds"
+    [prev]="{ label: 'Missing width/height Causes a Measurable Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' }"
+  />
+</div>
