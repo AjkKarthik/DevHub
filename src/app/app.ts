@@ -1462,6 +1462,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'aria-hidden vs the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' },
     { label: 'button vs div role=button Keyboard Activation', route: '/html/accessibility/native-button-translates-enter-space-div-role-button-does-not' },
   ],
+  'head-metadata': [
+    { label: 'Font preload Without crossorigin Fetches Twice', route: '/html/head-metadata/font-preload-without-crossorigin-fetches-twice' },
+    { label: 'preload Without as= Is Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' },
+    { label: 'Relative canonical Resolves Differently', route: '/html/head-metadata/relative-canonical-resolves-differently-per-page' },
+  ],
 };
 
 @Component({

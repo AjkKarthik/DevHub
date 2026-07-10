@@ -22486,6 +22486,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/head-metadata/font-preload-without-crossorigin-fetches-twice': {
+    apis: ['<link rel="preload">', 'crossorigin', 'performance.getEntriesByType()'],
+    related: [
+      { label: 'Head & Metadata (overview)', route: '/html/head-metadata' },
+      { label: 'preload Without as= Is Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' },
+      { label: 'Relative canonical Resolves Differently', route: '/html/head-metadata/relative-canonical-resolves-differently-per-page' },
+    ],
+    tip: 'CSS font requests always use CORS mode — a preload without crossorigin never matches, so the browser fetches the font a genuine second time.',
+    docs: [
+      { label: 'MDN — Preloading content', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload' },
+    ],
+    resources: [
+      { label: 'web.dev — Preload critical assets', url: 'https://web.dev/articles/preload-critical-assets', badge: 'blog' },
+    ],
+    gotchas: [
+      'crossorigin is required on EVERY font preload, same-origin or not — the requirement comes from font-specific CORS behavior, not cross-origin URLs.',
+      'A mismatched preload still renders the font correctly — the only cost is an invisible, wasted second download, provable via Resource Timing entry counts.',
+    ],
+  },
+
+  'html/head-metadata/preload-without-as-is-silently-ignored': {
+    apis: ['<link rel="preload">', 'as attribute', 'console.warn()'],
+    related: [
+      { label: 'Head & Metadata (overview)', route: '/html/head-metadata' },
+      { label: 'Font preload Without crossorigin Fetches Twice', route: '/html/head-metadata/font-preload-without-crossorigin-fetches-twice' },
+      { label: 'Relative canonical Resolves Differently', route: '/html/head-metadata/relative-canonical-resolves-differently-per-page' },
+    ],
+    tip: 'A preload missing as= is not degraded, it is dropped entirely — the only trace is a DevTools console warning, invisible to the page\'s own JavaScript.',
+    docs: [
+      { label: 'MDN — Preloading content', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload' },
+    ],
+    resources: [
+      { label: 'web.dev — Preload critical assets', url: 'https://web.dev/articles/preload-critical-assets', badge: 'blog' },
+    ],
+    gotchas: [
+      'No exception is thrown and no event fires — a page\'s own script has no reliable way to detect a rejected preload at all.',
+      'The page still renders correctly, which is exactly why this class of bug tends to survive unnoticed in production.',
+    ],
+  },
+
+  'html/head-metadata/relative-canonical-resolves-differently-per-page': {
+    apis: ['<link rel="canonical">', 'getAttribute()', 'HTMLLinkElement.href', 'URL()'],
+    related: [
+      { label: 'Head & Metadata (overview)', route: '/html/head-metadata' },
+      { label: 'Font preload Without crossorigin Fetches Twice', route: '/html/head-metadata/font-preload-without-crossorigin-fetches-twice' },
+      { label: 'preload Without as= Is Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' },
+    ],
+    tip: 'link.href always returns a resolved absolute URL, even for a relative attribute — use getAttribute(\'href\') to see the real, raw, potentially-fragile value.',
+    docs: [
+      { label: 'MDN — rel=canonical', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/canonical' },
+    ],
+    resources: [
+      { label: 'Google — Consolidate duplicate URLs', url: 'https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls', badge: 'docs' },
+    ],
+    gotchas: [
+      'The exact same relative href resolves to genuinely different absolute URLs depending on which domain/page serves it.',
+      'Checking link.href in DevTools can look perfectly correct even when the underlying markup is relative and fragile.',
+    ],
+  },
+
   // ── HTML: iFrames & Embeds ─────────────────────────────────────────────────
   'html/iframes-embeds': {
     apis: ['sandbox', 'allow', 'srcdoc', 'loading="lazy"', 'X-Frame-Options', 'frame-ancestors'],

@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Head &amp; Metadata" topicRoute="/html/head-metadata" subtopicLabel="A Relative canonical Resolves Differently Per Page" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A Relative canonical Resolves Differently Per Page</h1>
+  <p class="page-subtitle">A relative canonical href resolves against whichever page happens to serve it — and the DOM's own .href property hides this by always showing a resolved absolute URL.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A canonical tag with a relative href. Compare the raw attribute, the resolved DOM property, and what the same relative value would resolve to on two different mirror domains.</p>
+    <app-live-playground title="relative canonical resolving differently per origin" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious head-tag mechanics — a mismatched font preload duplicating a download, a preload with no type hint being dropped outright, and now a canonical tag whose meaning silently depends on where it's hosted. Return to the <a routerLink="/html/head-metadata">Head &amp; Metadata</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Head &amp; Metadata"
+    topicRoute="/html/head-metadata"
+    [prev]="{ label: 'preload Without as= Is Silently Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' }"
+  />
+</div>

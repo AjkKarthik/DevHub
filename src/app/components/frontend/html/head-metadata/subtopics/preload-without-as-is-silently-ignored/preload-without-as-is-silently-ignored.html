@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Head &amp; Metadata" topicRoute="/html/head-metadata" subtopicLabel="preload Without as= Is Silently Ignored" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">preload Without as= Is Silently Ignored</h1>
+  <p class="page-subtitle">A missing as= attribute doesn't degrade the preload — the browser drops it entirely and only logs a DevTools console warning your own script can never observe.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two preload tags — one missing <code>as=</code>, one correct. Capture <code>console.warn()</code> calls to see the only signal a page ever gets when a preload is rejected.</p>
+    <app-live-playground title="capturing the console warning for a missing as=" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Between this and the crossorigin mismatch in the previous subtopic, a resource hint can fail two genuinely different ways — dropped outright, or duplicated. The final subtopic turns to a different head tag entirely: how a relative canonical URL quietly resolves differently depending on where it's served from. Return to the <a routerLink="/html/head-metadata">Head &amp; Metadata</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Head &amp; Metadata"
+    topicRoute="/html/head-metadata"
+    [prev]="{ label: 'Font preload Without crossorigin Fetches the Font Twice', route: '/html/head-metadata/font-preload-without-crossorigin-fetches-twice' }"
+    [next]="{ label: 'A Relative canonical Resolves Differently Per Page', route: '/html/head-metadata/relative-canonical-resolves-differently-per-page' }"
+  />
+</div>

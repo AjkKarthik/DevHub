@@ -1330,7 +1330,12 @@ export const routes: Routes = [
       { path: 'aria-hidden-removes-from-a11y-tree-not-tab-order', loadComponent: () => import('./components/frontend/html/accessibility/subtopics/aria-hidden-removes-from-a11y-tree-not-tab-order/aria-hidden-removes-from-a11y-tree-not-tab-order').then(m => m.AriaHiddenRemovesFromA11yTreeNotTabOrderSubtopic) },
       { path: 'native-button-translates-enter-space-div-role-button-does-not', loadComponent: () => import('./components/frontend/html/accessibility/subtopics/native-button-translates-enter-space-div-role-button-does-not/native-button-translates-enter-space-div-role-button-does-not').then(m => m.NativeButtonTranslatesEnterSpaceDivRoleButtonDoesNotSubtopic) },
     ] },
-    { path: 'head-metadata',       loadComponent: () => import('./components/frontend/html/head-metadata/head-metadata').then(m => m.HtmlHeadMetadata) },
+    { path: 'head-metadata', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/head-metadata/head-metadata').then(m => m.HtmlHeadMetadata) },
+      { path: 'font-preload-without-crossorigin-fetches-twice', loadComponent: () => import('./components/frontend/html/head-metadata/subtopics/font-preload-without-crossorigin-fetches-twice/font-preload-without-crossorigin-fetches-twice').then(m => m.FontPreloadWithoutCrossoriginFetchesTwiceSubtopic) },
+      { path: 'preload-without-as-is-silently-ignored', loadComponent: () => import('./components/frontend/html/head-metadata/subtopics/preload-without-as-is-silently-ignored/preload-without-as-is-silently-ignored').then(m => m.PreloadWithoutAsIsSilentlyIgnoredSubtopic) },
+      { path: 'relative-canonical-resolves-differently-per-page', loadComponent: () => import('./components/frontend/html/head-metadata/subtopics/relative-canonical-resolves-differently-per-page/relative-canonical-resolves-differently-per-page').then(m => m.RelativeCanonicalResolvesDifferentlyPerPageSubtopic) },
+    ] },
     { path: 'custom-elements',     loadComponent: () => import('./components/frontend/html/custom-elements/custom-elements').then(m => m.HtmlCustomElements) },
     { path: 'iframes-embeds',      loadComponent: () => import('./components/frontend/html/iframes-embeds/iframes-embeds').then(m => m.HtmlIframesEmbeds) },
     { path: 'canvas-svg',          loadComponent: () => import('./components/frontend/html/canvas-svg/canvas-svg').then(m => m.HtmlCanvasSvg) },

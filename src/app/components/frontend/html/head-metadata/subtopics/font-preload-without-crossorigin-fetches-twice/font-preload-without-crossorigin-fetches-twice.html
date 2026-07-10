@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Head &amp; Metadata" topicRoute="/html/head-metadata" subtopicLabel="Font preload Without crossorigin Fetches the Font Twice" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Font preload Without crossorigin Fetches the Font Twice</h1>
+  <p class="page-subtitle">CSS font requests always use CORS mode. A preload without crossorigin never matches that mode — so the browser downloads the font a genuine second time.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A font is preloaded WITHOUT <code>crossorigin</code>, then requested again by an <code>&#64;font-face</code> rule. Inspect the Resource Timing entries to see whether the browser reused the preload or fetched twice.</p>
+    <app-live-playground title="counting resource-timing entries for a mismatched font preload" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is one of two ways a <code>rel="preload"</code> tag can quietly fail to do its job — the next subtopic covers the other one, where the hint is ignored outright rather than merely duplicated. Return to the <a routerLink="/html/head-metadata">Head &amp; Metadata</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Head &amp; Metadata"
+    topicRoute="/html/head-metadata"
+    [next]="{ label: 'preload Without as= Is Silently Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' }"
+  />
+</div>
