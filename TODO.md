@@ -1660,7 +1660,7 @@ off here with a date.
 
 #### HTML — 23 topic pages
 
-- [ ] `/html/document-structure` — Document Structure
+- [x] `/html/document-structure` — Document Structure (2026-07-10 — 3 subtopics: defer-runs-in-order-after-parse-async-runs-whenever-ready, missing-doctype-triggers-quirks-mode-compatmode-reveals-it, a-duplicate-head-elements-content-is-moved-into-body — FIRST HTML hub subtopic set, established conventions documented in CLAUDE.md (search/progress prefix html-, full-path sidebar keys, bare breadcrumb keys, light-tint icon, .html-page wrapper already global so no scss override needed); SUBTOPICS map key left bare ('document-structure'), collision-free)
 - [ ] `/html/semantic-elements` — Semantic Elements
 - [ ] `/html/forms` — Forms & Input
 - [ ] `/html/media` — Media Elements

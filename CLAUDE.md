@@ -910,6 +910,45 @@ Confirmed via direct file inspection and a live browser pilot before the first s
     something that runs in a plain client-side React app, or something that only exists because
     an actual Next.js (or similar SSR framework) server process is involved.
 
+### HTML hub subtopic wiring — first non-JS-family hub with its own live playground pattern
+
+Confirmed via direct file inspection before the first subtopic set (`/html/document-structure`,
+2026-07-10):
+1. Progress/search keys are `html-` PREFIXED (`html-document-structure`), confirmed via existing
+   nav markup. `SIDEBAR_MAP` keys are FULL-PATH PREFIXED (`'html/document-structure'`) — matching
+   ASP.NET/TypeScript/React, not C#'s bare-key convention. **No base sidebar entry existed for
+   `document-structure` before this** (same gap pattern as the JavaScript hub's first topic) —
+   added one alongside the 3 composite subtopic entries.
+2. Breadcrumb `HTML_LABELS` map uses bare keys (`'document-structure'`), composite subtopic keys
+   are bare too (`'document-structure/<slug>'`) — the same generic pattern every hub shares.
+3. **`.html-page`'s wrapper rule IS global** in `src/styles.scss` (confirmed: `.html-page {
+   max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; box-sizing: border-box; }`) —
+   unlike SQL/TypeScript/React/JavaScript, so subtopic `.scss` files do NOT strictly need to
+   redefine it, but included it anyway (harmless, matches the main topic page's own `.scss`
+   pattern of redundantly re-declaring the global rule). Padding value is `2rem 1.5rem 4rem`
+   (note: `1.5rem` horizontal, not JS hub's `1.25rem`) — confirmed from the real main-page `.scss`.
+4. **Icon is LIGHT TINT** (`background: $tint; color: $accent;`), confirmed from the real
+   `document-structure.scss` — matches the documented default table for this hub, unlike the
+   JavaScript hub which turned out to be an exception. Icon content is the literal text `</>`.
+5. `tech="javascript"` in `app-page-meta` (HTML hub shares the JS hub's external run-it links —
+   PlayCode/CodePen — since there's no dedicated HTML-only playground service worth linking).
+6. **Live playground uses the `'typescript'` StackBlitz template, but the DEMO'S OWN `index.html`
+   IS the document under test** — a genuinely different pattern from every JS/TS-family subtopic
+   before it. Where JS/TS subtopics always used a fixed, generic `index.html` shell plus a
+   separate `index.ts` doing the actual demonstrated logic, HTML-hub subtopics whose claim is
+   about HTML PARSING ITSELF (missing DOCTYPE, duplicate `<head>`, script loading order) instead
+   write the INTERESTING markup directly into `index.html` (omitting the DOCTYPE entirely, adding
+   a genuine second `<head>`/`<body>` pair, using real `<script defer>`/`<script async>` tags),
+   with `index.ts` only doing the OBSERVATION (`document.compatMode`, `document.head.contains()`,
+   `performance.now()` timestamps) rather than the demonstration itself. `openFile` in these cases
+   points at `index.html` (not `index.ts`), since that's the file whose content the reader actually
+   needs to see. Confirmed working end-to-end in a live pilot — StackBlitz's `'typescript'`
+   template serves arbitrary plain `.js` files referenced by classic (non-module) `<script src>`
+   tags without issue, alongside its usual ESM `.ts` module resolution.
+7. No `SUBTOPICS` map bare-key collision for `document-structure` (checked, confirmed collision-free)
+   — but this hub is entering a `SUBTOPICS` map already shared by 8+ other hubs, so the standard
+   grep-before-adding discipline still applies to every future HTML-hub topic.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
