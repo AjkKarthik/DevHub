@@ -1440,6 +1440,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'novalidate Disables Blocking, Not checkValidity()', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' },
     { label: 'enctype Only Affects Native Submission', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' },
   ],
+  media: [
+    { label: 'loading="lazy" Defers the Fetch', route: '/html/media/lazy-loading-defers-fetch-until-viewport' },
+    { label: 'sizes Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' },
+    { label: 'Empty sandbox Blocks Scripts', route: '/html/media/empty-sandbox-blocks-script-execution' },
+  ],
 };
 
 @Component({

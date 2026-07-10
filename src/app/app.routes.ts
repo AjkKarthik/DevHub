@@ -1306,7 +1306,12 @@ export const routes: Routes = [
       { path: 'novalidate-disables-blocking-but-checkvalidity-still-works', loadComponent: () => import('./components/frontend/html/forms/subtopics/novalidate-disables-blocking-but-checkvalidity-still-works/novalidate-disables-blocking-but-checkvalidity-still-works').then(m => m.NovalidateAttributeSubtopic) },
       { path: 'enctype-only-affects-native-submission-not-formdata-api', loadComponent: () => import('./components/frontend/html/forms/subtopics/enctype-only-affects-native-submission-not-formdata-api/enctype-only-affects-native-submission-not-formdata-api').then(m => m.RequiredEnctypeForFileUploadSubtopic) },
     ] },
-    { path: 'media',               loadComponent: () => import('./components/frontend/html/media/media').then(m => m.HtmlMedia) },
+    { path: 'media', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/media/media').then(m => m.HtmlMedia) },
+      { path: 'lazy-loading-defers-fetch-until-viewport', loadComponent: () => import('./components/frontend/html/media/subtopics/lazy-loading-defers-fetch-until-viewport/lazy-loading-defers-fetch-until-viewport').then(m => m.LazyLoadingDefersFetchUntilViewportSubtopic) },
+      { path: 'sizes-not-media-picks-srcset-candidate', loadComponent: () => import('./components/frontend/html/media/subtopics/sizes-not-media-picks-srcset-candidate/sizes-not-media-picks-srcset-candidate').then(m => m.SizesNotMediaPicksSrcsetCandidateSubtopic) },
+      { path: 'empty-sandbox-blocks-script-execution', loadComponent: () => import('./components/frontend/html/media/subtopics/empty-sandbox-blocks-script-execution/empty-sandbox-blocks-script-execution').then(m => m.EmptySandboxBlocksScriptExecutionSubtopic) },
+    ] },
     { path: 'tables',              loadComponent: () => import('./components/frontend/html/tables/tables').then(m => m.HtmlTables) },
     { path: 'links-navigation',    loadComponent: () => import('./components/frontend/html/links-navigation/links-navigation').then(m => m.HtmlLinksNavigation) },
     { path: 'accessibility',       loadComponent: () => import('./components/frontend/html/accessibility/accessibility').then(m => m.HtmlAccessibility) },

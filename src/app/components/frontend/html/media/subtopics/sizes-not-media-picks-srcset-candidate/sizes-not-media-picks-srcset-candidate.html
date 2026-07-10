@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Media Elements" topicRoute="/html/media" subtopicLabel="sizes, Not Media Queries, Picks the srcset Candidate" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">sizes, Not Media Queries, Picks the srcset Candidate</h1>
+  <p class="page-subtitle">srcset only lists candidate files. The <code>sizes</code> attribute is the browser's only signal for how wide the image actually renders — get it wrong and even a perfectly correct srcset over-fetches.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two images render at the identical 300px CSS width. One has an accurate <code>sizes="300px"</code>; the other lies with <code>sizes="1200px"</code>. Inspect <code>currentSrc</code> to see which candidate the browser actually fetched for each.</p>
+    <app-live-playground title="sizes hint controls the fetched srcset candidate" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a separate mechanism from the <em>timing</em> question the previous subtopic covers (eager vs lazy) — sizes controls WHICH file loads, loading controls WHEN it loads. Neither has anything to do with the iframe sandbox restrictions in the next subtopic. Return to the <a routerLink="/html/media">Media Elements</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Media Elements"
+    topicRoute="/html/media"
+    [prev]="{ label: 'loading=“lazy” Defers the Fetch Until Near the Viewport', route: '/html/media/lazy-loading-defers-fetch-until-viewport' }"
+    [next]="{ label: 'An Empty sandbox Blocks Script Execution Entirely', route: '/html/media/empty-sandbox-blocks-script-execution' }"
+  />
+</div>

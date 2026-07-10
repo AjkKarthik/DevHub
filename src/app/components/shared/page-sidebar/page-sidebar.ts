@@ -22220,6 +22220,87 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/media': {
+    apis: ['<img srcset sizes>', '<picture>', 'loading', 'HTMLImageElement.currentSrc'],
+    related: [
+      { label: 'Forms & Input',      route: '/html/forms'          },
+      { label: 'HTML Performance',   route: '/html/performance'    },
+      { label: 'iFrames & Embeds',   route: '/html/iframes-embeds' },
+    ],
+    tip: 'loading and sizes solve two completely different problems — loading controls WHEN a fetch starts, sizes controls WHICH candidate file gets fetched.',
+    docs: [
+      { label: 'MDN — Responsive images', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images' },
+    ],
+    resources: [
+      { label: 'MDN — iframe sandbox', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox', badge: 'docs' },
+    ],
+    gotchas: [
+      'Never lazy-load your LCP candidate image — it delays the exact metric Core Web Vitals measures.',
+      'A wrong sizes value causes real over-fetching even with a perfectly correct srcset list.',
+      'An empty sandbox="" blocks script execution entirely — allow-scripts and allow-same-origin are independent tokens.',
+    ],
+  },
+
+  'html/media/lazy-loading-defers-fetch-until-viewport': {
+    apis: ['loading', 'HTMLImageElement.complete', 'HTMLImageElement.naturalWidth'],
+    related: [
+      { label: 'Media Elements (overview)', route: '/html/media' },
+      { label: 'sizes Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' },
+      { label: 'Empty sandbox Blocks Scripts', route: '/html/media/empty-sandbox-blocks-script-execution' },
+    ],
+    tip: 'naturalWidth === 0 immediately after page load is a reliable signal a lazy image has not fetched yet — an eager image at the same distance is already loaded.',
+    docs: [
+      { label: 'MDN — loading attribute', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading' },
+    ],
+    resources: [
+      { label: 'web.dev — Browser-level lazy loading', url: 'https://web.dev/articles/browser-level-image-lazy-loading', badge: 'docs' },
+    ],
+    gotchas: [
+      'eager (the default) loads the instant the parser sees the tag, regardless of position on the page — document order never determines timing on its own.',
+      'Scrolling a lazy image into view is what triggers its fetch — there is no manual "unlock" API, it is fully automatic.',
+    ],
+  },
+
+  'html/media/sizes-not-media-picks-srcset-candidate': {
+    apis: ['sizes', 'srcset', 'HTMLImageElement.currentSrc'],
+    related: [
+      { label: 'Media Elements (overview)', route: '/html/media' },
+      { label: 'loading="lazy" Defers the Fetch', route: '/html/media/lazy-loading-defers-fetch-until-viewport' },
+      { label: 'Empty sandbox Blocks Scripts', route: '/html/media/empty-sandbox-blocks-script-execution' },
+    ],
+    tip: 'currentSrc reflects the browser\'s actual resolved choice — src and srcset just echo the raw attribute strings you wrote.',
+    docs: [
+      { label: 'MDN — sizes attribute', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes' },
+    ],
+    resources: [
+      { label: 'MDN — Responsive images', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images', badge: 'docs' },
+    ],
+    gotchas: [
+      'sizes is a CSS-length hint, not a media-query selector like <picture>\'s source media attribute — they answer completely different questions.',
+      'The browser resolves srcset/sizes before layout is necessarily computed, and never retroactively corrects a bad sizes guess once the real CSS width is known.',
+    ],
+  },
+
+  'html/media/empty-sandbox-blocks-script-execution': {
+    apis: ['sandbox', 'allow-scripts', 'allow-same-origin', 'iframe.contentDocument'],
+    related: [
+      { label: 'Media Elements (overview)', route: '/html/media' },
+      { label: 'loading="lazy" Defers the Fetch', route: '/html/media/lazy-loading-defers-fetch-until-viewport' },
+      { label: 'sizes Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' },
+    ],
+    tip: 'allow-scripts controls whether the frame\'s OWN code runs; allow-same-origin separately controls whether the PARENT can read into the frame afterward.',
+    docs: [
+      { label: 'MDN — iframe sandbox', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox' },
+    ],
+    resources: [
+      { label: 'MDN — Same-origin policy', url: 'https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy', badge: 'docs' },
+    ],
+    gotchas: [
+      'Without allow-scripts, a <script> tag inside the frame is present in the markup but simply never executes — there is nothing to catch with try/catch.',
+      'Without allow-same-origin, the frame gets an opaque origin — the parent\'s contentDocument access throws a SecurityError even for a same-page srcdoc frame.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],

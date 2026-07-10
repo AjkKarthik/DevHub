@@ -3364,7 +3364,26 @@
       <p class="nav-group-label">Text &amp; Media</p>
       <a routerLink="/html/headings-paragraphs" routerLinkActive="active"><span class="nl-text">Headings &amp; Paragraphs</span>@if(progress.isDone('html-headings-paragraphs')){<span class="nl-done">✓</span>}@if(diff('html-headings-paragraphs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/html/links-navigation"   routerLinkActive="active"><span class="nl-text">Links &amp; Navigation</span>@if(progress.isDone('html-links-navigation')){<span class="nl-done">✓</span>}@if(diff('html-links-navigation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/media"              routerLinkActive="active"><span class="nl-text">Media Elements</span>@if(progress.isDone('html-media')){<span class="nl-done">✓</span>}@if(diff('html-media');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/media" routerLinkActive="active">
+        <span class="nl-text">Media Elements</span>
+        @if (progress.isDone('html-media')) {<span class="nl-done">✓</span>}
+        @if (diff('html-media'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('media')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('media')"
+                  (click)="toggleSubtopics('media', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('media'); as htmlMediaSubs) {
+        @if (isSubtopicsExpanded('media')) {
+          <div class="nav-subtopics">
+            @for (s of htmlMediaSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/html/tables"             routerLinkActive="active"><span class="nl-text">Tables</span>@if(progress.isDone('html-tables')){<span class="nl-done">✓</span>}@if(diff('html-tables');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
