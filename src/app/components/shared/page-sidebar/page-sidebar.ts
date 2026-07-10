@@ -22753,6 +22753,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/custom-elements/clonenode-required-appendchild-consumes-the-template': {
+    apis: ['<template>', 'DocumentFragment', 'cloneNode()'],
+    related: [
+      { label: 'Web Components (overview)', route: '/html/custom-elements' },
+      { label: 'composed:true Crosses the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' },
+      { label: 'attributeChangedCallback Before connectedCallback', route: '/html/custom-elements/attributechangedcallback-fires-before-connectedcallback' },
+    ],
+    tip: 'template.content is a live DocumentFragment — appending it directly MOVES its nodes rather than copying them, emptying a shared template after the first use.',
+    docs: [
+      { label: 'MDN — <template>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template' },
+    ],
+    resources: [
+      { label: 'MDN — DocumentFragment', url: 'https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment', badge: 'docs' },
+    ],
+    gotchas: [
+      'The bug is invisible with only one element instance — it only surfaces once a second instance shares the same template object.',
+      'cloneNode(true) produces a fresh, independent fragment every time, leaving the original template untouched for future clones.',
+    ],
+  },
+
+  'html/custom-elements/composed-true-required-to-cross-the-shadow-boundary': {
+    apis: ['CustomEvent', 'composed', 'bubbles', 'dispatchEvent()'],
+    related: [
+      { label: 'Web Components (overview)', route: '/html/custom-elements' },
+      { label: 'cloneNode(true) Is Required', route: '/html/custom-elements/clonenode-required-appendchild-consumes-the-template' },
+      { label: 'attributeChangedCallback Before connectedCallback', route: '/html/custom-elements/attributechangedcallback-fires-before-connectedcallback' },
+    ],
+    tip: 'bubbles and composed answer different questions — bubbles climbs through ancestors WITHIN a tree, composed is what lets an event leave a shadow root at all.',
+    docs: [
+      { label: 'MDN — Event.composed', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Event/composed' },
+    ],
+    resources: [
+      { label: 'MDN — Using shadow DOM', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM', badge: 'docs' },
+    ],
+    gotchas: [
+      'CustomEvent defaults composed to false — you must set it explicitly for a dispatched event to reach listeners outside the shadow root.',
+      'A missing composed flag fails completely silently — no error, the outside listener simply never fires.',
+    ],
+  },
+
+  'html/custom-elements/attributechangedcallback-fires-before-connectedcallback': {
+    apis: ['attributeChangedCallback()', 'connectedCallback()', 'observedAttributes', 'isConnected'],
+    related: [
+      { label: 'Web Components (overview)', route: '/html/custom-elements' },
+      { label: 'cloneNode(true) Is Required', route: '/html/custom-elements/clonenode-required-appendchild-consumes-the-template' },
+      { label: 'composed:true Crosses the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' },
+    ],
+    tip: 'For attributes already present in the HTML, attributeChangedCallback fires during upgrade — before connectedCallback, while isConnected can still be false.',
+    docs: [
+      { label: 'MDN — Using custom elements', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements' },
+    ],
+    resources: [
+      { label: 'Custom Elements Spec', url: 'https://html.spec.whatwg.org/multipage/custom-elements.html', badge: 'docs' },
+    ],
+    gotchas: [
+      'attributeChangedCallback only fires for names listed in the static observedAttributes getter — anything else is silently ignored, with no warning.',
+      'Logic inside attributeChangedCallback that assumes the element is already connected can break specifically on this first, pre-connection call.',
+    ],
+  },
+
   // ── HTML: Accessibility & ARIA ─────────────────────────────────────────────
   'html/accessibility': {
     apis: ['role', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-hidden', 'tabindex'],

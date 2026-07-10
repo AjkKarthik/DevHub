@@ -1336,7 +1336,12 @@ export const routes: Routes = [
       { path: 'preload-without-as-is-silently-ignored', loadComponent: () => import('./components/frontend/html/head-metadata/subtopics/preload-without-as-is-silently-ignored/preload-without-as-is-silently-ignored').then(m => m.PreloadWithoutAsIsSilentlyIgnoredSubtopic) },
       { path: 'relative-canonical-resolves-differently-per-page', loadComponent: () => import('./components/frontend/html/head-metadata/subtopics/relative-canonical-resolves-differently-per-page/relative-canonical-resolves-differently-per-page').then(m => m.RelativeCanonicalResolvesDifferentlyPerPageSubtopic) },
     ] },
-    { path: 'custom-elements',     loadComponent: () => import('./components/frontend/html/custom-elements/custom-elements').then(m => m.HtmlCustomElements) },
+    { path: 'custom-elements', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/custom-elements/custom-elements').then(m => m.HtmlCustomElements) },
+      { path: 'clonenode-required-appendchild-consumes-the-template', loadComponent: () => import('./components/frontend/html/custom-elements/subtopics/clonenode-required-appendchild-consumes-the-template/clonenode-required-appendchild-consumes-the-template').then(m => m.CloneNodeRequiredAppendChildConsumesTheTemplateSubtopic) },
+      { path: 'composed-true-required-to-cross-the-shadow-boundary', loadComponent: () => import('./components/frontend/html/custom-elements/subtopics/composed-true-required-to-cross-the-shadow-boundary/composed-true-required-to-cross-the-shadow-boundary').then(m => m.ComposedTrueRequiredToCrossTheShadowBoundarySubtopic) },
+      { path: 'attributechangedcallback-fires-before-connectedcallback', loadComponent: () => import('./components/frontend/html/custom-elements/subtopics/attributechangedcallback-fires-before-connectedcallback/attributechangedcallback-fires-before-connectedcallback').then(m => m.AttributeChangedCallbackFiresBeforeConnectedCallbackSubtopic) },
+    ] },
     { path: 'iframes-embeds',      loadComponent: () => import('./components/frontend/html/iframes-embeds/iframes-embeds').then(m => m.HtmlIframesEmbeds) },
     { path: 'canvas-svg',          loadComponent: () => import('./components/frontend/html/canvas-svg/canvas-svg').then(m => m.HtmlCanvasSvg) },
     { path: 'performance',         loadComponent: () => import('./components/frontend/html/performance/performance').then(m => m.HtmlPerformance) },

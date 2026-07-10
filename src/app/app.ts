@@ -1467,6 +1467,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'preload Without as= Is Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' },
     { label: 'Relative canonical Resolves Differently', route: '/html/head-metadata/relative-canonical-resolves-differently-per-page' },
   ],
+  'custom-elements': [
+    { label: 'cloneNode(true) Is Required', route: '/html/custom-elements/clonenode-required-appendchild-consumes-the-template' },
+    { label: 'composed:true Crosses the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' },
+    { label: 'attributeChangedCallback Before connectedCallback', route: '/html/custom-elements/attributechangedcallback-fires-before-connectedcallback' },
+  ],
 };
 
 @Component({

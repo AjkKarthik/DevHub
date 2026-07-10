@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Web Components &amp; Custom Elements" topicRoute="/html/custom-elements" subtopicLabel="composed: true Is Required to Cross the Shadow Boundary" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">composed: true Is Required to Cross the Shadow Boundary</h1>
+  <p class="page-subtitle">bubbles:true alone never gets a custom event out of a shadow root. composed:true is the separate, additional flag that actually lets it reach the host document.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two otherwise-identical CustomEvents, both with <code>bubbles: true</code>, dispatched from inside a shadow root — only one has <code>composed: true</code>. Check which one a <code>document</code>-level listener actually hears.</p>
+    <app-live-playground title="composed vs bubbles crossing the shadow boundary" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Both this and the previous subtopic cover mistakes that only surface at a very specific moment — multiple instances for the template bug, an outside listener for this one. The final subtopic covers a mistake that surfaces the moment ANY attribute is set on the element in markup. Return to the <a routerLink="/html/custom-elements">Web Components &amp; Custom Elements</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Web Components &amp; Custom Elements"
+    topicRoute="/html/custom-elements"
+    [prev]="{ label: 'cloneNode(true) Is Required — appendChild Consumes the Template', route: '/html/custom-elements/clonenode-required-appendchild-consumes-the-template' }"
+    [next]="{ label: 'attributeChangedCallback Fires Before connectedCallback', route: '/html/custom-elements/attributechangedcallback-fires-before-connectedcallback' }"
+  />
+</div>
