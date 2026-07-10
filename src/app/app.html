@@ -3370,7 +3370,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Forms</p>
-      <a routerLink="/html/forms"       routerLinkActive="active"><span class="nl-text">Forms &amp; Input</span>@if(progress.isDone('html-forms')){<span class="nl-done">✓</span>}@if(diff('html-forms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/forms" routerLinkActive="active">
+        <span class="nl-text">Forms &amp; Input</span>
+        @if (progress.isDone('html-forms')) {<span class="nl-done">✓</span>}
+        @if (diff('html-forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('html-forms')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('html-forms')"
+                  (click)="toggleSubtopics('html-forms', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('html-forms'); as htmlFormsSubs) {
+        @if (isSubtopicsExpanded('html-forms')) {
+          <div class="nav-subtopics">
+            @for (s of htmlFormsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/html/input-types" routerLinkActive="active"><span class="nl-text">Input Types</span>@if(progress.isDone('html-input-types')){<span class="nl-done">✓</span>}@if(diff('html-input-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

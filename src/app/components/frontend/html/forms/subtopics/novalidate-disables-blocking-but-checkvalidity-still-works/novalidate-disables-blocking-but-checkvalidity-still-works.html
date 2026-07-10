@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Forms &amp; Input" topicRoute="/html/forms" subtopicLabel="novalidate Disables Blocking, But checkValidity() Still Works" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">novalidate Disables Blocking, But checkValidity() Still Works</h1>
+  <p class="page-subtitle"><code>novalidate</code> only turns off the browser's automatic submit-blocking behavior — the underlying constraint attributes and the Constraint Validation API keep working exactly as before.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A <code>novalidate</code> form with an empty <code>required</code> field is submitted. Watch the submit handler actually run, then confirm <code>checkValidity()</code> still correctly reports the field as invalid.</p>
+    <app-live-playground title="novalidate vs. checkValidity() and reportValidity()" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This grounds the main <a routerLink="/html/forms">Forms &amp; Input</a> page's <code>novalidate</code> theory in a real, working custom-validation setup. Next, see why <code>enctype="multipart/form-data"</code> only matters for native form submission — the <code>FormData</code> API captures files correctly regardless.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Forms &amp; Input"
+    topicRoute="/html/forms"
+    [prev]="{ label: 'name, Not id, Determines the Submitted FormData Key', route: '/html/forms/name-not-id-determines-the-submitted-formdata-key' }"
+    [next]="{ label: 'enctype Only Affects Native Submission, Not the FormData API', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' }"
+  />
+</div>

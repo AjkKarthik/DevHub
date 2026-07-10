@@ -22140,6 +22140,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/forms': {
+    apis: ['FormData', 'HTMLFormElement', 'checkValidity()', 'name attribute'],
+    related: [
+      { label: 'Semantic Elements',   route: '/html/semantic-elements' },
+      { label: 'Input Types',         route: '/html/input-types'       },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility'    },
+    ],
+    tip: 'FormData is keyed entirely by the name attribute — an input with only an id is completely invisible to a native form submission.',
+    docs: [
+      { label: 'MDN — FormData', url: 'https://developer.mozilla.org/en-US/docs/Web/API/FormData' },
+    ],
+    resources: [
+      { label: 'MDN — Constraint validation', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation', badge: 'docs' },
+    ],
+    gotchas: [
+      'novalidate only disables the browser\'s own blocking popups — checkValidity() and the underlying constraint state still work exactly as before.',
+      'enctype only changes how the browser encodes a native submission — it has zero effect on new FormData(formElement), which reads File objects straight from the DOM either way.',
+    ],
+  },
+
+  'html/forms/name-not-id-determines-the-submitted-formdata-key': {
+    apis: ['FormData', 'name attribute', 'HTMLInputElement'],
+    related: [
+      { label: 'Forms & Input (overview)', route: '/html/forms' },
+      { label: 'novalidate vs checkValidity', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' },
+      { label: 'enctype and FormData', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' },
+    ],
+    tip: 'id is for CSS/JS/label targeting; name is the ONLY attribute FormData and native submission ever look at.',
+    docs: [
+      { label: 'MDN — FormData', url: 'https://developer.mozilla.org/en-US/docs/Web/API/FormData' },
+    ],
+    resources: [
+      { label: 'MDN — <input> name', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name', badge: 'docs' },
+    ],
+    gotchas: [
+      'An input with id but no name renders and behaves normally on screen — the missing data only shows up once you inspect the actual submitted payload.',
+      'This is a very common beginner mistake because id and name look interchangeable everywhere except in form submission.',
+    ],
+  },
+
+  'html/forms/novalidate-disables-blocking-but-checkvalidity-still-works': {
+    apis: ['novalidate', 'checkValidity()', 'HTMLFormElement'],
+    related: [
+      { label: 'Forms & Input (overview)', route: '/html/forms' },
+      { label: 'name vs id', route: '/html/forms/name-not-id-determines-the-submitted-formdata-key' },
+      { label: 'enctype and FormData', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' },
+    ],
+    tip: 'novalidate turns off the browser\'s automatic popup-and-block behavior only — every constraint attribute (required, pattern, min, etc.) keeps working as a queryable hint for your own JS.',
+    docs: [
+      { label: 'MDN — Constraint validation', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation' },
+    ],
+    resources: [
+      { label: 'MDN — novalidate', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#novalidate', badge: 'docs' },
+    ],
+    gotchas: [
+      'A novalidate form still fires submit — your handler must call checkValidity() itself if it wants to stop anything.',
+      'Removing novalidate does not remove the constraint attributes either — the two are fully independent controls.',
+    ],
+  },
+
+  'html/forms/enctype-only-affects-native-submission-not-formdata-api': {
+    apis: ['enctype', 'FormData', 'File', 'DataTransfer'],
+    related: [
+      { label: 'Forms & Input (overview)', route: '/html/forms' },
+      { label: 'name vs id', route: '/html/forms/name-not-id-determines-the-submitted-formdata-key' },
+      { label: 'novalidate vs checkValidity', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' },
+    ],
+    tip: 'enctype only governs how a browser-native form submission encodes the body over the wire — new FormData(formElement) reads live DOM state and was never routed through enctype at all.',
+    docs: [
+      { label: 'MDN — enctype', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#enctype' },
+    ],
+    resources: [
+      { label: 'MDN — FormData', url: 'https://developer.mozilla.org/en-US/docs/Web/API/FormData', badge: 'docs' },
+    ],
+    gotchas: [
+      'fetch(url, { body: new FormData(form) }) correctly sends real file content with no enctype attribute needed anywhere.',
+      'The classic "add multipart/form-data or files break" advice applies ONLY to plain native <form> submission, not to any JS-driven FormData usage.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],

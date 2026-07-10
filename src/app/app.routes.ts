@@ -1300,7 +1300,12 @@ export const routes: Routes = [
       { path: 'a-heading-less-section-is-valid-parseable-html', loadComponent: () => import('./components/frontend/html/semantic-elements/subtopics/a-heading-less-section-is-valid-parseable-html/a-heading-less-section-is-valid-parseable-html').then(m => m.UsingSectionAsAGenericWrapperSubtopic) },
       { path: 'times-datetime-property-can-diverge-from-its-own-text', loadComponent: () => import('./components/frontend/html/semantic-elements/subtopics/times-datetime-property-can-diverge-from-its-own-text/times-datetime-property-can-diverge-from-its-own-text').then(m => m.OmittingDatetimeOnTimeSubtopic) },
     ] },
-    { path: 'forms',               loadComponent: () => import('./components/frontend/html/forms/forms').then(m => m.HtmlForms) },
+    { path: 'forms', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/forms/forms').then(m => m.HtmlForms) },
+      { path: 'name-not-id-determines-the-submitted-formdata-key', loadComponent: () => import('./components/frontend/html/forms/subtopics/name-not-id-determines-the-submitted-formdata-key/name-not-id-determines-the-submitted-formdata-key').then(m => m.NameNotIdDeterminesSubmittedKeySubtopic) },
+      { path: 'novalidate-disables-blocking-but-checkvalidity-still-works', loadComponent: () => import('./components/frontend/html/forms/subtopics/novalidate-disables-blocking-but-checkvalidity-still-works/novalidate-disables-blocking-but-checkvalidity-still-works').then(m => m.NovalidateAttributeSubtopic) },
+      { path: 'enctype-only-affects-native-submission-not-formdata-api', loadComponent: () => import('./components/frontend/html/forms/subtopics/enctype-only-affects-native-submission-not-formdata-api/enctype-only-affects-native-submission-not-formdata-api').then(m => m.RequiredEnctypeForFileUploadSubtopic) },
+    ] },
     { path: 'media',               loadComponent: () => import('./components/frontend/html/media/media').then(m => m.HtmlMedia) },
     { path: 'tables',              loadComponent: () => import('./components/frontend/html/tables/tables').then(m => m.HtmlTables) },
     { path: 'links-navigation',    loadComponent: () => import('./components/frontend/html/links-navigation/links-navigation').then(m => m.HtmlLinksNavigation) },

@@ -1433,6 +1433,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Heading-Less section Is Valid HTML', route: '/html/semantic-elements/a-heading-less-section-is-valid-parseable-html' },
     { label: 'time’s datetime Can Diverge From Its Text', route: '/html/semantic-elements/times-datetime-property-can-diverge-from-its-own-text' },
   ],
+  // NOTE: keyed 'html-forms', NOT bare 'forms' — the Angular hub's own
+  // /angular/forms topic already claims the bare key.
+  'html-forms': [
+    { label: 'name, Not id, Determines the FormData Key', route: '/html/forms/name-not-id-determines-the-submitted-formdata-key' },
+    { label: 'novalidate Disables Blocking, Not checkValidity()', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' },
+    { label: 'enctype Only Affects Native Submission', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' },
+  ],
 };
 
 @Component({
