@@ -1366,7 +1366,12 @@ export const routes: Routes = [
       { path: 'service-workers-genuinely-have-no-dom-access', loadComponent: () => import('./components/frontend/html/pwa-service-workers/subtopics/service-workers-genuinely-have-no-dom-access/service-workers-genuinely-have-no-dom-access').then(m => m.ServiceWorkersGenuinelyHaveNoDomAccessSubtopic) },
       { path: 'a-new-sw-sits-in-registration-waiting-without-skipwaiting', loadComponent: () => import('./components/frontend/html/pwa-service-workers/subtopics/a-new-sw-sits-in-registration-waiting-without-skipwaiting/a-new-sw-sits-in-registration-waiting-without-skipwaiting').then(m => m.ANewSwSitsInRegistrationWaitingWithoutSkipWaitingSubtopic) },
     ] },
-    { path: 'seo',                 loadComponent: () => import('./components/frontend/html/seo/seo').then(m => m.HtmlSeo) },
+    { path: 'seo', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/seo/seo').then(m => m.HtmlSeo) },
+      { path: 'document-title-deterministically-uses-only-the-first-title', loadComponent: () => import('./components/frontend/html/seo/subtopics/document-title-deterministically-uses-only-the-first-title/document-title-deterministically-uses-only-the-first-title').then(m => m.DocumentTitleDeterministicallyUsesOnlyTheFirstTitleSubtopic) },
+      { path: 'malformed-json-ld-renders-fine-but-fails-to-parse', loadComponent: () => import('./components/frontend/html/seo/subtopics/malformed-json-ld-renders-fine-but-fails-to-parse/malformed-json-ld-renders-fine-but-fails-to-parse').then(m => m.MalformedJsonLdRendersFineButFailsToParseSubtopic) },
+      { path: 'og-image-dimensions-are-checkable-live-via-the-image-api', loadComponent: () => import('./components/frontend/html/seo/subtopics/og-image-dimensions-are-checkable-live-via-the-image-api/og-image-dimensions-are-checkable-live-via-the-image-api').then(m => m.OgImageDimensionsAreCheckableLiveViaTheImageApiSubtopic) },
+    ] },
     { path: 'apis',                loadComponent: () => import('./components/frontend/html/apis/apis').then(m => m.HtmlApis) },
     { path: 'fundamentals',        loadComponent: () => import('./components/frontend/html/fundamentals/fundamentals').then(m => m.HtmlFundamentals) },
     { path: 'headings-paragraphs', loadComponent: () => import('./components/frontend/html/headings-paragraphs/headings-paragraphs').then(m => m.HtmlHeadingsParagraphs) },

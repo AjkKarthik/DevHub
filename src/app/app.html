@@ -3495,7 +3495,26 @@
           </div>
         }
       }
-      <a routerLink="/html/seo"               routerLinkActive="active"><span class="nl-text">HTML SEO</span>@if(progress.isDone('html-seo')){<span class="nl-done">✓</span>}@if(diff('html-seo');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/seo" routerLinkActive="active">
+        <span class="nl-text">HTML SEO</span>
+        @if (progress.isDone('html-seo')) {<span class="nl-done">✓</span>}
+        @if (diff('html-seo'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('seo')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('seo')"
+                  (click)="toggleSubtopics('seo', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('seo'); as htmlSeoSubs) {
+        @if (isSubtopicsExpanded('seo')) {
+          <div class="nav-subtopics">
+            @for (s of htmlSeoSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

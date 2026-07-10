@@ -1494,6 +1494,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'No DOM Access Inside a Service Worker', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' },
     { label: 'New SW Waits Without skipWaiting()', route: '/html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting' },
   ],
+  seo: [
+    { label: 'document.title Uses Only the First title', route: '/html/seo/document-title-deterministically-uses-only-the-first-title' },
+    { label: 'Malformed JSON-LD Renders Fine, Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' },
+    { label: 'og:image Dimensions Checkable via Image API', route: '/html/seo/og-image-dimensions-are-checkable-live-via-the-image-api' },
+  ],
 };
 
 @Component({

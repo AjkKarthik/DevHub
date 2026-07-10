@@ -22717,6 +22717,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/seo/document-title-deterministically-uses-only-the-first-title': {
+    apis: ['document.title', '<title>', 'querySelectorAll()'],
+    related: [
+      { label: 'HTML SEO (overview)', route: '/html/seo' },
+      { label: 'Malformed JSON-LD Renders Fine, Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' },
+      { label: 'og:image Dimensions Checkable via Image API', route: '/html/seo/og-image-dimensions-are-checkable-live-via-the-image-api' },
+    ],
+    tip: 'document.title always uses the FIRST title element in tree order — a second one is a real, findable DOM node that has zero effect on the browser itself.',
+    docs: [
+      { label: 'MDN — document.title', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/title' },
+    ],
+    resources: [
+      { label: 'Google — Title link best practices', url: 'https://developers.google.com/search/docs/appearance/title-link', badge: 'docs' },
+    ],
+    gotchas: [
+      'The browser tab always looks correct even with a duplicate title tag — this bug is invisible without viewing raw source or querySelectorAll.',
+      'The "confusion" the main page warns about is at the crawler level, not the browser level — browser behavior here is fully deterministic.',
+    ],
+  },
+
+  'html/seo/malformed-json-ld-renders-fine-but-fails-to-parse': {
+    apis: ['application/ld+json', 'JSON.parse()', 'script.textContent'],
+    related: [
+      { label: 'HTML SEO (overview)', route: '/html/seo' },
+      { label: 'document.title Uses Only the First title', route: '/html/seo/document-title-deterministically-uses-only-the-first-title' },
+      { label: 'og:image Dimensions Checkable via Image API', route: '/html/seo/og-image-dimensions-are-checkable-live-via-the-image-api' },
+    ],
+    tip: 'application/ld+json is never executed as JavaScript — a malformed block causes zero render failures and zero console errors, completely invisible to visual QA.',
+    docs: [
+      { label: 'Google — Rich Results Test', url: 'https://search.google.com/test/rich-results' },
+    ],
+    resources: [
+      { label: 'Schema.org', url: 'https://schema.org', badge: 'docs' },
+    ],
+    gotchas: [
+      'A page "looking correct" is no evidence its structured data is valid — the two are completely independent checks.',
+      'A plain JSON.parse() on the script\'s textContent catches syntax errors offline, before ever needing an external validator.',
+    ],
+  },
+
+  'html/seo/og-image-dimensions-are-checkable-live-via-the-image-api': {
+    apis: ['og:image', 'Image()', 'naturalWidth', 'naturalHeight'],
+    related: [
+      { label: 'HTML SEO (overview)', route: '/html/seo' },
+      { label: 'document.title Uses Only the First title', route: '/html/seo/document-title-deterministically-uses-only-the-first-title' },
+      { label: 'Malformed JSON-LD Renders Fine, Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' },
+    ],
+    tip: 'og:image is just a string attribute — nothing validates the real image dimensions at write time. Load it for real and check naturalWidth/naturalHeight against 1200×630.',
+    docs: [
+      { label: 'Open Graph Protocol', url: 'https://ogp.me/' },
+    ],
+    resources: [
+      { label: 'Facebook Sharing Debugger', url: 'https://developers.facebook.com/tools/debug/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A too-small og:image doesn\'t break the share entirely — it just downgrades to a smaller inline thumbnail instead of a full preview card.',
+      'The exact same dimension check the demo runs is what a platform\'s own crawler effectively performs when it fetches the image.',
+    ],
+  },
+
   'html/pwa-service-workers': {
     apis: ['navigator.serviceWorker.register()', 'self.addEventListener("install")', 'self.addEventListener("fetch")', 'caches.open()', 'cache.put()', 'cache.match()', 'skipWaiting()', 'clients.claim()', 'PushManager', 'BackgroundSync'],
     related: [

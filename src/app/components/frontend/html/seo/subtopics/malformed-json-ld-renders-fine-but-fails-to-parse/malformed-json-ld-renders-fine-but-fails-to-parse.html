@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML SEO" topicRoute="/html/seo" subtopicLabel="Malformed JSON-LD Renders Fine But Fails to Parse" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Malformed JSON-LD Renders Fine But Fails to Parse</h1>
+  <p class="page-subtitle">application/ld+json is never executed as JavaScript — a broken block causes zero render failures and zero console errors, completely invisible to normal visual QA.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two JSON-LD blocks on an identical-looking page — one valid, one with a trailing comma. Try parsing both with the exact call a real structured-data consumer would use.</p>
+    <app-live-playground title="JSON.parse() on valid vs malformed JSON-LD" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a syntax-level structured-data bug. The final subtopic covers a different, content-level SEO check — whether an og:image actually meets the recommended real-world dimensions. Return to the <a routerLink="/html/seo">HTML SEO</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML SEO"
+    topicRoute="/html/seo"
+    [prev]="{ label: 'document.title Deterministically Uses Only the First title', route: '/html/seo/document-title-deterministically-uses-only-the-first-title' }"
+    [next]="{ label: 'og:image Dimensions Are Checkable Live via the Image API', route: '/html/seo/og-image-dimensions-are-checkable-live-via-the-image-api' }"
+  />
+</div>

@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML SEO" topicRoute="/html/seo" subtopicLabel="og:image Dimensions Are Checkable Live via the Image API" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">og:image Dimensions Are Checkable Live via the Image API</h1>
+  <p class="page-subtitle">og:image is just a string — nothing validates it at write time. Actually loading the real URL and reading naturalWidth/naturalHeight is the only way to catch an undersized image.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>An <code>og:image</code> pointing at a real 400×300 image — well under the 1200×630 minimum. Load it for real and check its actual dimensions.</p>
+    <app-live-playground title="checking a real og:image against the 1200x630 minimum" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious SEO mechanics — a duplicate tag the browser silently resolves, a structured-data block silently broken beneath a normal-looking page, and now a social-preview requirement silently unenforced by the markup itself. Return to the <a routerLink="/html/seo">HTML SEO</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML SEO"
+    topicRoute="/html/seo"
+    [prev]="{ label: 'Malformed JSON-LD Renders Fine But Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' }"
+  />
+</div>
