@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Links &amp; Navigation" topicRoute="/html/links-navigation" subtopicLabel="An href-less Anchor Is Skipped by Tab Navigation" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">An href-less Anchor Is Skipped by Tab Navigation</h1>
+  <p class="page-subtitle">An <code>&lt;a&gt;</code> with no href attribute has a default tabIndex of -1 — invisible to keyboard users. <code>href="javascript:void(0)"</code> quietly avoids that, but stays a "link" that goes nowhere.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Three anchors, none with a real destination in common. Check each one's default <code>tabIndex</code> — with no explicit <code>tabindex</code> attribute set anywhere in the markup.</p>
+    <app-live-playground title="default tabIndex across three href variants" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Keyboard reachability is only half the story — once a link IS focusable, which CSS rule actually paints it depends on source order, covered in the next subtopic. Return to the <a routerLink="/html/links-navigation">Links &amp; Navigation</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Links &amp; Navigation"
+    topicRoute="/html/links-navigation"
+    [prev]="{ label: 'rel=“noopener” Genuinely Nulls window.opener', route: '/html/links-navigation/rel-noopener-genuinely-nulls-window-opener' }"
+    [next]="{ label: 'LVHFA Source Order Decides the Equal-Specificity Winner', route: '/html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner' }"
+  />
+</div>

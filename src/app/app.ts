@@ -1450,6 +1450,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'table-layout: fixed Uses Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' },
     { label: 'col Only Supports 4 CSS Properties', route: '/html/tables/col-only-supports-background-border-visibility-width' },
   ],
+  'links-navigation': [
+    { label: 'noopener Genuinely Nulls window.opener', route: '/html/links-navigation/rel-noopener-genuinely-nulls-window-opener' },
+    { label: 'href-less Anchor Skips Tab Navigation', route: '/html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation' },
+    { label: 'LVHFA Order Decides the Winner', route: '/html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner' },
+  ],
 };
 
 @Component({

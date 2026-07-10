@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Links &amp; Navigation" topicRoute="/html/links-navigation" subtopicLabel="LVHFA Source Order Decides the Equal-Specificity Winner" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">LVHFA Source Order Decides the Equal-Specificity Winner</h1>
+  <p class="page-subtitle"><code>a:link</code>, <code>a:visited</code>, <code>a:hover</code>, <code>a:focus</code>, and <code>a:active</code> all tie on specificity — when two apply at once, only declaration order decides which one paints.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="CSS1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two links use the identical <code>:link</code>/<code>:focus</code> rule pair, just declared in a different order. Programmatically focus each one and check which color actually renders.</p>
+    <app-live-playground title="LVHFA order proven with element.focus()" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious link mechanics — the security implications of a real window.opener reference, which links keyboard users can even reach, and now which CSS rule actually wins once they get there. Return to the <a routerLink="/html/links-navigation">Links &amp; Navigation</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Links &amp; Navigation"
+    topicRoute="/html/links-navigation"
+    [prev]="{ label: 'An href-less Anchor Is Skipped by Tab Navigation', route: '/html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation' }"
+  />
+</div>

@@ -22382,6 +22382,86 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/links-navigation': {
+    apis: ['window.opener', 'rel="noopener"', 'tabIndex', ':link :visited :hover :focus :active'],
+    related: [
+      { label: 'Tables',              route: '/html/tables'         },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility' },
+      { label: 'Landmark Elements',   route: '/html/landmark-elements' },
+    ],
+    tip: 'rel="noopener" doesn\'t just hide window.opener from the original tab — it genuinely nulls it from the new tab\'s own perspective too.',
+    docs: [
+      { label: 'MDN — rel=noopener', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/noopener' },
+    ],
+    resources: [
+      { label: 'web.dev — Cross-window opener access', url: 'https://web.dev/articles/referrer-best-practices', badge: 'docs' },
+    ],
+    gotchas: [
+      'An <a> with no href attribute has default tabIndex -1 — invisible to keyboard Tab navigation, with no error or warning.',
+      'a:link, a:visited, a:hover, a:focus, and a:active all tie on specificity — only LVHFA source order breaks the tie.',
+    ],
+  },
+
+  'html/links-navigation/rel-noopener-genuinely-nulls-window-opener': {
+    apis: ['window.opener', 'window.open()', 'rel="noopener"'],
+    related: [
+      { label: 'Links & Navigation (overview)', route: '/html/links-navigation' },
+      { label: 'href-less Anchor Skips Tab Navigation', route: '/html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation' },
+      { label: 'LVHFA Order Decides the Winner', route: '/html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner' },
+    ],
+    tip: 'window.open(url, target, \'noopener\') achieves the exact same severance as the HTML rel="noopener" attribute — noopener is a window-creation flag, not an HTML-only concept.',
+    docs: [
+      { label: 'MDN — rel=noopener', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/noopener' },
+    ],
+    resources: [
+      { label: 'MDN — Window.open()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/open', badge: 'docs' },
+    ],
+    gotchas: [
+      'Without noopener, window.opener is a real, working cross-origin reference the new tab can use to redirect the original page.',
+      'With noopener, the new window\'s own window.opener reads back as null from ITS OWN script — a genuine severance, not just a one-sided block.',
+    ],
+  },
+
+  'html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation': {
+    apis: ['tabIndex', 'HTMLAnchorElement', 'href attribute'],
+    related: [
+      { label: 'Links & Navigation (overview)', route: '/html/links-navigation' },
+      { label: 'noopener Genuinely Nulls window.opener', route: '/html/links-navigation/rel-noopener-genuinely-nulls-window-opener' },
+      { label: 'LVHFA Order Decides the Winner', route: '/html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner' },
+    ],
+    tip: 'The browser\'s default-focusability check only asks whether an href ATTRIBUTE is present — never whether its value actually leads anywhere.',
+    docs: [
+      { label: 'MDN — tabindex', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex' },
+    ],
+    resources: [
+      { label: 'MDN — <a> element', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a', badge: 'docs' },
+    ],
+    gotchas: [
+      'An <a> with no href has default tabIndex -1 — completely invisible to Tab navigation.',
+      'href="javascript:void(0)" has an href attribute, so it keeps full link semantics and stays keyboard-reachable despite navigating nowhere.',
+    ],
+  },
+
+  'html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner': {
+    apis: [':link', ':visited', ':hover', ':focus', ':active', 'element.focus()'],
+    related: [
+      { label: 'Links & Navigation (overview)', route: '/html/links-navigation' },
+      { label: 'noopener Genuinely Nulls window.opener', route: '/html/links-navigation/rel-noopener-genuinely-nulls-window-opener' },
+      { label: 'href-less Anchor Skips Tab Navigation', route: '/html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation' },
+    ],
+    tip: 'element.focus() triggers :focus programmatically — making the LVHFA ordering rule provable with a script instead of a screenshot.',
+    docs: [
+      { label: 'MDN — :focus', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:focus' },
+    ],
+    resources: [
+      { label: 'MDN — CSS specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Specificity', badge: 'docs' },
+    ],
+    gotchas: [
+      'All five LVHFA pseudo-classes have identical specificity — there is no built-in prioritization between them.',
+      'A focus style that silently never appears can be a correctly-written, typo-free rule simply declared in the wrong order relative to an equal-specificity rule.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],

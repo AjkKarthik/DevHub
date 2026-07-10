@@ -1318,7 +1318,12 @@ export const routes: Routes = [
       { path: 'table-layout-fixed-sizes-columns-from-first-row', loadComponent: () => import('./components/frontend/html/tables/subtopics/table-layout-fixed-sizes-columns-from-first-row/table-layout-fixed-sizes-columns-from-first-row').then(m => m.TableLayoutFixedSizesColumnsFromFirstRowSubtopic) },
       { path: 'col-only-supports-background-border-visibility-width', loadComponent: () => import('./components/frontend/html/tables/subtopics/col-only-supports-background-border-visibility-width/col-only-supports-background-border-visibility-width').then(m => m.ColOnlySupportsBackgroundBorderVisibilityWidthSubtopic) },
     ] },
-    { path: 'links-navigation',    loadComponent: () => import('./components/frontend/html/links-navigation/links-navigation').then(m => m.HtmlLinksNavigation) },
+    { path: 'links-navigation', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/links-navigation/links-navigation').then(m => m.HtmlLinksNavigation) },
+      { path: 'rel-noopener-genuinely-nulls-window-opener', loadComponent: () => import('./components/frontend/html/links-navigation/subtopics/rel-noopener-genuinely-nulls-window-opener/rel-noopener-genuinely-nulls-window-opener').then(m => m.RelNoopenerGenuinelyNullsWindowOpenerSubtopic) },
+      { path: 'href-less-anchor-is-skipped-by-tab-navigation', loadComponent: () => import('./components/frontend/html/links-navigation/subtopics/href-less-anchor-is-skipped-by-tab-navigation/href-less-anchor-is-skipped-by-tab-navigation').then(m => m.HrefLessAnchorIsSkippedByTabNavigationSubtopic) },
+      { path: 'lvhfa-source-order-decides-the-equal-specificity-winner', loadComponent: () => import('./components/frontend/html/links-navigation/subtopics/lvhfa-source-order-decides-the-equal-specificity-winner/lvhfa-source-order-decides-the-equal-specificity-winner').then(m => m.LvhfaSourceOrderDecidesTheEqualSpecificityWinnerSubtopic) },
+    ] },
     { path: 'accessibility',       loadComponent: () => import('./components/frontend/html/accessibility/accessibility').then(m => m.HtmlAccessibility) },
     { path: 'head-metadata',       loadComponent: () => import('./components/frontend/html/head-metadata/head-metadata').then(m => m.HtmlHeadMetadata) },
     { path: 'custom-elements',     loadComponent: () => import('./components/frontend/html/custom-elements/custom-elements').then(m => m.HtmlCustomElements) },
