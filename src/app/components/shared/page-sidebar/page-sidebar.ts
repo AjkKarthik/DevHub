@@ -22741,6 +22741,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location': {
+    apis: ['navigator.serviceWorker.register()', 'ServiceWorkerRegistration.scope'],
+    related: [
+      { label: 'PWA & Service Workers (overview)', route: '/html/pwa-service-workers' },
+      { label: 'No DOM Access Inside a Service Worker', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' },
+      { label: 'New SW Waits Without skipWaiting()', route: '/html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting' },
+    ],
+    tip: 'There is no separate scope setting for the common case — the script file\'s own URL path IS the default scope, directly readable via registration.scope.',
+    docs: [
+      { label: 'MDN — ServiceWorkerRegistration.scope', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/scope' },
+    ],
+    resources: [
+      { label: 'MDN — Service Worker API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'A worker registered from a subdirectory can only control that subdirectory and its descendants — never the site root.',
+      'Moving the script file itself (not adding config) is the standard fix for a too-narrow scope.',
+    ],
+  },
+
+  'html/pwa-service-workers/service-workers-genuinely-have-no-dom-access': {
+    apis: ['ServiceWorkerGlobalScope', 'postMessage()', 'self.clients'],
+    related: [
+      { label: 'PWA & Service Workers (overview)', route: '/html/pwa-service-workers' },
+      { label: 'Registration Scope From Script Location', route: '/html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location' },
+      { label: 'New SW Waits Without skipWaiting()', route: '/html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting' },
+    ],
+    tip: 'document and window aren\'t restricted from a service worker — they were never defined in ServiceWorkerGlobalScope, so typeof checks evaluate cleanly to \'undefined\' with no error.',
+    docs: [
+      { label: 'MDN — ServiceWorkerGlobalScope', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope' },
+    ],
+    resources: [
+      { label: 'MDN — Clients API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Clients', badge: 'docs' },
+    ],
+    gotchas: [
+      'Communication with controlled pages happens entirely through postMessage() and the Clients API — never direct DOM manipulation.',
+      'This is architectural, not a permission check — no exception is thrown when checking typeof document from inside a worker.',
+    ],
+  },
+
+  'html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting': {
+    apis: ['registration.installing', 'registration.waiting', 'registration.active', 'skipWaiting()'],
+    related: [
+      { label: 'PWA & Service Workers (overview)', route: '/html/pwa-service-workers' },
+      { label: 'Registration Scope From Script Location', route: '/html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location' },
+      { label: 'No DOM Access Inside a Service Worker', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' },
+    ],
+    tip: 'A freshly-installed worker never auto-promotes to active while an older worker still controls an open page — it sits in registration.waiting, directly readable and checkable.',
+    docs: [
+      { label: 'MDN — Service Worker lifecycle', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers#service_worker_lifecycle' },
+    ],
+    resources: [
+      { label: 'web.dev — Service worker lifecycle', url: 'https://web.dev/articles/service-worker-lifecycle', badge: 'blog' },
+    ],
+    gotchas: [
+      'skipWaiting() and clients.claim() act on two different lifecycle moments — both together are usually needed for a fully instant update.',
+      'This waiting behavior is a deliberate safety mechanism protecting already-open pages, not an oversight or a bug.',
+    ],
+  },
+
   'html/performance': {
     apis: ['loading="lazy"', 'fetchpriority="high"', 'rel="preload"', 'rel="prefetch"', 'rel="preconnect"', 'rel="dns-prefetch"', 'defer', 'async', 'rel="modulepreload"', 'content-visibility'],
     related: [

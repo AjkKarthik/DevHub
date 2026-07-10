@@ -1489,6 +1489,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'defer Guarantees Order + DOMContentLoaded Timing', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' },
     { label: 'content-visibility: auto Genuinely Skips Rendering', route: '/html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering' },
   ],
+  'pwa-service-workers': [
+    { label: 'Registration Scope From Script Location', route: '/html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location' },
+    { label: 'No DOM Access Inside a Service Worker', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' },
+    { label: 'New SW Waits Without skipWaiting()', route: '/html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting' },
+  ],
 };
 
 @Component({

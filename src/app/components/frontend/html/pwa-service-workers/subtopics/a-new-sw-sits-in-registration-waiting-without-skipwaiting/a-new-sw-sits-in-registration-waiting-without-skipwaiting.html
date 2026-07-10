@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="PWA &amp; Service Workers" topicRoute="/html/pwa-service-workers" subtopicLabel="A New SW Sits in registration.waiting Without skipWaiting()" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A New SW Sits in registration.waiting Without skipWaiting()</h1>
+  <p class="page-subtitle">A freshly-installed worker doesn't auto-activate over an old one still controlling an open page — it sits in registration.waiting until skipWaiting() or every old tab closes.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Register sw-v1, let it activate, then register a genuinely different sw-v2 at the same scope without reloading. Inspect <code>registration.installing</code>/<code>.waiting</code>/<code>.active</code> directly.</p>
+    <app-live-playground title="watching registration.waiting populate without skipWaiting()" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious service worker mechanics — how scope gets determined, why DOM access is architecturally impossible, and now how the update lifecycle itself deliberately protects already-open pages. Return to the <a routerLink="/html/pwa-service-workers">PWA &amp; Service Workers</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="PWA &amp; Service Workers"
+    topicRoute="/html/pwa-service-workers"
+    [prev]="{ label: 'Service Workers Genuinely Have No DOM Access', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' }"
+  />
+</div>

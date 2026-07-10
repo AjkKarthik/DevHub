@@ -1360,7 +1360,12 @@ export const routes: Routes = [
       { path: 'defer-guarantees-order-and-fires-before-domcontentloaded', loadComponent: () => import('./components/frontend/html/performance/subtopics/defer-guarantees-order-and-fires-before-domcontentloaded/defer-guarantees-order-and-fires-before-domcontentloaded').then(m => m.DeferGuaranteesOrderAndFiresBeforeDomcontentloadedSubtopic) },
       { path: 'content-visibility-auto-genuinely-skips-offscreen-rendering', loadComponent: () => import('./components/frontend/html/performance/subtopics/content-visibility-auto-genuinely-skips-offscreen-rendering/content-visibility-auto-genuinely-skips-offscreen-rendering').then(m => m.ContentVisibilityAutoGenuinelySkipsOffscreenRenderingSubtopic) },
     ] },
-    { path: 'pwa-service-workers', loadComponent: () => import('./components/frontend/html/pwa-service-workers/pwa-service-workers').then(m => m.HtmlPwaServiceWorkers) },
+    { path: 'pwa-service-workers', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/pwa-service-workers/pwa-service-workers').then(m => m.HtmlPwaServiceWorkers) },
+      { path: 'registration-scope-is-set-by-the-script-file-location', loadComponent: () => import('./components/frontend/html/pwa-service-workers/subtopics/registration-scope-is-set-by-the-script-file-location/registration-scope-is-set-by-the-script-file-location').then(m => m.RegistrationScopeIsSetByTheScriptFileLocationSubtopic) },
+      { path: 'service-workers-genuinely-have-no-dom-access', loadComponent: () => import('./components/frontend/html/pwa-service-workers/subtopics/service-workers-genuinely-have-no-dom-access/service-workers-genuinely-have-no-dom-access').then(m => m.ServiceWorkersGenuinelyHaveNoDomAccessSubtopic) },
+      { path: 'a-new-sw-sits-in-registration-waiting-without-skipwaiting', loadComponent: () => import('./components/frontend/html/pwa-service-workers/subtopics/a-new-sw-sits-in-registration-waiting-without-skipwaiting/a-new-sw-sits-in-registration-waiting-without-skipwaiting').then(m => m.ANewSwSitsInRegistrationWaitingWithoutSkipWaitingSubtopic) },
+    ] },
     { path: 'seo',                 loadComponent: () => import('./components/frontend/html/seo/seo').then(m => m.HtmlSeo) },
     { path: 'apis',                loadComponent: () => import('./components/frontend/html/apis/apis').then(m => m.HtmlApis) },
     { path: 'fundamentals',        loadComponent: () => import('./components/frontend/html/fundamentals/fundamentals').then(m => m.HtmlFundamentals) },
