@@ -1671,7 +1671,7 @@ off here with a date.
 - [x] `/html/custom-elements` — Web Components & Custom Elements (2026-07-10 — 3 subtopics: clonenode-required-appendchild-consumes-the-template, composed-true-required-to-cross-the-shadow-boundary, attributechangedcallback-fires-before-connectedcallback; SUBTOPICS map key left bare ('custom-elements'), collision-free)
 - [x] `/html/iframes-embeds` — iFrames & Embeds (2026-07-10 — 3 subtopics: allow-scripts-plus-allow-same-origin-enables-sandbox-escape, missing-width-height-causes-measurable-layout-shift, srcdoc-makes-zero-network-requests-src-makes-a-real-one; SUBTOPICS map key left bare ('iframes-embeds'), collision-free)
 - [x] `/html/canvas-svg` — Canvas & SVG (2026-07-10 — 3 subtopics: canvas-html-attrs-set-resolution-css-only-stretches-pixels, missing-beginpath-merges-paths-provable-via-pixel-data, svg-without-viewbox-ignores-css-resize-of-coordinates; SUBTOPICS map key left bare ('canvas-svg'), collision-free)
-- [ ] `/html/performance` — HTML Performance
+- [x] `/html/performance` — HTML Performance (2026-07-10 — 3 subtopics: too-many-high-priority-resources-dilutes-the-signal, defer-guarantees-order-and-fires-before-domcontentloaded, content-visibility-auto-genuinely-skips-offscreen-rendering; SUBTOPICS map hub-prefixed to `html-performance` — bare `performance` key already claimed elsewhere in the shared map)
 - [ ] `/html/pwa-service-workers` — PWA & Service Workers
 - [ ] `/html/seo` — HTML SEO
 - [ ] `/html/apis` — HTML5 Browser APIs
