@@ -1312,7 +1312,12 @@ export const routes: Routes = [
       { path: 'sizes-not-media-picks-srcset-candidate', loadComponent: () => import('./components/frontend/html/media/subtopics/sizes-not-media-picks-srcset-candidate/sizes-not-media-picks-srcset-candidate').then(m => m.SizesNotMediaPicksSrcsetCandidateSubtopic) },
       { path: 'empty-sandbox-blocks-script-execution', loadComponent: () => import('./components/frontend/html/media/subtopics/empty-sandbox-blocks-script-execution/empty-sandbox-blocks-script-execution').then(m => m.EmptySandboxBlocksScriptExecutionSubtopic) },
     ] },
-    { path: 'tables',              loadComponent: () => import('./components/frontend/html/tables/tables').then(m => m.HtmlTables) },
+    { path: 'tables', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/tables/tables').then(m => m.HtmlTables) },
+      { path: 'rowspan-covered-cells-shift-every-later-cell', loadComponent: () => import('./components/frontend/html/tables/subtopics/rowspan-covered-cells-shift-every-later-cell/rowspan-covered-cells-shift-every-later-cell').then(m => m.RowspanCoveredCellsShiftEveryLaterCellSubtopic) },
+      { path: 'table-layout-fixed-sizes-columns-from-first-row', loadComponent: () => import('./components/frontend/html/tables/subtopics/table-layout-fixed-sizes-columns-from-first-row/table-layout-fixed-sizes-columns-from-first-row').then(m => m.TableLayoutFixedSizesColumnsFromFirstRowSubtopic) },
+      { path: 'col-only-supports-background-border-visibility-width', loadComponent: () => import('./components/frontend/html/tables/subtopics/col-only-supports-background-border-visibility-width/col-only-supports-background-border-visibility-width').then(m => m.ColOnlySupportsBackgroundBorderVisibilityWidthSubtopic) },
+    ] },
     { path: 'links-navigation',    loadComponent: () => import('./components/frontend/html/links-navigation/links-navigation').then(m => m.HtmlLinksNavigation) },
     { path: 'accessibility',       loadComponent: () => import('./components/frontend/html/accessibility/accessibility').then(m => m.HtmlAccessibility) },
     { path: 'head-metadata',       loadComponent: () => import('./components/frontend/html/head-metadata/head-metadata').then(m => m.HtmlHeadMetadata) },

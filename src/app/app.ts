@@ -1445,6 +1445,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'sizes Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' },
     { label: 'Empty sandbox Blocks Scripts', route: '/html/media/empty-sandbox-blocks-script-execution' },
   ],
+  tables: [
+    { label: 'Leftover rowspan Cell Shifts Everything', route: '/html/tables/rowspan-covered-cells-shift-every-later-cell' },
+    { label: 'table-layout: fixed Uses Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' },
+    { label: 'col Only Supports 4 CSS Properties', route: '/html/tables/col-only-supports-background-border-visibility-width' },
+  ],
 };
 
 @Component({

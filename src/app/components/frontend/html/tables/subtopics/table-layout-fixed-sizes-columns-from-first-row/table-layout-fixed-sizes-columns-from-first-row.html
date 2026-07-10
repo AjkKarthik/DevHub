@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tables" topicRoute="/html/tables" subtopicLabel="table-layout: fixed Sizes Columns From Row 1 Only" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">table-layout: fixed Sizes Columns From Row 1 Only</h1>
+  <p class="page-subtitle">The default algorithm measures every cell in every row before drawing a single column. <code>table-layout: fixed</code> looks at row 1 alone — and never revisits its decision.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="CSS2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two tables share identical markup — one long, unbreakable word in row 2 only. Compare column 2's actual rendered width under <code>auto</code> versus <code>fixed</code> layout.</p>
+    <app-live-playground title="table-layout auto vs fixed column widths" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Like the rowspan shift in the previous subtopic, this is another case where a table's rendered result depends on structural rules many developers never think about — here it’s column width instead of column position. Return to the <a routerLink="/html/tables">Tables</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tables"
+    topicRoute="/html/tables"
+    [prev]="{ label: 'A Leftover rowspan Cell Shifts Every Cell After It', route: '/html/tables/rowspan-covered-cells-shift-every-later-cell' }"
+    [next]="{ label: 'col Only Supports background, border, visibility, width', route: '/html/tables/col-only-supports-background-border-visibility-width' }"
+  />
+</div>

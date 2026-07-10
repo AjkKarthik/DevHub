@@ -22301,6 +22301,87 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/tables': {
+    apis: ['<table>', '<col>', 'rowspan', 'table-layout', 'HTMLTableRowElement.cells'],
+    related: [
+      { label: 'Media Elements',     route: '/html/media'         },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility' },
+      { label: 'HTML Performance',   route: '/html/performance'   },
+    ],
+    tip: 'HTML tables have no auto-placement algorithm like CSS Grid — a leftover rowspan cell silently shifts every following cell rather than getting dropped.',
+    docs: [
+      { label: 'MDN — Table basics', url: 'https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Basics' },
+    ],
+    resources: [
+      { label: 'MDN — table-layout', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout', badge: 'docs' },
+    ],
+    gotchas: [
+      'cellIndex only reflects DOM order within a row — it cannot detect a shift caused by an earlier row\'s rowspan.',
+      'table-layout: fixed locks column widths from row 1 alone and never revisits them, even if later rows overflow.',
+      'Only background, border, visibility, and width apply to a <col> element — everything else is silently ignored.',
+    ],
+  },
+
+  'html/tables/rowspan-covered-cells-shift-every-later-cell': {
+    apis: ['rowspan', 'HTMLTableRowElement.cells', 'HTMLTableCellElement.cellIndex'],
+    related: [
+      { label: 'Tables (overview)', route: '/html/tables' },
+      { label: 'table-layout: fixed Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' },
+      { label: 'col CSS Restrictions', route: '/html/tables/col-only-supports-background-border-visibility-width' },
+    ],
+    tip: 'A leftover cell after a rowspan is never dropped — it renders in the next unreserved column, shifting every cell after it.',
+    docs: [
+      { label: 'MDN — rowspan', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/td#rowspan' },
+    ],
+    resources: [
+      { label: 'MDN — Table basics', url: 'https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Basics', badge: 'docs' },
+    ],
+    gotchas: [
+      'cellIndex and cells.length only describe DOM order within a single row — they cannot see rowspan reservations from earlier rows.',
+      'The fix is always to remove the covered cell\'s markup — there is no auto-correction mechanism to rely on.',
+    ],
+  },
+
+  'html/tables/table-layout-fixed-sizes-columns-from-first-row': {
+    apis: ['table-layout', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Tables (overview)', route: '/html/tables' },
+      { label: 'Leftover rowspan Cell Shifts Everything', route: '/html/tables/rowspan-covered-cells-shift-every-later-cell' },
+      { label: 'col CSS Restrictions', route: '/html/tables/col-only-supports-background-border-visibility-width' },
+    ],
+    tip: 'table-layout: fixed turns an O(all cells) width-measurement pass into an O(first row) one — the documented fix for slow layout on large tables.',
+    docs: [
+      { label: 'MDN — table-layout', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout' },
+    ],
+    resources: [
+      { label: 'web.dev — Rendering performance', url: 'https://web.dev/articles/rendering-performance', badge: 'docs' },
+    ],
+    gotchas: [
+      'Content in later rows that doesn\'t fit row 1\'s column width overflows visibly by default — it does not force the column to grow.',
+      'table-layout: fixed changes how EVERY column\'s width is calculated, not just the table\'s overall width.',
+    ],
+  },
+
+  'html/tables/col-only-supports-background-border-visibility-width': {
+    apis: ['<col>', '<colgroup>', 'getComputedStyle()'],
+    related: [
+      { label: 'Tables (overview)', route: '/html/tables' },
+      { label: 'Leftover rowspan Cell Shifts Everything', route: '/html/tables/rowspan-covered-cells-shift-every-later-cell' },
+      { label: 'table-layout: fixed Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' },
+    ],
+    tip: 'A <col> never gets its own rendered box like a <td> does — only background, border, visibility, and width are special-cased to reach the real cells.',
+    docs: [
+      { label: 'MDN — <col>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/col' },
+    ],
+    resources: [
+      { label: 'MDN — <colgroup>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/colgroup', badge: 'docs' },
+    ],
+    gotchas: [
+      'Unsupported CSS on a <col> causes no error or warning — it is valid syntax that simply never reaches any rendered box.',
+      'getComputedStyle() on the <col> itself reports what you SET, not what actually rendered — check the real <td>/<th> cells instead.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],

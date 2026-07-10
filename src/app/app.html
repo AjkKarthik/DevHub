@@ -3384,7 +3384,26 @@
           </div>
         }
       }
-      <a routerLink="/html/tables"             routerLinkActive="active"><span class="nl-text">Tables</span>@if(progress.isDone('html-tables')){<span class="nl-done">✓</span>}@if(diff('html-tables');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/tables" routerLinkActive="active">
+        <span class="nl-text">Tables</span>
+        @if (progress.isDone('html-tables')) {<span class="nl-done">✓</span>}
+        @if (diff('html-tables'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('tables')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tables')"
+                  (click)="toggleSubtopics('tables', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tables'); as htmlTablesSubs) {
+        @if (isSubtopicsExpanded('tables')) {
+          <div class="nav-subtopics">
+            @for (s of htmlTablesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
