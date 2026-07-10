@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Accessibility &amp; ARIA" topicRoute="/html/accessibility" subtopicLabel="aria-hidden Removes From the a11y Tree, Not the Tab Order" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">aria-hidden Removes From the a11y Tree, Not the Tab Order</h1>
+  <p class="page-subtitle">aria-hidden="true" hides an element from screen readers — it does nothing to tabIndex or .focus(). A keyboard user can land on a control a screen reader user is told doesn't exist.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="WAI-ARIA 1.0" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>One normal button, one with <code>aria-hidden="true"</code>. Compare their <code>tabIndex</code> and confirm both genuinely accept keyboard focus.</p>
+    <app-live-playground title="aria-hidden's tab order is unaffected" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Staying reachable by keyboard is necessary but not sufficient — the next subtopic covers the OTHER half of Rule 3: once a custom control is genuinely reachable, does pressing Enter or Space actually activate it the way a native element would? Return to the <a routerLink="/html/accessibility">Accessibility &amp; ARIA</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Accessibility &amp; ARIA"
+    topicRoute="/html/accessibility"
+    [prev]="{ label: 'aria-labelledby Concatenates in Listed Order, Skips Missing ids', route: '/html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids' }"
+    [next]="{ label: 'A Native button Translates Enter/Space, div role=button Does Not', route: '/html/accessibility/native-button-translates-enter-space-div-role-button-does-not' }"
+  />
+</div>

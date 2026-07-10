@@ -1324,7 +1324,12 @@ export const routes: Routes = [
       { path: 'href-less-anchor-is-skipped-by-tab-navigation', loadComponent: () => import('./components/frontend/html/links-navigation/subtopics/href-less-anchor-is-skipped-by-tab-navigation/href-less-anchor-is-skipped-by-tab-navigation').then(m => m.HrefLessAnchorIsSkippedByTabNavigationSubtopic) },
       { path: 'lvhfa-source-order-decides-the-equal-specificity-winner', loadComponent: () => import('./components/frontend/html/links-navigation/subtopics/lvhfa-source-order-decides-the-equal-specificity-winner/lvhfa-source-order-decides-the-equal-specificity-winner').then(m => m.LvhfaSourceOrderDecidesTheEqualSpecificityWinnerSubtopic) },
     ] },
-    { path: 'accessibility',       loadComponent: () => import('./components/frontend/html/accessibility/accessibility').then(m => m.HtmlAccessibility) },
+    { path: 'accessibility', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/accessibility/accessibility').then(m => m.HtmlAccessibility) },
+      { path: 'aria-labelledby-concatenates-in-listed-order-skips-missing-ids', loadComponent: () => import('./components/frontend/html/accessibility/subtopics/aria-labelledby-concatenates-in-listed-order-skips-missing-ids/aria-labelledby-concatenates-in-listed-order-skips-missing-ids').then(m => m.AriaLabelledbyConcatenatesInListedOrderSkipsMissingIdsSubtopic) },
+      { path: 'aria-hidden-removes-from-a11y-tree-not-tab-order', loadComponent: () => import('./components/frontend/html/accessibility/subtopics/aria-hidden-removes-from-a11y-tree-not-tab-order/aria-hidden-removes-from-a11y-tree-not-tab-order').then(m => m.AriaHiddenRemovesFromA11yTreeNotTabOrderSubtopic) },
+      { path: 'native-button-translates-enter-space-div-role-button-does-not', loadComponent: () => import('./components/frontend/html/accessibility/subtopics/native-button-translates-enter-space-div-role-button-does-not/native-button-translates-enter-space-div-role-button-does-not').then(m => m.NativeButtonTranslatesEnterSpaceDivRoleButtonDoesNotSubtopic) },
+    ] },
     { path: 'head-metadata',       loadComponent: () => import('./components/frontend/html/head-metadata/head-metadata').then(m => m.HtmlHeadMetadata) },
     { path: 'custom-elements',     loadComponent: () => import('./components/frontend/html/custom-elements/custom-elements').then(m => m.HtmlCustomElements) },
     { path: 'iframes-embeds',      loadComponent: () => import('./components/frontend/html/iframes-embeds/iframes-embeds').then(m => m.HtmlIframesEmbeds) },

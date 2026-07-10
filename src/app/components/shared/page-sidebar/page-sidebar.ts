@@ -22718,6 +22718,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids': {
+    apis: ['aria-labelledby', 'aria-label'],
+    related: [
+      { label: 'Accessibility & ARIA (overview)', route: '/html/accessibility' },
+      { label: 'aria-hidden vs the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' },
+      { label: 'button vs div role=button Keyboard Activation', route: '/html/accessibility/native-button-translates-enter-space-div-role-button-does-not' },
+    ],
+    tip: 'Unlike aria-label\'s single fixed string, aria-labelledby can compose a name from multiple, visually-separate elements — in the order the ids are LISTED, not the order they appear in the DOM.',
+    docs: [
+      { label: 'MDN — aria-labelledby', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-labelledby' },
+    ],
+    resources: [
+      { label: 'W3C Accessible Name Computation', url: 'https://www.w3.org/TR/accname-1.2/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A missing referenced id is silently skipped — no console warning, no error, just a shorter accessible name.',
+      'There is no standard, cross-browser JS API to read a live computed accessible name — verifying this requires replicating the spec\'s own algorithm.',
+    ],
+  },
+
+  'html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order': {
+    apis: ['aria-hidden', 'tabIndex', 'element.focus()'],
+    related: [
+      { label: 'Accessibility & ARIA (overview)', route: '/html/accessibility' },
+      { label: 'aria-labelledby Order and Missing-id Skip', route: '/html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids' },
+      { label: 'button vs div role=button Keyboard Activation', route: '/html/accessibility/native-button-translates-enter-space-div-role-button-does-not' },
+    ],
+    tip: 'aria-hidden and tabIndex control two fully independent systems — the accessibility tree and the keyboard tab order. Setting one never implicitly changes the other.',
+    docs: [
+      { label: 'MDN — aria-hidden', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden' },
+    ],
+    resources: [
+      { label: 'a11yproject.com', url: 'https://www.a11yproject.com/', badge: 'blog' },
+    ],
+    gotchas: [
+      'A button with aria-hidden="true" keeps tabIndex 0 and still accepts .focus() — a real, provable keyboard trap for a screen reader user.',
+      'The usual fix is a real accessible name (aria-label) or removing the element from the DOM — not tabindex="-1", which just trades one accessibility bug for another.',
+    ],
+  },
+
+  'html/accessibility/native-button-translates-enter-space-div-role-button-does-not': {
+    apis: ['role="button"', 'tabindex', 'keydown', 'click'],
+    related: [
+      { label: 'Accessibility & ARIA (overview)', route: '/html/accessibility' },
+      { label: 'aria-labelledby Order and Missing-id Skip', route: '/html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids' },
+      { label: 'aria-hidden vs the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' },
+    ],
+    tip: 'Only genuinely native interactive elements (button, a[href], input) get the browser\'s automatic Enter/Space-to-click synthesis — a div never does, role attribute or not.',
+    docs: [
+      { label: 'MDN — <button>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button' },
+    ],
+    resources: [
+      { label: 'WAI-ARIA Authoring Practices', url: 'https://www.w3.org/WAI/ARIA/apg/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A div role="button" with only a click handler works fine with a mouse and silently does nothing on Enter or Space.',
+      'This gap is invisible during normal mouse-based manual testing — it only surfaces for keyboard-only users.',
+    ],
+  },
+
   // ── HTML: New topic pages ─────────────────────────────────────────────────
   'html/fundamentals': {
     apis: ['<!DOCTYPE html>', '<html lang>', '<head>', '<body>', 'void elements', 'block vs inline', 'data-*', 'id', 'class', 'charset'],

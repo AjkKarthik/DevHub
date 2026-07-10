@@ -3453,7 +3453,26 @@
     <div class="nav-group">
       <p class="nav-group-label">Semantic &amp; Accessibility</p>
       <a routerLink="/html/landmark-elements" routerLinkActive="active"><span class="nl-text">Landmark Elements</span>@if(progress.isDone('html-landmark-elements')){<span class="nl-done">✓</span>}@if(diff('html-landmark-elements');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/accessibility"     routerLinkActive="active"><span class="nl-text">Accessibility &amp; ARIA</span>@if(progress.isDone('html-accessibility')){<span class="nl-done">✓</span>}@if(diff('html-accessibility');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/accessibility" routerLinkActive="active">
+        <span class="nl-text">Accessibility &amp; ARIA</span>
+        @if (progress.isDone('html-accessibility')) {<span class="nl-done">✓</span>}
+        @if (diff('html-accessibility'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('html-accessibility')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('html-accessibility')"
+                  (click)="toggleSubtopics('html-accessibility', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('html-accessibility'); as htmlA11ySubs) {
+        @if (isSubtopicsExpanded('html-accessibility')) {
+          <div class="nav-subtopics">
+            @for (s of htmlA11ySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/html/aria-roles"        routerLinkActive="active"><span class="nl-text">ARIA Roles</span>@if(progress.isDone('html-aria-roles')){<span class="nl-done">✓</span>}@if(diff('html-aria-roles');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/html/focus-management"  routerLinkActive="active"><span class="nl-text">Focus Management</span>@if(progress.isDone('html-focus-management')){<span class="nl-done">✓</span>}@if(diff('html-focus-management');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/html/head-metadata"     routerLinkActive="active"><span class="nl-text">Head &amp; Metadata</span>@if(progress.isDone('html-head-metadata')){<span class="nl-done">✓</span>}@if(diff('html-head-metadata');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

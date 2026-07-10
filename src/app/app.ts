@@ -1455,6 +1455,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'href-less Anchor Skips Tab Navigation', route: '/html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation' },
     { label: 'LVHFA Order Decides the Winner', route: '/html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner' },
   ],
+  // NOTE: keyed 'html-accessibility', NOT bare 'accessibility' — the Angular
+  // hub's own /angular/accessibility topic already claims the bare key.
+  'html-accessibility': [
+    { label: 'aria-labelledby Order and Missing-id Skip', route: '/html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids' },
+    { label: 'aria-hidden vs the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' },
+    { label: 'button vs div role=button Keyboard Activation', route: '/html/accessibility/native-button-translates-enter-space-div-role-button-does-not' },
+  ],
 };
 
 @Component({

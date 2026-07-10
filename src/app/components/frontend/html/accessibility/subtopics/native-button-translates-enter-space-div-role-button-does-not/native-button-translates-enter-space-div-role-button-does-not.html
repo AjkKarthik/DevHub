@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Accessibility &amp; ARIA" topicRoute="/html/accessibility" subtopicLabel="A Native button Translates Enter/Space, div role=button Does Not" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A Native button Translates Enter/Space, div role="button" Does Not</h1>
+  <p class="page-subtitle">A real &lt;button&gt; automatically synthesizes a click event from Enter or Space. A div with role="button" and only a click handler stays completely silent on the keyboard.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="WAI-ARIA 1.0" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Neither control has a keydown listener — only a click listener, on both. Tab to each and press Enter to see which one actually responds.</p>
+    <app-live-playground title="native button vs div role=button keyboard activation" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious ARIA mechanics — how a multi-part accessible name gets composed, why hiding a control from screen readers doesn't remove it from the keyboard, and now why a custom control needs its own keyboard handling that native elements get for free. Return to the <a routerLink="/html/accessibility">Accessibility &amp; ARIA</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Accessibility &amp; ARIA"
+    topicRoute="/html/accessibility"
+    [prev]="{ label: 'aria-hidden Removes From the a11y Tree, Not the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' }"
+  />
+</div>
