@@ -1043,6 +1043,17 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
    (`void el.offsetWidth`) still returned an empty array in every case tried — only a genuine
    `setTimeout`-deferred check (even a very short one, 20–50ms) reliably returns the live
    animation object.
+10. **`/css/tailwind` is the first CSS-hub topic to drop the live playground entirely** — same
+    reasoning already established for `/javascript/bundlers` and `/react/nextjs`: Tailwind's JIT
+    engine is a build-time static-text scanner (it reads source files as plain text, never
+    executes JavaScript), so none of its actual gotchas — a dynamic class string being invisible
+    to the scanner, a missing file extension in `content` — have any runtime behavior a browser
+    JS console can demonstrate. Used plain `<app-code-block>` instead, no
+    `LivePlaygroundComponent`/`PlaygroundFile` import. Also confirmed a real `SUBTOPICS` map
+    bare-key collision here (`tailwind` already claimed by the Angular hub's own
+    `/angular/tailwind` topic) — hub-prefixed to `css-tailwind`, matching the
+    `aspnet-routing`/`css-animations` precedent; verified via browser that the Angular hub's own
+    nav toggle and subtopics were unaffected by the fix.
 
 ## Current state (update when it changes!)
 
