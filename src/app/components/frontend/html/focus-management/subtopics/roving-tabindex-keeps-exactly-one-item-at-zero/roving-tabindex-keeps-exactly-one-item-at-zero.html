@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Focus Management" topicRoute="/html/focus-management" subtopicLabel="Roving Tabindex Keeps Exactly One Item at Zero" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Roving Tabindex Keeps Exactly One Item at Zero</h1>
+  <p class="page-subtitle">A checkable invariant: in a roving-tabindex widget, exactly one item has tabIndex 0 at any moment — arrow keys move it, Tab never touches it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="WAI-ARIA APG" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Count how many toolbar buttons have <code>tabIndex === 0</code> before and after simulating an arrow-key move — the count stays exactly 1 the whole time.</p>
+    <app-live-playground title="Roving tabindex" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This shows tabindex used deliberately to shape a widget's Tab behavior. Next, see the opposite case — a POSITIVE tabindex value silently overriding DOM order for Tab traversal, an anti-pattern the main page already warns against.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Focus Management" topicRoute="/html/focus-management"
+    [next]="{ label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' }" />
+</div>

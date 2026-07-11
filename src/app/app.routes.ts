@@ -1408,7 +1408,12 @@ export const routes: Routes = [
       { path: 'aria-hidden-does-not-block-focus', loadComponent: () => import('./components/frontend/html/aria-roles/subtopics/aria-hidden-does-not-block-focus/aria-hidden-does-not-block-focus').then(m => m.AriaHiddenDoesNotBlockFocusSubtopic) },
       { path: 'disabled-vs-aria-disabled-blocks-events', loadComponent: () => import('./components/frontend/html/aria-roles/subtopics/disabled-vs-aria-disabled-blocks-events/disabled-vs-aria-disabled-blocks-events').then(m => m.DisabledVsAriaDisabledBlocksEventsSubtopic) },
     ] },
-    { path: 'focus-management',    loadComponent: () => import('./components/frontend/html/focus-management/focus-management').then(m => m.HtmlFocusManagement) },
+    { path: 'focus-management', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/focus-management/focus-management').then(m => m.HtmlFocusManagement) },
+      { path: 'roving-tabindex-keeps-exactly-one-item-at-zero', loadComponent: () => import('./components/frontend/html/focus-management/subtopics/roving-tabindex-keeps-exactly-one-item-at-zero/roving-tabindex-keeps-exactly-one-item-at-zero').then(m => m.RovingTabindexKeepsExactlyOneItemAtZeroSubtopic) },
+      { path: 'positive-tabindex-breaks-natural-dom-tab-order', loadComponent: () => import('./components/frontend/html/focus-management/subtopics/positive-tabindex-breaks-natural-dom-tab-order/positive-tabindex-breaks-natural-dom-tab-order').then(m => m.PositiveTabindexBreaksNaturalDomTabOrderSubtopic) },
+      { path: 'dialog-close-restores-last-focused-element', loadComponent: () => import('./components/frontend/html/focus-management/subtopics/dialog-close-restores-last-focused-element/dialog-close-restores-last-focused-element').then(m => m.DialogCloseRestoresLastFocusedElementSubtopic) },
+    ] },
     { path: 'storage-apis',        loadComponent: () => import('./components/frontend/html/storage-apis/storage-apis').then(m => m.HtmlStorageApis) },
     { path: 'drag-drop',           loadComponent: () => import('./components/frontend/html/drag-drop/drag-drop').then(m => m.HtmlDragDrop) },
     { path: 'cheatsheet',          loadComponent: () => import('./components/frontend/html/cheatsheet/cheatsheet').then(m => m.HtmlCheatsheet) },

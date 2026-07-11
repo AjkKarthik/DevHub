@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Focus Management" topicRoute="/html/focus-management" subtopicLabel="dialog close() Restores the Last-Focused Element" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">dialog close() Restores the Last-Focused Element</h1>
+  <p class="page-subtitle">Native &lt;dialog&gt; genuinely restores focus on close — but to whatever was focused at showModal() time, not necessarily the button the user thinks of as "the trigger".</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>An intervening decoy focus call right before showModal() proves the browser's restoration mechanism is real — and shows exactly what it actually snapshots.</p>
+    <app-live-playground title="dialog close focus restoration" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This closes out three focus-management gotchas: tabindex used correctly to shape widget behavior (roving tabindex), tabindex misused to silently reorder the whole page (positive values), and a native mechanism that's real and automatic but easy to misjudge exactly WHAT it captures. Return to the Focus Management overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Focus Management" topicRoute="/html/focus-management"
+    [prev]="{ label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' }" />
+</div>

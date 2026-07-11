@@ -1532,6 +1532,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' },
     { label: 'disabled vs aria-disabled Blocks Events', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' },
   ],
+  'focus-management': [
+    { label: 'Roving Tabindex Keeps Exactly One at Zero', route: '/html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero' },
+    { label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' },
+    { label: 'dialog close() Restores Last-Focused Element', route: '/html/focus-management/dialog-close-restores-last-focused-element' },
+  ],
 };
 
 @Component({

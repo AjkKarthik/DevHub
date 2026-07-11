@@ -3569,7 +3569,26 @@
           </div>
         }
       }
-      <a routerLink="/html/focus-management"  routerLinkActive="active"><span class="nl-text">Focus Management</span>@if(progress.isDone('html-focus-management')){<span class="nl-done">✓</span>}@if(diff('html-focus-management');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/focus-management" routerLinkActive="active">
+        <span class="nl-text">Focus Management</span>
+        @if (progress.isDone('html-focus-management')) {<span class="nl-done">✓</span>}
+        @if (diff('html-focus-management'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('focus-management')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('focus-management')"
+                  (click)="toggleSubtopics('focus-management', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('focus-management'); as htmlFocusSubs) {
+        @if (isSubtopicsExpanded('focus-management')) {
+          <div class="nav-subtopics">
+            @for (s of htmlFocusSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/html/head-metadata" routerLinkActive="active">
         <span class="nl-text">Head &amp; Metadata</span>
         @if (progress.isDone('html-head-metadata')) {<span class="nl-done">✓</span>}

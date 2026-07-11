@@ -1,0 +1,26 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Focus Management" topicRoute="/html/focus-management" subtopicLabel="Positive Tabindex Breaks Natural Tab Order" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Positive Tabindex Breaks Natural Tab Order</h1>
+  <p class="page-subtitle">A single tabindex="1" pulls an element to the FRONT of the tab sequence — reconstructing the browser's actual sort proves it, without simulating real Tab presses.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Compute the actual browser tab-order sort (positive tabindex first, ascending, then DOM order) and compare it against plain DOM order to see exactly how far a positive value displaces an element.</p>
+    <app-live-playground title="Positive tabindex breaks tab order" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>Where roving tabindex is a deliberate, correct use of tabindex to shape widget behavior, this is the classic misuse the main page's Common Mistakes section already warns against. The final subtopic turns to a different focus surprise — what actually happens to focus when a native dialog closes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Focus Management" topicRoute="/html/focus-management"
+    [prev]="{ label: 'Roving Tabindex Keeps Exactly One Item at Zero', route: '/html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero' }"
+    [next]="{ label: 'dialog close() Restores the Last-Focused Element', route: '/html/focus-management/dialog-close-restores-last-focused-element' }" />
+</div>

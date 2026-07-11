@@ -23699,6 +23699,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero': {
+    apis: ['tabindex', 'tabIndex', 'focus()', 'role="toolbar"'],
+    related: [
+      { label: 'Focus Management (overview)', route: '/html/focus-management' },
+      { label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' },
+      { label: 'dialog close() Restores the Last-Focused Element', route: '/html/focus-management/dialog-close-restores-last-focused-element' },
+    ],
+    tip: 'In a correctly-implemented roving tabindex widget, exactly one item has tabIndex 0 at any moment — checkable by simply counting.',
+    docs: [
+      { label: 'W3C APG — Toolbar pattern', url: 'https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/' },
+    ],
+    resources: [
+      { label: 'web.dev — Focus management', url: 'https://web.dev/articles/focus', badge: 'blog' },
+    ],
+    gotchas: [
+      'Giving every item tabindex="0" makes Tab stop on each one individually — worse for keyboard users, not more accessible.',
+      'Tab enters/exits the group as one stop; arrow keys move the roving tabindex WITHIN the group — mixing these up breaks the pattern.',
+    ],
+  },
+
+  'html/focus-management/positive-tabindex-breaks-natural-dom-tab-order': {
+    apis: ['tabindex', 'tabIndex', 'sequential focus navigation'],
+    related: [
+      { label: 'Focus Management (overview)', route: '/html/focus-management' },
+      { label: 'Roving Tabindex Keeps Exactly One at Zero', route: '/html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero' },
+      { label: 'dialog close() Restores the Last-Focused Element', route: '/html/focus-management/dialog-close-restores-last-focused-element' },
+    ],
+    tip: 'Positive tabindex values form their own group, sorted ascending, ahead of everything else — a single tabindex="1" can pull an element to the very front of the tab sequence.',
+    docs: [
+      { label: 'MDN — tabindex', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex' },
+    ],
+    resources: [
+      { label: 'web.dev — Focus management', url: 'https://web.dev/articles/focus', badge: 'blog' },
+    ],
+    gotchas: [
+      'tabindex > 0 creates a separate focus order before the natural DOM order — this almost always creates a confusing tab sequence.',
+      'Prefer tabindex="0" (join natural order) or reordering the DOM/CSS instead of positive values.',
+    ],
+  },
+
+  'html/focus-management/dialog-close-restores-last-focused-element': {
+    apis: ['dialog.showModal()', 'dialog.close()', 'previously focused element'],
+    related: [
+      { label: 'Focus Management (overview)', route: '/html/focus-management' },
+      { label: 'Roving Tabindex Keeps Exactly One at Zero', route: '/html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero' },
+      { label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' },
+    ],
+    tip: 'Native <dialog> genuinely restores focus automatically on close — but to whatever was focused at showModal() time, which can diverge from the visual "trigger" if focus shifted in between.',
+    docs: [
+      { label: 'MDN — <dialog>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog' },
+    ],
+    resources: [
+      { label: 'web.dev — Focus management', url: 'https://web.dev/articles/focus', badge: 'blog' },
+    ],
+    gotchas: [
+      'The restoration mechanism snapshots whatever had focus right before showModal() runs, not necessarily the element the user visually clicked.',
+      'If intervening code shifts focus before showModal(), explicitly re-focus the real trigger immediately before opening the dialog.',
+    ],
+  },
+
   'html/storage-apis': {
     apis: ['localStorage.setItem()', 'localStorage.getItem()', 'sessionStorage', 'indexedDB.open()', 'IDBObjectStore', 'document.cookie', 'CookieStore API', 'cache.put()', 'navigator.storage.estimate()'],
     related: [
