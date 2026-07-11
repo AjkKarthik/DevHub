@@ -1686,7 +1686,7 @@ off here with a date.
 
 #### CSS — 22 topic pages
 
-- [ ] `/css/box-model` — CSS Box Model
+- [x] `/css/box-model` — CSS Box Model (2026-07-11 — FIRST CSS hub subtopic set, conventions documented in CLAUDE.md — 3 subtopics: margin-collapse-uses-larger-value-not-the-sum, outline-never-affects-box-model-layout, parent-child-collapse-moves-the-parents-own-box; all three claims verified empirically via getBoundingClientRect() in-browser before writing; SUBTOPICS map key left bare ('box-model'), collision-free)
 - [ ] `/css/flexbox` — CSS Flexbox
 - [ ] `/css/grid` — CSS Grid
 - [ ] `/css/positioning` — Positioning & Stacking

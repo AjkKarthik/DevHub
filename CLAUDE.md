@@ -986,6 +986,45 @@ Confirmed via direct file inspection before the first subtopic set (`/html/docum
    — but this hub is entering a `SUBTOPICS` map already shared by 8+ other hubs, so the standard
    grep-before-adding discipline still applies to every future HTML-hub topic.
 
+### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
+
+Confirmed via direct file inspection before the first subtopic set (`/css/box-model`, 2026-07-11):
+1. **`.css-page`'s wrapper rule is NOT global** (confirmed absent from `src/styles.scss`, same
+   situation as SQL/TypeScript/React/JavaScript) — every CSS subtopic `.scss` must include the
+   full `.css-page { max-width: 860px; margin: 0 auto; }` rule, with padding on `.subtopic-page`
+   instead (`2rem 1.25rem 4rem` — note `1.25rem` horizontal, matching the main topic page's own
+   `.scss`, NOT the HTML hub's `1.5rem`).
+2. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'css/box-model'`, confirmed the base entry
+   already existed) — subtopic composite keys follow suit: `'css/box-model/<slug>'`.
+3. **Breadcrumb uses its own dedicated `CSS_LABELS` map with bare keys** (`'box-model'`) — no
+   cross-hub collision risk here at all, since every hub has its own separate labels object
+   (unlike `app.ts`'s single flat `SUBTOPICS` map shared across all hubs) — confirmed via grep
+   showing only one `'box-model'` key in the whole file.
+4. Progress/search keys are `css-` prefixed (`css-box-model`), confirmed via existing nav markup.
+5. Theme: `$accent: #264de4`, `$tint: #eff6ff`, `.css-page`/`.css-icon`/`.css-section` CSS classes,
+   icon content the literal text `CSS` (light tint, matching the documented default), `tech="javascript"`
+   in `app-page-meta` (CSS pages share the JS/TS playground and run-it links).
+6. **Live playground uses the same `'typescript'` StackBlitz template as JS/TS/HTML subtopics**
+   (CSS runs natively in the browser) — `index.html` with an inline `<style>` block for the CSS
+   under test, plus `index.ts` doing the measurement/observation (e.g. `getBoundingClientRect()`),
+   `openFile="index.ts"`. Confirmed working end-to-end in the pilot, including StackBlitz loading
+   correctly in both light and dark mode.
+7. **Accuracy discipline carried over from a same-day HTML-hub fix**: before writing any subtopic
+   demo whose claim depends on live-measured behavior (not just documented facts), verify the
+   exact claim empirically via `javascript_tool` in the actual browser session first — do not
+   assume a plausible-sounding claim is correct. This directly followed catching and fixing a real
+   published inaccuracy in `/html/aria-roles/div-role-button-lacks-keyboard-activation` (its demo
+   claimed a synthetic/script-dispatched `Enter` keydown triggers a real `<button>`'s native click
+   activation — false: browsers only run default actions for TRUSTED events, and every
+   script-dispatched event has `isTrusted: false`, so the real button would show 0 clicks too,
+   contradicting the page's own claim). All three CSS Box Model claims (margin collapse uses the
+   larger value not the sum, outline never affects layout, parent-child collapse moves the
+   parent's own box) were confirmed via real `getBoundingClientRect()` measurements in-browser
+   before being written up — CSS layout computation has no analogous trusted-event gating, but
+   verifying first rather than assuming is now the standing practice for any live-behavior claim,
+   regardless of how confident the reasoning feels.
+8. No `SUBTOPICS` map bare-key collision for `box-model` (checked, confirmed collision-free).
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
