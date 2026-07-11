@@ -1443,7 +1443,12 @@ export const routes: Routes = [
       { path: 'flex-basis-wins-over-width-when-both-are-set', loadComponent: () => import('./components/frontend/css/flexbox/subtopics/flex-basis-wins-over-width-when-both-are-set/flex-basis-wins-over-width-when-both-are-set').then(m => m.FlexBasisWinsOverWidthWhenBothAreSetSubtopic) },
       { path: 'order-changes-visual-position-not-dom-order', loadComponent: () => import('./components/frontend/css/flexbox/subtopics/order-changes-visual-position-not-dom-order/order-changes-visual-position-not-dom-order').then(m => m.OrderChangesVisualPositionNotDomOrderSubtopic) },
     ] },
-    { path: 'grid',        loadComponent: () => import('./components/frontend/css/grid/grid').then(m => m.CssGrid) },
+    { path: 'grid', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/grid/grid').then(m => m.CssGrid) },
+      { path: 'auto-fit-collapses-tracks-auto-fill-keeps-them', loadComponent: () => import('./components/frontend/css/grid/subtopics/auto-fit-collapses-tracks-auto-fill-keeps-them/auto-fit-collapses-tracks-auto-fill-keeps-them').then(m => m.AutoFitCollapsesTracksAutoFillKeepsThemSubtopic) },
+      { path: 'grid-column-1-to-3-spans-two-columns-not-three', loadComponent: () => import('./components/frontend/css/grid/subtopics/grid-column-1-to-3-spans-two-columns-not-three/grid-column-1-to-3-spans-two-columns-not-three').then(m => m.GridColumn1To3SpansTwoColumnsNotThreeSubtopic) },
+      { path: 'dense-packing-reorders-visually-not-in-dom', loadComponent: () => import('./components/frontend/css/grid/subtopics/dense-packing-reorders-visually-not-in-dom/dense-packing-reorders-visually-not-in-dom').then(m => m.DensePackingReordersVisuallyNotInDomSubtopic) },
+    ] },
     { path: 'positioning',        loadComponent: () => import('./components/frontend/css/positioning/positioning').then(m => m.CssPositioning) },
     { path: 'custom-properties',  loadComponent: () => import('./components/frontend/css/custom-properties/custom-properties').then(m => m.CssCustomProperties) },
     { path: 'selectors',          loadComponent: () => import('./components/frontend/css/selectors/selectors').then(m => m.CssSelectors) },

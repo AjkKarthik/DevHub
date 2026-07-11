@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Grid" topicRoute="/css/grid" subtopicLabel="grid-column: 1 / 3 Spans Two Columns, Not Three" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">grid-column: 1 / 3 Spans Two Columns, Not Three</h1>
+  <p class="page-subtitle">In a 3-column grid, grid-column: 1 / 3 renders at exactly 2/3 the width — line numbers, not column counts, are what those two numbers mean.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS Grid Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Measure an item's rendered width against the full grid width to confirm exactly how many of the three columns grid-column: 1 / 3 actually spans.</p>
+    <app-live-playground title="grid-column line numbers vs column counts" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>Where the first subtopic covered a sizing gotcha, this covers a counting gotcha the main page's Common Mistakes already flags. The final subtopic turns to auto-placement — how dense packing can reorder items visually without any explicit order property at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Grid" topicRoute="/css/grid"
+    [prev]="{ label: 'auto-fit Collapses Tracks, auto-fill Keeps Them', route: '/css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them' }"
+    [next]="{ label: 'Dense Packing Reorders Visually, Not in the DOM', route: '/css/grid/dense-packing-reorders-visually-not-in-dom' }" />
+</div>

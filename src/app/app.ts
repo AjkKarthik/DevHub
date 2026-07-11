@@ -1557,6 +1557,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'flex-basis Wins Over width', route: '/css/flexbox/flex-basis-wins-over-width-when-both-are-set' },
     { label: 'order Changes Visual Position, Not DOM Order', route: '/css/flexbox/order-changes-visual-position-not-dom-order' },
   ],
+  'grid': [
+    { label: 'auto-fit Collapses Tracks, auto-fill Keeps Them', route: '/css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them' },
+    { label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' },
+    { label: 'Dense Packing Reorders Visually, Not in the DOM', route: '/css/grid/dense-packing-reorders-visually-not-in-dom' },
+  ],
 };
 
 @Component({

@@ -22014,6 +22014,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them': {
+    apis: ['auto-fit', 'auto-fill', 'minmax()', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Grid (overview)', route: '/css/grid' },
+      { label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' },
+      { label: 'Dense Packing Reorders Visually, Not in the DOM', route: '/css/grid/dense-packing-reorders-visually-not-in-dom' },
+    ],
+    tip: 'A single item in a 600px container renders at 150px under auto-fill but 600px under auto-fit — a 4x rendered-width difference from one keyword.',
+    docs: [
+      { label: 'MDN — CSS Grid Layout', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Grid Guide', url: 'https://css-tricks.com/snippets/css/complete-guide-grid/', badge: 'blog' },
+    ],
+    gotchas: [
+      'The difference is most visible in a card grid\'s last, partially-filled row — auto-fill leaves phantom empty columns there.',
+      'Switching from auto-fill to auto-fit is a one-keyword fix, no extra CSS needed.',
+    ],
+  },
+
+  'css/grid/grid-column-1-to-3-spans-two-columns-not-three': {
+    apis: ['grid-column', 'grid lines', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Grid (overview)', route: '/css/grid' },
+      { label: 'auto-fit Collapses Tracks, auto-fill Keeps Them', route: '/css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them' },
+      { label: 'Dense Packing Reorders Visually, Not in the DOM', route: '/css/grid/dense-packing-reorders-visually-not-in-dom' },
+    ],
+    tip: 'grid-column: 1 / 3 in a 3-column grid renders at 2/3 the width — both numbers are LINE numbers (an N-column grid has N+1 lines), not a column count.',
+    docs: [
+      { label: 'MDN — grid-column', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column' },
+    ],
+    resources: [
+      { label: 'Grid Garden (game)', url: 'https://cssgridgarden.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'grid-column: 1 / -1 always spans the full grid regardless of column count — no counting required.',
+      'This is the same off-by-one trap the main page\'s Common Mistakes section flags directly.',
+    ],
+  },
+
+  'css/grid/dense-packing-reorders-visually-not-in-dom': {
+    apis: ['grid-auto-flow: dense', 'DOM traversal', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Grid (overview)', route: '/css/grid' },
+      { label: 'auto-fit Collapses Tracks, auto-fill Keeps Them', route: '/css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them' },
+      { label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' },
+    ],
+    tip: 'dense packing can render a later item before an earlier one — automatically, no order property needed — while DOM order (and Tab/screen reader order) stays completely unchanged.',
+    docs: [
+      { label: 'MDN — grid-auto-flow', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Grid Guide', url: 'https://css-tricks.com/snippets/css/complete-guide-grid/', badge: 'blog' },
+    ],
+    gotchas: [
+      'This creates the same DOM-vs-visual divergence flexbox\'s order property does, just triggered automatically by item spans instead of manually.',
+      'Checking for this is directly scriptable — compare DOM traversal order against items sorted by rendered position.',
+    ],
+  },
+
   // ── CSS: Flexbox ──────────────────────────────────────────────────────────
   'css/flexbox': {
     apis: ['display: flex', 'justify-content', 'align-items', 'flex-wrap', 'gap', 'flex', 'align-self', 'order'],

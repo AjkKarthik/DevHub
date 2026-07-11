@@ -3856,7 +3856,26 @@
           </div>
         }
       }
-      <a routerLink="/css/grid" routerLinkActive="active"><span class="nl-text">CSS Grid</span>@if(progress.isDone('css-grid')){<span class="nl-done">✓</span>}@if(diff('css-grid');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/grid" routerLinkActive="active">
+        <span class="nl-text">CSS Grid</span>
+        @if (progress.isDone('css-grid')) {<span class="nl-done">✓</span>}
+        @if (diff('css-grid'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('grid')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('grid')"
+                  (click)="toggleSubtopics('grid', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('grid'); as cssGridSubs) {
+        @if (isSubtopicsExpanded('grid')) {
+          <div class="nav-subtopics">
+            @for (s of cssGridSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/positioning" routerLinkActive="active"><span class="nl-text">Positioning & Stacking</span>@if(progress.isDone('css-positioning')){<span class="nl-done">✓</span>}@if(diff('css-positioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
