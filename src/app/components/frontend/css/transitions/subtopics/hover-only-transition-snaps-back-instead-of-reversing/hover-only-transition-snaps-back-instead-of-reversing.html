@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Transitions" topicRoute="/css/transitions" subtopicLabel="A Hover-Only Transition Snaps Back Instead of Reversing" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">A Hover-Only Transition Snaps Back Instead of Reversing</h1>
+  <p class="page-subtitle">Declaring transition only inside :hover animates going in — but hovering out reverts to a rule with no transition at all, so it snaps back instantly.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare active transitions on hover-out between an element with transition on its base rule and one with transition only inside :hover.</p>
+    <app-live-playground title="hover-only transition snaps back instead of reversing" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This makes the main page's own third "Common Mistake" directly measurable via the Web Animations API, confirming with a real CSSTransition object count (not just visual judgment) that the reverse direction genuinely never animates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Transitions" topicRoute="/css/transitions"
+    [prev]="{ label: 'A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value', route: '/css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last' }" />
+</div>

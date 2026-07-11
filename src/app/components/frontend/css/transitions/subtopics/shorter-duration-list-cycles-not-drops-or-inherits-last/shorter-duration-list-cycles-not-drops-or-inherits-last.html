@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Transitions" topicRoute="/css/transitions" subtopicLabel="A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value</h1>
+  <p class="page-subtitle">3 properties, 2 durations: the third property wraps back to the FIRST listed duration — not zero, and not the last one.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Read the live CSSTransition object driving the third (cycled-back) property to confirm its actual effective duration.</p>
+    <app-live-playground title="shorter duration list cycles" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is a natural companion to the main page's own "Multiple Transitions" section on comma-separated per-property timing. The final subtopic turns to the main page's own hover-transition mistake — proving directly, via the Web Animations API, that a transition declared only on :hover never runs in reverse.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Transitions" topicRoute="/css/transitions"
+    [prev]="{ label: 'Negative Delay Starts Mid-Cycle, Not After a Pause', route: '/css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause' }"
+    [next]="{ label: 'A Hover-Only Transition Snaps Back Instead of Reversing', route: '/css/transitions/hover-only-transition-snaps-back-instead-of-reversing' }" />
+</div>

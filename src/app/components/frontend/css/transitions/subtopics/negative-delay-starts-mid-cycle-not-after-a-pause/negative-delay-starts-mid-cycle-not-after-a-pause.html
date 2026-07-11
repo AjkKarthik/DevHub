@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Transitions" topicRoute="/css/transitions" subtopicLabel="Negative Delay Starts Mid-Cycle, Not After a Pause" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Negative Delay Starts Mid-Cycle, Not After a Pause</h1>
+  <p class="page-subtitle">transition-delay: -0.5s on a 1s transition doesn't wait — it starts the transition already halfway through, on its very first frame.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Read the real CSSTransition object's reported delay and its interpolated opacity at zero elapsed time.</p>
+    <app-live-playground title="negative transition-delay starts mid-cycle" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own quiz question about negative transition-delay, confirmed directly via the Web Animations API rather than just timing observation. The next subtopic turns to a different comma-separated-list gotcha — what happens when transition-duration has fewer entries than transition-property.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Transitions" topicRoute="/css/transitions"
+    [next]="{ label: 'A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value', route: '/css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last' }" />
+</div>

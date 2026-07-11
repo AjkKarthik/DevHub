@@ -21971,6 +21971,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause': {
+    apis: ['transition-delay', 'getAnimations()', 'CSSTransition', 'currentTime'],
+    related: [
+      { label: 'CSS Transitions (overview)', route: '/css/transitions' },
+      { label: 'A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value', route: '/css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last' },
+      { label: 'A Hover-Only Transition Snaps Back Instead of Reversing', route: '/css/transitions/hover-only-transition-snaps-back-instead-of-reversing' },
+    ],
+    tip: 'transition-delay: -0.5s on a 1s transition starts already halfway through on its very first frame — confirmed via the real CSSTransition object\'s reported delay and interpolated value at zero elapsed time.',
+    docs: [
+      { label: 'MDN — transition-delay', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transition-delay' },
+    ],
+    resources: [
+      { label: 'MDN — CSSTransition', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CSSTransition', badge: 'docs' },
+    ],
+    gotchas: [
+      'A negative delay does not pause or shorten the transition — it shifts the starting point later on the same internal timeline.',
+      'Useful deliberately for staggered groups that should all finish at the same moment despite starting at different progress points.',
+    ],
+  },
+
+  'css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last': {
+    apis: ['transition-property', 'transition-duration', 'getAnimations()', 'effect.getTiming()'],
+    related: [
+      { label: 'CSS Transitions (overview)', route: '/css/transitions' },
+      { label: 'Negative Delay Starts Mid-Cycle, Not After a Pause', route: '/css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause' },
+      { label: 'A Hover-Only Transition Snaps Back Instead of Reversing', route: '/css/transitions/hover-only-transition-snaps-back-instead-of-reversing' },
+    ],
+    tip: 'With 3 properties and only 2 durations, the third property cycles back to the FIRST duration — confirmed by reading the live CSSTransition object\'s own effective duration directly.',
+    docs: [
+      { label: 'MDN — transition-duration', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transition-duration' },
+    ],
+    resources: [
+      { label: 'MDN — transition-duration', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transition-duration', badge: 'docs' },
+    ],
+    gotchas: [
+      'This happens any time transition-property gains a property without transition-duration/timing-function being extended to match.',
+      'The shorter list repeats from its start — it never drops the extra properties or reuses only the last value.',
+    ],
+  },
+
+  'css/transitions/hover-only-transition-snaps-back-instead-of-reversing': {
+    apis: ['transition', ':hover', 'getAnimations()'],
+    related: [
+      { label: 'CSS Transitions (overview)', route: '/css/transitions' },
+      { label: 'Negative Delay Starts Mid-Cycle, Not After a Pause', route: '/css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause' },
+      { label: 'A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value', route: '/css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last' },
+    ],
+    tip: 'Declaring transition only inside :hover means hover-out reverts to a rule with no transition at all — confirmed via getAnimations() returning zero active transitions on the reverse direction.',
+    docs: [
+      { label: 'MDN — Using CSS transitions', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions' },
+    ],
+    resources: [
+      { label: 'MDN — Using CSS transitions', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions', badge: 'docs' },
+    ],
+    gotchas: [
+      'Always define transition on the base rule, not the :hover/:focus/:active/.is-open rule, for a two-way animation.',
+      'One of the most common real-world transition bugs — a component that animates in but jerks out on state removal.',
+    ],
+  },
+
   // ── CSS: Animations ───────────────────────────────────────────────────────
   'css/animations': {
     apis: ['@keyframes', 'animation-duration', 'animation-timing-function', 'animation-fill-mode', 'animation-delay', 'will-change', 'animation-play-state'],

@@ -1485,7 +1485,12 @@ export const routes: Routes = [
       { path: 'negative-delay-starts-the-animation-mid-cycle', loadComponent: () => import('./components/frontend/css/animations/subtopics/negative-delay-starts-the-animation-mid-cycle/negative-delay-starts-the-animation-mid-cycle').then(m => m.NegativeDelayStartsTheAnimationMidCycleSubtopic) },
       { path: 'display-cannot-be-smoothly-interpolated-only-flips', loadComponent: () => import('./components/frontend/css/animations/subtopics/display-cannot-be-smoothly-interpolated-only-flips/display-cannot-be-smoothly-interpolated-only-flips').then(m => m.DisplayCannotBeSmoothlyInterpolatedOnlyFlipsSubtopic) },
     ] },
-    { path: 'transitions',        loadComponent: () => import('./components/frontend/css/transitions/transitions').then(m => m.CssTransitions) },
+    { path: 'transitions', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/transitions/transitions').then(m => m.CssTransitions) },
+      { path: 'negative-delay-starts-mid-cycle-not-after-a-pause', loadComponent: () => import('./components/frontend/css/transitions/subtopics/negative-delay-starts-mid-cycle-not-after-a-pause/negative-delay-starts-mid-cycle-not-after-a-pause').then(m => m.NegativeDelayStartsMidCycleNotAfterAPauseSubtopic) },
+      { path: 'shorter-duration-list-cycles-not-drops-or-inherits-last', loadComponent: () => import('./components/frontend/css/transitions/subtopics/shorter-duration-list-cycles-not-drops-or-inherits-last/shorter-duration-list-cycles-not-drops-or-inherits-last').then(m => m.ShorterDurationListCyclesNotDropsOrInheritsLastSubtopic) },
+      { path: 'hover-only-transition-snaps-back-instead-of-reversing', loadComponent: () => import('./components/frontend/css/transitions/subtopics/hover-only-transition-snaps-back-instead-of-reversing/hover-only-transition-snaps-back-instead-of-reversing').then(m => m.HoverOnlyTransitionSnapsBackInsteadOfReversingSubtopic) },
+    ] },
     { path: 'colors-theming', children: [
       { path: '', loadComponent: () => import('./components/frontend/css/colors-theming/colors-theming').then(m => m.CssColorsTheming) },
       { path: 'color-mix-in-oklch-preserves-vividness-srgb-doesnt', loadComponent: () => import('./components/frontend/css/colors-theming/subtopics/color-mix-in-oklch-preserves-vividness-srgb-doesnt/color-mix-in-oklch-preserves-vividness-srgb-doesnt').then(m => m.ColorMixInOklchPreservesVividnessSrgbDoesntSubtopic) },

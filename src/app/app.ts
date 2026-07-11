@@ -1587,6 +1587,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' },
     { label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' },
   ],
+  'transitions': [
+    { label: 'Negative Delay Starts Mid-Cycle, Not After a Pause', route: '/css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause' },
+    { label: 'A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value', route: '/css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last' },
+    { label: 'A Hover-Only Transition Snaps Back Instead of Reversing', route: '/css/transitions/hover-only-transition-snaps-back-instead-of-reversing' },
+  ],
   // NOTE: keyed 'css-animations', NOT bare 'animations' — Angular's
   // own /angular/animations topic already claims the bare key.
   'css-animations': [
