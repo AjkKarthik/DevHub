@@ -2,13 +2,13 @@
   <app-subtopic-eyebrow topicLabel="ARIA Roles & Attributes" topicRoute="/html/aria-roles" subtopicLabel="div role=button Lacks Keyboard Activation" />
   <div class="page-header-icon html-icon">&lt;/&gt;</div>
   <h1 class="page-title">div role="button" Lacks Keyboard Activation</h1>
-  <p class="page-subtitle">Setting <code>role="button"</code> on a div changes only what's announced — a synthetic Enter keydown proves it never fires the click listener a real button gets for free.</p>
+  <p class="page-subtitle">Setting <code>role="button"</code> on a div changes only what's announced — replicating real keyboard activation needs your own tabindex and keydown handler, since there's no default action to lean on.</p>
   <app-page-meta [readingTime]="6" difficulty="intermediate" since="WAI-ARIA 1.1" tech="javascript" />
 
   <app-theory-block [sections]="theory" />
 
   <section class="html-section"><h2>See it run</h2>
-    <p>Compare tabIndex and Enter-keydown click behavior between a <code>role="button"</code> div and a real <code>&lt;button&gt;</code> — the div gets neither for free.</p>
+    <p>Compare tabIndex on an unmodified div vs. one with tabindex="0", then see how a manually-added keydown handler is what actually makes Enter activation possible — since neither div gets a native default action.</p>
     <app-live-playground title="div role=button lacks keyboard activation" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
   </section>
 

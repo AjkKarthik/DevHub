@@ -23622,7 +23622,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' },
       { label: 'disabled vs aria-disabled Blocks Events', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' },
     ],
-    tip: 'role="button" on a div changes only what a screen reader announces — a synthetic Enter keydown never fires a click listener, unlike on a real <button>.',
+    tip: 'role="button" on a div changes only what a screen reader announces — it adds no focusability, tab order, or Enter/Space activation, all of which a real <button> gets for free.',
     docs: [
       { label: 'MDN — ARIA: button role', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/button_role' },
     ],
