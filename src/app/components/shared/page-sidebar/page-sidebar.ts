@@ -23365,6 +23365,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default': {
+    apis: ['getComputedStyle()', '<strong>/<b>', '<em>/<i>'],
+    related: [
+      { label: 'Headings & Paragraphs (overview)', route: '/html/headings-paragraphs' },
+      { label: 'Nesting strong Doesn’t Compound', route: '/html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis' },
+      { label: 'Multiple h1s Never Auto-Demoted', route: '/html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth' },
+    ],
+    tip: 'strong/b and em/i render with identical default computed styles — the meaningful difference lives entirely in the accessibility tree, invisible to any purely visual QA pass.',
+    docs: [
+      { label: 'MDN — <strong>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong' },
+    ],
+    resources: [
+      { label: 'MDN — <em>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/em', badge: 'docs' },
+    ],
+    gotchas: [
+      'Swapping strong for b (or vice versa) changes nothing visually but genuinely changes what a screen reader announces.',
+      'A visual QA pass can never catch a wrong choice between the semantic and presentational tag in a pair.',
+    ],
+  },
+
+  'html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis': {
+    apis: ['getComputedStyle()', '<strong>', 'accessibility tree'],
+    related: [
+      { label: 'Headings & Paragraphs (overview)', route: '/html/headings-paragraphs' },
+      { label: 'strong/b and em/i Are Visually Identical', route: '/html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default' },
+      { label: 'Multiple h1s Never Auto-Demoted', route: '/html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth' },
+    ],
+    tip: 'Semantic importance is a binary flag, not a scale — nesting the same emphasis tag repeatedly compounds neither the screen-reader announcement nor the computed font-weight.',
+    docs: [
+      { label: 'MDN — <strong>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong' },
+    ],
+    resources: [
+      { label: 'WAI-ARIA Live Regions', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions', badge: 'docs' },
+    ],
+    gotchas: [
+      'Genuinely greater urgency requires different content wording or an assertive ARIA live region, not repeated nesting of the same tag.',
+      'getComputedStyle().fontWeight reports the identical value for a single vs a doubly-nested strong, mirroring the semantic non-compounding.',
+    ],
+  },
+
+  'html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth': {
+    apis: ['getComputedStyle()', '<h1>', '<section>', 'HTML5 outline algorithm'],
+    related: [
+      { label: 'Headings & Paragraphs (overview)', route: '/html/headings-paragraphs' },
+      { label: 'strong/b and em/i Are Visually Identical', route: '/html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default' },
+      { label: 'Nesting strong Doesn’t Compound', route: '/html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis' },
+    ],
+    tip: 'The HTML5 outline algorithm would have demoted a deeply-nested h1 — but no browser ever implemented it, provable via identical computed font-size regardless of sectioning depth.',
+    docs: [
+      { label: 'MDN — Heading elements', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements' },
+    ],
+    resources: [
+      { label: 'HTML5 Doctor — Outline algorithm', url: 'https://html5doctor.com/computers-and-tables-and-lists-oh-no/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Multiple h1 elements are technically valid HTML, not a validity error — the "one per page" rule is a best practice, not a parsing rule.',
+      'Screen readers read a flat list of headings by their literal tag level, with no outline-algorithm-based reinterpretation.',
+    ],
+  },
+
   'html/input-types': {
     apis: ['type="email"', 'type="tel"', 'type="url"', 'type="number"', 'type="date"', 'type="range"', 'type="color"', 'type="search"', 'type="file"', 'type="checkbox"', 'autocomplete', 'inputmode'],
     related: [

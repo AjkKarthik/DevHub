@@ -1512,6 +1512,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Unknown Elements Fall Back to Inline', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' },
     { label: 'Stray br End Tag Inserts a Second Break', route: '/html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break' },
   ],
+  'headings-paragraphs': [
+    { label: 'strong/b and em/i Are Visually Identical', route: '/html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default' },
+    { label: 'Nesting strong Doesn’t Compound', route: '/html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis' },
+    { label: 'Multiple h1s Never Auto-Demoted', route: '/html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth' },
+  ],
 };
 
 @Component({

@@ -1384,7 +1384,12 @@ export const routes: Routes = [
       { path: 'unknown-elements-fall-back-to-anonymous-inline-rendering', loadComponent: () => import('./components/frontend/html/fundamentals/subtopics/unknown-elements-fall-back-to-anonymous-inline-rendering/unknown-elements-fall-back-to-anonymous-inline-rendering').then(m => m.UnknownElementsFallBackToAnonymousInlineRenderingSubtopic) },
       { path: 'a-stray-br-end-tag-inserts-a-second-line-break', loadComponent: () => import('./components/frontend/html/fundamentals/subtopics/a-stray-br-end-tag-inserts-a-second-line-break/a-stray-br-end-tag-inserts-a-second-line-break').then(m => m.AStrayBrEndTagInsertsASecondLineBreakSubtopic) },
     ] },
-    { path: 'headings-paragraphs', loadComponent: () => import('./components/frontend/html/headings-paragraphs/headings-paragraphs').then(m => m.HtmlHeadingsParagraphs) },
+    { path: 'headings-paragraphs', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/headings-paragraphs/headings-paragraphs').then(m => m.HtmlHeadingsParagraphs) },
+      { path: 'strong-b-and-em-i-are-visually-identical-by-default', loadComponent: () => import('./components/frontend/html/headings-paragraphs/subtopics/strong-b-and-em-i-are-visually-identical-by-default/strong-b-and-em-i-are-visually-identical-by-default').then(m => m.StrongBAndEmIAreVisuallyIdenticalByDefaultSubtopic) },
+      { path: 'nesting-strong-doesnt-compound-weight-or-emphasis', loadComponent: () => import('./components/frontend/html/headings-paragraphs/subtopics/nesting-strong-doesnt-compound-weight-or-emphasis/nesting-strong-doesnt-compound-weight-or-emphasis').then(m => m.NestingStrongDoesntCompoundWeightOrEmphasisSubtopic) },
+      { path: 'multiple-h1s-are-never-auto-demoted-by-sectioning-depth', loadComponent: () => import('./components/frontend/html/headings-paragraphs/subtopics/multiple-h1s-are-never-auto-demoted-by-sectioning-depth/multiple-h1s-are-never-auto-demoted-by-sectioning-depth').then(m => m.MultipleH1sAreNeverAutoDemotedBySectioningDepthSubtopic) },
+    ] },
     { path: 'input-types',         loadComponent: () => import('./components/frontend/html/input-types/input-types').then(m => m.HtmlInputTypes) },
     { path: 'landmark-elements',   loadComponent: () => import('./components/frontend/html/landmark-elements/landmark-elements').then(m => m.HtmlLandmarkElements) },
     { path: 'aria-roles',          loadComponent: () => import('./components/frontend/html/aria-roles/aria-roles').then(m => m.HtmlAriaRoles) },
