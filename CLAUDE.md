@@ -1024,6 +1024,25 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
    verifying first rather than assuming is now the standing practice for any live-behavior claim,
    regardless of how confident the reasoning feels.
 8. No `SUBTOPICS` map bare-key collision for `box-model` (checked, confirmed collision-free).
+9. **The preview browser tab used for verification is backgrounded (`document.hidden === true`,
+   `document.hasFocus() === false`), which freezes real-time CSS transition/animation playback
+   AND `requestAnimationFrame` entirely** — confirmed via a real investigation during the CSS
+   Transitions batch (`/css/transitions`, 2026-07-11): a plain `transition: opacity 0.2s linear`
+   triggered via `el.style.opacity = '0'` stayed at its ORIGINAL value even 3 full seconds later
+   (`getComputedStyle` never progressed), and a nested `requestAnimationFrame` callback simply
+   never fired (a `javascript_tool` call hung to its 30s timeout). This is the same root cause as
+   the earlier CSS Animations batch's "`animationend` never fires" discovery — not two separate
+   bugs, one shared cause. **Fix — use `setTimeout`, never `requestAnimationFrame`, for any real
+   real-time wait in a verification script**, and for verifying transition/animation VALUES at a
+   specific point, retrieve the live `Animation`/`CSSTransition` object via
+   `element.getAnimations()` (reading it inside a `setTimeout` callback, not synchronously right
+   after triggering — the object only registers a tick later) and set its `currentTime` directly
+   — this bypasses the frozen real-time clock entirely and was reused successfully for CSS
+   Transitions in this batch, exactly as it was for `@keyframes` Animations in the prior batch.
+   `getAnimations()` checked synchronously (0ms after triggering) or via a forced-reflow
+   (`void el.offsetWidth`) still returned an empty array in every case tried — only a genuine
+   `setTimeout`-deferred check (even a very short one, 20–50ms) reliably returns the live
+   animation object.
 
 ## Current state (update when it changes!)
 
