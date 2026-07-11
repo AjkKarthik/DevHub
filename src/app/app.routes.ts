@@ -1455,7 +1455,12 @@ export const routes: Routes = [
       { path: 'child-z-index-cant-escape-parent-stacking-context', loadComponent: () => import('./components/frontend/css/positioning/subtopics/child-z-index-cant-escape-parent-stacking-context/child-z-index-cant-escape-parent-stacking-context').then(m => m.ChildZIndexCantEscapeParentStackingContextSubtopic) },
       { path: 'sticky-without-an-offset-behaves-like-static', loadComponent: () => import('./components/frontend/css/positioning/subtopics/sticky-without-an-offset-behaves-like-static/sticky-without-an-offset-behaves-like-static').then(m => m.StickyWithoutAnOffsetBehavesLikeStaticSubtopic) },
     ] },
-    { path: 'custom-properties',  loadComponent: () => import('./components/frontend/css/custom-properties/custom-properties').then(m => m.CssCustomProperties) },
+    { path: 'custom-properties', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/custom-properties/custom-properties').then(m => m.CssCustomProperties) },
+      { path: 'var-fallback-only-fires-when-undefined-not-invalid', loadComponent: () => import('./components/frontend/css/custom-properties/subtopics/var-fallback-only-fires-when-undefined-not-invalid/var-fallback-only-fires-when-undefined-not-invalid').then(m => m.VarFallbackOnlyFiresWhenUndefinedNotInvalidSubtopic) },
+      { path: 'circular-references-resolve-to-the-initial-value', loadComponent: () => import('./components/frontend/css/custom-properties/subtopics/circular-references-resolve-to-the-initial-value/circular-references-resolve-to-the-initial-value').then(m => m.CircularReferencesResolveToTheInitialValueSubtopic) },
+      { path: 'setproperty-updates-everything-using-the-variable', loadComponent: () => import('./components/frontend/css/custom-properties/subtopics/setproperty-updates-everything-using-the-variable/setproperty-updates-everything-using-the-variable').then(m => m.SetpropertyUpdatesEverythingUsingTheVariableSubtopic) },
+    ] },
     { path: 'selectors',          loadComponent: () => import('./components/frontend/css/selectors/selectors').then(m => m.CssSelectors) },
     { path: 'typography',         loadComponent: () => import('./components/frontend/css/typography/typography').then(m => m.CssTypography) },
     { path: 'responsive',         loadComponent: () => import('./components/frontend/css/responsive/responsive').then(m => m.CssResponsive) },

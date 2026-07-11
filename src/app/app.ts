@@ -1567,6 +1567,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' },
     { label: 'sticky Without an Offset Behaves Like static', route: '/css/positioning/sticky-without-an-offset-behaves-like-static' },
   ],
+  'custom-properties': [
+    { label: 'var() Fallback Only Fires When Undefined', route: '/css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid' },
+    { label: 'Circular References Resolve to the Initial Value', route: '/css/custom-properties/circular-references-resolve-to-the-initial-value' },
+    { label: 'setProperty() Updates Everything Using the Variable', route: '/css/custom-properties/setproperty-updates-everything-using-the-variable' },
+  ],
 };
 
 @Component({

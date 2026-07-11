@@ -21967,6 +21967,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid': {
+    apis: ['var()', 'invalid at computed-value time'],
+    related: [
+      { label: 'CSS Custom Properties (overview)', route: '/css/custom-properties' },
+      { label: 'Circular References Resolve to the Initial Value', route: '/css/custom-properties/circular-references-resolve-to-the-initial-value' },
+      { label: 'setProperty() Updates Everything Using the Variable', route: '/css/custom-properties/setproperty-updates-everything-using-the-variable' },
+    ],
+    tip: 'var(--x, fallback) only substitutes the fallback when --x is undefined — a defined-but-invalid value falls through to the property\'s own initial value instead.',
+    docs: [
+      { label: 'MDN — Using CSS custom properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties' },
+    ],
+    resources: [
+      { label: 'Open Props (token library)', url: 'https://open-props.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a well-documented common mistake — a typo\'d or wrongly-typed value silently produces a different visual result than expected.',
+      '@property with a syntax constraint is the real fix for guarding against invalid values, not the var() fallback.',
+    ],
+  },
+
+  'css/custom-properties/circular-references-resolve-to-the-initial-value': {
+    apis: ['var()', 'guaranteed-invalid value', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Custom Properties (overview)', route: '/css/custom-properties' },
+      { label: 'var() Fallback Only Fires When Undefined', route: '/css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid' },
+      { label: 'setProperty() Updates Everything Using the Variable', route: '/css/custom-properties/setproperty-updates-everything-using-the-variable' },
+    ],
+    tip: 'Two custom properties referencing each other never loop or crash — the spec defines it as a deterministic guaranteed-invalid value, resolving to the property\'s own initial value.',
+    docs: [
+      { label: 'MDN — Using CSS custom properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties' },
+    ],
+    resources: [
+      { label: 'Open Props (token library)', url: 'https://open-props.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the SAME underlying rule as an invalid value elsewhere — a circular reference is just one specific way to produce an invalid value.',
+      'The var() fallback still does not apply here, since both properties ARE declared, just unresolvable.',
+    ],
+  },
+
+  'css/custom-properties/setproperty-updates-everything-using-the-variable': {
+    apis: ['el.style.setProperty()', 'getComputedStyle()', 'CSSOM'],
+    related: [
+      { label: 'CSS Custom Properties (overview)', route: '/css/custom-properties' },
+      { label: 'var() Fallback Only Fires When Undefined', route: '/css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid' },
+      { label: 'Circular References Resolve to the Initial Value', route: '/css/custom-properties/circular-references-resolve-to-the-initial-value' },
+    ],
+    tip: 'Changing a custom property with setProperty() on an ancestor recomputes every descendant style referencing it via var() automatically — no manual re-render or class toggle needed.',
+    docs: [
+      { label: 'MDN — CSS custom properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties' },
+    ],
+    resources: [
+      { label: 'web.dev — CSS Variables', url: 'https://web.dev/learn/css/custom-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is the real, fundamental difference from Sass variables for JS-driven use cases — genuinely live, runtime state.',
+      'Powers patterns beyond dark mode toggles — data-viz color scales, drag-to-resize UI, scroll-linked effects.',
+    ],
+  },
+
   // ── CSS: Positioning ──────────────────────────────────────────────────────
   'css/positioning': {
     apis: ['position: relative', 'position: absolute', 'position: fixed', 'position: sticky', 'z-index', 'inset', 'isolation: isolate'],
