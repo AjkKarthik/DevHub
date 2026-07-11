@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Queries" topicRoute="/css/container-queries" subtopicLabel="Container Queries Silently Do Nothing Without container-type" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Container Queries Silently Do Nothing Without container-type</h1>
+  <p class="page-subtitle">An &#64;container rule with no container-type ancestor isn't a syntax error — it's valid CSS that can never match, with zero console warning.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 105+, Firefox 110+, Safari 16+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare computed color on two identical &#64;container-targeted children — only the one with a container-type ancestor picks up the query's style.</p>
+    <app-live-playground title="container queries do nothing without container-type" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own first "Common Mistake" made directly measurable via computed styles. The next subtopic turns to the other container-type option — showing exactly how container-type: size can collapse an element's height.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Container Queries" topicRoute="/css/container-queries"
+    [next]="{ label: 'container-type: size Collapses Height Without Explicit Sizing', route: '/css/container-queries/container-type-size-collapses-height-without-explicit-sizing' }" />
+</div>

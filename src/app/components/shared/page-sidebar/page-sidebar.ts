@@ -21864,6 +21864,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/container-queries/container-queries-silently-do-nothing-without-container-type': {
+    apis: ['container-type', '@container', 'getComputedStyle()'],
+    related: [
+      { label: 'Container Queries (overview)', route: '/css/container-queries' },
+      { label: 'container-type: size Collapses Height Without Explicit Sizing', route: '/css/container-queries/container-type-size-collapses-height-without-explicit-sizing' },
+      { label: 'A Container Cannot Query or Style Itself', route: '/css/container-queries/a-container-cannot-query-or-style-itself' },
+    ],
+    tip: 'An @container rule with no container-type ancestor produces no error at all — it is valid CSS that can simply never match, confirmed via identical getComputedStyle() checks with and without the ancestor.',
+    docs: [
+      { label: 'MDN — container-type', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type' },
+    ],
+    resources: [
+      { label: 'MDN — container-type', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type', badge: 'docs' },
+    ],
+    gotchas: [
+      'No console warning appears — a missing container-type ancestor makes the @container rule permanently, silently inactive.',
+      'Every form of @container query needs a container-type ancestor, not just ones using cqw/cqh units.',
+    ],
+  },
+
+  'css/container-queries/container-type-size-collapses-height-without-explicit-sizing': {
+    apis: ['container-type: size', 'container-type: inline-size', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Container Queries (overview)', route: '/css/container-queries' },
+      { label: 'Container Queries Silently Do Nothing Without container-type', route: '/css/container-queries/container-queries-silently-do-nothing-without-container-type' },
+      { label: 'A Container Cannot Query or Style Itself', route: '/css/container-queries/a-container-cannot-query-or-style-itself' },
+    ],
+    tip: 'Identical content and width, but container-type: size measures 0px height while inline-size sizes normally — confirmed directly via getBoundingClientRect().',
+    docs: [
+      { label: 'MDN — container-type', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type' },
+    ],
+    resources: [
+      { label: 'MDN — container-type', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type', badge: 'docs' },
+    ],
+    gotchas: [
+      'Block-size containment from container-type: size blocks the element from growing to fit its children in the block direction.',
+      'Default to inline-size unless height-based @container queries are genuinely needed — set an explicit height if size is required.',
+    ],
+  },
+
+  'css/container-queries/a-container-cannot-query-or-style-itself': {
+    apis: ['@container', 'container-type', 'getComputedStyle()'],
+    related: [
+      { label: 'Container Queries (overview)', route: '/css/container-queries' },
+      { label: 'Container Queries Silently Do Nothing Without container-type', route: '/css/container-queries/container-queries-silently-do-nothing-without-container-type' },
+      { label: 'container-type: size Collapses Height Without Explicit Sizing', route: '/css/container-queries/container-type-size-collapses-height-without-explicit-sizing' },
+    ],
+    tip: 'The same @container block, targeting both the container\'s own class and a descendant\'s class, only ever applies to the descendant — confirmed via a direct computed-style comparison.',
+    docs: [
+      { label: 'MDN — @container', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@container' },
+    ],
+    resources: [
+      { label: 'MDN — @container', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@container', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is a fundamental spec restriction, not a specificity conflict — the self-targeting rule is never evaluated at all.',
+      'The CSS-only fix is an extra wrapping element: move container-type up one level, let the original element become the styled descendant.',
+    ],
+  },
+
   // ── CSS: Colors & Theming ─────────────────────────────────────────────────
   'css/colors-theming': {
     apis: ['oklch()', 'color-mix()', 'prefers-color-scheme', 'forced-colors', 'color-scheme', 'var(--token)', 'contrast-color()'],

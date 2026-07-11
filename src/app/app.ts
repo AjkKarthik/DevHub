@@ -1609,6 +1609,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'object-fit Does Nothing Without Explicit Dimensions', route: '/css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions' },
     { label: 'border-radius: 50% Is an Ellipse, Not a Circle', route: '/css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle' },
   ],
+  'container-queries': [
+    { label: 'Container Queries Silently Do Nothing Without container-type', route: '/css/container-queries/container-queries-silently-do-nothing-without-container-type' },
+    { label: 'container-type: size Collapses Height Without Explicit Sizing', route: '/css/container-queries/container-type-size-collapses-height-without-explicit-sizing' },
+    { label: 'A Container Cannot Query or Style Itself', route: '/css/container-queries/a-container-cannot-query-or-style-itself' },
+  ],
 };
 
 @Component({

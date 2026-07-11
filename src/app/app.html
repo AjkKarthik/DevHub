@@ -4024,7 +4024,26 @@
           </div>
         }
       }
-      <a routerLink="/css/container-queries" routerLinkActive="active"><span class="nl-text">Container Queries</span>@if(progress.isDone('css-container-queries')){<span class="nl-done">✓</span>}@if(diff('css-container-queries');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/container-queries" routerLinkActive="active">
+        <span class="nl-text">Container Queries</span>
+        @if (progress.isDone('css-container-queries')) {<span class="nl-done">✓</span>}
+        @if (diff('css-container-queries'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('container-queries')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('container-queries')"
+                  (click)="toggleSubtopics('container-queries', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('container-queries'); as cssContainerQueriesSubs) {
+        @if (isSubtopicsExpanded('container-queries')) {
+          <div class="nav-subtopics">
+            @for (s of cssContainerQueriesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

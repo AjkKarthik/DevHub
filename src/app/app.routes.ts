@@ -1503,7 +1503,12 @@ export const routes: Routes = [
       { path: 'object-fit-does-nothing-without-explicit-dimensions', loadComponent: () => import('./components/frontend/css/backgrounds-borders/subtopics/object-fit-does-nothing-without-explicit-dimensions/object-fit-does-nothing-without-explicit-dimensions').then(m => m.ObjectFitDoesNothingWithoutExplicitDimensionsSubtopic) },
       { path: 'border-radius-50pct-is-an-ellipse-not-a-circle', loadComponent: () => import('./components/frontend/css/backgrounds-borders/subtopics/border-radius-50pct-is-an-ellipse-not-a-circle/border-radius-50pct-is-an-ellipse-not-a-circle').then(m => m.BorderRadius50pctIsAnEllipseNotACircleSubtopic) },
     ] },
-    { path: 'container-queries',  loadComponent: () => import('./components/frontend/css/container-queries/container-queries').then(m => m.CssContainerQueries) },
+    { path: 'container-queries', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/container-queries/container-queries').then(m => m.CssContainerQueries) },
+      { path: 'container-queries-silently-do-nothing-without-container-type', loadComponent: () => import('./components/frontend/css/container-queries/subtopics/container-queries-silently-do-nothing-without-container-type/container-queries-silently-do-nothing-without-container-type').then(m => m.ContainerQueriesSilentlyDoNothingWithoutContainerTypeSubtopic) },
+      { path: 'container-type-size-collapses-height-without-explicit-sizing', loadComponent: () => import('./components/frontend/css/container-queries/subtopics/container-type-size-collapses-height-without-explicit-sizing/container-type-size-collapses-height-without-explicit-sizing').then(m => m.ContainerTypeSizeCollapsesHeightWithoutExplicitSizingSubtopic) },
+      { path: 'a-container-cannot-query-or-style-itself', loadComponent: () => import('./components/frontend/css/container-queries/subtopics/a-container-cannot-query-or-style-itself/a-container-cannot-query-or-style-itself').then(m => m.AContainerCannotQueryOrStyleItselfSubtopic) },
+    ] },
     { path: 'css-layers',         loadComponent: () => import('./components/frontend/css/css-layers/css-layers').then(m => m.CssCssLayers) },
     { path: 'css-nesting',         loadComponent: () => import('./components/frontend/css/css-nesting/css-nesting').then(m => m.CssCssNesting) },
     { path: 'logical-properties',  loadComponent: () => import('./components/frontend/css/logical-properties/logical-properties').then(m => m.CssLogicalProperties) },

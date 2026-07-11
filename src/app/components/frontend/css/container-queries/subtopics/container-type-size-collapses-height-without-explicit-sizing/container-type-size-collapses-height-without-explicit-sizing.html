@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Queries" topicRoute="/css/container-queries" subtopicLabel="container-type: size Collapses Height Without Explicit Sizing" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">container-type: size Collapses Height Without Explicit Sizing</h1>
+  <p class="page-subtitle">Identical content, identical width — but container-type: size renders at 0px height while inline-size sizes normally to content.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 105+, Firefox 110+, Safari 16+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Measure the rendered height of two identical wrappers, differing only in container-type value.</p>
+    <app-live-playground title="container-type: size collapses height" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own second "Common Mistake" made directly measurable via getBoundingClientRect(). The final subtopic turns to the main page's own third mistake — proving a container genuinely cannot query or style itself, only its descendants.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Container Queries" topicRoute="/css/container-queries"
+    [prev]="{ label: 'Container Queries Silently Do Nothing Without container-type', route: '/css/container-queries/container-queries-silently-do-nothing-without-container-type' }"
+    [next]="{ label: 'A Container Cannot Query or Style Itself', route: '/css/container-queries/a-container-cannot-query-or-style-itself' }" />
+</div>

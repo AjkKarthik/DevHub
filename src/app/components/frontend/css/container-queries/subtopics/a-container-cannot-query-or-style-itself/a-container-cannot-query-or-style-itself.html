@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Queries" topicRoute="/css/container-queries" subtopicLabel="A Container Cannot Query or Style Itself" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">A Container Cannot Query or Style Itself</h1>
+  <p class="page-subtitle">The same &#64;container rule, targeting both the container's own class and a descendant's class, only ever applies to the descendant.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 105+, Firefox 110+, Safari 16+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare computed color on a container vs its child, both targeted by the identical &#64;container rule.</p>
+    <app-live-playground title="a container cannot query or style itself" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This directly answers the main page's own quiz question and third "Common Mistake" about self-querying, confirmed here via a real computed-style comparison rather than just the spec's text.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Container Queries" topicRoute="/css/container-queries"
+    [prev]="{ label: 'container-type: size Collapses Height Without Explicit Sizing', route: '/css/container-queries/container-type-size-collapses-height-without-explicit-sizing' }" />
+</div>
