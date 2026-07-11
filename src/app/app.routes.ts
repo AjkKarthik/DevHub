@@ -1402,7 +1402,12 @@ export const routes: Routes = [
       { path: 'arialabel-distinguishes-multiple-navs', loadComponent: () => import('./components/frontend/html/landmark-elements/subtopics/arialabel-distinguishes-multiple-navs/arialabel-distinguishes-multiple-navs').then(m => m.ArialabelDistinguishesMultipleNavsSubtopic) },
       { path: 'nested-header-loses-implicit-banner-role', loadComponent: () => import('./components/frontend/html/landmark-elements/subtopics/nested-header-loses-implicit-banner-role/nested-header-loses-implicit-banner-role').then(m => m.NestedHeaderLosesImplicitBannerRoleSubtopic) },
     ] },
-    { path: 'aria-roles',          loadComponent: () => import('./components/frontend/html/aria-roles/aria-roles').then(m => m.HtmlAriaRoles) },
+    { path: 'aria-roles', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/aria-roles/aria-roles').then(m => m.HtmlAriaRoles) },
+      { path: 'div-role-button-lacks-keyboard-activation', loadComponent: () => import('./components/frontend/html/aria-roles/subtopics/div-role-button-lacks-keyboard-activation/div-role-button-lacks-keyboard-activation').then(m => m.DivRoleButtonLacksKeyboardActivationSubtopic) },
+      { path: 'aria-hidden-does-not-block-focus', loadComponent: () => import('./components/frontend/html/aria-roles/subtopics/aria-hidden-does-not-block-focus/aria-hidden-does-not-block-focus').then(m => m.AriaHiddenDoesNotBlockFocusSubtopic) },
+      { path: 'disabled-vs-aria-disabled-blocks-events', loadComponent: () => import('./components/frontend/html/aria-roles/subtopics/disabled-vs-aria-disabled-blocks-events/disabled-vs-aria-disabled-blocks-events').then(m => m.DisabledVsAriaDisabledBlocksEventsSubtopic) },
+    ] },
     { path: 'focus-management',    loadComponent: () => import('./components/frontend/html/focus-management/focus-management').then(m => m.HtmlFocusManagement) },
     { path: 'storage-apis',        loadComponent: () => import('./components/frontend/html/storage-apis/storage-apis').then(m => m.HtmlStorageApis) },
     { path: 'drag-drop',           loadComponent: () => import('./components/frontend/html/drag-drop/drag-drop').then(m => m.HtmlDragDrop) },

@@ -1527,6 +1527,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' },
     { label: 'Nested header Loses Implicit Banner Role', route: '/html/landmark-elements/nested-header-loses-implicit-banner-role' },
   ],
+  'aria-roles': [
+    { label: 'div role=button Lacks Keyboard Activation', route: '/html/aria-roles/div-role-button-lacks-keyboard-activation' },
+    { label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' },
+    { label: 'disabled vs aria-disabled Blocks Events', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' },
+  ],
 };
 
 @Component({

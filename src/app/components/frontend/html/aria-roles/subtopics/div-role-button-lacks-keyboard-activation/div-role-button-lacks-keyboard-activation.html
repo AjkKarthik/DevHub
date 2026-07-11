@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ARIA Roles & Attributes" topicRoute="/html/aria-roles" subtopicLabel="div role=button Lacks Keyboard Activation" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">div role="button" Lacks Keyboard Activation</h1>
+  <p class="page-subtitle">Setting <code>role="button"</code> on a div changes only what's announced — a synthetic Enter keydown proves it never fires the click listener a real button gets for free.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="WAI-ARIA 1.1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Compare tabIndex and Enter-keydown click behavior between a <code>role="button"</code> div and a real <code>&lt;button&gt;</code> — the div gets neither for free.</p>
+    <app-live-playground title="div role=button lacks keyboard activation" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This is the clearest illustration of "ARIA changes announcement, not behavior." Next, see the opposite kind of surprise — aria-hidden hides content from assistive tech but does nothing to stop it from receiving keyboard focus.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="ARIA Roles & Attributes" topicRoute="/html/aria-roles"
+    [next]="{ label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ARIA Roles & Attributes" topicRoute="/html/aria-roles" subtopicLabel="aria-hidden Does Not Block Focus" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">aria-hidden Does Not Block Focus</h1>
+  <p class="page-subtitle">A button inside an aria-hidden container is invisible to screen readers but still fully reachable via Tab — a real, well-documented focus trap.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="WAI-ARIA 1.1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Focus a button hidden inside an <code>aria-hidden="true"</code> container and confirm <code>document.activeElement</code> reaches it anyway — proving the attribute never touches focusability.</p>
+    <app-live-playground title="aria-hidden does not block focus" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>Where the previous subtopic showed ARIA adding no behavior it should, this shows the mirror case — an attribute that hides content from AT while silently leaving an unrelated system (focus) untouched. The final subtopic looks at a case where two similarly-named attributes diverge in a much more consequential way: disabled vs aria-disabled.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="ARIA Roles & Attributes" topicRoute="/html/aria-roles"
+    [prev]="{ label: 'div role=button Lacks Keyboard Activation', route: '/html/aria-roles/div-role-button-lacks-keyboard-activation' }"
+    [next]="{ label: 'disabled vs aria-disabled Blocks Events Differently', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' }" />
+</div>

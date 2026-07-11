@@ -23615,6 +23615,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/aria-roles/div-role-button-lacks-keyboard-activation': {
+    apis: ['role="button"', 'tabIndex', 'KeyboardEvent'],
+    related: [
+      { label: 'ARIA Roles & Attributes (overview)', route: '/html/aria-roles' },
+      { label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' },
+      { label: 'disabled vs aria-disabled Blocks Events', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' },
+    ],
+    tip: 'role="button" on a div changes only what a screen reader announces — a synthetic Enter keydown never fires a click listener, unlike on a real <button>.',
+    docs: [
+      { label: 'MDN — ARIA: button role', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/button_role' },
+    ],
+    resources: [
+      { label: 'W3C ARIA Authoring Practices', url: 'https://www.w3.org/WAI/ARIA/apg/', badge: 'docs' },
+    ],
+    gotchas: [
+      'tabindex="0" alone only handles focusability — Enter/Space activation still needs a manual keydown listener.',
+      'role="button" on an actual <button> is redundant at best and can confuse screen readers by overriding the implicit native role.',
+    ],
+  },
+
+  'html/aria-roles/aria-hidden-does-not-block-focus': {
+    apis: ['aria-hidden', 'tabindex', 'inert', 'document.activeElement'],
+    related: [
+      { label: 'ARIA Roles & Attributes (overview)', route: '/html/aria-roles' },
+      { label: 'div role=button Lacks Keyboard Activation', route: '/html/aria-roles/div-role-button-lacks-keyboard-activation' },
+      { label: 'disabled vs aria-disabled Blocks Events', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' },
+    ],
+    tip: 'aria-hidden="true" only removes content from the accessibility tree — a focusable descendant remains fully reachable via Tab, a real and well-documented trap.',
+    docs: [
+      { label: 'MDN — aria-hidden', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden' },
+    ],
+    resources: [
+      { label: 'W3C ARIA Authoring Practices', url: 'https://www.w3.org/WAI/ARIA/apg/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A hidden-from-AT focusable descendant is a real, documented accessibility anti-pattern — pair aria-hidden with tabindex="-1"/inert or use display:none instead.',
+      'tabindex="-1" only removes an element from the natural Tab order — a programmatic .focus() call still succeeds on it.',
+    ],
+  },
+
+  'html/aria-roles/disabled-vs-aria-disabled-blocks-events': {
+    apis: ['disabled', 'aria-disabled', 'click event'],
+    related: [
+      { label: 'ARIA Roles & Attributes (overview)', route: '/html/aria-roles' },
+      { label: 'div role=button Lacks Keyboard Activation', route: '/html/aria-roles/div-role-button-lacks-keyboard-activation' },
+      { label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' },
+    ],
+    tip: 'Only the native disabled attribute is enforced by the browser\'s event system — aria-disabled="true" changes nothing about whether click listeners fire.',
+    docs: [
+      { label: 'MDN — aria-disabled', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-disabled' },
+    ],
+    resources: [
+      { label: 'Deque — ARIA roles reference', url: 'https://dequeuniversity.com/library/', badge: 'blog' },
+    ],
+    gotchas: [
+      'disabled removes an element from the tab order entirely; aria-disabled keeps it focusable so keyboard users can discover WHY it\'s unavailable.',
+      'Using aria-disabled means YOUR code must manually check for and respect it in every event handler — the browser never does this for you.',
+    ],
+  },
+
   'html/focus-management': {
     apis: ['tabindex', 'focus()', 'blur()', ':focus-visible', ':focus-within', 'focusTrap', 'inert', 'autofocus', 'dialog.showModal()', 'skip link'],
     related: [
