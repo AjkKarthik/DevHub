@@ -23867,6 +23867,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/drag-drop/getdata-returns-empty-string-for-missing-type': {
+    apis: ['dataTransfer.getData()', 'new DataTransfer()'],
+    related: [
+      { label: 'Drag & Drop API (overview)', route: '/html/drag-drop' },
+      { label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' },
+      { label: 'No Native Keyboard-to-dragstart Mapping Exists', route: '/html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists' },
+    ],
+    tip: 'getData() for a MIME type that was never set returns "" — never null or undefined — so a strict === null check will never match.',
+    docs: [
+      { label: 'MDN — DataTransfer', url: 'https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer' },
+    ],
+    resources: [
+      { label: 'web.dev — Drag and Drop', url: 'https://web.dev/articles/drag-and-drop', badge: 'blog' },
+    ],
+    gotchas: [
+      'A DataTransfer object can be constructed and tested directly with new DataTransfer() — no real drag gesture needed to verify this behavior.',
+      'Prefer a truthiness check or an explicit === \'\' comparison over === null when checking for missing data.',
+    ],
+  },
+
+  'html/drag-drop/cleardata-selectively-removes-one-type-not-all': {
+    apis: ['dataTransfer.clearData()', 'dataTransfer.types'],
+    related: [
+      { label: 'Drag & Drop API (overview)', route: '/html/drag-drop' },
+      { label: 'getData Returns Empty String for a Missing Type', route: '/html/drag-drop/getdata-returns-empty-string-for-missing-type' },
+      { label: 'No Native Keyboard-to-dragstart Mapping Exists', route: '/html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists' },
+    ],
+    tip: 'clearData(type) removes only that one MIME type — every other type set on the same DataTransfer survives. Only the zero-argument form clears everything.',
+    docs: [
+      { label: 'MDN — DataTransfer.clearData()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/clearData' },
+    ],
+    resources: [
+      { label: 'web.dev — Drag and Drop', url: 'https://web.dev/articles/drag-and-drop', badge: 'blog' },
+    ],
+    gotchas: [
+      'The same selective-vs-total shape appears elsewhere on the platform — localStorage.removeItem(key) vs localStorage.clear().',
+      'setData() can be called again for a cleared type afterward — it works exactly like setting it on a fresh object.',
+    ],
+  },
+
+  'html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists': {
+    apis: ['dragstart', 'draggable attribute', 'KeyboardEvent'],
+    related: [
+      { label: 'Drag & Drop API (overview)', route: '/html/drag-drop' },
+      { label: 'getData Returns Empty String for a Missing Type', route: '/html/drag-drop/getdata-returns-empty-string-for-missing-type' },
+      { label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' },
+    ],
+    tip: 'No key or key combination natively fires dragstart, in any browser — unlike a real button\'s genuine (if untestable-by-script) Enter activation, this absence is total and directly provable.',
+    docs: [
+      { label: 'MDN — HTML Drag and Drop API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API' },
+    ],
+    resources: [
+      { label: 'MDN — Pointer Events (accessible alternative)', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events', badge: 'docs' },
+    ],
+    gotchas: [
+      'No ARIA attribute grants keyboard drag capability — a parallel interaction path (custom handlers, alternative UI, or a library) is required.',
+      'This is a different failure mode from testing a real button\'s Enter activation — there the native behavior is real but untestable by script; here there is no native behavior at all.',
+    ],
+  },
+
   // ── SSR + Hydration ─────────────────────────────────────────────────────────
   ssr: {
     apis: ['provideClientHydration()', 'withEventReplay()', 'isPlatformBrowser()', 'PLATFORM_ID', 'TransferState'],

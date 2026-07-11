@@ -1542,6 +1542,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' },
     { label: 'QuotaExceededError Is a Real, Catchable Exception', route: '/html/storage-apis/quotaexceedederror-is-a-real-catchable-exception' },
   ],
+  'drag-drop': [
+    { label: 'getData Returns Empty String for a Missing Type', route: '/html/drag-drop/getdata-returns-empty-string-for-missing-type' },
+    { label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' },
+    { label: 'No Native Keyboard-to-dragstart Mapping Exists', route: '/html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists' },
+  ],
 };
 
 @Component({

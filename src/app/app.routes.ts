@@ -1420,7 +1420,12 @@ export const routes: Routes = [
       { path: 'storage-event-never-fires-in-the-writing-tab', loadComponent: () => import('./components/frontend/html/storage-apis/subtopics/storage-event-never-fires-in-the-writing-tab/storage-event-never-fires-in-the-writing-tab').then(m => m.StorageEventNeverFiresInTheWritingTabSubtopic) },
       { path: 'quotaexceedederror-is-a-real-catchable-exception', loadComponent: () => import('./components/frontend/html/storage-apis/subtopics/quotaexceedederror-is-a-real-catchable-exception/quotaexceedederror-is-a-real-catchable-exception').then(m => m.QuotaexceedederrorIsARealCatchableExceptionSubtopic) },
     ] },
-    { path: 'drag-drop',           loadComponent: () => import('./components/frontend/html/drag-drop/drag-drop').then(m => m.HtmlDragDrop) },
+    { path: 'drag-drop', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/drag-drop/drag-drop').then(m => m.HtmlDragDrop) },
+      { path: 'getdata-returns-empty-string-for-missing-type', loadComponent: () => import('./components/frontend/html/drag-drop/subtopics/getdata-returns-empty-string-for-missing-type/getdata-returns-empty-string-for-missing-type').then(m => m.GetdataReturnsEmptyStringForMissingTypeSubtopic) },
+      { path: 'cleardata-selectively-removes-one-type-not-all', loadComponent: () => import('./components/frontend/html/drag-drop/subtopics/cleardata-selectively-removes-one-type-not-all/cleardata-selectively-removes-one-type-not-all').then(m => m.CleardataSelectivelyRemovesOneTypeNotAllSubtopic) },
+      { path: 'no-native-keyboard-to-dragstart-mapping-exists', loadComponent: () => import('./components/frontend/html/drag-drop/subtopics/no-native-keyboard-to-dragstart-mapping-exists/no-native-keyboard-to-dragstart-mapping-exists').then(m => m.NoNativeKeyboardToDragstartMappingExistsSubtopic) },
+    ] },
     { path: 'cheatsheet',          loadComponent: () => import('./components/frontend/html/cheatsheet/cheatsheet').then(m => m.HtmlCheatsheet) },
     { path: 'interview-prep',      loadComponent: () => import('./components/frontend/html/interview-prep/interview-prep').then(m => m.HtmlInterviewPrep) },
   ] },

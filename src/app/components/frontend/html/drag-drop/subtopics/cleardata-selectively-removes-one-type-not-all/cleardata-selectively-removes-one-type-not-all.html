@@ -1,0 +1,26 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Drag &amp; Drop API" topicRoute="/html/drag-drop" subtopicLabel="clearData Selectively Removes One Type" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">clearData Selectively Removes One Type</h1>
+  <p class="page-subtitle">clearData("text/plain") removes only that one MIME type — every other type set on the same DataTransfer object survives, provable directly.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Set two MIME types, clear just one, and confirm the other survives — then call clearData() with no arguments to see the total-wipe form.</p>
+    <app-live-playground title="clearData selective removal" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>Where the previous subtopic covered a read-side gotcha (missing data returns "" not null), this covers a write-side one (selective vs. total removal). The final subtopic turns to a completely different angle — whether keyboard users can use drag-and-drop at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Drag &amp; Drop API" topicRoute="/html/drag-drop"
+    [prev]="{ label: 'getData Returns Empty String for a Missing Type', route: '/html/drag-drop/getdata-returns-empty-string-for-missing-type' }"
+    [next]="{ label: 'No Native Keyboard-to-dragstart Mapping Exists', route: '/html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists' }" />
+</div>

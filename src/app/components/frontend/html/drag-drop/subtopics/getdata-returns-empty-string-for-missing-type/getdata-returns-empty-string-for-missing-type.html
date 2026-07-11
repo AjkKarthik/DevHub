@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Drag &amp; Drop API" topicRoute="/html/drag-drop" subtopicLabel="getData Returns Empty String for a Missing Type" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">getData Returns Empty String for a Missing Type</h1>
+  <p class="page-subtitle">Asking dataTransfer for a MIME type that was never set returns "" — never null or undefined — provable without any real drag gesture.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Construct a DataTransfer object directly, set one MIME type, then query a type that was never set — confirming exactly what comes back.</p>
+    <app-live-playground title="getData returns empty string for missing type" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This is the first of two dataTransfer mechanics gotchas that are testable without any real drag gesture. Next, see how clearData() selectively removes one MIME type while leaving others untouched.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Drag &amp; Drop API" topicRoute="/html/drag-drop"
+    [next]="{ label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' }" />
+</div>

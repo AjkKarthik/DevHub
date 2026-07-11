@@ -1204,6 +1204,9 @@ const HTML_LABELS: Record<string, string> = {
   'storage-apis/storage-event-never-fires-in-the-writing-tab': 'storage Event Never Fires in the Writing Tab',
   'storage-apis/quotaexceedederror-is-a-real-catchable-exception': 'QuotaExceededError Is a Real, Catchable Exception',
   'drag-drop':            'Drag & Drop API',
+  'drag-drop/getdata-returns-empty-string-for-missing-type': 'getData Returns Empty String for a Missing Type',
+  'drag-drop/cleardata-selectively-removes-one-type-not-all': 'clearData Selectively Removes One Type',
+  'drag-drop/no-native-keyboard-to-dragstart-mapping-exists': 'No Native Keyboard-to-dragstart Mapping Exists',
   'cheatsheet':          'HTML Cheat Sheet',
   'interview-prep':      'HTML Interview Prep',
 };
