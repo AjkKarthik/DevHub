@@ -1467,7 +1467,12 @@ export const routes: Routes = [
       { path: 'before-after-need-content-to-exist-at-all', loadComponent: () => import('./components/frontend/css/selectors/subtopics/before-after-need-content-to-exist-at-all/before-after-need-content-to-exist-at-all').then(m => m.BeforeAfterNeedContentToExistAtAllSubtopic) },
       { path: 'has-parent-selector-actually-selects-the-parent', loadComponent: () => import('./components/frontend/css/selectors/subtopics/has-parent-selector-actually-selects-the-parent/has-parent-selector-actually-selects-the-parent').then(m => m.HasParentSelectorActuallySelectsTheParentSubtopic) },
     ] },
-    { path: 'typography',         loadComponent: () => import('./components/frontend/css/typography/typography').then(m => m.CssTypography) },
+    { path: 'typography', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/typography/typography').then(m => m.CssTypography) },
+      { path: 'unitless-line-height-scales-fixed-px-does-not', loadComponent: () => import('./components/frontend/css/typography/subtopics/unitless-line-height-scales-fixed-px-does-not/unitless-line-height-scales-fixed-px-does-not').then(m => m.UnitlessLineHeightScalesFixedPxDoesNotSubtopic) },
+      { path: 'em-compounds-in-nested-elements-rem-does-not', loadComponent: () => import('./components/frontend/css/typography/subtopics/em-compounds-in-nested-elements-rem-does-not/em-compounds-in-nested-elements-rem-does-not').then(m => m.EmCompoundsInNestedElementsRemDoesNotSubtopic) },
+      { path: 'ch-unit-scales-with-font-size-not-fixed-pixels', loadComponent: () => import('./components/frontend/css/typography/subtopics/ch-unit-scales-with-font-size-not-fixed-pixels/ch-unit-scales-with-font-size-not-fixed-pixels').then(m => m.ChUnitScalesWithFontSizeNotFixedPixelsSubtopic) },
+    ] },
     { path: 'responsive',         loadComponent: () => import('./components/frontend/css/responsive/responsive').then(m => m.CssResponsive) },
     { path: 'animations',         loadComponent: () => import('./components/frontend/css/animations/animations').then(m => m.CssAnimations) },
     { path: 'transitions',        loadComponent: () => import('./components/frontend/css/transitions/transitions').then(m => m.CssTransitions) },

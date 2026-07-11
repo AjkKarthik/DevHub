@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Typography" topicRoute="/css/typography" subtopicLabel="ch Unit Scales With Font-Size, Not Fixed Pixels" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">ch Unit Scales With Font-Size, Not Fixed Pixels</h1>
+  <p class="page-subtitle">A width: 65ch container's rendered pixel width roughly doubles when font-size doubles — ch is a live measurement, not a fixed conversion.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Measure a width: 65ch container's actual pixel width before and after doubling font-size — the width scales proportionally, confirming ch is font-relative.</p>
+    <app-live-playground title="ch unit scales with font-size" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This closes out three CSS unit gotchas — unitless line-height as a live multiplier, em's parent-relative compounding vs rem's root-relative stability, and ch's font-relative measurement. Return to the Typography overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Typography" topicRoute="/css/typography"
+    [prev]="{ label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' }" />
+</div>

@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Typography" topicRoute="/css/typography" subtopicLabel="Unitless line-height Scales, Fixed px Does Not" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Unitless line-height Scales, Fixed px Does Not</h1>
+  <p class="page-subtitle">Two elements starting with an identical 24px line-height diverge completely once font-size doubles — one recomputes to 48px, the other stays frozen at 24px.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Change a container's font-size and read the computed line-height of a unitless vs. fixed-pixel sibling before and after — only one actually recalculates.</p>
+    <app-live-playground title="unitless vs fixed line-height" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the classic line-height gotcha the main page's Common Mistakes already flags. Next, see the same category of issue applied to font-size itself — em compounding across nested elements while rem stays constant.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Typography" topicRoute="/css/typography"
+    [next]="{ label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' }" />
+</div>

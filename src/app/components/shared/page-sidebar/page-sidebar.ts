@@ -21921,6 +21921,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/typography/unitless-line-height-scales-fixed-px-does-not': {
+    apis: ['line-height', 'getComputedStyle()'],
+    related: [
+      { label: 'Typography (overview)', route: '/css/typography' },
+      { label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' },
+      { label: 'ch Unit Scales With Font-Size, Not Fixed Pixels', route: '/css/typography/ch-unit-scales-with-font-size-not-fixed-pixels' },
+    ],
+    tip: 'line-height: 1.5 recomputes automatically when font-size changes; line-height: 24px stays permanently fixed regardless — measurably different, not just style preference.',
+    docs: [
+      { label: 'MDN — line-height', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/line-height' },
+    ],
+    resources: [
+      { label: 'Fluid Type Scale', url: 'https://www.fluid-type-scale.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Headings need proportionally tighter line-height at larger font-sizes — only a unitless value adapts automatically.',
+      'The two values can coincidentally compute to the same pixels at ONE font-size, masking the difference until font-size changes.',
+    ],
+  },
+
+  'css/typography/em-compounds-in-nested-elements-rem-does-not': {
+    apis: ['em', 'rem', 'getComputedStyle()'],
+    related: [
+      { label: 'Typography (overview)', route: '/css/typography' },
+      { label: 'Unitless line-height Scales, Fixed px Does Not', route: '/css/typography/unitless-line-height-scales-fixed-px-does-not' },
+      { label: 'ch Unit Scales With Font-Size, Not Fixed Pixels', route: '/css/typography/ch-unit-scales-with-font-size-not-fixed-pixels' },
+    ],
+    tip: 'A parent and child both using font-size: 1.25em compute to 20px and 25px — em is relative to the PARENT, not the root, so it genuinely compounds with nesting depth.',
+    docs: [
+      { label: 'MDN — CSS values and units', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units' },
+    ],
+    resources: [
+      { label: 'Fluid Type Scale', url: 'https://www.fluid-type-scale.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The fix is simply using rem for font-size, not calculating compensating em values per nesting level.',
+      'rem is always relative to the html element specifically, never the immediate parent, regardless of nesting depth.',
+    ],
+  },
+
+  'css/typography/ch-unit-scales-with-font-size-not-fixed-pixels': {
+    apis: ['ch unit', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Typography (overview)', route: '/css/typography' },
+      { label: 'Unitless line-height Scales, Fixed px Does Not', route: '/css/typography/unitless-line-height-scales-fixed-px-does-not' },
+      { label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' },
+    ],
+    tip: 'A width: 65ch container roughly doubles its rendered pixel width when font-size doubles — ch measures against the "0" glyph of the CURRENT font, not a fixed conversion.',
+    docs: [
+      { label: 'MDN — CSS values and units', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units' },
+    ],
+    resources: [
+      { label: 'Fluid Type Scale', url: 'https://www.fluid-type-scale.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is exactly why ch is useful for readable line lengths — the "60-75 characters" guidance stays roughly accurate across font-size changes and different fonts.',
+      'ch works on any length-accepting property, with or without actual text content present.',
+    ],
+  },
+
   // ── CSS: Selectors ────────────────────────────────────────────────────────
   'css/selectors': {
     apis: [':is()', ':where()', ':has()', ':not()', ':nth-child()', '::before', '::after', '[attr^=]'],

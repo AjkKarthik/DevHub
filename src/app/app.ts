@@ -1577,6 +1577,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' },
     { label: ':has() Actually Selects the Parent', route: '/css/selectors/has-parent-selector-actually-selects-the-parent' },
   ],
+  'typography': [
+    { label: 'Unitless line-height Scales, Fixed px Does Not', route: '/css/typography/unitless-line-height-scales-fixed-px-does-not' },
+    { label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' },
+    { label: 'ch Unit Scales With Font-Size, Not Fixed Pixels', route: '/css/typography/ch-unit-scales-with-font-size-not-fixed-pixels' },
+  ],
 };
 
 @Component({
