@@ -1587,6 +1587,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' },
     { label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' },
   ],
+  // NOTE: keyed 'css-animations', NOT bare 'animations' — Angular's
+  // own /angular/animations topic already claims the bare key.
+  'css-animations': [
+    { label: 'fill-mode: both Retains the Final Keyframe State', route: '/css/animations/fill-mode-both-retains-the-final-keyframe-state' },
+    { label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' },
+    { label: 'display Cannot Be Smoothly Interpolated, Only Flips', route: '/css/animations/display-cannot-be-smoothly-interpolated-only-flips' },
+  ],
 };
 
 @Component({

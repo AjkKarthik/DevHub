@@ -4014,7 +4014,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Animation</p>
-      <a routerLink="/css/animations" routerLinkActive="active"><span class="nl-text">CSS Animations</span>@if(progress.isDone('css-animations')){<span class="nl-done">✓</span>}@if(diff('css-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/animations" routerLinkActive="active">
+        <span class="nl-text">CSS Animations</span>
+        @if (progress.isDone('css-animations')) {<span class="nl-done">✓</span>}
+        @if (diff('css-animations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('css-animations')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('css-animations')"
+                  (click)="toggleSubtopics('css-animations', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('css-animations'); as cssAnimationsSubs) {
+        @if (isSubtopicsExpanded('css-animations')) {
+          <div class="nav-subtopics">
+            @for (s of cssAnimationsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/transitions" routerLinkActive="active"><span class="nl-text">CSS Transitions</span>@if(progress.isDone('css-transitions')){<span class="nl-done">✓</span>}@if(diff('css-transitions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

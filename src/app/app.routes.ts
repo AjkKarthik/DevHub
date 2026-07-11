@@ -1479,7 +1479,12 @@ export const routes: Routes = [
       { path: 'container-queries-respond-to-container-width-not-viewport', loadComponent: () => import('./components/frontend/css/responsive/subtopics/container-queries-respond-to-container-width-not-viewport/container-queries-respond-to-container-width-not-viewport').then(m => m.ContainerQueriesRespondToContainerWidthNotViewportSubtopic) },
       { path: 'currentsrc-reveals-which-srcset-candidate-was-picked', loadComponent: () => import('./components/frontend/css/responsive/subtopics/currentsrc-reveals-which-srcset-candidate-was-picked/currentsrc-reveals-which-srcset-candidate-was-picked').then(m => m.CurrentsrcRevealsWhichSrcsetCandidateWasPickedSubtopic) },
     ] },
-    { path: 'animations',         loadComponent: () => import('./components/frontend/css/animations/animations').then(m => m.CssAnimations) },
+    { path: 'animations', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/animations/animations').then(m => m.CssAnimations) },
+      { path: 'fill-mode-both-retains-the-final-keyframe-state', loadComponent: () => import('./components/frontend/css/animations/subtopics/fill-mode-both-retains-the-final-keyframe-state/fill-mode-both-retains-the-final-keyframe-state').then(m => m.FillModeBothRetainsTheFinalKeyframeStateSubtopic) },
+      { path: 'negative-delay-starts-the-animation-mid-cycle', loadComponent: () => import('./components/frontend/css/animations/subtopics/negative-delay-starts-the-animation-mid-cycle/negative-delay-starts-the-animation-mid-cycle').then(m => m.NegativeDelayStartsTheAnimationMidCycleSubtopic) },
+      { path: 'display-cannot-be-smoothly-interpolated-only-flips', loadComponent: () => import('./components/frontend/css/animations/subtopics/display-cannot-be-smoothly-interpolated-only-flips/display-cannot-be-smoothly-interpolated-only-flips').then(m => m.DisplayCannotBeSmoothlyInterpolatedOnlyFlipsSubtopic) },
+    ] },
     { path: 'transitions',        loadComponent: () => import('./components/frontend/css/transitions/transitions').then(m => m.CssTransitions) },
     { path: 'colors-theming',     loadComponent: () => import('./components/frontend/css/colors-theming/colors-theming').then(m => m.CssColorsTheming) },
     { path: 'backgrounds-borders', loadComponent: () => import('./components/frontend/css/backgrounds-borders/backgrounds-borders').then(m => m.CssBackgroundsBorders) },

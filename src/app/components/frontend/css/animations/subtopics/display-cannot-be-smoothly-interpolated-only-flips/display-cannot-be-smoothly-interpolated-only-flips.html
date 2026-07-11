@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Animations" topicRoute="/css/animations" subtopicLabel="display Cannot Be Smoothly Interpolated, Only Flips" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">display Cannot Be Smoothly Interpolated, Only Flips</h1>
+  <p class="page-subtitle">Sampling a display: none to block animation at 10%, 50%, and 90% through its timeline always returns exactly "none" or exactly "block" — never a blended value.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS Animations Level 2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Sample the computed display value at several points through the animation timeline using getAnimations() — confirm it's always one of the two literal keywords.</p>
+    <app-live-playground title="display cannot be smoothly interpolated" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This closes out three animation-timeline gotchas — what happens after an animation ends (fill-mode), where it starts (negative delay), and now a fundamental limit on what CAN be animated at all. Return to the CSS Animations overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Animations" topicRoute="/css/animations"
+    [prev]="{ label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' }" />
+</div>

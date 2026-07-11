@@ -21874,6 +21874,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/animations/fill-mode-both-retains-the-final-keyframe-state': {
+    apis: ['animation-fill-mode', 'element.getAnimations()', 'Animation.currentTime'],
+    related: [
+      { label: 'CSS Animations (overview)', route: '/css/animations' },
+      { label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' },
+      { label: 'display Cannot Be Smoothly Interpolated, Only Flips', route: '/css/animations/display-cannot-be-smoothly-interpolated-only-flips' },
+    ],
+    tip: 'Without fill-mode: both/forwards, an element genuinely reverts to its own declared value once the animation ends — the last keyframe never "sticks" on its own.',
+    docs: [
+      { label: 'MDN — CSS Animations', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations' },
+    ],
+    resources: [
+      { label: 'Animate.css', url: 'https://animate.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'element.getAnimations()[0].currentTime can be set directly to jump to any point in the timeline instantly, avoiding real-time waits when testing fill-mode behavior.',
+      'fill-mode: both and forwards only differ during the DELAY period before the animation starts.',
+    ],
+  },
+
+  'css/animations/negative-delay-starts-the-animation-mid-cycle': {
+    apis: ['animation-delay', 'element.getAnimations()'],
+    related: [
+      { label: 'CSS Animations (overview)', route: '/css/animations' },
+      { label: 'fill-mode: both Retains the Final Keyframe State', route: '/css/animations/fill-mode-both-retains-the-final-keyframe-state' },
+      { label: 'display Cannot Be Smoothly Interpolated, Only Flips', route: '/css/animations/display-cannot-be-smoothly-interpolated-only-flips' },
+    ],
+    tip: 'animation-delay: -1s on a 2s animation starts the very first rendered frame already at the 50% mark — the standard technique for staggering list animations without sequential waits.',
+    docs: [
+      { label: 'MDN — CSS Animations', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations' },
+    ],
+    resources: [
+      { label: 'Animate.css', url: 'https://animate.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A negative delay does not reverse playback direction — it only changes the starting point within the timeline.',
+      'Staggered lists reuse the SAME @keyframes rule across items, varying only the (often negative) delay per item.',
+    ],
+  },
+
+  'css/animations/display-cannot-be-smoothly-interpolated-only-flips': {
+    apis: ['display', 'discrete animation', 'element.getAnimations()'],
+    related: [
+      { label: 'CSS Animations (overview)', route: '/css/animations' },
+      { label: 'fill-mode: both Retains the Final Keyframe State', route: '/css/animations/fill-mode-both-retains-the-final-keyframe-state' },
+      { label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' },
+    ],
+    tip: 'display is a discrete property — at any sampled point during a none-to-block animation, the computed value is always EXACTLY one of the two keywords, never a blended intermediate.',
+    docs: [
+      { label: 'MDN — CSS Animations', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations' },
+    ],
+    resources: [
+      { label: 'web.dev — Animations guide', url: 'https://web.dev/articles/animations-guide', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is exactly why fade animations should use opacity instead of display — opacity genuinely interpolates across a continuous 0-to-1 range.',
+      'No easing function or timing adjustment changes discrete-property behavior — it always flips cleanly, never blends.',
+    ],
+  },
+
   // ── CSS: Responsive Design ────────────────────────────────────────────────
   'css/responsive': {
     apis: ['@media (min-width)', '@container', 'container-type', 'clamp()', 'min()', 'max()', 'auto-fit', 'minmax()', 'prefers-reduced-motion'],
