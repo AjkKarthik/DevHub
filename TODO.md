@@ -1679,7 +1679,7 @@ off here with a date.
 - [x] `/html/headings-paragraphs` — Headings & Paragraphs (2026-07-11 — 3 subtopics: strong-b-and-em-i-are-visually-identical-by-default, nesting-strong-doesnt-compound-weight-or-emphasis, multiple-h1s-are-never-auto-demoted-by-sectioning-depth; SUBTOPICS map key left bare ('headings-paragraphs'), collision-free)
 - [x] `/html/input-types` — Input Types & Attributes (2026-07-11 — 3 subtopics: number-input-empty-value-for-invalid-text, unsupported-types-fallback-to-text, step-mismatch-checkable-via-validity; SUBTOPICS map key left bare ('input-types'), collision-free)
 - [x] `/html/landmark-elements` — Landmark Elements (2026-07-11 — 3 subtopics: multiple-main-elements-dont-error, arialabel-distinguishes-multiple-navs, nested-header-loses-implicit-banner-role; SUBTOPICS map key left bare ('landmark-elements'), collision-free)
-- [ ] `/html/aria-roles` — ARIA Roles & Attributes
+- [x] `/html/aria-roles` — ARIA Roles & Attributes (2026-07-11 — 3 subtopics: div-role-button-lacks-keyboard-activation, aria-hidden-does-not-block-focus, disabled-vs-aria-disabled-blocks-events; SUBTOPICS map key left bare ('aria-roles'), collision-free)
 - [ ] `/html/focus-management` — Focus Management
 - [ ] `/html/storage-apis` — HTML5 Storage APIs
 - [ ] `/html/drag-drop` — Drag & Drop API
