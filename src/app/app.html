@@ -3920,7 +3920,26 @@
           </div>
         }
       }
-      <a routerLink="/css/selectors" routerLinkActive="active"><span class="nl-text">Selectors Deep Dive</span>@if(progress.isDone('css-selectors')){<span class="nl-done">✓</span>}@if(diff('css-selectors');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/selectors" routerLinkActive="active">
+        <span class="nl-text">Selectors Deep Dive</span>
+        @if (progress.isDone('css-selectors')) {<span class="nl-done">✓</span>}
+        @if (diff('css-selectors'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('selectors')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('selectors')"
+                  (click)="toggleSubtopics('selectors', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('selectors'); as cssSelectorsSubs) {
+        @if (isSubtopicsExpanded('selectors')) {
+          <div class="nav-subtopics">
+            @for (s of cssSelectorsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/typography" routerLinkActive="active"><span class="nl-text">Typography</span>@if(progress.isDone('css-typography')){<span class="nl-done">✓</span>}@if(diff('css-typography');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/colors-theming" routerLinkActive="active"><span class="nl-text">Colors &amp; Theming</span>@if(progress.isDone('css-colors-theming')){<span class="nl-done">✓</span>}@if(diff('css-colors-theming');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/backgrounds-borders" routerLinkActive="active"><span class="nl-text">Backgrounds &amp; Borders</span>@if(progress.isDone('css-backgrounds-borders')){<span class="nl-done">✓</span>}@if(diff('css-backgrounds-borders');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

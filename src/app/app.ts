@@ -1572,6 +1572,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Circular References Resolve to the Initial Value', route: '/css/custom-properties/circular-references-resolve-to-the-initial-value' },
     { label: 'setProperty() Updates Everything Using the Variable', route: '/css/custom-properties/setproperty-updates-everything-using-the-variable' },
   ],
+  'selectors': [
+    { label: ':is() Takes Highest Specificity, :where() Stays Zero', route: '/css/selectors/is-takes-highest-specificity-where-stays-zero' },
+    { label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' },
+    { label: ':has() Actually Selects the Parent', route: '/css/selectors/has-parent-selector-actually-selects-the-parent' },
+  ],
 };
 
 @Component({

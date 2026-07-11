@@ -21944,6 +21944,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/selectors/is-takes-highest-specificity-where-stays-zero': {
+    apis: [':is()', ':where()', 'getComputedStyle()', 'specificity'],
+    related: [
+      { label: 'Selectors Deep Dive (overview)', route: '/css/selectors' },
+      { label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' },
+      { label: ':has() Actually Selects the Parent', route: '/css/selectors/has-parent-selector-actually-selects-the-parent' },
+    ],
+    tip: ':where(#id) genuinely loses to an earlier class rule even when declared last — proof it contributes zero specificity, unlike :is(#id) which wins on real specificity grounds.',
+    docs: [
+      { label: 'MDN — Specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity' },
+    ],
+    resources: [
+      { label: 'CSS Specificity Calculator', url: 'https://specificity.keegan.st/', badge: 'tool' },
+    ],
+    gotchas: [
+      'To isolate real specificity from source-order coincidence, test with the suspected-lower-specificity rule declared LAST — if it still loses, that is genuine specificity, not just tie-breaking.',
+      'Choosing :is() vs :where() incorrectly can create genuinely different, hard-to-debug override behavior.',
+    ],
+  },
+
+  'css/selectors/before-after-need-content-to-exist-at-all': {
+    apis: ['content', '::before', '::after', 'getComputedStyle()'],
+    related: [
+      { label: 'Selectors Deep Dive (overview)', route: '/css/selectors' },
+      { label: ':is() Takes Highest Specificity, :where() Stays Zero', route: '/css/selectors/is-takes-highest-specificity-where-stays-zero' },
+      { label: ':has() Actually Selects the Parent', route: '/css/selectors/has-parent-selector-actually-selects-the-parent' },
+    ],
+    tip: 'getComputedStyle(el, "::before").content reports the literal string "none" when content is never declared — proof the pseudo-element was never generated at all.',
+    docs: [
+      { label: 'MDN — ::before', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/::before' },
+    ],
+    resources: [
+      { label: 'CSS Specificity Calculator', url: 'https://specificity.keegan.st/', badge: 'tool' },
+    ],
+    gotchas: [
+      'content: \'\'; (empty string) still counts as declared — it triggers generation with zero visible text, the standard fix for decorative pseudo-elements.',
+      'Every other property on ::before/::after is moot if content was never declared — check that first when a pseudo-element "isn\'t working".',
+    ],
+  },
+
+  'css/selectors/has-parent-selector-actually-selects-the-parent': {
+    apis: [':has()', 'getComputedStyle()'],
+    related: [
+      { label: 'Selectors Deep Dive (overview)', route: '/css/selectors' },
+      { label: ':is() Takes Highest Specificity, :where() Stays Zero', route: '/css/selectors/is-takes-highest-specificity-where-stays-zero' },
+      { label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' },
+    ],
+    tip: '.card:has(img) styles the .card, not the img — a real, testable "look inside, style outside" selector that used to require JavaScript.',
+    docs: [
+      { label: 'MDN — :has()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:has' },
+    ],
+    resources: [
+      { label: 'CSS Specificity Calculator', url: 'https://specificity.keegan.st/', badge: 'tool' },
+    ],
+    gotchas: [
+      ':has() checks for a descendant at ANY depth by default, exactly like a normal descendant combinator would.',
+      'Combining :has() with a sibling combinator (label:has(+ input:invalid)) extends the same pattern to sibling relationships.',
+    ],
+  },
+
   // ── CSS: Custom Properties ────────────────────────────────────────────────
   'css/custom-properties': {
     apis: ['var()', '--custom-prop', ':root', '@property', 'color-mix()', 'calc() with var()'],

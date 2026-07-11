@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Selectors Deep Dive" topicRoute="/css/selectors" subtopicLabel=":is() Takes Highest Specificity, :where() Stays Zero" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">:is() Takes Highest Specificity, :where() Stays Zero</h1>
+  <p class="page-subtitle">Placing the ID-based rule last isn't enough to prove specificity — :where(#id) still loses to an earlier class rule, while :is(#id) genuinely wins.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Selectors Level 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Run the identical test twice — once with :where(#id), once with :is(#id) — both declared last against an earlier class rule, to isolate real specificity from source-order coincidence.</p>
+    <app-live-playground title=":is() vs :where() specificity" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This establishes the core specificity distinction the main page's Common Mistakes already flags. Next, see a completely different gotcha — why a pseudo-element can silently fail to render at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Selectors Deep Dive" topicRoute="/css/selectors"
+    [next]="{ label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' }" />
+</div>

@@ -1461,7 +1461,12 @@ export const routes: Routes = [
       { path: 'circular-references-resolve-to-the-initial-value', loadComponent: () => import('./components/frontend/css/custom-properties/subtopics/circular-references-resolve-to-the-initial-value/circular-references-resolve-to-the-initial-value').then(m => m.CircularReferencesResolveToTheInitialValueSubtopic) },
       { path: 'setproperty-updates-everything-using-the-variable', loadComponent: () => import('./components/frontend/css/custom-properties/subtopics/setproperty-updates-everything-using-the-variable/setproperty-updates-everything-using-the-variable').then(m => m.SetpropertyUpdatesEverythingUsingTheVariableSubtopic) },
     ] },
-    { path: 'selectors',          loadComponent: () => import('./components/frontend/css/selectors/selectors').then(m => m.CssSelectors) },
+    { path: 'selectors', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/selectors/selectors').then(m => m.CssSelectors) },
+      { path: 'is-takes-highest-specificity-where-stays-zero', loadComponent: () => import('./components/frontend/css/selectors/subtopics/is-takes-highest-specificity-where-stays-zero/is-takes-highest-specificity-where-stays-zero').then(m => m.IsTakesHighestSpecificityWhereStaysZeroSubtopic) },
+      { path: 'before-after-need-content-to-exist-at-all', loadComponent: () => import('./components/frontend/css/selectors/subtopics/before-after-need-content-to-exist-at-all/before-after-need-content-to-exist-at-all').then(m => m.BeforeAfterNeedContentToExistAtAllSubtopic) },
+      { path: 'has-parent-selector-actually-selects-the-parent', loadComponent: () => import('./components/frontend/css/selectors/subtopics/has-parent-selector-actually-selects-the-parent/has-parent-selector-actually-selects-the-parent').then(m => m.HasParentSelectorActuallySelectsTheParentSubtopic) },
+    ] },
     { path: 'typography',         loadComponent: () => import('./components/frontend/css/typography/typography').then(m => m.CssTypography) },
     { path: 'responsive',         loadComponent: () => import('./components/frontend/css/responsive/responsive').then(m => m.CssResponsive) },
     { path: 'animations',         loadComponent: () => import('./components/frontend/css/animations/animations').then(m => m.CssAnimations) },

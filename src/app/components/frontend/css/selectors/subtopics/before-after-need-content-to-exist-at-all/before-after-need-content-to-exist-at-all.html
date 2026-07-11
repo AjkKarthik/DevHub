@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Selectors Deep Dive" topicRoute="/css/selectors" subtopicLabel="before/after Need content to Exist at All" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">before/after Need content to Exist at All</h1>
+  <p class="page-subtitle">getComputedStyle(el, '::before').content reports the literal "none" when content is never declared — proof the pseudo-element was never generated.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare getComputedStyle(el, '::before').content between a pseudo-element with no content declared and one with content: '' — only one was actually generated.</p>
+    <app-live-playground title="before/after need content to exist" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the classic pseudo-element gotcha the main page's Common Mistakes already flags. The final subtopic moves to :has() — how it works as a genuine, testable parent selector.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Selectors Deep Dive" topicRoute="/css/selectors"
+    [prev]="{ label: ':is() Takes Highest Specificity, :where() Stays Zero', route: '/css/selectors/is-takes-highest-specificity-where-stays-zero' }"
+    [next]="{ label: ':has() Actually Selects the Parent', route: '/css/selectors/has-parent-selector-actually-selects-the-parent' }" />
+</div>
