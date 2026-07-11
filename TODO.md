@@ -1678,7 +1678,7 @@ off here with a date.
 - [x] `/html/fundamentals` — HTML Fundamentals (2026-07-10 — 3 subtopics: attribute-vs-property-input-value-genuinely-diverges, unknown-elements-fall-back-to-anonymous-inline-rendering, a-stray-br-end-tag-inserts-a-second-line-break; SUBTOPICS map hub-prefixed to `html-fundamentals` — collision with the JavaScript hub's own bare `fundamentals` key; caught and fixed a new gotcha class — literal void-element end tags in .html template text, and literal tags inside [innerHTML]-bound fields rendering as real elements — documented in CLAUDE.md)
 - [x] `/html/headings-paragraphs` — Headings & Paragraphs (2026-07-11 — 3 subtopics: strong-b-and-em-i-are-visually-identical-by-default, nesting-strong-doesnt-compound-weight-or-emphasis, multiple-h1s-are-never-auto-demoted-by-sectioning-depth; SUBTOPICS map key left bare ('headings-paragraphs'), collision-free)
 - [x] `/html/input-types` — Input Types & Attributes (2026-07-11 — 3 subtopics: number-input-empty-value-for-invalid-text, unsupported-types-fallback-to-text, step-mismatch-checkable-via-validity; SUBTOPICS map key left bare ('input-types'), collision-free)
-- [ ] `/html/landmark-elements` — Landmark Elements
+- [x] `/html/landmark-elements` — Landmark Elements (2026-07-11 — 3 subtopics: multiple-main-elements-dont-error, arialabel-distinguishes-multiple-navs, nested-header-loses-implicit-banner-role; SUBTOPICS map key left bare ('landmark-elements'), collision-free)
 - [ ] `/html/aria-roles` — ARIA Roles & Attributes
 - [ ] `/html/focus-management` — Focus Management
 - [ ] `/html/storage-apis` — HTML5 Storage APIs
