@@ -3966,7 +3966,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Responsive</p>
-      <a routerLink="/css/responsive" routerLinkActive="active"><span class="nl-text">Responsive Design</span>@if(progress.isDone('css-responsive')){<span class="nl-done">✓</span>}@if(diff('css-responsive');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/responsive" routerLinkActive="active">
+        <span class="nl-text">Responsive Design</span>
+        @if (progress.isDone('css-responsive')) {<span class="nl-done">✓</span>}
+        @if (diff('css-responsive'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('responsive')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('responsive')"
+                  (click)="toggleSubtopics('responsive', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('responsive'); as cssResponsiveSubs) {
+        @if (isSubtopicsExpanded('responsive')) {
+          <div class="nav-subtopics">
+            @for (s of cssResponsiveSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/container-queries" routerLinkActive="active"><span class="nl-text">Container Queries</span>@if(progress.isDone('css-container-queries')){<span class="nl-done">✓</span>}@if(diff('css-container-queries');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

@@ -1582,6 +1582,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' },
     { label: 'ch Unit Scales With Font-Size, Not Fixed Pixels', route: '/css/typography/ch-unit-scales-with-font-size-not-fixed-pixels' },
   ],
+  'responsive': [
+    { label: 'min() Picks the Smaller Value, Not the Larger', route: '/css/responsive/min-picks-the-smaller-value-not-the-larger' },
+    { label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' },
+    { label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' },
+  ],
 };
 
 @Component({

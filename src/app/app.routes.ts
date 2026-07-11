@@ -1473,7 +1473,12 @@ export const routes: Routes = [
       { path: 'em-compounds-in-nested-elements-rem-does-not', loadComponent: () => import('./components/frontend/css/typography/subtopics/em-compounds-in-nested-elements-rem-does-not/em-compounds-in-nested-elements-rem-does-not').then(m => m.EmCompoundsInNestedElementsRemDoesNotSubtopic) },
       { path: 'ch-unit-scales-with-font-size-not-fixed-pixels', loadComponent: () => import('./components/frontend/css/typography/subtopics/ch-unit-scales-with-font-size-not-fixed-pixels/ch-unit-scales-with-font-size-not-fixed-pixels').then(m => m.ChUnitScalesWithFontSizeNotFixedPixelsSubtopic) },
     ] },
-    { path: 'responsive',         loadComponent: () => import('./components/frontend/css/responsive/responsive').then(m => m.CssResponsive) },
+    { path: 'responsive', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/responsive/responsive').then(m => m.CssResponsive) },
+      { path: 'min-picks-the-smaller-value-not-the-larger', loadComponent: () => import('./components/frontend/css/responsive/subtopics/min-picks-the-smaller-value-not-the-larger/min-picks-the-smaller-value-not-the-larger').then(m => m.MinPicksTheSmallerValueNotTheLargerSubtopic) },
+      { path: 'container-queries-respond-to-container-width-not-viewport', loadComponent: () => import('./components/frontend/css/responsive/subtopics/container-queries-respond-to-container-width-not-viewport/container-queries-respond-to-container-width-not-viewport').then(m => m.ContainerQueriesRespondToContainerWidthNotViewportSubtopic) },
+      { path: 'currentsrc-reveals-which-srcset-candidate-was-picked', loadComponent: () => import('./components/frontend/css/responsive/subtopics/currentsrc-reveals-which-srcset-candidate-was-picked/currentsrc-reveals-which-srcset-candidate-was-picked').then(m => m.CurrentsrcRevealsWhichSrcsetCandidateWasPickedSubtopic) },
+    ] },
     { path: 'animations',         loadComponent: () => import('./components/frontend/css/animations/animations').then(m => m.CssAnimations) },
     { path: 'transitions',        loadComponent: () => import('./components/frontend/css/transitions/transitions').then(m => m.CssTransitions) },
     { path: 'colors-theming',     loadComponent: () => import('./components/frontend/css/colors-theming/colors-theming').then(m => m.CssColorsTheming) },

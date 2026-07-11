@@ -21897,6 +21897,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/responsive/min-picks-the-smaller-value-not-the-larger': {
+    apis: ['min()', 'max()', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Responsive Design (overview)', route: '/css/responsive' },
+      { label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' },
+      { label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' },
+    ],
+    tip: 'min(100%, 600px) is a continuous comparison re-evaluated at layout time — the winning argument genuinely switches as the container resizes, not a fixed decision.',
+    docs: [
+      { label: 'MDN — min()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/min' },
+    ],
+    resources: [
+      { label: 'Utopia fluid type & space', url: 'https://utopia.fyi/', badge: 'tool' },
+    ],
+    gotchas: [
+      'min() is directly usable inside calc() and as a grid-template-columns track — max-width + width can only be separate box properties.',
+      'Neither argument in min()/max() has a "primary" position — the comparison is symmetric.',
+    ],
+  },
+
+  'css/responsive/container-queries-respond-to-container-width-not-viewport': {
+    apis: ['@container', 'container-type: inline-size', 'getComputedStyle()'],
+    related: [
+      { label: 'Responsive Design (overview)', route: '/css/responsive' },
+      { label: 'min() Picks the Smaller Value, Not the Larger', route: '/css/responsive/min-picks-the-smaller-value-not-the-larger' },
+      { label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' },
+    ],
+    tip: 'The identical @container rule can produce different computed styles for two component instances at the exact same viewport width — each is measured against its OWN container.',
+    docs: [
+      { label: 'MDN — Container queries', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries' },
+    ],
+    resources: [
+      { label: 'Utopia fluid type & space', url: 'https://utopia.fyi/', badge: 'tool' },
+    ],
+    gotchas: [
+      'container-type: inline-size must be explicitly declared on the parent — this opt-in is what makes per-instance responses possible.',
+      'A media query can never do this — the viewport is implicitly shared by every element on the page.',
+    ],
+  },
+
+  'css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked': {
+    apis: ['srcset', 'sizes', 'img.currentSrc', 'img.src'],
+    related: [
+      { label: 'Responsive Design (overview)', route: '/css/responsive' },
+      { label: 'min() Picks the Smaller Value, Not the Larger', route: '/css/responsive/min-picks-the-smaller-value-not-the-larger' },
+      { label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' },
+    ],
+    tip: 'img.src always reflects the plain src attribute; img.currentSrc reflects whichever srcset candidate the browser\'s own selection algorithm actually chose — the two can genuinely differ.',
+    docs: [
+      { label: 'MDN — HTMLImageElement.currentSrc', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/currentSrc' },
+    ],
+    resources: [
+      { label: 'Utopia fluid type & space', url: 'https://utopia.fyi/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The srcset attribute string only shows what candidates were OFFERED, not which one WON — only currentSrc reveals the resolved decision.',
+      'currentSrc can update again later if a viewport resize changes which candidate is the best fit.',
+    ],
+  },
+
   // ── CSS: Typography ───────────────────────────────────────────────────────
   'css/typography': {
     apis: ['@font-face', 'font-display', 'clamp()', 'line-height', 'text-wrap', 'font-variation-settings', 'font-optical-sizing'],

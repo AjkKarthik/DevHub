@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Responsive Design" topicRoute="/css/responsive" subtopicLabel="Container Queries Respond to Container Width, Not Viewport" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Container Queries Respond to Container Width, Not Viewport</h1>
+  <p class="page-subtitle">The identical &#64;container rule produces two different computed flex-directions for two cards, at the exact same window width — provable by comparing getComputedStyle() on each.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="CSS Containment Level 3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare computed flex-direction on two identical cards sitting in differently-sized containers, at one shared viewport width — a genuine per-instance response.</p>
+    <app-live-playground title="Container queries respond to container width" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>Where the first subtopic covered a fluid VALUE resolution mechanism, this covers a fundamentally different responsive QUERY mechanism. The final subtopic moves to responsive images — how the browser autonomously picks a srcset candidate, verifiable via currentSrc.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Responsive Design" topicRoute="/css/responsive"
+    [prev]="{ label: 'min() Picks the Smaller Value, Not the Larger', route: '/css/responsive/min-picks-the-smaller-value-not-the-larger' }"
+    [next]="{ label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' }" />
+</div>
