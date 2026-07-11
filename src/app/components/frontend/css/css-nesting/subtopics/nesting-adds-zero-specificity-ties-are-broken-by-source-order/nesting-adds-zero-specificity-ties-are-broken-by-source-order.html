@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Nesting" topicRoute="/css/css-nesting" subtopicLabel="Nesting Adds Zero Specificity — Ties Are Broken by Source Order" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Nesting Adds Zero Specificity — Ties Are Broken by Source Order</h1>
+  <p class="page-subtitle">A nested rule declared first loses to an equally-specific flat rule declared second — proving nesting carried no hidden priority boost.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 112+, Firefox 117+, Safari 17.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Force a genuine specificity tie between a nested rule and its flat equivalent, and confirm the winner is decided purely by source order.</p>
+    <app-live-playground title="nesting adds zero specificity" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own fourth "Common Mistake" made directly measurable via computed styles, completing the trio of nesting gotchas alongside the missing-& descendant selector and the invalid &__element syntax.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Nesting" topicRoute="/css/css-nesting"
+    [prev]="{ label: '& Followed by a Bare Identifier Is Invalid and Silently Dropped', route: '/css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped' }" />
+</div>

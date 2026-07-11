@@ -1515,7 +1515,12 @@ export const routes: Routes = [
       { path: 'important-reverses-layer-priority-lower-layers-win', loadComponent: () => import('./components/frontend/css/css-layers/subtopics/important-reverses-layer-priority-lower-layers-win/important-reverses-layer-priority-lower-layers-win').then(m => m.ImportantReversesLayerPriorityLowerLayersWinSubtopic) },
       { path: 'first-encountered-layer-block-sets-its-position-not-declaration-order', loadComponent: () => import('./components/frontend/css/css-layers/subtopics/first-encountered-layer-block-sets-its-position-not-declaration-order/first-encountered-layer-block-sets-its-position-not-declaration-order').then(m => m.FirstEncounteredLayerBlockSetsItsPositionNotDeclarationOrderSubtopic) },
     ] },
-    { path: 'css-nesting',         loadComponent: () => import('./components/frontend/css/css-nesting/css-nesting').then(m => m.CssCssNesting) },
+    { path: 'css-nesting', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/css-nesting/css-nesting').then(m => m.CssCssNesting) },
+      { path: 'omitting-ampersand-before-pseudo-class-creates-a-descendant-selector', loadComponent: () => import('./components/frontend/css/css-nesting/subtopics/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector').then(m => m.OmittingAmpersandBeforePseudoClassCreatesADescendantSelectorSubtopic) },
+      { path: 'ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped', loadComponent: () => import('./components/frontend/css/css-nesting/subtopics/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped').then(m => m.AmpersandFollowedByABareIdentifierIsInvalidAndSilentlyDroppedSubtopic) },
+      { path: 'nesting-adds-zero-specificity-ties-are-broken-by-source-order', loadComponent: () => import('./components/frontend/css/css-nesting/subtopics/nesting-adds-zero-specificity-ties-are-broken-by-source-order/nesting-adds-zero-specificity-ties-are-broken-by-source-order').then(m => m.NestingAddsZeroSpecificityTiesAreBrokenBySourceOrderSubtopic) },
+    ] },
     { path: 'logical-properties',  loadComponent: () => import('./components/frontend/css/logical-properties/logical-properties').then(m => m.CssLogicalProperties) },
     { path: 'css-architecture',    loadComponent: () => import('./components/frontend/css/css-architecture/css-architecture').then(m => m.CssCssArchitecture) },
     { path: 'tailwind',                   loadComponent: () => import('./components/frontend/css/tailwind/tailwind').then(m => m.CssTailwind) },

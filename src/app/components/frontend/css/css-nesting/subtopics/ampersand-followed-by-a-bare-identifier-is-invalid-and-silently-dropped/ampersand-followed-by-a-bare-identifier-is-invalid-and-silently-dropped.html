@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Nesting" topicRoute="/css/css-nesting" subtopicLabel="& Followed by a Bare Identifier Is Invalid and Silently Dropped" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">& Followed by a Bare Identifier Is Invalid and Silently Dropped</h1>
+  <p class="page-subtitle">&__element isn't a descendant selector — it's a syntax error. The entire nested rule vanishes, with no console warning at all.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 112+, Firefox 117+, Safari 17.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Read the browser's own parsed cssRules to confirm &__element and &--modifier are dropped entirely, not converted into a descendant selector.</p>
+    <app-live-playground title="ampersand followed by a bare identifier is invalid" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This corrects a genuine inaccuracy caught during research and now fixed on the main page's own "Common Mistake" entry — &__element does not compile to a descendant selector as commonly assumed; it's invalid syntax. The final subtopic turns to nesting's effect on specificity — confirming it truly adds none.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Nesting" topicRoute="/css/css-nesting"
+    [prev]="{ label: 'Omitting & Before a Pseudo-Class Creates a Descendant Selector', route: '/css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector' }"
+    [next]="{ label: 'Nesting Adds Zero Specificity — Ties Are Broken by Source Order', route: '/css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order' }" />
+</div>

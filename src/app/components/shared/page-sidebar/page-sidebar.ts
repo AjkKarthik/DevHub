@@ -21820,6 +21820,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector': {
+    apis: ['& (parent selector)', 'cssRules'],
+    related: [
+      { label: 'CSS Nesting (overview)', route: '/css/css-nesting' },
+      { label: '& Followed by a Bare Identifier Is Invalid and Silently Dropped', route: '/css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped' },
+      { label: 'Nesting Adds Zero Specificity — Ties Are Broken by Source Order', route: '/css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order' },
+    ],
+    tip: '.card { :hover { } } is parsed as .card :hover (with a space) — confirmed directly via the browser\'s own serialized cssRules, not just the spec text.',
+    docs: [
+      { label: 'MDN — & selector', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Nesting_selector' },
+    ],
+    resources: [
+      { label: 'CSS Nesting Playground', url: 'https://codepen.io/web-dot-dev/pen/OJoKJeK', badge: 'tool' },
+    ],
+    gotchas: [
+      'Every pseudo-class, pseudo-element, and attribute selector needs & the same way — &:focus-visible, &::before, &[disabled] all require it.',
+      'There is no console warning for this — the selector is valid CSS, just not the one you meant.',
+    ],
+  },
+
+  'css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped': {
+    apis: ['& (parent selector)', 'cssRules'],
+    related: [
+      { label: 'CSS Nesting (overview)', route: '/css/css-nesting' },
+      { label: 'Omitting & Before a Pseudo-Class Creates a Descendant Selector', route: '/css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector' },
+      { label: 'Nesting Adds Zero Specificity — Ties Are Broken by Source Order', route: '/css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order' },
+    ],
+    tip: '&__element is not valid CSS at all — a bare identifier cannot follow & in a compound selector, so the entire rule is silently dropped, confirmed directly via the browser\'s own parsed cssRules.',
+    docs: [
+      { label: 'MDN — & selector', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Nesting_selector' },
+    ],
+    resources: [
+      { label: 'CSS Nesting Playground', url: 'https://codepen.io/web-dot-dev/pen/OJoKJeK', badge: 'tool' },
+    ],
+    gotchas: [
+      'This corrects a common assumption (including one previously on this hub\'s own main topic page) that &__element compiles to a descendant selector — it does not, it is dropped entirely.',
+      'To combine & with a full BEM modifier/element class, include the leading dot: &.block__element--modifier.',
+    ],
+  },
+
+  'css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order': {
+    apis: ['specificity', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Nesting (overview)', route: '/css/css-nesting' },
+      { label: 'Omitting & Before a Pseudo-Class Creates a Descendant Selector', route: '/css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector' },
+      { label: '& Followed by a Bare Identifier Is Invalid and Silently Dropped', route: '/css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped' },
+    ],
+    tip: 'A nested rule declared first loses to an equally-specific flat rule declared second — confirmed via getComputedStyle(), proving nesting adds no hidden specificity weight.',
+    docs: [
+      { label: 'MDN — CSS Nesting', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting' },
+    ],
+    resources: [
+      { label: 'CSS Nesting Playground', url: 'https://codepen.io/web-dot-dev/pen/OJoKJeK', badge: 'tool' },
+    ],
+    gotchas: [
+      'Nesting depth has no effect on specificity — only the actual selector components (classes, IDs, pseudo-classes) in the expanded selector matter.',
+      'A losing tie against a nested rule needs the same fixes as any flat CSS specificity issue — it is not fixed by nesting more or less deeply.',
+    ],
+  },
+
   'css/css-layers': {
     apis: ['@layer', 'revert-layer', 'layer() in @import'],
     related: [

@@ -1619,6 +1619,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '!important Reverses Layer Priority — Lower Layers Win', route: '/css/css-layers/important-reverses-layer-priority-lower-layers-win' },
     { label: 'The First @layer Encountered Sets Its Position, Not Declaration Order', route: '/css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order' },
   ],
+  'css-nesting': [
+    { label: 'Omitting & Before a Pseudo-Class Creates a Descendant Selector', route: '/css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector' },
+    { label: '& Followed by a Bare Identifier Is Invalid and Silently Dropped', route: '/css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped' },
+    { label: 'Nesting Adds Zero Specificity — Ties Are Broken by Source Order', route: '/css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order' },
+  ],
 };
 
 @Component({
