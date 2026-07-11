@@ -1624,6 +1624,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '& Followed by a Bare Identifier Is Invalid and Silently Dropped', route: '/css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped' },
     { label: 'Nesting Adds Zero Specificity — Ties Are Broken by Source Order', route: '/css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order' },
   ],
+  'logical-properties': [
+    { label: 'margin-inline-start Flips With Direction, Not Writing Mode', route: '/css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode' },
+    { label: 'inline-size Maps to Width or Height Depending on Writing Mode', route: '/css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode' },
+    { label: 'border-start-start-radius Flips Corners in RTL', route: '/css/logical-properties/border-start-start-radius-flips-corners-in-rtl' },
+  ],
 };
 
 @Component({

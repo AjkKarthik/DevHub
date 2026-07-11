@@ -21798,6 +21798,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode': {
+    apis: ['margin-inline-start', 'direction', 'getComputedStyle()'],
+    related: [
+      { label: 'Logical Properties (overview)', route: '/css/logical-properties' },
+      { label: 'inline-size Maps to Width or Height Depending on Writing Mode', route: '/css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode' },
+      { label: 'border-start-start-radius Flips Corners in RTL', route: '/css/logical-properties/border-start-start-radius-flips-corners-in-rtl' },
+    ],
+    tip: 'margin-inline-start: 20px resolves to margin-left under direction: ltr and margin-right under direction: rtl — confirmed directly via getComputedStyle() on both.',
+    docs: [
+      { label: 'MDN — margin-inline-start', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-start' },
+    ],
+    resources: [
+      { label: 'CSS Logical Properties Guide', url: 'https://web.dev/learn/css/logical-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'The flip follows the direction property specifically — not writing-mode, which governs a separate axis mapping (see inline-size/block-size).',
+      'No [dir="rtl"] override selector is needed — the same declaration re-resolves automatically.',
+    ],
+  },
+
+  'css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode': {
+    apis: ['inline-size', 'block-size', 'writing-mode', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Logical Properties (overview)', route: '/css/logical-properties' },
+      { label: 'margin-inline-start Flips With Direction, Not Writing Mode', route: '/css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode' },
+      { label: 'border-start-start-radius Flips Corners in RTL', route: '/css/logical-properties/border-start-start-radius-flips-corners-in-rtl' },
+    ],
+    tip: 'The identical inline-size: 300px; block-size: 100px; renders as 300x100 under horizontal-tb and 100x300 under vertical-rl — width and height fully swapped, confirmed via getBoundingClientRect().',
+    docs: [
+      { label: 'MDN — inline-size', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/inline-size' },
+    ],
+    resources: [
+      { label: 'CSS Logical Properties Guide', url: 'https://web.dev/learn/css/logical-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'This mapping follows writing-mode, a genuinely different axis-control mechanism than the direction-based inline-start/end flip.',
+      'The same axis swap applies to every logical sizing property: max-inline-size, min-inline-size, max-block-size, min-block-size.',
+    ],
+  },
+
+  'css/logical-properties/border-start-start-radius-flips-corners-in-rtl': {
+    apis: ['border-start-start-radius', 'direction', 'getComputedStyle()'],
+    related: [
+      { label: 'Logical Properties (overview)', route: '/css/logical-properties' },
+      { label: 'margin-inline-start Flips With Direction, Not Writing Mode', route: '/css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode' },
+      { label: 'inline-size Maps to Width or Height Depending on Writing Mode', route: '/css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode' },
+    ],
+    tip: 'border-start-start-radius: 20px rounds the top-left corner under direction: ltr and the top-right corner under direction: rtl — confirmed via getComputedStyle() on borderTopLeftRadius/borderTopRightRadius.',
+    docs: [
+      { label: 'MDN — border-start-start-radius', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/border-start-start-radius' },
+    ],
+    resources: [
+      { label: 'CSS Logical Properties Guide', url: 'https://web.dev/learn/css/logical-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'Logical border-radius names combine two axes (block position + inline position) — start-start is not directly analogous to a single-axis property like margin-inline-start.',
+      'Most valuable for asymmetric shapes (chat bubble tails, tag pills, accent cards) where rounding is not naturally symmetric.',
+    ],
+  },
+
   'css/css-nesting': {
     apis: ['& (parent selector)', 'nested @media', 'nested @container', 'nested @supports'],
     related: [

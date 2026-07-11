@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Logical Properties" topicRoute="/css/logical-properties" subtopicLabel="margin-inline-start Flips With Direction, Not Writing Mode" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">margin-inline-start Flips With Direction, Not Writing Mode</h1>
+  <p class="page-subtitle">The same margin-inline-start: 20px resolves to margin-left in LTR and margin-right in RTL — automatically, with no override rule.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Chrome 87+, Firefox 66+, Safari 14.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare the physical margin-left/margin-right computed values between an LTR and an RTL element sharing the same margin-inline-start declaration.</p>
+    <app-live-playground title="margin-inline-start flips with direction" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own quiz claim about margin-inline-start made directly measurable via computed styles. The next subtopic turns to a different logical axis flip — how inline-size maps to width or height depending on writing-mode, not direction.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Logical Properties" topicRoute="/css/logical-properties"
+    [next]="{ label: 'inline-size Maps to Width or Height Depending on Writing Mode', route: '/css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode' }" />
+</div>

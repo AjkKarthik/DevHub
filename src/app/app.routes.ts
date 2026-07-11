@@ -1521,7 +1521,12 @@ export const routes: Routes = [
       { path: 'ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped', loadComponent: () => import('./components/frontend/css/css-nesting/subtopics/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped').then(m => m.AmpersandFollowedByABareIdentifierIsInvalidAndSilentlyDroppedSubtopic) },
       { path: 'nesting-adds-zero-specificity-ties-are-broken-by-source-order', loadComponent: () => import('./components/frontend/css/css-nesting/subtopics/nesting-adds-zero-specificity-ties-are-broken-by-source-order/nesting-adds-zero-specificity-ties-are-broken-by-source-order').then(m => m.NestingAddsZeroSpecificityTiesAreBrokenBySourceOrderSubtopic) },
     ] },
-    { path: 'logical-properties',  loadComponent: () => import('./components/frontend/css/logical-properties/logical-properties').then(m => m.CssLogicalProperties) },
+    { path: 'logical-properties', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/logical-properties/logical-properties').then(m => m.CssLogicalProperties) },
+      { path: 'margin-inline-start-flips-with-direction-not-writing-mode', loadComponent: () => import('./components/frontend/css/logical-properties/subtopics/margin-inline-start-flips-with-direction-not-writing-mode/margin-inline-start-flips-with-direction-not-writing-mode').then(m => m.MarginInlineStartFlipsWithDirectionNotWritingModeSubtopic) },
+      { path: 'inline-size-maps-to-width-or-height-depending-on-writing-mode', loadComponent: () => import('./components/frontend/css/logical-properties/subtopics/inline-size-maps-to-width-or-height-depending-on-writing-mode/inline-size-maps-to-width-or-height-depending-on-writing-mode').then(m => m.InlineSizeMapsToWidthOrHeightDependingOnWritingModeSubtopic) },
+      { path: 'border-start-start-radius-flips-corners-in-rtl', loadComponent: () => import('./components/frontend/css/logical-properties/subtopics/border-start-start-radius-flips-corners-in-rtl/border-start-start-radius-flips-corners-in-rtl').then(m => m.BorderStartStartRadiusFlipsCornersInRtlSubtopic) },
+    ] },
     { path: 'css-architecture',    loadComponent: () => import('./components/frontend/css/css-architecture/css-architecture').then(m => m.CssCssArchitecture) },
     { path: 'tailwind',                   loadComponent: () => import('./components/frontend/css/tailwind/tailwind').then(m => m.CssTailwind) },
     { path: 'scroll-driven-animations',   loadComponent: () => import('./components/frontend/css/scroll-driven-animations/scroll-driven-animations').then(m => m.CssScrollDrivenAnimations) },

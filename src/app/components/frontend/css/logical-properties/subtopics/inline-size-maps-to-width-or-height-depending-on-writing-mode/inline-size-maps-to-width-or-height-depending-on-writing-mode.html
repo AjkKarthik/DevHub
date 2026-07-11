@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Logical Properties" topicRoute="/css/logical-properties" subtopicLabel="inline-size Maps to Width or Height Depending on Writing Mode" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">inline-size Maps to Width or Height Depending on Writing Mode</h1>
+  <p class="page-subtitle">The identical inline-size/block-size pair renders as 300x100 in horizontal-tb and 100x300 in vertical-rl — width and height fully swapped.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 87+, Firefox 66+, Safari 14.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Measure the rendered box dimensions for the same inline-size/block-size declaration under horizontal-tb vs vertical-rl.</p>
+    <app-live-playground title="inline-size maps to width or height depending on writing mode" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own second "Common Mistake" and quiz claim made directly measurable via getBoundingClientRect(). The final subtopic turns to logical border-radius — confirming border-start-start-radius genuinely flips corners in RTL.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Logical Properties" topicRoute="/css/logical-properties"
+    [prev]="{ label: 'margin-inline-start Flips With Direction, Not Writing Mode', route: '/css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode' }"
+    [next]="{ label: 'border-start-start-radius Flips Corners in RTL', route: '/css/logical-properties/border-start-start-radius-flips-corners-in-rtl' }" />
+</div>

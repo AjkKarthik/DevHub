@@ -4088,7 +4088,26 @@
           </div>
         }
       }
-      <a routerLink="/css/logical-properties" routerLinkActive="active"><span class="nl-text">Logical Properties</span>@if(progress.isDone('css-logical-properties')){<span class="nl-done">✓</span>}@if(diff('css-logical-properties');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/logical-properties" routerLinkActive="active">
+        <span class="nl-text">Logical Properties</span>
+        @if (progress.isDone('css-logical-properties')) {<span class="nl-done">✓</span>}
+        @if (diff('css-logical-properties'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('logical-properties')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('logical-properties')"
+                  (click)="toggleSubtopics('logical-properties', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('logical-properties'); as cssLogicalPropsSubs) {
+        @if (isSubtopicsExpanded('logical-properties')) {
+          <div class="nav-subtopics">
+            @for (s of cssLogicalPropsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/css-architecture" routerLinkActive="active"><span class="nl-text">CSS Architecture</span>@if(progress.isDone('css-css-architecture')){<span class="nl-done">✓</span>}@if(diff('css-css-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/tailwind" routerLinkActive="active"><span class="nl-text">Tailwind CSS</span>@if(progress.isDone('css-tailwind')){<span class="nl-done">✓</span>}@if(diff('css-tailwind');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/scroll-driven-animations" routerLinkActive="active"><span class="nl-text">Scroll-Driven Animations</span>@if(progress.isDone('css-scroll-driven-animations')){<span class="nl-done">✓</span>}@if(diff('css-scroll-driven-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
