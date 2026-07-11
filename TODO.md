@@ -1681,7 +1681,7 @@ off here with a date.
 - [x] `/html/landmark-elements` — Landmark Elements (2026-07-11 — 3 subtopics: multiple-main-elements-dont-error, arialabel-distinguishes-multiple-navs, nested-header-loses-implicit-banner-role; SUBTOPICS map key left bare ('landmark-elements'), collision-free)
 - [x] `/html/aria-roles` — ARIA Roles & Attributes (2026-07-11 — 3 subtopics: div-role-button-lacks-keyboard-activation, aria-hidden-does-not-block-focus, disabled-vs-aria-disabled-blocks-events; SUBTOPICS map key left bare ('aria-roles'), collision-free)
 - [x] `/html/focus-management` — Focus Management (2026-07-11 — 3 subtopics: roving-tabindex-keeps-exactly-one-item-at-zero, positive-tabindex-breaks-natural-dom-tab-order, dialog-close-restores-last-focused-element; SUBTOPICS map key left bare ('focus-management'), collision-free; note — first draft of the dialog-close subtopic incorrectly claimed native <dialog> never restores focus on close, contradicting the pre-existing sidebar tip for this topic; corrected before commit to the accurate nuance — close() DOES auto-restore, but to whatever was focused at showModal() time, not necessarily the visual trigger)
-- [ ] `/html/storage-apis` — HTML5 Storage APIs
+- [x] `/html/storage-apis` — HTML5 Storage APIs (2026-07-11 — 3 subtopics: localstorage-only-stores-strings-not-objects, storage-event-never-fires-in-the-writing-tab, quotaexceedederror-is-a-real-catchable-exception; SUBTOPICS map key left bare ('storage-apis'), collision-free)
 - [ ] `/html/drag-drop` — Drag & Drop API
 
 #### CSS — 22 topic pages
