@@ -1537,6 +1537,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' },
     { label: 'dialog close() Restores Last-Focused Element', route: '/html/focus-management/dialog-close-restores-last-focused-element' },
   ],
+  'storage-apis': [
+    { label: 'localStorage Only Stores Strings, Not Objects', route: '/html/storage-apis/localstorage-only-stores-strings-not-objects' },
+    { label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' },
+    { label: 'QuotaExceededError Is a Real, Catchable Exception', route: '/html/storage-apis/quotaexceedederror-is-a-real-catchable-exception' },
+  ],
 };
 
 @Component({

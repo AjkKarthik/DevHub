@@ -1414,7 +1414,12 @@ export const routes: Routes = [
       { path: 'positive-tabindex-breaks-natural-dom-tab-order', loadComponent: () => import('./components/frontend/html/focus-management/subtopics/positive-tabindex-breaks-natural-dom-tab-order/positive-tabindex-breaks-natural-dom-tab-order').then(m => m.PositiveTabindexBreaksNaturalDomTabOrderSubtopic) },
       { path: 'dialog-close-restores-last-focused-element', loadComponent: () => import('./components/frontend/html/focus-management/subtopics/dialog-close-restores-last-focused-element/dialog-close-restores-last-focused-element').then(m => m.DialogCloseRestoresLastFocusedElementSubtopic) },
     ] },
-    { path: 'storage-apis',        loadComponent: () => import('./components/frontend/html/storage-apis/storage-apis').then(m => m.HtmlStorageApis) },
+    { path: 'storage-apis', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/storage-apis/storage-apis').then(m => m.HtmlStorageApis) },
+      { path: 'localstorage-only-stores-strings-not-objects', loadComponent: () => import('./components/frontend/html/storage-apis/subtopics/localstorage-only-stores-strings-not-objects/localstorage-only-stores-strings-not-objects').then(m => m.LocalstorageOnlyStoresStringsNotObjectsSubtopic) },
+      { path: 'storage-event-never-fires-in-the-writing-tab', loadComponent: () => import('./components/frontend/html/storage-apis/subtopics/storage-event-never-fires-in-the-writing-tab/storage-event-never-fires-in-the-writing-tab').then(m => m.StorageEventNeverFiresInTheWritingTabSubtopic) },
+      { path: 'quotaexceedederror-is-a-real-catchable-exception', loadComponent: () => import('./components/frontend/html/storage-apis/subtopics/quotaexceedederror-is-a-real-catchable-exception/quotaexceedederror-is-a-real-catchable-exception').then(m => m.QuotaexceedederrorIsARealCatchableExceptionSubtopic) },
+    ] },
     { path: 'drag-drop',           loadComponent: () => import('./components/frontend/html/drag-drop/drag-drop').then(m => m.HtmlDragDrop) },
     { path: 'cheatsheet',          loadComponent: () => import('./components/frontend/html/cheatsheet/cheatsheet').then(m => m.HtmlCheatsheet) },
     { path: 'interview-prep',      loadComponent: () => import('./components/frontend/html/interview-prep/interview-prep').then(m => m.HtmlInterviewPrep) },

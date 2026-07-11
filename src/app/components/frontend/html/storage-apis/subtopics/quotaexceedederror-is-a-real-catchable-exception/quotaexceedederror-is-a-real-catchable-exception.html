@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML5 Storage APIs" topicRoute="/html/storage-apis" subtopicLabel="QuotaExceededError Is a Real, Catchable Exception" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">QuotaExceededError Is a Real, Catchable Exception</h1>
+  <p class="page-subtitle">Running localStorage out of room doesn't silently fail — setItem() throws a real DOMException on the exact call that pushes it over quota.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Write growing chunks to localStorage in a loop until quota is hit, catching the real DOMException and counting exactly how many writes succeeded first.</p>
+    <app-live-playground title="QuotaExceededError" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This closes out three storage gotchas that all hinge on the same question — silent vs. loud failure. Storing an object fails silently (wrong data, no error); a same-tab storage listener fails silently (no error, just never runs); running out of quota fails loudly (a real, catchable exception). Return to the HTML5 Storage APIs overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTML5 Storage APIs" topicRoute="/html/storage-apis"
+    [prev]="{ label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' }" />
+</div>

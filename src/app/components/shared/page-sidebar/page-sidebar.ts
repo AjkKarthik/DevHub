@@ -23783,6 +23783,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/storage-apis/localstorage-only-stores-strings-not-objects': {
+    apis: ['localStorage.setItem()', 'JSON.stringify()', 'JSON.parse()'],
+    related: [
+      { label: 'HTML5 Storage APIs (overview)', route: '/html/storage-apis' },
+      { label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' },
+      { label: 'QuotaExceededError Is a Real, Catchable Exception', route: '/html/storage-apis/quotaexceedederror-is-a-real-catchable-exception' },
+    ],
+    tip: 'Passing an object to setItem() never throws — it silently stores the literal text "[object Object]" via the object\'s default toString().',
+    docs: [
+      { label: 'MDN — Web Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API' },
+    ],
+    resources: [
+      { label: 'web.dev — Storage for the web', url: 'https://web.dev/articles/storage-for-the-web', badge: 'blog' },
+    ],
+    gotchas: [
+      'Forgetting JSON.stringify() on write is a common, completely silent bug — no error anywhere signals the data loss.',
+      'Always wrap JSON.parse(getItem()) in try/catch — stored data can be missing, corrupted, or from an old schema.',
+    ],
+  },
+
+  'html/storage-apis/storage-event-never-fires-in-the-writing-tab': {
+    apis: ['storage event', 'window.addEventListener()'],
+    related: [
+      { label: 'HTML5 Storage APIs (overview)', route: '/html/storage-apis' },
+      { label: 'localStorage Only Stores Strings, Not Objects', route: '/html/storage-apis/localstorage-only-stores-strings-not-objects' },
+      { label: 'QuotaExceededError Is a Real, Catchable Exception', route: '/html/storage-apis/quotaexceedederror-is-a-real-catchable-exception' },
+    ],
+    tip: 'The storage event exists purely for cross-tab communication — the tab that made the write never receives its own event, by design.',
+    docs: [
+      { label: 'MDN — Window: storage event', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event' },
+    ],
+    resources: [
+      { label: 'web.dev — Storage for the web', url: 'https://web.dev/articles/storage-for-the-web', badge: 'blog' },
+    ],
+    gotchas: [
+      'sessionStorage never fires storage events at all, cross-tab or otherwise — it has no "other tab" to notify.',
+      'Same-tab reactivity to your own writes has to come from your own application logic, never from this event.',
+    ],
+  },
+
+  'html/storage-apis/quotaexceedederror-is-a-real-catchable-exception': {
+    apis: ['QuotaExceededError', 'DOMException', 'try/catch'],
+    related: [
+      { label: 'HTML5 Storage APIs (overview)', route: '/html/storage-apis' },
+      { label: 'localStorage Only Stores Strings, Not Objects', route: '/html/storage-apis/localstorage-only-stores-strings-not-objects' },
+      { label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' },
+    ],
+    tip: 'Running out of localStorage quota throws a real, catchable QuotaExceededError DOMException — the opposite of the silent "[object Object]" failure mode.',
+    docs: [
+      { label: 'MDN — QuotaExceededError', url: 'https://developer.mozilla.org/en-US/docs/Web/API/DOMException#quotaexceedederror' },
+    ],
+    resources: [
+      { label: 'web.dev — Storage for the web', url: 'https://web.dev/articles/storage-for-the-web', badge: 'blog' },
+    ],
+    gotchas: [
+      'Private/incognito mode imposes a much smaller effective quota in several browsers, making this exception more realistic in production than it seems in normal testing.',
+      'Everything written successfully before the exception remains fully intact — only the one over-limit write is prevented.',
+    ],
+  },
+
   'html/drag-drop': {
     apis: ['draggable="true"', 'dragstart', 'dragover', 'drop', 'dragend', 'dataTransfer.setData()', 'dataTransfer.getData()', 'dataTransfer.effectAllowed', 'dataTransfer.dropEffect', 'event.preventDefault()'],
     related: [

@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML5 Storage APIs" topicRoute="/html/storage-apis" subtopicLabel="localStorage Only Stores Strings, Not Objects" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">localStorage Only Stores Strings, Not Objects</h1>
+  <p class="page-subtitle">Passing an object to setItem() never throws — it silently stores the literal text "[object Object]" instead.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Compare storing an object directly against the JSON.stringify()/JSON.parse() pattern — one silently loses the data, the other round-trips it faithfully.</p>
+    <app-live-playground title="localStorage only stores strings" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This is a silent-failure gotcha specific to WRITING data. Next, see a silent-omission gotcha specific to the storage event fired when data is written — it never reaches the tab that made the change.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTML5 Storage APIs" topicRoute="/html/storage-apis"
+    [next]="{ label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' }" />
+</div>
