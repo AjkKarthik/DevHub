@@ -1676,7 +1676,7 @@ off here with a date.
 - [x] `/html/seo` — HTML SEO (2026-07-10 — 3 subtopics: document-title-deterministically-uses-only-the-first-title, malformed-json-ld-renders-fine-but-fails-to-parse, og-image-dimensions-are-checkable-live-via-the-image-api; SUBTOPICS map key left bare ('seo'), collision-free)
 - [x] `/html/apis` — HTML5 Browser APIs (2026-07-10 — 3 subtopics: filereadersync-only-exists-inside-a-real-web-worker, navigator-share-feature-detection-prevents-a-real-typeerror, notification-permission-is-readable-anytime-construction-never-throws; SUBTOPICS map key left bare ('apis'), collision-free)
 - [x] `/html/fundamentals` — HTML Fundamentals (2026-07-10 — 3 subtopics: attribute-vs-property-input-value-genuinely-diverges, unknown-elements-fall-back-to-anonymous-inline-rendering, a-stray-br-end-tag-inserts-a-second-line-break; SUBTOPICS map hub-prefixed to `html-fundamentals` — collision with the JavaScript hub's own bare `fundamentals` key; caught and fixed a new gotcha class — literal void-element end tags in .html template text, and literal tags inside [innerHTML]-bound fields rendering as real elements — documented in CLAUDE.md)
-- [ ] `/html/headings-paragraphs` — Headings & Paragraphs
+- [x] `/html/headings-paragraphs` — Headings & Paragraphs (2026-07-11 — 3 subtopics: strong-b-and-em-i-are-visually-identical-by-default, nesting-strong-doesnt-compound-weight-or-emphasis, multiple-h1s-are-never-auto-demoted-by-sectioning-depth; SUBTOPICS map key left bare ('headings-paragraphs'), collision-free)
 - [ ] `/html/input-types` — Input Types & Attributes
 - [ ] `/html/landmark-elements` — Landmark Elements
 - [ ] `/html/aria-roles` — ARIA Roles & Attributes
