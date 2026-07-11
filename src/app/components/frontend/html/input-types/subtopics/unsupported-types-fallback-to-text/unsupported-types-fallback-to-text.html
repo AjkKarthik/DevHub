@@ -1,0 +1,26 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Input Types & Attributes" topicRoute="/html/input-types" subtopicLabel="Unsupported Types Fall Back to Text" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Unsupported Types Fall Back to Text</h1>
+  <p class="page-subtitle">An unrecognized <code>type</code> keyword never errors — it silently resolves to <code>"text"</code>, provable by reading <code>el.type</code> back.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Set <code>type</code> to a made-up keyword, then read it back — the browser reports what it actually applied, not the string you requested.</p>
+    <app-live-playground title="Input type fallback to text" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This silent-fallback pattern is the same family of graceful degradation as the previous subtopic's value sanitization. The final subtopic looks at a case where the browser does the OPPOSITE of silently ignoring a problem — <code>step</code> mismatches produce a real, checkable validity flag.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Input Types & Attributes" topicRoute="/html/input-types"
+    [prev]="{ label: 'Number Input’s Empty Value for Invalid Text', route: '/html/input-types/number-input-empty-value-for-invalid-text' }"
+    [next]="{ label: 'step Mismatch Is Checkable via Validity', route: '/html/input-types/step-mismatch-checkable-via-validity' }" />
+</div>

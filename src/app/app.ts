@@ -1517,6 +1517,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Nesting strong Doesn’t Compound', route: '/html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis' },
     { label: 'Multiple h1s Never Auto-Demoted', route: '/html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth' },
   ],
+  'input-types': [
+    { label: 'Number Input’s Empty Value for Invalid Text', route: '/html/input-types/number-input-empty-value-for-invalid-text' },
+    { label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' },
+    { label: 'step Mismatch Is Checkable via Validity', route: '/html/input-types/step-mismatch-checkable-via-validity' },
+  ],
 };
 
 @Component({

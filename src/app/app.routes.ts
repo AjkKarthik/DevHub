@@ -1390,7 +1390,12 @@ export const routes: Routes = [
       { path: 'nesting-strong-doesnt-compound-weight-or-emphasis', loadComponent: () => import('./components/frontend/html/headings-paragraphs/subtopics/nesting-strong-doesnt-compound-weight-or-emphasis/nesting-strong-doesnt-compound-weight-or-emphasis').then(m => m.NestingStrongDoesntCompoundWeightOrEmphasisSubtopic) },
       { path: 'multiple-h1s-are-never-auto-demoted-by-sectioning-depth', loadComponent: () => import('./components/frontend/html/headings-paragraphs/subtopics/multiple-h1s-are-never-auto-demoted-by-sectioning-depth/multiple-h1s-are-never-auto-demoted-by-sectioning-depth').then(m => m.MultipleH1sAreNeverAutoDemotedBySectioningDepthSubtopic) },
     ] },
-    { path: 'input-types',         loadComponent: () => import('./components/frontend/html/input-types/input-types').then(m => m.HtmlInputTypes) },
+    { path: 'input-types', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/input-types/input-types').then(m => m.HtmlInputTypes) },
+      { path: 'number-input-empty-value-for-invalid-text', loadComponent: () => import('./components/frontend/html/input-types/subtopics/number-input-empty-value-for-invalid-text/number-input-empty-value-for-invalid-text').then(m => m.NumberInputEmptyValueForInvalidTextSubtopic) },
+      { path: 'unsupported-types-fallback-to-text', loadComponent: () => import('./components/frontend/html/input-types/subtopics/unsupported-types-fallback-to-text/unsupported-types-fallback-to-text').then(m => m.UnsupportedTypesFallbackToTextSubtopic) },
+      { path: 'step-mismatch-checkable-via-validity', loadComponent: () => import('./components/frontend/html/input-types/subtopics/step-mismatch-checkable-via-validity/step-mismatch-checkable-via-validity').then(m => m.StepMismatchCheckableViaValiditySubtopic) },
+    ] },
     { path: 'landmark-elements',   loadComponent: () => import('./components/frontend/html/landmark-elements/landmark-elements').then(m => m.HtmlLandmarkElements) },
     { path: 'aria-roles',          loadComponent: () => import('./components/frontend/html/aria-roles/aria-roles').then(m => m.HtmlAriaRoles) },
     { path: 'focus-management',    loadComponent: () => import('./components/frontend/html/focus-management/focus-management').then(m => m.HtmlFocusManagement) },

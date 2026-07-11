@@ -3485,7 +3485,26 @@
           </div>
         }
       }
-      <a routerLink="/html/input-types" routerLinkActive="active"><span class="nl-text">Input Types</span>@if(progress.isDone('html-input-types')){<span class="nl-done">✓</span>}@if(diff('html-input-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/input-types" routerLinkActive="active">
+        <span class="nl-text">Input Types</span>
+        @if (progress.isDone('html-input-types')) {<span class="nl-done">✓</span>}
+        @if (diff('html-input-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('input-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('input-types')"
+                  (click)="toggleSubtopics('input-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('input-types'); as htmlInputTypesSubs) {
+        @if (isSubtopicsExpanded('input-types')) {
+          <div class="nav-subtopics">
+            @for (s of htmlInputTypesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

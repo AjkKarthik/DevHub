@@ -23447,6 +23447,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/input-types/number-input-empty-value-for-invalid-text': {
+    apis: ['.value', '.validity.badInput', '.valueAsNumber'],
+    related: [
+      { label: 'Input Types & Attributes (overview)', route: '/html/input-types' },
+      { label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' },
+      { label: 'step Mismatch Is Checkable via Validity', route: '/html/input-types/step-mismatch-checkable-via-validity' },
+    ],
+    tip: 'A number input\'s .value is empty for anything that doesn\'t parse as a complete valid number — including legal-but-incomplete strings like "1e", which no keystroke ever blocked.',
+    docs: [
+      { label: 'MDN — <input type="number">', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number' },
+    ],
+    resources: [
+      { label: 'MDN — ValidityState.badInput', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/badInput', badge: 'docs' },
+    ],
+    gotchas: [
+      '"1e" is valid keystroke-by-keystroke but reports .value === "" — an incomplete-but-legal exponential prefix.',
+      '.value can\'t distinguish "empty field" from "invalid input" — both report "". Use .validity.badInput when that matters.',
+    ],
+  },
+
+  'html/input-types/unsupported-types-fallback-to-text': {
+    apis: ['.type', 'type attribute'],
+    related: [
+      { label: 'Input Types & Attributes (overview)', route: '/html/input-types' },
+      { label: 'Number Input’s Empty Value for Invalid Text', route: '/html/input-types/number-input-empty-value-for-invalid-text' },
+      { label: 'step Mismatch Is Checkable via Validity', route: '/html/input-types/step-mismatch-checkable-via-validity' },
+    ],
+    tip: 'Setting el.type to an unrecognized keyword never throws — reading el.type back afterward proves the browser silently applied "text" instead.',
+    docs: [
+      { label: 'MDN — <input> types', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input' },
+    ],
+    resources: [
+      { label: 'web.dev — Forms best practices', url: 'https://web.dev/articles/payment-and-address-form-best-practices', badge: 'blog' },
+    ],
+    gotchas: [
+      'A bogus type value produces zero console warnings and zero errors — the fallback is completely silent by design.',
+      'It\'s always safe to use a newer input type without a support check first — the worst case is already a plain text field.',
+    ],
+  },
+
+  'html/input-types/step-mismatch-checkable-via-validity': {
+    apis: ['step attribute', '.validity.stepMismatch', '.checkValidity()', '.reportValidity()'],
+    related: [
+      { label: 'Input Types & Attributes (overview)', route: '/html/input-types' },
+      { label: 'Number Input’s Empty Value for Invalid Text', route: '/html/input-types/number-input-empty-value-for-invalid-text' },
+      { label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' },
+    ],
+    tip: 'Unlike the other two input gotchas, an off-step value is neither emptied nor rewritten — it stays exactly as set, flagged invalid via .validity.stepMismatch.',
+    docs: [
+      { label: 'MDN — ValidityState.stepMismatch', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/stepMismatch' },
+    ],
+    resources: [
+      { label: 'MDN — Constraint validation', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation', badge: 'docs' },
+    ],
+    gotchas: [
+      'step applies to number, range, date, time and more — not just the visual snapping of a range slider.',
+      'An off-step value is never blocked from being set or typed — checkValidity() must actually be called (or native submission triggered) for it to matter.',
+    ],
+  },
+
   'html/landmark-elements': {
     apis: ['<header>', '<nav>', '<main>', '<aside>', '<footer>', '<section>', '<article>', '<form>', 'role="search"', 'aria-label', 'aria-labelledby'],
     related: [
