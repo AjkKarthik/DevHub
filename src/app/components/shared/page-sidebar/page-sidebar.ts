@@ -22038,6 +22038,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/flexbox/min-width-auto-lets-items-overflow-container': {
+    apis: ['min-width', 'flex-shrink', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Flexbox (overview)', route: '/css/flexbox' },
+      { label: 'flex-basis Wins Over width', route: '/css/flexbox/flex-basis-wins-over-width-when-both-are-set' },
+      { label: 'order Changes Visual Position, Not DOM Order', route: '/css/flexbox/order-changes-visual-position-not-dom-order' },
+    ],
+    tip: 'Flex items default to min-width: auto — unbreakable content can render wider than the container despite flex-shrink being set. Add min-width: 0 to fix it.',
+    docs: [
+      { label: 'MDN — flex shorthand', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/flex' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Flexbox Guide', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', badge: 'blog' },
+    ],
+    gotchas: [
+      'A long filename or unbroken URL is enough to trigger this — normal-looking placeholder text during development can hide the bug.',
+      'min-width: 0 is the universal fix — no need to calculate a specific pixel value.',
+    ],
+  },
+
+  'css/flexbox/flex-basis-wins-over-width-when-both-are-set': {
+    apis: ['flex-basis', 'width', 'flex shorthand'],
+    related: [
+      { label: 'CSS Flexbox (overview)', route: '/css/flexbox' },
+      { label: 'min-width: auto Lets Items Overflow', route: '/css/flexbox/min-width-auto-lets-items-overflow-container' },
+      { label: 'order Changes Visual Position, Not DOM Order', route: '/css/flexbox/order-changes-visual-position-not-dom-order' },
+    ],
+    tip: 'When both width and flex-basis are set on the same item, flex-basis silently wins for main-axis sizing — width is effectively ignored.',
+    docs: [
+      { label: 'MDN — flex-basis', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Flexbox Guide', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', badge: 'blog' },
+    ],
+    gotchas: [
+      'This priority is specific to the main axis — in a column container, width behaves normally and height competes with flex-basis instead.',
+      'Prefer the flex shorthand alone (e.g. flex: 1 1 200px) over declaring width separately to avoid the conflict entirely.',
+    ],
+  },
+
+  'css/flexbox/order-changes-visual-position-not-dom-order': {
+    apis: ['order', 'DOM traversal', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Flexbox (overview)', route: '/css/flexbox' },
+      { label: 'min-width: auto Lets Items Overflow', route: '/css/flexbox/min-width-auto-lets-items-overflow-container' },
+      { label: 'flex-basis Wins Over width', route: '/css/flexbox/flex-basis-wins-over-width-when-both-are-set' },
+    ],
+    tip: 'order only changes where an item renders — DOM order (and therefore Tab-key order) never changes, provable by comparing DOM traversal against sorted visual position.',
+    docs: [
+      { label: 'MDN — order', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/order' },
+    ],
+    resources: [
+      { label: 'web.dev — Learn CSS Flexbox', url: 'https://web.dev/learn/css/flexbox', badge: 'docs' },
+    ],
+    gotchas: [
+      'A keyboard user tabs through elements in DOM order, not visual order — order can create a real, confusing mismatch for keyboard/screen-reader users.',
+      'A visual-only check with a mouse can never catch this — verifying requires actually tabbing through the page or checking DOM order programmatically.',
+    ],
+  },
+
   // ── HTML: Document Structure ─────────────────────────────────────────────
   'html/document-structure': {
     apis: ['DOCTYPE', '<html lang>', 'defer', 'async', 'document.compatMode'],

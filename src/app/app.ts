@@ -1552,6 +1552,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' },
     { label: 'Parent-Child Collapse Moves the Parent’s Own Box', route: '/css/box-model/parent-child-collapse-moves-the-parents-own-box' },
   ],
+  'flexbox': [
+    { label: 'min-width: auto Lets Items Overflow', route: '/css/flexbox/min-width-auto-lets-items-overflow-container' },
+    { label: 'flex-basis Wins Over width', route: '/css/flexbox/flex-basis-wins-over-width-when-both-are-set' },
+    { label: 'order Changes Visual Position, Not DOM Order', route: '/css/flexbox/order-changes-visual-position-not-dom-order' },
+  ],
 };
 
 @Component({

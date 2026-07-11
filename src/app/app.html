@@ -3836,7 +3836,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Layout</p>
-      <a routerLink="/css/flexbox" routerLinkActive="active"><span class="nl-text">Flexbox</span>@if(progress.isDone('css-flexbox')){<span class="nl-done">✓</span>}@if(diff('css-flexbox');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/flexbox" routerLinkActive="active">
+        <span class="nl-text">Flexbox</span>
+        @if (progress.isDone('css-flexbox')) {<span class="nl-done">✓</span>}
+        @if (diff('css-flexbox'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('flexbox')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('flexbox')"
+                  (click)="toggleSubtopics('flexbox', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('flexbox'); as cssFlexboxSubs) {
+        @if (isSubtopicsExpanded('flexbox')) {
+          <div class="nav-subtopics">
+            @for (s of cssFlexboxSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/grid" routerLinkActive="active"><span class="nl-text">CSS Grid</span>@if(progress.isDone('css-grid')){<span class="nl-done">✓</span>}@if(diff('css-grid');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/positioning" routerLinkActive="active"><span class="nl-text">Positioning & Stacking</span>@if(progress.isDone('css-positioning')){<span class="nl-done">✓</span>}@if(diff('css-positioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

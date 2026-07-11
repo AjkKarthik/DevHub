@@ -1437,7 +1437,12 @@ export const routes: Routes = [
       { path: 'outline-never-affects-box-model-layout', loadComponent: () => import('./components/frontend/css/box-model/subtopics/outline-never-affects-box-model-layout/outline-never-affects-box-model-layout').then(m => m.OutlineNeverAffectsBoxModelLayoutSubtopic) },
       { path: 'parent-child-collapse-moves-the-parents-own-box', loadComponent: () => import('./components/frontend/css/box-model/subtopics/parent-child-collapse-moves-the-parents-own-box/parent-child-collapse-moves-the-parents-own-box').then(m => m.ParentChildCollapseMovesTheParentsOwnBoxSubtopic) },
     ] },
-    { path: 'flexbox',   loadComponent: () => import('./components/frontend/css/flexbox/flexbox').then(m => m.CssFlexbox) },
+    { path: 'flexbox', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/flexbox/flexbox').then(m => m.CssFlexbox) },
+      { path: 'min-width-auto-lets-items-overflow-container', loadComponent: () => import('./components/frontend/css/flexbox/subtopics/min-width-auto-lets-items-overflow-container/min-width-auto-lets-items-overflow-container').then(m => m.MinWidthAutoLetsItemsOverflowContainerSubtopic) },
+      { path: 'flex-basis-wins-over-width-when-both-are-set', loadComponent: () => import('./components/frontend/css/flexbox/subtopics/flex-basis-wins-over-width-when-both-are-set/flex-basis-wins-over-width-when-both-are-set').then(m => m.FlexBasisWinsOverWidthWhenBothAreSetSubtopic) },
+      { path: 'order-changes-visual-position-not-dom-order', loadComponent: () => import('./components/frontend/css/flexbox/subtopics/order-changes-visual-position-not-dom-order/order-changes-visual-position-not-dom-order').then(m => m.OrderChangesVisualPositionNotDomOrderSubtopic) },
+    ] },
     { path: 'grid',        loadComponent: () => import('./components/frontend/css/grid/grid').then(m => m.CssGrid) },
     { path: 'positioning',        loadComponent: () => import('./components/frontend/css/positioning/positioning').then(m => m.CssPositioning) },
     { path: 'custom-properties',  loadComponent: () => import('./components/frontend/css/custom-properties/custom-properties').then(m => m.CssCustomProperties) },
