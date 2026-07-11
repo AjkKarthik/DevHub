@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tailwind CSS" topicRoute="/css/tailwind" subtopicLabel="Dynamic Class Strings Are Invisible to the JIT Scanner" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Dynamic Class Strings Are Invisible to the JIT Scanner</h1>
+  <p class="page-subtitle"><code>bg-&#36;&#123;color&#125;-500</code> correctly evaluates to "bg-blue-500" at runtime — but the JIT scanner never sees the runtime value, only the literal, unexecuted source text.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Tailwind CSS 3+ (JIT)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section">
+    <h2>Code Examples</h2>
+    <p>A component that correctly computes a class name string at runtime, but silently renders unstyled because the JIT scanner only ever reads unexecuted source text.</p>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own third "Common Mistake" explained through exactly when the JIT scanner runs relative to your JavaScript. The next subtopic turns to a related build-time gotcha — the content array's own file-extension coverage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Tailwind CSS" topicRoute="/css/tailwind"
+    [next]="{ label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' }" />
+</div>

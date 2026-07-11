@@ -21754,6 +21754,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner': {
+    apis: ['JIT scanner', 'content array'],
+    related: [
+      { label: 'Tailwind CSS (overview)', route: '/css/tailwind' },
+      { label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' },
+      { label: 'Responsive Variants Are Mobile-First, Not Breakpoint-Specific', route: '/css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific' },
+    ],
+    tip: 'The JIT scanner reads files as raw text at build time — it never executes JavaScript, so a template-literal class name that is 100% correct at runtime is completely invisible to it.',
+    docs: [
+      { label: 'Tailwind CSS Docs', url: 'https://tailwindcss.com/docs' },
+    ],
+    resources: [
+      { label: 'Tailwind UI components', url: 'https://tailwindui.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The failure is completely silent — correct build, correct runtime DOM, just a missing style with zero error anywhere.',
+      'Fix: use a lookup object where every complete class name string appears literally in the source.',
+    ],
+  },
+
+  'css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes': {
+    apis: ['content array', 'JIT scanner'],
+    related: [
+      { label: 'Tailwind CSS (overview)', route: '/css/tailwind' },
+      { label: 'Dynamic Class Strings Are Invisible to the JIT Scanner', route: '/css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner' },
+      { label: 'Responsive Variants Are Mobile-First, Not Breakpoint-Specific', route: '/css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific' },
+    ],
+    tip: 'content is not a performance filter on top of a broader default scan — it is the complete, exhaustive list of what gets opened at all. A missing file extension means that file is never read.',
+    docs: [
+      { label: 'Tailwind CSS Docs', url: 'https://tailwindcss.com/docs' },
+    ],
+    resources: [
+      { label: 'Tailwind UI components', url: 'https://tailwindui.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Angular components with inline templates keep their class names inside .ts files — easy to miss if content only lists .html.',
+      'A project can look "mostly fine" while a smaller, uncovered part silently has zero generated styles.',
+    ],
+  },
+
+  'css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific': {
+    apis: ['md:', 'lg:', 'min-width media queries'],
+    related: [
+      { label: 'Tailwind CSS (overview)', route: '/css/tailwind' },
+      { label: 'Dynamic Class Strings Are Invisible to the JIT Scanner', route: '/css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner' },
+      { label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' },
+    ],
+    tip: 'md:grid-cols-2 compiles to a min-width: 768px media query with no upper bound — it stays active through every larger breakpoint unless a later, wider variant is explicitly added.',
+    docs: [
+      { label: 'Tailwind CSS Docs', url: 'https://tailwindcss.com/docs' },
+    ],
+    resources: [
+      { label: 'Tailwind UI components', url: 'https://tailwindui.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A layout using only md: classes is fully intentional at every width from 768px up, including a 4K monitor.',
+      'To change behavior at a larger size, add an explicit later variant (lg:, xl:) — nothing reverts automatically.',
+    ],
+  },
+
   'css/css-architecture': {
     apis: ['BEM', 'ITCSS', 'CSS Modules', '@layer + ITCSS'],
     related: [

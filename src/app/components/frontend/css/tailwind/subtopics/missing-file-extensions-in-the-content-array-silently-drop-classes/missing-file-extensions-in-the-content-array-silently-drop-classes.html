@@ -1,0 +1,27 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tailwind CSS" topicRoute="/css/tailwind" subtopicLabel="Missing File Extensions in the content Array Silently Drop Classes" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Missing File Extensions in the content Array Silently Drop Classes</h1>
+  <p class="page-subtitle">content: ['./src/**/*.html'] means .ts files are never opened at all — any class name living only inside an inline template gets zero CSS, with no error anywhere.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Tailwind CSS 3+ (JIT)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section">
+    <h2>Code Examples</h2>
+    <p>An inline-template Angular component whose classes are never scanned because .ts files aren't in the content array, and the fix.</p>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own first "Common Mistake" explained through exactly what the content array does and doesn't cover. The final subtopic turns to a different kind of gotcha — the mobile-first direction of responsive variants.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Tailwind CSS" topicRoute="/css/tailwind"
+    [prev]="{ label: 'Dynamic Class Strings Are Invisible to the JIT Scanner', route: '/css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner' }"
+    [next]="{ label: 'Responsive Variants Are Mobile-First, Not Breakpoint-Specific', route: '/css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tailwind CSS" topicRoute="/css/tailwind" subtopicLabel="Responsive Variants Are Mobile-First, Not Breakpoint-Specific" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Responsive Variants Are Mobile-First, Not Breakpoint-Specific</h1>
+  <p class="page-subtitle">md:grid-cols-2 has no upper bound — it stays active from 768px all the way up through a 4K monitor unless a later, larger variant overrides it.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Tailwind CSS 1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section">
+    <h2>Code Examples</h2>
+    <p>The actual min-width media query a responsive variant compiles to, and how adding a larger breakpoint variant changes behavior at that point.</p>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own quiz claim about mobile-first responsive variants made concrete through the actual compiled media query. It completes the trio of build-time and mental-model gotchas alongside dynamic class strings and the content array's file coverage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Tailwind CSS" topicRoute="/css/tailwind"
+    [prev]="{ label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' }" />
+</div>

@@ -1634,6 +1634,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ITCSS Layer Order Works Because Class Selectors Beat Element Selectors', route: '/css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors' },
     { label: 'Composable Modifiers Merge by Source Order, Not Special Priority', route: '/css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority' },
   ],
+  // NOTE: keyed 'css-tailwind', NOT bare 'tailwind' — the Angular
+  // hub's own /angular/tailwind topic already claims the bare key.
+  'css-tailwind': [
+    { label: 'Dynamic Class Strings Are Invisible to the JIT Scanner', route: '/css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner' },
+    { label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' },
+    { label: 'Responsive Variants Are Mobile-First, Not Breakpoint-Specific', route: '/css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific' },
+  ],
 };
 
 @Component({

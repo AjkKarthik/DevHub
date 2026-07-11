@@ -4128,7 +4128,26 @@
           </div>
         }
       }
-      <a routerLink="/css/tailwind" routerLinkActive="active"><span class="nl-text">Tailwind CSS</span>@if(progress.isDone('css-tailwind')){<span class="nl-done">✓</span>}@if(diff('css-tailwind');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/tailwind" routerLinkActive="active">
+        <span class="nl-text">Tailwind CSS</span>
+        @if (progress.isDone('css-tailwind')) {<span class="nl-done">✓</span>}
+        @if (diff('css-tailwind'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('css-tailwind')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('css-tailwind')"
+                  (click)="toggleSubtopics('css-tailwind', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('css-tailwind'); as cssTailwindSubs) {
+        @if (isSubtopicsExpanded('css-tailwind')) {
+          <div class="nav-subtopics">
+            @for (s of cssTailwindSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/scroll-driven-animations" routerLinkActive="active"><span class="nl-text">Scroll-Driven Animations</span>@if(progress.isDone('css-scroll-driven-animations')){<span class="nl-done">✓</span>}@if(diff('css-scroll-driven-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/css-transforms" routerLinkActive="active"><span class="nl-text">CSS Transforms</span>@if(progress.isDone('css-css-transforms')){<span class="nl-done">✓</span>}@if(diff('css-css-transforms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/css-filters" routerLinkActive="active"><span class="nl-text">CSS Filters & Effects</span>@if(progress.isDone('css-css-filters')){<span class="nl-done">✓</span>}@if(diff('css-css-filters');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

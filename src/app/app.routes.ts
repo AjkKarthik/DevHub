@@ -1533,7 +1533,12 @@ export const routes: Routes = [
       { path: 'itcss-layer-order-works-because-class-selectors-beat-element-selectors', loadComponent: () => import('./components/frontend/css/css-architecture/subtopics/itcss-layer-order-works-because-class-selectors-beat-element-selectors/itcss-layer-order-works-because-class-selectors-beat-element-selectors').then(m => m.ItcssLayerOrderWorksBecauseClassSelectorsBeatElementSelectorsSubtopic) },
       { path: 'composable-modifiers-merge-by-source-order-not-special-priority', loadComponent: () => import('./components/frontend/css/css-architecture/subtopics/composable-modifiers-merge-by-source-order-not-special-priority/composable-modifiers-merge-by-source-order-not-special-priority').then(m => m.ComposableModifiersMergeBySourceOrderNotSpecialPrioritySubtopic) },
     ] },
-    { path: 'tailwind',                   loadComponent: () => import('./components/frontend/css/tailwind/tailwind').then(m => m.CssTailwind) },
+    { path: 'tailwind', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/tailwind/tailwind').then(m => m.CssTailwind) },
+      { path: 'dynamic-class-strings-are-invisible-to-the-jit-scanner', loadComponent: () => import('./components/frontend/css/tailwind/subtopics/dynamic-class-strings-are-invisible-to-the-jit-scanner/dynamic-class-strings-are-invisible-to-the-jit-scanner').then(m => m.DynamicClassStringsAreInvisibleToTheJitScannerSubtopic) },
+      { path: 'missing-file-extensions-in-the-content-array-silently-drop-classes', loadComponent: () => import('./components/frontend/css/tailwind/subtopics/missing-file-extensions-in-the-content-array-silently-drop-classes/missing-file-extensions-in-the-content-array-silently-drop-classes').then(m => m.MissingFileExtensionsInTheContentArraySilentlyDropClassesSubtopic) },
+      { path: 'responsive-variants-are-mobile-first-not-breakpoint-specific', loadComponent: () => import('./components/frontend/css/tailwind/subtopics/responsive-variants-are-mobile-first-not-breakpoint-specific/responsive-variants-are-mobile-first-not-breakpoint-specific').then(m => m.ResponsiveVariantsAreMobileFirstNotBreakpointSpecificSubtopic) },
+    ] },
     { path: 'scroll-driven-animations',   loadComponent: () => import('./components/frontend/css/scroll-driven-animations/scroll-driven-animations').then(m => m.CssScrollDrivenAnimations) },
     { path: 'css-transforms',             loadComponent: () => import('./components/frontend/css/css-transforms/css-transforms').then(m => m.CssCssTransforms) },
     { path: 'css-filters',               loadComponent: () => import('./components/frontend/css/css-filters/css-filters').then(m => m.CssCssFilters) },
