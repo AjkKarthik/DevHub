@@ -3509,7 +3509,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Semantic &amp; Accessibility</p>
-      <a routerLink="/html/landmark-elements" routerLinkActive="active"><span class="nl-text">Landmark Elements</span>@if(progress.isDone('html-landmark-elements')){<span class="nl-done">✓</span>}@if(diff('html-landmark-elements');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/landmark-elements" routerLinkActive="active">
+        <span class="nl-text">Landmark Elements</span>
+        @if (progress.isDone('html-landmark-elements')) {<span class="nl-done">✓</span>}
+        @if (diff('html-landmark-elements'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('landmark-elements')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('landmark-elements')"
+                  (click)="toggleSubtopics('landmark-elements', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('landmark-elements'); as htmlLandmarkSubs) {
+        @if (isSubtopicsExpanded('landmark-elements')) {
+          <div class="nav-subtopics">
+            @for (s of htmlLandmarkSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/html/accessibility" routerLinkActive="active">
         <span class="nl-text">Accessibility &amp; ARIA</span>
         @if (progress.isDone('html-accessibility')) {<span class="nl-done">✓</span>}

@@ -23531,6 +23531,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/landmark-elements/multiple-main-elements-dont-error': {
+    apis: ['querySelectorAll()', 'hidden attribute', '<main>'],
+    related: [
+      { label: 'Landmark Elements (overview)', route: '/html/landmark-elements' },
+      { label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' },
+      { label: 'Nested header Loses Implicit Banner Role', route: '/html/landmark-elements/nested-header-loses-implicit-banner-role' },
+    ],
+    tip: 'Two <main> elements parse without a single warning — the one-main rule is checked by accessibility linters, never by the HTML parser itself.',
+    docs: [
+      { label: 'MDN — <main>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main' },
+    ],
+    resources: [
+      { label: 'W3C — Using ARIA landmarks', url: 'https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A second <main> element causes zero parse errors and zero console warnings — only an a11y audit tool catches it.',
+      'The spec only forbids more than one main WITHOUT the hidden attribute — briefly having two during a transition is fine if the outgoing one is hidden.',
+    ],
+  },
+
+  'html/landmark-elements/arialabel-distinguishes-multiple-navs': {
+    apis: ['.ariaLabel', 'aria-label', 'aria-labelledby', '<nav>'],
+    related: [
+      { label: 'Landmark Elements (overview)', route: '/html/landmark-elements' },
+      { label: 'Multiple main Elements Don’t Error', route: '/html/landmark-elements/multiple-main-elements-dont-error' },
+      { label: 'Nested header Loses Implicit Banner Role', route: '/html/landmark-elements/nested-header-loses-implicit-banner-role' },
+    ],
+    tip: 'Before labeling, every unlabeled <nav>\'s .ariaLabel reads back as identical null — there is no default value that already distinguishes them.',
+    docs: [
+      { label: 'MDN — <nav>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav' },
+    ],
+    resources: [
+      { label: 'a11yproject — Landmark regions', url: 'https://www.a11yproject.com/posts/aria-landmark-roles/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Multiple <nav> elements are completely valid — primary, breadcrumb, and footer nav commonly coexist on one page.',
+      '.ariaLabel is a live, readable/writable JS property (ARIAMixin) that stays in sync with the aria-label attribute in both directions.',
+    ],
+  },
+
+  'html/landmark-elements/nested-header-loses-implicit-banner-role': {
+    apis: ['closest()', '<header>', 'implicit ARIA role'],
+    related: [
+      { label: 'Landmark Elements (overview)', route: '/html/landmark-elements' },
+      { label: 'Multiple main Elements Don’t Error', route: '/html/landmark-elements/multiple-main-elements-dont-error' },
+      { label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' },
+    ],
+    tip: 'header.closest(\'article, aside, main, nav, section\') mirrors the exact structural condition the spec uses to decide whether a header keeps its implicit banner role.',
+    docs: [
+      { label: 'MDN — <header>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/header' },
+    ],
+    resources: [
+      { label: 'MDN — ARIA landmark roles', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles#landmark_roles', badge: 'docs' },
+    ],
+    gotchas: [
+      'A header nested at ANY depth inside article/aside/main/nav/section loses the banner role — not just as a direct child.',
+      'There is no standard JS property to read a computed implicit role directly — the closest() check works by recreating the spec\'s own condition, not by querying the role.',
+    ],
+  },
+
   'html/aria-roles': {
     apis: ['role="button"', 'role="dialog"', 'role="alertdialog"', 'role="alert"', 'role="status"', 'role="tooltip"', 'role="tab"', 'role="tabpanel"', 'aria-expanded', 'aria-controls', 'aria-selected', 'aria-live'],
     related: [

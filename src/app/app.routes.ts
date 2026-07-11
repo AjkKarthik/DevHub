@@ -1396,7 +1396,12 @@ export const routes: Routes = [
       { path: 'unsupported-types-fallback-to-text', loadComponent: () => import('./components/frontend/html/input-types/subtopics/unsupported-types-fallback-to-text/unsupported-types-fallback-to-text').then(m => m.UnsupportedTypesFallbackToTextSubtopic) },
       { path: 'step-mismatch-checkable-via-validity', loadComponent: () => import('./components/frontend/html/input-types/subtopics/step-mismatch-checkable-via-validity/step-mismatch-checkable-via-validity').then(m => m.StepMismatchCheckableViaValiditySubtopic) },
     ] },
-    { path: 'landmark-elements',   loadComponent: () => import('./components/frontend/html/landmark-elements/landmark-elements').then(m => m.HtmlLandmarkElements) },
+    { path: 'landmark-elements', children: [
+      { path: '', loadComponent: () => import('./components/frontend/html/landmark-elements/landmark-elements').then(m => m.HtmlLandmarkElements) },
+      { path: 'multiple-main-elements-dont-error', loadComponent: () => import('./components/frontend/html/landmark-elements/subtopics/multiple-main-elements-dont-error/multiple-main-elements-dont-error').then(m => m.MultipleMainElementsDontErrorSubtopic) },
+      { path: 'arialabel-distinguishes-multiple-navs', loadComponent: () => import('./components/frontend/html/landmark-elements/subtopics/arialabel-distinguishes-multiple-navs/arialabel-distinguishes-multiple-navs').then(m => m.ArialabelDistinguishesMultipleNavsSubtopic) },
+      { path: 'nested-header-loses-implicit-banner-role', loadComponent: () => import('./components/frontend/html/landmark-elements/subtopics/nested-header-loses-implicit-banner-role/nested-header-loses-implicit-banner-role').then(m => m.NestedHeaderLosesImplicitBannerRoleSubtopic) },
+    ] },
     { path: 'aria-roles',          loadComponent: () => import('./components/frontend/html/aria-roles/aria-roles').then(m => m.HtmlAriaRoles) },
     { path: 'focus-management',    loadComponent: () => import('./components/frontend/html/focus-management/focus-management').then(m => m.HtmlFocusManagement) },
     { path: 'storage-apis',        loadComponent: () => import('./components/frontend/html/storage-apis/storage-apis').then(m => m.HtmlStorageApis) },

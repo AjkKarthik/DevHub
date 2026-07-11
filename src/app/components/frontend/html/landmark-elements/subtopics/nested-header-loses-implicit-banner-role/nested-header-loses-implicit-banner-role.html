@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Landmark Elements" topicRoute="/html/landmark-elements" subtopicLabel="Nested header Loses Implicit Banner Role" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Nested header Loses Implicit Banner Role</h1>
+  <p class="page-subtitle">A &lt;header&gt; only gets the implicit "banner" landmark role at the document's top level — nesting it inside article/aside/main/nav/section removes it.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>A top-level header and an article-nested header get checked against the exact structural condition the spec uses to decide the implicit banner role.</p>
+    <app-live-playground title="Nested header loses banner role" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This closes out three landmark gotchas the browser itself won't warn you about: an unenforced one-main rule, unlabeled navs that are indistinguishable by name, and a header's landmark role silently depending on its nesting position. Return to the Landmark Elements overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Landmark Elements" topicRoute="/html/landmark-elements"
+    [prev]="{ label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' }" />
+</div>

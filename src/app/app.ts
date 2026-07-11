@@ -1522,6 +1522,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' },
     { label: 'step Mismatch Is Checkable via Validity', route: '/html/input-types/step-mismatch-checkable-via-validity' },
   ],
+  'landmark-elements': [
+    { label: 'Multiple main Elements Don’t Error', route: '/html/landmark-elements/multiple-main-elements-dont-error' },
+    { label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' },
+    { label: 'Nested header Loses Implicit Banner Role', route: '/html/landmark-elements/nested-header-loses-implicit-banner-role' },
+  ],
 };
 
 @Component({
