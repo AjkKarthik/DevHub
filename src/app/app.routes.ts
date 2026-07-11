@@ -1431,7 +1431,12 @@ export const routes: Routes = [
   ] },
   { path: 'css', children: [
     { path: '',          loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) },
-    { path: 'box-model', loadComponent: () => import('./components/frontend/css/box-model/box-model').then(m => m.CssBoxModel) },
+    { path: 'box-model', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/box-model/box-model').then(m => m.CssBoxModel) },
+      { path: 'margin-collapse-uses-larger-value-not-the-sum', loadComponent: () => import('./components/frontend/css/box-model/subtopics/margin-collapse-uses-larger-value-not-the-sum/margin-collapse-uses-larger-value-not-the-sum').then(m => m.MarginCollapseUsesLargerValueNotTheSumSubtopic) },
+      { path: 'outline-never-affects-box-model-layout', loadComponent: () => import('./components/frontend/css/box-model/subtopics/outline-never-affects-box-model-layout/outline-never-affects-box-model-layout').then(m => m.OutlineNeverAffectsBoxModelLayoutSubtopic) },
+      { path: 'parent-child-collapse-moves-the-parents-own-box', loadComponent: () => import('./components/frontend/css/box-model/subtopics/parent-child-collapse-moves-the-parents-own-box/parent-child-collapse-moves-the-parents-own-box').then(m => m.ParentChildCollapseMovesTheParentsOwnBoxSubtopic) },
+    ] },
     { path: 'flexbox',   loadComponent: () => import('./components/frontend/css/flexbox/flexbox').then(m => m.CssFlexbox) },
     { path: 'grid',        loadComponent: () => import('./components/frontend/css/grid/grid').then(m => m.CssGrid) },
     { path: 'positioning',        loadComponent: () => import('./components/frontend/css/positioning/positioning').then(m => m.CssPositioning) },

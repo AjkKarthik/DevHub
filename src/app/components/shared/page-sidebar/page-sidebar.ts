@@ -21474,6 +21474,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/box-model/margin-collapse-uses-larger-value-not-the-sum': {
+    apis: ['margin', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Box Model (overview)', route: '/css/box-model' },
+      { label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' },
+      { label: 'Parent-Child Collapse Moves the Parent’s Own Box', route: '/css/box-model/parent-child-collapse-moves-the-parents-own-box' },
+    ],
+    tip: 'Adjacent vertical margins collapse to the LARGER of the two, not their sum — directly measurable with getBoundingClientRect().',
+    docs: [
+      { label: 'MDN — Mastering margin collapsing', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Box Model', url: 'https://css-tricks.com/the-css-box-model/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Margin collapse only happens between adjacent block-level elements in normal flow — flex and grid containers never collapse their children\'s margins.',
+      'getBoundingClientRect() gives the true rendered layout, making margin collapse claims directly verifiable rather than something you have to eyeball.',
+    ],
+  },
+
+  'css/box-model/outline-never-affects-box-model-layout': {
+    apis: ['outline', 'outline-offset', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Box Model (overview)', route: '/css/box-model' },
+      { label: 'Margin Collapse Uses the Larger Value', route: '/css/box-model/margin-collapse-uses-larger-value-not-the-sum' },
+      { label: 'Parent-Child Collapse Moves the Parent’s Own Box', route: '/css/box-model/parent-child-collapse-moves-the-parents-own-box' },
+    ],
+    tip: 'outline reserves zero layout space at any width or offset — exactly why it\'s the recommended tool for focus indicators, which must never cause a layout shift.',
+    docs: [
+      { label: 'MDN — outline', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/outline' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Box Model', url: 'https://css-tricks.com/the-css-box-model/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Unlike border, outline never adds to an element\'s rendered size in any box-sizing mode.',
+      'outline-offset repositions the already layout-inert outline — it also has zero effect on layout.',
+    ],
+  },
+
+  'css/box-model/parent-child-collapse-moves-the-parents-own-box': {
+    apis: ['margin', 'overflow', 'display: flow-root', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Box Model (overview)', route: '/css/box-model' },
+      { label: 'Margin Collapse Uses the Larger Value', route: '/css/box-model/margin-collapse-uses-larger-value-not-the-sum' },
+      { label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' },
+    ],
+    tip: 'A first child\'s collapsing top margin doesn\'t create internal space — it shifts the PARENT\'s own bounding box, measurably, until a Block Formatting Context blocks it.',
+    docs: [
+      { label: 'MDN — Mastering margin collapsing', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Box Model', url: 'https://css-tricks.com/the-css-box-model/', badge: 'blog' },
+    ],
+    gotchas: [
+      'overflow: hidden (or display: flow-root) on the parent creates a BFC, specifically blocking this collapse.',
+      'Before the fix, the wrapper\'s own getBoundingClientRect().top equals the child\'s — proof the margin escaped rather than being absorbed.',
+    ],
+  },
+
   // ── CSS: Backgrounds & Borders ────────────────────────────────────────────
   'css/backgrounds-borders': {
     apis: ['background-size', 'background-image', 'linear-gradient()', 'radial-gradient()', 'border-radius', 'box-shadow', 'object-fit', 'aspect-ratio', 'outline'],

@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Box Model" topicRoute="/css/box-model" subtopicLabel="Margin Collapse Uses the Larger Value, Not the Sum" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Margin Collapse Uses the Larger Value, Not the Sum</h1>
+  <p class="page-subtitle">A 30px margin-bottom next to a 20px margin-top produces a 30px gap, not 50px — measurable directly with getBoundingClientRect().</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Measure the actual rendered gap between two blocks with different vertical margins and compare it against both the sum and the max of the declared values.</p>
+    <app-live-playground title="Margin collapse uses the larger value" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This establishes the core collapse rule between siblings. Next, see how outline — despite looking like a second border — never affects layout at all, not even by a single pixel.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Box Model" topicRoute="/css/box-model"
+    [next]="{ label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' }" />
+</div>

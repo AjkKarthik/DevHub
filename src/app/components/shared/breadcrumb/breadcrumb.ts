@@ -1213,6 +1213,9 @@ const HTML_LABELS: Record<string, string> = {
 
 const CSS_LABELS: Record<string, string> = {
   'box-model':         'Box Model',
+  'box-model/margin-collapse-uses-larger-value-not-the-sum': 'Margin Collapse Uses the Larger Value',
+  'box-model/outline-never-affects-box-model-layout': 'outline Never Affects Box Model Layout',
+  'box-model/parent-child-collapse-moves-the-parents-own-box': 'Parent-Child Collapse Moves the Parent’s Own Box',
   'flexbox':           'Flexbox',
   'grid':              'CSS Grid',
   'positioning':       'Positioning & Stacking',

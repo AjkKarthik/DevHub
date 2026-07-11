@@ -1547,6 +1547,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' },
     { label: 'No Native Keyboard-to-dragstart Mapping Exists', route: '/html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists' },
   ],
+  'box-model': [
+    { label: 'Margin Collapse Uses the Larger Value', route: '/css/box-model/margin-collapse-uses-larger-value-not-the-sum' },
+    { label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' },
+    { label: 'Parent-Child Collapse Moves the Parent’s Own Box', route: '/css/box-model/parent-child-collapse-moves-the-parents-own-box' },
+  ],
 };
 
 @Component({
