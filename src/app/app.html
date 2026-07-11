@@ -3980,7 +3980,26 @@
           </div>
         }
       }
-      <a routerLink="/css/backgrounds-borders" routerLinkActive="active"><span class="nl-text">Backgrounds &amp; Borders</span>@if(progress.isDone('css-backgrounds-borders')){<span class="nl-done">✓</span>}@if(diff('css-backgrounds-borders');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/backgrounds-borders" routerLinkActive="active">
+        <span class="nl-text">Backgrounds &amp; Borders</span>
+        @if (progress.isDone('css-backgrounds-borders')) {<span class="nl-done">✓</span>}
+        @if (diff('css-backgrounds-borders'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('backgrounds-borders')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('backgrounds-borders')"
+                  (click)="toggleSubtopics('backgrounds-borders', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('backgrounds-borders'); as cssBgBordersSubs) {
+        @if (isSubtopicsExpanded('backgrounds-borders')) {
+          <div class="nav-subtopics">
+            @for (s of cssBgBordersSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

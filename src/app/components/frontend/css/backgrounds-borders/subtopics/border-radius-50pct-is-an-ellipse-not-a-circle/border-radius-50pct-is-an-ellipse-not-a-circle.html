@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Backgrounds &amp; Borders" topicRoute="/css/backgrounds-borders" subtopicLabel="border-radius: 50% Is an Ellipse, Not a Circle" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">border-radius: 50% Is an Ellipse, Not a Circle</h1>
+  <p class="page-subtitle">Percentage border-radius resolves against width and height independently — only a square element gets a true circle from 50%.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Hit-test the same relative corner point on a 200x100 rectangle and a 100x100 square, both with border-radius: 50%, to prove their corner curves are shaped differently.</p>
+    <app-live-playground title="border-radius: 50% is an ellipse, not a circle" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This directly answers the main page's own Q&amp;A about border-radius: 8px vs 50% on non-square elements, confirmed here via a real corner hit-test rather than just visual inspection.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Backgrounds &amp; Borders" topicRoute="/css/backgrounds-borders"
+    [prev]="{ label: 'object-fit Does Nothing Without Explicit Dimensions', route: '/css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions' }" />
+</div>

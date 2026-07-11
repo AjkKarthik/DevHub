@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Backgrounds &amp; Borders" topicRoute="/css/backgrounds-borders" subtopicLabel="The background Shorthand Resets Unlisted Sub-Properties" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">The background Shorthand Resets Unlisted Sub-Properties</h1>
+  <p class="page-subtitle">A background-size: cover set earlier silently reverts to auto the moment a later background shorthand is applied — even though that shorthand never mentions size.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare the computed background-size and background-position before and after applying a background shorthand that only mentions image, position, and repeat.</p>
+    <app-live-playground title="background shorthand resets unlisted sub-properties" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own first "Common Mistake" made concrete and checkable via computed styles. The next subtopic turns to object-fit — another background/image property with a gotcha condition of its own, this time about element sizing rather than the shorthand.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Backgrounds &amp; Borders" topicRoute="/css/backgrounds-borders"
+    [next]="{ label: 'object-fit Does Nothing Without Explicit Dimensions', route: '/css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions' }" />
+</div>

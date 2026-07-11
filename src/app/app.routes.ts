@@ -1492,7 +1492,12 @@ export const routes: Routes = [
       { path: 'color-mix-always-produces-an-opaque-result', loadComponent: () => import('./components/frontend/css/colors-theming/subtopics/color-mix-always-produces-an-opaque-result/color-mix-always-produces-an-opaque-result').then(m => m.ColorMixAlwaysProducesAnOpaqueResultSubtopic) },
       { path: 'wcag-contrast-ratio-is-directly-computable-from-rgb', loadComponent: () => import('./components/frontend/css/colors-theming/subtopics/wcag-contrast-ratio-is-directly-computable-from-rgb/wcag-contrast-ratio-is-directly-computable-from-rgb').then(m => m.WcagContrastRatioIsDirectlyComputableFromRgbSubtopic) },
     ] },
-    { path: 'backgrounds-borders', loadComponent: () => import('./components/frontend/css/backgrounds-borders/backgrounds-borders').then(m => m.CssBackgroundsBorders) },
+    { path: 'backgrounds-borders', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/backgrounds-borders/backgrounds-borders').then(m => m.CssBackgroundsBorders) },
+      { path: 'background-shorthand-resets-unlisted-sub-properties', loadComponent: () => import('./components/frontend/css/backgrounds-borders/subtopics/background-shorthand-resets-unlisted-sub-properties/background-shorthand-resets-unlisted-sub-properties').then(m => m.BackgroundShorthandResetsUnlistedSubPropertiesSubtopic) },
+      { path: 'object-fit-does-nothing-without-explicit-dimensions', loadComponent: () => import('./components/frontend/css/backgrounds-borders/subtopics/object-fit-does-nothing-without-explicit-dimensions/object-fit-does-nothing-without-explicit-dimensions').then(m => m.ObjectFitDoesNothingWithoutExplicitDimensionsSubtopic) },
+      { path: 'border-radius-50pct-is-an-ellipse-not-a-circle', loadComponent: () => import('./components/frontend/css/backgrounds-borders/subtopics/border-radius-50pct-is-an-ellipse-not-a-circle/border-radius-50pct-is-an-ellipse-not-a-circle').then(m => m.BorderRadius50pctIsAnEllipseNotACircleSubtopic) },
+    ] },
     { path: 'container-queries',  loadComponent: () => import('./components/frontend/css/container-queries/container-queries').then(m => m.CssContainerQueries) },
     { path: 'css-layers',         loadComponent: () => import('./components/frontend/css/css-layers/css-layers').then(m => m.CssCssLayers) },
     { path: 'css-nesting',         loadComponent: () => import('./components/frontend/css/css-nesting/css-nesting').then(m => m.CssCssNesting) },

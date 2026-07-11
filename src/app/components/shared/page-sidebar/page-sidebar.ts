@@ -21558,6 +21558,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/backgrounds-borders/background-shorthand-resets-unlisted-sub-properties': {
+    apis: ['background (shorthand)', 'background-size', 'getComputedStyle()'],
+    related: [
+      { label: 'Backgrounds & Borders (overview)', route: '/css/backgrounds-borders' },
+      { label: 'object-fit Does Nothing Without Explicit Dimensions', route: '/css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions' },
+      { label: 'border-radius: 50% Is an Ellipse, Not a Circle', route: '/css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle' },
+    ],
+    tip: 'A background-size: cover set earlier reverts to auto the moment a later background shorthand omits it — confirmed directly via getComputedStyle().backgroundSize before and after.',
+    docs: [
+      { label: 'MDN — background', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/background' },
+    ],
+    resources: [
+      { label: 'MDN — background-size', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/background-size', badge: 'docs' },
+    ],
+    gotchas: [
+      'The shorthand always sets all eight background sub-properties — anything not mentioned reverts to its initial value, it never merges with prior declarations.',
+      'Re-state the affected sub-property after the shorthand, or avoid the shorthand entirely and set only background-image, to preserve earlier sizing.',
+    ],
+  },
+
+  'css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions': {
+    apis: ['object-fit', 'getBoundingClientRect()', 'naturalWidth/naturalHeight'],
+    related: [
+      { label: 'Backgrounds & Borders (overview)', route: '/css/backgrounds-borders' },
+      { label: 'The background Shorthand Resets Unlisted Sub-Properties', route: '/css/backgrounds-borders/background-shorthand-resets-unlisted-sub-properties' },
+      { label: 'border-radius: 50% Is an Ellipse, Not a Circle', route: '/css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle' },
+    ],
+    tip: 'Without explicit width/height, an object-fit: cover image renders at its raw intrinsic size — confirmed via getBoundingClientRect() matching naturalWidth/naturalHeight exactly until sizing is added.',
+    docs: [
+      { label: 'MDN — object-fit', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit' },
+    ],
+    resources: [
+      { label: 'MDN — object-fit', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit', badge: 'docs' },
+    ],
+    gotchas: [
+      'object-fit only governs fitting within the element\'s OWN box — it never sizes a surrounding container or itself.',
+      'A gallery grid still needs explicit width/height (or aspect-ratio) on every image element for uniform, cropped thumbnails.',
+    ],
+  },
+
+  'css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle': {
+    apis: ['border-radius', 'elementFromPoint()'],
+    related: [
+      { label: 'Backgrounds & Borders (overview)', route: '/css/backgrounds-borders' },
+      { label: 'The background Shorthand Resets Unlisted Sub-Properties', route: '/css/backgrounds-borders/background-shorthand-resets-unlisted-sub-properties' },
+      { label: 'object-fit Does Nothing Without Explicit Dimensions', route: '/css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions' },
+    ],
+    tip: 'A corner hit-test with document.elementFromPoint() proves a 200x100 box with border-radius: 50% clips a point that the equivalent 100x100 square does not — the two shapes are genuinely different.',
+    docs: [
+      { label: 'MDN — border-radius', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius' },
+    ],
+    resources: [
+      { label: 'MDN — border-radius', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius', badge: 'docs' },
+    ],
+    gotchas: [
+      'Percentage border-radius resolves against width and height independently — only equal dimensions produce a true circle.',
+      'For a pill/stadium shape on a non-square element, use a fixed radius (e.g. 999px or height/2), not a percentage.',
+    ],
+  },
+
   'css/cheatsheet': {
     apis: ['Selectors', 'Box Model', 'Flexbox', 'Grid', 'Typography', 'Colors & Variables', 'Animations', 'Modern CSS'],
     related: [
