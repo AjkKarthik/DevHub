@@ -1449,7 +1449,12 @@ export const routes: Routes = [
       { path: 'grid-column-1-to-3-spans-two-columns-not-three', loadComponent: () => import('./components/frontend/css/grid/subtopics/grid-column-1-to-3-spans-two-columns-not-three/grid-column-1-to-3-spans-two-columns-not-three').then(m => m.GridColumn1To3SpansTwoColumnsNotThreeSubtopic) },
       { path: 'dense-packing-reorders-visually-not-in-dom', loadComponent: () => import('./components/frontend/css/grid/subtopics/dense-packing-reorders-visually-not-in-dom/dense-packing-reorders-visually-not-in-dom').then(m => m.DensePackingReordersVisuallyNotInDomSubtopic) },
     ] },
-    { path: 'positioning',        loadComponent: () => import('./components/frontend/css/positioning/positioning').then(m => m.CssPositioning) },
+    { path: 'positioning', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/positioning/positioning').then(m => m.CssPositioning) },
+      { path: 'z-index-does-nothing-without-position-set', loadComponent: () => import('./components/frontend/css/positioning/subtopics/z-index-does-nothing-without-position-set/z-index-does-nothing-without-position-set').then(m => m.ZIndexDoesNothingWithoutPositionSetSubtopic) },
+      { path: 'child-z-index-cant-escape-parent-stacking-context', loadComponent: () => import('./components/frontend/css/positioning/subtopics/child-z-index-cant-escape-parent-stacking-context/child-z-index-cant-escape-parent-stacking-context').then(m => m.ChildZIndexCantEscapeParentStackingContextSubtopic) },
+      { path: 'sticky-without-an-offset-behaves-like-static', loadComponent: () => import('./components/frontend/css/positioning/subtopics/sticky-without-an-offset-behaves-like-static/sticky-without-an-offset-behaves-like-static').then(m => m.StickyWithoutAnOffsetBehavesLikeStaticSubtopic) },
+    ] },
     { path: 'custom-properties',  loadComponent: () => import('./components/frontend/css/custom-properties/custom-properties').then(m => m.CssCustomProperties) },
     { path: 'selectors',          loadComponent: () => import('./components/frontend/css/selectors/selectors').then(m => m.CssSelectors) },
     { path: 'typography',         loadComponent: () => import('./components/frontend/css/typography/typography').then(m => m.CssTypography) },

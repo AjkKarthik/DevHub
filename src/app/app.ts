@@ -1562,6 +1562,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' },
     { label: 'Dense Packing Reorders Visually, Not in the DOM', route: '/css/grid/dense-packing-reorders-visually-not-in-dom' },
   ],
+  'positioning': [
+    { label: 'z-index Does Nothing Without position Set', route: '/css/positioning/z-index-does-nothing-without-position-set' },
+    { label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' },
+    { label: 'sticky Without an Offset Behaves Like static', route: '/css/positioning/sticky-without-an-offset-behaves-like-static' },
+  ],
 };
 
 @Component({

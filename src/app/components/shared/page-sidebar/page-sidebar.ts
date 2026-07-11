@@ -21990,6 +21990,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/positioning/z-index-does-nothing-without-position-set': {
+    apis: ['z-index', 'position', 'document.elementFromPoint()'],
+    related: [
+      { label: 'CSS Positioning & Stacking (overview)', route: '/css/positioning' },
+      { label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' },
+      { label: 'sticky Without an Offset Behaves Like static', route: '/css/positioning/sticky-without-an-offset-behaves-like-static' },
+    ],
+    tip: 'A position: static element\'s z-index is completely ignored, no matter how large — document.elementFromPoint() proves a lower-z-index positioned sibling still wins visually.',
+    docs: [
+      { label: 'MDN — z-index', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/z-index' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — z-index', url: 'https://css-tricks.com/almanac/properties/z/z-index/', badge: 'blog' },
+    ],
+    gotchas: [
+      'The fix is always position: relative (or another non-static value) FIRST — no z-index number alone will ever work on a static element.',
+      'document.elementFromPoint(x, y) is a reliable, code-based way to check real stacking order instead of reasoning about z-index numbers by eye.',
+    ],
+  },
+
+  'css/positioning/child-z-index-cant-escape-parent-stacking-context': {
+    apis: ['z-index', 'stacking context', 'isolation: isolate', 'document.elementFromPoint()'],
+    related: [
+      { label: 'CSS Positioning & Stacking (overview)', route: '/css/positioning' },
+      { label: 'z-index Does Nothing Without position Set', route: '/css/positioning/z-index-does-nothing-without-position-set' },
+      { label: 'sticky Without an Offset Behaves Like static', route: '/css/positioning/sticky-without-an-offset-behaves-like-static' },
+    ],
+    tip: 'A tooltip with z-index: 9999 nested in a lower-ranked stacking context still loses to a sibling with z-index: 2 — the huge number never even competes at the outer level.',
+    docs: [
+      { label: 'MDN — Stacking context', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — z-index', url: 'https://css-tricks.com/almanac/properties/z/z-index/', badge: 'blog' },
+    ],
+    gotchas: [
+      'No z-index number is high enough to fix this — the element is trapped in the wrong stacking context; isolation: isolate or DOM restructuring is the real fix.',
+      'opacity < 1, transform, filter, and will-change also create stacking contexts — a component can trap children\'s z-index without ever setting z-index itself.',
+    ],
+  },
+
+  'css/positioning/sticky-without-an-offset-behaves-like-static': {
+    apis: ['position: sticky', 'top/bottom/left/right offset', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Positioning & Stacking (overview)', route: '/css/positioning' },
+      { label: 'z-index Does Nothing Without position Set', route: '/css/positioning/z-index-does-nothing-without-position-set' },
+      { label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' },
+    ],
+    tip: 'sticky with no top/bottom/left/right offset never activates — it scrolls away exactly like position: static, measurably via getBoundingClientRect() before/after a simulated scroll.',
+    docs: [
+      { label: 'MDN — position', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/position' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — z-index', url: 'https://css-tricks.com/almanac/properties/z/z-index/', badge: 'blog' },
+    ],
+    gotchas: [
+      'This is a SEPARATE prerequisite from the overflow: hidden / scroll-container issue — two different missing requirements, same silent symptom.',
+      'Any offset value (even top: 0) activates sticky pinning — leaving all four unset is what causes the total no-op.',
+    ],
+  },
+
   // ── CSS: Grid ─────────────────────────────────────────────────────────────
   'css/grid': {
     apis: ['display: grid', 'grid-template-columns', 'grid-template-areas', 'repeat()', 'minmax()', 'fr', 'gap', 'grid-area'],
