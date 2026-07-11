@@ -21842,6 +21842,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-layers/unlayered-styles-always-beat-every-layer-regardless-of-specificity': {
+    apis: ['@layer', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Cascade Layers (overview)', route: '/css/css-layers' },
+      { label: '!important Reverses Layer Priority — Lower Layers Win', route: '/css/css-layers/important-reverses-layer-priority-lower-layers-win' },
+      { label: 'The First @layer Encountered Sets Its Position, Not Declaration Order', route: '/css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order' },
+    ],
+    tip: 'A one-selector unlayered rule beats a triple-ID-and-class layered rule on the same element — confirmed via getComputedStyle(), since the layer/unlayered comparison happens before specificity is ever checked.',
+    docs: [
+      { label: 'MDN — @layer', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@layer' },
+    ],
+    resources: [
+      { label: 'CSS Cascade Layers Explainer', url: 'https://css.oddbird.net/layers/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Migrating to @layer only controls styles that actually participate in the layer system — any leftover unlayered CSS keeps outranking every layer.',
+      'This is exactly why adopting layers incrementally is considered safe: existing unlayered code keeps winning by default.',
+    ],
+  },
+
+  'css/css-layers/important-reverses-layer-priority-lower-layers-win': {
+    apis: ['@layer', '!important', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Cascade Layers (overview)', route: '/css/css-layers' },
+      { label: 'Unlayered Styles Always Beat Every Layer, Regardless of Specificity', route: '/css/css-layers/unlayered-styles-always-beat-every-layer-regardless-of-specificity' },
+      { label: 'The First @layer Encountered Sets Its Position, Not Declaration Order', route: '/css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order' },
+    ],
+    tip: 'Two identical !important rules, only differing by layer order — the earliest-declared layer wins, the exact opposite of normal layer priority, confirmed via getComputedStyle().',
+    docs: [
+      { label: 'MDN — @layer', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@layer' },
+    ],
+    resources: [
+      { label: 'CSS Cascade Layers Explainer', url: 'https://css.oddbird.net/layers/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Reserve !important inside layers for reset-style rules meant to never be overridden — not for typical utility overrides, which expect the normal (non-reversed) order.',
+      'This reversal only kicks in when BOTH competing declarations use !important — a single !important rule still just beats non-important rules normally.',
+    ],
+  },
+
+  'css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order': {
+    apis: ['@layer', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Cascade Layers (overview)', route: '/css/css-layers' },
+      { label: 'Unlayered Styles Always Beat Every Layer, Regardless of Specificity', route: '/css/css-layers/unlayered-styles-always-beat-every-layer-regardless-of-specificity' },
+      { label: '!important Reverses Layer Priority — Lower Layers Win', route: '/css/css-layers/important-reverses-layer-priority-lower-layers-win' },
+    ],
+    tip: 'A layer filled in as a block before the explicit order statement locks its position immediately — the later order statement can only append layers not yet registered, confirmed via getComputedStyle().',
+    docs: [
+      { label: 'MDN — @layer', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@layer' },
+    ],
+    resources: [
+      { label: 'CSS Cascade Layers Explainer', url: 'https://css.oddbird.net/layers/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Always put the explicit @layer order statement as the very first line of a stylesheet to avoid this trap entirely.',
+      'A partial/imported file that fills in a layer\'s styles before the main stylesheet\'s order statement runs is a realistic way to trigger this by accident.',
+    ],
+  },
+
   'css/container-queries': {
     apis: ['container-type', 'container-name', 'container', '@container', 'cqw', 'cqh', 'cqi', 'cqb'],
     related: [

@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Cascade Layers" topicRoute="/css/css-layers" subtopicLabel="!important Reverses Layer Priority — Lower Layers Win" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">!important Reverses Layer Priority — Lower Layers Win</h1>
+  <p class="page-subtitle">Two identical !important rules, one difference: layer order. The earliest-declared layer wins — the exact opposite of normal layer priority.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 99+, Firefox 97+, Safari 15.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare computed color when both a first-declared and a last-declared layer use !important on the same property.</p>
+    <app-live-playground title="important reverses layer priority" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own third "Common Mistake" made directly measurable via computed styles. The final subtopic turns to the main page's own first mistake — proving exactly how the FIRST &#64;layer statement or block encountered establishes layer order, regardless of where the explicit order list appears.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Cascade Layers" topicRoute="/css/css-layers"
+    [prev]="{ label: 'Unlayered Styles Always Beat Every Layer, Regardless of Specificity', route: '/css/css-layers/unlayered-styles-always-beat-every-layer-regardless-of-specificity' }"
+    [next]="{ label: 'The First @layer Encountered Sets Its Position, Not Declaration Order', route: '/css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order' }" />
+</div>

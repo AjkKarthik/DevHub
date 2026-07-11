@@ -1509,7 +1509,12 @@ export const routes: Routes = [
       { path: 'container-type-size-collapses-height-without-explicit-sizing', loadComponent: () => import('./components/frontend/css/container-queries/subtopics/container-type-size-collapses-height-without-explicit-sizing/container-type-size-collapses-height-without-explicit-sizing').then(m => m.ContainerTypeSizeCollapsesHeightWithoutExplicitSizingSubtopic) },
       { path: 'a-container-cannot-query-or-style-itself', loadComponent: () => import('./components/frontend/css/container-queries/subtopics/a-container-cannot-query-or-style-itself/a-container-cannot-query-or-style-itself').then(m => m.AContainerCannotQueryOrStyleItselfSubtopic) },
     ] },
-    { path: 'css-layers',         loadComponent: () => import('./components/frontend/css/css-layers/css-layers').then(m => m.CssCssLayers) },
+    { path: 'css-layers', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/css-layers/css-layers').then(m => m.CssCssLayers) },
+      { path: 'unlayered-styles-always-beat-every-layer-regardless-of-specificity', loadComponent: () => import('./components/frontend/css/css-layers/subtopics/unlayered-styles-always-beat-every-layer-regardless-of-specificity/unlayered-styles-always-beat-every-layer-regardless-of-specificity').then(m => m.UnlayeredStylesAlwaysBeatEveryLayerRegardlessOfSpecificitySubtopic) },
+      { path: 'important-reverses-layer-priority-lower-layers-win', loadComponent: () => import('./components/frontend/css/css-layers/subtopics/important-reverses-layer-priority-lower-layers-win/important-reverses-layer-priority-lower-layers-win').then(m => m.ImportantReversesLayerPriorityLowerLayersWinSubtopic) },
+      { path: 'first-encountered-layer-block-sets-its-position-not-declaration-order', loadComponent: () => import('./components/frontend/css/css-layers/subtopics/first-encountered-layer-block-sets-its-position-not-declaration-order/first-encountered-layer-block-sets-its-position-not-declaration-order').then(m => m.FirstEncounteredLayerBlockSetsItsPositionNotDeclarationOrderSubtopic) },
+    ] },
     { path: 'css-nesting',         loadComponent: () => import('./components/frontend/css/css-nesting/css-nesting').then(m => m.CssCssNesting) },
     { path: 'logical-properties',  loadComponent: () => import('./components/frontend/css/logical-properties/logical-properties').then(m => m.CssLogicalProperties) },
     { path: 'css-architecture',    loadComponent: () => import('./components/frontend/css/css-architecture/css-architecture').then(m => m.CssCssArchitecture) },
