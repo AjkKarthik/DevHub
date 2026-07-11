@@ -1687,7 +1687,7 @@ off here with a date.
 #### CSS — 22 topic pages
 
 - [x] `/css/box-model` — CSS Box Model (2026-07-11 — FIRST CSS hub subtopic set, conventions documented in CLAUDE.md — 3 subtopics: margin-collapse-uses-larger-value-not-the-sum, outline-never-affects-box-model-layout, parent-child-collapse-moves-the-parents-own-box; all three claims verified empirically via getBoundingClientRect() in-browser before writing; SUBTOPICS map key left bare ('box-model'), collision-free)
-- [ ] `/css/flexbox` — CSS Flexbox
+- [x] `/css/flexbox` — CSS Flexbox (2026-07-11 — 3 subtopics: min-width-auto-lets-items-overflow-container, flex-basis-wins-over-width-when-both-are-set, order-changes-visual-position-not-dom-order; all three claims verified empirically via getBoundingClientRect()/DOM traversal in-browser before writing; caught and fixed a real build error — a page-sidebar.ts resources entry missing the required badge field; SUBTOPICS map key left bare ('flexbox'), collision-free)
 - [ ] `/css/grid` — CSS Grid
 - [ ] `/css/positioning` — Positioning & Stacking
 - [ ] `/css/custom-properties` — CSS Custom Properties
