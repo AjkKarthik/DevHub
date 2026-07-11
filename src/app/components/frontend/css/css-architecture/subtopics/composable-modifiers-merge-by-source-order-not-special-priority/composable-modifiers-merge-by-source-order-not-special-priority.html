@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Architecture" topicRoute="/css/css-architecture" subtopicLabel="Composable Modifiers Merge by Source Order, Not Special Priority" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Composable Modifiers Merge by Source Order, Not Special Priority</h1>
+  <p class="page-subtitle">Two independent modifiers merge their different properties fine — but a shared property resolves purely by CSS declaration order, ignoring the HTML class attribute's own order.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare computed styles for two composed modifiers, confirming non-conflicting properties survive and the shared property resolves by CSS source order.</p>
+    <app-live-playground title="composable modifiers merge by source order" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own fourth "Common Mistake" (composable modifiers over combinatorial explosion) made directly measurable via computed styles, completing the trio of specificity/order gotchas alongside BEM's flat-vs-descendant conflict and ITCSS's layer ordering.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Architecture" topicRoute="/css/css-architecture"
+    [prev]="{ label: 'ITCSS Layer Order Works Because Class Selectors Beat Element Selectors', route: '/css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors' }" />
+</div>

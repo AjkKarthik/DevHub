@@ -1527,7 +1527,12 @@ export const routes: Routes = [
       { path: 'inline-size-maps-to-width-or-height-depending-on-writing-mode', loadComponent: () => import('./components/frontend/css/logical-properties/subtopics/inline-size-maps-to-width-or-height-depending-on-writing-mode/inline-size-maps-to-width-or-height-depending-on-writing-mode').then(m => m.InlineSizeMapsToWidthOrHeightDependingOnWritingModeSubtopic) },
       { path: 'border-start-start-radius-flips-corners-in-rtl', loadComponent: () => import('./components/frontend/css/logical-properties/subtopics/border-start-start-radius-flips-corners-in-rtl/border-start-start-radius-flips-corners-in-rtl').then(m => m.BorderStartStartRadiusFlipsCornersInRtlSubtopic) },
     ] },
-    { path: 'css-architecture',    loadComponent: () => import('./components/frontend/css/css-architecture/css-architecture').then(m => m.CssCssArchitecture) },
+    { path: 'css-architecture', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/css-architecture/css-architecture').then(m => m.CssCssArchitecture) },
+      { path: 'bem-flat-elements-lose-to-accidental-descendant-selectors', loadComponent: () => import('./components/frontend/css/css-architecture/subtopics/bem-flat-elements-lose-to-accidental-descendant-selectors/bem-flat-elements-lose-to-accidental-descendant-selectors').then(m => m.BemFlatElementsLoseToAccidentalDescendantSelectorsSubtopic) },
+      { path: 'itcss-layer-order-works-because-class-selectors-beat-element-selectors', loadComponent: () => import('./components/frontend/css/css-architecture/subtopics/itcss-layer-order-works-because-class-selectors-beat-element-selectors/itcss-layer-order-works-because-class-selectors-beat-element-selectors').then(m => m.ItcssLayerOrderWorksBecauseClassSelectorsBeatElementSelectorsSubtopic) },
+      { path: 'composable-modifiers-merge-by-source-order-not-special-priority', loadComponent: () => import('./components/frontend/css/css-architecture/subtopics/composable-modifiers-merge-by-source-order-not-special-priority/composable-modifiers-merge-by-source-order-not-special-priority').then(m => m.ComposableModifiersMergeBySourceOrderNotSpecialPrioritySubtopic) },
+    ] },
     { path: 'tailwind',                   loadComponent: () => import('./components/frontend/css/tailwind/tailwind').then(m => m.CssTailwind) },
     { path: 'scroll-driven-animations',   loadComponent: () => import('./components/frontend/css/scroll-driven-animations/scroll-driven-animations').then(m => m.CssScrollDrivenAnimations) },
     { path: 'css-transforms',             loadComponent: () => import('./components/frontend/css/css-transforms/css-transforms').then(m => m.CssCssTransforms) },

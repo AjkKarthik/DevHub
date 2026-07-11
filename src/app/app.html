@@ -4108,7 +4108,26 @@
           </div>
         }
       }
-      <a routerLink="/css/css-architecture" routerLinkActive="active"><span class="nl-text">CSS Architecture</span>@if(progress.isDone('css-css-architecture')){<span class="nl-done">✓</span>}@if(diff('css-css-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/css-architecture" routerLinkActive="active">
+        <span class="nl-text">CSS Architecture</span>
+        @if (progress.isDone('css-css-architecture')) {<span class="nl-done">✓</span>}
+        @if (diff('css-css-architecture'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('css-architecture')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('css-architecture')"
+                  (click)="toggleSubtopics('css-architecture', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('css-architecture'); as cssArchSubs) {
+        @if (isSubtopicsExpanded('css-architecture')) {
+          <div class="nav-subtopics">
+            @for (s of cssArchSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/tailwind" routerLinkActive="active"><span class="nl-text">Tailwind CSS</span>@if(progress.isDone('css-tailwind')){<span class="nl-done">✓</span>}@if(diff('css-tailwind');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/scroll-driven-animations" routerLinkActive="active"><span class="nl-text">Scroll-Driven Animations</span>@if(progress.isDone('css-scroll-driven-animations')){<span class="nl-done">✓</span>}@if(diff('css-scroll-driven-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/css-transforms" routerLinkActive="active"><span class="nl-text">CSS Transforms</span>@if(progress.isDone('css-css-transforms')){<span class="nl-done">✓</span>}@if(diff('css-css-transforms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

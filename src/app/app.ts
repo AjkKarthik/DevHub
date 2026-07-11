@@ -1629,6 +1629,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'inline-size Maps to Width or Height Depending on Writing Mode', route: '/css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode' },
     { label: 'border-start-start-radius Flips Corners in RTL', route: '/css/logical-properties/border-start-start-radius-flips-corners-in-rtl' },
   ],
+  'css-architecture': [
+    { label: 'BEM Flat Elements Lose to Accidental Descendant Selectors', route: '/css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors' },
+    { label: 'ITCSS Layer Order Works Because Class Selectors Beat Element Selectors', route: '/css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors' },
+    { label: 'Composable Modifiers Merge by Source Order, Not Special Priority', route: '/css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority' },
+  ],
 };
 
 @Component({

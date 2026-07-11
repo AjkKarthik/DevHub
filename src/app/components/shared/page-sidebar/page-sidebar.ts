@@ -21776,6 +21776,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors': {
+    apis: ['BEM', 'specificity', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Architecture (overview)', route: '/css/css-architecture' },
+      { label: 'ITCSS Layer Order Works Because Class Selectors Beat Element Selectors', route: '/css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors' },
+      { label: 'Composable Modifiers Merge by Source Order, Not Special Priority', route: '/css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority' },
+    ],
+    tip: 'A flat .card__title (0,1,0) genuinely loses to a stray .card .title (0,2,0) targeting the same element — confirmed via getComputedStyle(), regardless of which rule was declared first.',
+    docs: [
+      { label: 'BEM Official Docs', url: 'https://getbem.com/' },
+    ],
+    resources: [
+      { label: 'CUBE CSS (modern take)', url: 'https://cube.fyi/', badge: 'docs' },
+    ],
+    gotchas: [
+      'BEM\'s flat-specificity promise is a naming convention, not a browser-enforced rule — one leftover descendant selector anywhere in the codebase can defeat it.',
+      'The fix is removing the conflicting descendant selector entirely, not just adding the correct BEM rule alongside it.',
+    ],
+  },
+
+  'css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors': {
+    apis: ['ITCSS', 'specificity', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Architecture (overview)', route: '/css/css-architecture' },
+      { label: 'BEM Flat Elements Lose to Accidental Descendant Selectors', route: '/css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors' },
+      { label: 'Composable Modifiers Merge by Source Order, Not Special Priority', route: '/css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority' },
+    ],
+    tip: 'A Generic-layer element selector declared LAST still cannot override an earlier Components-layer class selector — confirmed via getComputedStyle(), proving the Generic/Components boundary is structural, not order-dependent.',
+    docs: [
+      { label: 'ITCSS — Harry Roberts', url: 'https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/' },
+    ],
+    resources: [
+      { label: 'CUBE CSS (modern take)', url: 'https://cube.fyi/', badge: 'docs' },
+    ],
+    gotchas: [
+      'This specificity protection only holds ACROSS genuinely different selector-type tiers — within the same tier (two class selectors), file order still fully determines the winner.',
+      '@layer still adds real value for same-specificity conflicts across ITCSS layers, even though the Generic-vs-Components boundary already worked without it.',
+    ],
+  },
+
+  'css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority': {
+    apis: ['BEM modifiers', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Architecture (overview)', route: '/css/css-architecture' },
+      { label: 'BEM Flat Elements Lose to Accidental Descendant Selectors', route: '/css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors' },
+      { label: 'ITCSS Layer Order Works Because Class Selectors Beat Element Selectors', route: '/css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors' },
+    ],
+    tip: 'Two composed modifiers merge their different properties cleanly, but a property BOTH set resolves purely to whichever modifier class is declared LATER in the CSS — the HTML class attribute order has no effect, confirmed via getComputedStyle().',
+    docs: [
+      { label: 'BEM Official Docs', url: 'https://getbem.com/' },
+    ],
+    resources: [
+      { label: 'CUBE CSS (modern take)', url: 'https://cube.fyi/', badge: 'docs' },
+    ],
+    gotchas: [
+      'There is no special "BEM modifier priority" mechanism — same-property conflicts between two modifiers are ordinary same-specificity CSS conflicts.',
+      'Worth explicitly checking for property overlap when designing two independent modifier scales (e.g. size + density) that might both end up touching the same property.',
+    ],
+  },
+
   'css/logical-properties': {
     apis: ['margin-inline', 'padding-block', 'inset-inline-start', 'inline-size', 'block-size', 'border-inline-start', 'border-start-start-radius'],
     related: [
