@@ -1594,6 +1594,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' },
     { label: 'display Cannot Be Smoothly Interpolated, Only Flips', route: '/css/animations/display-cannot-be-smoothly-interpolated-only-flips' },
   ],
+  'colors-theming': [
+    { label: 'color-mix in oklch Preserves Vividness, sRGB Doesn’t', route: '/css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt' },
+    { label: 'color-mix() Always Produces an Opaque Result', route: '/css/colors-theming/color-mix-always-produces-an-opaque-result' },
+    { label: 'WCAG Contrast Ratio Is Directly Computable From RGB', route: '/css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb' },
+  ],
 };
 
 @Component({

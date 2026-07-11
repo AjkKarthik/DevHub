@@ -3960,7 +3960,26 @@
           </div>
         }
       }
-      <a routerLink="/css/colors-theming" routerLinkActive="active"><span class="nl-text">Colors &amp; Theming</span>@if(progress.isDone('css-colors-theming')){<span class="nl-done">✓</span>}@if(diff('css-colors-theming');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/colors-theming" routerLinkActive="active">
+        <span class="nl-text">Colors &amp; Theming</span>
+        @if (progress.isDone('css-colors-theming')) {<span class="nl-done">✓</span>}
+        @if (diff('css-colors-theming'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('colors-theming')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('colors-theming')"
+                  (click)="toggleSubtopics('colors-theming', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('colors-theming'); as cssColorsSubs) {
+        @if (isSubtopicsExpanded('colors-theming')) {
+          <div class="nav-subtopics">
+            @for (s of cssColorsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/backgrounds-borders" routerLinkActive="active"><span class="nl-text">Backgrounds &amp; Borders</span>@if(progress.isDone('css-backgrounds-borders')){<span class="nl-done">✓</span>}@if(diff('css-backgrounds-borders');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

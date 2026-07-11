@@ -1486,7 +1486,12 @@ export const routes: Routes = [
       { path: 'display-cannot-be-smoothly-interpolated-only-flips', loadComponent: () => import('./components/frontend/css/animations/subtopics/display-cannot-be-smoothly-interpolated-only-flips/display-cannot-be-smoothly-interpolated-only-flips').then(m => m.DisplayCannotBeSmoothlyInterpolatedOnlyFlipsSubtopic) },
     ] },
     { path: 'transitions',        loadComponent: () => import('./components/frontend/css/transitions/transitions').then(m => m.CssTransitions) },
-    { path: 'colors-theming',     loadComponent: () => import('./components/frontend/css/colors-theming/colors-theming').then(m => m.CssColorsTheming) },
+    { path: 'colors-theming', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/colors-theming/colors-theming').then(m => m.CssColorsTheming) },
+      { path: 'color-mix-in-oklch-preserves-vividness-srgb-doesnt', loadComponent: () => import('./components/frontend/css/colors-theming/subtopics/color-mix-in-oklch-preserves-vividness-srgb-doesnt/color-mix-in-oklch-preserves-vividness-srgb-doesnt').then(m => m.ColorMixInOklchPreservesVividnessSrgbDoesntSubtopic) },
+      { path: 'color-mix-always-produces-an-opaque-result', loadComponent: () => import('./components/frontend/css/colors-theming/subtopics/color-mix-always-produces-an-opaque-result/color-mix-always-produces-an-opaque-result').then(m => m.ColorMixAlwaysProducesAnOpaqueResultSubtopic) },
+      { path: 'wcag-contrast-ratio-is-directly-computable-from-rgb', loadComponent: () => import('./components/frontend/css/colors-theming/subtopics/wcag-contrast-ratio-is-directly-computable-from-rgb/wcag-contrast-ratio-is-directly-computable-from-rgb').then(m => m.WcagContrastRatioIsDirectlyComputableFromRgbSubtopic) },
+    ] },
     { path: 'backgrounds-borders', loadComponent: () => import('./components/frontend/css/backgrounds-borders/backgrounds-borders').then(m => m.CssBackgroundsBorders) },
     { path: 'container-queries',  loadComponent: () => import('./components/frontend/css/container-queries/container-queries').then(m => m.CssContainerQueries) },
     { path: 'css-layers',         loadComponent: () => import('./components/frontend/css/css-layers/css-layers').then(m => m.CssCssLayers) },

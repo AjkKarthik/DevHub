@@ -21828,6 +21828,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt': {
+    apis: ['color-mix()', 'oklch()', 'getComputedStyle()'],
+    related: [
+      { label: 'Colors & Theming (overview)', route: '/css/colors-theming' },
+      { label: 'color-mix() Always Produces an Opaque Result', route: '/css/colors-theming/color-mix-always-produces-an-opaque-result' },
+      { label: 'WCAG Contrast Ratio Is Directly Computable From RGB', route: '/css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb' },
+    ],
+    tip: 'Mixing red and blue in oklch reports a genuinely high chroma value directly in the computed style — sRGB mixing has no equivalent vividness measure at all.',
+    docs: [
+      { label: 'MDN — color-mix()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix' },
+    ],
+    resources: [
+      { label: 'oklch.com palette tool', url: 'https://oklch.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The "muddy midpoint" problem with sRGB gradients/mixes is a structural consequence of having no chroma channel, not a rendering bug.',
+      'Comparing vividness is directly measurable from the computed chroma number, not just a visual judgment.',
+    ],
+  },
+
+  'css/colors-theming/color-mix-always-produces-an-opaque-result': {
+    apis: ['color-mix()', 'rgba()', 'getComputedStyle()'],
+    related: [
+      { label: 'Colors & Theming (overview)', route: '/css/colors-theming' },
+      { label: 'color-mix in oklch Preserves Vividness, sRGB Doesn’t', route: '/css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt' },
+      { label: 'WCAG Contrast Ratio Is Directly Computable From RGB', route: '/css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb' },
+    ],
+    tip: 'rgba(0,0,255,0.5) reports an explicit alpha value in its computed style; color-mix(in oklch, blue 50%, white) reports none at all — genuinely opaque, not simulated transparency.',
+    docs: [
+      { label: 'MDN — color-mix()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix' },
+    ],
+    resources: [
+      { label: 'oklch.com palette tool', url: 'https://oklch.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A color-mix() tint renders identically over any background — no bleed-through, unlike a genuinely transparent color.',
+      'Use color-mix() for solid tint badges/buttons; rgba for overlays and shadows that should blend with what is behind them.',
+    ],
+  },
+
+  'css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb': {
+    apis: ['relative luminance formula', 'contrast ratio formula'],
+    related: [
+      { label: 'Colors & Theming (overview)', route: '/css/colors-theming' },
+      { label: 'color-mix in oklch Preserves Vividness, sRGB Doesn’t', route: '/css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt' },
+      { label: 'color-mix() Always Produces an Opaque Result', route: '/css/colors-theming/color-mix-always-produces-an-opaque-result' },
+    ],
+    tip: 'Implementing the WCAG luminance formula in plain JavaScript reproduces #aaa on white as exactly 2.32:1 (fails) and #767676 on white as 4.54:1 (passes) — precise, not approximate.',
+    docs: [
+      { label: 'WCAG — Contrast Minimum', url: 'https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html' },
+    ],
+    resources: [
+      { label: 'oklch.com palette tool', url: 'https://oklch.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The formula weighs green, red, and blue differently and applies gamma correction — a naive RGB average produces an incorrect number.',
+      'The formula is short enough to implement directly for automated contrast checking in design systems or tests.',
+    ],
+  },
+
   // ── CSS: Transitions ──────────────────────────────────────────────────────
   'css/transitions': {
     apis: ['transition', 'transition-duration', 'transition-timing-function', 'transition-delay', 'cubic-bezier()', 'prefers-reduced-motion'],
