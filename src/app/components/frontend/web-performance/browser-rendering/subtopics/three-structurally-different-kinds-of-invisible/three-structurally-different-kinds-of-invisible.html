@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Browser Rendering Pipeline" topicRoute="/performance/browser-rendering" subtopicLabel="Three Structurally Different Kinds of Invisible" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Three Structurally Different Kinds of Invisible</h1>
+  <p class="page-subtitle">opacity: 0 and visibility: hidden both keep their full layout space; display: none collapses to zero — and only visibility: hidden is excluded from real hit-testing, measured with elementFromPoint.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Fundamental CSS/DOM behaviour" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare real getBoundingClientRect() sizes and elementFromPoint hit-testing across opacity: 0, visibility: hidden, and display: none.</p>
+    <app-live-playground title="three structurally different kinds of invisible" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This makes the main page's opacity-vs-visibility QnA concrete with real, measured layout and hit-testing behaviour. Next: content-visibility: auto's actual measured render-time savings — a related but distinct rendering optimisation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Browser Rendering Pipeline" topicRoute="/performance/browser-rendering"
+    [next]="{ label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' }" />
+</div>

@@ -1993,7 +1993,12 @@ export const routes: Routes = [
       { path: 'defer-genuinely-waits-for-parsing-to-finish', loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/subtopics/defer-genuinely-waits-for-parsing-to-finish/defer-genuinely-waits-for-parsing-to-finish').then(m => m.DeferGenuinelyWaitsForParsingToFinishSubtopic) },
       { path: 'type-module-is-deferred-by-default', loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/subtopics/type-module-is-deferred-by-default/type-module-is-deferred-by-default').then(m => m.TypeModuleIsDeferredByDefaultSubtopic) },
     ] },
-    { path: 'browser-rendering',        loadComponent: () => import('./components/frontend/web-performance/browser-rendering/browser-rendering').then(m => m.PerfBrowserRendering) },
+    { path: 'browser-rendering', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/browser-rendering/browser-rendering').then(m => m.PerfBrowserRendering) },
+      { path: 'three-structurally-different-kinds-of-invisible', loadComponent: () => import('./components/frontend/web-performance/browser-rendering/subtopics/three-structurally-different-kinds-of-invisible/three-structurally-different-kinds-of-invisible').then(m => m.ThreeStructurallyDifferentKindsOfInvisibleSubtopic) },
+      { path: 'content-visibility-auto-cuts-render-time-dramatically', loadComponent: () => import('./components/frontend/web-performance/browser-rendering/subtopics/content-visibility-auto-cuts-render-time-dramatically/content-visibility-auto-cuts-render-time-dramatically').then(m => m.ContentVisibilityAutoCutsRenderTimeDramaticallySubtopic) },
+      { path: 'content-visibility-defers-work-it-doesnt-eliminate-it', loadComponent: () => import('./components/frontend/web-performance/browser-rendering/subtopics/content-visibility-defers-work-it-doesnt-eliminate-it/content-visibility-defers-work-it-doesnt-eliminate-it').then(m => m.ContentVisibilityDefersWorkItDoesntEliminateItSubtopic) },
+    ] },
     { path: 'resource-hints',           loadComponent: () => import('./components/frontend/web-performance/resource-hints/resource-hints').then(m => m.PerfResourceHints) },
     { path: 'http2-http3',              loadComponent: () => import('./components/frontend/web-performance/http2-http3/http2-http3').then(m => m.PerfHttp2Http3) },
     { path: 'caching',                  loadComponent: () => import('./components/frontend/web-performance/caching/caching').then(m => m.PerfCaching) },

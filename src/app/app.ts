@@ -1689,6 +1689,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' },
     { label: 'type="module" Is Deferred by Default', route: '/performance/critical-rendering-path/type-module-is-deferred-by-default' },
   ],
+  'browser-rendering': [
+    { label: 'Three Structurally Different Kinds of Invisible', route: '/performance/browser-rendering/three-structurally-different-kinds-of-invisible' },
+    { label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' },
+    { label: 'content-visibility Defers Work, It Doesn’t Eliminate It', route: '/performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it' },
+  ],
 };
 
 @Component({

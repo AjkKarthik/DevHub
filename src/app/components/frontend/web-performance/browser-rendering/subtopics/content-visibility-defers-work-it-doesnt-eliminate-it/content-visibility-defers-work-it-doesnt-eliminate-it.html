@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Browser Rendering Pipeline" topicRoute="/performance/browser-rendering" subtopicLabel="content-visibility Defers Work, It Doesn’t Eliminate It" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">content-visibility Defers Work, It Doesn't Eliminate It</h1>
+  <p class="page-subtitle">Querying a nested child's geometry inside a never-rendered content-visibility: auto section costs a real, measurable few milliseconds — the same query on an already-rendered section is nearly free.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="content-visibility, Chrome 85+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare the real, measured cost of querying a deep child's geometry in an already-rendered section versus a never-touched content-visibility: auto section.</p>
+    <app-live-playground title="content-visibility defers work, it doesn't eliminate it" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This closes out the set with the honest limit of the previous subtopic's dramatic speedup — the work isn't gone, it's deferred, and eager measurement code can silently pay it all back. Together, these three subtopics cover the composite-vs-layout theme (invisible techniques), the win (content-visibility's real savings), and the gotcha (when that win disappears).</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Browser Rendering Pipeline" topicRoute="/performance/browser-rendering"
+    [prev]="{ label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' }" />
+</div>

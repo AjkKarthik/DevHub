@@ -22097,6 +22097,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/browser-rendering': {
+    apis: ['getBoundingClientRect()', 'elementFromPoint()', 'content-visibility', 'contain-intrinsic-size'],
+    related: [
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'transform and opacity are the only properties that run entirely on the compositor thread — everything else triggers at least paint, and many trigger layout too.',
+    docs: [
+      { label: 'web.dev — Rendering performance', url: 'https://web.dev/articles/rendering-performance' },
+    ],
+    resources: [
+      { label: 'csstriggers.com', url: 'https://csstriggers.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'opacity: 0 remains hit-testable by default — it is not the same as removing an element from interaction.',
+      'content-visibility: auto defers rendering work, it does not eliminate it — an early measurement forces it to happen anyway.',
+    ],
+  },
+
+  'performance/browser-rendering/three-structurally-different-kinds-of-invisible': {
+    apis: ['getBoundingClientRect()', 'elementFromPoint()'],
+    related: [
+      { label: 'Browser Rendering Pipeline (overview)', route: '/performance/browser-rendering' },
+      { label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' },
+      { label: 'content-visibility Defers Work, It Doesn’t Eliminate It', route: '/performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it' },
+    ],
+    tip: 'opacity: 0 and visibility: hidden both keep their full layout height; display: none collapses to 0 — and only visibility: hidden is excluded from elementFromPoint hit-testing.',
+    docs: [
+      { label: 'MDN — visibility', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'opacity: 0 elements still receive click/hover events by default — add pointer-events: none if that is not wanted.',
+      'display: none is the most expensive of the three to re-show, since the browser lays it out from scratch.',
+    ],
+  },
+
+  'performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically': {
+    apis: ['content-visibility', 'contain-intrinsic-size', 'performance.now()'],
+    related: [
+      { label: 'Browser Rendering Pipeline (overview)', route: '/performance/browser-rendering' },
+      { label: 'Three Structurally Different Kinds of Invisible', route: '/performance/browser-rendering/three-structurally-different-kinds-of-invisible' },
+      { label: 'content-visibility Defers Work, It Doesn’t Eliminate It', route: '/performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it' },
+    ],
+    tip: '60 sections of 2,400 total elements rendered roughly 14x faster with content-visibility: auto than without it — same DOM, same content, measured with performance.now().',
+    docs: [
+      { label: 'web.dev — content-visibility', url: 'https://web.dev/articles/content-visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'The saving comes from skipping style/layout/paint work, not from having fewer DOM nodes — node count is identical either way.',
+      'Pair with contain-intrinsic-size to avoid a visible pop-in as sections scroll into view.',
+    ],
+  },
+
+  'performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it': {
+    apis: ['content-visibility', 'getBoundingClientRect()', 'ResizeObserver', 'IntersectionObserver'],
+    related: [
+      { label: 'Browser Rendering Pipeline (overview)', route: '/performance/browser-rendering' },
+      { label: 'Three Structurally Different Kinds of Invisible', route: '/performance/browser-rendering/three-structurally-different-kinds-of-invisible' },
+      { label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' },
+    ],
+    tip: 'Querying a nested child\'s geometry inside a never-rendered content-visibility: auto section cost real, measurable milliseconds — the same query on an already-rendered section was nearly free.',
+    docs: [
+      { label: 'web.dev — content-visibility', url: 'https://web.dev/articles/content-visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'An eager ResizeObserver or getBoundingClientRect() loop over every section forces all deferred work to happen immediately, silently cancelling the optimisation.',
+      'Measure lazily instead — only query sections that are actually about to become relevant, e.g. via IntersectionObserver.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [
