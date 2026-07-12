@@ -1731,6 +1731,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Facade Loads Zero Third-Party Bytes Until Interaction', route: '/performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction' },
     { label: 'Resource Timing Correctly Separates First-Party From Third-Party', route: '/performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party' },
   ],
+  'measurement': [
+    { label: 'performance.mark() Creates Real Timeline Entries — performance.now() Does Not', route: '/performance/measurement/performance-mark-creates-real-timeline-entries-performance-now-does-not' },
+    { label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' },
+    { label: 'Navigation Timing’s responseStart Genuinely Computes TTFB', route: '/performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb' },
+  ],
 };
 
 @Component({

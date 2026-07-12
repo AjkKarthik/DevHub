@@ -2041,7 +2041,12 @@ export const routes: Routes = [
       { path: 'a-facade-loads-zero-third-party-bytes-until-interaction', loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/subtopics/a-facade-loads-zero-third-party-bytes-until-interaction/a-facade-loads-zero-third-party-bytes-until-interaction').then(m => m.AFacadeLoadsZeroThirdPartyBytesUntilInteractionSubtopic) },
       { path: 'resource-timing-correctly-separates-first-party-from-third-party', loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/subtopics/resource-timing-correctly-separates-first-party-from-third-party/resource-timing-correctly-separates-first-party-from-third-party').then(m => m.ResourceTimingCorrectlySeparatesFirstPartyFromThirdPartySubtopic) },
     ] },
-    { path: 'measurement',              loadComponent: () => import('./components/frontend/web-performance/measurement/measurement').then(m => m.PerfMeasurement) },
+    { path: 'measurement', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/measurement/measurement').then(m => m.PerfMeasurement) },
+      { path: 'performance-mark-creates-real-timeline-entries-performance-now-does-not', loadComponent: () => import('./components/frontend/web-performance/measurement/subtopics/performance-mark-creates-real-timeline-entries-performance-now-does-not/performance-mark-creates-real-timeline-entries-performance-now-does-not').then(m => m.PerformanceMarkCreatesRealTimelineEntriesPerformanceNowDoesNotSubtopic) },
+      { path: 'fcp-and-lcp-are-genuinely-different-real-timestamps', loadComponent: () => import('./components/frontend/web-performance/measurement/subtopics/fcp-and-lcp-are-genuinely-different-real-timestamps/fcp-and-lcp-are-genuinely-different-real-timestamps').then(m => m.FcpAndLcpAreGenuinelyDifferentRealTimestampsSubtopic) },
+      { path: 'navigation-timings-responsestart-genuinely-computes-ttfb', loadComponent: () => import('./components/frontend/web-performance/measurement/subtopics/navigation-timings-responsestart-genuinely-computes-ttfb/navigation-timings-responsestart-genuinely-computes-ttfb').then(m => m.NavigationTimingsResponsestartGenuinelyComputesTtfbSubtopic) },
+    ] },
     { path: 'rum',                      loadComponent: () => import('./components/frontend/web-performance/rum/rum').then(m => m.PerfRum) },
     { path: 'ssr-streaming',            loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/ssr-streaming').then(m => m.PerfSsrStreaming) },
     { path: 'css-performance',          loadComponent: () => import('./components/frontend/web-performance/css-performance/css-performance').then(m => m.PerfCssPerformance) },

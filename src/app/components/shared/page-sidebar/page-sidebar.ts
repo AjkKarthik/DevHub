@@ -22689,6 +22689,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/measurement': {
+    apis: ['performance.mark()', 'performance.measure()', 'PerformanceObserver', 'PerformanceNavigationTiming'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+    ],
+    tip: 'Measure in both lab (Lighthouse, WebPageTest) and field (CrUX, RUM) — Google ranks on field data; lab tools identify root causes.',
+    docs: [
+      { label: 'web.dev — User Timing API', url: 'https://web.dev/articles/user-timing' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'performance.now() produces zero queryable Performance API entries — only mark()/measure() do.',
+      'FCP and LCP are separate entry types with separate real timestamps, not the same measurement renamed.',
+    ],
+  },
+
+  'performance/measurement/performance-mark-creates-real-timeline-entries-performance-now-does-not': {
+    apis: ['performance.mark()', 'performance.measure()', 'performance.now()'],
+    related: [
+      { label: 'Performance Measurement (overview)', route: '/performance/measurement' },
+      { label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' },
+      { label: 'Navigation Timing’s responseStart Genuinely Computes TTFB', route: '/performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb' },
+    ],
+    tip: 'A performance.now() timing produced zero entries anywhere queryable; the identical timing via mark()/measure() created a real, named entry findable from anywhere.',
+    docs: [
+      { label: 'MDN — User Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/User_timing' },
+    ],
+    resources: [],
+    gotchas: [
+      'Both use the same underlying high-resolution clock — the difference is whether the timing gets recorded as a queryable entry, not precision.',
+      'Only mark()/measure() entries appear in DevTools\' Performance panel "Timings" lane.',
+    ],
+  },
+
+  'performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps': {
+    apis: ['paint entries', 'largest-contentful-paint', 'PerformanceObserver'],
+    related: [
+      { label: 'Performance Measurement (overview)', route: '/performance/measurement' },
+      { label: 'performance.mark() Creates Real Timeline Entries — performance.now() Does Not', route: '/performance/measurement/performance-mark-creates-real-timeline-entries-performance-now-does-not' },
+      { label: 'Navigation Timing’s responseStart Genuinely Computes TTFB', route: '/performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb' },
+    ],
+    tip: 'On this very page, FCP fired at 360ms while the final LCP candidate settled at 460ms and covered roughly 6.5x more pixel area — two separate entry types, not the same measurement renamed.',
+    docs: [
+      { label: 'MDN — Paint Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/PerformancePaintTiming' },
+    ],
+    resources: [],
+    gotchas: [
+      'Google ranks on LCP, not FCP — a fast FCP with a slow-arriving hero element is exactly the scenario checking only FCP misses.',
+      'LCP can update even without new DOM insertions — an already-present element that finishes painting later can still become a new candidate.',
+    ],
+  },
+
+  'performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb': {
+    apis: ['PerformanceNavigationTiming', 'responseStart', 'requestStart'],
+    related: [
+      { label: 'Performance Measurement (overview)', route: '/performance/measurement' },
+      { label: 'performance.mark() Creates Real Timeline Entries — performance.now() Does Not', route: '/performance/measurement/performance-mark-creates-real-timeline-entries-performance-now-does-not' },
+      { label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' },
+    ],
+    tip: 'Real timestamps from this page\'s own navigation entry — fetchStart 2ms, requestStart 5ms, responseStart 8ms — produced a genuine, computed TTFB of 3ms.',
+    docs: [
+      { label: 'MDN — Navigation Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigationTiming' },
+    ],
+    resources: [],
+    gotchas: [
+      'There is no dedicated "ttfb" field — it is always computed as responseStart minus requestStart.',
+      'Client-measured TTFB includes network/infrastructure time invisible to server-side application-only logging.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [
