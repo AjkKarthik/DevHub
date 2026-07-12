@@ -22319,6 +22319,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/caching': {
+    apis: ['Cache-Control', 'ETag', 'Cache Storage API', 'Service Worker', 'Workbox'],
+    related: [
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'HTTP/2 & HTTP/3', route: '/performance/http2-http3' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+    ],
+    tip: 'Cache versioned assets forever (immutable) + always revalidate HTML (no-cache) — the two rules that make repeat visits fast and deploys instant.',
+    docs: [
+      { label: 'MDN — Cache Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cache' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The Cache API can only store GET requests — cache.put() with a POST request throws a real TypeError.',
+      'Cache-first has no freshness check at all — only safe for content-hashed, versioned URLs.',
+    ],
+  },
+
+  'performance/caching/the-cache-api-only-stores-get-requests': {
+    apis: ['Cache Storage API', 'cache.put()'],
+    related: [
+      { label: 'Caching & Service Workers (overview)', route: '/performance/caching' },
+      { label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' },
+      { label: 'Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones', route: '/performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones' },
+    ],
+    tip: 'cache.put() with a POST request threw a real, immediate TypeError — confirmed with the exact browser error message, not a silent no-op.',
+    docs: [
+      { label: 'MDN — Cache Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cache' },
+    ],
+    resources: [],
+    gotchas: [
+      'Offline POST support needs Background Sync (IndexedDB queue + replay), not the Cache API — a structurally different mechanism.',
+      'Workbox\'s BackgroundSyncPlugin automates the IndexedDB queue-and-replay pattern.',
+    ],
+  },
+
+  'performance/caching/cache-first-genuinely-skips-the-network-entirely': {
+    apis: ['Cache Storage API', 'cache.match()', 'Workbox CacheFirst'],
+    related: [
+      { label: 'Caching & Service Workers (overview)', route: '/performance/caching' },
+      { label: 'The Cache API Only Stores GET Requests', route: '/performance/caching/the-cache-api-only-stores-get-requests' },
+      { label: 'Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones', route: '/performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones' },
+    ],
+    tip: 'A cache-first lookup for an already-cached URL never called the real network function — the fetch counter stayed at 0, proven directly rather than assumed.',
+    docs: [
+      { label: 'web.dev — Workbox strategies', url: 'https://developer.chrome.com/docs/workbox/caching-strategies-overview' },
+    ],
+    resources: [],
+    gotchas: [
+      'Cache-first has no freshness mechanism at all once a hit is found — safe only for content-hashed, versioned URLs.',
+      'Stale-while-revalidate differs specifically by still triggering a real background fetch after returning the cached response.',
+    ],
+  },
+
+  'performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones': {
+    apis: ['caches.keys()', 'caches.delete()', 'Service Worker activate event'],
+    related: [
+      { label: 'Caching & Service Workers (overview)', route: '/performance/caching' },
+      { label: 'The Cache API Only Stores GET Requests', route: '/performance/caching/the-cache-api-only-stores-get-requests' },
+      { label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' },
+    ],
+    tip: 'Seeding three caches and running the main page\'s own clearOldCaches() pattern left exactly the one named as current — the other two were genuinely deleted, verified by re-querying caches.keys().',
+    docs: [
+      { label: 'MDN — Cache Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cache' },
+    ],
+    resources: [],
+    gotchas: [
+      'A cache name accidentally left out of the "current caches" list is silently deleted, even if it still holds needed data — no error is thrown.',
+      'Named caches persist indefinitely with no automatic expiration by age — cleanup must be explicit.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

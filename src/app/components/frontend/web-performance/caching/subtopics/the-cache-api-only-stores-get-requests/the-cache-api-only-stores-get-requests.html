@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching &amp; Service Workers" topicRoute="/performance/caching" subtopicLabel="The Cache API Only Stores GET Requests" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">The Cache API Only Stores GET Requests</h1>
+  <p class="page-subtitle">cache.put() with a POST request throws a real TypeError immediately — confirmed with the exact browser error message, not a silent no-op.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Cache Storage API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare caching a GET request (succeeds) against caching a POST request (throws) using the real Cache Storage API.</p>
+    <app-live-playground title="the Cache API only stores GET requests" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Can a Service Worker cache POST requests?" QnA with the real, exact error the API throws. Next: whether a cache-first strategy genuinely skips the network, verified by counting real fetch calls.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching &amp; Service Workers" topicRoute="/performance/caching"
+    [next]="{ label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' }" />
+</div>

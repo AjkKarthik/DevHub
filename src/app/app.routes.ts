@@ -2011,7 +2011,12 @@ export const routes: Routes = [
       { path: 'domain-sharding-defeats-http2-connection-coalescing', loadComponent: () => import('./components/frontend/web-performance/http2-http3/subtopics/domain-sharding-defeats-http2-connection-coalescing/domain-sharding-defeats-http2-connection-coalescing').then(m => m.DomainShardingDefeatsHttp2ConnectionCoalescingSubtopic) },
       { path: 'early-hints-lets-the-browser-fetch-before-html-finishes', loadComponent: () => import('./components/frontend/web-performance/http2-http3/subtopics/early-hints-lets-the-browser-fetch-before-html-finishes/early-hints-lets-the-browser-fetch-before-html-finishes').then(m => m.EarlyHintsLetsTheBrowserFetchBeforeHtmlFinishesSubtopic) },
     ] },
-    { path: 'caching',                  loadComponent: () => import('./components/frontend/web-performance/caching/caching').then(m => m.PerfCaching) },
+    { path: 'caching', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/caching/caching').then(m => m.PerfCaching) },
+      { path: 'the-cache-api-only-stores-get-requests', loadComponent: () => import('./components/frontend/web-performance/caching/subtopics/the-cache-api-only-stores-get-requests/the-cache-api-only-stores-get-requests').then(m => m.TheCacheApiOnlyStoresGetRequestsSubtopic) },
+      { path: 'cache-first-genuinely-skips-the-network-entirely', loadComponent: () => import('./components/frontend/web-performance/caching/subtopics/cache-first-genuinely-skips-the-network-entirely/cache-first-genuinely-skips-the-network-entirely').then(m => m.CacheFirstGenuinelySkipsTheNetworkEntirelySubtopic) },
+      { path: 'selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones', loadComponent: () => import('./components/frontend/web-performance/caching/subtopics/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones').then(m => m.SelectiveCacheDeletionKeepsTheCurrentCacheAndRemovesStaleOnesSubtopic) },
+    ] },
     { path: 'image-optimisation',       loadComponent: () => import('./components/frontend/web-performance/image-optimisation/image-optimisation').then(m => m.PerfImageOptimisation) },
     { path: 'font-performance',         loadComponent: () => import('./components/frontend/web-performance/font-performance/font-performance').then(m => m.PerfFontPerformance) },
     { path: 'js-performance',           loadComponent: () => import('./components/frontend/web-performance/js-performance/js-performance').then(m => m.PerfJsPerformance) },

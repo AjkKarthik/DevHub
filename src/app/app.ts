@@ -1704,6 +1704,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' },
     { label: 'Early Hints Lets the Browser Fetch Before HTML Finishes', route: '/performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes' },
   ],
+  // NOTE: keyed bare 'caching' — no collision found; ASP.NET already
+  // resolved its own prior collision as 'aspnet-caching' (see that entry).
+  'caching': [
+    { label: 'The Cache API Only Stores GET Requests', route: '/performance/caching/the-cache-api-only-stores-get-requests' },
+    { label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' },
+    { label: 'Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones', route: '/performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones' },
+  ],
 };
 
 @Component({

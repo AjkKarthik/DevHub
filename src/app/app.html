@@ -4464,7 +4464,26 @@
           </div>
         }
       }
-      <a routerLink="/performance/caching" routerLinkActive="active"><span class="nl-text">Caching &amp; Service Workers</span>@if(progress.isDone('perf-caching')){<span class="nl-done">✓</span>}@if(diff('perf-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/caching" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Caching &amp; Service Workers</span>
+        @if (progress.isDone('perf-caching')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-caching'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('caching')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('caching')"
+                  (click)="toggleSubtopics('caching', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('caching'); as perfCachingSubs) {
+        @if (isSubtopicsExpanded('caching')) {
+          <div class="nav-subtopics">
+            @for (s of perfCachingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/performance/speculation-rules" routerLinkActive="active"><span class="nl-text">Speculation Rules API</span>@if(progress.isDone('perf-speculation-rules')){<span class="nl-done">✓</span>}@if(diff('perf-speculation-rules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
