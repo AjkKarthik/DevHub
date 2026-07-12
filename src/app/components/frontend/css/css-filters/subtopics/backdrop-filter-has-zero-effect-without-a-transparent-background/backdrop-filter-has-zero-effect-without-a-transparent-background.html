@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Filters &amp; Effects" topicRoute="/css/css-filters" subtopicLabel="backdrop-filter Has Zero Effect Without a Transparent Background" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">backdrop-filter Has Zero Effect Without a Transparent Background</h1>
+  <p class="page-subtitle">The identical backdrop-filter: blur(8px) produces pure white with an opaque background, but a clear red-tinted blend with a 20% transparent one — pixel-verified.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 76+, Firefox 103+, Safari 9+ (prefixed)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Rasterize both scenes and sample the actual rendered pixel color to confirm the backdrop only shows through when the panel's own background is transparent.</p>
+    <app-live-playground title="backdrop-filter has zero effect without a transparent background" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own first "Common Mistake" and quiz claim confirmed via genuine pixel-level rendering, not just theory. The next subtopic turns to mix-blend-mode — confirming isolation: isolate genuinely confines blending to its own subtree.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Filters &amp; Effects" topicRoute="/css/css-filters"
+    [next]="{ label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' }" />
+</div>

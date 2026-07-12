@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Filters &amp; Effects" topicRoute="/css/css-filters" subtopicLabel="filter Creates a Stacking Context, Trapping Negative z-index Children" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">filter Creates a Stacking Context, Trapping Negative z-index Children</h1>
+  <p class="page-subtitle">Even a visually inert filter: brightness(1) traps a z-index: -1 child in front of its parent — confirmed via real hit-testing, exactly like transform's own side effect.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Hit-test the same z-index:-1 setup against a plain parent and one with a visually-inert filter to confirm the stacking-context trap.</p>
+    <app-live-playground title="filter creates a stacking context" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own theory section on filter/z-index side effects made directly measurable via document.elementFromPoint(), completing the trio of filter gotchas alongside backdrop-filter opacity and mix-blend-mode isolation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Filters &amp; Effects" topicRoute="/css/css-filters"
+    [prev]="{ label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' }" />
+</div>

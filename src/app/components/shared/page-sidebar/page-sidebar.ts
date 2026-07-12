@@ -21689,6 +21689,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background': {
+    apis: ['backdrop-filter', 'canvas rasterization'],
+    related: [
+      { label: 'CSS Filters & Effects (overview)', route: '/css/css-filters' },
+      { label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' },
+      { label: 'filter Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children' },
+    ],
+    tip: 'The identical backdrop-filter: blur(8px) renders pure white with an opaque background and a red-tinted blend with a 20% transparent one — pixel-verified via SVG foreignObject + canvas rasterization.',
+    docs: [
+      { label: 'MDN: backdrop-filter', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter' },
+    ],
+    resources: [],
+    gotchas: [
+      'The declaration is valid and doing real work even when invisible — an opaque background just paints completely over the blurred result.',
+      'Any degree of transparency works, not just a fully absent background.',
+    ],
+  },
+
+  'css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree': {
+    apis: ['mix-blend-mode', 'isolation: isolate', 'canvas rasterization'],
+    related: [
+      { label: 'CSS Filters & Effects (overview)', route: '/css/css-filters' },
+      { label: 'backdrop-filter Has Zero Effect Without a Transparent Background', route: '/css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background' },
+      { label: 'filter Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children' },
+    ],
+    tip: 'The same red, multiply-blended element renders black over a green page background but pure red once isolated in a white wrapper — pixel-verified with the actual multiply color math.',
+    docs: [
+      { label: 'MDN: mix-blend-mode', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode' },
+    ],
+    resources: [],
+    gotchas: [
+      'isolation: isolate belongs on a wrapping ancestor of both the blended element and its intended blend partners — not on the blended element itself.',
+      'Without it, the blend reaches back through the whole stacking context, including the page background.',
+    ],
+  },
+
+  'css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children': {
+    apis: ['filter', 'z-index', 'document.elementFromPoint()'],
+    related: [
+      { label: 'CSS Filters & Effects (overview)', route: '/css/css-filters' },
+      { label: 'backdrop-filter Has Zero Effect Without a Transparent Background', route: '/css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background' },
+      { label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' },
+    ],
+    tip: 'Even filter: brightness(1) — a value that visually changes nothing — still traps a z-index: -1 child in front of its parent, confirmed via real hit-testing with document.elementFromPoint().',
+    docs: [
+      { label: 'MDN: filter', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/filter' },
+    ],
+    resources: [],
+    gotchas: [
+      'filter, backdrop-filter, and transform all independently trigger this same stacking-context creation.',
+      'The browser checks only for the PRESENCE of a filter value other than none — it never evaluates whether that value is a visual no-op.',
+    ],
+  },
+
   'css/css-transforms': {
     apis: ['translate()', 'rotate()', 'scale()', 'skew()', 'perspective()', 'transform-origin', 'transform-style: preserve-3d', 'backface-visibility', 'translate / rotate / scale (individual properties)'],
     related: [

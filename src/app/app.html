@@ -4188,7 +4188,26 @@
           </div>
         }
       }
-      <a routerLink="/css/css-filters" routerLinkActive="active"><span class="nl-text">CSS Filters & Effects</span>@if(progress.isDone('css-css-filters')){<span class="nl-done">✓</span>}@if(diff('css-css-filters');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/css-filters" routerLinkActive="active">
+        <span class="nl-text">CSS Filters &amp; Effects</span>
+        @if (progress.isDone('css-css-filters')) {<span class="nl-done">✓</span>}
+        @if (diff('css-css-filters'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('css-filters')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('css-filters')"
+                  (click)="toggleSubtopics('css-filters', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('css-filters'); as cssFiltersSubs) {
+        @if (isSubtopicsExpanded('css-filters')) {
+          <div class="nav-subtopics">
+            @for (s of cssFiltersSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

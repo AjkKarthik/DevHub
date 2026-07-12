@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Filters &amp; Effects" topicRoute="/css/css-filters" subtopicLabel="isolation: isolate Confines mix-blend-mode to Its Own Subtree" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">isolation: isolate Confines mix-blend-mode to Its Own Subtree</h1>
+  <p class="page-subtitle">The same red, multiply-blended element renders black over a green page background but pure red once isolated in a white wrapper — pixel-verified with the actual color math.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 41+, Firefox 36+, Safari 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Rasterize both scenes and sample the actual rendered pixel color to confirm isolation genuinely changes what the blend sees behind it.</p>
+    <app-live-playground title="isolation: isolate confines mix-blend-mode to its own subtree" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own third "Common Mistake" and quiz claim confirmed via genuine pixel-level color math, not just theory. The final subtopic turns to filter's own stacking-context side effect — confirming it traps negative z-index children exactly like transform does.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Filters &amp; Effects" topicRoute="/css/css-filters"
+    [prev]="{ label: 'backdrop-filter Has Zero Effect Without a Transparent Background', route: '/css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background' }"
+    [next]="{ label: 'filter Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children' }" />
+</div>

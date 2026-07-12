@@ -1651,6 +1651,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Transforms Never Affect Sibling Layout Positions', route: '/css/css-transforms/transforms-never-affect-sibling-layout-positions' },
     { label: 'Transform Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children' },
   ],
+  'css-filters': [
+    { label: 'backdrop-filter Has Zero Effect Without a Transparent Background', route: '/css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background' },
+    { label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' },
+    { label: 'filter Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children' },
+  ],
 };
 
 @Component({

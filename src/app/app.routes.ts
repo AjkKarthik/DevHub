@@ -1551,7 +1551,12 @@ export const routes: Routes = [
       { path: 'transforms-never-affect-sibling-layout-positions', loadComponent: () => import('./components/frontend/css/css-transforms/subtopics/transforms-never-affect-sibling-layout-positions/transforms-never-affect-sibling-layout-positions').then(m => m.TransformsNeverAffectSiblingLayoutPositionsSubtopic) },
       { path: 'transform-creates-a-stacking-context-trapping-negative-z-index-children', loadComponent: () => import('./components/frontend/css/css-transforms/subtopics/transform-creates-a-stacking-context-trapping-negative-z-index-children/transform-creates-a-stacking-context-trapping-negative-z-index-children').then(m => m.TransformCreatesAStackingContextTrappingNegativeZIndexChildrenSubtopic) },
     ] },
-    { path: 'css-filters',               loadComponent: () => import('./components/frontend/css/css-filters/css-filters').then(m => m.CssCssFilters) },
+    { path: 'css-filters', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/css-filters/css-filters').then(m => m.CssCssFilters) },
+      { path: 'backdrop-filter-has-zero-effect-without-a-transparent-background', loadComponent: () => import('./components/frontend/css/css-filters/subtopics/backdrop-filter-has-zero-effect-without-a-transparent-background/backdrop-filter-has-zero-effect-without-a-transparent-background').then(m => m.BackdropFilterHasZeroEffectWithoutATransparentBackgroundSubtopic) },
+      { path: 'isolation-isolate-confines-mix-blend-mode-to-its-own-subtree', loadComponent: () => import('./components/frontend/css/css-filters/subtopics/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree').then(m => m.IsolationIsolateConfinesMixBlendModeToItsOwnSubtreeSubtopic) },
+      { path: 'filter-creates-a-stacking-context-trapping-negative-z-index-children', loadComponent: () => import('./components/frontend/css/css-filters/subtopics/filter-creates-a-stacking-context-trapping-negative-z-index-children/filter-creates-a-stacking-context-trapping-negative-z-index-children').then(m => m.FilterCreatesAStackingContextTrappingNegativeZIndexChildrenSubtopic) },
+    ] },
     { path: 'fundamentals',              loadComponent: () => import('./components/frontend/css/fundamentals/fundamentals').then(m => m.CssFundamentals) },
     { path: 'cheatsheet',               loadComponent: () => import('./components/frontend/css/cheatsheet/cheatsheet').then(m => m.CssCheatsheet) },
     { path: 'interview-prep',           loadComponent: () => import('./components/frontend/css/interview-prep/interview-prep').then(m => m.CssInterviewPrep) },
