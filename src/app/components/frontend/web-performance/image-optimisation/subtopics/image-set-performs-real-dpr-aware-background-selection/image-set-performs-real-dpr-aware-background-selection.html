@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Image Optimisation" topicRoute="/performance/image-optimisation" subtopicLabel="image-set() Performs Real DPR-Aware Background Selection" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">image-set() Performs Real DPR-Aware Background Selection</h1>
+  <p class="page-subtitle">Only the candidate matching the current device pixel ratio is ever fetched — the other is never requested at all, confirmed with real Resource Timing entries, not getComputedStyle.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="image-set(), widely supported unprefixed" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Check real resource-timing entries for an image-set() background with 1x and 2x candidates — see which one actually gets fetched.</p>
+    <app-live-playground title="image-set() performs real DPR-aware background selection" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's claim that background-image cannot use srcset but image-set() fills the gap — with real network proof, not just the CSS declaration echoed back. Together, these three subtopics cover srcset's sizes-driven selection, picture's document-order rule, and CSS's own DPR-aware background equivalent.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Image Optimisation" topicRoute="/performance/image-optimisation"
+    [prev]="{ label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' }" />
+</div>

@@ -22393,6 +22393,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/image-optimisation': {
+    apis: ['srcset', 'sizes', 'picture', 'source', 'image-set()', 'currentSrc'],
+    related: [
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+    ],
+    tip: 'Serve AVIF → WebP → JPEG via picture, use srcset + sizes together (sizes is required, not optional), and never lazy-load the LCP image.',
+    docs: [
+      { label: 'web.dev — Responsive images', url: 'https://web.dev/articles/serve-responsive-images' },
+    ],
+    resources: [
+      { label: 'Squoosh', url: 'https://squoosh.app/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Without sizes, the browser defaults to 100vw and often picks the largest srcset candidate — confirmed directly via currentSrc.',
+      'picture picks the FIRST matching source in document order, not the smallest file — source order is the entire mechanism.',
+    ],
+  },
+
+  'performance/image-optimisation/sizes-controls-which-srcset-candidate-wins': {
+    apis: ['srcset', 'sizes', 'img.currentSrc'],
+    related: [
+      { label: 'Image Optimisation (overview)', route: '/performance/image-optimisation' },
+      { label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' },
+      { label: 'image-set() Performs Real DPR-Aware Background Selection', route: '/performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection' },
+    ],
+    tip: 'The exact same srcset list picked the largest candidate with no sizes, the smallest sufficient candidate for sizes="300px", and a larger one for sizes="900px" — confirmed via img.currentSrc each time.',
+    docs: [
+      { label: 'MDN — Responsive images', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images' },
+    ],
+    resources: [],
+    gotchas: [
+      'sizes is not inferred from CSS — it must be declared explicitly, evaluated at parse time before styles are guaranteed applied.',
+      'sizes accepts a media-query-like list, so it can describe a genuinely responsive rendered width, not just a fixed one.',
+    ],
+  },
+
+  'performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order': {
+    apis: ['picture', 'source', 'img.currentSrc'],
+    related: [
+      { label: 'Image Optimisation (overview)', route: '/performance/image-optimisation' },
+      { label: 'sizes Controls Which srcset Candidate Wins', route: '/performance/image-optimisation/sizes-controls-which-srcset-candidate-wins' },
+      { label: 'image-set() Performs Real DPR-Aware Background Selection', route: '/performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection' },
+    ],
+    tip: 'Swapping the order of two equally-supported source elements changed which one was picked every time — confirmed via img.currentSrc, proving order is the entire mechanism, not a quality comparison.',
+    docs: [
+      { label: 'MDN — picture element', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/picture' },
+    ],
+    resources: [],
+    gotchas: [
+      'A reversed source order (JPEG before AVIF) fails completely silently — the image still renders correctly, just larger, with no error anywhere.',
+      'Visual regression tests cannot catch this mistake — the wrong format still looks visually correct.',
+    ],
+  },
+
+  'performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection': {
+    apis: ['image-set()', 'background-image', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Image Optimisation (overview)', route: '/performance/image-optimisation' },
+      { label: 'sizes Controls Which srcset Candidate Wins', route: '/performance/image-optimisation/sizes-controls-which-srcset-candidate-wins' },
+      { label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' },
+    ],
+    tip: 'On a 1x-DPR screen, only the 1x image-set() candidate produced a real network request — the 2x candidate was never fetched at all, confirmed via Resource Timing, not getComputedStyle.',
+    docs: [
+      { label: 'MDN — image-set()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/image/image-set' },
+    ],
+    resources: [],
+    gotchas: [
+      'getComputedStyle().backgroundImage just echoes the full declaration — it does not reveal which candidate was actually fetched.',
+      'A hard-coded url("icon@2x.png") always fetches the larger file on every screen — image-set() is what gives the browser a real choice.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

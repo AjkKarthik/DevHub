@@ -2017,7 +2017,12 @@ export const routes: Routes = [
       { path: 'cache-first-genuinely-skips-the-network-entirely', loadComponent: () => import('./components/frontend/web-performance/caching/subtopics/cache-first-genuinely-skips-the-network-entirely/cache-first-genuinely-skips-the-network-entirely').then(m => m.CacheFirstGenuinelySkipsTheNetworkEntirelySubtopic) },
       { path: 'selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones', loadComponent: () => import('./components/frontend/web-performance/caching/subtopics/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones').then(m => m.SelectiveCacheDeletionKeepsTheCurrentCacheAndRemovesStaleOnesSubtopic) },
     ] },
-    { path: 'image-optimisation',       loadComponent: () => import('./components/frontend/web-performance/image-optimisation/image-optimisation').then(m => m.PerfImageOptimisation) },
+    { path: 'image-optimisation', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/image-optimisation/image-optimisation').then(m => m.PerfImageOptimisation) },
+      { path: 'sizes-controls-which-srcset-candidate-wins', loadComponent: () => import('./components/frontend/web-performance/image-optimisation/subtopics/sizes-controls-which-srcset-candidate-wins/sizes-controls-which-srcset-candidate-wins').then(m => m.SizesControlsWhichSrcsetCandidateWinsSubtopic) },
+      { path: 'picture-picks-the-first-matching-source-in-document-order', loadComponent: () => import('./components/frontend/web-performance/image-optimisation/subtopics/picture-picks-the-first-matching-source-in-document-order/picture-picks-the-first-matching-source-in-document-order').then(m => m.PicturePicksTheFirstMatchingSourceInDocumentOrderSubtopic) },
+      { path: 'image-set-performs-real-dpr-aware-background-selection', loadComponent: () => import('./components/frontend/web-performance/image-optimisation/subtopics/image-set-performs-real-dpr-aware-background-selection/image-set-performs-real-dpr-aware-background-selection').then(m => m.ImageSetPerformsRealDprAwareBackgroundSelectionSubtopic) },
+    ] },
     { path: 'font-performance',         loadComponent: () => import('./components/frontend/web-performance/font-performance/font-performance').then(m => m.PerfFontPerformance) },
     { path: 'js-performance',           loadComponent: () => import('./components/frontend/web-performance/js-performance/js-performance').then(m => m.PerfJsPerformance) },
     { path: 'third-party-scripts',      loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/third-party-scripts').then(m => m.PerfThirdPartyScripts) },

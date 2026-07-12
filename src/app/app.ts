@@ -1711,6 +1711,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' },
     { label: 'Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones', route: '/performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones' },
   ],
+  'image-optimisation': [
+    { label: 'sizes Controls Which srcset Candidate Wins', route: '/performance/image-optimisation/sizes-controls-which-srcset-candidate-wins' },
+    { label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' },
+    { label: 'image-set() Performs Real DPR-Aware Background Selection', route: '/performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection' },
+  ],
 };
 
 @Component({

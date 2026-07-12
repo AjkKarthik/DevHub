@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Image Optimisation" topicRoute="/performance/image-optimisation" subtopicLabel="sizes Controls Which srcset Candidate Wins" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">sizes Controls Which srcset Candidate Wins</h1>
+  <p class="page-subtitle">The exact same srcset list picks a different real candidate depending on the sizes value — confirmed directly via img.currentSrc, not assumed.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Responsive Images, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare the real srcset candidate selected for no sizes, a narrow sizes value, and a wide sizes value — same list, three different outcomes.</p>
+    <app-live-playground title="sizes controls which srcset candidate wins" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Omitting sizes attribute" mistake with a real, three-way currentSrc comparison. Next: how a picture element with multiple equally-supported source elements picks the first one, not the "best" one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Image Optimisation" topicRoute="/performance/image-optimisation"
+    [next]="{ label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' }" />
+</div>
