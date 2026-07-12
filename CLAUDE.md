@@ -1054,6 +1054,31 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
     `/angular/tailwind` topic) — hub-prefixed to `css-tailwind`, matching the
     `aspnet-routing`/`css-animations` precedent; verified via browser that the Angular hub's own
     nav toggle and subtopics were unaffected by the fix.
+11. **New verification technique: SVG `foreignObject` + canvas rasterization for genuine pixel-level
+    proof of visual CSS effects** — discovered during the CSS Filters batch (`/css/css-filters`,
+    2026-07-12) when `getComputedStyle()`/`elementFromPoint()` couldn't verify claims about
+    `backdrop-filter` and `mix-blend-mode`, since those are pure rendering/compositing effects with
+    no CSSOM-exposed result. The technique: serialize a small HTML string into an SVG
+    `<foreignObject>`, load it into an `Image` via a `data:image/svg+xml` URL, `drawImage()` it onto
+    a `<canvas>`, then read the actual rendered pixel color with `ctx.getImageData(x, y, 1,
+    1).data`. This produced exact, reproducible pixel values (e.g. confirming `backdrop-filter:
+    blur(8px)` renders pure white `[255,255,255,255]` behind an opaque background but a red-tinted
+    blend behind a 20%-transparent one) — genuine proof, not inference from spec text. Reused
+    successfully for a second claim in the same batch (`mix-blend-mode: multiply` producing exactly
+    black `(0,0,0)` over a green background vs. exactly red `(255,0,0)` once isolated over a white
+    one — the precise multiply color math, not just "it looks different"). This is now the
+    established fallback whenever a CSS claim is about actual paint/compositing output that
+    `getComputedStyle()` cannot expose. **Gotcha found in the same batch**: an early attempt to
+    distinguish `filter: drop-shadow()` from `box-shadow` using `clip-path` to create a
+    transparent region failed — `clip-path` clips `box-shadow` identically to how it clips
+    `drop-shadow`, so both produced the same (unhelpful) result; abandoned that specific comparison
+    rather than force a misleading test. **A second, separate gotcha in the same batch**: testing
+    whether `filter`/`transform` creates a stacking context by hit-testing with
+    `document.elementFromPoint()` requires the elements under test to use `position: relative` (or
+    similar), never `position: fixed` — `position: fixed` unconditionally creates its OWN stacking
+    context regardless of `filter`/`transform`, which silently confounded the first attempt (both
+    the "with" and "without" cases showed the same trapped-child result until this was caught and
+    fixed by switching to `position: relative` on a `position: fixed` OUTER wrapper only).
 
 ## Current state (update when it changes!)
 
