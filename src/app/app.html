@@ -4355,7 +4355,26 @@
           </div>
         }
       }
-      <a routerLink="/performance/cls" routerLinkActive="active"><span class="nl-text">Cumulative Layout Shift</span>@if(progress.isDone('perf-cls')){<span class="nl-done">✓</span>}@if(diff('perf-cls');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/cls" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Cumulative Layout Shift</span>
+        @if (progress.isDone('perf-cls')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-cls'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('cls')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cls')"
+                  (click)="toggleSubtopics('cls', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cls'); as perfClsSubs) {
+        @if (isSubtopicsExpanded('cls')) {
+          <div class="nav-subtopics">
+            @for (s of perfClsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

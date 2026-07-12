@@ -21948,6 +21948,81 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/cls': {
+    apis: ['layout-shift', 'PerformanceObserver', 'hadRecentInput', 'content-visibility', 'contain-intrinsic-size'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+    ],
+    tip: 'CLS = sum of (impact fraction × distance fraction) per shift, using the worst 5-second session window — always set width/height on img/video first, it is the single biggest win.',
+    docs: [
+      { label: 'web.dev — Cumulative Layout Shift', url: 'https://web.dev/articles/cls' },
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Only a genuinely trusted user gesture sets hadRecentInput: true — element.click() from JavaScript does not count.',
+      'content-visibility: auto collapses an element to zero height without an explicit contain-intrinsic-size hint.',
+    ],
+  },
+
+  'performance/cls/hadrecentinput-excludes-click-caused-shifts': {
+    apis: ['layout-shift', 'hadRecentInput', 'PerformanceObserver'],
+    related: [
+      { label: 'Cumulative Layout Shift (overview)', route: '/performance/cls' },
+      { label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' },
+      { label: 'Fixed Positioning Eliminates the Shift In-Flow Insertion Causes', route: '/performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes' },
+    ],
+    tip: 'A real, trusted click produced a layout-shift entry with hadRecentInput: true; the identical shift with no preceding input reported false — confirmed with genuine browser automation, not a simulated click.',
+    docs: [
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'element.click() from JavaScript is not a trusted event — shifts it causes still report hadRecentInput: false.',
+      'The exclusion is per-entry, not a blanket window — later unrelated shifts with no nearby real input still count normally.',
+    ],
+  },
+
+  'performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height': {
+    apis: ['content-visibility', 'contain-intrinsic-size', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Cumulative Layout Shift (overview)', route: '/performance/cls' },
+      { label: 'hadRecentInput Excludes Click-Caused Shifts', route: '/performance/cls/hadrecentinput-excludes-click-caused-shifts' },
+      { label: 'Fixed Positioning Eliminates the Shift In-Flow Insertion Causes', route: '/performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes' },
+    ],
+    tip: 'A 400px-tall section measured a real, verified 0px height with content-visibility: auto alone — adding contain-intrinsic-size: 0 400px restored the true 400px.',
+    docs: [
+      { label: 'MDN — content-visibility', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'The estimate in contain-intrinsic-size does not need to be pixel-perfect — a close approximation still shrinks the eventual shift dramatically.',
+      'Every content-visibility: auto section needs its own contain-intrinsic-size — there is no single global fix.',
+    ],
+  },
+
+  'performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes': {
+    apis: ['layout-shift', 'PerformanceObserver', 'position: fixed'],
+    related: [
+      { label: 'Cumulative Layout Shift (overview)', route: '/performance/cls' },
+      { label: 'hadRecentInput Excludes Click-Caused Shifts', route: '/performance/cls/hadrecentinput-excludes-click-caused-shifts' },
+      { label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' },
+    ],
+    tip: 'The same 80px banner produced a real, nonzero layout-shift entry inserted into normal flow, and zero entries inserted as position: fixed — confirmed in isolation with a live observer.',
+    docs: [
+      { label: 'web.dev — Cumulative Layout Shift', url: 'https://web.dev/articles/cls' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a structural difference, not a magnitude one — a fixed element of any size never causes CLS since it never displaces anything.',
+      'position: sticky only behaves this way once actually stuck — a newly inserted sticky element can still shift content depending on where it lands.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

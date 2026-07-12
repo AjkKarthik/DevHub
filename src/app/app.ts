@@ -1679,6 +1679,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' },
     { label: 'scheduler.yield() Turns One longtask Into Zero', route: '/performance/inp/scheduler-yield-turns-one-longtask-into-zero' },
   ],
+  'cls': [
+    { label: 'hadRecentInput Excludes Click-Caused Shifts', route: '/performance/cls/hadrecentinput-excludes-click-caused-shifts' },
+    { label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' },
+    { label: 'Fixed Positioning Eliminates the Shift In-Flow Insertion Causes', route: '/performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes' },
+  ],
 };
 
 @Component({

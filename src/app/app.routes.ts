@@ -1981,7 +1981,12 @@ export const routes: Routes = [
       { path: 'layout-thrashing-is-dramatically-slower-than-batching', loadComponent: () => import('./components/frontend/web-performance/inp/subtopics/layout-thrashing-is-dramatically-slower-than-batching/layout-thrashing-is-dramatically-slower-than-batching').then(m => m.LayoutThrashingIsDramaticallySlowerThanBatchingSubtopic) },
       { path: 'scheduler-yield-turns-one-longtask-into-zero', loadComponent: () => import('./components/frontend/web-performance/inp/subtopics/scheduler-yield-turns-one-longtask-into-zero/scheduler-yield-turns-one-longtask-into-zero').then(m => m.SchedulerYieldTurnsOneLongtaskIntoZeroSubtopic) },
     ] },
-    { path: 'cls',                      loadComponent: () => import('./components/frontend/web-performance/cls/cls').then(m => m.PerfCls) },
+    { path: 'cls', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/cls/cls').then(m => m.PerfCls) },
+      { path: 'hadrecentinput-excludes-click-caused-shifts', loadComponent: () => import('./components/frontend/web-performance/cls/subtopics/hadrecentinput-excludes-click-caused-shifts/hadrecentinput-excludes-click-caused-shifts').then(m => m.HadrecentinputExcludesClickCausedShiftsSubtopic) },
+      { path: 'content-visibility-without-contain-intrinsic-size-collapses-height', loadComponent: () => import('./components/frontend/web-performance/cls/subtopics/content-visibility-without-contain-intrinsic-size-collapses-height/content-visibility-without-contain-intrinsic-size-collapses-height').then(m => m.ContentVisibilityWithoutContainIntrinsicSizeCollapsesHeightSubtopic) },
+      { path: 'fixed-positioning-eliminates-the-shift-in-flow-insertion-causes', loadComponent: () => import('./components/frontend/web-performance/cls/subtopics/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes').then(m => m.FixedPositioningEliminatesTheShiftInFlowInsertionCausesSubtopic) },
+    ] },
     { path: 'critical-rendering-path',  loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/critical-rendering-path').then(m => m.PerfCriticalRenderingPath) },
     { path: 'browser-rendering',        loadComponent: () => import('./components/frontend/web-performance/browser-rendering/browser-rendering').then(m => m.PerfBrowserRendering) },
     { path: 'resource-hints',           loadComponent: () => import('./components/frontend/web-performance/resource-hints/resource-hints').then(m => m.PerfResourceHints) },

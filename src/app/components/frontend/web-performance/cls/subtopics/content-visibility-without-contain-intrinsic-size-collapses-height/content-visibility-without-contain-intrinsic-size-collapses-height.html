@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cumulative Layout Shift" topicRoute="/performance/cls" subtopicLabel="content-visibility Without contain-intrinsic-size Collapses Height" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">content-visibility Without contain-intrinsic-size Collapses Height</h1>
+  <p class="page-subtitle">A 400px-tall section measures a real, verified 0px height with content-visibility: auto alone — adding contain-intrinsic-size: 0 400px restores the true 400px, measured with getBoundingClientRect().</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="content-visibility, Chrome 85+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare the real, measured height of two identical 400px sections — one with content-visibility: auto alone, one with contain-intrinsic-size added.</p>
+    <app-live-playground title="content-visibility without contain-intrinsic-size collapses height" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Forgetting contain-intrinsic-size" mistake with a real, measured 0px-vs-400px comparison. Next: why inserting a banner into the normal document flow shifts content while the same banner as position: fixed does not.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cumulative Layout Shift" topicRoute="/performance/cls"
+    [prev]="{ label: 'hadRecentInput Excludes Click-Caused Shifts', route: '/performance/cls/hadrecentinput-excludes-click-caused-shifts' }"
+    [next]="{ label: 'Fixed Positioning Eliminates the Shift In-Flow Insertion Causes', route: '/performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes' }" />
+</div>
