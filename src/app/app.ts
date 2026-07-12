@@ -1646,6 +1646,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Named Timelines Are Invisible to Siblings Without timeline-scope', route: '/css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope' },
     { label: 'Bare scroll() Defaults to the Nearest Ancestor Scroll Container', route: '/css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container' },
   ],
+  'css-transforms': [
+    { label: 'Rotate Before Translate Changes the Direction of Movement', route: '/css/css-transforms/rotate-before-translate-changes-the-direction-of-movement' },
+    { label: 'Transforms Never Affect Sibling Layout Positions', route: '/css/css-transforms/transforms-never-affect-sibling-layout-positions' },
+    { label: 'Transform Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children' },
+  ],
 };
 
 @Component({

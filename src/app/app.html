@@ -4168,7 +4168,26 @@
           </div>
         }
       }
-      <a routerLink="/css/css-transforms" routerLinkActive="active"><span class="nl-text">CSS Transforms</span>@if(progress.isDone('css-css-transforms')){<span class="nl-done">✓</span>}@if(diff('css-css-transforms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/css-transforms" routerLinkActive="active">
+        <span class="nl-text">CSS Transforms</span>
+        @if (progress.isDone('css-css-transforms')) {<span class="nl-done">✓</span>}
+        @if (diff('css-css-transforms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('css-transforms')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('css-transforms')"
+                  (click)="toggleSubtopics('css-transforms', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('css-transforms'); as cssTransformsSubs) {
+        @if (isSubtopicsExpanded('css-transforms')) {
+          <div class="nav-subtopics">
+            @for (s of cssTransformsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/css-filters" routerLinkActive="active"><span class="nl-text">CSS Filters & Effects</span>@if(progress.isDone('css-css-filters')){<span class="nl-done">✓</span>}@if(diff('css-css-filters');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

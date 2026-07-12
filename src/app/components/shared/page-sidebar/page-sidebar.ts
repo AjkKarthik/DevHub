@@ -21709,6 +21709,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-transforms/rotate-before-translate-changes-the-direction-of-movement': {
+    apis: ['transform', 'rotate()', 'translateX()', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Transforms (overview)', route: '/css/css-transforms' },
+      { label: 'Transforms Never Affect Sibling Layout Positions', route: '/css/css-transforms/transforms-never-affect-sibling-layout-positions' },
+      { label: 'Transform Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children' },
+    ],
+    tip: 'rotate(90deg) translateX(100px) moves an element down, not right — confirmed by measuring the actual pixel displacement with getBoundingClientRect() and comparing against the reversed order.',
+    docs: [
+      { label: 'MDN: transform', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform' },
+    ],
+    resources: [],
+    gotchas: [
+      'Each transform function modifies the local coordinate system for every function listed after it — order genuinely changes the result.',
+      'Individual transform properties (translate, rotate, scale) avoid this entirely by using a fixed composition order.',
+    ],
+  },
+
+  'css/css-transforms/transforms-never-affect-sibling-layout-positions': {
+    apis: ['transform', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Transforms (overview)', route: '/css/css-transforms' },
+      { label: 'Rotate Before Translate Changes the Direction of Movement', route: '/css/css-transforms/rotate-before-translate-changes-the-direction-of-movement' },
+      { label: 'Transform Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children' },
+    ],
+    tip: 'A sibling\'s getBoundingClientRect() position stays identical even after a dramatic translateX(200px) scale(2) transform is applied to its neighbor — layout is calculated entirely from the pre-transform box.',
+    docs: [
+      { label: 'MDN: transform', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform' },
+    ],
+    resources: [],
+    gotchas: [
+      'A large transform can cause visual OVERLAP with siblings (subject to stacking order) without ever triggering an actual layout reflow.',
+      'This is exactly why translate(-50%, -50%) works for centering — it never recalculates the element\'s own layout position.',
+    ],
+  },
+
+  'css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children': {
+    apis: ['transform', 'z-index', 'document.elementFromPoint()'],
+    related: [
+      { label: 'CSS Transforms (overview)', route: '/css/css-transforms' },
+      { label: 'Rotate Before Translate Changes the Direction of Movement', route: '/css/css-transforms/rotate-before-translate-changes-the-direction-of-movement' },
+      { label: 'Transforms Never Affect Sibling Layout Positions', route: '/css/css-transforms/transforms-never-affect-sibling-layout-positions' },
+    ],
+    tip: 'A z-index: -1 child correctly hides behind a plain parent, but stays trapped IN FRONT of a transformed one — confirmed via document.elementFromPoint() hit-testing the overlapping region on both.',
+    docs: [
+      { label: 'MDN: transform', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform' },
+    ],
+    resources: [],
+    gotchas: [
+      'transform alone (any value other than none) creates a new stacking context — no z-index or position needs to be set on the transformed element.',
+      'This is a genuinely confusing bug to diagnose since transform doesn\'t look related to z-index at all.',
+    ],
+  },
+
   'css/scroll-driven-animations': {
     apis: ['animation-timeline: scroll()', 'animation-timeline: view()', 'animation-range', 'scroll-timeline-name', 'view-timeline-name', 'timeline-scope'],
     related: [

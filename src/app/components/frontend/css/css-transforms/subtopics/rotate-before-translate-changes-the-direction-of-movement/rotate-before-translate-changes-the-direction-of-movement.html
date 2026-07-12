@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Transforms" topicRoute="/css/css-transforms" subtopicLabel="Rotate Before Translate Changes the Direction of Movement" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Rotate Before Translate Changes the Direction of Movement</h1>
+  <p class="page-subtitle">rotate(90deg) translateX(100px) moves an element down, not right — rotate runs first and rotates the axis translateX then moves along.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare the actual pixel displacement of the same two transform functions in opposite orders.</p>
+    <app-live-playground title="rotate before translate changes the direction of movement" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own first "Common Mistake" and quiz claim made directly measurable via getBoundingClientRect(). The next subtopic turns to a related but distinct claim — confirming transforms never shift sibling elements' own layout positions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Transforms" topicRoute="/css/css-transforms"
+    [next]="{ label: 'Transforms Never Affect Sibling Layout Positions', route: '/css/css-transforms/transforms-never-affect-sibling-layout-positions' }" />
+</div>

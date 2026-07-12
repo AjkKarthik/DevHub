@@ -1545,7 +1545,12 @@ export const routes: Routes = [
       { path: 'named-timelines-are-invisible-to-siblings-without-timeline-scope', loadComponent: () => import('./components/frontend/css/scroll-driven-animations/subtopics/named-timelines-are-invisible-to-siblings-without-timeline-scope/named-timelines-are-invisible-to-siblings-without-timeline-scope').then(m => m.NamedTimelinesAreInvisibleToSiblingsWithoutTimelineScopeSubtopic) },
       { path: 'bare-scroll-defaults-to-the-nearest-ancestor-scroll-container', loadComponent: () => import('./components/frontend/css/scroll-driven-animations/subtopics/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container').then(m => m.BareScrollDefaultsToTheNearestAncestorScrollContainerSubtopic) },
     ] },
-    { path: 'css-transforms',             loadComponent: () => import('./components/frontend/css/css-transforms/css-transforms').then(m => m.CssCssTransforms) },
+    { path: 'css-transforms', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/css-transforms/css-transforms').then(m => m.CssCssTransforms) },
+      { path: 'rotate-before-translate-changes-the-direction-of-movement', loadComponent: () => import('./components/frontend/css/css-transforms/subtopics/rotate-before-translate-changes-the-direction-of-movement/rotate-before-translate-changes-the-direction-of-movement').then(m => m.RotateBeforeTranslateChangesTheDirectionOfMovementSubtopic) },
+      { path: 'transforms-never-affect-sibling-layout-positions', loadComponent: () => import('./components/frontend/css/css-transforms/subtopics/transforms-never-affect-sibling-layout-positions/transforms-never-affect-sibling-layout-positions').then(m => m.TransformsNeverAffectSiblingLayoutPositionsSubtopic) },
+      { path: 'transform-creates-a-stacking-context-trapping-negative-z-index-children', loadComponent: () => import('./components/frontend/css/css-transforms/subtopics/transform-creates-a-stacking-context-trapping-negative-z-index-children/transform-creates-a-stacking-context-trapping-negative-z-index-children').then(m => m.TransformCreatesAStackingContextTrappingNegativeZIndexChildrenSubtopic) },
+    ] },
     { path: 'css-filters',               loadComponent: () => import('./components/frontend/css/css-filters/css-filters').then(m => m.CssCssFilters) },
     { path: 'fundamentals',              loadComponent: () => import('./components/frontend/css/fundamentals/fundamentals').then(m => m.CssFundamentals) },
     { path: 'cheatsheet',               loadComponent: () => import('./components/frontend/css/cheatsheet/cheatsheet').then(m => m.CssCheatsheet) },
