@@ -1736,6 +1736,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' },
     { label: 'Navigation Timing’s responseStart Genuinely Computes TTFB', route: '/performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb' },
   ],
+  'rum': [
+    { label: 'sendBeacon() Fires a Real Request With Its Own Initiator Type', route: '/performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type' },
+    { label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' },
+    { label: 'Batching Metrics Into One Beacon Genuinely Cuts Requests', route: '/performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests' },
+  ],
 };
 
 @Component({

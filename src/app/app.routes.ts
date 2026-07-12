@@ -2047,7 +2047,12 @@ export const routes: Routes = [
       { path: 'fcp-and-lcp-are-genuinely-different-real-timestamps', loadComponent: () => import('./components/frontend/web-performance/measurement/subtopics/fcp-and-lcp-are-genuinely-different-real-timestamps/fcp-and-lcp-are-genuinely-different-real-timestamps').then(m => m.FcpAndLcpAreGenuinelyDifferentRealTimestampsSubtopic) },
       { path: 'navigation-timings-responsestart-genuinely-computes-ttfb', loadComponent: () => import('./components/frontend/web-performance/measurement/subtopics/navigation-timings-responsestart-genuinely-computes-ttfb/navigation-timings-responsestart-genuinely-computes-ttfb').then(m => m.NavigationTimingsResponsestartGenuinelyComputesTtfbSubtopic) },
     ] },
-    { path: 'rum',                      loadComponent: () => import('./components/frontend/web-performance/rum/rum').then(m => m.PerfRum) },
+    { path: 'rum', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/rum/rum').then(m => m.PerfRum) },
+      { path: 'sendbeacon-fires-a-real-request-with-its-own-initiator-type', loadComponent: () => import('./components/frontend/web-performance/rum/subtopics/sendbeacon-fires-a-real-request-with-its-own-initiator-type/sendbeacon-fires-a-real-request-with-its-own-initiator-type').then(m => m.SendbeaconFiresARealRequestWithItsOwnInitiatorTypeSubtopic) },
+      { path: 'p75-and-average-can-disagree-on-the-pass-fail-rating-entirely', loadComponent: () => import('./components/frontend/web-performance/rum/subtopics/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely').then(m => m.P75AndAverageCanDisagreeOnThePassFailRatingEntirelySubtopic) },
+      { path: 'batching-metrics-into-one-beacon-genuinely-cuts-requests', loadComponent: () => import('./components/frontend/web-performance/rum/subtopics/batching-metrics-into-one-beacon-genuinely-cuts-requests/batching-metrics-into-one-beacon-genuinely-cuts-requests').then(m => m.BatchingMetricsIntoOneBeaconGenuinelyCutsRequestsSubtopic) },
+    ] },
     { path: 'ssr-streaming',            loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/ssr-streaming').then(m => m.PerfSsrStreaming) },
     { path: 'css-performance',          loadComponent: () => import('./components/frontend/web-performance/css-performance/css-performance').then(m => m.PerfCssPerformance) },
     { path: 'web-workers',              loadComponent: () => import('./components/frontend/web-performance/web-workers/web-workers').then(m => m.PerfWebWorkers) },

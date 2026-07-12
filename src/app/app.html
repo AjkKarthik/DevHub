@@ -4599,7 +4599,26 @@
           </div>
         }
       }
-      <a routerLink="/performance/rum" routerLinkActive="active"><span class="nl-text">Real User Monitoring</span>@if(progress.isDone('perf-rum')){<span class="nl-done">✓</span>}@if(diff('perf-rum');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/rum" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Real User Monitoring</span>
+        @if (progress.isDone('perf-rum')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-rum'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('rum')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rum')"
+                  (click)="toggleSubtopics('rum', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rum'); as perfRumSubs) {
+        @if (isSubtopicsExpanded('rum')) {
+          <div class="nav-subtopics">
+            @for (s of perfRumSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/performance/performance-budgets" routerLinkActive="active"><span class="nl-text">Performance Budgets &amp; CI</span>@if(progress.isDone('perf-performance-budgets')){<span class="nl-done">✓</span>}@if(diff('perf-performance-budgets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

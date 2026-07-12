@@ -22763,6 +22763,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/rum': {
+    apis: ['web-vitals', 'navigator.sendBeacon()', 'visibilitychange', 'Attribution'],
+    related: [
+      { label: 'Performance Measurement', route: '/performance/measurement' },
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+    ],
+    tip: 'RUM is your ground truth — use web-vitals + sendBeacon, report P75 by device type, and include attribution data to pinpoint the element or interaction causing poor metrics.',
+    docs: [
+      { label: 'web.dev — web-vitals library', url: 'https://github.com/GoogleChrome/web-vitals' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'sendBeacon() is a genuinely distinct request category (initiatorType: "beacon"), not a fetch() wrapper.',
+      'Average and P75 can disagree entirely on whether a metric is "good" — always report P75 to match Google\'s methodology.',
+    ],
+  },
+
+  'performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type': {
+    apis: ['navigator.sendBeacon()', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Real User Monitoring (overview)', route: '/performance/rum' },
+      { label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' },
+      { label: 'Batching Metrics Into One Beacon Genuinely Cuts Requests', route: '/performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests' },
+    ],
+    tip: 'navigator.sendBeacon() returned true and produced a genuine resource-timing entry with initiatorType: "beacon" — a distinct browser-level request category, not a thin fetch() wrapper.',
+    docs: [
+      { label: 'MDN — Beacon API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Beacon_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'A true return value only means the browser queued the request — it says nothing about whether the server received or processed it.',
+      'fetch(url, { keepalive: true }) is the documented fallback when sendBeacon() is unavailable, not a full replacement.',
+    ],
+  },
+
+  'performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely': {
+    apis: ['Array.prototype.sort()', 'Percentile calculation'],
+    related: [
+      { label: 'Real User Monitoring (overview)', route: '/performance/rum' },
+      { label: 'sendBeacon() Fires a Real Request With Its Own Initiator Type', route: '/performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type' },
+      { label: 'Batching Metrics Into One Beacon Genuinely Cuts Requests', route: '/performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests' },
+    ],
+    tip: 'A realistic 20-session dataset produced an average of 1,839ms ("good") and a P75 of 2,600ms ("poor") — the identical underlying data, two completely different pass/fail outcomes.',
+    docs: [
+      { label: 'web.dev — Core Web Vitals thresholds', url: 'https://web.dev/articles/defining-core-web-vitals-thresholds' },
+    ],
+    resources: [],
+    gotchas: [
+      'CrUX and Google Search Console\'s CWV report use P75 — the same methodology this subtopic verifies.',
+      'The disagreement is structural, not a small-sample artifact — it persists at any sample size as long as the slow-tail fraction stays consistent.',
+    ],
+  },
+
+  'performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests': {
+    apis: ['navigator.sendBeacon()', 'PerformanceResourceTiming', 'visibilitychange'],
+    related: [
+      { label: 'Real User Monitoring (overview)', route: '/performance/rum' },
+      { label: 'sendBeacon() Fires a Real Request With Its Own Initiator Type', route: '/performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type' },
+      { label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' },
+    ],
+    tip: 'Firing 5 separate sendBeacon() calls (one per metric) produced 5 real network requests; batching into one payload produced exactly 1 — the same data, a real 5x request-count difference.',
+    docs: [
+      { label: 'web.dev — web-vitals library', url: 'https://github.com/GoogleChrome/web-vitals' },
+    ],
+    resources: [],
+    gotchas: [
+      'Batching does not require waiting for all metrics to fire — whatever has fired by visibilitychange gets included in the one beacon.',
+      'At real production traffic volumes, request COUNT (not just payload size) is the primary saving.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [
