@@ -1969,7 +1969,12 @@ export const routes: Routes = [
       { path: 'missing-image-dimensions-cause-a-real-measurable-layout-shift', loadComponent: () => import('./components/frontend/web-performance/core-web-vitals/subtopics/missing-image-dimensions-cause-a-real-measurable-layout-shift/missing-image-dimensions-cause-a-real-measurable-layout-shift').then(m => m.MissingImageDimensionsCauseARealMeasurableLayoutShiftSubtopic) },
       { path: 'the-lcp-candidate-changes-as-larger-elements-appear', loadComponent: () => import('./components/frontend/web-performance/core-web-vitals/subtopics/the-lcp-candidate-changes-as-larger-elements-appear/the-lcp-candidate-changes-as-larger-elements-appear').then(m => m.TheLcpCandidateChangesAsLargerElementsAppearSubtopic) },
     ] },
-    { path: 'lcp',                      loadComponent: () => import('./components/frontend/web-performance/lcp/lcp').then(m => m.PerfLcp) },
+    { path: 'lcp', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/lcp/lcp').then(m => m.PerfLcp) },
+      { path: 'text-can-be-the-lcp-candidate', loadComponent: () => import('./components/frontend/web-performance/lcp/subtopics/text-can-be-the-lcp-candidate/text-can-be-the-lcp-candidate').then(m => m.TextCanBeTheLcpCandidateSubtopic) },
+      { path: 'preload-beats-a-blocking-resource-for-lcp', loadComponent: () => import('./components/frontend/web-performance/lcp/subtopics/preload-beats-a-blocking-resource-for-lcp/preload-beats-a-blocking-resource-for-lcp').then(m => m.PreloadBeatsABlockingResourceForLcpSubtopic) },
+      { path: 'lazy-loading-defers-fetch-until-near-viewport', loadComponent: () => import('./components/frontend/web-performance/lcp/subtopics/lazy-loading-defers-fetch-until-near-viewport/lazy-loading-defers-fetch-until-near-viewport').then(m => m.LazyLoadingDefersFetchUntilNearViewportSubtopic) },
+    ] },
     { path: 'inp',                      loadComponent: () => import('./components/frontend/web-performance/inp/inp').then(m => m.PerfInp) },
     { path: 'cls',                      loadComponent: () => import('./components/frontend/web-performance/cls/cls').then(m => m.PerfCls) },
     { path: 'critical-rendering-path',  loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/critical-rendering-path').then(m => m.PerfCriticalRenderingPath) },

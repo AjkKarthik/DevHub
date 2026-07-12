@@ -1669,6 +1669,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' },
     { label: 'The LCP Candidate Changes as Larger Elements Appear', route: '/performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear' },
   ],
+  'lcp': [
+    { label: 'Text Can Be the LCP Candidate — Not Only Images', route: '/performance/lcp/text-can-be-the-lcp-candidate' },
+    { label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' },
+    { label: 'loading="lazy" Defers the Fetch Until Near the Viewport', route: '/performance/lcp/lazy-loading-defers-fetch-until-near-viewport' },
+  ],
 };
 
 @Component({

@@ -21798,6 +21798,81 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/lcp': {
+    apis: ['largest-contentful-paint', 'PerformanceObserver', 'PerformanceResourceTiming', 'fetchpriority', 'rel="preload"'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'LCP cannot beat TTFB — if the server takes 2s to respond, no amount of image optimisation gets LCP under 2s. Fix TTFB first.',
+    docs: [
+      { label: 'web.dev — Largest Contentful Paint', url: 'https://web.dev/articles/lcp' },
+      { label: 'MDN — Largest Contentful Paint API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/LargestContentfulPaint' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The LCP candidate can be text, not just an image — check entry.url (empty string means text won).',
+      'loading="lazy" on the LCP element can delay its discovery even when it looks obviously above-the-fold to a human.',
+    ],
+  },
+
+  'performance/lcp/text-can-be-the-lcp-candidate': {
+    apis: ['largest-contentful-paint', 'PerformanceObserver'],
+    related: [
+      { label: 'Largest Contentful Paint (overview)', route: '/performance/lcp' },
+      { label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' },
+      { label: 'loading="lazy" Defers the Fetch Until Near the Viewport', route: '/performance/lcp/lazy-loading-defers-fetch-until-near-viewport' },
+    ],
+    tip: 'A large heading out-covered a small photo and won as the LCP candidate in a real PerformanceObserver — entry.url was the empty string, the browser\'s own signal that text won.',
+    docs: [
+      { label: 'MDN — Largest Contentful Paint API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/LargestContentfulPaint' },
+    ],
+    resources: [],
+    gotchas: [
+      'Optimising images does nothing for LCP if the actual candidate is a text block — check the real reported element before planning fixes.',
+      'A slow custom web font can block text LCP exactly like a slow image blocks image LCP.',
+    ],
+  },
+
+  'performance/lcp/preload-beats-a-blocking-resource-for-lcp': {
+    apis: ['PerformanceResourceTiming', 'fetchStart', 'rel="preload"', 'fetchpriority'],
+    related: [
+      { label: 'Largest Contentful Paint (overview)', route: '/performance/lcp' },
+      { label: 'Text Can Be the LCP Candidate — Not Only Images', route: '/performance/lcp/text-can-be-the-lcp-candidate' },
+      { label: 'loading="lazy" Defers the Fetch Until Near the Viewport', route: '/performance/lcp/lazy-loading-defers-fetch-until-near-viewport' },
+    ],
+    tip: 'A preloaded image\'s real fetchStart landed ~308ms earlier than an un-preloaded one behind a simulated 300ms blocking resource — the win tracks the blocking delay almost exactly.',
+    docs: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing' },
+    ],
+    resources: [],
+    gotchas: [
+      'Preload controls WHEN a fetch starts; fetchpriority controls how much bandwidth it gets once started — the LCP image needs both.',
+      'If the LCP image tag is already the earliest thing the parser reaches, preload has nothing left to skip past.',
+    ],
+  },
+
+  'performance/lcp/lazy-loading-defers-fetch-until-near-viewport': {
+    apis: ['loading="lazy"', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Largest Contentful Paint (overview)', route: '/performance/lcp' },
+      { label: 'Text Can Be the LCP Candidate — Not Only Images', route: '/performance/lcp/text-can-be-the-lcp-candidate' },
+      { label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' },
+    ],
+    tip: 'A lazy image 9000px below the fold produced zero resource-timing entries; the identical eager image fetched immediately — lazy genuinely withholds the request, it does not just deprioritise it.',
+    docs: [
+      { label: 'MDN — Lazy loading', url: 'https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading' },
+    ],
+    resources: [],
+    gotchas: [
+      'The browser decides lazy vs. eager at discovery time, before layout is necessarily settled — an above-the-fold image is not automatically safe.',
+      'loading="lazy" and fetchpriority="low" are different mechanisms: one can withhold the request entirely, the other only lowers bandwidth priority.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [
