@@ -22981,6 +22981,78 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/web-workers': {
+    apis: ['Worker', 'postMessage()', 'Transferable', 'Comlink', 'navigator.hardwareConcurrency'],
+    related: [
+      { label: 'JavaScript Performance', route: '/performance/js-performance' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'SSR & Streaming HTML', route: '/performance/ssr-streaming' },
+    ],
+    tip: 'A setInterval ticked 0 times during a 300ms busy-loop on the main thread, but 4 times during the identical work run inside a real Worker — direct, measured proof of what "off the main thread" buys you.',
+    docs: [
+      { label: 'MDN — Web Workers API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'A transferred ArrayBuffer becomes detached (byteLength 0) on the sending side immediately — the data is never duplicated.',
+      'Creating a fresh Worker per task measured 17.8x slower than reusing one Worker for the same 20 tasks — always pool and reuse.',
+    ],
+  },
+
+  'performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy': {
+    apis: ['ArrayBuffer', 'Worker.postMessage()', 'Transferable'],
+    related: [
+      { label: 'Web Workers (overview)', route: '/performance/web-workers' },
+      { label: 'A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work', route: '/performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work' },
+      { label: 'Reusing a Worker Is Dramatically Faster Than Creating One Per Task', route: '/performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task' },
+    ],
+    tip: 'A real 1MB ArrayBuffer sent via the transfer list dropped to byteLength 0 on the main thread immediately after postMessage() returned, while the Worker received the full 1,048,576 bytes.',
+    docs: [
+      { label: 'MDN — Transferable objects', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only specific types (ArrayBuffer, MessagePort, ImageBitmap, OffscreenCanvas) support transfer — others throw a DataCloneError in the transfer list.',
+      'Detachment is synchronous — capture any size/data needed from the buffer BEFORE calling postMessage with a transfer list, not after.',
+    ],
+  },
+
+  'performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work': {
+    apis: ['Worker', 'setInterval()', 'performance.now()'],
+    related: [
+      { label: 'Web Workers (overview)', route: '/performance/web-workers' },
+      { label: 'Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)', route: '/performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy' },
+      { label: 'Reusing a Worker Is Dramatically Faster Than Creating One Per Task', route: '/performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task' },
+    ],
+    tip: 'The identical 300ms synchronous busy-loop produced 0 main-thread timer ticks when run directly on the main thread, and 4 ticks when run inside a real Worker — the CPU work took the same time either way, only main-thread availability changed.',
+    docs: [
+      { label: 'web.dev — Off-main-thread work', url: 'https://web.dev/articles/off-main-thread' },
+    ],
+    resources: [],
+    gotchas: [
+      'A Worker does not make CPU work faster — it moves where the work happens, not how fast it executes.',
+      'A Worker is a genuine OS thread, not a chunking trick — an unbroken synchronous loop inside a Worker still leaves the main thread fully free.',
+    ],
+  },
+
+  'performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task': {
+    apis: ['Worker', 'Worker.terminate()', 'navigator.hardwareConcurrency'],
+    related: [
+      { label: 'Web Workers (overview)', route: '/performance/web-workers' },
+      { label: 'Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)', route: '/performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy' },
+      { label: 'A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work', route: '/performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work' },
+    ],
+    tip: '20 trivial tasks took 89ms with a fresh Worker per task versus 5ms reusing one Worker for all 20 — a measured 17.8x overhead penalty entirely from Worker creation/teardown, not the work itself.',
+    docs: [
+      { label: 'MDN — Worker()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker' },
+    ],
+    resources: [],
+    gotchas: [
+      'terminate() is for tearing down a feature entirely, not a per-task cleanup ritual — a reused idle Worker is not "leaking" anything.',
+      'Worker startup cost compounds with how many times new Worker() is called, not once per page load.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Web Workers &amp; Off-Main-Thread" topicRoute="/performance/web-workers" subtopicLabel="Reusing a Worker Is Dramatically Faster Than Creating One Per Task" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Reusing a Worker Is Dramatically Faster Than Creating One Per Task</h1>
+  <p class="page-subtitle">20 trivial tasks took 89ms with a fresh Worker created and torn down per task, versus 5ms reusing a single Worker for all 20 — a measured 17.8x overhead penalty entirely from Worker creation, not the work itself.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Web Workers, universally supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Run 20 trivial tasks two ways — a fresh Worker per task vs one reused Worker — and compare total elapsed time.</p>
+    <app-live-playground title="reusing a Worker is dramatically faster than creating one per task" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This closes out the batch with the measured justification for the main page's Worker pool pattern. Together with the earlier two subtopics, this batch shows transfer genuinely moves ownership with zero copy, a Worker genuinely frees the main thread during heavy work, and reusing Workers genuinely avoids real, measurable startup overhead.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Web Workers &amp; Off-Main-Thread" topicRoute="/performance/web-workers"
+    [prev]="{ label: 'A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work', route: '/performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work' }" />
+</div>

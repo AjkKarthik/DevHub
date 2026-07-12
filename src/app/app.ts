@@ -1751,6 +1751,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' },
     { label: 'contain: content Clips Overflow Like overflow: hidden', route: '/performance/css-performance/contain-content-clips-overflow-like-overflow-hidden' },
   ],
+  'perf-web-workers': [
+    { label: 'Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)', route: '/performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy' },
+    { label: 'A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work', route: '/performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work' },
+    { label: 'Reusing a Worker Is Dramatically Faster Than Creating One Per Task', route: '/performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task' },
+  ],
 };
 
 @Component({

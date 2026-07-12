@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Web Workers &amp; Off-Main-Thread" topicRoute="/performance/web-workers" subtopicLabel="Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)</h1>
+  <p class="page-subtitle">A real 1MB ArrayBuffer sent via the transfer list dropped to byteLength 0 on the sending side the instant postMessage() returned, while the Worker received the full 1,048,576 bytes — confirming transfer moves ownership, it doesn't copy.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Transferable objects, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Transfer a real ArrayBuffer to a real Worker, then check what the sender's own reference looks like afterward.</p>
+    <app-live-playground title="transferred ArrayBuffers become genuinely detached (zero-copy)" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This grounds the main page's "zero-copy transfer" claim in a real, observable detachment. Next: proving that a Worker genuinely keeps the main thread responsive during heavy CPU work.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Web Workers &amp; Off-Main-Thread" topicRoute="/performance/web-workers"
+    [next]="{ label: 'A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work', route: '/performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work' }" />
+</div>
