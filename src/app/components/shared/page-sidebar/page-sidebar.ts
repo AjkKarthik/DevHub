@@ -22615,6 +22615,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/third-party-scripts': {
+    apis: ['integrity attribute', 'Facade pattern', 'PerformanceResourceTiming', 'Partytown'],
+    related: [
+      { label: 'JavaScript Performance', route: '/performance/js-performance' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+    ],
+    tip: 'Third-party scripts cost main-thread time and INP — load them deferred, behind facades, or in Web Workers; audit impact with Resource Timing and Lighthouse.',
+    docs: [
+      { label: 'web.dev — Third-party JavaScript', url: 'https://web.dev/articles/fast#optimize-your-third-party-resources' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'SRI genuinely blocks execution on a hash mismatch — confirmed via onerror, not just a console warning.',
+      'A facade produces zero network requests for the real widget until the user actually interacts.',
+    ],
+  },
+
+  'performance/third-party-scripts/subresource-integrity-genuinely-blocks-a-mismatched-script': {
+    apis: ['integrity attribute', 'crypto.subtle.digest()'],
+    related: [
+      { label: 'Third-Party Scripts (overview)', route: '/performance/third-party-scripts' },
+      { label: 'A Facade Loads Zero Third-Party Bytes Until Interaction', route: '/performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction' },
+      { label: 'Resource Timing Correctly Separates First-Party From Third-Party', route: '/performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party' },
+    ],
+    tip: 'A script with a wrong integrity hash failed to execute at all; the identical script with a live-computed correct hash loaded and ran, confirmed by checking its own side effect actually happened.',
+    docs: [
+      { label: 'MDN — Subresource Integrity', url: 'https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity' },
+    ],
+    resources: [],
+    gotchas: [
+      'SRI only works safely against versioned, immutable URLs — a vendor updating content at the same URL breaks the integration.',
+      'SRI verifies the file has not been tampered with — it says nothing about whether the vendor\'s own unmodified code is trustworthy.',
+    ],
+  },
+
+  'performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction': {
+    apis: ['PerformanceResourceTiming', 'Facade pattern'],
+    related: [
+      { label: 'Third-Party Scripts (overview)', route: '/performance/third-party-scripts' },
+      { label: 'Subresource Integrity Genuinely Blocks a Mismatched Script', route: '/performance/third-party-scripts/subresource-integrity-genuinely-blocks-a-mismatched-script' },
+      { label: 'Resource Timing Correctly Separates First-Party From Third-Party', route: '/performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party' },
+    ],
+    tip: 'Zero resource-timing entries for the widget script before any click, exactly one immediately after — the widget genuinely never gets requested for visitors who never interact.',
+    docs: [
+      { label: 'web.dev — lite-youtube-embed', url: 'https://web.dev/articles/fast#optimize-your-third-party-resources' },
+    ],
+    resources: [],
+    gotchas: [
+      'A rarely-clicked widget benefits MOST from a facade — the majority of visitors are the ones who skip the cost entirely.',
+      'This is fundamentally different from deferred/lazy loading, which still eventually loads unconditionally for every visitor.',
+    ],
+  },
+
+  'performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party': {
+    apis: ['PerformanceResourceTiming', 'location.origin'],
+    related: [
+      { label: 'Third-Party Scripts (overview)', route: '/performance/third-party-scripts' },
+      { label: 'Subresource Integrity Genuinely Blocks a Mismatched Script', route: '/performance/third-party-scripts/subresource-integrity-genuinely-blocks-a-mismatched-script' },
+      { label: 'A Facade Loads Zero Third-Party Bytes Until Interaction', route: '/performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction' },
+    ],
+    tip: 'The main page\'s audit pattern correctly split real first-party and third-party requests and grouped them by hostname — confirmed live on this actual production page.',
+    docs: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing' },
+    ],
+    resources: [],
+    gotchas: [
+      'This audit can be run entirely from the DevTools console on live production, no code changes needed.',
+      'The resource-timing buffer has a default size limit — increase it with performance.setResourceTimingBufferSize() on request-heavy pages.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

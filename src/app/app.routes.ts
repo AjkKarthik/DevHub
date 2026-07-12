@@ -2035,7 +2035,12 @@ export const routes: Routes = [
       { path: 'event-delegation-catches-dynamically-added-elements', loadComponent: () => import('./components/frontend/web-performance/js-performance/subtopics/event-delegation-catches-dynamically-added-elements/event-delegation-catches-dynamically-added-elements').then(m => m.EventDelegationCatchesDynamicallyAddedElementsSubtopic) },
       { path: 'memoization-genuinely-skips-recomputation-for-repeated-inputs', loadComponent: () => import('./components/frontend/web-performance/js-performance/subtopics/memoization-genuinely-skips-recomputation-for-repeated-inputs/memoization-genuinely-skips-recomputation-for-repeated-inputs').then(m => m.MemoizationGenuinelySkipsRecomputationForRepeatedInputsSubtopic) },
     ] },
-    { path: 'third-party-scripts',      loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/third-party-scripts').then(m => m.PerfThirdPartyScripts) },
+    { path: 'third-party-scripts', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/third-party-scripts').then(m => m.PerfThirdPartyScripts) },
+      { path: 'subresource-integrity-genuinely-blocks-a-mismatched-script', loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/subtopics/subresource-integrity-genuinely-blocks-a-mismatched-script/subresource-integrity-genuinely-blocks-a-mismatched-script').then(m => m.SubresourceIntegrityGenuinelyBlocksAMismatchedScriptSubtopic) },
+      { path: 'a-facade-loads-zero-third-party-bytes-until-interaction', loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/subtopics/a-facade-loads-zero-third-party-bytes-until-interaction/a-facade-loads-zero-third-party-bytes-until-interaction').then(m => m.AFacadeLoadsZeroThirdPartyBytesUntilInteractionSubtopic) },
+      { path: 'resource-timing-correctly-separates-first-party-from-third-party', loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/subtopics/resource-timing-correctly-separates-first-party-from-third-party/resource-timing-correctly-separates-first-party-from-third-party').then(m => m.ResourceTimingCorrectlySeparatesFirstPartyFromThirdPartySubtopic) },
+    ] },
     { path: 'measurement',              loadComponent: () => import('./components/frontend/web-performance/measurement/measurement').then(m => m.PerfMeasurement) },
     { path: 'rum',                      loadComponent: () => import('./components/frontend/web-performance/rum/rum').then(m => m.PerfRum) },
     { path: 'ssr-streaming',            loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/ssr-streaming').then(m => m.PerfSsrStreaming) },

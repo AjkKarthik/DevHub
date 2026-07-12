@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Third-Party Scripts" topicRoute="/performance/third-party-scripts" subtopicLabel="A Facade Loads Zero Third-Party Bytes Until Interaction" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">A Facade Loads Zero Third-Party Bytes Until Interaction</h1>
+  <p class="page-subtitle">Zero resource-timing entries for the widget script before any click, exactly one immediately after — a clean, measured before/after, not an assumption about how facades work.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Resource Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Count real resource-timing entries for a widget's script before and after clicking its facade.</p>
+    <app-live-playground title="a facade loads zero third-party bytes until interaction" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's facade pattern with a real, measured zero-to-one request count rather than a conceptual description. Next: how the Resource Timing API correctly separates first-party from third-party requests, demonstrated live on this actual page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Third-Party Scripts" topicRoute="/performance/third-party-scripts"
+    [prev]="{ label: 'Subresource Integrity Genuinely Blocks a Mismatched Script', route: '/performance/third-party-scripts/subresource-integrity-genuinely-blocks-a-mismatched-script' }"
+    [next]="{ label: 'Resource Timing Correctly Separates First-Party From Third-Party', route: '/performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party' }" />
+</div>
