@@ -4148,7 +4148,26 @@
           </div>
         }
       }
-      <a routerLink="/css/scroll-driven-animations" routerLinkActive="active"><span class="nl-text">Scroll-Driven Animations</span>@if(progress.isDone('css-scroll-driven-animations')){<span class="nl-done">✓</span>}@if(diff('css-scroll-driven-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/scroll-driven-animations" routerLinkActive="active">
+        <span class="nl-text">Scroll-Driven Animations</span>
+        @if (progress.isDone('css-scroll-driven-animations')) {<span class="nl-done">✓</span>}
+        @if (diff('css-scroll-driven-animations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('scroll-driven-animations')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('scroll-driven-animations')"
+                  (click)="toggleSubtopics('scroll-driven-animations', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('scroll-driven-animations'); as cssScrollDrivenSubs) {
+        @if (isSubtopicsExpanded('scroll-driven-animations')) {
+          <div class="nav-subtopics">
+            @for (s of cssScrollDrivenSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/css/css-transforms" routerLinkActive="active"><span class="nl-text">CSS Transforms</span>@if(progress.isDone('css-css-transforms')){<span class="nl-done">✓</span>}@if(diff('css-css-transforms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/css/css-filters" routerLinkActive="active"><span class="nl-text">CSS Filters & Effects</span>@if(progress.isDone('css-css-filters')){<span class="nl-done">✓</span>}@if(diff('css-css-filters');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

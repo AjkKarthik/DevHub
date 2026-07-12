@@ -21731,6 +21731,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional': {
+    apis: ['ScrollTimeline', 'getAnimations()', 'currentTime'],
+    related: [
+      { label: 'Scroll-Driven Animations (overview)', route: '/css/scroll-driven-animations' },
+      { label: 'Named Timelines Are Invisible to Siblings Without timeline-scope', route: '/css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope' },
+      { label: 'Bare scroll() Defaults to the Nearest Ancestor Scroll Container', route: '/css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container' },
+    ],
+    tip: 'A declared animation-duration: 1s has zero effect once animation-timeline is scroll() — currentTime becomes a scroll-progress percentage, confirmed directly on the real ScrollTimeline object.',
+    docs: [
+      { label: 'MDN: animation-timeline', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline' },
+    ],
+    resources: [
+      { label: 'Scroll-driven demos', url: 'https://scroll-driven-animations.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'animation-timing-function still fully applies — only the fixed-real-seconds concept of duration is meaningless, not easing.',
+      'Omit animation-duration or set it to auto for scroll/view timelines to avoid reader confusion.',
+    ],
+  },
+
+  'css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope': {
+    apis: ['view-timeline-name', 'timeline-scope', 'getAnimations()'],
+    related: [
+      { label: 'Scroll-Driven Animations (overview)', route: '/css/scroll-driven-animations' },
+      { label: 'animation-duration Is Ignored — Scroll Timeline Progress Is Positional', route: '/css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional' },
+      { label: 'Bare scroll() Defaults to the Nearest Ancestor Scroll Container', route: '/css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container' },
+    ],
+    tip: 'A sibling referencing a named timeline with no timeline-scope gets a real CSSAnimation object whose timeline is null — confirmed directly via getAnimations(), not just inferred from a silent visual bug.',
+    docs: [
+      { label: 'MDN: animation-timeline', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline' },
+    ],
+    resources: [
+      { label: 'Scroll-driven demos', url: 'https://scroll-driven-animations.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'timeline-scope belongs on the common ancestor of both elements, not on the timeline-defining element itself.',
+      'There is no console warning — the declaration is valid CSS that simply resolves to no timeline.',
+    ],
+  },
+
+  'css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container': {
+    apis: ['scroll()', 'ScrollTimeline.source'],
+    related: [
+      { label: 'Scroll-Driven Animations (overview)', route: '/css/scroll-driven-animations' },
+      { label: 'animation-duration Is Ignored — Scroll Timeline Progress Is Positional', route: '/css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional' },
+      { label: 'Named Timelines Are Invisible to Siblings Without timeline-scope', route: '/css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope' },
+    ],
+    tip: 'animation-timeline: scroll() with no scroller keyword is exactly scroll(nearest) — confirmed via the ScrollTimeline object\'s own source property binding to the closest scrollable ancestor, not the document.',
+    docs: [
+      { label: 'MDN: animation-timeline', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline' },
+    ],
+    resources: [
+      { label: 'Scroll-driven demos', url: 'https://scroll-driven-animations.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Any element nested inside its own scrollable container (a modal, a scrollable card) binds to that inner scroller by default, not the page.',
+      'Use an explicit scroll(root block) when a component genuinely needs to track the page scroll regardless of nesting.',
+    ],
+  },
+
   'css/tailwind': {
     apis: ['flex', 'grid', 'p-4', 'bg-{color}-500', 'hover:', 'md:', 'dark:', '@apply', 'group-hover:', 'peer-checked:', 'arbitrary values []'],
     related: [

@@ -1641,6 +1641,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' },
     { label: 'Responsive Variants Are Mobile-First, Not Breakpoint-Specific', route: '/css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific' },
   ],
+  'scroll-driven-animations': [
+    { label: 'animation-duration Is Ignored — Scroll Timeline Progress Is Positional', route: '/css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional' },
+    { label: 'Named Timelines Are Invisible to Siblings Without timeline-scope', route: '/css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope' },
+    { label: 'Bare scroll() Defaults to the Nearest Ancestor Scroll Container', route: '/css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container' },
+  ],
 };
 
 @Component({

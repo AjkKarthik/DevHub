@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Scroll-Driven Animations" topicRoute="/css/scroll-driven-animations" subtopicLabel="Named Timelines Are Invisible to Siblings Without timeline-scope" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Named Timelines Are Invisible to Siblings Without timeline-scope</h1>
+  <p class="page-subtitle">The same setup produces a real ViewTimeline object for a descendant, but a null timeline for a sibling — until timeline-scope is added to their shared ancestor.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 115+, Firefox 110+, Safari 18+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare a sibling's bound timeline with and without timeline-scope on the shared ancestor.</p>
+    <app-live-playground title="named timelines are invisible to siblings without timeline-scope" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own fourth "Common Mistake" made directly measurable via the real Animation object's timeline property. The final subtopic turns to a related default — which scroll container a bare scroll() actually binds to.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Scroll-Driven Animations" topicRoute="/css/scroll-driven-animations"
+    [prev]="{ label: 'animation-duration Is Ignored — Scroll Timeline Progress Is Positional', route: '/css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional' }"
+    [next]="{ label: 'Bare scroll() Defaults to the Nearest Ancestor Scroll Container', route: '/css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container' }" />
+</div>
