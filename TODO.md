@@ -1711,7 +1711,7 @@ off here with a date.
 
 #### Web Performance — 20 topic pages
 
-- [ ] `/performance/core-web-vitals` — Core Web Vitals Overview
+- [x] `/performance/core-web-vitals` — Core Web Vitals Overview (2026-07-12 — 3 subtopics: transform-avoids-cls-while-top-and-left-trigger-it, missing-image-dimensions-cause-a-real-measurable-layout-shift, the-lcp-candidate-changes-as-larger-elements-appear; first Web Performance hub subtopic set — introduced a new verification technique this batch, real browser `PerformanceObserver` APIs (`layout-shift`, `largest-contentful-paint`) instead of generic DOM inspection, directly measuring the same mechanisms behind real CLS/LCP scores; all three claims verified empirically in-browser before writing (layout-shift needed a large-enough/long-enough shift to register — 200x200 element, 300px displacement, 500ms wait; image-dimensions demo needed an explicit forced initial paint via `offsetWidth` before swapping `img.src` or no shift registered); filled a pre-existing sidebar gap — no base entry existed for any Web Performance topic, added one alongside the 3 composites; SUBTOPICS map key left bare ('core-web-vitals'), collision-free; browser-verified successfully, all 3 nav links + breadcrumb confirmed)
 - [ ] `/performance/lcp` — Largest Contentful Paint
 - [ ] `/performance/inp` — Interaction to Next Paint
 - [ ] `/performance/cls` — Cumulative Layout Shift
