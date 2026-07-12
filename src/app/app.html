@@ -4676,7 +4676,26 @@
           </div>
         }
       }
-      <a routerLink="/performance/performance-budgets" routerLinkActive="active"><span class="nl-text">Performance Budgets &amp; CI</span>@if(progress.isDone('perf-performance-budgets')){<span class="nl-done">✓</span>}@if(diff('perf-performance-budgets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/performance-budgets" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Performance Budgets &amp; CI</span>
+        @if (progress.isDone('perf-performance-budgets')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-performance-budgets'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('performance-budgets')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('performance-budgets')"
+                  (click)="toggleSubtopics('performance-budgets', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('performance-budgets'); as perfBudgetsSubs) {
+        @if (isSubtopicsExpanded('performance-budgets')) {
+          <div class="nav-subtopics">
+            @for (s of perfBudgetsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

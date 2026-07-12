@@ -23053,6 +23053,78 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/performance-budgets': {
+    apis: ['CompressionStream', 'Lighthouse CI', 'angular.json budgets', 'bundlesize'],
+    related: [
+      { label: 'CSS Performance', route: '/performance/css-performance' },
+      { label: 'JavaScript Performance', route: '/performance/js-performance' },
+      { label: 'Real User Monitoring (RUM)', route: '/performance/rum' },
+    ],
+    tip: 'Real CompressionStream(\'gzip\') measurements showed the classic "size × 0.3" shortcut overstated a repetitive sample by ~12x and understated a high-entropy sample by 60% — wrong in opposite directions depending on content.',
+    docs: [
+      { label: 'Google — Lighthouse CI', url: 'https://github.com/GoogleChrome/lighthouse-ci' },
+    ],
+    resources: [],
+    gotchas: [
+      'A median-of-3 measured a real, narrower variance than single runs on genuinely noisy data — but noise reduction, not noise elimination.',
+      '"initial" and "anyScript" Angular CLI budgets catch different failure modes — a healthy total can still hide one oversized chunk, and vice versa.',
+    ],
+  },
+
+  'performance/performance-budgets/gzip-approximation-is-wildly-inaccurate': {
+    apis: ['CompressionStream', 'TextEncoder'],
+    related: [
+      { label: 'Performance Budgets (overview)', route: '/performance/performance-budgets' },
+      { label: 'A Median of 3 Runs Genuinely Narrows Measurement Variance', route: '/performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance' },
+      { label: 'Initial vs anyScript Budgets Catch Genuinely Different Failure Modes', route: '/performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes' },
+    ],
+    tip: 'A repetitive minified-JS-like sample real-gzipped to 2.3% of its raw size (ratio 0.023) — the ×0.3 approximation overstated it by roughly 12x.',
+    docs: [
+      { label: 'MDN — CompressionStream', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CompressionStream' },
+    ],
+    resources: [],
+    gotchas: [
+      'Compression ratio depends entirely on content redundancy, not file type or "looking compact" — minified code can still compress far better than 0.3×.',
+      'CompressionStream is a standard Web API — real gzip size can be measured without any build tool or Node.js dependency.',
+    ],
+  },
+
+  'performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance': {
+    apis: ['performance.now()', 'fetch()'],
+    related: [
+      { label: 'Performance Budgets (overview)', route: '/performance/performance-budgets' },
+      { label: 'The size × 0.3 Gzip Approximation Is Wildly Inaccurate', route: '/performance/performance-budgets/gzip-approximation-is-wildly-inaccurate' },
+      { label: 'Initial vs anyScript Budgets Catch Genuinely Different Failure Modes', route: '/performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes' },
+    ],
+    tip: '30 real fetch() timings had a range of 2.7ms–7.3ms; grouping into medians of 3 narrowed the range to 2.9ms–5.5ms — single-run outliers get filtered out.',
+    docs: [
+      { label: 'web.dev — Lighthouse CI variability', url: 'https://github.com/GoogleChrome/lighthouse-ci/blob/main/docs/variability.md' },
+    ],
+    resources: [],
+    gotchas: [
+      'Median resists outliers better than average — a single extreme run pulls an average directly, but needs a majority of its group to shift a median.',
+      'A single unblocked CI run (numberOfRuns: 1) is exactly as susceptible to this measured noise as any other single measurement.',
+    ],
+  },
+
+  'performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes': {
+    apis: ['angular.json budgets', 'ng build'],
+    related: [
+      { label: 'Performance Budgets (overview)', route: '/performance/performance-budgets' },
+      { label: 'The size × 0.3 Gzip Approximation Is Wildly Inaccurate', route: '/performance/performance-budgets/gzip-approximation-is-wildly-inaccurate' },
+      { label: 'A Median of 3 Runs Genuinely Narrows Measurement Variance', route: '/performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance' },
+    ],
+    tip: 'A build with ten 40KB chunks can fail "initial" while passing "anyScript"; a build with one legitimate 180KB chunk can fail "anyScript" while passing "initial" — same numbers, opposite verdicts.',
+    docs: [
+      { label: 'Angular — Build budgets', url: 'https://angular.dev/tools/cli/build-system-migration' },
+    ],
+    resources: [],
+    gotchas: [
+      'A lazy-loaded chunk is NOT part of the "initial" total by definition — only "anyScript" (checking every chunk, lazy included) catches unbounded lazy-chunk growth.',
+      'Setting only one budget type leaves a real blind spot for the failure mode the other type is specifically designed to catch.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [
