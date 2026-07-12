@@ -21873,6 +21873,81 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/inp': {
+    apis: ['longtask', 'PerformanceObserver', 'scheduler.yield()', 'isInputPending()'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'INP replaced FID in March 2024 — it tracks the WORST interaction across the whole page visit, not just the first one.',
+    docs: [
+      { label: 'web.dev — Interaction to Next Paint', url: 'https://web.dev/articles/inp' },
+      { label: 'MDN — Long Tasks API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A fast click handler can still produce a slow interaction if an unrelated long task is already running when the click happens.',
+      'scheduler.yield() does not make code run faster — it makes long work interruptible by input.',
+    ],
+  },
+
+  'performance/inp/long-tasks-register-as-real-longtask-entries': {
+    apis: ['longtask', 'PerformanceObserver'],
+    related: [
+      { label: 'Interaction to Next Paint (overview)', route: '/performance/inp' },
+      { label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' },
+      { label: 'scheduler.yield() Turns One longtask Into Zero', route: '/performance/inp/scheduler-yield-turns-one-longtask-into-zero' },
+    ],
+    tip: 'A genuine 360ms synchronous block produced one real longtask entry with duration: 360 — the exact API Chrome DevTools uses for its own long-task markers.',
+    docs: [
+      { label: 'MDN — Long Tasks API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'Input delay is the gap before a handler even STARTS — a fast handler is irrelevant if a long task was already running when the click happened.',
+      'Long tasks are not just a page-load concern — any synchronous block over 50ms at any point in the page lifecycle produces the same entry and the same risk.',
+    ],
+  },
+
+  'performance/inp/layout-thrashing-is-dramatically-slower-than-batching': {
+    apis: ['offsetHeight', 'getBoundingClientRect()', 'performance.now()'],
+    related: [
+      { label: 'Interaction to Next Paint (overview)', route: '/performance/inp' },
+      { label: 'Long Tasks Register as Real longtask Entries', route: '/performance/inp/long-tasks-register-as-real-longtask-entries' },
+      { label: 'scheduler.yield() Turns One longtask Into Zero', route: '/performance/inp/scheduler-yield-turns-one-longtask-into-zero' },
+    ],
+    tip: 'The same 300-element read and write, interleaved vs batched, measured a real ~95x slowdown (190ms vs 2ms) with nothing but performance.now() — same operations, same total work, just reordered.',
+    docs: [
+      { label: 'web.dev — Avoid large, complex layouts', url: 'https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing' },
+    ],
+    resources: [],
+    gotchas: [
+      'Reading offsetHeight/getBoundingClientRect right after a DOM write forces a synchronous layout flush — it is not a cheap property lookup.',
+      'The fix costs nothing structurally: read everything first, then write everything — no fewer elements, no virtualisation needed.',
+    ],
+  },
+
+  'performance/inp/scheduler-yield-turns-one-longtask-into-zero': {
+    apis: ['scheduler.yield()', 'longtask', 'PerformanceObserver'],
+    related: [
+      { label: 'Interaction to Next Paint (overview)', route: '/performance/inp' },
+      { label: 'Long Tasks Register as Real longtask Entries', route: '/performance/inp/long-tasks-register-as-real-longtask-entries' },
+      { label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' },
+    ],
+    tip: 'The same 360ms of total work produced one longtask entry unbroken, and zero longtask entries split into 12 yielding 30ms chunks — wall-clock time stayed roughly the same either way.',
+    docs: [
+      { label: 'MDN — Prioritized Task Scheduling API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Prioritized_Task_Scheduling_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'scheduler.yield() does not speed up the work — evaluating it by wall-clock time alone misses the point; check longtask entries or real responsiveness instead.',
+      'Chunks must individually stay under 50ms to avoid producing their own longtask entries — yielding with oversized chunks still leaves a long task per chunk.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

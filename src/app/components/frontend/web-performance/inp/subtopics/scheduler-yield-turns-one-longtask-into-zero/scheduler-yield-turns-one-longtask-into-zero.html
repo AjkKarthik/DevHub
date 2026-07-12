@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Interaction to Next Paint" topicRoute="/performance/inp" subtopicLabel="scheduler.yield() Turns One longtask Into Zero" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">scheduler.yield() Turns One longtask Into Zero</h1>
+  <p class="page-subtitle">The same 360ms of total work, unbroken, produces one real longtask entry — split into yielding 30ms chunks, it produces none, measured with the same Long Tasks API from the previous subtopic.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="scheduler.yield(), Chrome 129+ (Scheduler API origin trial from Chrome 115+)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare real longtask entries between one unbroken 360ms block and the same total work split into 12 yielding 30ms chunks.</p>
+    <app-live-playground title="scheduler.yield() turns one longtask into zero" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This closes the loop with the first subtopic in this set — the same Long Tasks API that proved a 360ms block is a real longtask now proves that yielding removes it entirely. Together, these three subtopics give a measured, not theoretical, account of where INP's input delay and processing time actually come from.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Interaction to Next Paint" topicRoute="/performance/inp"
+    [prev]="{ label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' }" />
+</div>

@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Interaction to Next Paint" topicRoute="/performance/inp" subtopicLabel="Long Tasks Register as Real longtask Entries" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Long Tasks Register as Real longtask Entries</h1>
+  <p class="page-subtitle">A genuine 360ms synchronous block produces one real longtask performance entry with duration: 360 — the exact API Chrome DevTools uses to draw its own long-task markers.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Long Tasks API, Chrome 58+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Register a real PerformanceObserver for longtask entries and run a genuine 360ms synchronous busy-loop to see it fire.</p>
+    <app-live-playground title="long tasks register as real longtask entries" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This backs the main page's "input delay" theory with the real Long Tasks API measurement, not just the concept. Next: how interleaved DOM reads and writes turn into measurable layout thrashing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Interaction to Next Paint" topicRoute="/performance/inp"
+    [next]="{ label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' }" />
+</div>

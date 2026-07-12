@@ -1674,6 +1674,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' },
     { label: 'loading="lazy" Defers the Fetch Until Near the Viewport', route: '/performance/lcp/lazy-loading-defers-fetch-until-near-viewport' },
   ],
+  'inp': [
+    { label: 'Long Tasks Register as Real longtask Entries', route: '/performance/inp/long-tasks-register-as-real-longtask-entries' },
+    { label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' },
+    { label: 'scheduler.yield() Turns One longtask Into Zero', route: '/performance/inp/scheduler-yield-turns-one-longtask-into-zero' },
+  ],
 };
 
 @Component({

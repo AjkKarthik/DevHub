@@ -1975,7 +1975,12 @@ export const routes: Routes = [
       { path: 'preload-beats-a-blocking-resource-for-lcp', loadComponent: () => import('./components/frontend/web-performance/lcp/subtopics/preload-beats-a-blocking-resource-for-lcp/preload-beats-a-blocking-resource-for-lcp').then(m => m.PreloadBeatsABlockingResourceForLcpSubtopic) },
       { path: 'lazy-loading-defers-fetch-until-near-viewport', loadComponent: () => import('./components/frontend/web-performance/lcp/subtopics/lazy-loading-defers-fetch-until-near-viewport/lazy-loading-defers-fetch-until-near-viewport').then(m => m.LazyLoadingDefersFetchUntilNearViewportSubtopic) },
     ] },
-    { path: 'inp',                      loadComponent: () => import('./components/frontend/web-performance/inp/inp').then(m => m.PerfInp) },
+    { path: 'inp', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/inp/inp').then(m => m.PerfInp) },
+      { path: 'long-tasks-register-as-real-longtask-entries', loadComponent: () => import('./components/frontend/web-performance/inp/subtopics/long-tasks-register-as-real-longtask-entries/long-tasks-register-as-real-longtask-entries').then(m => m.LongTasksRegisterAsRealLongtaskEntriesSubtopic) },
+      { path: 'layout-thrashing-is-dramatically-slower-than-batching', loadComponent: () => import('./components/frontend/web-performance/inp/subtopics/layout-thrashing-is-dramatically-slower-than-batching/layout-thrashing-is-dramatically-slower-than-batching').then(m => m.LayoutThrashingIsDramaticallySlowerThanBatchingSubtopic) },
+      { path: 'scheduler-yield-turns-one-longtask-into-zero', loadComponent: () => import('./components/frontend/web-performance/inp/subtopics/scheduler-yield-turns-one-longtask-into-zero/scheduler-yield-turns-one-longtask-into-zero').then(m => m.SchedulerYieldTurnsOneLongtaskIntoZeroSubtopic) },
+    ] },
     { path: 'cls',                      loadComponent: () => import('./components/frontend/web-performance/cls/cls').then(m => m.PerfCls) },
     { path: 'critical-rendering-path',  loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/critical-rendering-path').then(m => m.PerfCriticalRenderingPath) },
     { path: 'browser-rendering',        loadComponent: () => import('./components/frontend/web-performance/browser-rendering/browser-rendering').then(m => m.PerfBrowserRendering) },
