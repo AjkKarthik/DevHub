@@ -22909,6 +22909,78 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/css-performance': {
+    apis: ['content-visibility', 'contain', 'CSSStyleSheet', 'will-change'],
+    related: [
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Browser Rendering Pipeline', route: '/performance/browser-rendering' },
+      { label: 'JavaScript Performance', route: '/performance/js-performance' },
+    ],
+    tip: 'A flat class selector and a 4-level descendant selector recalculated style for 5,000 elements in statistically identical time (25.02ms vs 25.00ms) — selector depth is not where CSS performance work should go.',
+    docs: [
+      { label: 'web.dev — content-visibility', url: 'https://web.dev/articles/content-visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'Unused CSS rules stay fully parsed and stored in the CSSOM regardless of DOM usage — the browser has no automatic removal mechanism.',
+      'contain: content bundles paint containment, which clips overflowing content like overflow: hidden — a real side effect beyond layout isolation.',
+    ],
+  },
+
+  'performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale': {
+    apis: ['CSSStyleDeclaration', 'classList', 'performance.now()'],
+    related: [
+      { label: 'CSS Performance (overview)', route: '/performance/css-performance' },
+      { label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' },
+      { label: 'contain: content Clips Overflow Like overflow: hidden', route: '/performance/css-performance/contain-content-clips-overflow-like-overflow-hidden' },
+    ],
+    tip: 'A first naive test showed a misleading ~7x gap purely from warm-up bias — a corrected methodology (warm-up pass + alternating trial order) collapsed it to a 0.07% difference.',
+    docs: [
+      { label: 'MDN — CSS selector performance', url: 'https://developer.mozilla.org/en-US/docs/Web/Performance/CSS_JavaScript_animation_performance' },
+    ],
+    resources: [],
+    gotchas: [
+      'Always control for warm-up/ordering effects before trusting a timing result — the first pass in any loop pays a one-time setup cost.',
+      'Render-blocking CSS size and layout-triggering animations are the real CSS performance levers, not selector depth.',
+    ],
+  },
+
+  'performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them': {
+    apis: ['document.styleSheets', 'CSSStyleSheet.cssRules', 'querySelectorAll()'],
+    related: [
+      { label: 'CSS Performance (overview)', route: '/performance/css-performance' },
+      { label: 'Selector Complexity Barely Moves Recalc-Style Time at Scale', route: '/performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale' },
+      { label: 'contain: content Clips Overflow Like overflow: hidden', route: '/performance/css-performance/contain-content-clips-overflow-like-overflow-hidden' },
+    ],
+    tip: 'A rule for a class matching zero elements was still fully present in document.styleSheets\' cssRules — the browser has no lazy or on-demand parsing based on DOM matches.',
+    docs: [
+      { label: 'MDN — CSSStyleSheet', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet' },
+    ],
+    resources: [],
+    gotchas: [
+      'PurgeCSS/Tailwind JIT work entirely at build time by scanning source files as plain text — there is no browser-level "used CSS" API they rely on.',
+      'A 200 KB framework where 3% is used still costs the full 200 KB of download and parse time.',
+    ],
+  },
+
+  'performance/css-performance/contain-content-clips-overflow-like-overflow-hidden': {
+    apis: ['contain', 'document.elementFromPoint()', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Performance (overview)', route: '/performance/css-performance' },
+      { label: 'Selector Complexity Barely Moves Recalc-Style Time at Scale', route: '/performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale' },
+      { label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' },
+    ],
+    tip: 'An overflowing child was fully hit-testable with no containment, and completely non-hit-testable with contain: content applied — geometry is identical in both cases, only what paints differs.',
+    docs: [
+      { label: 'MDN — CSS Containment', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment' },
+    ],
+    resources: [],
+    gotchas: [
+      'contain: layout alone does NOT include paint containment — overflowing content stays visible while still getting the layout-isolation benefit.',
+      'Adding contain: content to an existing component for its performance benefit can silently clip a tooltip, dropdown, or badge relying on overflow.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

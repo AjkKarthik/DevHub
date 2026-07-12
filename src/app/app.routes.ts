@@ -2059,7 +2059,12 @@ export const routes: Routes = [
       { path: 'non-deterministic-values-genuinely-differ-between-renders', loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/subtopics/non-deterministic-values-genuinely-differ-between-renders/non-deterministic-values-genuinely-differ-between-renders').then(m => m.NonDeterministicValuesGenuinelyDifferBetweenRendersSubtopic) },
       { path: 'reading-chunk-by-chunk-beats-waiting-for-the-full-response', loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/subtopics/reading-chunk-by-chunk-beats-waiting-for-the-full-response/reading-chunk-by-chunk-beats-waiting-for-the-full-response').then(m => m.ReadingChunkByChunkBeatsWaitingForTheFullResponseSubtopic) },
     ] },
-    { path: 'css-performance',          loadComponent: () => import('./components/frontend/web-performance/css-performance/css-performance').then(m => m.PerfCssPerformance) },
+    { path: 'css-performance', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/css-performance/css-performance').then(m => m.PerfCssPerformance) },
+      { path: 'selector-complexity-barely-moves-recalc-style-time-at-scale', loadComponent: () => import('./components/frontend/web-performance/css-performance/subtopics/selector-complexity-barely-moves-recalc-style-time-at-scale/selector-complexity-barely-moves-recalc-style-time-at-scale').then(m => m.SelectorComplexityBarelyMovesRecalcStyleTimeAtScaleSubtopic) },
+      { path: 'unused-css-selectors-stay-in-the-cssom-until-you-remove-them', loadComponent: () => import('./components/frontend/web-performance/css-performance/subtopics/unused-css-selectors-stay-in-the-cssom-until-you-remove-them/unused-css-selectors-stay-in-the-cssom-until-you-remove-them').then(m => m.UnusedCssSelectorsStayInTheCssomUntilYouRemoveThemSubtopic) },
+      { path: 'contain-content-clips-overflow-like-overflow-hidden', loadComponent: () => import('./components/frontend/web-performance/css-performance/subtopics/contain-content-clips-overflow-like-overflow-hidden/contain-content-clips-overflow-like-overflow-hidden').then(m => m.ContainContentClipsOverflowLikeOverflowHiddenSubtopic) },
+    ] },
     { path: 'web-workers',              loadComponent: () => import('./components/frontend/web-performance/web-workers/web-workers').then(m => m.PerfWebWorkers) },
     { path: 'performance-budgets',      loadComponent: () => import('./components/frontend/web-performance/performance-budgets/performance-budgets').then(m => m.PerfPerformanceBudgets) },
     { path: 'speculation-rules',        loadComponent: () => import('./components/frontend/web-performance/speculation-rules/speculation-rules').then(m => m.PerfSpeculationRules) },

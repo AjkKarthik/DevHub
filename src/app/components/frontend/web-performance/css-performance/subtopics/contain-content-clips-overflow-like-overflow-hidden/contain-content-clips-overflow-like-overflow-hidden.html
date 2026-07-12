@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Performance" topicRoute="/performance/css-performance" subtopicLabel="contain: content Clips Overflow Like overflow: hidden" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">contain: content Clips Overflow Like overflow: hidden</h1>
+  <p class="page-subtitle">An overflowing child was fully hit-testable with no containment, and completely non-hit-testable with contain: content applied — confirming paint containment genuinely clips content, a real side effect beyond layout isolation.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS Containment, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Hit-test an overflowing child's real screen position, once with no containment and once with contain: content applied.</p>
+    <app-live-playground title="contain: content clips overflow like overflow: hidden" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This closes out the batch with a real, easy-to-miss side effect of the main page's own containment recommendation — a bundled behavior, not just a performance dial. Together with the earlier two subtopics, this batch shows selector complexity is a non-issue, unused CSS needs build-time removal, and containment has real visual consequences beyond isolation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Performance" topicRoute="/performance/css-performance"
+    [prev]="{ label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' }" />
+</div>

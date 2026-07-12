@@ -1746,6 +1746,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' },
     { label: 'Reading Chunk-by-Chunk Beats Waiting for the Full Response', route: '/performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response' },
   ],
+  'css-performance': [
+    { label: 'Selector Complexity Barely Moves Recalc-Style Time at Scale', route: '/performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale' },
+    { label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' },
+    { label: 'contain: content Clips Overflow Like overflow: hidden', route: '/performance/css-performance/contain-content-clips-overflow-like-overflow-hidden' },
+  ],
 };
 
 @Component({
