@@ -22837,6 +22837,78 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/ssr-streaming': {
+    apis: ['ReadableStream', 'renderToPipeableStream()', 'res.write()', 'provideClientHydration()'],
+    related: [
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Performance Measurement', route: '/performance/measurement' },
+      { label: 'Real User Monitoring (RUM)', route: '/performance/rum' },
+    ],
+    tip: 'A real ReadableStream delivers a shell chunk at +0ms while slower, data-dependent chunks arrive hundreds of ms later — the browser can act on the shell immediately, well before the rest exists.',
+    docs: [
+      { label: 'MDN — Streams API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Streams_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'Non-deterministic values (Date.now(), Math.random()) in render output cause hydration mismatches essentially every time, not as a rare edge case.',
+      'A streaming producer is fully negated by a buffering consumer anywhere downstream (client code, reverse proxy, CDN).',
+    ],
+  },
+
+  'performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times': {
+    apis: ['ReadableStream', 'ReadableStreamDefaultReader', 'performance.now()'],
+    related: [
+      { label: 'SSR & Streaming HTML (overview)', route: '/performance/ssr-streaming' },
+      { label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' },
+      { label: 'Reading Chunk-by-Chunk Beats Waiting for the Full Response', route: '/performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response' },
+    ],
+    tip: 'A real stream enqueuing 3 chunks with setTimeout delays between them produced measured arrival times of roughly 0ms, then several hundred ms later, then later still — read via a real reader.read() loop.',
+    docs: [
+      { label: 'MDN — ReadableStream', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream' },
+    ],
+    resources: [],
+    gotchas: [
+      'enqueue() makes a chunk available to readers immediately — it does not wait for close() or later enqueue() calls.',
+      'ReadableStream is a standard Web API usable in any browser script, not a Node.js/server-only construct.',
+    ],
+  },
+
+  'performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders': {
+    apis: ['Date', 'Math.random()'],
+    related: [
+      { label: 'SSR & Streaming HTML (overview)', route: '/performance/ssr-streaming' },
+      { label: 'A ReadableStream Genuinely Delivers Chunks at Different Real Times', route: '/performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times' },
+      { label: 'Reading Chunk-by-Chunk Beats Waiting for the Full Response', route: '/performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response' },
+    ],
+    tip: 'Calling the identical rendering function twice — once as a "server render," once 1.2s later as a "client render" — produced two different Date/Math.random() values essentially every time.',
+    docs: [
+      { label: 'React docs — Hydration mismatches', url: 'https://react.dev/link/hydration-mismatch' },
+    ],
+    resources: [],
+    gotchas: [
+      'Moving a non-deterministic call to a lifecycle hook does not fix a mismatch — it just moves WHEN it becomes visible.',
+      'suppressHydrationWarning only hides the console message; the underlying re-render/flash still happens unless the value is computed once and passed down.',
+    ],
+  },
+
+  'performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response': {
+    apis: ['ReadableStream', 'Response', 'reader.read()'],
+    related: [
+      { label: 'SSR & Streaming HTML (overview)', route: '/performance/ssr-streaming' },
+      { label: 'A ReadableStream Genuinely Delivers Chunks at Different Real Times', route: '/performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times' },
+      { label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' },
+    ],
+    tip: 'Against the identical stream, reader.read() returned the first chunk at +0ms while await new Response(stream).text() blocked for the full 1020ms — the benefit lives in HOW a stream is consumed.',
+    docs: [
+      { label: 'MDN — Response', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Response' },
+    ],
+    resources: [],
+    gotchas: [
+      'A streaming server is fully negated if anything downstream (buffering reverse proxy, response.text() consumer) waits for the full response before acting.',
+      'The performance gap comes from timing gaps between chunks becoming ready, not from raw byte size — even small HTML pages benefit.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

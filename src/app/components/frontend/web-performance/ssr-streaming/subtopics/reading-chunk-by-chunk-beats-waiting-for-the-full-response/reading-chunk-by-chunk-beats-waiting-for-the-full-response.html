@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SSR &amp; Streaming HTML" topicRoute="/performance/ssr-streaming" subtopicLabel="Reading Chunk-by-Chunk Beats Waiting for the Full Response" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Reading Chunk-by-Chunk Beats Waiting for the Full Response</h1>
+  <p class="page-subtitle">Against the identical stream, chunk-by-chunk reading got the first chunk at +0ms while waiting for the full text blocked for the entire duration — proving the benefit lives in HOW a stream is consumed, not just whether it exists.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Streams API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Consume the exact same underlying stream two different ways, and compare real, measured timing.</p>
+    <app-live-playground title="reading chunk-by-chunk beats waiting for the full response" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This ties together the batch: a real ReadableStream delivers chunks at genuinely different times, non-deterministic values explain why hydration mismatches are inevitable, and here, the consumption pattern determines whether streaming's timing advantage is realized or thrown away.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SSR &amp; Streaming HTML" topicRoute="/performance/ssr-streaming"
+    [prev]="{ label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' }" />
+</div>

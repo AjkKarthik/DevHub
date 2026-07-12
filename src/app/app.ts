@@ -1741,6 +1741,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' },
     { label: 'Batching Metrics Into One Beacon Genuinely Cuts Requests', route: '/performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests' },
   ],
+  'ssr-streaming': [
+    { label: 'A ReadableStream Genuinely Delivers Chunks at Different Real Times', route: '/performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times' },
+    { label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' },
+    { label: 'Reading Chunk-by-Chunk Beats Waiting for the Full Response', route: '/performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response' },
+  ],
 };
 
 @Component({

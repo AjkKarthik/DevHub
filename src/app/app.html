@@ -4419,7 +4419,26 @@
           </div>
         }
       }
-      <a routerLink="/performance/ssr-streaming" routerLinkActive="active"><span class="nl-text">SSR &amp; Streaming HTML</span>@if(progress.isDone('perf-ssr-streaming')){<span class="nl-done">✓</span>}@if(diff('perf-ssr-streaming');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/ssr-streaming" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">SSR &amp; Streaming HTML</span>
+        @if (progress.isDone('perf-ssr-streaming')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-ssr-streaming'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ssr-streaming')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ssr-streaming')"
+                  (click)="toggleSubtopics('ssr-streaming', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ssr-streaming'); as perfSsrSubs) {
+        @if (isSubtopicsExpanded('ssr-streaming')) {
+          <div class="nav-subtopics">
+            @for (s of perfSsrSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

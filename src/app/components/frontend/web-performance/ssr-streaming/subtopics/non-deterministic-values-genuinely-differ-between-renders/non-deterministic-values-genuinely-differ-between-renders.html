@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SSR &amp; Streaming HTML" topicRoute="/performance/ssr-streaming" subtopicLabel="Non-Deterministic Values Genuinely Differ Between Renders" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Non-Deterministic Values Genuinely Differ Between Renders</h1>
+  <p class="page-subtitle">The same function, called once as a "server render" and once as a "client render," produced genuinely different values almost every time — proving hydration mismatches from Date.now()/Math.random() are inevitable, not rare.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Applies to any SSR framework" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Simulate the exact SSR/hydration scenario: call the same rendering function twice with a realistic delay, and compare the outputs.</p>
+    <app-live-playground title="non-deterministic values genuinely differ between renders" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This explains the mechanism behind the main page's hydration-mismatch mistake with real, measured evidence rather than a general warning. Next: why reading a stream chunk-by-chunk genuinely beats waiting for the full response.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SSR &amp; Streaming HTML" topicRoute="/performance/ssr-streaming"
+    [prev]="{ label: 'A ReadableStream Genuinely Delivers Chunks at Different Real Times', route: '/performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times' }"
+    [next]="{ label: 'Reading Chunk-by-Chunk Beats Waiting for the Full Response', route: '/performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response' }" />
+</div>

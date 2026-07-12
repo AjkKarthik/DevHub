@@ -2053,7 +2053,12 @@ export const routes: Routes = [
       { path: 'p75-and-average-can-disagree-on-the-pass-fail-rating-entirely', loadComponent: () => import('./components/frontend/web-performance/rum/subtopics/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely').then(m => m.P75AndAverageCanDisagreeOnThePassFailRatingEntirelySubtopic) },
       { path: 'batching-metrics-into-one-beacon-genuinely-cuts-requests', loadComponent: () => import('./components/frontend/web-performance/rum/subtopics/batching-metrics-into-one-beacon-genuinely-cuts-requests/batching-metrics-into-one-beacon-genuinely-cuts-requests').then(m => m.BatchingMetricsIntoOneBeaconGenuinelyCutsRequestsSubtopic) },
     ] },
-    { path: 'ssr-streaming',            loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/ssr-streaming').then(m => m.PerfSsrStreaming) },
+    { path: 'ssr-streaming', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/ssr-streaming').then(m => m.PerfSsrStreaming) },
+      { path: 'a-readablestream-genuinely-delivers-chunks-at-different-real-times', loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/subtopics/a-readablestream-genuinely-delivers-chunks-at-different-real-times/a-readablestream-genuinely-delivers-chunks-at-different-real-times').then(m => m.AReadablestreamGenuinelyDeliversChunksAtDifferentRealTimesSubtopic) },
+      { path: 'non-deterministic-values-genuinely-differ-between-renders', loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/subtopics/non-deterministic-values-genuinely-differ-between-renders/non-deterministic-values-genuinely-differ-between-renders').then(m => m.NonDeterministicValuesGenuinelyDifferBetweenRendersSubtopic) },
+      { path: 'reading-chunk-by-chunk-beats-waiting-for-the-full-response', loadComponent: () => import('./components/frontend/web-performance/ssr-streaming/subtopics/reading-chunk-by-chunk-beats-waiting-for-the-full-response/reading-chunk-by-chunk-beats-waiting-for-the-full-response').then(m => m.ReadingChunkByChunkBeatsWaitingForTheFullResponseSubtopic) },
+    ] },
     { path: 'css-performance',          loadComponent: () => import('./components/frontend/web-performance/css-performance/css-performance').then(m => m.PerfCssPerformance) },
     { path: 'web-workers',              loadComponent: () => import('./components/frontend/web-performance/web-workers/web-workers').then(m => m.PerfWebWorkers) },
     { path: 'performance-budgets',      loadComponent: () => import('./components/frontend/web-performance/performance-budgets/performance-budgets').then(m => m.PerfPerformanceBudgets) },
