@@ -1297,6 +1297,9 @@ const CSS_LABELS: Record<string, string> = {
   'css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree': 'isolation: isolate Confines mix-blend-mode to Its Own Subtree',
   'css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children': 'filter Creates a Stacking Context, Trapping Negative z-index Children',
   'fundamentals':              'CSS Fundamentals',
+  'fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes': 'Specificity Is Not a Decimal — a Single ID Beats Any Number of Classes',
+  'fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit': 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit',
+  'fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height': 'Percentage padding-top Resolves Against the Parent’s Width, Not Height',
   'cheatsheet':               'CSS Cheat Sheet',
   'interview-prep':           'CSS Interview Prep',
 };

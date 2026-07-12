@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Fundamentals" topicRoute="/css/fundamentals" subtopicLabel="Non-Inherited Properties Don’t Flow to Children Without Explicit inherit" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Non-Inherited Properties Don’t Flow to Children Without Explicit inherit</h1>
+  <p class="page-subtitle">A parent's border and padding never reach an unstyled child — only a specific, mostly text-related list of properties inherits by default.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare a child's computed border, padding, and color against its parent's declared values to see exactly which properties inherit.</p>
+    <app-live-playground title="non-inherited properties don't flow to children" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own fourth "Common Mistake" and quiz claim made directly measurable via computed styles. The final subtopic turns to a genuinely surprising percentage-resolution rule — why padding-top: 56.25% uses the parent's width, not its height.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Fundamentals" topicRoute="/css/fundamentals"
+    [prev]="{ label: 'Specificity Is Not a Decimal — a Single ID Beats Any Number of Classes', route: '/css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes' }"
+    [next]="{ label: 'Percentage padding-top Resolves Against the Parent’s Width, Not Height', route: '/css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height' }" />
+</div>

@@ -4212,7 +4212,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Bonus</p>
-      <a routerLink="/css/fundamentals" routerLinkActive="active"><span class="nl-text">CSS Fundamentals</span>@if(progress.isDone('css-fundamentals')){<span class="nl-done">✓</span>}@if(diff('css-fundamentals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/fundamentals" routerLinkActive="active">
+        <span class="nl-text">CSS Fundamentals</span>
+        @if (progress.isDone('css-fundamentals')) {<span class="nl-done">✓</span>}
+        @if (diff('css-fundamentals'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('css-fundamentals')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('css-fundamentals')"
+                  (click)="toggleSubtopics('css-fundamentals', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('css-fundamentals'); as cssFundamentalsSubs) {
+        @if (isSubtopicsExpanded('css-fundamentals')) {
+          <div class="nav-subtopics">
+            @for (s of cssFundamentalsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

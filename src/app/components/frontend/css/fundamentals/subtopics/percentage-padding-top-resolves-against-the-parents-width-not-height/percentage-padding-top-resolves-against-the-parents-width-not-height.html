@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Fundamentals" topicRoute="/css/fundamentals" subtopicLabel="Percentage padding-top Resolves Against the Parent’s Width, Not Height" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Percentage padding-top Resolves Against the Parent’s Width, Not Height</h1>
+  <p class="page-subtitle">In a 400px x 100px container, padding-top: 56.25% renders at exactly 225px — 56.25% of the WIDTH, completely independent of the 100px height.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare the actual rendered height against both a width-based and height-based expectation to confirm which one padding-top really tracks.</p>
+    <app-live-playground title="percentage padding-top resolves against the parent's width" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own fifth QnA answer made directly measurable via getBoundingClientRect(), completing the trio of fundamentals gotchas alongside specificity's tuple comparison and non-inherited properties, and closing out the CSS hub's full Phase 10 subtopic rollout.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Fundamentals" topicRoute="/css/fundamentals"
+    [prev]="{ label: 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit', route: '/css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit' }" />
+</div>

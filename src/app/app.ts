@@ -1656,6 +1656,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' },
     { label: 'filter Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children' },
   ],
+  // NOTE: keyed 'css-fundamentals', NOT bare 'fundamentals' — the HTML
+  // hub's own /html/fundamentals topic already claims the bare key
+  // (see the 'html-fundamentals' NOTE above).
+  'css-fundamentals': [
+    { label: 'Specificity Is Not a Decimal — a Single ID Beats Any Number of Classes', route: '/css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes' },
+    { label: 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit', route: '/css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit' },
+    { label: 'Percentage padding-top Resolves Against the Parent’s Width, Not Height', route: '/css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height' },
+  ],
 };
 
 @Component({

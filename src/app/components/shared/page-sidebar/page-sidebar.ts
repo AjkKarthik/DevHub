@@ -21669,6 +21669,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes': {
+    apis: ['specificity', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Fundamentals (overview)', route: '/css/fundamentals' },
+      { label: 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit', route: '/css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit' },
+      { label: 'Percentage padding-top Resolves Against the Parent’s Width, Not Height', route: '/css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height' },
+    ],
+    tip: 'A selector with ten chained classes still loses to a single ID selector — confirmed via getComputedStyle(), since specificity compares column by column, never sums into one number.',
+    docs: [
+      { label: 'MDN: Cascade & Specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade' },
+    ],
+    resources: [],
+    gotchas: [
+      'The comparison stops at the first differing column — the ID column decides before the class column is ever checked.',
+      'Avoiding ID selectors entirely (using classes + @layer instead) sidesteps this specificity ceiling.',
+    ],
+  },
+
+  'css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit': {
+    apis: ['inherit', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Fundamentals (overview)', route: '/css/fundamentals' },
+      { label: 'Specificity Is Not a Decimal — a Single ID Beats Any Number of Classes', route: '/css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes' },
+      { label: 'Percentage padding-top Resolves Against the Parent’s Width, Not Height', route: '/css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height' },
+    ],
+    tip: 'A parent\'s border and padding never reach an unstyled child (both compute to 0), while color correctly inherits — confirmed via getComputedStyle() on both properties.',
+    docs: [
+      { label: 'MDN: Inheritance', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Inheritance' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only a short, mostly text-related list of properties inherits by default — the majority of CSS properties, especially layout ones, do not.',
+      'Use the explicit inherit keyword (e.g. border: inherit;) to force a non-inherited property to follow the parent.',
+    ],
+  },
+
+  'css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height': {
+    apis: ['padding-top', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Fundamentals (overview)', route: '/css/fundamentals' },
+      { label: 'Specificity Is Not a Decimal — a Single ID Beats Any Number of Classes', route: '/css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes' },
+      { label: 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit', route: '/css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit' },
+    ],
+    tip: 'In a 400px x 100px container, padding-top: 56.25% renders at exactly 225px (56.25% of the width) — confirmed via getBoundingClientRect(), completely independent of the container\'s 100px height.',
+    docs: [
+      { label: 'MDN: Inheritance', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Inheritance' },
+    ],
+    resources: [],
+    gotchas: [
+      'This applies to margin-top, margin-bottom, padding-top, and padding-bottom equally — all resolve against the containing block\'s width.',
+      'The modern aspect-ratio property is now the preferred way to achieve this effect directly.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

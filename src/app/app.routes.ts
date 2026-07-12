@@ -1557,7 +1557,12 @@ export const routes: Routes = [
       { path: 'isolation-isolate-confines-mix-blend-mode-to-its-own-subtree', loadComponent: () => import('./components/frontend/css/css-filters/subtopics/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree').then(m => m.IsolationIsolateConfinesMixBlendModeToItsOwnSubtreeSubtopic) },
       { path: 'filter-creates-a-stacking-context-trapping-negative-z-index-children', loadComponent: () => import('./components/frontend/css/css-filters/subtopics/filter-creates-a-stacking-context-trapping-negative-z-index-children/filter-creates-a-stacking-context-trapping-negative-z-index-children').then(m => m.FilterCreatesAStackingContextTrappingNegativeZIndexChildrenSubtopic) },
     ] },
-    { path: 'fundamentals',              loadComponent: () => import('./components/frontend/css/fundamentals/fundamentals').then(m => m.CssFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/frontend/css/fundamentals/fundamentals').then(m => m.CssFundamentals) },
+      { path: 'specificity-is-not-a-decimal-a-single-id-beats-any-classes', loadComponent: () => import('./components/frontend/css/fundamentals/subtopics/specificity-is-not-a-decimal-a-single-id-beats-any-classes/specificity-is-not-a-decimal-a-single-id-beats-any-classes').then(m => m.SpecificityIsNotADecimalASingleIdBeatsAnyClassesSubtopic) },
+      { path: 'non-inherited-properties-dont-flow-to-children-without-explicit-inherit', loadComponent: () => import('./components/frontend/css/fundamentals/subtopics/non-inherited-properties-dont-flow-to-children-without-explicit-inherit/non-inherited-properties-dont-flow-to-children-without-explicit-inherit').then(m => m.NonInheritedPropertiesDontFlowToChildrenWithoutExplicitInheritSubtopic) },
+      { path: 'percentage-padding-top-resolves-against-the-parents-width-not-height', loadComponent: () => import('./components/frontend/css/fundamentals/subtopics/percentage-padding-top-resolves-against-the-parents-width-not-height/percentage-padding-top-resolves-against-the-parents-width-not-height').then(m => m.PercentagePaddingTopResolvesAgainstTheParentsWidthNotHeightSubtopic) },
+    ] },
     { path: 'cheatsheet',               loadComponent: () => import('./components/frontend/css/cheatsheet/cheatsheet').then(m => m.CssCheatsheet) },
     { path: 'interview-prep',           loadComponent: () => import('./components/frontend/css/interview-prep/interview-prep').then(m => m.CssInterviewPrep) },
   ] },
