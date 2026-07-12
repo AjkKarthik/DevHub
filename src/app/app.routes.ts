@@ -2005,7 +2005,12 @@ export const routes: Routes = [
       { path: 'mismatched-preload-url-causes-a-genuine-double-fetch', loadComponent: () => import('./components/frontend/web-performance/resource-hints/subtopics/mismatched-preload-url-causes-a-genuine-double-fetch/mismatched-preload-url-causes-a-genuine-double-fetch').then(m => m.MismatchedPreloadUrlCausesAGenuineDoubleFetchSubtopic) },
       { path: 'missing-as-silently-does-nothing-not-a-double-fetch', loadComponent: () => import('./components/frontend/web-performance/resource-hints/subtopics/missing-as-silently-does-nothing-not-a-double-fetch/missing-as-silently-does-nothing-not-a-double-fetch').then(m => m.MissingAsSilentlyDoesNothingNotADoubleFetchSubtopic) },
     ] },
-    { path: 'http2-http3',              loadComponent: () => import('./components/frontend/web-performance/http2-http3/http2-http3').then(m => m.PerfHttp2Http3) },
+    { path: 'http2-http3', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/http2-http3/http2-http3').then(m => m.PerfHttp2Http3) },
+      { path: 'nexthopprotocol-reveals-the-real-http-version-per-resource', loadComponent: () => import('./components/frontend/web-performance/http2-http3/subtopics/nexthopprotocol-reveals-the-real-http-version-per-resource/nexthopprotocol-reveals-the-real-http-version-per-resource').then(m => m.NexthopprotocolRevealsTheRealHttpVersionPerResourceSubtopic) },
+      { path: 'domain-sharding-defeats-http2-connection-coalescing', loadComponent: () => import('./components/frontend/web-performance/http2-http3/subtopics/domain-sharding-defeats-http2-connection-coalescing/domain-sharding-defeats-http2-connection-coalescing').then(m => m.DomainShardingDefeatsHttp2ConnectionCoalescingSubtopic) },
+      { path: 'early-hints-lets-the-browser-fetch-before-html-finishes', loadComponent: () => import('./components/frontend/web-performance/http2-http3/subtopics/early-hints-lets-the-browser-fetch-before-html-finishes/early-hints-lets-the-browser-fetch-before-html-finishes').then(m => m.EarlyHintsLetsTheBrowserFetchBeforeHtmlFinishesSubtopic) },
+    ] },
     { path: 'caching',                  loadComponent: () => import('./components/frontend/web-performance/caching/caching').then(m => m.PerfCaching) },
     { path: 'image-optimisation',       loadComponent: () => import('./components/frontend/web-performance/image-optimisation/image-optimisation').then(m => m.PerfImageOptimisation) },
     { path: 'font-performance',         loadComponent: () => import('./components/frontend/web-performance/font-performance/font-performance').then(m => m.PerfFontPerformance) },

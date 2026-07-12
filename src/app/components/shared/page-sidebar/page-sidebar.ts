@@ -22245,6 +22245,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/http2-http3': {
+    apis: ['nextHopProtocol', 'PerformanceResourceTiming', '103 Early Hints', 'QUIC'],
+    related: [
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+    ],
+    tip: 'HTTP/2 multiplexes many requests on one connection — domain sharding and heavy bundling, both HTTP/1.1-era workarounds, actively hurt performance once you\'ve migrated.',
+    docs: [
+      { label: 'web.dev — HTTP/2', url: 'https://web.dev/articles/performance-http2' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A single page can genuinely mix protocols — each origin negotiates its own, checkable via nextHopProtocol.',
+      '103 Early Hints is cache-aware (unlike HTTP/2 Server Push) — it sends ordinary preload hints the browser evaluates normally.',
+    ],
+  },
+
+  'performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource': {
+    apis: ['nextHopProtocol', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'HTTP/2 & HTTP/3 (overview)', route: '/performance/http2-http3' },
+      { label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' },
+      { label: 'Early Hints Lets the Browser Fetch Before HTML Finishes', route: '/performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes' },
+    ],
+    tip: 'A real check on this site showed the local dev server responding over http/1.1 while Google Fonts resources on the same page reported h2 and h3 — protocol is negotiated per origin, not per page.',
+    docs: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing' },
+    ],
+    resources: [],
+    gotchas: [
+      'nextHopProtocol is the programmatic equivalent of DevTools\' Protocol column — usable in real RUM auditing, not just manual inspection.',
+      'Timing data including nextHopProtocol is still exposed for cross-origin no-cors fetches, confirmed directly — it is not withheld the way response bodies are.',
+    ],
+  },
+
+  'performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing': {
+    apis: ['Connection coalescing', 'TLS certificate matching'],
+    related: [
+      { label: 'HTTP/2 & HTTP/3 (overview)', route: '/performance/http2-http3' },
+      { label: 'nextHopProtocol Reveals the Real HTTP Version Per Resource', route: '/performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource' },
+      { label: 'Early Hints Lets the Browser Fetch Before HTML Finishes', route: '/performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes' },
+    ],
+    tip: 'Sharding solved the HTTP/1.1 6-connections-per-origin limit — a limit HTTP/2 multiplexing removes entirely. Keeping it after migrating forces redundant DNS/TCP/TLS handshakes for nothing.',
+    docs: [
+      { label: 'web.dev — HTTP/2', url: 'https://web.dev/articles/performance-http2' },
+    ],
+    resources: [],
+    gotchas: [
+      'Coalescing needs BOTH the same IP AND a certificate valid for both hostnames — sharded subdomains often fail one or both checks.',
+      'Verify with DevTools\' Connection ID column — matching IDs mean one connection was reused; different IDs mean sharding is still costing extra handshakes.',
+    ],
+  },
+
+  'performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes': {
+    apis: ['103 Early Hints', 'Link header', 'rel="preload"'],
+    related: [
+      { label: 'HTTP/2 & HTTP/3 (overview)', route: '/performance/http2-http3' },
+      { label: 'nextHopProtocol Reveals the Real HTTP Version Per Resource', route: '/performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource' },
+      { label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' },
+    ],
+    tip: 'A 103 response lets asset downloads start while the server is still generating HTML — hiding download time behind server processing time, most useful exactly when TTFB is already slow.',
+    docs: [
+      { label: 'web.dev — 103 Early Hints', url: 'https://web.dev/articles/early-hints' },
+    ],
+    resources: [],
+    gotchas: [
+      'Unlike HTTP/2 Server Push, Early Hints sends ordinary Link headers the browser checks against its own cache — no cache-blindness problem.',
+      'Typically implemented entirely at the reverse proxy/CDN layer — the origin application server usually needs no code changes.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

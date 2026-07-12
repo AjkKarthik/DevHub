@@ -4444,7 +4444,26 @@
           </div>
         }
       }
-      <a routerLink="/performance/http2-http3" routerLinkActive="active"><span class="nl-text">HTTP/2 &amp; HTTP/3</span>@if(progress.isDone('perf-http2-http3')){<span class="nl-done">✓</span>}@if(diff('perf-http2-http3');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/http2-http3" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">HTTP/2 &amp; HTTP/3</span>
+        @if (progress.isDone('perf-http2-http3')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-http2-http3'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('http2-http3')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('http2-http3')"
+                  (click)="toggleSubtopics('http2-http3', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('http2-http3'); as perfH2Subs) {
+        @if (isSubtopicsExpanded('http2-http3')) {
+          <div class="nav-subtopics">
+            @for (s of perfH2Subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/performance/caching" routerLinkActive="active"><span class="nl-text">Caching &amp; Service Workers</span>@if(progress.isDone('perf-caching')){<span class="nl-done">✓</span>}@if(diff('perf-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/performance/speculation-rules" routerLinkActive="active"><span class="nl-text">Speculation Rules API</span>@if(progress.isDone('perf-speculation-rules')){<span class="nl-done">✓</span>}@if(diff('perf-speculation-rules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

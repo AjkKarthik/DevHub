@@ -1,0 +1,27 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTTP/2 &amp; HTTP/3" topicRoute="/performance/http2-http3" subtopicLabel="Domain Sharding Defeats HTTP/2 Connection Coalescing" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Domain Sharding Defeats HTTP/2 Connection Coalescing</h1>
+  <p class="page-subtitle">Sharding solved the HTTP/1.1 6-connections-per-origin limit — a limit HTTP/2 multiplexing removes entirely. Keeping it after migrating forces redundant DNS/TCP/TLS handshakes for nothing.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="HTTP/2, RFC 7540" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <p>Sharded hostnames force separate connections on HTTP/2; consolidating to one origin lets multiplexing handle everything — and DevTools' Connection ID column confirms whether coalescing actually happened.</p>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This is the main page's own first "Common Mistake", explained through exactly why the old fix becomes the new problem. Next: 103 Early Hints, the modern replacement for HTTP/2 Server Push.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTTP/2 &amp; HTTP/3" topicRoute="/performance/http2-http3"
+    [prev]="{ label: 'nextHopProtocol Reveals the Real HTTP Version Per Resource', route: '/performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource' }"
+    [next]="{ label: 'Early Hints Lets the Browser Fetch Before HTML Finishes', route: '/performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes' }" />
+</div>

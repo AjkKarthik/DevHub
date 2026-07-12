@@ -1699,6 +1699,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Mismatched Preload URL Causes a Genuine Double-Fetch', route: '/performance/resource-hints/mismatched-preload-url-causes-a-genuine-double-fetch' },
     { label: 'Missing as= Silently Does Nothing — Not a Double-Fetch', route: '/performance/resource-hints/missing-as-silently-does-nothing-not-a-double-fetch' },
   ],
+  'http2-http3': [
+    { label: 'nextHopProtocol Reveals the Real HTTP Version Per Resource', route: '/performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource' },
+    { label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' },
+    { label: 'Early Hints Lets the Browser Fetch Before HTML Finishes', route: '/performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes' },
+  ],
 };
 
 @Component({
