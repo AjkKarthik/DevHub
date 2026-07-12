@@ -4503,7 +4503,26 @@
           </div>
         }
       }
-      <a routerLink="/performance/speculation-rules" routerLinkActive="active"><span class="nl-text">Speculation Rules API</span>@if(progress.isDone('perf-speculation-rules')){<span class="nl-done">✓</span>}@if(diff('perf-speculation-rules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/speculation-rules" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Speculation Rules API</span>
+        @if (progress.isDone('perf-speculation-rules')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-speculation-rules'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('speculation-rules')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('speculation-rules')"
+                  (click)="toggleSubtopics('speculation-rules', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('speculation-rules'); as perfSpecSubs) {
+        @if (isSubtopicsExpanded('speculation-rules')) {
+          <div class="nav-subtopics">
+            @for (s of perfSpecSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

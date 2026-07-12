@@ -2077,7 +2077,12 @@ export const routes: Routes = [
       { path: 'a-median-of-3-runs-genuinely-narrows-measurement-variance', loadComponent: () => import('./components/frontend/web-performance/performance-budgets/subtopics/a-median-of-3-runs-genuinely-narrows-measurement-variance/a-median-of-3-runs-genuinely-narrows-measurement-variance').then(m => m.AMedianOf3RunsGenuinelyNarrowsMeasurementVarianceSubtopic) },
       { path: 'initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes', loadComponent: () => import('./components/frontend/web-performance/performance-budgets/subtopics/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes').then(m => m.InitialVsAnyscriptBudgetsCatchGenuinelyDifferentFailureModesSubtopic) },
     ] },
-    { path: 'speculation-rules',        loadComponent: () => import('./components/frontend/web-performance/speculation-rules/speculation-rules').then(m => m.PerfSpeculationRules) },
+    { path: 'speculation-rules', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/speculation-rules/speculation-rules').then(m => m.PerfSpeculationRules) },
+      { path: 'feature-detection-genuinely-confirms-support-before-you-speculate', loadComponent: () => import('./components/frontend/web-performance/speculation-rules/subtopics/feature-detection-genuinely-confirms-support-before-you-speculate/feature-detection-genuinely-confirms-support-before-you-speculate').then(m => m.FeatureDetectionGenuinelyConfirmsSupportBeforeYouSpeculateSubtopic) },
+      { path: 'document-prerendering-genuinely-reports-false-on-a-normal-page-load', loadComponent: () => import('./components/frontend/web-performance/speculation-rules/subtopics/document-prerendering-genuinely-reports-false-on-a-normal-page-load/document-prerendering-genuinely-reports-false-on-a-normal-page-load').then(m => m.DocumentPrerenderingGenuinelyReportsFalseOnANormalPageLoadSubtopic) },
+      { path: 'malformed-speculation-rules-json-is-not-silently-ignored', loadComponent: () => import('./components/frontend/web-performance/speculation-rules/subtopics/malformed-speculation-rules-json-is-not-silently-ignored/malformed-speculation-rules-json-is-not-silently-ignored').then(m => m.MalformedSpeculationRulesJsonIsNotSilentlyIgnoredSubtopic) },
+    ] },
     { path: 'cheatsheet',              loadComponent: () => import('./components/frontend/web-performance/cheatsheet/cheatsheet').then(m => m.PerfCheatsheet) },
     { path: 'interview-prep',          loadComponent: () => import('./components/frontend/web-performance/interview-prep/interview-prep').then(m => m.PerfInterviewPrep) },
   ] },

@@ -1761,6 +1761,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Median of 3 Runs Genuinely Narrows Measurement Variance', route: '/performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance' },
     { label: 'Initial vs anyScript Budgets Catch Genuinely Different Failure Modes', route: '/performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes' },
   ],
+  'speculation-rules': [
+    { label: 'Feature Detection Genuinely Confirms Support Before You Speculate', route: '/performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate' },
+    { label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' },
+    { label: 'Malformed Speculation Rules JSON Is Not Silently Ignored', route: '/performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored' },
+  ],
 };
 
 @Component({

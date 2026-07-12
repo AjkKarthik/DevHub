@@ -1382,6 +1382,9 @@ const PERFORMANCE_LABELS: Record<string, string> = {
   'performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance': 'A Median of 3 Runs Genuinely Narrows Measurement Variance',
   'performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes': 'Initial vs anyScript Budgets Catch Genuinely Different Failure Modes',
   'speculation-rules':      'Speculation Rules API',
+  'speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate': 'Feature Detection Genuinely Confirms Support Before You Speculate',
+  'speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load': 'document.prerendering Genuinely Reports False on a Normal Page Load',
+  'speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored': 'Malformed Speculation Rules JSON Is Not Silently Ignored',
   'cheatsheet':             'Web Performance Cheat Sheet',
   'interview-prep':         'Performance Interview Prep',
 };

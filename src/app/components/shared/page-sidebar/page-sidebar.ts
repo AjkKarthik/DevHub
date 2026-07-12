@@ -23125,6 +23125,78 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/speculation-rules': {
+    apis: ['HTMLScriptElement.supports()', 'document.prerendering', 'prerenderingchange'],
+    related: [
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Caching & Service Workers', route: '/performance/caching' },
+    ],
+    tip: 'HTMLScriptElement.supports(\'speculationrules\') returned true in a real Chromium browser, and document.prerendering correctly reported false on this normal page load — both real, verified capability/state checks.',
+    docs: [
+      { label: 'Chrome Developers — Speculation Rules API', url: 'https://developer.chrome.com/docs/web-platform/prerender-pages' },
+    ],
+    resources: [],
+    gotchas: [
+      'An unsupported browser silently ignores a speculationrules block; a SUPPORTING browser given malformed JSON produces a real, catchable window error event — two very different signals.',
+      'The error for malformed rules JSON is asynchronous — a synchronous try/catch around the script injection will not catch it.',
+    ],
+  },
+
+  'performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate': {
+    apis: ['HTMLScriptElement.supports()'],
+    related: [
+      { label: 'Speculation Rules API (overview)', route: '/performance/speculation-rules' },
+      { label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' },
+      { label: 'Malformed Speculation Rules JSON Is Not Silently Ignored', route: '/performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored' },
+    ],
+    tip: 'HTMLScriptElement.supports(\'speculationrules\') returned true in a real Chromium 148-based browser, and a dynamically injected rules block was accepted into the DOM without error.',
+    docs: [
+      { label: 'MDN — HTMLScriptElement: supports() static method', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement/supports_static' },
+    ],
+    resources: [],
+    gotchas: [
+      'User-agent string sniffing is unreliable for this feature — many non-Chrome browsers include "Chrome" in their UA string.',
+      'A truthy result only confirms the browser WOULD act on a rules block — it says nothing about whether any rules currently exist on the page.',
+    ],
+  },
+
+  'performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load': {
+    apis: ['document.prerendering', 'prerenderingchange event'],
+    related: [
+      { label: 'Speculation Rules API (overview)', route: '/performance/speculation-rules' },
+      { label: 'Feature Detection Genuinely Confirms Support Before You Speculate', route: '/performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate' },
+      { label: 'Malformed Speculation Rules JSON Is Not Silently Ignored', route: '/performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored' },
+    ],
+    tip: 'document.prerendering reported false on this actual page (loaded via normal navigation), and prerenderingchange listener registration succeeded without error — the analytics-guard pattern\'s real, verified foundation.',
+    docs: [
+      { label: 'MDN — Document: prerendering property', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/prerendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'document.prerendering reflects CURRENT state, not history — it correctly becomes false again after a prerendered page is activated.',
+      'Testing the guard by opening a URL directly (not via a link with speculation rules pointing at it) will never trigger the deferred branch — that is correct, not a sign the guard is broken.',
+    ],
+  },
+
+  'performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored': {
+    apis: ['window error event', 'JSON'],
+    related: [
+      { label: 'Speculation Rules API (overview)', route: '/performance/speculation-rules' },
+      { label: 'Feature Detection Genuinely Confirms Support Before You Speculate', route: '/performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate' },
+      { label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' },
+    ],
+    tip: 'Broken JSON inside a speculationrules block triggered a real window error event ("Uncaught TypeError: Line: 1, column: 3, Syntax error.") — a completely different signal from an unsupported browser\'s silent no-op.',
+    docs: [
+      { label: 'MDN — Speculation Rules', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'A global window.addEventListener(\'error\', ...) handler (common for error-tracking setups) will catch broken speculation rules JSON — a local try/catch around the injection will not.',
+      'The error surfaces asynchronously, shortly after script injection — not synchronously at the appendChild() call.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

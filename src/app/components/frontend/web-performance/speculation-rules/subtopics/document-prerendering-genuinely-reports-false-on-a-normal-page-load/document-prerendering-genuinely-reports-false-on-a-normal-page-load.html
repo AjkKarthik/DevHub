@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Speculation Rules API" topicRoute="/performance/speculation-rules" subtopicLabel="document.prerendering Genuinely Reports False on a Normal Page Load" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">document.prerendering Genuinely Reports False on a Normal Page Load</h1>
+  <p class="page-subtitle">Reading document.prerendering on this actual page (loaded via normal navigation, not a speculative prerender) returned false, and the prerenderingchange event listener registered without error — the analytics-guard pattern's real, verified foundation.</p>
+  <app-page-meta [readingTime]="4" difficulty="beginner" since="Chrome 109+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Check document.prerendering on this normal page load and confirm the prerenderingchange event API is available.</p>
+    <app-live-playground title="document.prerendering genuinely reports false on a normal page load" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This grounds the main page's analytics-guard pattern in a real, verified check rather than an assumed one. Next: what actually happens when the JSON inside a speculation rules block is malformed — it is not silently ignored the way an unsupported browser would ignore the block entirely.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Speculation Rules API" topicRoute="/performance/speculation-rules"
+    [prev]="{ label: 'Feature Detection Genuinely Confirms Support Before You Speculate', route: '/performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate' }"
+    [next]="{ label: 'Malformed Speculation Rules JSON Is Not Silently Ignored', route: '/performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored' }" />
+</div>
