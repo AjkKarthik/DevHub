@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource Hints" topicRoute="/performance/resource-hints" subtopicLabel="Missing as= Silently Does Nothing — Not a Double-Fetch" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Missing as= Silently Does Nothing — Not a Double-Fetch</h1>
+  <p class="page-subtitle">A preload with no as= attribute produces exactly ONE request, identical in count to a working preload — the browser treats it as invalid and never fetches it at all, confirmed with real resource-timing entries.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Resource Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Check real resource-timing entries for a preload with no as= attribute — see that only one request exists, and it isn't the preload's own.</p>
+    <app-live-playground title="missing as= silently does nothing, not a double-fetch" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This corrects a real inaccuracy on the main page — verified directly, a missing as= does NOT double-fetch the way the previous two subtopics' mismatches do; it simply never fetches the preload at all. Together, these three subtopics show that not every broken preload fails the same observable way, which matters when debugging by request count alone.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resource Hints" topicRoute="/performance/resource-hints"
+    [prev]="{ label: 'A Mismatched Preload URL Causes a Genuine Double-Fetch', route: '/performance/resource-hints/mismatched-preload-url-causes-a-genuine-double-fetch' }" />
+</div>

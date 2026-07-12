@@ -1999,7 +1999,12 @@ export const routes: Routes = [
       { path: 'content-visibility-auto-cuts-render-time-dramatically', loadComponent: () => import('./components/frontend/web-performance/browser-rendering/subtopics/content-visibility-auto-cuts-render-time-dramatically/content-visibility-auto-cuts-render-time-dramatically').then(m => m.ContentVisibilityAutoCutsRenderTimeDramaticallySubtopic) },
       { path: 'content-visibility-defers-work-it-doesnt-eliminate-it', loadComponent: () => import('./components/frontend/web-performance/browser-rendering/subtopics/content-visibility-defers-work-it-doesnt-eliminate-it/content-visibility-defers-work-it-doesnt-eliminate-it').then(m => m.ContentVisibilityDefersWorkItDoesntEliminateItSubtopic) },
     ] },
-    { path: 'resource-hints',           loadComponent: () => import('./components/frontend/web-performance/resource-hints/resource-hints').then(m => m.PerfResourceHints) },
+    { path: 'resource-hints', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/resource-hints/resource-hints').then(m => m.PerfResourceHints) },
+      { path: 'font-preload-without-crossorigin-causes-a-genuine-double-fetch', loadComponent: () => import('./components/frontend/web-performance/resource-hints/subtopics/font-preload-without-crossorigin-causes-a-genuine-double-fetch/font-preload-without-crossorigin-causes-a-genuine-double-fetch').then(m => m.FontPreloadWithoutCrossoriginCausesAGenuineDoubleFetchSubtopic) },
+      { path: 'mismatched-preload-url-causes-a-genuine-double-fetch', loadComponent: () => import('./components/frontend/web-performance/resource-hints/subtopics/mismatched-preload-url-causes-a-genuine-double-fetch/mismatched-preload-url-causes-a-genuine-double-fetch').then(m => m.MismatchedPreloadUrlCausesAGenuineDoubleFetchSubtopic) },
+      { path: 'missing-as-silently-does-nothing-not-a-double-fetch', loadComponent: () => import('./components/frontend/web-performance/resource-hints/subtopics/missing-as-silently-does-nothing-not-a-double-fetch/missing-as-silently-does-nothing-not-a-double-fetch').then(m => m.MissingAsSilentlyDoesNothingNotADoubleFetchSubtopic) },
+    ] },
     { path: 'http2-http3',              loadComponent: () => import('./components/frontend/web-performance/http2-http3/http2-http3').then(m => m.PerfHttp2Http3) },
     { path: 'caching',                  loadComponent: () => import('./components/frontend/web-performance/caching/caching').then(m => m.PerfCaching) },
     { path: 'image-optimisation',       loadComponent: () => import('./components/frontend/web-performance/image-optimisation/image-optimisation').then(m => m.PerfImageOptimisation) },

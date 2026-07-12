@@ -1694,6 +1694,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' },
     { label: 'content-visibility Defers Work, It Doesn’t Eliminate It', route: '/performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it' },
   ],
+  'resource-hints': [
+    { label: 'Font Preload Without crossorigin Causes a Genuine Double-Fetch', route: '/performance/resource-hints/font-preload-without-crossorigin-causes-a-genuine-double-fetch' },
+    { label: 'A Mismatched Preload URL Causes a Genuine Double-Fetch', route: '/performance/resource-hints/mismatched-preload-url-causes-a-genuine-double-fetch' },
+    { label: 'Missing as= Silently Does Nothing — Not a Double-Fetch', route: '/performance/resource-hints/missing-as-silently-does-nothing-not-a-double-fetch' },
+  ],
 };
 
 @Component({

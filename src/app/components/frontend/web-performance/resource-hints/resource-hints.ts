@@ -249,10 +249,10 @@ observer.observe({ type: 'resource', buffered: true });
     },
     {
       title: 'Omitting as= on preload links',
-      wrong: `<!-- as= missing — browser fetches at lowest priority and may double-fetch -->
+      wrong: `<!-- as= missing — the preload is invalid and silently does nothing -->
 <link rel="preload" href="/fonts/inter.woff2" crossorigin />`,
       right: `<link rel="preload" as="font" href="/fonts/inter.woff2" crossorigin />`,
-      explanation: 'Without as=, the browser cannot determine the correct priority for the resource and may fetch it at the wrong priority. It also cannot match the preload to the actual consumption request, causing a double-fetch.',
+      explanation: 'Without as=, the browser cannot determine the resource type needed for priority and cache matching — in modern Chrome the preload is treated as invalid and simply never fetches anything at all (verified: it produces no separate network request whatsoever). The resource still loads later, but only at its normal default priority when the element that actually needs it is parsed — you silently lose the entire point of preloading, with no double-fetch and no error, just a wasted <link> tag.',
     },
     {
       title: 'Over-preconnecting to too many origins',
@@ -427,7 +427,7 @@ slow LCP and first-paint times. Add the correct hints:
   qna: QnaItem[] = [
     {
       q: 'How do I know if my preload is working or causing a double-fetch?',
-      a: 'Open DevTools → Network tab → filter by the resource URL. If you see TWO requests — one with initiator "link rel=preload" and one from the element — the preload is not matching. Common causes: mismatched URL, missing crossorigin on font preload, or missing as= attribute. Chrome also logs "was preloaded but not used" warnings in the Console after 3 seconds.',
+      a: 'Open DevTools → Network tab → filter by the resource URL. If you see TWO requests — one with initiator "link rel=preload" and one from the element — the preload is not matching. Common causes: a mismatched URL, or missing crossorigin on a font preload. A missing as= attribute causes a DIFFERENT problem, not a double-fetch — in modern Chrome the preload is simply invalid and produces no request at all, so you will see only ONE request (the normal one, at default priority) and the preload silently does nothing. Chrome also logs "was preloaded but not used" warnings in the Console after 3 seconds for genuinely mismatched (but otherwise valid) preloads.',
     },
     {
       q: 'Should I preload my main JavaScript bundle?',

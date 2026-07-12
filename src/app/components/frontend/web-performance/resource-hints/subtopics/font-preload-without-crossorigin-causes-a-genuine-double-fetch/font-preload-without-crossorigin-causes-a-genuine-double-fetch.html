@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource Hints" topicRoute="/performance/resource-hints" subtopicLabel="Font Preload Without crossorigin Causes a Genuine Double-Fetch" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Font Preload Without crossorigin Causes a Genuine Double-Fetch</h1>
+  <p class="page-subtitle">A font preload with no crossorigin produces two real network requests for the same URL — one for the preload, one for the &#64;font-face — because the request modes don't match. Adding crossorigin collapses it to one.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Resource Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare real resource-timing entries for a font preload with and without crossorigin, consumed by a matching &#64;font-face.</p>
+    <app-live-playground title="font preload without crossorigin causes a genuine double-fetch" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Preloading fonts without crossorigin" mistake with a real, measured double-fetch. Next: a mismatched preload URL causes the exact same real double-fetch, for a different reason.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resource Hints" topicRoute="/performance/resource-hints"
+    [next]="{ label: 'A Mismatched Preload URL Causes a Genuine Double-Fetch', route: '/performance/resource-hints/mismatched-preload-url-causes-a-genuine-double-fetch' }" />
+</div>
