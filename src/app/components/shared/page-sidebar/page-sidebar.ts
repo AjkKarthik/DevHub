@@ -22467,6 +22467,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/font-performance': {
+    apis: ['font-display', 'unicode-range', 'size-adjust', 'document.fonts'],
+    related: [
+      { label: 'Image Optimisation', route: '/performance/image-optimisation' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'Prevent FOIT with font-display: swap, minimise CLS with size-adjust/ascent-override, and preload only the 1-2 most critical font weights with crossorigin.',
+    docs: [
+      { label: 'web.dev — Font best practices', url: 'https://web.dev/articles/font-best-practices' },
+    ],
+    resources: [
+      { label: 'Squoosh', url: 'https://squoosh.app/', badge: 'tool' },
+    ],
+    gotchas: [
+      'unicode-range genuinely skips downloading font files for character ranges not present in the page text — confirmed via real resource-timing.',
+      'size-adjust precisely, proportionally scales rendered text width — not a rough visual nudge.',
+    ],
+  },
+
+  'performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges': {
+    apis: ['unicode-range', '@font-face', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Font Performance (overview)', route: '/performance/font-performance' },
+      { label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' },
+      { label: 'The Font Loading API Tracks Real Load State, Not a Guess', route: '/performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess' },
+    ],
+    tip: 'A Cyrillic-range font-face with zero matching characters on the page produced zero network requests — the Latin file, matching the actual text, was the only one fetched.',
+    docs: [
+      { label: 'MDN — unicode-range', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/unicode-range' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is how Google Fonts serves compact per-script files under one combined CSS response with no manual splitting needed.',
+      'The browser determines this from declared ranges alone — it never downloads a file just to check its contents.',
+    ],
+  },
+
+  'performance/font-performance/size-adjust-measurably-changes-rendered-text-width': {
+    apis: ['size-adjust', '@font-face', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Font Performance (overview)', route: '/performance/font-performance' },
+      { label: 'unicode-range Skips Font Files for Unused Character Ranges', route: '/performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges' },
+      { label: 'The Font Loading API Tracks Real Load State, Not a Guess', route: '/performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess' },
+    ],
+    tip: 'Identical text at the identical font-size measured almost exactly 1.5x wider with size-adjust: 150% on the fallback — a precise, proportional, real layout change.',
+    docs: [
+      { label: 'MDN — size-adjust', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/size-adjust' },
+    ],
+    resources: [],
+    gotchas: [
+      'size-adjust changes the font\'s effective metrics at a given font-size — it does not change font-size itself.',
+      'Applying it to the FALLBACK\'s own @font-face is what prevents reflow at the moment the real webfont swaps in.',
+    ],
+  },
+
+  'performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess': {
+    apis: ['document.fonts.check()', 'document.fonts.load()', 'document.fonts.ready'],
+    related: [
+      { label: 'Font Performance (overview)', route: '/performance/font-performance' },
+      { label: 'unicode-range Skips Font Files for Unused Character Ranges', route: '/performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges' },
+      { label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' },
+    ],
+    tip: 'document.fonts.check() reported false before loading, load() triggered a real network fetch, and check() flipped to true only once that fetch genuinely completed.',
+    docs: [
+      { label: 'MDN — Font Loading API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CSS_Font_Loading_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'load() actively triggers a network fetch — it is not a passive check the way check() is.',
+      'Gate layout measurements that depend on final font metrics behind check()/ready to avoid cold-cache-only visual bugs.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

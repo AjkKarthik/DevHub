@@ -2023,7 +2023,12 @@ export const routes: Routes = [
       { path: 'picture-picks-the-first-matching-source-in-document-order', loadComponent: () => import('./components/frontend/web-performance/image-optimisation/subtopics/picture-picks-the-first-matching-source-in-document-order/picture-picks-the-first-matching-source-in-document-order').then(m => m.PicturePicksTheFirstMatchingSourceInDocumentOrderSubtopic) },
       { path: 'image-set-performs-real-dpr-aware-background-selection', loadComponent: () => import('./components/frontend/web-performance/image-optimisation/subtopics/image-set-performs-real-dpr-aware-background-selection/image-set-performs-real-dpr-aware-background-selection').then(m => m.ImageSetPerformsRealDprAwareBackgroundSelectionSubtopic) },
     ] },
-    { path: 'font-performance',         loadComponent: () => import('./components/frontend/web-performance/font-performance/font-performance').then(m => m.PerfFontPerformance) },
+    { path: 'font-performance', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/font-performance/font-performance').then(m => m.PerfFontPerformance) },
+      { path: 'unicode-range-skips-font-files-for-unused-character-ranges', loadComponent: () => import('./components/frontend/web-performance/font-performance/subtopics/unicode-range-skips-font-files-for-unused-character-ranges/unicode-range-skips-font-files-for-unused-character-ranges').then(m => m.UnicodeRangeSkipsFontFilesForUnusedCharacterRangesSubtopic) },
+      { path: 'size-adjust-measurably-changes-rendered-text-width', loadComponent: () => import('./components/frontend/web-performance/font-performance/subtopics/size-adjust-measurably-changes-rendered-text-width/size-adjust-measurably-changes-rendered-text-width').then(m => m.SizeAdjustMeasurablyChangesRenderedTextWidthSubtopic) },
+      { path: 'the-font-loading-api-tracks-real-load-state-not-a-guess', loadComponent: () => import('./components/frontend/web-performance/font-performance/subtopics/the-font-loading-api-tracks-real-load-state-not-a-guess/the-font-loading-api-tracks-real-load-state-not-a-guess').then(m => m.TheFontLoadingApiTracksRealLoadStateNotAGuessSubtopic) },
+    ] },
     { path: 'js-performance',           loadComponent: () => import('./components/frontend/web-performance/js-performance/js-performance').then(m => m.PerfJsPerformance) },
     { path: 'third-party-scripts',      loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/third-party-scripts').then(m => m.PerfThirdPartyScripts) },
     { path: 'measurement',              loadComponent: () => import('./components/frontend/web-performance/measurement/measurement').then(m => m.PerfMeasurement) },

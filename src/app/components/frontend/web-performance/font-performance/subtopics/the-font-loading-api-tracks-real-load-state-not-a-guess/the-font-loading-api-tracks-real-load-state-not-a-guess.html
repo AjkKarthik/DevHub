@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Font Performance" topicRoute="/performance/font-performance" subtopicLabel="The Font Loading API Tracks Real Load State, Not a Guess" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">The Font Loading API Tracks Real Load State, Not a Guess</h1>
+  <p class="page-subtitle">document.fonts.check() reports false before loading, load() triggers a real network fetch, and check() flips to true only once that fetch genuinely completes — verified end to end with a real webfont.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Font Loading API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Check a font's load state before and after calling document.fonts.load(), and confirm a real network request actually fired.</p>
+    <app-live-playground title="the Font Loading API tracks real load state, not a guess" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's Font Loading API QnA with a full, real load-state lifecycle rather than a description of the methods. Together, these three subtopics cover font subsetting's real network effect, size-adjust's real layout effect, and the Font Loading API's real state-tracking accuracy.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Font Performance" topicRoute="/performance/font-performance"
+    [prev]="{ label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' }" />
+</div>

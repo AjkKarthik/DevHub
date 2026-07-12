@@ -1716,6 +1716,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' },
     { label: 'image-set() Performs Real DPR-Aware Background Selection', route: '/performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection' },
   ],
+  'font-performance': [
+    { label: 'unicode-range Skips Font Files for Unused Character Ranges', route: '/performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges' },
+    { label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' },
+    { label: 'The Font Loading API Tracks Real Load State, Not a Guess', route: '/performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess' },
+  ],
 };
 
 @Component({

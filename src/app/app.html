@@ -4509,7 +4509,26 @@
           </div>
         }
       }
-      <a routerLink="/performance/font-performance" routerLinkActive="active"><span class="nl-text">Font Performance</span>@if(progress.isDone('perf-font-performance')){<span class="nl-done">✓</span>}@if(diff('perf-font-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/font-performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Font Performance</span>
+        @if (progress.isDone('perf-font-performance')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-font-performance'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('font-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('font-performance')"
+                  (click)="toggleSubtopics('font-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('font-performance'); as perfFontSubs) {
+        @if (isSubtopicsExpanded('font-performance')) {
+          <div class="nav-subtopics">
+            @for (s of perfFontSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/performance/css-performance" routerLinkActive="active"><span class="nl-text">CSS Performance</span>@if(progress.isDone('perf-css-performance')){<span class="nl-done">✓</span>}@if(diff('perf-css-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
