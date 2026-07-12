@@ -1684,6 +1684,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' },
     { label: 'Fixed Positioning Eliminates the Shift In-Flow Insertion Causes', route: '/performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes' },
   ],
+  'critical-rendering-path': [
+    { label: 'media="print" Downloads But Never Blocks Render', route: '/performance/critical-rendering-path/media-print-downloads-but-never-blocks-render' },
+    { label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' },
+    { label: 'type="module" Is Deferred by Default', route: '/performance/critical-rendering-path/type-module-is-deferred-by-default' },
+  ],
 };
 
 @Component({

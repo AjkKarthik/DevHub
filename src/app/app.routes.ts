@@ -1987,7 +1987,12 @@ export const routes: Routes = [
       { path: 'content-visibility-without-contain-intrinsic-size-collapses-height', loadComponent: () => import('./components/frontend/web-performance/cls/subtopics/content-visibility-without-contain-intrinsic-size-collapses-height/content-visibility-without-contain-intrinsic-size-collapses-height').then(m => m.ContentVisibilityWithoutContainIntrinsicSizeCollapsesHeightSubtopic) },
       { path: 'fixed-positioning-eliminates-the-shift-in-flow-insertion-causes', loadComponent: () => import('./components/frontend/web-performance/cls/subtopics/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes').then(m => m.FixedPositioningEliminatesTheShiftInFlowInsertionCausesSubtopic) },
     ] },
-    { path: 'critical-rendering-path',  loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/critical-rendering-path').then(m => m.PerfCriticalRenderingPath) },
+    { path: 'critical-rendering-path', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/critical-rendering-path').then(m => m.PerfCriticalRenderingPath) },
+      { path: 'media-print-downloads-but-never-blocks-render', loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/subtopics/media-print-downloads-but-never-blocks-render/media-print-downloads-but-never-blocks-render').then(m => m.MediaPrintDownloadsButNeverBlocksRenderSubtopic) },
+      { path: 'defer-genuinely-waits-for-parsing-to-finish', loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/subtopics/defer-genuinely-waits-for-parsing-to-finish/defer-genuinely-waits-for-parsing-to-finish').then(m => m.DeferGenuinelyWaitsForParsingToFinishSubtopic) },
+      { path: 'type-module-is-deferred-by-default', loadComponent: () => import('./components/frontend/web-performance/critical-rendering-path/subtopics/type-module-is-deferred-by-default/type-module-is-deferred-by-default').then(m => m.TypeModuleIsDeferredByDefaultSubtopic) },
+    ] },
     { path: 'browser-rendering',        loadComponent: () => import('./components/frontend/web-performance/browser-rendering/browser-rendering').then(m => m.PerfBrowserRendering) },
     { path: 'resource-hints',           loadComponent: () => import('./components/frontend/web-performance/resource-hints/resource-hints').then(m => m.PerfResourceHints) },
     { path: 'http2-http3',              loadComponent: () => import('./components/frontend/web-performance/http2-http3/http2-http3').then(m => m.PerfHttp2Http3) },

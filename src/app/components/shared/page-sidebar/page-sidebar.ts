@@ -22023,6 +22023,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/critical-rendering-path': {
+    apis: ['renderBlockingStatus', 'defer', 'async', 'type="module"', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Browser Rendering Pipeline', route: '/performance/browser-rendering' },
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+    ],
+    tip: 'CSS in <head> is render-blocking by default; a bare <script> is parser-blocking — defer and async both avoid blocking the parser during download, but only defer preserves document order.',
+    docs: [
+      { label: 'web.dev — Render-blocking resources', url: 'https://web.dev/articles/render-blocking-resources' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A stylesheet is still downloaded even when non-render-blocking (e.g. media="print") — only the render block is skipped.',
+      'type="module" scripts are deferred by default — the defer attribute adds nothing on top of it.',
+    ],
+  },
+
+  'performance/critical-rendering-path/media-print-downloads-but-never-blocks-render': {
+    apis: ['renderBlockingStatus', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Critical Rendering Path (overview)', route: '/performance/critical-rendering-path' },
+      { label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' },
+      { label: 'type="module" Is Deferred by Default', route: '/performance/critical-rendering-path/type-module-is-deferred-by-default' },
+    ],
+    tip: 'A normal stylesheet reported renderBlockingStatus: "blocking"; the identical stylesheet with media="print" reported "non-blocking" — both were still fetched, only the render classification differed.',
+    docs: [
+      { label: 'web.dev — Render-blocking resources', url: 'https://web.dev/articles/render-blocking-resources' },
+    ],
+    resources: [],
+    gotchas: [
+      'The browser decides this purely from the media attribute on the link tag, not by inspecting the CSS content itself.',
+      'media="print" does not delay the download — it only skips the render block.',
+    ],
+  },
+
+  'performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish': {
+    apis: ['document.readyState', 'defer', 'DOMContentLoaded'],
+    related: [
+      { label: 'Critical Rendering Path (overview)', route: '/performance/critical-rendering-path' },
+      { label: 'media="print" Downloads But Never Blocks Render', route: '/performance/critical-rendering-path/media-print-downloads-but-never-blocks-render' },
+      { label: 'type="module" Is Deferred by Default', route: '/performance/critical-rendering-path/type-module-is-deferred-by-default' },
+    ],
+    tip: 'A plain script sees a partially built DOM with readyState "loading"; a defer script always sees the fully parsed document with every element present, before DOMContentLoaded fires.',
+    docs: [
+      { label: 'MDN — script defer', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script#defer' },
+    ],
+    resources: [],
+    gotchas: [
+      'Multiple defer scripts always execute in document order, regardless of which finishes downloading first — unlike async.',
+      'A plain script genuinely halts the parser — elements after it in the source do not exist yet when it runs.',
+    ],
+  },
+
+  'performance/critical-rendering-path/type-module-is-deferred-by-default': {
+    apis: ['type="module"', 'document.readyState'],
+    related: [
+      { label: 'Critical Rendering Path (overview)', route: '/performance/critical-rendering-path' },
+      { label: 'media="print" Downloads But Never Blocks Render', route: '/performance/critical-rendering-path/media-print-downloads-but-never-blocks-render' },
+      { label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' },
+    ],
+    tip: 'A type="module" script with NO defer attribute still sees a fully parsed document, identical to an explicitly deferred classic script — modules are deferred by default.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [],
+    gotchas: [
+      'This default-deferred behaviour applies to external module scripts (with src) — an inline module has no separate fetch to defer past.',
+      'Adding defer to a module script is redundant but harmless, not a conflict.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

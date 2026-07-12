@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Critical Rendering Path" topicRoute="/performance/critical-rendering-path" subtopicLabel="defer Genuinely Waits for Parsing to Finish" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">defer Genuinely Waits for Parsing to Finish</h1>
+  <p class="page-subtitle">A plain script catches the parser mid-document with only some elements built; a defer script always sees the full, completed document — proven directly by checking body.children.length from inside each.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Fundamental HTML parsing behaviour" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>A fresh iframe document proves the parser is genuinely paused for a plain script, and genuinely finished before a defer script runs.</p>
+    <app-live-playground title="defer genuinely waits for parsing to finish" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's defer/async theory with direct proof that the parser is genuinely blocked by a plain script and genuinely finished before defer runs — not just a documented convention. Next: whether type="module" scripts need the defer attribute at all to get this same behaviour.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Critical Rendering Path" topicRoute="/performance/critical-rendering-path"
+    [prev]="{ label: 'media=&quot;print&quot; Downloads But Never Blocks Render', route: '/performance/critical-rendering-path/media-print-downloads-but-never-blocks-render' }"
+    [next]="{ label: 'type=&quot;module&quot; Is Deferred by Default', route: '/performance/critical-rendering-path/type-module-is-deferred-by-default' }" />
+</div>

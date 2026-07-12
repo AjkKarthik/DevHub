@@ -4379,7 +4379,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Rendering</p>
-      <a routerLink="/performance/critical-rendering-path" routerLinkActive="active"><span class="nl-text">Critical Rendering Path</span>@if(progress.isDone('perf-critical-rendering-path')){<span class="nl-done">✓</span>}@if(diff('perf-critical-rendering-path');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/critical-rendering-path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Critical Rendering Path</span>
+        @if (progress.isDone('perf-critical-rendering-path')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-critical-rendering-path'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('critical-rendering-path')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('critical-rendering-path')"
+                  (click)="toggleSubtopics('critical-rendering-path', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('critical-rendering-path'); as perfCrpSubs) {
+        @if (isSubtopicsExpanded('critical-rendering-path')) {
+          <div class="nav-subtopics">
+            @for (s of perfCrpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/performance/browser-rendering" routerLinkActive="active"><span class="nl-text">Browser Rendering Pipeline</span>@if(progress.isDone('perf-browser-rendering')){<span class="nl-done">✓</span>}@if(diff('perf-browser-rendering');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/performance/ssr-streaming" routerLinkActive="active"><span class="nl-text">SSR &amp; Streaming HTML</span>@if(progress.isDone('perf-ssr-streaming')){<span class="nl-done">✓</span>}@if(diff('perf-ssr-streaming');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
