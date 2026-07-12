@@ -4295,7 +4295,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Core Web Vitals</p>
-      <a routerLink="/performance/core-web-vitals" routerLinkActive="active"><span class="nl-text">CWV Overview</span>@if(progress.isDone('perf-core-web-vitals')){<span class="nl-done">✓</span>}@if(diff('perf-core-web-vitals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/core-web-vitals" routerLinkActive="active">
+        <span class="nl-text">CWV Overview</span>
+        @if (progress.isDone('perf-core-web-vitals')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-core-web-vitals'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('core-web-vitals')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('core-web-vitals')"
+                  (click)="toggleSubtopics('core-web-vitals', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('core-web-vitals'); as perfCwvSubs) {
+        @if (isSubtopicsExpanded('core-web-vitals')) {
+          <div class="nav-subtopics">
+            @for (s of perfCwvSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/performance/lcp" routerLinkActive="active"><span class="nl-text">Largest Contentful Paint</span>@if(progress.isDone('perf-lcp')){<span class="nl-done">✓</span>}@if(diff('perf-lcp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/performance/inp" routerLinkActive="active"><span class="nl-text">Interaction to Next Paint</span>@if(progress.isDone('perf-inp')){<span class="nl-done">✓</span>}@if(diff('perf-inp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/performance/cls" routerLinkActive="active"><span class="nl-text">Cumulative Layout Shift</span>@if(progress.isDone('perf-cls')){<span class="nl-done">✓</span>}@if(diff('perf-cls');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

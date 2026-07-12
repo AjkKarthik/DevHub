@@ -1306,6 +1306,9 @@ const CSS_LABELS: Record<string, string> = {
 
 const PERFORMANCE_LABELS: Record<string, string> = {
   'core-web-vitals':        'Core Web Vitals',
+  'core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it': 'transform Avoids CLS While top and left Trigger It',
+  'core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift': 'Missing Image Dimensions Cause a Real, Measurable Layout Shift',
+  'core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear': 'The LCP Candidate Changes as Larger Elements Appear',
   'lcp':                    'Largest Contentful Paint',
   'inp':                    'Interaction to Next Paint',
   'cls':                    'Cumulative Layout Shift',

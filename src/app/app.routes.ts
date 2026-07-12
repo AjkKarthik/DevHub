@@ -1963,7 +1963,12 @@ export const routes: Routes = [
   ] },
   { path: 'performance',   children: [
     { path: '', loadComponent: () => import('./components/frontend/web-performance/home/home').then(m => m.WebPerformanceHome) },
-    { path: 'core-web-vitals',          loadComponent: () => import('./components/frontend/web-performance/core-web-vitals/core-web-vitals').then(m => m.PerfCoreWebVitals) },
+    { path: 'core-web-vitals', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/core-web-vitals/core-web-vitals').then(m => m.PerfCoreWebVitals) },
+      { path: 'transform-avoids-cls-while-top-and-left-trigger-it', loadComponent: () => import('./components/frontend/web-performance/core-web-vitals/subtopics/transform-avoids-cls-while-top-and-left-trigger-it/transform-avoids-cls-while-top-and-left-trigger-it').then(m => m.TransformAvoidsClsWhileTopAndLeftTriggerItSubtopic) },
+      { path: 'missing-image-dimensions-cause-a-real-measurable-layout-shift', loadComponent: () => import('./components/frontend/web-performance/core-web-vitals/subtopics/missing-image-dimensions-cause-a-real-measurable-layout-shift/missing-image-dimensions-cause-a-real-measurable-layout-shift').then(m => m.MissingImageDimensionsCauseARealMeasurableLayoutShiftSubtopic) },
+      { path: 'the-lcp-candidate-changes-as-larger-elements-appear', loadComponent: () => import('./components/frontend/web-performance/core-web-vitals/subtopics/the-lcp-candidate-changes-as-larger-elements-appear/the-lcp-candidate-changes-as-larger-elements-appear').then(m => m.TheLcpCandidateChangesAsLargerElementsAppearSubtopic) },
+    ] },
     { path: 'lcp',                      loadComponent: () => import('./components/frontend/web-performance/lcp/lcp').then(m => m.PerfLcp) },
     { path: 'inp',                      loadComponent: () => import('./components/frontend/web-performance/inp/inp').then(m => m.PerfInp) },
     { path: 'cls',                      loadComponent: () => import('./components/frontend/web-performance/cls/cls').then(m => m.PerfCls) },

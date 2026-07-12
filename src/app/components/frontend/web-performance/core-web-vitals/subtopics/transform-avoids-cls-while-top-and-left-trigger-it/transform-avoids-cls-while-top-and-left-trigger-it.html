@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Core Web Vitals Overview" topicRoute="/performance/core-web-vitals" subtopicLabel="transform Avoids CLS While top and left Trigger It" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">transform Avoids CLS While top and left Trigger It</h1>
+  <p class="page-subtitle">The same 300px move produces a real layout-shift entry via top, but zero entries via transform — measured with the actual browser Performance API, not simulation.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Layout Instability API, Chrome 77+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Register a real PerformanceObserver for layout-shift entries and compare a top-based move against a transform-based move.</p>
+    <app-live-playground title="transform avoids CLS while top and left trigger it" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This is the main page's own third "Common Mistake" and quiz claim confirmed via the real Layout Instability API — the same mechanism Chrome DevTools and CrUX field data use, not an approximation. The next subtopic turns to a related CLS cause — missing image dimensions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Core Web Vitals Overview" topicRoute="/performance/core-web-vitals"
+    [next]="{ label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' }" />
+</div>

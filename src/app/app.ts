@@ -1664,6 +1664,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit', route: '/css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit' },
     { label: 'Percentage padding-top Resolves Against the Parent’s Width, Not Height', route: '/css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height' },
   ],
+  'core-web-vitals': [
+    { label: 'transform Avoids CLS While top and left Trigger It', route: '/performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it' },
+    { label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' },
+    { label: 'The LCP Candidate Changes as Larger Elements Appear', route: '/performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear' },
+  ],
 };
 
 @Component({

@@ -21723,6 +21723,81 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/core-web-vitals': {
+    apis: ['LCP', 'INP', 'CLS', 'PerformanceObserver', 'web-vitals library', 'CrUX'],
+    related: [
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'Lighthouse (lab data) can look great while real CrUX field data still fails — Google Search ranking uses field data, not lab scores.',
+    docs: [
+      { label: 'web.dev — Core Web Vitals', url: 'https://web.dev/articles/vitals' },
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'INP replaced FID in March 2024 — it measures the worst interaction across the full page lifetime, not just the first one.',
+      'transform/opacity animations never trigger layout-shift entries; top/left/width/height animations do.',
+    ],
+  },
+
+  'performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it': {
+    apis: ['layout-shift', 'PerformanceObserver'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' },
+      { label: 'The LCP Candidate Changes as Larger Elements Appear', route: '/performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear' },
+    ],
+    tip: 'The same 300px move produces a real layout-shift entry via top but zero entries via transform — confirmed with a live PerformanceObserver, the exact mechanism Chrome DevTools and CrUX use.',
+    docs: [
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'This holds even for instant, non-animated style changes — not just CSS transitions.',
+      'transform creates a new stacking context as a side effect, worth checking against z-index-sensitive layouts.',
+    ],
+  },
+
+  'performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift': {
+    apis: ['layout-shift', 'PerformanceObserver', 'width / height attributes'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'transform Avoids CLS While top and left Trigger It', route: '/performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it' },
+      { label: 'The LCP Candidate Changes as Larger Elements Appear', route: '/performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear' },
+    ],
+    tip: 'An image with no width/height produces a genuine layout-shift entry when it loads; the identical image with dimensions set produces none — confirmed with a live PerformanceObserver.',
+    docs: [
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'width/height attributes don\'t force a fixed pixel size — combined with CSS like height: auto, the browser still uses them purely to compute the aspect ratio for space reservation.',
+      'Lazy-loaded images are equally susceptible, often more disruptive since they shift content while the user is actively scrolling.',
+    ],
+  },
+
+  'performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear': {
+    apis: ['largest-contentful-paint', 'PerformanceObserver'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'transform Avoids CLS While top and left Trigger It', route: '/performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it' },
+      { label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' },
+    ],
+    tip: 'Adding a bigger element after a smaller one produces a SECOND, larger LCP entry — confirmed with a live largest-contentful-paint PerformanceObserver, not just theory.',
+    docs: [
+      { label: 'web.dev — Core Web Vitals', url: 'https://web.dev/articles/vitals' },
+    ],
+    resources: [],
+    gotchas: [
+      'LCP is not "whatever renders first" — it is whichever candidate is largest when measurement stops (on interaction or backgrounding).',
+      'A fast-rendering headline can be superseded by a slower hero image, making the image the real LCP bottleneck even though text appeared instantly.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [
