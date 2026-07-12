@@ -22541,6 +22541,80 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'performance/js-performance': {
+    apis: ['structuredClone()', 'Event delegation', 'Memoization', 'PerformanceObserver longtask'],
+    related: [
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+    ],
+    tip: 'Ship less JS: tree-shake ES modules, code-split routes, break long tasks with yield, and memoize expensive pure functions.',
+    docs: [
+      { label: 'web.dev — Optimize JavaScript', url: 'https://web.dev/articles/optimize-long-tasks' },
+    ],
+    resources: [
+      { label: 'bundlephobia.com', url: 'https://bundlephobia.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Spread only shallow-copies — nested objects/arrays remain shared references with the original, unlike structuredClone.',
+      'Per-element event listeners silently miss elements added after the listener setup ran — delegation does not.',
+    ],
+  },
+
+  'performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs': {
+    apis: ['structuredClone()', 'spread operator'],
+    related: [
+      { label: 'JavaScript Performance (overview)', route: '/performance/js-performance' },
+      { label: 'Event Delegation Catches Dynamically Added Elements', route: '/performance/js-performance/event-delegation-catches-dynamically-added-elements' },
+      { label: 'Memoization Genuinely Skips Recomputation for Repeated Inputs', route: '/performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs' },
+    ],
+    tip: 'Mutating a nested property through a spread copy changed the original object too — structuredClone left it untouched. For nested data, the speed gap is also far beyond 10x.',
+    docs: [
+      { label: 'MDN — structuredClone()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone' },
+    ],
+    resources: [],
+    gotchas: [
+      'The "~10x slower" figure applies specifically to flat objects — nested data reveals spread and structuredClone are not even doing the same job.',
+      'Spread is the correct choice when shared nested references are fine; structuredClone is required when genuine independence matters.',
+    ],
+  },
+
+  'performance/js-performance/event-delegation-catches-dynamically-added-elements': {
+    apis: ['addEventListener()', 'Event bubbling', 'event.target'],
+    related: [
+      { label: 'JavaScript Performance (overview)', route: '/performance/js-performance' },
+      { label: 'structuredClone and spread Do Fundamentally Different Jobs', route: '/performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs' },
+      { label: 'Memoization Genuinely Skips Recomputation for Repeated Inputs', route: '/performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs' },
+    ],
+    tip: 'A per-element listener setup silently missed clicks on an item added afterward — the identical setup using delegation caught both, including the one added after the listener was attached.',
+    docs: [
+      { label: 'MDN — Event bubbling', url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Event_bubbling' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a correctness bug, not just an efficiency loss — per-element setups need re-running for every dynamic addition, easy to forget.',
+      'Delegation works for nested markup too via event.target.closest(selector).',
+    ],
+  },
+
+  'performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs': {
+    apis: ['Map', 'JSON.stringify()', 'useMemo', 'computed()'],
+    related: [
+      { label: 'JavaScript Performance (overview)', route: '/performance/js-performance' },
+      { label: 'structuredClone and spread Do Fundamentally Different Jobs', route: '/performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs' },
+      { label: 'Event Delegation Catches Dynamically Added Elements', route: '/performance/js-performance/event-delegation-catches-dynamically-added-elements' },
+    ],
+    tip: '5 wrapper calls with only 2 distinct argument sets resulted in the real underlying function running exactly 2 times — confirmed with a real call counter.',
+    docs: [
+      { label: 'MDN — Memoization', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Memoization' },
+    ],
+    resources: [],
+    gotchas: [
+      'The benefit scales with call FREQUENCY as much as per-call cost — even a cheap function called thousands of times can bottleneck without memoization.',
+      'useMemo (React) and computed signals (Angular) are the same caching pattern with a framework-managed cache key.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [

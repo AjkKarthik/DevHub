@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JavaScript Performance" topicRoute="/performance/js-performance" subtopicLabel="Event Delegation Catches Dynamically Added Elements" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Event Delegation Catches Dynamically Added Elements</h1>
+  <p class="page-subtitle">A per-element listener setup silently missed clicks on an item added afterward — the identical setup using delegation caught both, including the one added after the listener was attached.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Event bubbling, fundamental DOM behaviour" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare real click counts between per-element listeners and event delegation, both tested against an item added after setup ran.</p>
+    <app-live-playground title="event delegation catches dynamically added elements" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This adds a real correctness angle to the main page's memory-focused event delegation mistake — a per-element setup isn't just less efficient, it silently breaks for dynamic content. Next: whether memoization genuinely skips recomputation, verified by counting real function calls.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JavaScript Performance" topicRoute="/performance/js-performance"
+    [prev]="{ label: 'structuredClone and spread Do Fundamentally Different Jobs', route: '/performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs' }"
+    [next]="{ label: 'Memoization Genuinely Skips Recomputation for Repeated Inputs', route: '/performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs' }" />
+</div>

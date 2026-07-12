@@ -4534,7 +4534,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">JavaScript</p>
-      <a routerLink="/performance/js-performance" routerLinkActive="active"><span class="nl-text">JavaScript Performance</span>@if(progress.isDone('perf-js-performance')){<span class="nl-done">✓</span>}@if(diff('perf-js-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/js-performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">JavaScript Performance</span>
+        @if (progress.isDone('perf-js-performance')) {<span class="nl-done">✓</span>}
+        @if (diff('perf-js-performance'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('js-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('js-performance')"
+                  (click)="toggleSubtopics('js-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('js-performance'); as perfJsSubs) {
+        @if (isSubtopicsExpanded('js-performance')) {
+          <div class="nav-subtopics">
+            @for (s of perfJsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/performance/third-party-scripts" routerLinkActive="active"><span class="nl-text">Third-Party Scripts</span>@if(progress.isDone('perf-third-party-scripts')){<span class="nl-done">✓</span>}@if(diff('perf-third-party-scripts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/performance/web-workers" routerLinkActive="active"><span class="nl-text">Web Workers</span>@if(progress.isDone('perf-web-workers')){<span class="nl-done">✓</span>}@if(diff('perf-web-workers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

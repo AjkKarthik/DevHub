@@ -2029,7 +2029,12 @@ export const routes: Routes = [
       { path: 'size-adjust-measurably-changes-rendered-text-width', loadComponent: () => import('./components/frontend/web-performance/font-performance/subtopics/size-adjust-measurably-changes-rendered-text-width/size-adjust-measurably-changes-rendered-text-width').then(m => m.SizeAdjustMeasurablyChangesRenderedTextWidthSubtopic) },
       { path: 'the-font-loading-api-tracks-real-load-state-not-a-guess', loadComponent: () => import('./components/frontend/web-performance/font-performance/subtopics/the-font-loading-api-tracks-real-load-state-not-a-guess/the-font-loading-api-tracks-real-load-state-not-a-guess').then(m => m.TheFontLoadingApiTracksRealLoadStateNotAGuessSubtopic) },
     ] },
-    { path: 'js-performance',           loadComponent: () => import('./components/frontend/web-performance/js-performance/js-performance').then(m => m.PerfJsPerformance) },
+    { path: 'js-performance', children: [
+      { path: '', loadComponent: () => import('./components/frontend/web-performance/js-performance/js-performance').then(m => m.PerfJsPerformance) },
+      { path: 'structuredclone-and-spread-do-fundamentally-different-jobs', loadComponent: () => import('./components/frontend/web-performance/js-performance/subtopics/structuredclone-and-spread-do-fundamentally-different-jobs/structuredclone-and-spread-do-fundamentally-different-jobs').then(m => m.StructuredcloneAndSpreadDoFundamentallyDifferentJobsSubtopic) },
+      { path: 'event-delegation-catches-dynamically-added-elements', loadComponent: () => import('./components/frontend/web-performance/js-performance/subtopics/event-delegation-catches-dynamically-added-elements/event-delegation-catches-dynamically-added-elements').then(m => m.EventDelegationCatchesDynamicallyAddedElementsSubtopic) },
+      { path: 'memoization-genuinely-skips-recomputation-for-repeated-inputs', loadComponent: () => import('./components/frontend/web-performance/js-performance/subtopics/memoization-genuinely-skips-recomputation-for-repeated-inputs/memoization-genuinely-skips-recomputation-for-repeated-inputs').then(m => m.MemoizationGenuinelySkipsRecomputationForRepeatedInputsSubtopic) },
+    ] },
     { path: 'third-party-scripts',      loadComponent: () => import('./components/frontend/web-performance/third-party-scripts/third-party-scripts').then(m => m.PerfThirdPartyScripts) },
     { path: 'measurement',              loadComponent: () => import('./components/frontend/web-performance/measurement/measurement').then(m => m.PerfMeasurement) },
     { path: 'rum',                      loadComponent: () => import('./components/frontend/web-performance/rum/rum').then(m => m.PerfRum) },

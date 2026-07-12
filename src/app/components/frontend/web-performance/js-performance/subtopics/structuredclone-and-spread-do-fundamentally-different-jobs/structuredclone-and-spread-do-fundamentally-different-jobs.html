@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JavaScript Performance" topicRoute="/performance/js-performance" subtopicLabel="structuredClone and spread Do Fundamentally Different Jobs" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">structuredClone and spread Do Fundamentally Different Jobs</h1>
+  <p class="page-subtitle">Mutating a nested property through a spread copy changed the original object too — structuredClone left it untouched. For nested data, the speed gap is also far beyond 10×.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="structuredClone, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare nested-mutation independence and real timing between spread and structuredClone on a genuinely nested object.</p>
+    <app-live-playground title="structuredClone and spread do fundamentally different jobs" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This adds real nuance to the main page's "10× slower" figure — confirming it applies to flat objects, while nested data reveals spread and structuredClone aren't even doing the same job. Next: whether event delegation genuinely handles content added after the listener was attached.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JavaScript Performance" topicRoute="/performance/js-performance"
+    [next]="{ label: 'Event Delegation Catches Dynamically Added Elements', route: '/performance/js-performance/event-delegation-catches-dynamically-added-elements' }" />
+</div>

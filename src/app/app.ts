@@ -1721,6 +1721,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' },
     { label: 'The Font Loading API Tracks Real Load State, Not a Guess', route: '/performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess' },
   ],
+  'js-performance': [
+    { label: 'structuredClone and spread Do Fundamentally Different Jobs', route: '/performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs' },
+    { label: 'Event Delegation Catches Dynamically Added Elements', route: '/performance/js-performance/event-delegation-catches-dynamically-added-elements' },
+    { label: 'Memoization Genuinely Skips Recomputation for Repeated Inputs', route: '/performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs' },
+  ],
 };
 
 @Component({
