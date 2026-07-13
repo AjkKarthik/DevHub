@@ -4827,7 +4827,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Data &amp; Forms</p>
-      <a routerLink="/blazor/forms" routerLinkActive="active"><span class="nl-text">Blazor Forms</span>@if(progress.isDone('blazor-forms')){<span class="nl-done">✓</span>}@if(diff('blazor-forms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/forms" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Blazor Forms</span>
+        @if (progress.isDone('blazor-forms')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('blazor-forms')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('blazor-forms')"
+                  (click)="toggleSubtopics('blazor-forms', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('blazor-forms'); as blazorFormsSubs) {
+        @if (isSubtopicsExpanded('blazor-forms')) {
+          <div class="nav-subtopics">
+            @for (s of blazorFormsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/data-binding" routerLinkActive="active"><span class="nl-text">Data Binding</span>@if(progress.isDone('blazor-data-binding')){<span class="nl-done">✓</span>}@if(diff('blazor-data-binding');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/routing" routerLinkActive="active"><span class="nl-text">Blazor Routing</span>@if(progress.isDone('blazor-routing')){<span class="nl-done">✓</span>}@if(diff('blazor-routing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

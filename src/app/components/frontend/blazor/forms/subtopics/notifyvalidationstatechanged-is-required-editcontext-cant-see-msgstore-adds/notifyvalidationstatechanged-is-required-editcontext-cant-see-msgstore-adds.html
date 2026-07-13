@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Forms" topicRoute="/blazor/forms" subtopicLabel="NotifyValidationStateChanged Is Required — EditContext Can't See ValidationMessageStore Adds" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">NotifyValidationStateChanged Is Required — EditContext Can't See ValidationMessageStore Adds</h1>
+  <p class="page-subtitle">ValidationMessageStore is a plain data structure with no event of its own — ValidationSummary and ValidationMessage only refresh when NotifyValidationStateChanged() raises EditContext's specific validation event, not on any general re-render.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's own ValidationMessageStore code samples into the actual event mechanism behind the required NotifyValidationStateChanged() call. Next: why DataAnnotationsValidator skips nested objects unless you switch to ObjectGraphDataAnnotationsValidator.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Forms" topicRoute="/blazor/forms"
+    [next]="{ label: 'DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType', route: '/blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype' }" />
+</div>

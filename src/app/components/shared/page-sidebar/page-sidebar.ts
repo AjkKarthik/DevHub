@@ -31419,6 +31419,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'InputSelect requires the bound property type to correctly implement equality comparison for a pre-selected value to display correctly.',
     ],
   },
+
+  'blazor/forms/notifyvalidationstatechanged-is-required-editcontext-cant-see-msgstore-adds': {
+    apis: ['ValidationMessageStore', 'EditContext.NotifyValidationStateChanged()'],
+    related: [
+      { label: 'Blazor Forms (overview)', route: '/blazor/forms' },
+      { label: 'DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType', route: '/blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype' },
+      { label: 'SupplyParameterFromForm Only Binds on a Real POST, Not First Load', route: '/blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load' },
+    ],
+    tip: 'ValidationMessageStore has no event of its own — ValidationSummary and ValidationMessage only refresh when NotifyValidationStateChanged() raises EditContext\'s specific validation event, not on any general re-render.',
+    docs: [
+      { label: 'Microsoft Learn — ValidationMessageStore', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/validation' },
+    ],
+    resources: [],
+    gotchas: [
+      'Calling only StateHasChanged() on the adding component does not reliably update ValidationSummary if it lives elsewhere in the tree.',
+      'A message added without NotifyValidationStateChanged() exists in memory but is invisible to the UI, with no error or warning.',
+    ],
+  },
+
+  'blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype': {
+    apis: ['[ValidateComplexType]', 'ObjectGraphDataAnnotationsValidator'],
+    related: [
+      { label: 'Blazor Forms (overview)', route: '/blazor/forms' },
+      { label: 'NotifyValidationStateChanged Is Required — EditContext Can’t See ValidationMessageStore Adds', route: '/blazor/forms/notifyvalidationstatechanged-is-required-editcontext-cant-see-msgstore-adds' },
+      { label: 'SupplyParameterFromForm Only Binds on a Real POST, Not First Load', route: '/blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load' },
+    ],
+    tip: 'The default DataAnnotationsValidator only validates the root model\'s own properties — a nested object\'s validation attributes are silently skipped unless BOTH [ValidateComplexType] and ObjectGraphDataAnnotationsValidator are added together.',
+    docs: [
+      { label: 'Microsoft.AspNetCore.Components.DataAnnotations.Validation', url: 'https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation' },
+    ],
+    resources: [],
+    gotchas: [
+      '[ValidateComplexType] alone changes nothing observable — the standard DataAnnotationsValidator does not understand that marker attribute at all.',
+      'Swapping to ObjectGraphDataAnnotationsValidator alone is also insufficient — each nested property still needs its own [ValidateComplexType] marker.',
+    ],
+  },
+
+  'blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load': {
+    apis: ['[SupplyParameterFromForm]', 'EditForm.FormName', '@formname'],
+    related: [
+      { label: 'Blazor Forms (overview)', route: '/blazor/forms' },
+      { label: 'NotifyValidationStateChanged Is Required — EditContext Can’t See ValidationMessageStore Adds', route: '/blazor/forms/notifyvalidationstatechanged-is-required-editcontext-cant-see-msgstore-adds' },
+      { label: 'DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType', route: '/blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype' },
+    ],
+    tip: 'On a first GET-request page load there is no posted data — the bound property is just its own default initializer. It only gets genuinely populated from form fields after a real POST back to the same page.',
+    docs: [
+      { label: 'Microsoft Learn — Static SSR forms with SupplyParameterFromForm', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/#binding-forms-with-the-editform-component' },
+    ],
+    resources: [],
+    gotchas: [
+      'A first-load "empty" model is not [SupplyParameterFromForm] "clearing" anything — there was simply never any posted data to bind from.',
+      'Multiple EditForm elements on one page need distinct FormName values, or the POST handler cannot tell which form\'s fields belong to which model.',
+    ],
+  },
+
   'blazor/dependency-injection': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
