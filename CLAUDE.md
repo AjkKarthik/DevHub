@@ -1036,6 +1036,31 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/blazor/f
    prose content, grep for a bare `'` immediately preceded by a digit or letter in a
    possessive/contraction pattern across the WHOLE file (not just `.html` bound attributes) —
    the existing "grep before building" discipline was previously scoped too narrowly.
+7. **VERIFY C# LANGUAGE/FRAMEWORK CLAIMS BEFORE WRITING, THE SAME AS EMPIRICAL JS/browser CLAIMS**
+   — a real, confirmed inaccuracy was found and fixed on an ALREADY-PUBLISHED C# hub main page
+   (`/blazor/data-binding`, 2026-07-12) during subtopic authoring: the page's "loop variable
+   capture" mistake entry, matching quiz question, and code sample all described the classic
+   `foreach` closure bug (every lambda sees the LAST loop value) as still a current Blazor
+   problem — this was fixed at the C# LANGUAGE level for `foreach` specifically at C# 5.0
+   (2012, per-iteration variable capture), and current Razor `@foreach` codegen matches that
+   same semantics, confirmed via two research-agent verification passes before publishing
+   anything. The genuinely still-current gotcha in the same area is `@key` and Blazor's
+   diffing-by-position state misattribution when a list reorders — the main page's mistake
+   entry, quiz, and code sample were all corrected to this instead. **Since there is no C#/.NET
+   runtime available in this browser to empirically test claims against** (unlike JS/TS/CSS/HTML
+   hubs where `javascript_tool` can verify directly), C#/Blazor/.NET topics need the equivalent
+   discipline applied via targeted research-agent fact-checks BEFORE writing subtopic content
+   that states a "still current" bug/behavior — especially for anything with a specific language
+   version history, since docs/blog-post inertia repeats stale advice long after a language-level
+   fix lands.
+8. **A bare directive name used as the page's own SUBJECT (not just prose mentioning it) is a
+   much higher-density source of the bare-`@word`-as-text gotcha than usual** — this batch's
+   subtopic pages were literally ABOUT `@key` and `@bind:format`, so the directive name appeared
+   bare in h1 titles and page-subtitles repeatedly, not just in one or two prose asides. The
+   standard sweep caught most instances but missed one in a "Where this fits" paragraph on the
+   first pass — for any subtopic whose OWN TITLE contains a bare `@directive`, run the sweep a
+   second time on the fully-assembled batch (not just per-file while writing) before considering
+   it clean.
 
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
