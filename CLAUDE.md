@@ -986,6 +986,57 @@ Confirmed via direct file inspection before the first subtopic set (`/html/docum
    — but this hub is entering a `SUBTOPICS` map already shared by 8+ other hubs, so the standard
    grep-before-adding discipline still applies to every future HTML-hub topic.
 
+### Blazor hub subtopic wiring — first pilot; confirms the C#-hub "no live playground" pattern extends here, plus two new gotchas
+
+Confirmed via a dedicated Explore-agent investigation before writing (`/blazor/fundamentals`,
+2026-07-12) — do this same check before any other new hub's first subtopic set:
+1. **`BLAZOR_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching every other
+   hub's own dedicated labels map — composite subtopic keys there are bare too
+   (`'fundamentals/<slug>'`).
+2. **Progress/search keys are `blazor-` PREFIXED** (`blazor-fundamentals`), confirmed via
+   existing nav markup. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'blazor/fundamentals'`,
+   confirmed the base entry already existed) — subtopic composite keys follow suit:
+   `'blazor/fundamentals/<slug>'`.
+3. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic. Hub-prefixed to `'blazor-fundamentals'`,
+   with the same `// NOTE:` comment pattern already used for the `html-fundamentals`/
+   `css-fundamentals` collisions — the three nav-accordion helper calls in `app.html`
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) all use `'blazor-fundamentals'` too,
+   not the bare slug.
+4. **Blazor/.NET has no in-browser runtime — every subtopic dropped the live playground**,
+   using `<app-code-block>` instead, matching the established non-Angular-hub pattern (C#, SQL,
+   Python, Go). Content is grounded in documented .NET/Blazor framework behavior (expanding each
+   of the main page's own mistake entries into its underlying mechanism), not empirical browser
+   verification — there is no .NET runtime available to test claims against in this browser,
+   unlike JS/TS/CSS/HTML hubs where `javascript_tool` can verify claims directly.
+5. **A NEW variant of the raw-HTML-tag-as-text gotcha, specific to C#/Blazor generic syntax**:
+   a C# generic type expression written as plain prose inside an `[innerHTML]`-bound field
+   (e.g. `AddScoped<AuditLogBuffer>()` inside `exercise.prompt`) gets parsed by the browser as a
+   literal `<AuditLogBuffer>` HTML tag — the same failure mode as mentioning a literal `<script>`
+   tag in prose, just triggered by C# generic angle-bracket syntax (`SomeType<T>`) instead of an
+   actual HTML tag name. Caught via `get_page_text` showing a sentence truncated mid-word exactly
+   where the generic began — not caught by the build. **Fix: entity-escape any `SomeType<T>`
+   generic syntax written as prose inside an `[innerHTML]`-bound field** (`exercise.prompt`/
+   `.hint`, `misconceptions.thought`/`.reality`) — `AddScoped&lt;AuditLogBuffer&gt;()`. This is a
+   standing rule for all future C#/Blazor (or any generics-heavy language) subtopic content, in
+   addition to the pre-existing literal-tag-name rule. Code inside `codeTabs`/`solution` fields
+   (plain interpolation, not `[innerHTML]`) is unaffected — generics there render as literal text
+   correctly, confirmed by the same batch's `codeTabs` entries using `AddSingleton<T>()`,
+   `List<T>()` etc. freely with no issue.
+6. **A genuine build failure from a straight apostrophe inside a component's own single-quoted
+   TS string field** (not a `.html` bound attribute) — `'...the scenario .NET 8's per-component...'`
+   prematurely closed the string at the apostrophe in "8's", producing a cascade of unrelated
+   parser errors (`TS2322`, `TS18004`, `TS1005`) far from the actual break, the same confusing
+   error-shape pattern already documented for the backtick-in-template-literal and
+   apostrophe-in-`.html`-bound-attribute gotchas. **Confirms the general rule extends to EVERY
+   file type and EVERY single-quoted string field, not just the previously-documented `.html`
+   `[prev]`/`[next]` attribute case** — any delimiter character (`'`, `` ` ``) appearing literally
+   inside a string that uses that same delimiter breaks the string, regardless of whether it's a
+   `.ts` field or a `.html` attribute. Fixed with `\'`. Before trusting a build that touches new
+   prose content, grep for a bare `'` immediately preceded by a digit or letter in a
+   possessive/contraction pattern across the WHOLE file (not just `.html` bound attributes) —
+   the existing "grep before building" discipline was previously scoped too narrowly.
+
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
 Confirmed via direct file inspection before the first subtopic set (`/css/box-model`, 2026-07-11):
