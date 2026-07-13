@@ -31341,6 +31341,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CascadingValue provides implicit parent-to-descendant data flow without threading parameters through every intermediate component — useful for deeply nested trees.',
     ],
   },
+
+  'blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker': {
+    apis: ['EventCallback<T>', 'InvokeAsync()'],
+    related: [
+      { label: 'Component Communication (overview)', route: '/blazor/component-communication' },
+      { label: 'bind-Value Desugars Into Two Separate Parameters, Not Magic Binding', route: '/blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding' },
+      { label: 'IsFixed=true Permanently Freezes a Cascading Value’s Re-Traversal', route: '/blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal' },
+    ],
+    tip: 'The automatic StateHasChanged from EventCallback.InvokeAsync() targets only the ONE component that owns the handler — typically the parent — never the invoking child, and never every intermediate component in a multi-level forwarding chain.',
+    docs: [
+      { label: 'Microsoft Learn — EventCallback', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling' },
+    ],
+    resources: [],
+    gotchas: [
+      'A component that calls InvokeAsync() does not automatically re-render itself as part of that call.',
+      'In a multi-level forwarding chain, only the ORIGINAL owner of the handler gets the automatic re-render, not every intermediate wrapper.',
+    ],
+  },
+
+  'blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding': {
+    apis: ['@bind-{Property}', '@bind-{Property}:event'],
+    related: [
+      { label: 'Component Communication (overview)', route: '/blazor/component-communication' },
+      { label: 'EventCallback’s Auto-StateHasChanged Targets the Receiver, Not the Invoker', route: '/blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker' },
+      { label: 'IsFixed=true Permanently Freezes a Cascading Value’s Re-Traversal', route: '/blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal' },
+    ],
+    tip: '@bind-Value is pure compile-time text expansion into Value and ValueChanged attributes based on an exact name match — no runtime reflection, and a mismatched callback name fails completely silently.',
+    docs: [
+      { label: 'Microsoft Learn — Data binding', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding' },
+    ],
+    resources: [],
+    gotchas: [
+      'A mismatched callback name (not matching the base-name-plus-Changed convention) compiles fine but silently generates no second attribute at all.',
+      '@bind-Value:event overrides which callback name the desugaring targets, proving there is no hardcoded runtime concept of "Changed."',
+    ],
+  },
+
+  'blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal': {
+    apis: ['CascadingValue', 'IsFixed'],
+    related: [
+      { label: 'Component Communication (overview)', route: '/blazor/component-communication' },
+      { label: 'EventCallback’s Auto-StateHasChanged Targets the Receiver, Not the Invoker', route: '/blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker' },
+      { label: 'bind-Value Desugars Into Two Separate Parameters, Not Magic Binding', route: '/blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding' },
+    ],
+    tip: 'IsFixed="true" is a one-time promise the value NEVER changes again, not a "rarely changes" optimization — if it does change, descendants keep a silently stale snapshot forever, with no error or warning.',
+    docs: [
+      { label: 'Microsoft Learn — Cascading values and parameters', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/cascading-values-and-parameters#cascadingvalue-iscascading' },
+    ],
+    resources: [],
+    gotchas: [
+      'There is no detection or fallback if a fixed value changes anyway — the provider re-renders fine, but consumers stay stale forever.',
+      'Only use IsFixed for values provably constant for the CascadingValue\'s entire lifetime, not merely infrequently-changing ones.',
+    ],
+  },
+
   'blazor/data-binding': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

@@ -1784,6 +1784,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' },
     { label: 'ShouldRender Cannot Suppress a Component’s First Render', route: '/blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render' },
   ],
+  'component-communication': [
+    { label: 'EventCallback’s Auto-StateHasChanged Targets the Receiver, Not the Invoker', route: '/blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker' },
+    { label: 'bind-Value Desugars Into Two Separate Parameters, Not Magic Binding', route: '/blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding' },
+    { label: 'IsFixed=true Permanently Freezes a Cascading Value’s Re-Traversal', route: '/blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal' },
+  ],
 };
 
 @Component({
