@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Routing" topicRoute="/blazor/routing" subtopicLabel="NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs</h1>
+  <p class="page-subtitle">NavigateTo() doesn't halt execution like a return or a thrown exception — it schedules the navigation and returns immediately, so any code written after the call genuinely still runs on the still-alive component.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's own QnA into a full worked example of the bug pattern and its fix. Next: exactly what a catch-all route parameter captures, including how it handles slashes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Routing" topicRoute="/blazor/routing"
+    [prev]="{ label: 'OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component', route: '/blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component' }"
+    [next]="{ label: 'Catch-All Routes Capture Everything After the Prefix as One String', route: '/blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string' }" />
+</div>

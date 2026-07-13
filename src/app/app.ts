@@ -1801,6 +1801,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' },
     { label: 'A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer', route: '/blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer' },
   ],
+  // NOTE: keyed 'blazor-routing', NOT bare 'routing' — the Angular hub's
+  // own /angular/routing topic already claims the bare key, and the
+  // ASP.NET Core hub already resolved the same collision as 'aspnet-routing'.
+  'blazor-routing': [
+    { label: 'OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component', route: '/blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component' },
+    { label: 'NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs', route: '/blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs' },
+    { label: 'Catch-All Routes Capture Everything After the Prefix as One String', route: '/blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string' },
+  ],
 };
 
 @Component({

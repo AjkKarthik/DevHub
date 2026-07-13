@@ -31563,6 +31563,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The NotFound render fragment on <Router> defines the 404 experience — a bare "not found" message with no path forward is a common, avoidable UX gap.',
     ],
   },
+
+  'blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component': {
+    apis: ['OnParametersSetAsync()', 'OnInitializedAsync()'],
+    related: [
+      { label: 'Blazor Routing (overview)', route: '/blazor/routing' },
+      { label: 'NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs', route: '/blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs' },
+      { label: 'Catch-All Routes Capture Everything After the Prefix as One String', route: '/blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string' },
+    ],
+    tip: 'Navigating between two routes handled by the same component type reuses that instance rather than recreating it — OnInitialized correctly runs only once, which is why route-parameter-dependent loading belongs in OnParametersSet instead.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor lifecycle', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'Genuinely one-time setup (a timer, a subscription unrelated to the route parameter) belongs in OnInitialized specifically because it runs only once per instance.',
+      'Component reuse only applies to same-TYPE navigation — navigating to a different component type always disposes and recreates.',
+    ],
+  },
+
+  'blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs': {
+    apis: ['NavigationManager.NavigateTo()'],
+    related: [
+      { label: 'Blazor Routing (overview)', route: '/blazor/routing' },
+      { label: 'OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component', route: '/blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component' },
+      { label: 'Catch-All Routes Capture Everything After the Prefix as One String', route: '/blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string' },
+    ],
+    tip: 'NavigateTo() schedules the navigation/reload and returns immediately — it does not halt execution like a return or a thrown exception, so code written after the call genuinely still runs on the still-alive component.',
+    docs: [
+      { label: 'Microsoft Learn — NavigationManager', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/routing#uri-and-navigation-state-helpers' },
+    ],
+    resources: [],
+    gotchas: [
+      'Finalize any state that must be correct BEFORE calling NavigateTo(), not after — nothing should depend on code after the call still mattering.',
+      'This scheduling behavior is identical for forceLoad: true and forceLoad: false — only the ultimate consequence of lingering code differs.',
+    ],
+  },
+
+  'blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string': {
+    apis: ['{*catchAllParam}'],
+    related: [
+      { label: 'Blazor Routing (overview)', route: '/blazor/routing' },
+      { label: 'OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component', route: '/blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component' },
+      { label: 'NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs', route: '/blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs' },
+    ],
+    tip: 'A catch-all parameter spans multiple path segments including their slashes, delivered as one string with no leading slash of its own — a more specific route always wins over the catch-all for an exact match.',
+    docs: [
+      { label: 'Microsoft Learn — Route parameters', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/routing#route-parameters' },
+    ],
+    resources: [],
+    gotchas: [
+      'The captured string never includes a leading slash — Path.Combine("content", "/" + path) treats the rooted second argument as absolute and silently drops "content" entirely.',
+      'Ordinary percent-encoded characters (like %20) are decoded before reaching the component.',
+    ],
+  },
+
   'blazor/sections-layouts': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

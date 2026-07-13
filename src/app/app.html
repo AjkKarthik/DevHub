@@ -4867,7 +4867,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/routing" routerLinkActive="active"><span class="nl-text">Blazor Routing</span>@if(progress.isDone('blazor-routing')){<span class="nl-done">✓</span>}@if(diff('blazor-routing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/routing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Blazor Routing</span>
+        @if (progress.isDone('blazor-routing')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-routing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('blazor-routing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('blazor-routing')"
+                  (click)="toggleSubtopics('blazor-routing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('blazor-routing'); as blazorRoutingSubs) {
+        @if (isSubtopicsExpanded('blazor-routing')) {
+          <div class="nav-subtopics">
+            @for (s of blazorRoutingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

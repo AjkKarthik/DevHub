@@ -1973,7 +1973,12 @@ export const routes: Routes = [
       { path: 'omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch', loadComponent: () => import('./components/frontend/blazor/data-binding/subtopics/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch').then(m => m.OmittingBindFormatOnDatesRisksASilentLocaleParseMismatchSubtopic) },
       { path: 'a-hand-rolled-debounce-needs-cancellation-not-just-a-timer', loadComponent: () => import('./components/frontend/blazor/data-binding/subtopics/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer').then(m => m.AHandRolledDebounceNeedsCancellationNotJustATimerSubtopic) },
     ] },
-    { path: 'routing',                 loadComponent: () => import('./components/frontend/blazor/routing/routing').then(m => m.BlazorRouting) },
+    { path: 'routing', children: [
+      { path: '', loadComponent: () => import('./components/frontend/blazor/routing/routing').then(m => m.BlazorRouting) },
+      { path: 'onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component', loadComponent: () => import('./components/frontend/blazor/routing/subtopics/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component').then(m => m.OnparametersetFiresWithoutOninitializedWhenBlazorReusesAComponentSubtopic) },
+      { path: 'navigateto-forceload-schedules-the-reload-code-after-it-still-runs', loadComponent: () => import('./components/frontend/blazor/routing/subtopics/navigateto-forceload-schedules-the-reload-code-after-it-still-runs/navigateto-forceload-schedules-the-reload-code-after-it-still-runs').then(m => m.NavigatetoForceloadSchedulesTheReloadCodeAfterItStillRunsSubtopic) },
+      { path: 'catch-all-routes-capture-everything-after-the-prefix-as-one-string', loadComponent: () => import('./components/frontend/blazor/routing/subtopics/catch-all-routes-capture-everything-after-the-prefix-as-one-string/catch-all-routes-capture-everything-after-the-prefix-as-one-string').then(m => m.CatchAllRoutesCaptureEverythingAfterThePrefixAsOneStringSubtopic) },
+    ] },
     { path: 'dependency-injection',    loadComponent: () => import('./components/frontend/blazor/dependency-injection/dependency-injection').then(m => m.BlazorDependencyInjection) },
     { path: 'state-management',        loadComponent: () => import('./components/frontend/blazor/state-management/state-management').then(m => m.BlazorStateManagement) },
     { path: 'js-interop',              loadComponent: () => import('./components/frontend/blazor/js-interop/js-interop').then(m => m.BlazorJsInterop) },
