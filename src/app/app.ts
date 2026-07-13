@@ -1809,6 +1809,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs', route: '/blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs' },
     { label: 'Catch-All Routes Capture Everything After the Prefix as One String', route: '/blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string' },
   ],
+  // NOTE: keyed 'blazor-dependency-injection', NOT bare 'dependency-injection' —
+  // already claimed elsewhere; ASP.NET Core resolved the same collision as
+  // 'aspnet-dependency-injection'.
+  'blazor-dependency-injection': [
+    { label: 'OwningComponentBase Gives Each Instance Its Own Scoped Service', route: '/blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service' },
+    { label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' },
+    { label: 'IServiceScopeFactory Must Dispose Its Scope Immediately After Use', route: '/blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Injection" topicRoute="/blazor/dependency-injection" subtopicLabel="Captive Dependency Freezes the Scoped Instance at Singleton Construction" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Captive Dependency Freezes the Scoped Instance at Singleton Construction</h1>
+  <p class="page-subtitle">A Singleton is constructed exactly once for the entire server process — whatever Scoped instance it receives at that moment is the only one it will ever have, permanently misattributing every later call to the wrong circuit.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's captive-dependency mistake entry into the actual construction-time mechanism and why IServiceScopeFactory is the correct fix, not just a Scoped-vs-Singleton registration swap. Next: why a scope obtained from IServiceScopeFactory must be disposed immediately after use, not held onto.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dependency Injection" topicRoute="/blazor/dependency-injection"
+    [prev]="{ label: 'OwningComponentBase Gives Each Instance Its Own Scoped Service', route: '/blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service' }"
+    [next]="{ label: 'IServiceScopeFactory Must Dispose Its Scope Immediately After Use', route: '/blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use' }" />
+</div>

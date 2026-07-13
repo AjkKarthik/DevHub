@@ -31540,6 +31540,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'In Blazor WebAssembly, there is only one user per tab, so Scoped and Singleton effectively behave the same, unlike the meaningful distinction in Blazor Server.',
     ],
   },
+
+  'blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service': {
+    apis: ['OwningComponentBase<TService>'],
+    related: [
+      { label: 'Dependency Injection (overview)', route: '/blazor/dependency-injection' },
+      { label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' },
+      { label: 'IServiceScopeFactory Must Dispose Its Scope Immediately After Use', route: '/blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use' },
+    ],
+    tip: 'A regular Scoped service is shared by every component in the same circuit — OwningComponentBase creates a genuinely separate child scope for one component alone, disposed when that component unmounts rather than when the circuit ends.',
+    docs: [
+      { label: 'Microsoft Learn — OwningComponentBase', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection#utility-base-component-classes-to-manage-a-di-scope' },
+    ],
+    resources: [],
+    gotchas: [
+      'Multiple components sharing one Scoped DbContext can genuinely collide — EF Core is not thread-safe, and Blazor\'s render pipeline can process components\' OnInitializedAsync concurrently.',
+      'Converting only ONE component to OwningComponentBase does not protect it from OTHER components still sharing the ordinary Scoped instance with each other.',
+    ],
+  },
+
+  'blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction': {
+    apis: ['IServiceScopeFactory', 'AddSingleton()', 'AddScoped()'],
+    related: [
+      { label: 'Dependency Injection (overview)', route: '/blazor/dependency-injection' },
+      { label: 'OwningComponentBase Gives Each Instance Its Own Scoped Service', route: '/blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service' },
+      { label: 'IServiceScopeFactory Must Dispose Its Scope Immediately After Use', route: '/blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use' },
+    ],
+    tip: 'A Singleton is constructed exactly once for the entire server process — whatever Scoped instance it receives at that moment is the only one it will ever have, permanently misattributing every later call to the wrong circuit.',
+    docs: [
+      { label: 'Microsoft Learn — Scoped service dependencies in Singleton services', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection#scoped-service-as-singleton' },
+    ],
+    resources: [],
+    gotchas: [
+      '.NET\'s DI container actively throws ("Cannot consume scoped service from singleton") when scope validation is enabled — this is a real, documented guard, not just theoretical.',
+      'Changing the consuming service\'s own registration to Scoped "fixes" the exception but sacrifices its intended Singleton (one-instance-for-the-server) behavior entirely.',
+    ],
+  },
+
+  'blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use': {
+    apis: ['IServiceScopeFactory.CreateScope()', 'IServiceScope'],
+    related: [
+      { label: 'Dependency Injection (overview)', route: '/blazor/dependency-injection' },
+      { label: 'OwningComponentBase Gives Each Instance Its Own Scoped Service', route: '/blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service' },
+      { label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' },
+    ],
+    tip: 'A manually-created scope is a real disposable resource the framework does not clean up for you — caching one scope for reuse recreates the exact captive-dependency problem IServiceScopeFactory was meant to solve.',
+    docs: [
+      { label: 'Microsoft Learn — IServiceScopeFactory', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory' },
+    ],
+    resources: [],
+    gotchas: [
+      'Create, use, and dispose a fresh scope on EVERY call that needs the dependency — caching a scope at any granularity (even partitioned by category) recreates the captive-dependency risk.',
+      'Wrap scope creation in a using statement so disposal happens reliably even if an exception is thrown mid-operation.',
+    ],
+  },
+
   'blazor/state-management': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

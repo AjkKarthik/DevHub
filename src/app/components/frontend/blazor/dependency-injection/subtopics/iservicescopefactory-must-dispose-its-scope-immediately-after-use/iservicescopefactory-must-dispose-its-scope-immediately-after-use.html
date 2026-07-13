@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Injection" topicRoute="/blazor/dependency-injection" subtopicLabel="IServiceScopeFactory Must Dispose Its Scope Immediately After Use" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">IServiceScopeFactory Must Dispose Its Scope Immediately After Use</h1>
+  <p class="page-subtitle">A manually-created scope is a real disposable resource the framework doesn't clean up for you — caching one scope for reuse recreates the exact captive-dependency problem IServiceScopeFactory was meant to solve.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's IServiceScopeFactory mention into the correct create-use-dispose-immediately pattern, and the tempting-but-wrong caching mistake. Together with the earlier two subtopics, this batch covers OwningComponentBase's per-component isolated scope, captive dependency's construction-time freeze, and now why a manually-created scope must never be cached.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dependency Injection" topicRoute="/blazor/dependency-injection"
+    [prev]="{ label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' }" />
+</div>
