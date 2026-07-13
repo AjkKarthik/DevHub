@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Data Binding" topicRoute="/blazor/data-binding" subtopicLabel="@key Prevents Blazor From Misattributing State When a List Reorders" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">&#64;key Prevents Blazor From Misattributing State When a List Reorders</h1>
+  <p class="page-subtitle">Without &#64;key, Blazor's diffing matches old and new render output by position, not identity — reordering or filtering a list can silently reassign a component's internal state to the wrong underlying item.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This corrects and replaces an outdated claim (the classic foreach-loop-variable-capture closure bug, fixed for foreach since C# 5.0 and no longer reproducible in current Blazor) with the genuinely current-day gotcha in the same area — &#64;key and diffing-based state misattribution. Next: why omitting &#64;bind:format on date inputs risks a silent locale-dependent parse mismatch.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Data Binding" topicRoute="/blazor/data-binding"
+    [next]="{ label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' }" />
+</div>

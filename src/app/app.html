@@ -4847,7 +4847,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/data-binding" routerLinkActive="active"><span class="nl-text">Data Binding</span>@if(progress.isDone('blazor-data-binding')){<span class="nl-done">✓</span>}@if(diff('blazor-data-binding');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/data-binding" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Data Binding</span>
+        @if (progress.isDone('blazor-data-binding')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-data-binding'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('data-binding')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('data-binding')"
+                  (click)="toggleSubtopics('data-binding', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('data-binding'); as blazorDataBindingSubs) {
+        @if (isSubtopicsExpanded('data-binding')) {
+          <div class="nav-subtopics">
+            @for (s of blazorDataBindingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/routing" routerLinkActive="active"><span class="nl-text">Blazor Routing</span>@if(progress.isDone('blazor-routing')){<span class="nl-done">✓</span>}@if(diff('blazor-routing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

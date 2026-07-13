@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Data Binding" topicRoute="/blazor/data-binding" subtopicLabel="Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Omitting &#64;bind:format on Dates Risks a Silent Locale Parse Mismatch</h1>
+  <p class="page-subtitle">The native date input's value is always ISO 8601 — the risk is on Blazor's own side, where a missing format string falls back to the current thread's culture, silently producing a string the input doesn't recognize.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's own quiz note into the exact mechanism behind the silent failure. Next: why a hand-rolled debounce wrapper needs its own cancellation, not just a Timer.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Data Binding" topicRoute="/blazor/data-binding"
+    [prev]="{ label: '@key Prevents Blazor From Misattributing State When a List Reorders', route: '/blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders' }"
+    [next]="{ label: 'A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer', route: '/blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer' }" />
+</div>

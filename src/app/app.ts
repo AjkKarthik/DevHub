@@ -1796,6 +1796,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType', route: '/blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype' },
     { label: 'SupplyParameterFromForm Only Binds on a Real POST, Not First Load', route: '/blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load' },
   ],
+  'data-binding': [
+    { label: '@key Prevents Blazor From Misattributing State When a List Reorders', route: '/blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders' },
+    { label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' },
+    { label: 'A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer', route: '/blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer' },
+  ],
 };
 
 @Component({

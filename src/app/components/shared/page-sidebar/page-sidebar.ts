@@ -31408,6 +31408,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '@bind without an explicit event defaults to onchange (fires on blur), not oninput — a common source of "why doesn\'t this update live" confusion.',
     ],
   },
+
+  'blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders': {
+    apis: ['@key'],
+    related: [
+      { label: 'Data Binding (overview)', route: '/blazor/data-binding' },
+      { label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' },
+      { label: 'A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer', route: '/blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer' },
+    ],
+    tip: 'Without @key, Blazor\'s diffing matches old and new render output by position, not identity — reordering or filtering a list can silently reassign a component\'s internal state to the wrong underlying item.',
+    docs: [
+      { label: 'Microsoft Learn — Use the @key directive', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/key' },
+    ],
+    resources: [],
+    gotchas: [
+      'This corrects an outdated claim: the classic foreach-loop-variable-capture closure bug was fixed for foreach at C# 5.0 and no longer reproduces in current Blazor — @key addresses a genuinely different, still-current diffing issue.',
+      'Even visually simple, uniform rows need @key if any row holds meaningful internal state (focus, an expanded flag) and the underlying list can be reordered.',
+    ],
+  },
+
+  'blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch': {
+    apis: ['@bind:format', 'CultureInfo'],
+    related: [
+      { label: 'Data Binding (overview)', route: '/blazor/data-binding' },
+      { label: '@key Prevents Blazor From Misattributing State When a List Reorders', route: '/blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders' },
+      { label: 'A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer', route: '/blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer' },
+    ],
+    tip: 'The native date input\'s value is always ISO 8601 — the risk is entirely on Blazor\'s own side, where a missing @bind:format falls back to the current thread\'s culture, silently producing a string the input doesn\'t recognize.',
+    docs: [
+      { label: 'Microsoft Learn — Data binding formatting', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding' },
+    ],
+    resources: [],
+    gotchas: [
+      'The failure is completely silent — no exception, no console warning, just a blank date picker with the underlying DateTime value unaffected.',
+      'Blazor Server can resolve a different request culture per user, meaning a bug can be invisible on a developer\'s own machine and only surface for users in a different locale.',
+    ],
+  },
+
+  'blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer': {
+    apis: ['CancellationTokenSource', 'Task.Delay()'],
+    related: [
+      { label: 'Data Binding (overview)', route: '/blazor/data-binding' },
+      { label: '@key Prevents Blazor From Misattributing State When a List Reorders', route: '/blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders' },
+      { label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' },
+    ],
+    tip: 'Wrapping an expensive call in Task.Delay alone only shifts WHEN each call fires, not how many times — genuine debouncing requires cancelling the previous pending delay every time a new one starts.',
+    docs: [
+      { label: 'Microsoft Learn — CancellationTokenSource', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource' },
+    ],
+    resources: [],
+    gotchas: [
+      'A TaskCanceledException from a superseded debounce delay is the EXPECTED outcome — catch and swallow it, do not log it as an error.',
+      'Dispose the CancellationTokenSource in the component\'s own Dispose method to avoid a resource leak if the component is removed mid-delay.',
+    ],
+  },
+
   'blazor/forms': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
