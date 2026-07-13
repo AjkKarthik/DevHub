@@ -1779,6 +1779,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' },
     { label: 'StreamRendering Flushes Placeholder HTML Before Async Data Resolves', route: '/blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves' },
   ],
+  'razor-components': [
+    { label: 'RenderFragment<T> Compiles to a Delegate the Framework Invokes Per Item', route: '/blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item' },
+    { label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' },
+    { label: 'ShouldRender Cannot Suppress a Component’s First Render', route: '/blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render' },
+  ],
 };
 
 @Component({

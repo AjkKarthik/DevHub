@@ -4781,7 +4781,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Components</p>
-      <a routerLink="/blazor/razor-components" routerLinkActive="active"><span class="nl-text">Razor Components</span>@if(progress.isDone('blazor-razor-components')){<span class="nl-done">✓</span>}@if(diff('blazor-razor-components');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/razor-components" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Razor Components</span>
+        @if (progress.isDone('blazor-razor-components')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-razor-components'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('razor-components')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('razor-components')"
+                  (click)="toggleSubtopics('razor-components', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('razor-components'); as blazorRazorSubs) {
+        @if (isSubtopicsExpanded('razor-components')) {
+          <div class="nav-subtopics">
+            @for (s of blazorRazorSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/component-communication" routerLinkActive="active"><span class="nl-text">Component Communication</span>@if(progress.isDone('blazor-component-communication')){<span class="nl-done">✓</span>}@if(diff('blazor-component-communication');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/sections-layouts" routerLinkActive="active"><span class="nl-text">Sections &amp; Layouts</span>@if(progress.isDone('blazor-sections-layouts')){<span class="nl-done">✓</span>}@if(diff('blazor-sections-layouts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/virtualization" routerLinkActive="active"><span class="nl-text">Component Virtualization</span>@if(progress.isDone('blazor-virtualization')){<span class="nl-done">✓</span>}@if(diff('blazor-virtualization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

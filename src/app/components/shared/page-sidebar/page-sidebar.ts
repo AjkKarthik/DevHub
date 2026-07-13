@@ -31274,6 +31274,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '@key on list items prevents Blazor from misattributing state (like input focus) to the wrong element when a list is reordered.',
     ],
   },
+
+  'blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item': {
+    apis: ['RenderFragment<T>', 'RenderTreeBuilder'],
+    related: [
+      { label: 'Razor Components (overview)', route: '/blazor/razor-components' },
+      { label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' },
+      { label: 'ShouldRender Cannot Suppress a Component’s First Render', route: '/blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render' },
+    ],
+    tip: 'RenderFragment<T> is effectively Func<T, RenderFragment> — a delegate the child invokes once per item, meaning the parent\'s template code genuinely re-executes every single call, not just once total.',
+    docs: [
+      { label: 'Microsoft Learn — RenderFragment', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/index#child-content-render-fragments' },
+    ],
+    resources: [],
+    gotchas: [
+      'Rendering the same ItemTemplate twice in one render pass genuinely re-executes the parent\'s template code twice, not once with the output reused.',
+      'A "run once per render" assumption inside an ItemTemplate delegate is wrong — it runs once per invocation, typically once per item.',
+    ],
+  },
+
+  'blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding': {
+    apis: ['CascadingValue', '[CascadingParameter]'],
+    related: [
+      { label: 'Razor Components (overview)', route: '/blazor/razor-components' },
+      { label: 'RenderFragment<T> Compiles to a Delegate the Framework Invokes Per Item', route: '/blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item' },
+      { label: 'ShouldRender Cannot Suppress a Component’s First Render', route: '/blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render' },
+    ],
+    tip: 'CascadingValue bypasses intermediate components entirely, reaching any descendant depth — correct for genuine cross-cutting concerns (theme, culture, auth), a real design smell for ordinary parent-to-specific-child data with one known consumer.',
+    docs: [
+      { label: 'Microsoft Learn — Cascading values and parameters', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/cascading-values-and-parameters' },
+    ],
+    resources: [],
+    gotchas: [
+      'A [CascadingParameter] dependency is invisible at the consuming component\'s own usage site, unlike a regular [Parameter].',
+      'Using CascadingValue for a value with exactly one specific consumer hides a dependency that would be clearer as an explicit [Parameter] chain.',
+    ],
+  },
+
+  'blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render': {
+    apis: ['ShouldRender()', 'OnParametersSet()'],
+    related: [
+      { label: 'Razor Components (overview)', route: '/blazor/razor-components' },
+      { label: 'RenderFragment<T> Compiles to a Delegate the Framework Invokes Per Item', route: '/blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item' },
+      { label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' },
+    ],
+    tip: 'Blazor unconditionally performs a component\'s first render regardless of what ShouldRender() would return, and a false return only suppresses that one component\'s own markup — never its children\'s independent updates.',
+    docs: [
+      { label: 'Microsoft Learn — ShouldRender', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle#suppress-ui-refreshing-shouldrender' },
+    ],
+    resources: [],
+    gotchas: [
+      'A parent\'s ShouldRender() returning false does not pause or freeze child components — each child responds to its own independent triggers.',
+      'ShouldRender() only intercepts the render step, which happens after lifecycle methods like OnParametersSet(Async) have already run.',
+    ],
+  },
+
   'blazor/component-communication': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
