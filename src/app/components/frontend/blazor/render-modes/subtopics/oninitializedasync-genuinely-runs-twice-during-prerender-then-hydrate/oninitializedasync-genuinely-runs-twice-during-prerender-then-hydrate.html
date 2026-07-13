@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Render Modes" topicRoute="/blazor/render-modes" subtopicLabel="OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate</h1>
+  <p class="page-subtitle">By default, an interactive component runs its ENTIRE lifecycle once during prerendering and again when the real interactive runtime connects — expected behavior on every normal page load, not an intermittent glitch.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's prerendering theory into the practical distinction between a wasteful-but-harmless double-fetch and a genuinely dangerous double side-effect. Next: how [StreamRendering] flushes placeholder HTML before async data resolves, on Static SSR pages that never prerender-then-hydrate at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Render Modes" topicRoute="/blazor/render-modes"
+    [prev]="{ label: 'InteractiveAuto Loses State When It Switches From Server to WebAssembly', route: '/blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly' }"
+    [next]="{ label: 'StreamRendering Flushes Placeholder HTML Before Async Data Resolves', route: '/blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves' }" />
+</div>

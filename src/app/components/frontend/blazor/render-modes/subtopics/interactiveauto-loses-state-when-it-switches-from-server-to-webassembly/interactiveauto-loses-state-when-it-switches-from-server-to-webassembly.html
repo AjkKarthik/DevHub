@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Render Modes" topicRoute="/blazor/render-modes" subtopicLabel="InteractiveAuto Loses State When It Switches From Server to WebAssembly" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">InteractiveAuto Loses State When It Switches From Server to WebAssembly</h1>
+  <p class="page-subtitle">The Auto transition is not a smooth upgrade — it tears down the server-side component instance entirely and constructs a brand new one inside a completely separate WASM process, with no shared memory between them.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's QnA about Auto mode's state-loss behavior into the actual mechanism and the correct fix. Next: why OnInitializedAsync genuinely runs twice during the prerender-then-hydrate lifecycle.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Render Modes" topicRoute="/blazor/render-modes"
+    [next]="{ label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' }" />
+</div>

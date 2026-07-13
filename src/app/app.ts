@@ -1774,6 +1774,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' },
     { label: 'Static SSR Parents Cannot Make Children Interactive', route: '/blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive' },
   ],
+  'render-modes': [
+    { label: 'InteractiveAuto Loses State When It Switches From Server to WebAssembly', route: '/blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly' },
+    { label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' },
+    { label: 'StreamRendering Flushes Placeholder HTML Before Async Data Resolves', route: '/blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves' },
+  ],
 };
 
 @Component({

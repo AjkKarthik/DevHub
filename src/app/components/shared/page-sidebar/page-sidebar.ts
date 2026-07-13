@@ -31366,6 +31366,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Components using browser-only APIs must guard against running during server-side prerender, where no real browser exists.',
     ],
   },
+
+  'blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly': {
+    apis: ['PersistentComponentState', 'RegisterOnPersisting()', 'PersistAsJson()'],
+    related: [
+      { label: 'Render Modes (overview)', route: '/blazor/render-modes' },
+      { label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' },
+      { label: 'StreamRendering Flushes Placeholder HTML Before Async Data Resolves', route: '/blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves' },
+    ],
+    tip: 'InteractiveAuto\'s Server-to-WebAssembly switch is a full teardown and restart in a completely separate process, not an in-place upgrade — only PersistentComponentState (data embedded in the page HTML) genuinely bridges the two runtimes.',
+    docs: [
+      { label: 'Microsoft Learn — Persist state across prerendering', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/state-management' },
+    ],
+    resources: [],
+    gotchas: [
+      'A static field or Singleton service does NOT survive the transition — the server process and the browser WASM sandbox share no memory.',
+      'PersistentComponentState serializes into the page\'s own HTML, not server memory awaiting a fetch.',
+    ],
+  },
+
+  'blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate': {
+    apis: ['OnInitializedAsync()', 'InteractiveServerRenderMode', 'prerender: false'],
+    related: [
+      { label: 'Render Modes (overview)', route: '/blazor/render-modes' },
+      { label: 'InteractiveAuto Loses State When It Switches From Server to WebAssembly', route: '/blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly' },
+      { label: 'StreamRendering Flushes Placeholder HTML Before Async Data Resolves', route: '/blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves' },
+    ],
+    tip: 'Every interactive component runs its FULL lifecycle twice by default — once during server-side prerendering, once at real interactive startup. Harmless for a read-only fetch, but genuinely dangerous for a non-idempotent side effect like analytics recording.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor render modes', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes' },
+    ],
+    resources: [],
+    gotchas: [
+      'A static bool "hasRun" guard is dangerous, not just ineffective — it is shared across every user hitting the same server process, silently breaking initialization for everyone after the first request.',
+      'Disable prerendering (prerender: false) only for genuinely non-idempotent side effects — for a simple data-fetch, PersistentComponentState is the better fix.',
+    ],
+  },
+
+  'blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves': {
+    apis: ['[StreamRendering]', 'chunked transfer encoding'],
+    related: [
+      { label: 'Render Modes (overview)', route: '/blazor/render-modes' },
+      { label: 'InteractiveAuto Loses State When It Switches From Server to WebAssembly', route: '/blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly' },
+      { label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' },
+    ],
+    tip: '[StreamRendering] does not make a slow query run faster — it changes WHEN bytes reach the browser, flushing non-dependent content immediately and streaming updates as slow sections resolve, all on a purely Static SSR page with no interactive runtime.',
+    docs: [
+      { label: 'Microsoft Learn — Stream rendering', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering#streaming-rendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'The final rendered HTML is identical with or without [StreamRendering] — only the timing of when bytes reach the browser changes.',
+      'This is a genuinely different mechanism from the prerender-then-hydrate double-execution behavior — [StreamRendering] applies to Static SSR (no interactive runtime, single lifecycle run), not interactive render modes.',
+    ],
+  },
+
   'blazor/error-handling': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
