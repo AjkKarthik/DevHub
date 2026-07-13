@@ -1937,7 +1937,12 @@ export const routes: Routes = [
   ] },
   { path: 'blazor', children: [
     { path: '', loadComponent: () => import('./components/frontend/blazor/home/home').then(m => m.BlazorHome) },
-    { path: 'fundamentals',            loadComponent: () => import('./components/frontend/blazor/fundamentals/fundamentals').then(m => m.BlazorFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/frontend/blazor/fundamentals/fundamentals').then(m => m.BlazorFundamentals) },
+      { path: 'statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere', loadComponent: () => import('./components/frontend/blazor/fundamentals/subtopics/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere').then(m => m.StatehaschangedIsAutomaticAfterSyncHandlersManualElsewhereSubtopic) },
+      { path: 'scoped-services-are-per-circuit-not-per-request-in-blazor-server', loadComponent: () => import('./components/frontend/blazor/fundamentals/subtopics/scoped-services-are-per-circuit-not-per-request-in-blazor-server/scoped-services-are-per-circuit-not-per-request-in-blazor-server').then(m => m.ScopedServicesArePerCircuitNotPerRequestInBlazorServerSubtopic) },
+      { path: 'static-ssr-parents-cannot-make-children-interactive', loadComponent: () => import('./components/frontend/blazor/fundamentals/subtopics/static-ssr-parents-cannot-make-children-interactive/static-ssr-parents-cannot-make-children-interactive').then(m => m.StaticSsrParentsCannotMakeChildrenInteractiveSubtopic) },
+    ] },
     { path: 'render-modes',            loadComponent: () => import('./components/frontend/blazor/render-modes/render-modes').then(m => m.BlazorRenderModes) },
     { path: 'razor-components',        loadComponent: () => import('./components/frontend/blazor/razor-components/razor-components').then(m => m.BlazorRazorComponents) },
     { path: 'component-communication', loadComponent: () => import('./components/frontend/blazor/component-communication/component-communication').then(m => m.BlazorComponentCommunication) },

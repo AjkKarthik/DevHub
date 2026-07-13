@@ -31207,6 +31207,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Blazor WebAssembly\'s initial download (the .NET runtime plus your app) is larger than a typical JS bundle, affecting first-load time.',
     ],
   },
+
+  'blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere': {
+    apis: ['StateHasChanged()', 'InvokeAsync()', 'System.Threading.Timer'],
+    related: [
+      { label: 'Blazor Fundamentals (overview)', route: '/blazor/fundamentals' },
+      { label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' },
+      { label: 'Static SSR Parents Cannot Make Children Interactive', route: '/blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive' },
+    ],
+    tip: 'Blazor only auto-renders after code paths it dispatched itself (event handlers, lifecycle methods) — a background Timer callback or an injected service\'s event subscription needs an explicit InvokeAsync(StateHasChanged) call.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor lifecycle', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'A background Timer or Task.Run callback runs on a thread-pool thread — wrap StateHasChanged() in InvokeAsync() to marshal back onto the correct circuit context.',
+      'Calling StateHasChanged() when Blazor would have re-rendered anyway is a harmless no-op, not a correctness bug.',
+    ],
+  },
+
+  'blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server': {
+    apis: ['AddScoped()', 'AddSingleton()', 'AddTransient()', 'SignalR circuit'],
+    related: [
+      { label: 'Blazor Fundamentals (overview)', route: '/blazor/fundamentals' },
+      { label: 'StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere', route: '/blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere' },
+      { label: 'Static SSR Parents Cannot Make Children Interactive', route: '/blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive' },
+    ],
+    tip: 'Blazor Server has no HTTP request/response cycle for most of its lifetime — Scoped maps to the long-lived SignalR circuit instead, one instance per browser tab session, not per request.',
+    docs: [
+      { label: 'Microsoft Learn — Blazor dependency injection', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection' },
+    ],
+    resources: [],
+    gotchas: [
+      'Singleton services in Blazor Server are shared across EVERY connected user, process-wide — never store per-user state there.',
+      'Every component rendered within the same circuit shares the identical Scoped instance, unlike Angular\'s component-tree-scoped providers.',
+    ],
+  },
+
+  'blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive': {
+    apis: ['@rendermode', 'InteractiveServer', 'InteractiveWebAssembly', 'InteractiveAuto'],
+    related: [
+      { label: 'Blazor Fundamentals (overview)', route: '/blazor/fundamentals' },
+      { label: 'StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere', route: '/blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere' },
+      { label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' },
+    ],
+    tip: 'A Static SSR page ships as plain HTML with no live runtime wired up — @rendermode must be declared at or above the specific component that needs interactivity; it cannot flow upward from a child.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor render modes', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes' },
+    ],
+    resources: [],
+    gotchas: [
+      'An @onclick handler in a Static SSR component\'s markup renders a normal-looking button that silently does nothing — no error, no console message.',
+      'Once a component establishes an interactive boundary, its own descendants inherit that render mode automatically — no need to repeat @rendermode on every child.',
+    ],
+  },
+
   'blazor/razor-components': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

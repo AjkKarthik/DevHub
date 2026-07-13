@@ -1391,6 +1391,9 @@ const PERFORMANCE_LABELS: Record<string, string> = {
 
 const BLAZOR_LABELS: Record<string, string> = {
   'fundamentals':            'Blazor Fundamentals',
+  'fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere': 'StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere',
+  'fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server': 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server',
+  'fundamentals/static-ssr-parents-cannot-make-children-interactive': 'Static SSR Parents Cannot Make Children Interactive',
   'render-modes':            'Render Modes',
   'razor-components':        'Razor Components',
   'component-communication': 'Component Communication',

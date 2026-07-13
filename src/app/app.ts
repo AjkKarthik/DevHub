@@ -1766,6 +1766,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' },
     { label: 'Malformed Speculation Rules JSON Is Not Silently Ignored', route: '/performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored' },
   ],
+  // NOTE: keyed 'blazor-fundamentals', NOT bare 'fundamentals' — the
+  // JavaScript hub's own /javascript/fundamentals topic already claims
+  // the bare key.
+  'blazor-fundamentals': [
+    { label: 'StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere', route: '/blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere' },
+    { label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' },
+    { label: 'Static SSR Parents Cannot Make Children Interactive', route: '/blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive' },
+  ],
 };
 
 @Component({

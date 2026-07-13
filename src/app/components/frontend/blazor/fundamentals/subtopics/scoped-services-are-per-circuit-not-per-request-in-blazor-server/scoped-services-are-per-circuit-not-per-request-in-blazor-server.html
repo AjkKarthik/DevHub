@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Fundamentals" topicRoute="/blazor/fundamentals" subtopicLabel="Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server</h1>
+  <p class="page-subtitle">Blazor Server has no HTTP request/response cycle for most of its lifetime — Scoped maps to the long-lived SignalR circuit instead, meaning one instance per browser tab session, shared across every component and event for that whole session.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's Singleton-vs-Scoped mistake entry into the actual circuit-scoping mechanism, and contrasts it with Transient. Next: why a Static SSR parent component cannot make its children interactive just by being on the same page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Fundamentals" topicRoute="/blazor/fundamentals"
+    [prev]="{ label: 'StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere', route: '/blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere' }"
+    [next]="{ label: 'Static SSR Parents Cannot Make Children Interactive', route: '/blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive' }" />
+</div>
