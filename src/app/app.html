@@ -4794,7 +4794,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/progressive-enhancement" routerLinkActive="active"><span class="nl-text">Progressive Enhancement</span>@if(progress.isDone('blazor-progressive-enhancement')){<span class="nl-done">✓</span>}@if(diff('blazor-progressive-enhancement');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/progressive-enhancement" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Progressive Enhancement</span>
+        @if (progress.isDone('blazor-progressive-enhancement')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-progressive-enhancement'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('progressive-enhancement')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('progressive-enhancement')"
+                  (click)="toggleSubtopics('progressive-enhancement', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('progressive-enhancement'); as blazorProgEnhSubs) {
+        @if (isSubtopicsExpanded('progressive-enhancement')) {
+          <div class="nav-subtopics">
+            @for (s of blazorProgEnhSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/seo-metadata" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
         <span class="nl-text">SEO &amp; Head Metadata</span>
         @if (progress.isDone('blazor-seo-metadata')) {<span class="nl-done">✓</span>}

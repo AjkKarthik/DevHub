@@ -1877,6 +1877,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' },
     { label: 'OverscanCount Splits Evenly, With No Scroll-Direction Awareness', route: '/blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness' },
   ],
+  'progressive-enhancement': [
+    { label: 'Enhanced Forms Share Enhanced Navigation’s Fetch-and-Patch Pipeline', route: '/blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline' },
+    { label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' },
+    { label: 'FormName Defaults to an Empty String, With No Ancestor Scoping', route: '/blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping' },
+  ],
 };
 
 @Component({

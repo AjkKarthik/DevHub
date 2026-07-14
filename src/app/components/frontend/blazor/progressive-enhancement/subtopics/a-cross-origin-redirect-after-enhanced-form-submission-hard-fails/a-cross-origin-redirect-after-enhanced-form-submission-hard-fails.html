@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Progressive Enhancement" topicRoute="/blazor/progressive-enhancement" subtopicLabel="Cross-Origin Redirects Hard-Fail" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails</h1>
+  <p class="page-subtitle">
+    It's not a cookie-setting problem — a redirect to an external domain makes the fetch response opaque, and
+    enhanced form handling treats that as an error.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic showed enhanced forms share enhanced navigation's exact patching pipeline — this one
+      pins down the precise, doc-confirmed reason login/logout forms should skip data-enhance. Next: FormName has
+      the same flat, page-independent namespace already seen with SectionName — two unnamed forms collide by
+      default, with no ancestor scoping to protect them.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Progressive Enhancement"
+    topicRoute="/blazor/progressive-enhancement"
+    [prev]="{ label: 'Enhanced Forms Share Enhanced Navigation’s Fetch-and-Patch Pipeline', route: '/blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline' }"
+    [next]="{ label: 'FormName Defaults to an Empty String, With No Ancestor Scoping', route: '/blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping' }"
+  />
+</div>

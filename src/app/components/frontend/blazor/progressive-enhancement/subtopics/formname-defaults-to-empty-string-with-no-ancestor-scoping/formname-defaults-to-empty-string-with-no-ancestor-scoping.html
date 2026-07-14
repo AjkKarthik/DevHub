@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Progressive Enhancement" topicRoute="/blazor/progressive-enhancement" subtopicLabel="FormName's Flat Namespace" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">FormName Defaults to an Empty String, With No Ancestor Scoping</h1>
+  <p class="page-subtitle">
+    Omitting FormName isn't "no name" — it's a real, shared identifier that two forms can silently collide on, the
+    same flat namespace pattern already seen with SectionName.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by connecting FormName's scoping rules to the same flat-namespace pattern already
+      established for SectionName in the Sections & Layouts topic. Together with the earlier two subtopics, this
+      batch covers how enhanced forms share navigation's exact patching pipeline, why cross-origin redirects hard-fail
+      rather than break on cookies, and now why every form needs an explicit, distinct FormName.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Progressive Enhancement"
+    topicRoute="/blazor/progressive-enhancement"
+    [prev]="{ label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' }"
+  />
+</div>

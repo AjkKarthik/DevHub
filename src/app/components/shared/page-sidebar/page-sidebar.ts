@@ -32276,6 +32276,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing both the enhanced and baseline (no-JS) submission paths ensures the progressive enhancement genuinely works, not just the happy path.',
     ],
   },
+  'blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline': {
+    apis: ['data-enhance', 'data-permanent', 'blazor.web.js'],
+    related: [
+      { label: 'Progressive Enhancement (overview)', route: '/blazor/progressive-enhancement' },
+      { label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' },
+      { label: 'FormName Defaults to an Empty String, With No Ancestor Scoping', route: '/blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping' },
+    ],
+    tip: 'A data-enhance form and an intercepted link click go through the exact same fetch-and-patch pipeline — any DOM content that needs data-permanent protection from enhanced navigation needs it from enhanced forms too.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor forms overview', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Enhanced navigation and enhanced form handling are documented together as one shared mechanism, not two independently-implemented features.',
+      'There is no separate "form-permanent" attribute — data-permanent works identically regardless of which interaction (link or form) triggers the patch.',
+    ],
+  },
+
+  'blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails': {
+    apis: ['fetch()', 'Response.type: opaque'],
+    related: [
+      { label: 'Progressive Enhancement (overview)', route: '/blazor/progressive-enhancement' },
+      { label: 'Enhanced Forms Share Enhanced Navigation’s Fetch-and-Patch Pipeline', route: '/blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline' },
+      { label: 'FormName Defaults to an Empty String, With No Ancestor Scoping', route: '/blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping' },
+    ],
+    tip: 'A data-enhance form submission that silently fails with no error is the classic symptom of a redirect to an external origin (a common OAuth flow) — remove data-enhance to restore native browser redirect handling.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor navigation', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/navigation' },
+    ],
+    resources: [],
+    gotchas: [
+      'Same-origin redirects via fetch actually do set cookies correctly — the real failure is specific to cross-origin redirects becoming opaque responses.',
+      'Even a working same-origin redirect only updates the URL via the JS History API, not a genuine page reload, so the circuit never freshly re-initializes.',
+    ],
+  },
+
+  'blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping': {
+    apis: ['FormName', '[SupplyParameterFromForm]', 'FormMappingScope'],
+    related: [
+      { label: 'Progressive Enhancement (overview)', route: '/blazor/progressive-enhancement' },
+      { label: 'Enhanced Forms Share Enhanced Navigation’s Fetch-and-Patch Pipeline', route: '/blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline' },
+      { label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' },
+    ],
+    tip: 'Give every form an explicit, distinct FormName — omitting it defaults to an empty string, so two unnamed forms silently share the same identifier and can cross-contaminate bound data.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor forms binding', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/binding' },
+    ],
+    resources: [],
+    gotchas: [
+      'FormName uniqueness is never validated at build or render time — the collision only surfaces as silent, incorrect binding when an actual POST arrives.',
+      'FormName is a flat, page-independent namespace by default, the same pattern as SectionName — FormMappingScope is the dedicated escape hatch for reusable component libraries.',
+    ],
+  },
+
   'blazor/seo-metadata': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
