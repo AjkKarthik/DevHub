@@ -1991,7 +1991,12 @@ export const routes: Routes = [
       { path: 'cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor', loadComponent: () => import('./components/frontend/blazor/state-management/subtopics/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor').then(m => m.CrossTabSyncNeedsTheBrowsersOwnStorageEventNotBlazorSubtopic) },
       { path: 'a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event', loadComponent: () => import('./components/frontend/blazor/state-management/subtopics/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event').then(m => m.AForgottenUnsubscribeThrowsOnADisposedComponentsNextEventSubtopic) },
     ] },
-    { path: 'js-interop',              loadComponent: () => import('./components/frontend/blazor/js-interop/js-interop').then(m => m.BlazorJsInterop) },
+    { path: 'js-interop', children: [
+      { path: '', loadComponent: () => import('./components/frontend/blazor/js-interop/js-interop').then(m => m.BlazorJsInterop) },
+      { path: 'jsonstringify-throws-a-real-typeerror-on-circular-references', loadComponent: () => import('./components/frontend/blazor/js-interop/subtopics/jsonstringify-throws-a-real-typeerror-on-circular-references/jsonstringify-throws-a-real-typeerror-on-circular-references').then(m => m.JsonstringifyThrowsARealTypeerrorOnCircularReferencesSubtopic) },
+      { path: 'dynamic-import-genuinely-scopes-exports-never-touching-window', loadComponent: () => import('./components/frontend/blazor/js-interop/subtopics/dynamic-import-genuinely-scopes-exports-never-touching-window/dynamic-import-genuinely-scopes-exports-never-touching-window').then(m => m.DynamicImportGenuinelyScopesExportsNeverTouchingWindowSubtopic) },
+      { path: 'ijsinprocessruntime-only-works-in-wasm-same-process-execution', loadComponent: () => import('./components/frontend/blazor/js-interop/subtopics/ijsinprocessruntime-only-works-in-wasm-same-process-execution/ijsinprocessruntime-only-works-in-wasm-same-process-execution').then(m => m.IjsinprocessruntimeOnlyWorksInWasmSameProcessExecutionSubtopic) },
+    ] },
     { path: 'server-signalr',          loadComponent: () => import('./components/frontend/blazor/server-signalr/server-signalr').then(m => m.BlazorServerSignalr) },
     { path: 'maui-hybrid',             loadComponent: () => import('./components/frontend/blazor/maui-hybrid/maui-hybrid').then(m => m.BlazorMauiHybrid) },
     { path: 'authentication',          loadComponent: () => import('./components/frontend/blazor/authentication/authentication').then(m => m.BlazorAuthentication) },

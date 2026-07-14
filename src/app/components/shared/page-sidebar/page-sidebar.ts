@@ -31828,6 +31828,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing JS-to-.NET interop with bUnit requires directly invoking the [JSInvokable] method, since no real JavaScript runtime exists in the test environment.',
     ],
   },
+
+  'blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references': {
+    apis: ['JSON.stringify()', 'InvokeVoidAsync()'],
+    related: [
+      { label: 'JavaScript Interop (overview)', route: '/blazor/js-interop' },
+      { label: 'Dynamic import() Genuinely Scopes Exports, Never Touching window', route: '/blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window' },
+      { label: 'IJSInProcessRuntime Only Works in WASM — Same-Process Execution', route: '/blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution' },
+    ],
+    tip: 'Confirmed directly in a real browser console — a circular object thrown at JSON.stringify() genuinely throws a TypeError, the exact same JSON limitation Blazor\'s interop marshalling hits, not a Blazor-specific restriction.',
+    docs: [
+      { label: 'MDN — JSON.stringify()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify' },
+    ],
+    resources: [],
+    gotchas: [
+      'The serialization failure happens BEFORE the JS function is ever called — it never receives partial data, it never gets invoked at all.',
+      'Catching and swallowing the exception hides the failure without fixing it — the JS side\'s intended effect simply never happens.',
+    ],
+  },
+
+  'blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window': {
+    apis: ['import()', 'IJSObjectReference'],
+    related: [
+      { label: 'JavaScript Interop (overview)', route: '/blazor/js-interop' },
+      { label: 'JSON.stringify Throws a Real TypeError on Circular References', route: '/blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references' },
+      { label: 'IJSInProcessRuntime Only Works in WASM — Same-Process Execution', route: '/blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution' },
+    ],
+    tip: 'Confirmed directly — window stays completely unchanged before and after a dynamic import, structurally preventing the naming collisions the older window-global JS interop pattern was genuinely vulnerable to.',
+    docs: [
+      { label: 'MDN — import()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import' },
+    ],
+    resources: [],
+    gotchas: [
+      'Blazor\'s "import" interop function name triggers the browser\'s own real dynamic import() — it is not a custom Blazor mechanism.',
+      'Two components can safely reuse the identical internal function name across separate modules with zero risk of collision.',
+    ],
+  },
+
+  'blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution': {
+    apis: ['IJSInProcessRuntime', 'IJSRuntime.InvokeAsync()'],
+    related: [
+      { label: 'JavaScript Interop (overview)', route: '/blazor/js-interop' },
+      { label: 'JSON.stringify Throws a Real TypeError on Circular References', route: '/blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references' },
+      { label: 'Dynamic import() Genuinely Scopes Exports, Never Touching window', route: '/blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window' },
+    ],
+    tip: 'A truly synchronous call requires the caller and callee to run in the same process — genuinely true for WASM, genuinely impossible for Blazor Server, where every interop call must cross a real network boundary.',
+    docs: [
+      { label: 'Microsoft Learn — Call JavaScript from .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/js-interop/call-javascript-from-dotnet' },
+    ],
+    resources: [],
+    gotchas: [
+      'InteractiveAuto\'s first phase always runs under InteractiveServer — a synchronous-only component becomes unsafe the moment Auto mode touches it, even in a previously WASM-only app.',
+      'This is an architectural constraint, not an arbitrary API restriction — no future .NET release could make a network round-trip genuinely synchronous.',
+    ],
+  },
+
   'blazor/authentication': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

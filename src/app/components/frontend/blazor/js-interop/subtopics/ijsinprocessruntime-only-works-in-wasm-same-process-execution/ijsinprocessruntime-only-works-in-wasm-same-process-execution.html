@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JavaScript Interop" topicRoute="/blazor/js-interop" subtopicLabel="IJSInProcessRuntime Only Works in WASM — Same-Process Execution" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">IJSInProcessRuntime Only Works in WASM — Same-Process Execution</h1>
+  <p class="page-subtitle">A truly synchronous call requires the caller and callee to run in the same process — genuinely true for WASM, genuinely impossible for Blazor Server, where every interop call must cross a real network boundary.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's "always use async interop" guidance into the actual architectural reason, and why it matters even more under InteractiveAuto. Together with the earlier two subtopics, this batch grounds the serialization-failure mistake in a real JSON.stringify test, confirms the ES module pattern's genuine collision-safety, and now explains why the synchronous API is a standing risk, not a neutral style choice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JavaScript Interop" topicRoute="/blazor/js-interop"
+    [prev]="{ label: 'Dynamic import() Genuinely Scopes Exports, Never Touching window', route: '/blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window' }" />
+</div>

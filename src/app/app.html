@@ -4935,7 +4935,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
-      <a routerLink="/blazor/js-interop" routerLinkActive="active"><span class="nl-text">JavaScript Interop</span>@if(progress.isDone('blazor-js-interop')){<span class="nl-done">✓</span>}@if(diff('blazor-js-interop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/js-interop" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">JavaScript Interop</span>
+        @if (progress.isDone('blazor-js-interop')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-js-interop'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('js-interop')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('js-interop')"
+                  (click)="toggleSubtopics('js-interop', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('js-interop'); as blazorJsInteropSubs) {
+        @if (isSubtopicsExpanded('js-interop')) {
+          <div class="nav-subtopics">
+            @for (s of blazorJsInteropSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/server-signalr" routerLinkActive="active"><span class="nl-text">Blazor Server SignalR</span>@if(progress.isDone('blazor-server-signalr')){<span class="nl-done">✓</span>}@if(diff('blazor-server-signalr');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/maui-hybrid" routerLinkActive="active"><span class="nl-text">MAUI Blazor Hybrid</span>@if(progress.isDone('blazor-maui-hybrid')){<span class="nl-done">✓</span>}@if(diff('blazor-maui-hybrid');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/authentication" routerLinkActive="active"><span class="nl-text">Authentication</span>@if(progress.isDone('blazor-authentication')){<span class="nl-done">✓</span>}@if(diff('blazor-authentication');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

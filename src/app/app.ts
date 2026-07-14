@@ -1825,6 +1825,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' },
     { label: 'A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event', route: '/blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event' },
   ],
+  'js-interop': [
+    { label: 'JSON.stringify Throws a Real TypeError on Circular References', route: '/blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references' },
+    { label: 'Dynamic import() Genuinely Scopes Exports, Never Touching window', route: '/blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window' },
+    { label: 'IJSInProcessRuntime Only Works in WASM — Same-Process Execution', route: '/blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution' },
+  ],
 };
 
 @Component({

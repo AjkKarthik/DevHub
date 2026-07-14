@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JavaScript Interop" topicRoute="/blazor/js-interop" subtopicLabel="JSON.stringify Throws a Real TypeError on Circular References" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">JSON.stringify Throws a Real TypeError on Circular References</h1>
+  <p class="page-subtitle">Confirmed directly in a real browser console — a circular object thrown at JSON.stringify() genuinely throws, the exact same JSON limitation Blazor's interop marshalling hits, not a Blazor-specific restriction.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This grounds the main page's "non-serializable types" mistake entry in a real, verified JavaScript failure mode. Next: proof that dynamic import() genuinely scopes a module's exports without ever touching the global window object.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JavaScript Interop" topicRoute="/blazor/js-interop"
+    [next]="{ label: 'Dynamic import() Genuinely Scopes Exports, Never Touching window', route: '/blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window' }" />
+</div>
