@@ -1,0 +1,38 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Modules & CommonJS" topicRoute="/node/modules" subtopicLabel="Live Bindings vs Snapshots" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">ESM Named Imports Are Live Bindings, CJS Destructuring Is a Snapshot</h1>
+  <p class="page-subtitle">
+    The two similar-looking syntaxes are fundamentally different operations — one is a spec-defined live link, the
+    other is ordinary value-copying.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 12+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by demonstrating the main page's own "live bindings vs. snapshots" claim with a
+      concrete side-by-side comparison. Together with the earlier two subtopics, this batch covers a
+      reference-vs-reassignment subtlety in circular CJS requires, the dual package hazard across the CJS/ESM
+      boundary, and now why the two systems' named-import syntax looks similar but behaves fundamentally
+      differently.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Modules & CommonJS"
+    topicRoute="/node/modules"
+    [prev]="{ label: 'The Dual Package Hazard — require() and import() Never Share a Cache', route: '/node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache' }"
+  />
+</div>

@@ -5190,7 +5190,26 @@
           </div>
         }
       }
-      <a routerLink="/node/modules" routerLinkActive="active"><span class="nl-text">Modules &amp; CommonJS</span>@if(progress.isDone('node-modules')){<span class="nl-done">✓</span>}@if(diff('node-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/modules" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Modules &amp; CommonJS</span>
+        @if (progress.isDone('node-modules')) {<span class="nl-done">✓</span>}
+        @if (diff('node-modules'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-modules')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-modules')"
+                  (click)="toggleSubtopics('node-modules', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-modules'); as nodeModSubs) {
+        @if (isSubtopicsExpanded('node-modules')) {
+          <div class="nav-subtopics">
+            @for (s of nodeModSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/core-modules" routerLinkActive="active"><span class="nl-text">Core Modules</span>@if(progress.isDone('node-core-modules')){<span class="nl-done">✓</span>}@if(diff('node-core-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/env-config" routerLinkActive="active"><span class="nl-text">Env Config &amp; dotenv</span>@if(progress.isDone('node-env-config')){<span class="nl-done">✓</span>}@if(diff('node-env-config');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

@@ -30774,6 +30774,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Circular requires between two modules can silently produce a partially-initialized export depending on load order.',
     ],
   },
+  'node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not': {
+    apis: ['require.cache', 'module.exports'],
+    related: [
+      { label: 'Modules & CommonJS (overview)', route: '/node/modules' },
+      { label: 'The Dual Package Hazard — require() and import() Never Share a Cache', route: '/node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache' },
+      { label: 'ESM Named Imports Are Live Bindings, CJS Destructuring Is a Snapshot', route: '/node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot' },
+    ],
+    tip: 'A module that only mutates module.exports (never fully reassigns it) after a circular require point keeps every already-captured reference correctly in sync — a full reassignment permanently disconnects them.',
+    docs: [
+      { label: 'Node.js — Modules: CommonJS modules, Cycles', url: 'https://nodejs.org/api/modules.html#cycles' },
+    ],
+    resources: [],
+    gotchas: [
+      'A circular require returns the SAME object reference the module holds at that moment, not a copy — later mutations to it are visible, but a later full reassignment is not.',
+      'Mixing a circular require with a later module.exports reassignment can leave different requiring files holding two genuinely different objects for what should be one module.',
+    ],
+  },
+
+  'node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache': {
+    apis: ['require.cache', 'import()'],
+    related: [
+      { label: 'Modules & CommonJS (overview)', route: '/node/modules' },
+      { label: 'Circular Requires Share a Reference, Mutation Is Visible, Reassignment Isn’t', route: '/node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not' },
+      { label: 'ESM Named Imports Are Live Bindings, CJS Destructuring Is a Snapshot', route: '/node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot' },
+    ],
+    tip: 'A failed instanceof check between two objects that "should" be the same class, with a correct and matching package version, is the classic symptom of the dual package hazard — not a version mismatch.',
+    docs: [
+      { label: 'Node.js — Modules: Packages, Dual package hazard', url: 'https://nodejs.org/api/packages.html#dual-package-hazard' },
+    ],
+    resources: [],
+    gotchas: [
+      'require.cache and the ESM module registry are genuinely separate caches with zero cross-awareness — the same package version can be loaded and evaluated twice.',
+      'This breaks shared singleton state silently — code registering something via one loading path is invisible to code reading via the other.',
+    ],
+  },
+
+  'node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot': {
+    apis: ['import', 'module.exports'],
+    related: [
+      { label: 'Modules & CommonJS (overview)', route: '/node/modules' },
+      { label: 'Circular Requires Share a Reference, Mutation Is Visible, Reassignment Isn’t', route: '/node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not' },
+      { label: 'The Dual Package Hazard — require() and import() Never Share a Cache', route: '/node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache' },
+    ],
+    tip: 'To expose a value that changes over time in CommonJS, export a getter function (or the containing object, accessed without destructuring) — destructuring a primitive value directly never sees later updates.',
+    docs: [
+      { label: 'Node.js — Modules: ECMAScript modules', url: 'https://nodejs.org/api/esm.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'ESM named imports are true live bindings defined by the ECMAScript spec — not the same operation as CJS object destructuring, despite the similar-looking syntax.',
+      'ESM live bindings are read-only from the importing side — only the exporting module itself may reassign the underlying variable.',
+    ],
+  },
+
   'node/promises-async': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

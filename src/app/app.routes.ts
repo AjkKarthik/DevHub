@@ -2195,7 +2195,12 @@ export const routes: Routes = [
       { path: 'uv-threadpool-size-must-be-set-before-first-threadpool-call', loadComponent: () => import('./components/backend/nodejs/architecture/subtopics/uv-threadpool-size-must-be-set-before-first-threadpool-call/uv-threadpool-size-must-be-set-before-first-threadpool-call').then(m => m.UvThreadpoolSizeMustBeSetBeforeFirstThreadpoolCallSubtopic) },
       { path: 'dns-lookup-uses-threadpool-dns-resolve-never-does', loadComponent: () => import('./components/backend/nodejs/architecture/subtopics/dns-lookup-uses-threadpool-dns-resolve-never-does/dns-lookup-uses-threadpool-dns-resolve-never-does').then(m => m.DnsLookupUsesThreadpoolDnsResolveNeverDoesSubtopic) },
     ] },
-    { path: 'modules',        loadComponent: () => import('./components/backend/nodejs/modules/modules').then(m => m.NodeModules) },
+    { path: 'modules', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/modules/modules').then(m => m.NodeModules) },
+      { path: 'circular-requires-share-a-reference-mutation-visible-reassignment-not', loadComponent: () => import('./components/backend/nodejs/modules/subtopics/circular-requires-share-a-reference-mutation-visible-reassignment-not/circular-requires-share-a-reference-mutation-visible-reassignment-not').then(m => m.CircularRequiresShareAReferenceMutationVisibleReassignmentNotSubtopic) },
+      { path: 'the-dual-package-hazard-require-and-import-never-share-a-cache', loadComponent: () => import('./components/backend/nodejs/modules/subtopics/the-dual-package-hazard-require-and-import-never-share-a-cache/the-dual-package-hazard-require-and-import-never-share-a-cache').then(m => m.TheDualPackageHazardRequireAndImportNeverShareACacheSubtopic) },
+      { path: 'esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot', loadComponent: () => import('./components/backend/nodejs/modules/subtopics/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot').then(m => m.EsmNamedImportsAreLiveBindingsCjsDestructuringIsASnapshotSubtopic) },
+    ] },
     { path: 'core-modules',   loadComponent: () => import('./components/backend/nodejs/core-modules/core-modules').then(m => m.NodeCoreModules) },
     { path: 'env-config',     loadComponent: () => import('./components/backend/nodejs/env-config/env-config').then(m => m.NodeEnvConfig) },
     { path: 'express',        loadComponent: () => import('./components/backend/nodejs/express/express').then(m => m.NodeExpress) },

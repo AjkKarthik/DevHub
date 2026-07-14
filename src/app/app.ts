@@ -1896,6 +1896,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' },
     { label: 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does', route: '/node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does' },
   ],
+  // NOTE: keyed 'node-modules', NOT bare 'modules' — already claimed
+  // elsewhere in this map (grep confirmed).
+  'node-modules': [
+    { label: 'Circular Requires Share a Reference, Mutation Is Visible, Reassignment Isn’t', route: '/node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not' },
+    { label: 'The Dual Package Hazard — require() and import() Never Share a Cache', route: '/node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache' },
+    { label: 'ESM Named Imports Are Live Bindings, CJS Destructuring Is a Snapshot', route: '/node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot' },
+  ],
 };
 
 @Component({
