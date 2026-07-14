@@ -1857,6 +1857,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' },
     { label: 'Async void Event Handlers Bypass ErrorBoundary Entirely', route: '/blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely' },
   ],
+  'streaming-rendering': [
+    { label: 'Enhanced Navigation Can Undo DOM Changes Unless Marked data-permanent', route: '/blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent' },
+    { label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' },
+    { label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' },
+  ],
 };
 
 @Component({

@@ -32080,6 +32080,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing streaming behavior in bUnit is limited, since bUnit doesn\'t simulate actual HTTP streaming mechanics — real browser-based E2E testing is usually needed.',
     ],
   },
+  'blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent': {
+    apis: ['data-permanent', 'enhancedload event', 'blazor.web.js'],
+    related: [
+      { label: 'Streaming Rendering (overview)', route: '/blazor/streaming-rendering' },
+      { label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' },
+      { label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' },
+    ],
+    tip: 'A third-party widget\'s DOM state resetting after navigation, even though it visually sits outside the routed page content, is the classic symptom of enhanced navigation\'s whole-document diff — mark the element data-permanent to exempt it.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor navigation', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/navigation' },
+    ],
+    resources: [],
+    gotchas: [
+      'Location inside vs. outside @Body has no bearing on whether an element can be reverted — the diff compares the whole rendered document, not a scoped content region.',
+      'The enhancedload event is the right tool when a script needs to actively re-run setup logic after each navigation, as opposed to data-permanent which just preserves existing DOM state untouched.',
+    ],
+  },
+
+  'blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked': {
+    apis: ['[StreamRendering]', '@rendermode', 'OnInitializedAsync()'],
+    related: [
+      { label: 'Streaming Rendering (overview)', route: '/blazor/streaming-rendering' },
+      { label: 'Enhanced Navigation Can Undo DOM Changes Unless Marked data-permanent', route: '/blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent' },
+      { label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' },
+    ],
+    tip: 'The same nullable-field-plus-@if-guard placeholder pattern works correctly under both Static SSR streaming and an interactive render mode — only the delivery mechanism differs, not the component code.',
+    docs: [
+      { label: 'Microsoft Learn — Razor class libraries with static SSR', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/class-libraries-and-static-server-side-rendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'Interactive render modes are not technically incapable of streaming — they already deliver the same incremental UI update through their own normal render pipeline, making [StreamRendering] redundant there rather than blocked.',
+      'Adding [StreamRendering] to an interactive component is a genuine no-op, not a fallback with a smaller benefit — the render mode\'s own mechanism already fully covers the same use case.',
+    ],
+  },
+
+  'blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order': {
+    apis: ['Task.WhenAll()', '[StreamRendering]'],
+    related: [
+      { label: 'Streaming Rendering (overview)', route: '/blazor/streaming-rendering' },
+      { label: 'Enhanced Navigation Can Undo DOM Changes Unless Marked data-permanent', route: '/blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent' },
+      { label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' },
+    ],
+    tip: 'To genuinely prioritize which streamed section a user sees populate first, make that section\'s own data fetch resolve faster — reordering markup has zero effect on arrival order.',
+    docs: [
+      { label: 'Microsoft Learn — Stream rendering in ASP.NET Core Blazor apps', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'A page tested locally with uniformly fast mock data may never reveal out-of-order arrival — the effect only becomes visible under realistic, varying latency between sections.',
+      'Arrival order tracks actual async resolution order, not markup declaration order — a section declared last can populate before one declared first.',
+    ],
+  },
+
   'blazor/performance': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

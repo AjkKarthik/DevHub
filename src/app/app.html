@@ -4774,7 +4774,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/streaming-rendering" routerLinkActive="active"><span class="nl-text">Streaming Rendering</span>@if(progress.isDone('blazor-streaming-rendering')){<span class="nl-done">✓</span>}@if(diff('blazor-streaming-rendering');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/streaming-rendering" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Streaming Rendering</span>
+        @if (progress.isDone('blazor-streaming-rendering')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-streaming-rendering'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('streaming-rendering')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('streaming-rendering')"
+                  (click)="toggleSubtopics('streaming-rendering', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('streaming-rendering'); as blazorStreamSubs) {
+        @if (isSubtopicsExpanded('streaming-rendering')) {
+          <div class="nav-subtopics">
+            @for (s of blazorStreamSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/progressive-enhancement" routerLinkActive="active"><span class="nl-text">Progressive Enhancement</span>@if(progress.isDone('blazor-progressive-enhancement')){<span class="nl-done">✓</span>}@if(diff('blazor-progressive-enhancement');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/seo-metadata" routerLinkActive="active"><span class="nl-text">SEO &amp; Head Metadata</span>@if(progress.isDone('blazor-seo-metadata')){<span class="nl-done">✓</span>}@if(diff('blazor-seo-metadata');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Streaming Rendering" topicRoute="/blazor/streaming-rendering" subtopicLabel="Enhanced Nav Can Undo DOM Changes" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Enhanced Navigation Can Undo DOM Changes Unless Marked data-permanent</h1>
+  <p class="page-subtitle">
+    The diffing algorithm compares the whole document, not just the page content — location inside or outside
+    <code>&#64;Body</code> doesn't exempt an element.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's theory already introduces enhanced navigation as fetching and patching page content — this
+      subtopic clarifies the diff's actual scope, which surprises developers who assume anything outside the routed
+      content is automatically safe. Next: streaming rendering's Static-SSR-only restriction isn't a technical
+      limitation of interactive render modes — they already get the same incremental-update benefit for free
+      through a completely different mechanism.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Streaming Rendering"
+    topicRoute="/blazor/streaming-rendering"
+    [next]="{ label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' }"
+  />
+</div>
