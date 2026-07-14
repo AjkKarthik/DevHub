@@ -4955,7 +4955,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/server-signalr" routerLinkActive="active"><span class="nl-text">Blazor Server SignalR</span>@if(progress.isDone('blazor-server-signalr')){<span class="nl-done">✓</span>}@if(diff('blazor-server-signalr');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/server-signalr" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Blazor Server SignalR</span>
+        @if (progress.isDone('blazor-server-signalr')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-server-signalr'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('server-signalr')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('server-signalr')"
+                  (click)="toggleSubtopics('server-signalr', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('server-signalr'); as blazorSignalrSubs) {
+        @if (isSubtopicsExpanded('server-signalr')) {
+          <div class="nav-subtopics">
+            @for (s of blazorSignalrSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/maui-hybrid" routerLinkActive="active"><span class="nl-text">MAUI Blazor Hybrid</span>@if(progress.isDone('blazor-maui-hybrid')){<span class="nl-done">✓</span>}@if(diff('blazor-maui-hybrid');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/authentication" routerLinkActive="active"><span class="nl-text">Authentication</span>@if(progress.isDone('blazor-authentication')){<span class="nl-done">✓</span>}@if(diff('blazor-authentication');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('blazor-error-handling')){<span class="nl-done">✓</span>}@if(diff('blazor-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

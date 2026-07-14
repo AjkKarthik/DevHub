@@ -31905,6 +31905,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For very large concurrent user counts where per-user server memory becomes prohibitive, Blazor WebAssembly (shifting state to the client) may scale more cost-effectively.',
     ],
   },
+
+  'blazor/server-signalr/a-custom-hub-and-the-render-circuit-are-separate-signalr-mechanisms': {
+    apis: ['Hub<T>', 'IHubContext<T>', 'HubConnection'],
+    related: [
+      { label: 'Blazor Server & SignalR (overview)', route: '/blazor/server-signalr' },
+      { label: 'The Reconnection Window Only Preserves State for the Same Circuit', route: '/blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit' },
+      { label: 'Azure SignalR Service Routes Messages, It Doesn’t Replicate Circuit State', route: '/blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state' },
+    ],
+    tip: 'Injecting IHubContext directly into a component compiles and even works mechanically — but the component never becomes a connected client of that Hub, so it can broadcast to others while never receiving its own messages back.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core SignalR Hubs', url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/hubs' },
+    ],
+    resources: [],
+    gotchas: [
+      'A component must open its own real HubConnection to a custom Hub to both send AND receive its messages — IHubContext alone only lets it push, one-way, as if it were server-side code.',
+      'Blazor\'s own internal render circuit and a developer-defined Hub<T> are completely separate SignalR endpoints, despite both using the SignalR protocol.',
+    ],
+  },
+
+  'blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit': {
+    apis: ['DisconnectedCircuitRetentionPeriod', 'DisconnectedCircuitMaxRetained'],
+    related: [
+      { label: 'Blazor Server & SignalR (overview)', route: '/blazor/server-signalr' },
+      { label: 'A Custom Hub and the Render Circuit Are Separate SignalR Mechanisms', route: '/blazor/server-signalr/a-custom-hub-and-the-render-circuit-are-separate-signalr-mechanisms' },
+      { label: 'Azure SignalR Service Routes Messages, It Doesn’t Replicate Circuit State', route: '/blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state' },
+    ],
+    tip: 'A disconnected circuit is held paused in server memory for DisconnectedCircuitRetentionPeriod, waiting for the exact same session to reconnect — if that window expires, the state is genuinely, permanently gone.',
+    docs: [
+      { label: 'Microsoft Learn — Blazor Server circuit handler', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/signalr#reflect-the-connection-state-in-the-ui' },
+    ],
+    resources: [],
+    gotchas: [
+      'An expired retention window falls back to a full page reload starting an entirely new circuit — not a silent recovery of the old state.',
+      'A longer retention period has a real server memory cost, since most real-world disconnections never actually reconnect.',
+    ],
+  },
+
+  'blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state': {
+    apis: ['AddAzureSignalR()'],
+    related: [
+      { label: 'Blazor Server & SignalR (overview)', route: '/blazor/server-signalr' },
+      { label: 'A Custom Hub and the Render Circuit Are Separate SignalR Mechanisms', route: '/blazor/server-signalr/a-custom-hub-and-the-render-circuit-are-separate-signalr-mechanisms' },
+      { label: 'The Reconnection Window Only Preserves State for the Same Circuit', route: '/blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit' },
+    ],
+    tip: 'Removing the sticky-session requirement is a connection-routing fix, not a state-durability one — a circuit\'s actual component tree still lives in exactly one app server\'s memory, just as vulnerable to that server\'s own crash as before.',
+    docs: [
+      { label: 'Microsoft Learn — Azure SignalR Service for Blazor Server', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/server#azure-signalr-service' },
+    ],
+    resources: [],
+    gotchas: [
+      'If the specific app server instance holding a circuit crashes or restarts, that circuit is lost just as it would be without Azure SignalR Service.',
+      'Azure SignalR Service simplifies scaling Server (routing), it does not change Server\'s fundamental per-user server memory cost the way switching to WASM would.',
+    ],
+  },
+
   'blazor/streaming-rendering': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
