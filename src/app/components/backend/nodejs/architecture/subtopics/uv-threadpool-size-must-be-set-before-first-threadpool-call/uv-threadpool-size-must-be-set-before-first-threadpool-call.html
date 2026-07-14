@@ -1,0 +1,38 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Architecture" topicRoute="/node/architecture" subtopicLabel="Must Be Set Before the First Call" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call</h1>
+  <p class="page-subtitle">
+    libuv creates its worker pool lazily on the first call that needs it — a process.env assignment inside your own
+    script always runs too late to matter.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered how the nextTick queue's draining guarantee can starve I/O — this one covers a
+      different timing subtlety around the thread pool itself. Next: dns.lookup() specifically routes through the
+      thread pool because it delegates to the OS's own blocking resolver, while dns.resolve() never touches the
+      thread pool at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Architecture"
+    topicRoute="/node/architecture"
+    [prev]="{ label: 'Recursive nextTick Starves I/O Forever', route: '/node/architecture/recursive-nexttick-starves-io-forever' }"
+    [next]="{ label: 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does', route: '/node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does' }"
+  />
+</div>

@@ -1891,6 +1891,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' },
     { label: 'IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently', route: '/blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently' },
   ],
+  'architecture': [
+    { label: 'Recursive nextTick Starves I/O Forever', route: '/node/architecture/recursive-nexttick-starves-io-forever' },
+    { label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' },
+    { label: 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does', route: '/node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does' },
+  ],
 };
 
 @Component({

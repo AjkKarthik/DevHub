@@ -30709,6 +30709,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Understanding the phases of the event loop (timers, I/O callbacks, setImmediate) explains subtle ordering bugs between setTimeout(fn, 0) and process.nextTick.',
     ],
   },
+  'node/architecture/recursive-nexttick-starves-io-forever': {
+    apis: ['process.nextTick()', 'setImmediate()'],
+    related: [
+      { label: 'Architecture (overview)', route: '/node/architecture' },
+      { label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' },
+      { label: 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does', route: '/node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does' },
+    ],
+    tip: 'A process that appears completely frozen — no requests served, no timers firing, not even an in-flight file read completing — is the classic symptom of an unconditionally self-scheduling process.nextTick() call.',
+    docs: [
+      { label: 'Node.js — The Event Loop, Timers, and process.nextTick()', url: 'https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick' },
+    ],
+    resources: [],
+    gotchas: [
+      'The nextTick queue drains completely — including callbacks newly added while draining — before any other phase runs, so a self-scheduling callback never lets the loop advance.',
+      'setImmediate() is the documented fix for cases that genuinely need to reschedule work, since it runs in the check phase, after poll, giving pending I/O a chance to run between iterations.',
+    ],
+  },
+
+  'node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call': {
+    apis: ['UV_THREADPOOL_SIZE', 'uv_queue_work()'],
+    related: [
+      { label: 'Architecture (overview)', route: '/node/architecture' },
+      { label: 'Recursive nextTick Starves I/O Forever', route: '/node/architecture/recursive-nexttick-starves-io-forever' },
+      { label: 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does', route: '/node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does' },
+    ],
+    tip: 'Set UV_THREADPOOL_SIZE in the shell, a process manager\'s config, or a container\'s ENV directive — never via a process.env assignment inside the script libuv is already running under.',
+    docs: [
+      { label: 'libuv — Thread pool work scheduling', url: 'https://docs.libuv.org/en/v1.x/threadpool.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'libuv creates its pool lazily, on the first call that actually needs it — not necessarily at the exact instant the process boots, though in practice this rarely changes the guidance.',
+      'A process.env assignment inside your own script always runs after libuv\'s own runtime initialization has already completed, regardless of how early it appears in your code.',
+    ],
+  },
+
+  'node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does': {
+    apis: ['dns.lookup()', 'dns.resolve()', 'getaddrinfo()'],
+    related: [
+      { label: 'Architecture (overview)', route: '/node/architecture' },
+      { label: 'Recursive nextTick Starves I/O Forever', route: '/node/architecture/recursive-nexttick-starves-io-forever' },
+      { label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' },
+    ],
+    tip: 'A file-processing slowdown that correlates with DNS resolution volume is a classic thread-pool contention symptom — switching from dns.lookup() to dns.resolve4() removes DNS work from the shared pool entirely.',
+    docs: [
+      { label: 'Node.js — dns module documentation', url: 'https://nodejs.org/api/dns.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'dns.lookup() delegates to the OS\'s own blocking getaddrinfo(), sharing the same thread pool as fs and crypto operations — a burst of lookups can genuinely delay unrelated file reads.',
+      'dns.resolve()/resolve4()/resolve6() use the c-ares library to query DNS servers directly over the network, entirely bypassing the thread pool and the OS resolver\'s own behavior (/etc/hosts, NSS, OS-level caching).',
+    ],
+  },
+
   'node/modules': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

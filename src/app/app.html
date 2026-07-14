@@ -5170,7 +5170,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/node/architecture" routerLinkActive="active"><span class="nl-text">Node.js Architecture</span>@if(progress.isDone('node-architecture')){<span class="nl-done">✓</span>}@if(diff('node-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/architecture" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Node.js Architecture</span>
+        @if (progress.isDone('node-architecture')) {<span class="nl-done">✓</span>}
+        @if (diff('node-architecture'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('architecture')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('architecture')"
+                  (click)="toggleSubtopics('architecture', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('architecture'); as nodeArchSubs) {
+        @if (isSubtopicsExpanded('architecture')) {
+          <div class="nav-subtopics">
+            @for (s of nodeArchSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/modules" routerLinkActive="active"><span class="nl-text">Modules &amp; CommonJS</span>@if(progress.isDone('node-modules')){<span class="nl-done">✓</span>}@if(diff('node-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/core-modules" routerLinkActive="active"><span class="nl-text">Core Modules</span>@if(progress.isDone('node-core-modules')){<span class="nl-done">✓</span>}@if(diff('node-core-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/env-config" routerLinkActive="active"><span class="nl-text">Env Config &amp; dotenv</span>@if(progress.isDone('node-env-config')){<span class="nl-done">✓</span>}@if(diff('node-env-config');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

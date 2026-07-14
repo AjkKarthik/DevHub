@@ -2189,7 +2189,12 @@ export const routes: Routes = [
   // ── Backend Hubs ──────────────────────────────────────────────────────────
   { path: 'node', children: [
     { path: '', loadComponent: () => import('./components/backend/nodejs/home/home').then(m => m.NodejsHome) },
-    { path: 'architecture',   loadComponent: () => import('./components/backend/nodejs/architecture/architecture').then(m => m.NodeArchitecture) },
+    { path: 'architecture', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/architecture/architecture').then(m => m.NodeArchitecture) },
+      { path: 'recursive-nexttick-starves-io-forever', loadComponent: () => import('./components/backend/nodejs/architecture/subtopics/recursive-nexttick-starves-io-forever/recursive-nexttick-starves-io-forever').then(m => m.RecursiveNexttickStarvesIoForeverSubtopic) },
+      { path: 'uv-threadpool-size-must-be-set-before-first-threadpool-call', loadComponent: () => import('./components/backend/nodejs/architecture/subtopics/uv-threadpool-size-must-be-set-before-first-threadpool-call/uv-threadpool-size-must-be-set-before-first-threadpool-call').then(m => m.UvThreadpoolSizeMustBeSetBeforeFirstThreadpoolCallSubtopic) },
+      { path: 'dns-lookup-uses-threadpool-dns-resolve-never-does', loadComponent: () => import('./components/backend/nodejs/architecture/subtopics/dns-lookup-uses-threadpool-dns-resolve-never-does/dns-lookup-uses-threadpool-dns-resolve-never-does').then(m => m.DnsLookupUsesThreadpoolDnsResolveNeverDoesSubtopic) },
+    ] },
     { path: 'modules',        loadComponent: () => import('./components/backend/nodejs/modules/modules').then(m => m.NodeModules) },
     { path: 'core-modules',   loadComponent: () => import('./components/backend/nodejs/core-modules/core-modules').then(m => m.NodeCoreModules) },
     { path: 'env-config',     loadComponent: () => import('./components/backend/nodejs/env-config/env-config').then(m => m.NodeEnvConfig) },

@@ -1631,6 +1631,9 @@ const DEVOPS_LABELS: Record<string, string> = {
 
 const NODE_LABELS: Record<string, string> = {
   'architecture':    'Node.js Architecture',
+  'architecture/recursive-nexttick-starves-io-forever': 'Recursive nextTick Starves I/O Forever',
+  'architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call': 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call',
+  'architecture/dns-lookup-uses-threadpool-dns-resolve-never-does': 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does',
   'modules':         'Modules & CommonJS',
   'core-modules':    'Core Modules',
   'env-config':      'Env Config & dotenv',
