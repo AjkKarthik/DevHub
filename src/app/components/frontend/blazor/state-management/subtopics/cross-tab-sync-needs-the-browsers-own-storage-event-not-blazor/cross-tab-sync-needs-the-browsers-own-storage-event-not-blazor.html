@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="State Management" topicRoute="/blazor/state-management" subtopicLabel="Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Cross-Tab Sync Needs the Browser's Own StorageEvent, Not Blazor</h1>
+  <p class="page-subtitle">Every browser tab is a genuinely separate circuit or app instance with no shared C# memory — the only bridge between tabs is the browser's own standard 'storage' event, which fires only in OTHER tabs, never the one that made the change.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's QnA about cross-tab communication into a full working JS interop pattern. Next: the exact exception risk when a component forgets to unsubscribe from a shared service's change event before being disposed.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="State Management" topicRoute="/blazor/state-management"
+    [prev]="{ label: 'ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory', route: '/blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory' }"
+    [next]="{ label: 'A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event', route: '/blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event' }" />
+</div>

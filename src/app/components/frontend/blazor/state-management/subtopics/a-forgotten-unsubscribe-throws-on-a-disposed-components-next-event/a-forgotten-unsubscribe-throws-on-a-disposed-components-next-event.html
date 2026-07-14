@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="State Management" topicRoute="/blazor/state-management" subtopicLabel="A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">A Forgotten Unsubscribe Throws on a Disposed Component's Next Event</h1>
+  <p class="page-subtitle">A missed unsubscribe isn't just a memory leak — the service still holds a live delegate reference, and the next time it raises its event, it invokes StateHasChanged on a component Blazor's renderer no longer tracks, which can throw.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's "always unsubscribe" mistake entry into the specific exception risk, not just the memory-leak framing. Together with the earlier two subtopics, this batch covers ProtectedLocalStorage's real security boundary, the browser-native mechanism behind cross-tab sync, and now the correctness (not just efficiency) cost of a missed unsubscribe.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="State Management" topicRoute="/blazor/state-management"
+    [prev]="{ label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' }" />
+</div>

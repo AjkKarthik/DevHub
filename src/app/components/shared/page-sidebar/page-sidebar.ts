@@ -31607,6 +31607,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Untraceable state mutations scattered across a codebase are one of the hardest bug categories to track down in any stateful UI, Blazor included.',
     ],
   },
+
+  'blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory': {
+    apis: ['ProtectedLocalStorage', 'Data Protection API'],
+    related: [
+      { label: 'State Management (overview)', route: '/blazor/state-management' },
+      { label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' },
+      { label: 'A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event', route: '/blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event' },
+    ],
+    tip: 'The encryption only protects a value while it sits in browser storage as ciphertext — the moment your own code calls GetAsync, the decrypted plaintext is fully exposed in the page\'s own memory like any other data.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Data Protection', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction' },
+    ],
+    resources: [],
+    gotchas: [
+      'A genuinely sensitive credential (an API key, a token) should not be round-tripped through ProtectedLocalStorage just because it is encrypted at rest.',
+      'Data Protection keys not persisted correctly across server restarts/deployments permanently break decryption of previously-stored values.',
+    ],
+  },
+
+  'blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor': {
+    apis: ['window.addEventListener(\'storage\')', 'DotNetObjectReference'],
+    related: [
+      { label: 'State Management (overview)', route: '/blazor/state-management' },
+      { label: 'ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory', route: '/blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory' },
+      { label: 'A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event', route: '/blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event' },
+    ],
+    tip: 'Every browser tab is a genuinely separate circuit or app instance with no shared C# memory — the only bridge between tabs is the browser\'s own standard \'storage\' event, which fires only in OTHER tabs, never the one that made the change.',
+    docs: [
+      { label: 'MDN — Window: storage event', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event' },
+    ],
+    resources: [],
+    gotchas: [
+      'The \'storage\' event never fires in the tab that made the change — that tab must update its own UI through its normal reactive mechanism instead.',
+      'Testing cross-tab sync with only a single open tab can never demonstrate it working, by design of the underlying browser event.',
+    ],
+  },
+
+  'blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event': {
+    apis: ['IDisposable', 'event (C#)'],
+    related: [
+      { label: 'State Management (overview)', route: '/blazor/state-management' },
+      { label: 'ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory', route: '/blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory' },
+      { label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' },
+    ],
+    tip: 'A missed unsubscribe is not just a memory leak — the service still holds a live delegate reference, and the next time it raises its event, it invokes StateHasChanged on a component Blazor\'s renderer no longer tracks, which can throw.',
+    docs: [
+      { label: 'Microsoft Learn — Component disposal', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle#component-disposal-with-idisposable' },
+    ],
+    resources: [],
+    gotchas: [
+      'The risk compounds over a long session — every unsubscribed component leaves a dead delegate reference that gets invoked (and can throw) on every future state change.',
+      'An exception from one dead subscriber can disrupt the whole event-raising operation, potentially affecting other, correctly-subscribed components too.',
+    ],
+  },
+
   'blazor/routing': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

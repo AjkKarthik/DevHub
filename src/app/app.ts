@@ -1817,6 +1817,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' },
     { label: 'IServiceScopeFactory Must Dispose Its Scope Immediately After Use', route: '/blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use' },
   ],
+  // NOTE: keyed 'blazor-state-management', NOT bare 'state-management' —
+  // the React hub's own /react/state-management topic already claims the
+  // bare key.
+  'blazor-state-management': [
+    { label: 'ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory', route: '/blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory' },
+    { label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' },
+    { label: 'A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event', route: '/blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event' },
+  ],
 };
 
 @Component({
