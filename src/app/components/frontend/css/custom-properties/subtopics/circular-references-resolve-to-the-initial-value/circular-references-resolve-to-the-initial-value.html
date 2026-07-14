@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Custom Properties" topicRoute="/css/custom-properties" subtopicLabel="Circular References Resolve to the Initial Value" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Circular References Resolve to the Initial Value</h1>
+  <p class="page-subtitle">--a: var(--b); --b: var(--a); used for opacity computes to 1 (opacity's own initial value) — never the var() fallback, never an error.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS Custom Properties Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Read the actual computed opacity of an element using a circularly-referenced custom property — it lands on opacity's own initial value, not the var() fallback.</p>
+    <app-live-playground title="Circular custom property references" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the same underlying invalid-at-computed-value-time rule from the first subtopic, applied to a different way of producing an invalid value. The final subtopic shifts to a different topic entirely — how JavaScript can read and write custom properties live, genuinely at runtime.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Custom Properties" topicRoute="/css/custom-properties"
+    [prev]="{ label: 'var() Fallback Only Fires When Undefined', route: '/css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid' }"
+    [next]="{ label: 'setProperty() Updates Everything Using the Variable', route: '/css/custom-properties/setproperty-updates-everything-using-the-variable' }" />
+</div>

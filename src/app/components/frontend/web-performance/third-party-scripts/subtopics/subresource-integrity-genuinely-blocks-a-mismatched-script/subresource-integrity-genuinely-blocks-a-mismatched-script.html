@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Third-Party Scripts" topicRoute="/performance/third-party-scripts" subtopicLabel="Subresource Integrity Genuinely Blocks a Mismatched Script" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Subresource Integrity Genuinely Blocks a Mismatched Script</h1>
+  <p class="page-subtitle">A script with a wrong integrity hash failed to execute at all; the identical script with a live-computed correct hash loaded and ran — confirmed by checking its own side effect actually happened.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Subresource Integrity, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compute a real SHA-384 hash live with crypto.subtle.digest(), then compare loading the same script with a wrong hash versus the correct one.</p>
+    <app-live-playground title="Subresource Integrity genuinely blocks a mismatched script" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's SRI security claim with a real, live-computed hash rather than a pre-baked example. Next: whether the facade pattern genuinely produces zero network requests until the user actually interacts.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Third-Party Scripts" topicRoute="/performance/third-party-scripts"
+    [next]="{ label: 'A Facade Loads Zero Third-Party Bytes Until Interaction', route: '/performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction' }" />
+</div>

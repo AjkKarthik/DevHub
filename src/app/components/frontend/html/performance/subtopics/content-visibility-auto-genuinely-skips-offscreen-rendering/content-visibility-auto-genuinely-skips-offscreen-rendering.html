@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML Performance" topicRoute="/html/performance" subtopicLabel="content-visibility: auto Genuinely Skips Off-Screen Rendering" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">content-visibility: auto Genuinely Skips Off-Screen Rendering</h1>
+  <p class="page-subtitle">Not a visual trick like opacity: 0 — layout, style, and paint are genuinely skipped for off-screen descendants, and a real browser event reports exactly when.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="CSS Containment 2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A box far below a tall spacer, styled with <code>content-visibility: auto</code>. Listen for the real <code>contentvisibilityautostatechange</code> event and scroll to watch its <code>skipped</code> state flip.</p>
+    <app-live-playground title="observing the real skipped state via contentvisibilityautostatechange" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious performance mechanics — an over-applied resource hint, a script-ordering guarantee, and now a genuine rendering-pipeline optimization with its own observable event. Return to the <a routerLink="/html/performance">HTML Performance</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML Performance"
+    topicRoute="/html/performance"
+    [prev]="{ label: 'defer Guarantees Order and Fires Before DOMContentLoaded', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' }"
+  />
+</div>

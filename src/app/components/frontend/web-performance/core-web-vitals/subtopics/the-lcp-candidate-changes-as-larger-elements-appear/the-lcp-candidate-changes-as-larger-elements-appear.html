@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Core Web Vitals Overview" topicRoute="/performance/core-web-vitals" subtopicLabel="The LCP Candidate Changes as Larger Elements Appear" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">The LCP Candidate Changes as Larger Elements Appear</h1>
+  <p class="page-subtitle">Adding a bigger element after a smaller one produces a second, larger LCP entry — measured with the real largest-contentful-paint Performance Observer, not simulation.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="LCP API, Chrome 77+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Register a real PerformanceObserver for largest-contentful-paint entries and watch the candidate update as a larger element appears.</p>
+    <app-live-playground title="the LCP candidate changes as larger elements appear" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This is the main page's own theory claim about the LCP candidate changing during page load, confirmed via the real largest-contentful-paint Performance Observer, completing the trio of Core Web Vitals gotchas alongside CLS's two mechanisms.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Core Web Vitals Overview" topicRoute="/performance/core-web-vitals"
+    [prev]="{ label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' }" />
+</div>

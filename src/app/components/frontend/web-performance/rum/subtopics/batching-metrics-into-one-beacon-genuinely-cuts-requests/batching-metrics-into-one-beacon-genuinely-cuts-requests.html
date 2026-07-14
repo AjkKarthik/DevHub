@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Real User Monitoring (RUM)" topicRoute="/performance/rum" subtopicLabel="Batching Metrics Into One Beacon Genuinely Cuts Requests" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Batching Metrics Into One Beacon Genuinely Cuts Requests</h1>
+  <p class="page-subtitle">Firing 5 separate sendBeacon() calls (one per metric) produced 5 real network requests; batching into one payload produced exactly 1 — the same data, a real 5× request-count difference.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Resource Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Count real network requests for the unbatched (5 separate calls) versus batched (1 combined call) sendBeacon patterns.</p>
+    <app-live-playground title="batching metrics into one beacon genuinely cuts requests" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Sending RUM data on every metric callback instead of batching" mistake with a real, counted request difference. Together, these three subtopics cover sendBeacon's real distinct request category, P75's real divergence from average, and batching's real request-count reduction — each backed by an actual measurement.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Real User Monitoring (RUM)" topicRoute="/performance/rum"
+    [prev]="{ label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' }" />
+</div>

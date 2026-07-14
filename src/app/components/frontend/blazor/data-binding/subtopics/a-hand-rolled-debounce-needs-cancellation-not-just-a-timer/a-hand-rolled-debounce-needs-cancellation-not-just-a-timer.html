@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Data Binding" topicRoute="/blazor/data-binding" subtopicLabel="A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer</h1>
+  <p class="page-subtitle">Wrapping an expensive call in Task.Delay alone only shifts WHEN each call fires — it doesn't reduce how many times it fires. Genuine debouncing requires cancelling the previous pending delay every time a new one starts.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's debouncing note into a full, correct implementation and its most common (silently broken) naive attempt. Together with the earlier two subtopics, this batch corrects an outdated closure claim with the genuinely current &#64;key gotcha, covers the silent date-format mismatch, and now the debounce cancellation requirement.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Data Binding" topicRoute="/blazor/data-binding"
+    [prev]="{ label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' }" />
+</div>

@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Server & SignalR" topicRoute="/blazor/server-signalr" subtopicLabel="Azure SignalR Service Routes Messages, It Doesn’t Replicate Circuit State" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Azure SignalR Service Routes Messages, It Doesn't Replicate Circuit State</h1>
+  <p class="page-subtitle">Removing the sticky-session requirement is a connection-routing fix, not a state-durability one — a circuit's actual component tree still lives in exactly one app server's memory, just as vulnerable to that server's own crash as before.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's Azure SignalR Service QnA into precisely what it does and does not solve. Together with the earlier two subtopics, this batch covers why a component can't directly reach a custom Hub, the exact reconnection-window mechanism, and now the real scope of Azure SignalR Service's scaling benefit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Server & SignalR" topicRoute="/blazor/server-signalr"
+    [prev]="{ label: 'The Reconnection Window Only Preserves State for the Same Circuit', route: '/blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit' }" />
+</div>

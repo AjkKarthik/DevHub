@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Positioning &amp; Stacking" topicRoute="/css/positioning" subtopicLabel="sticky Without an Offset Behaves Like static" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">sticky Without an Offset Behaves Like static</h1>
+  <p class="page-subtitle">A sticky element with no top/bottom offset scrolls completely away with its container — measurably identical to position: static.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS Positioned Layout Level 3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Scroll a container 300px and measure a sticky-but-offset-less element's position relative to it — it moves exactly as far as ordinary content would.</p>
+    <app-live-playground title="sticky without an offset behaves like static" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This closes out three positioning gotchas that share one theme — a positioning feature silently doing nothing when a specific prerequisite is missing, with no error to flag it. Return to the CSS Positioning & Stacking overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Positioning &amp; Stacking" topicRoute="/css/positioning"
+    [prev]="{ label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' }" />
+</div>

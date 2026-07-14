@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Colors &amp; Theming" topicRoute="/css/colors-theming" subtopicLabel="color-mix in oklch Preserves Vividness, sRGB Doesn't" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">color-mix in oklch Preserves Vividness, sRGB Doesn't</h1>
+  <p class="page-subtitle">Mixing red and blue in oklch reports a genuinely high chroma value directly in the computed style — sRGB mixing has no equivalent measure at all.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS Color Module Level 5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Read the actual computed background color string for an oklch mix vs an sRGB mix of the same two colors — the underlying representations genuinely differ.</p>
+    <app-live-playground title="color-mix in oklch vs sRGB" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This establishes why oklch is the recommended color space for design tokens. Next, see a related but distinct property — that color-mix() always produces a fully opaque result, unlike rgba-based transparency.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Colors &amp; Theming" topicRoute="/css/colors-theming"
+    [next]="{ label: 'color-mix() Always Produces an Opaque Result', route: '/css/colors-theming/color-mix-always-produces-an-opaque-result' }" />
+</div>

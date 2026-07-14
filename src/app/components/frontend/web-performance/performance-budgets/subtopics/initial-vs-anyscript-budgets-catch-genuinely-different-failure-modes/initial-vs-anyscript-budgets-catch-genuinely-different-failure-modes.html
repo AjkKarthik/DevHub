@@ -1,0 +1,24 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Budgets &amp; CI" topicRoute="/performance/performance-budgets" subtopicLabel="Initial vs anyScript Budgets Catch Genuinely Different Failure Modes" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Initial vs anyScript Budgets Catch Genuinely Different Failure Modes</h1>
+  <p class="page-subtitle">A build with ten 40KB chunks can fail an "initial" budget while passing "anyScript"; a build with one legitimate 180KB chunk can fail "anyScript" while passing "initial" — the same numbers, two different verdicts.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Angular CLI, all recent versions" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This closes out the batch with a genuinely easy-to-miss budget-configuration gap. Together with the earlier two subtopics, this batch shows a common size-estimation shortcut is wildly unreliable, why multi-run measurement genuinely reduces noise, and why a single budget type can leave real regressions uncaught.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Budgets &amp; CI" topicRoute="/performance/performance-budgets"
+    [prev]="{ label: 'A Median of 3 Runs Genuinely Narrows Measurement Variance', route: '/performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance' }" />
+</div>

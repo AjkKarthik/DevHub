@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Landmark Elements" topicRoute="/html/landmark-elements" subtopicLabel="Multiple main Elements Don't Error" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Multiple main Elements Don't Error</h1>
+  <p class="page-subtitle">"Only one &lt;main&gt; per document" is a spec convention for accessibility tooling to catch — the parser accepts as many as you write.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>A document with two <code>&lt;main&gt;</code> elements parses without a single warning — <code>querySelectorAll('main').length</code> reports 2, and the fix is the <code>hidden</code> attribute, not deleting one.</p>
+    <app-live-playground title="Multiple main elements" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This is the first of two subtopics on rules the platform doesn't enforce itself. Next, see how multiple <code>&lt;nav&gt;</code> elements — also perfectly valid — need <code>aria-label</code> to be told apart, checkable live via the <code>ariaLabel</code> property.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Landmark Elements" topicRoute="/html/landmark-elements"
+    [next]="{ label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' }" />
+</div>

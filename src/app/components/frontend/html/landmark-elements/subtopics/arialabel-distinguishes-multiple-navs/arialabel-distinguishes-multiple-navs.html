@@ -1,0 +1,26 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Landmark Elements" topicRoute="/html/landmark-elements" subtopicLabel="ariaLabel Distinguishes Multiple navs" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">ariaLabel Distinguishes Multiple navs</h1>
+  <p class="page-subtitle">Two unlabeled &lt;nav&gt; elements report the identical <code>null</code> .ariaLabel — proof there's no default name telling them apart.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Read <code>.ariaLabel</code> on two navs before and after labeling them — both start identically unlabeled, then diverge once labels are set via the reflected JS property.</p>
+    <app-live-playground title="aria-label on multiple navs" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>Like the previous subtopic's unenforced one-main rule, this is another case where valid, unremarkable-looking HTML has an accessibility gap the browser won't flag for you. The final subtopic turns to a structural question — how nesting a &lt;header&gt; inside &lt;article&gt;/&lt;section&gt; silently changes its implicit landmark role.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Landmark Elements" topicRoute="/html/landmark-elements"
+    [prev]="{ label: 'Multiple main Elements Don’t Error', route: '/html/landmark-elements/multiple-main-elements-dont-error' }"
+    [next]="{ label: 'Nested header Loses Implicit Banner Role', route: '/html/landmark-elements/nested-header-loses-implicit-banner-role' }" />
+</div>

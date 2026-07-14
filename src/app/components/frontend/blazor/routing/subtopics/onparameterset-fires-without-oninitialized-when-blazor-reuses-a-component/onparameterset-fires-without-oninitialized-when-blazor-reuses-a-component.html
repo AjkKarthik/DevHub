@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Routing" topicRoute="/blazor/routing" subtopicLabel="OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component</h1>
+  <p class="page-subtitle">Navigating between two routes handled by the same component type reuses that instance rather than recreating it — OnInitialized correctly runs only once, which is exactly why route-parameter-dependent loading belongs in OnParametersSet instead.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's own mistake entry into the actual component-reuse mechanism behind it. Next: what NavigateTo(forceLoad: true) actually does before the page reload happens, and why code after the call can still run.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Routing" topicRoute="/blazor/routing"
+    [next]="{ label: 'NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs', route: '/blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs' }" />
+</div>

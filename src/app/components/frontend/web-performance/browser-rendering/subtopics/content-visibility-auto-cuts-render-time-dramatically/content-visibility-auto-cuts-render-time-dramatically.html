@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Browser Rendering Pipeline" topicRoute="/performance/browser-rendering" subtopicLabel="content-visibility: auto Cuts Render Time Dramatically" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">content-visibility: auto Cuts Render Time Dramatically</h1>
+  <p class="page-subtitle">60 sections of 2,400 total elements render roughly 14× faster with content-visibility: auto than without it — measured with performance.now(), same DOM, same content.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="content-visibility, Chrome 85+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare the real, measured time to force a full render of 60 sections with and without content-visibility: auto.</p>
+    <app-live-playground title="content-visibility: auto cuts render time dramatically" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "massive paint-time win" claim with a real, dramatic measurement. Next: the honest limit of this optimisation — what happens the moment something actually needs the skipped content's real layout.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Browser Rendering Pipeline" topicRoute="/performance/browser-rendering"
+    [prev]="{ label: 'Three Structurally Different Kinds of Invisible', route: '/performance/browser-rendering/three-structurally-different-kinds-of-invisible' }"
+    [next]="{ label: 'content-visibility Defers Work, It Doesn’t Eliminate It', route: '/performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it' }" />
+</div>

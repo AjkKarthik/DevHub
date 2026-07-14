@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MAUI Blazor Hybrid" topicRoute="/blazor/maui-hybrid" subtopicLabel="A Wrong HostPage Path Produces a Blank Screen With No Error" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">A Wrong HostPage Path Produces a Blank Screen With No Error</h1>
+  <p class="page-subtitle">The failure happens at the native WebView-navigation layer, before any .NET or Blazor code has started — there is no exception to catch and no error boundary to display anything, since nothing downstream of the failed navigation ever runs.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's HostPage mistake entry into why the failure is genuinely silent, not just poorly logged. Next: how RootComponent's Selector maps to an actual element in HostPage's own HTML, and what happens when it doesn't match.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MAUI Blazor Hybrid" topicRoute="/blazor/maui-hybrid"
+    [next]="{ label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' }" />
+</div>

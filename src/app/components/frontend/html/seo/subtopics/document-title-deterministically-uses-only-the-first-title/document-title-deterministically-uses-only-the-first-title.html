@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML SEO" topicRoute="/html/seo" subtopicLabel="document.title Deterministically Uses Only the First title" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">document.title Deterministically Uses Only the First title</h1>
+  <p class="page-subtitle">A second &lt;title&gt; tag isn't rejected — it becomes a real, findable but completely inert DOM node. document.title always picks the first one, with total certainty.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two <code>&lt;title&gt;</code> elements in <code>&lt;head&gt;</code>. Count them via <code>querySelectorAll</code>, then compare against what <code>document.title</code> actually reports.</p>
+    <app-live-playground title="document.title vs a duplicate title element" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a markup-duplication mistake, invisible in the browser but real at the crawler level. The next subtopic covers something the browser DOES render identically either way — a structured data block that's silently broken for a completely different reason. Return to the <a routerLink="/html/seo">HTML SEO</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML SEO"
+    topicRoute="/html/seo"
+    [next]="{ label: 'Malformed JSON-LD Renders Fine But Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' }"
+  />
+</div>

@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Razor Components" topicRoute="/blazor/razor-components" subtopicLabel="CascadingParameter Flows Through Any Depth Without Explicit Forwarding" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">CascadingParameter Flows Through Any Depth Without Explicit Forwarding</h1>
+  <p class="page-subtitle">A regular [Parameter] only reaches one level down and must be explicitly re-forwarded by every intermediate component — CascadingValue bypasses intermediate components entirely, reaching any descendant regardless of depth.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's own QnA comparison into the actual render-tree mechanism, and the tradeoff of invisible dependencies it introduces. Next: why ShouldRender() cannot suppress a component's very first render, no matter what it returns.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Razor Components" topicRoute="/blazor/razor-components"
+    [prev]="{ label: 'RenderFragment&lt;T&gt; Compiles to a Delegate the Framework Invokes Per Item', route: '/blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item' }"
+    [next]="{ label: 'ShouldRender Cannot Suppress a Component’s First Render', route: '/blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render' }" />
+</div>

@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Budgets &amp; CI" topicRoute="/performance/performance-budgets" subtopicLabel="The size × 0.3 Gzip Approximation Is Wildly Inaccurate" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">The size × 0.3 Gzip Approximation Is Wildly Inaccurate</h1>
+  <p class="page-subtitle">Real CompressionStream('gzip') measurements showed the main page's own "size × 0.3" shortcut overstated a repetitive sample's size by roughly 12x, and understated a high-entropy sample's size by 60% — wrong in opposite directions depending on content.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CompressionStream, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare the "size × 0.3" approximation against real gzip compression on two genuinely different kinds of content.</p>
+    <app-live-playground title="the size × 0.3 gzip approximation is wildly inaccurate" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This directly critiques and corrects a shortcut in the main page's own code sample with real measurements. Next: why running a noisy measurement multiple times and taking the median genuinely narrows the variance, not just in theory.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Budgets &amp; CI" topicRoute="/performance/performance-budgets"
+    [next]="{ label: 'A Median of 3 Runs Genuinely Narrows Measurement Variance', route: '/performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance' }" />
+</div>

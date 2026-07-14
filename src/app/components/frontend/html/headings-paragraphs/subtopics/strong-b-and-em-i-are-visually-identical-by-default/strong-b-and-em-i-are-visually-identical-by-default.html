@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Headings &amp; Paragraphs" topicRoute="/html/headings-paragraphs" subtopicLabel="strong/b and em/i Are Visually Identical by Default" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">strong/b and em/i Are Visually Identical by Default</h1>
+  <p class="page-subtitle">Semantically completely different, rendered with the exact same default computed styles — the meaningful difference lives entirely outside of CSS.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A <code>&lt;strong&gt;</code>/<code>&lt;b&gt;</code> pair and an <code>&lt;em&gt;</code>/<code>&lt;i&gt;</code> pair, no custom CSS applied. Compare their computed styles directly.</p>
+    <app-live-playground title="comparing computed styles of semantic vs presentational tag pairs" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This establishes the visual-vs-semantic gap the next subtopic builds on directly — whether NESTING one of these tags compounds anything, visually or semantically. Return to the <a routerLink="/html/headings-paragraphs">Headings &amp; Paragraphs</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Headings &amp; Paragraphs"
+    topicRoute="/html/headings-paragraphs"
+    [next]="{ label: 'Nesting strong Doesn’t Compound Weight or Emphasis', route: '/html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis' }"
+  />
+</div>

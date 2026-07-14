@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTTP/2 &amp; HTTP/3" topicRoute="/performance/http2-http3" subtopicLabel="nextHopProtocol Reveals the Real HTTP Version Per Resource" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">nextHopProtocol Reveals the Real HTTP Version Per Resource</h1>
+  <p class="page-subtitle">A real check on this very page shows the local dev server responding over http/1.1 while Google Fonts resources on the same page report h2 and h3 — protocol is negotiated per origin, not per page.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Resource Timing API, nextHopProtocol widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Fetch a couple of real, publicly-hosted resources and check the actual negotiated protocol for each with nextHopProtocol.</p>
+    <app-live-playground title="nextHopProtocol reveals the real HTTP version per resource" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This turns the main page's "check the Protocol column in DevTools" advice into a programmatic, automatable check. Next: why domain sharding, a classic HTTP/1.1 optimisation, actively defeats HTTP/2's connection coalescing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTTP/2 &amp; HTTP/3" topicRoute="/performance/http2-http3"
+    [next]="{ label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' }" />
+</div>

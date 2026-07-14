@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Input Types & Attributes" topicRoute="/html/input-types" subtopicLabel="Number Input's Empty Value for Invalid Text" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Number Input's Empty Value for Invalid Text</h1>
+  <p class="page-subtitle">Typing "1e" into a number input isn't blocked — but reading <code>.value</code> back reports an empty string, not "1e".</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Setting a number input's value to a legal-but-incomplete number string ("1e") produces an empty <code>.value</code> — even though every character in it is individually valid number syntax.</p>
+    <app-live-playground title="Number input value sanitization" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This sanitization behavior is part of the same browser-graceful-degradation family as the next subtopic — unsupported input types silently falling back to <code>text</code> rather than erroring. After that, see how <code>step</code> mismatches surface as a checkable validity state rather than being silently blocked.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Input Types & Attributes" topicRoute="/html/input-types"
+    [next]="{ label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' }" />
+</div>

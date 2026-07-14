@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Forms" topicRoute="/blazor/forms" subtopicLabel="SupplyParameterFromForm Only Binds on a Real POST, Not First Load" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">SupplyParameterFromForm Only Binds on a Real POST, Not First Load</h1>
+  <p class="page-subtitle">On a first GET-request page load, there is no posted data at all — the bound property is simply its own default initializer. The model only gets genuinely populated from form fields after a real POST back to that same page.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's Static SSR form theory into exactly when [SupplyParameterFromForm] binding actually occurs. Together with the earlier two subtopics, this batch covers the required NotifyValidationStateChanged() event, the two-piece nested-validation fix, and the GET-versus-POST binding lifecycle for Static SSR forms.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Forms" topicRoute="/blazor/forms"
+    [prev]="{ label: 'DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType', route: '/blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype' }" />
+</div>

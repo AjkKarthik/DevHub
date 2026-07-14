@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Streaming Rendering" topicRoute="/blazor/streaming-rendering" subtopicLabel="Redundant, Not Blocked, on Interactive Modes" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">StreamRendering Is Redundant on Interactive Modes, Not Blocked</h1>
+  <p class="page-subtitle">
+    Interactive render modes already deliver the same incremental-update experience through their own render
+    pipeline — StreamRendering's mechanism just isn't needed there.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered enhanced navigation's actual DOM-diffing scope — this one covers a related
+      "why does this restriction exist" question for streaming rendering itself, ruling out a plausible-sounding
+      but undocumented guess in favor of the actual reason. Next: when a page has multiple independent streamed
+      sections, they patch into the DOM in resolution order, not the order they appear in markup.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Streaming Rendering"
+    topicRoute="/blazor/streaming-rendering"
+    [prev]="{ label: 'Enhanced Navigation Can Undo DOM Changes Unless Marked data-permanent', route: '/blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent' }"
+    [next]="{ label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' }"
+  />
+</div>

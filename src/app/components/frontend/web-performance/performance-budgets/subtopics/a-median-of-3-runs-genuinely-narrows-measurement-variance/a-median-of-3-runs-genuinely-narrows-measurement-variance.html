@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Budgets &amp; CI" topicRoute="/performance/performance-budgets" subtopicLabel="A Median of 3 Runs Genuinely Narrows Measurement Variance" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">A Median of 3 Runs Genuinely Narrows Measurement Variance</h1>
+  <p class="page-subtitle">30 real, individually-timed fetch() round-trips had a range of 2.7ms–7.3ms and a stddev of 0.97ms — grouping them into medians of 3 narrowed the range to 2.9ms–5.5ms and the stddev to 0.77ms, filtering out single-run outliers.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Applies to any noisy CI measurement" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Time 30 real fetch() round-trips, then compare raw single-run variance against medians of groups of 3.</p>
+    <app-live-playground title="a median of 3 runs genuinely narrows measurement variance" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This grounds the main page's "run 3x, use the median" recommendation in a real, general statistical mechanism, not something specific to Lighthouse. Next: why picking the wrong Angular CLI budget type can silently miss the failure mode you meant to catch.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Budgets &amp; CI" topicRoute="/performance/performance-budgets"
+    [prev]="{ label: 'The size × 0.3 Gzip Approximation Is Wildly Inaccurate', route: '/performance/performance-budgets/gzip-approximation-is-wildly-inaccurate' }"
+    [next]="{ label: 'Initial vs anyScript Budgets Catch Genuinely Different Failure Modes', route: '/performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes' }" />
+</div>

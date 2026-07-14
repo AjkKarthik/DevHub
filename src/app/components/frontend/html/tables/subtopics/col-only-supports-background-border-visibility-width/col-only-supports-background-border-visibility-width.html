@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tables" topicRoute="/html/tables" subtopicLabel="col Only Supports background, border, visibility, width" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">col Only Supports background, border, visibility, width</h1>
+  <p class="page-subtitle">A <code>&lt;col&gt;</code> element accepts any CSS you throw at it with zero errors — but only four specific properties ever actually reach the cells in that column.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>One <code>&lt;col&gt;</code> is styled with four different CSS properties. Inspect the actual computed styles on the real <code>&lt;td&gt;</code> cells in that column to see which properties genuinely took effect.</p>
+    <app-live-playground title="which CSS properties reach a styled col's cells" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on ways a table's rendered result silently diverges from what the markup or CSS seems to promise — cell position (rowspan), column width (table-layout), and now which CSS properties even reach a column at all. Return to the <a routerLink="/html/tables">Tables</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tables"
+    topicRoute="/html/tables"
+    [prev]="{ label: 'table-layout: fixed Sizes Columns From Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' }"
+  />
+</div>

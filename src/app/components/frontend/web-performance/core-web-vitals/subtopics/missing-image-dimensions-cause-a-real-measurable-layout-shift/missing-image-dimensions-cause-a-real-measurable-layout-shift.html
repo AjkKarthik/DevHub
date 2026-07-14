@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Core Web Vitals Overview" topicRoute="/performance/core-web-vitals" subtopicLabel="Missing Image Dimensions Cause a Real, Measurable Layout Shift" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Missing Image Dimensions Cause a Real, Measurable Layout Shift</h1>
+  <p class="page-subtitle">An image with no width/height produces a genuine layout-shift entry when it loads — the identical image with dimensions set produces none, measured with the real Layout Instability API.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Layout Instability API, Chrome 77+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Register a real PerformanceObserver for layout-shift entries and compare an image with no dimensions against one with dimensions set.</p>
+    <app-live-playground title="missing image dimensions cause a real, measurable layout shift" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This is the main page's own fourth "Common Mistake" and quiz claim confirmed via the real Layout Instability API. The final subtopic turns to LCP — confirming the largest-contentful-paint candidate genuinely updates as bigger elements appear during page load.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Core Web Vitals Overview" topicRoute="/performance/core-web-vitals"
+    [prev]="{ label: 'transform Avoids CLS While top and left Trigger It', route: '/performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it' }"
+    [next]="{ label: 'The LCP Candidate Changes as Larger Elements Appear', route: '/performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear' }" />
+</div>

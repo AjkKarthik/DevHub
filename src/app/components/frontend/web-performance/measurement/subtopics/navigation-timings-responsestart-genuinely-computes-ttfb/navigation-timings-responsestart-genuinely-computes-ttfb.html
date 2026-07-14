@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Measurement" topicRoute="/performance/measurement" subtopicLabel="Navigation Timing’s responseStart Genuinely Computes TTFB" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Navigation Timing's responseStart Genuinely Computes TTFB</h1>
+  <p class="page-subtitle">Real timestamps from this page's own navigation entry — fetchStart 2ms, requestStart 5ms, responseStart 8ms — produced a genuine, computed TTFB of 3ms, not a placeholder value.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Navigation Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Read this page's own real PerformanceNavigationTiming entry and compute TTFB, DOM Interactive, and full page load from its real timestamps.</p>
+    <app-live-playground title="Navigation Timing's responseStart genuinely computes TTFB" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's TTFB formula works exactly as documented, with real numbers rather than a hypothetical calculation. Together, these three subtopics show that mark()/measure() genuinely differ from now(), FCP genuinely differs from LCP, and TTFB is a genuinely computed value — each backed by real, queryable Performance API data.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Measurement" topicRoute="/performance/measurement"
+    [prev]="{ label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' }" />
+</div>

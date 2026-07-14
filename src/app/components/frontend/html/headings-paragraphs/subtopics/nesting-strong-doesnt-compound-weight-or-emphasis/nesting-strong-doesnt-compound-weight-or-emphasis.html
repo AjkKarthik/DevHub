@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Headings &amp; Paragraphs" topicRoute="/html/headings-paragraphs" subtopicLabel="Nesting strong Doesn’t Compound Weight or Emphasis" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Nesting strong Doesn't Compound Weight or Emphasis</h1>
+  <p class="page-subtitle">Semantic importance is a binary flag, not an intensity scale — and the same "no compounding" rule holds at the CSS layer too, provably via computed font-weight.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A single <code>&lt;strong&gt;</code> next to a doubly-nested <code>&lt;strong&gt;&lt;strong&gt;</code>. Compare their computed font-weight directly.</p>
+    <app-live-playground title="nested strong reports the same computed weight" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Both this and the previous subtopic are about text-emphasis mechanics. The final subtopic turns to a different structural question entirely — heading levels and whether the browser enforces any real hierarchy discipline. Return to the <a routerLink="/html/headings-paragraphs">Headings &amp; Paragraphs</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Headings &amp; Paragraphs"
+    topicRoute="/html/headings-paragraphs"
+    [prev]="{ label: 'strong/b and em/i Are Visually Identical by Default', route: '/html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default' }"
+    [next]="{ label: 'Multiple h1s Are Never Auto-Demoted by Sectioning Depth', route: '/html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth' }"
+  />
+</div>

@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Animations" topicRoute="/css/animations" subtopicLabel="fill-mode: both Retains the Final Keyframe State" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">fill-mode: both Retains the Final Keyframe State</h1>
+  <p class="page-subtitle">Jumping two identical animations to their end via the Web Animations API shows one element reverting to its own opacity, the other keeping the keyframe's final value.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS Animations Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Use getAnimations() to jump two elements directly to the end of an identical animation, then compare their computed opacity — no real-time waiting needed.</p>
+    <app-live-playground title="fill-mode: both retains the final keyframe" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This establishes the core fill-mode behavior the main page's Common Mistakes already flags. Next, see a different animation-timeline gotcha — how a negative animation-delay starts an animation mid-cycle, not before it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Animations" topicRoute="/css/animations"
+    [next]="{ label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' }" />
+</div>

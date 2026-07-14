@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Selectors Deep Dive" topicRoute="/css/selectors" subtopicLabel=":has() Actually Selects the Parent" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">:has() Actually Selects the Parent</h1>
+  <p class="page-subtitle">.card:has(img) styles the card, not the img — two structurally identical cards render with genuinely different computed padding based on their contents.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Selectors Level 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare computed padding on two structurally identical cards — one with an image, one without — to see which element :has() actually styles.</p>
+    <app-live-playground title=":has() as a parent selector" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This closes out three selector gotchas — genuine specificity vs. source-order coincidence, a pseudo-element's existence depending entirely on content, and :has() as a real (if easy to misread) parent selector. Return to the Selectors Deep Dive overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Selectors Deep Dive" topicRoute="/css/selectors"
+    [prev]="{ label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' }" />
+</div>

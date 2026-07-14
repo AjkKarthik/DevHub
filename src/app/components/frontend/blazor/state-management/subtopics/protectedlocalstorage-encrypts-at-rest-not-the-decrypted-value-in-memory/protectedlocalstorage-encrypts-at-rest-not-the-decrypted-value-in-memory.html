@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="State Management" topicRoute="/blazor/state-management" subtopicLabel="ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory</h1>
+  <p class="page-subtitle">The encryption only protects a value while it sits in browser storage as ciphertext — the moment your own code calls GetAsync, the decrypted plaintext is fully exposed in the page's own memory like any other data.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's ProtectedLocalStorage code sample into precisely what the encryption does and doesn't protect against. Next: why syncing state across browser tabs needs the browser's own StorageEvent, not anything Blazor-specific.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="State Management" topicRoute="/blazor/state-management"
+    [next]="{ label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' }" />
+</div>

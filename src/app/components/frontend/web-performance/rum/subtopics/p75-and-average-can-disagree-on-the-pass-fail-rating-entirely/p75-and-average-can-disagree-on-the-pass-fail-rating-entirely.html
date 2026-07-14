@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Real User Monitoring (RUM)" topicRoute="/performance/rum" subtopicLabel="P75 and Average Can Disagree on the Pass/Fail Rating Entirely" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">P75 and Average Can Disagree on the Pass/Fail Rating Entirely</h1>
+  <p class="page-subtitle">A realistic 20-session dataset produced an average of 1,839ms ("good") and a P75 of 2,600ms ("poor") — the identical underlying data, two completely different pass/fail outcomes.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Fundamental statistics, applied to CWV" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compute both average and P75 on a realistic mixed dataset and compare which threshold each one crosses.</p>
+    <app-live-playground title="P75 and average can disagree on the pass/fail rating entirely" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Reporting average instead of 75th percentile" mistake with real, computed numbers showing the outcomes can genuinely diverge. Next: how batching metrics into one beacon genuinely cuts real network requests, not just theoretically.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Real User Monitoring (RUM)" topicRoute="/performance/rum"
+    [prev]="{ label: 'sendBeacon() Fires a Real Request With Its Own Initiator Type', route: '/performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type' }"
+    [next]="{ label: 'Batching Metrics Into One Beacon Genuinely Cuts Requests', route: '/performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests' }" />
+</div>

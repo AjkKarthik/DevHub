@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Accessibility &amp; ARIA" topicRoute="/html/accessibility" subtopicLabel="aria-labelledby Concatenates in Listed Order, Skips Missing ids" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">aria-labelledby Concatenates in Listed Order, Skips Missing ids</h1>
+  <p class="page-subtitle">Multiple space-separated ids in aria-labelledby are read in the order WRITTEN, not the order the elements appear in the DOM — and a missing id is silently dropped.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="WAI-ARIA 1.0" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A button's <code>aria-labelledby</code> lists ids in one order, while the referenced elements sit in a different order in the DOM — and one id doesn't exist at all. Compute the true accessible name and compare it against a naive DOM-order guess.</p>
+    <app-live-playground title="aria-labelledby order and missing-id audit" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Getting the accessible NAME right is only useful if the element carrying it is actually reachable by keyboard — the next subtopic covers a related but distinct trap: an element can be hidden from the accessibility tree while staying fully keyboard-focusable. Return to the <a routerLink="/html/accessibility">Accessibility &amp; ARIA</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Accessibility &amp; ARIA"
+    topicRoute="/html/accessibility"
+    [next]="{ label: 'aria-hidden Removes From the a11y Tree, Not the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' }"
+  />
+</div>

@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cumulative Layout Shift" topicRoute="/performance/cls" subtopicLabel="Fixed Positioning Eliminates the Shift In-Flow Insertion Causes" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Fixed Positioning Eliminates the Shift In-Flow Insertion Causes</h1>
+  <p class="page-subtitle">The same 80px banner produces a real, nonzero layout-shift entry when inserted into normal flow, and zero entries when inserted as position: fixed — measured with the real Layout Instability API.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Layout Instability API, Chrome 77+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare real layout-shift entries between an identical banner inserted into normal document flow versus inserted as position: fixed.</p>
+    <app-live-playground title="fixed positioning eliminates the shift in-flow insertion causes" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's cookie-banner and dynamic-content mistakes with a direct, measured comparison rather than just a recommendation. Together with the previous two subtopics — hadRecentInput and content-visibility — this set covers three of the CLS page's less commonly demonstrated mechanisms, each backed by a real browser measurement.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cumulative Layout Shift" topicRoute="/performance/cls"
+    [prev]="{ label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' }" />
+</div>

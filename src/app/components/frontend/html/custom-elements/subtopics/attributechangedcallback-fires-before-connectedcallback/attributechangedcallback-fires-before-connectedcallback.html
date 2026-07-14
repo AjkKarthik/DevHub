@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Web Components &amp; Custom Elements" topicRoute="/html/custom-elements" subtopicLabel="attributeChangedCallback Fires Before connectedCallback" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">attributeChangedCallback Fires Before connectedCallback</h1>
+  <p class="page-subtitle">For a pre-existing HTML attribute, attributeChangedCallback runs during the upgrade — before connectedCallback, while the element may not even be connected yet.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>An element with one pre-existing observed attribute and one deliberately unwatched one. Log the exact lifecycle call order, including <code>isConnected</code> at each point.</p>
+    <app-live-playground title="lifecycle call order and isConnected" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious custom element mechanics — a shared template silently emptied after one use, an event silently confined to its shadow root, and now a lifecycle callback silently firing earlier than expected. Return to the <a routerLink="/html/custom-elements">Web Components &amp; Custom Elements</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Web Components &amp; Custom Elements"
+    topicRoute="/html/custom-elements"
+    [prev]="{ label: 'composed: true Is Required to Cross the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' }"
+  />
+</div>

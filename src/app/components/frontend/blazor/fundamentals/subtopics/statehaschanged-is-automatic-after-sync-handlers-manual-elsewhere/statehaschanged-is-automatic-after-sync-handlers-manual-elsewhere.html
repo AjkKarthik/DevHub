@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Fundamentals" topicRoute="/blazor/fundamentals" subtopicLabel="StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere</h1>
+  <p class="page-subtitle">Blazor auto-renders after any code path it dispatched itself — event handlers, lifecycle methods. Background timers, injected-service event subscriptions, and thread-pool callbacks run outside that path and need an explicit StateHasChanged() call.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's mistake entry into the actual mechanism — WHICH code paths get automatic re-rendering and which don't. Next: why Scoped services in Blazor Server are per SignalR circuit, not per HTTP request.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Fundamentals" topicRoute="/blazor/fundamentals"
+    [next]="{ label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' }" />
+</div>

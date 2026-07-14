@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Typography" topicRoute="/css/typography" subtopicLabel="em Compounds in Nested Elements, rem Does Not" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">em Compounds in Nested Elements, rem Does Not</h1>
+  <p class="page-subtitle">A parent and child both declaring font-size: 1.25em compute to 20px and 25px — the exact same rem value stays identical at every nesting depth.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare nested em vs. nested rem font-sizes side by side — one genuinely compounds with each nesting level, the other never does.</p>
+    <app-live-playground title="em compounds, rem does not" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the classic em/rem gotcha the main page's Common Mistakes already flags. The final subtopic turns to a different relative unit — how ch adapts to the current font's own metrics rather than being a fixed pixel value.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Typography" topicRoute="/css/typography"
+    [prev]="{ label: 'Unitless line-height Scales, Fixed px Does Not', route: '/css/typography/unitless-line-height-scales-fixed-px-does-not' }"
+    [next]="{ label: 'ch Unit Scales With Font-Size, Not Fixed Pixels', route: '/css/typography/ch-unit-scales-with-font-size-not-fixed-pixels' }" />
+</div>

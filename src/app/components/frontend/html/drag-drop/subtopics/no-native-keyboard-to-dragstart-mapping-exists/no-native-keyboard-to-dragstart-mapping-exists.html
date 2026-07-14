@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Drag &amp; Drop API" topicRoute="/html/drag-drop" subtopicLabel="No Native Keyboard-to-dragstart Mapping Exists" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">No Native Keyboard-to-dragstart Mapping Exists</h1>
+  <p class="page-subtitle">Unlike a button's real (if untestable) Enter activation, there is no native keyboard path to dragstart at all — an absence that's directly provable.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Dispatch Enter and Space at a focused draggable element and confirm dragstart never fires — then confirm a manually-added keydown handler CAN detect the same keys, showing where the gap must be filled.</p>
+    <app-live-playground title="No native keyboard-to-dragstart mapping" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This closes out three dataTransfer/drag mechanics gotchas — missing data returns empty string not null, clearData is selective by default, and keyboard users get no native fallback at all. Return to the Drag & Drop API overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Drag &amp; Drop API" topicRoute="/html/drag-drop"
+    [prev]="{ label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Flexbox" topicRoute="/css/flexbox" subtopicLabel="flex-basis Wins Over width When Both Are Set" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">flex-basis Wins Over width When Both Are Set</h1>
+  <p class="page-subtitle">width: 100px and flex: 0 0 300px on the same item render at 300px — flex-basis silently overrides width for main-axis sizing.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Set both width and flex-basis on the same item and measure which one actually determines the rendered main-axis size.</p>
+    <app-live-playground title="flex-basis wins over width" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>Where the previous subtopic covered a shrinking gotcha, this covers a competing-declaration gotcha. The final subtopic turns to a completely different concern — how the order property changes visual position while leaving DOM order (and therefore keyboard tab order) completely untouched.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Flexbox" topicRoute="/css/flexbox"
+    [prev]="{ label: 'min-width: auto Lets Items Overflow', route: '/css/flexbox/min-width-auto-lets-items-overflow-container' }"
+    [next]="{ label: 'order Changes Visual Position, Not DOM Order', route: '/css/flexbox/order-changes-visual-position-not-dom-order' }" />
+</div>

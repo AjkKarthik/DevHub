@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Streaming Rendering" topicRoute="/blazor/streaming-rendering" subtopicLabel="Resolution Order, Not Markup Order" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Streamed Sections Patch in Resolution Order, Not Markup Order</h1>
+  <p class="page-subtitle">
+    Whichever independent section's data resolves first is the one that populates first — declaration order in the
+    markup has no bearing on it.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by expanding the main page's own Dashboard multi-section example into an explicit
+      rule about arrival order. Together with the earlier two subtopics, this batch covers enhanced navigation's
+      true DOM-diffing scope, why streaming is redundant (not blocked) on interactive modes, and now why section
+      order in the markup doesn't predict which one a user sees populate first.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Streaming Rendering"
+    topicRoute="/blazor/streaming-rendering"
+    [prev]="{ label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' }"
+  />
+</div>

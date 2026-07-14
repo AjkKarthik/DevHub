@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Media Elements" topicRoute="/html/media" subtopicLabel="An Empty sandbox Blocks Script Execution Entirely" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">An Empty sandbox Blocks Script Execution Entirely</h1>
+  <p class="page-subtitle">Sandbox tokens are additive and independent — <code>allow-scripts</code> controls whether a frame's own code runs; <code>allow-same-origin</code> separately controls whether the parent can read the frame afterward.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two identical srcdoc iframes, both readable by the parent via <code>allow-same-origin</code>, differ only in whether they also grant <code>allow-scripts</code>. Watch which one's marker div actually gets mutated.</p>
+    <app-live-playground title="sandbox tokens gate script execution independently" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Sandboxing is a security boundary, entirely orthogonal to the loading-timing and srcset-selection mechanics covered in the previous two subtopics — an iframe can be perfectly performant and still be a serious security risk if sandboxed incorrectly. Return to the <a routerLink="/html/media">Media Elements</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Media Elements"
+    topicRoute="/html/media"
+    [prev]="{ label: 'sizes, Not Media Queries, Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' }"
+  />
+</div>

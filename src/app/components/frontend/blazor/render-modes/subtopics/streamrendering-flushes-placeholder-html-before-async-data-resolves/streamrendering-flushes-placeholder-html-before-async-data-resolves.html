@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Render Modes" topicRoute="/blazor/render-modes" subtopicLabel="StreamRendering Flushes Placeholder HTML Before Async Data Resolves" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">StreamRendering Flushes Placeholder HTML Before Async Data Resolves</h1>
+  <p class="page-subtitle">Adding the StreamRendering attribute doesn't make a slow query run faster — it changes WHEN bytes reach the browser, flushing non-dependent content immediately and streaming updates as slow sections resolve, all without any interactive runtime.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by covering a mechanism unique to Static SSR — no interactive runtime needed. Together with the earlier two subtopics, this batch covers why InteractiveAuto loses state on its Server-to-WASM transition, why OnInitializedAsync runs twice by default, and how StreamRendering solves a genuinely different "slow page" problem for purely static pages.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Render Modes" topicRoute="/blazor/render-modes"
+    [prev]="{ label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' }" />
+</div>

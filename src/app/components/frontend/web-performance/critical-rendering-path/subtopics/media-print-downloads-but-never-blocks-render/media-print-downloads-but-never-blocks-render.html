@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Critical Rendering Path" topicRoute="/performance/critical-rendering-path" subtopicLabel="media=&quot;print&quot; Downloads But Never Blocks Render" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">media="print" Downloads But Never Blocks Render</h1>
+  <p class="page-subtitle">A normal stylesheet reports renderBlockingStatus: "blocking"; the identical stylesheet with media="print" reports "non-blocking" — measured with the real Resource Timing API, not inferred.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="renderBlockingStatus, Chrome 107+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare the real renderBlockingStatus of a normal stylesheet against an identical one linked with media="print".</p>
+    <app-live-playground title="media=print downloads but never blocks render" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This makes the main page's "CSS always blocks rendering" QnA answer precise — it always blocks UNLESS the media attribute says otherwise, verified with the real renderBlockingStatus field. Next: whether defer actually waits for the parser to finish, proven by catching the parser mid-document.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Critical Rendering Path" topicRoute="/performance/critical-rendering-path"
+    [next]="{ label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' }" />
+</div>

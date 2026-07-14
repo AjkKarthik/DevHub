@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Responsive Design" topicRoute="/css/responsive" subtopicLabel="min() Picks the Smaller Value, Not the Larger" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">min() Picks the Smaller Value, Not the Larger</h1>
+  <p class="page-subtitle">The same width: min(100%, 600px) rule resolves to two genuinely different pixel widths depending on which argument is currently smaller.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS Values and Units Level 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Place the identical min(100%, 600px) rule inside a narrow and a wide container, and measure which argument actually wins in each.</p>
+    <app-live-playground title="min() picks the smaller value" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This establishes the core min()/max() comparison behavior. Next, see a different responsive mechanism entirely — container queries responding to a parent's own width, completely independent of the viewport.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Responsive Design" topicRoute="/css/responsive"
+    [next]="{ label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' }" />
+</div>

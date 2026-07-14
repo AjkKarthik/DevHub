@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Speculation Rules API" topicRoute="/performance/speculation-rules" subtopicLabel="Feature Detection Genuinely Confirms Support Before You Speculate" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Feature Detection Genuinely Confirms Support Before You Speculate</h1>
+  <p class="page-subtitle">HTMLScriptElement.supports('speculationrules') returned true in a real Chromium browser, and a dynamically injected rules block was accepted into the DOM without error — a genuine capability check, not a browser-name guess.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Chrome 109+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Check real Speculation Rules API support, then safely inject a rules block only if the browser will act on it.</p>
+    <app-live-playground title="feature detection genuinely confirms support before you speculate" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This grounds the main page's feature-detection recommendation in a real, verified capability check. Next: what document.prerendering actually reports on a normal page load, the basis for the analytics-guard pattern.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Speculation Rules API" topicRoute="/performance/speculation-rules"
+    [next]="{ label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' }" />
+</div>

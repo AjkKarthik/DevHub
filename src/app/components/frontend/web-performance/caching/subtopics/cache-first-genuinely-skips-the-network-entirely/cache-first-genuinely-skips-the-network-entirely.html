@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching &amp; Service Workers" topicRoute="/performance/caching" subtopicLabel="Cache-First Genuinely Skips the Network Entirely" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Cache-First Genuinely Skips the Network Entirely</h1>
+  <p class="page-subtitle">A cache-first lookup for an already-cached URL never calls the network function at all — the fetch counter stays at 0, confirmed with a real Cache Storage API demo.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Cache Storage API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Run a cache-first lookup against a cached URL and a never-cached URL, and count how many times the real network function actually gets called.</p>
+    <app-live-playground title="cache-first genuinely skips the network entirely" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms exactly why the main page pairs Cache First with versioned assets only — no freshness check exists once a cache entry is found. Next: whether the "clear old caches on deploy" pattern actually deletes the right ones.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching &amp; Service Workers" topicRoute="/performance/caching"
+    [prev]="{ label: 'The Cache API Only Stores GET Requests', route: '/performance/caching/the-cache-api-only-stores-get-requests' }"
+    [next]="{ label: 'Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones', route: '/performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones' }" />
+</div>

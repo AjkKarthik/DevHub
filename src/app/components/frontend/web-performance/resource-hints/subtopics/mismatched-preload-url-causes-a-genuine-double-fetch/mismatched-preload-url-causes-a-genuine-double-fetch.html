@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource Hints" topicRoute="/performance/resource-hints" subtopicLabel="A Mismatched Preload URL Causes a Genuine Double-Fetch" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">A Mismatched Preload URL Causes a Genuine Double-Fetch</h1>
+  <p class="page-subtitle">A preload href that differs from the consuming element's URL by even a single query character produces two real network requests — an exact match produces one.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Resource Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare real resource-timing entries for a preload with a mismatched URL against one with an exactly matching URL.</p>
+    <app-live-playground title="mismatched preload URL causes a genuine double-fetch" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Preloading the wrong resource URL" mistake with a real, measured double-fetch — the same failure mode as the crossorigin mismatch, caused by a different attribute. Next: what actually happens when a preload is missing as= entirely — a genuinely different (and less obvious) outcome.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resource Hints" topicRoute="/performance/resource-hints"
+    [prev]="{ label: 'Font Preload Without crossorigin Causes a Genuine Double-Fetch', route: '/performance/resource-hints/font-preload-without-crossorigin-causes-a-genuine-double-fetch' }"
+    [next]="{ label: 'Missing as= Silently Does Nothing — Not a Double-Fetch', route: '/performance/resource-hints/missing-as-silently-does-nothing-not-a-double-fetch' }" />
+</div>

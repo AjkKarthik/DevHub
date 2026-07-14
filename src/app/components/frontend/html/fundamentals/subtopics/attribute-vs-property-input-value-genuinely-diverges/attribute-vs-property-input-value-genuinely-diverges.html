@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML Fundamentals" topicRoute="/html/fundamentals" subtopicLabel="Attribute vs Property — input value Genuinely Diverges" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Attribute vs Property — input value Genuinely Diverges</h1>
+  <p class="page-subtitle">getAttribute('value') stays frozen at whatever the HTML originally said. The .value property is live, current state — and real typing makes the two permanently disagree.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>An input starts with <code>value="hello"</code>. Simulate real typing by setting <code>.value</code> directly, then compare the attribute and property side by side.</p>
+    <app-live-playground title="attribute vs property divergence after simulated typing" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a mechanics-level distinction in how the DOM tracks element state. The next subtopic covers a related but different mechanic — what happens when the browser encounters an element it has never heard of at all. Return to the <a routerLink="/html/fundamentals">HTML Fundamentals</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML Fundamentals"
+    topicRoute="/html/fundamentals"
+    [next]="{ label: 'Unknown Elements Fall Back to Anonymous Inline Rendering', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' }"
+  />
+</div>

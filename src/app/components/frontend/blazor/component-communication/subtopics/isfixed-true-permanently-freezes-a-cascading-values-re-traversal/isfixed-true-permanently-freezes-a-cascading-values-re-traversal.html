@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Component Communication" topicRoute="/blazor/component-communication" subtopicLabel="IsFixed=true Permanently Freezes a Cascading Value’s Re-Traversal" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">IsFixed=true Permanently Freezes a Cascading Value's Re-Traversal</h1>
+  <p class="page-subtitle">IsFixed is not "rarely changes" — it's a one-time promise the value NEVER changes again. If it does, every descendant that already consumed it keeps a silently stale snapshot forever, with no error or warning.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's brief IsFixed mention into its real correctness risk. Together with the earlier two subtopics, this batch covers exactly which component EventCallback's auto-render targets, how &#64;bind-Value actually desugars, and why IsFixed is a permanent, not occasional, opt-out of cascading updates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Component Communication" topicRoute="/blazor/component-communication"
+    [prev]="{ label: 'bind-Value Desugars Into Two Separate Parameters, Not Magic Binding', route: '/blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding' }" />
+</div>

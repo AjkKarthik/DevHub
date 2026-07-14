@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Largest Contentful Paint" topicRoute="/performance/lcp" subtopicLabel="Text Can Be the LCP Candidate — Not Only Images" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Text Can Be the LCP Candidate — Not Only Images</h1>
+  <p class="page-subtitle">A large heading can out-cover a modest hero photo and win as the LCP element, with an empty url field marking it as text — measured with the real largest-contentful-paint Performance Observer.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Largest Contentful Paint API, Chrome 77+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Register a real PerformanceObserver for largest-contentful-paint entries on a page with both a small image and a large headline, and see which one wins.</p>
+    <app-live-playground title="text can be the LCP candidate" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>The main page's own theory already states the LCP candidate can be text, image, or video poster — this subtopic makes that concrete with a real entry.url check, so you know to look at the actual reported element before optimising images that were never the bottleneck. Next: how a preload hint beats a render-blocking resource for the LCP fetch.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Largest Contentful Paint" topicRoute="/performance/lcp"
+    [next]="{ label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' }" />
+</div>

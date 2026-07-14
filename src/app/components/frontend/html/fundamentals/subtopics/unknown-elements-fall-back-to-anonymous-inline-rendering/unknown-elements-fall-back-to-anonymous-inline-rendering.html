@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML Fundamentals" topicRoute="/html/fundamentals" subtopicLabel="Unknown Elements Fall Back to Anonymous Inline Rendering" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Unknown Elements Fall Back to Anonymous Inline Rendering</h1>
+  <p class="page-subtitle">A completely made-up tag name is never rejected — the parser creates a real DOM node for it, defaulting to display: inline, identical to a span.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A real <code>&lt;span&gt;</code> next to a completely made-up <code>&lt;totally-fake-tag&gt;</code>. Confirm both exist in the DOM and compare their default computed <code>display</code> values.</p>
+    <app-live-playground title="unknown tag defaults to inline, just like span" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a parsing-tolerance mechanic for tag NAMES. The final subtopic covers a related but distinct parsing quirk — how the parser handles a stray END tag on a void element. Return to the <a routerLink="/html/fundamentals">HTML Fundamentals</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML Fundamentals"
+    topicRoute="/html/fundamentals"
+    [prev]="{ label: 'Attribute vs Property — input value Genuinely Diverges', route: '/html/fundamentals/attribute-vs-property-input-value-genuinely-diverges' }"
+    [next]="{ label: 'A Stray br End Tag Inserts a Second Line Break', route: '/html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break' }"
+  />
+</div>

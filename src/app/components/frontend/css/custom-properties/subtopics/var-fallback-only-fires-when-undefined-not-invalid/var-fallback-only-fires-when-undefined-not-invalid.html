@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Custom Properties" topicRoute="/css/custom-properties" subtopicLabel="var() Fallback Only Fires When Undefined, Not Invalid" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">var() Fallback Only Fires When Undefined, Not Invalid</h1>
+  <p class="page-subtitle">--size: red used for width computes to auto (fills the container), not the var() fallback — the fallback only catches a completely undefined variable.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="CSS Custom Properties Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare an invalid-but-defined variable against a genuinely undefined one, both using the same var() fallback — only one actually uses it.</p>
+    <app-live-playground title="var() fallback: undefined vs invalid" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the classic var() gotcha the main page's Common Mistakes already flags. Next, see a related resolution rule — what happens when two custom properties reference each other in a circle.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Custom Properties" topicRoute="/css/custom-properties"
+    [next]="{ label: 'Circular References Resolve to the Initial Value', route: '/css/custom-properties/circular-references-resolve-to-the-initial-value' }" />
+</div>

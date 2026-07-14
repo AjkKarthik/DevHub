@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Third-Party Scripts" topicRoute="/performance/third-party-scripts" subtopicLabel="Resource Timing Correctly Separates First-Party From Third-Party" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Resource Timing Correctly Separates First-Party From Third-Party</h1>
+  <p class="page-subtitle">The exact audit pattern from the main page correctly split real first-party and third-party requests and grouped them by hostname — confirmed live on this actual production page, not a synthetic demo.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Resource Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Fire a mix of first-party and third-party requests, then run the audit pattern and check the real split and grouping.</p>
+    <app-live-playground title="Resource Timing correctly separates first-party from third-party" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's audit code sample actually works as described, verified against real production traffic on this very site. Together, these three subtopics cover a real security guarantee (SRI), a real network-deferral guarantee (facades), and a real auditing technique (Resource Timing) — each backed by an actual measurement, not just documentation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Third-Party Scripts" topicRoute="/performance/third-party-scripts"
+    [prev]="{ label: 'A Facade Loads Zero Third-Party Bytes Until Interaction', route: '/performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction' }" />
+</div>

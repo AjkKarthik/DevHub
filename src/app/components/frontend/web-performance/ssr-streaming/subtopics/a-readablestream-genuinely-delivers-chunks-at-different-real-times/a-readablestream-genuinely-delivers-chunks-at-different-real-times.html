@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SSR &amp; Streaming HTML" topicRoute="/performance/ssr-streaming" subtopicLabel="A ReadableStream Genuinely Delivers Chunks at Different Real Times" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">A ReadableStream Genuinely Delivers Chunks at Different Real Times</h1>
+  <p class="page-subtitle">A real stream's chunks arrived at genuinely different, measured timestamps — a shell chunk at +0ms, later sections hundreds of milliseconds after — not all bundled into one delivery.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Streams API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Build a real ReadableStream enqueuing chunks with real delays, then read it and log each chunk's real arrival time.</p>
+    <app-live-playground title="a ReadableStream genuinely delivers chunks at different real times" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This grounds the main page's streaming SSR theory in the real, standard Web API that models it, confirmed with genuine per-chunk timestamps. Next: why non-deterministic values like Date.now() and Math.random() are exactly why hydration mismatches happen.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SSR &amp; Streaming HTML" topicRoute="/performance/ssr-streaming"
+    [next]="{ label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' }" />
+</div>

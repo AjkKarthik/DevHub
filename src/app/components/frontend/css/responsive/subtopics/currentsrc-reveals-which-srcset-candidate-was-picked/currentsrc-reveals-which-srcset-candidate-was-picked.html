@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Responsive Design" topicRoute="/css/responsive" subtopicLabel="currentSrc Reveals Which srcset Candidate Was Picked" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">currentSrc Reveals Which srcset Candidate Was Picked</h1>
+  <p class="page-subtitle">img.src always reflects the plain fallback attribute — img.currentSrc reveals whichever srcset candidate the browser's own algorithm actually chose.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare img.src against img.currentSrc after the image loads — one reflects the literal attribute, the other reflects the browser's real selection.</p>
+    <app-live-playground title="currentSrc reveals the chosen srcset candidate" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This closes out three responsive-design gotchas — a fluid value's dynamic comparison, container queries as a genuinely different query mechanism, and the browser's own autonomous resource-selection decision. Return to the Responsive Design overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Responsive Design" topicRoute="/css/responsive"
+    [prev]="{ label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' }" />
+</div>

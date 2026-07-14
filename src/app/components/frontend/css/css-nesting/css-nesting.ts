@@ -132,10 +132,14 @@ const codeTabs: CodeTab[] = [
   .sidebar & { font-size: .875rem; }
 }
 
-/* BEM-style with nesting */
-.block {
-  &__element { color: red; }   /* .block__element */
-  &--modifier { font-weight: 700; }  /* .block--modifier */
+/* BEM elements/modifiers: write them flat, not concatenated with & */
+.block { }
+.block__element { color: red; }
+.block--modifier { font-weight: 700; }
+
+/* Nesting still works for combining & with a FULL class name */
+.block__element {
+  &.block__element--highlighted { color: blue; }
 }`,
   },
   {
@@ -251,18 +255,18 @@ const mistakes: CommonMistake[] = [
   {
     title: 'Using & for BEM concatenation incorrectly',
     wrong: `.block {
-  &__element { }   /* .block__element — works in Sass, may not in native CSS */
+  &__element { }   /* invalid — the entire rule is silently dropped */
 }`,
     right: `/* Native CSS nesting does NOT concatenate strings — & is the full selector */
 .block { }
 .block__element { }  /* write BEM selectors flat in native CSS */
 
-/* Or use nesting for pseudo/state only */
+/* To combine & with a full class name, include the leading dot */
 .block__element {
   &:hover { }
-  &--modifier { }   /* only works if .block__element--modifier is valid on the same element */
+  &.block__element--modifier { }   /* & + full class name, not just the suffix */
 }`,
-    explanation: 'In native CSS nesting, & is always the full parent selector (.block), not a string fragment. .block { &__element } expands to .block __element (with a space) — a descendant selector, not concatenation. Sass-style BEM concatenation only works in preprocessors.',
+    explanation: '& is always the full parent selector (.block), not a string fragment, and a bare identifier immediately after & (like __element or --modifier with no leading dot) is not valid CSS — a type selector cannot follow another selector in a compound. The whole nested rule is silently dropped, with no console warning. Sass-style BEM concatenation only works in preprocessors; in native CSS either write BEM selectors flat, or nest using the full class name with its leading dot (&.block__element--modifier).',
   },
   {
     title: 'Expecting nesting to change specificity',
@@ -401,7 +405,7 @@ const quiz: QuizQuestion[] = [
 const qna: QnaItem[] = [
   {
     q: 'Is native CSS nesting the same as Sass nesting?',
-    a: 'Mostly yes, with one key difference: native CSS nesting does NOT support string concatenation. In Sass, .block { &__element { } } produces .block__element. In native CSS, it produces .block __element (a descendant selector) because & is the full selector, not a string fragment. Everything else — pseudo-classes, pseudo-elements, media queries, combinators — works the same way.',
+    a: 'Mostly yes, with one key difference: native CSS nesting does NOT support string concatenation. In Sass, .block { &__element { } } produces .block__element. In native CSS, & must be immediately followed by a selector type that is legal after another selector (a class, ID, pseudo-class, pseudo-element, or attribute) — a bare identifier like __element is not, so the whole rule is a syntax error and gets silently dropped, not turned into a descendant selector. Everything else — pseudo-classes, pseudo-elements, media queries, combinators — works the same way.',
   },
   {
     q: 'Do I still need PostCSS or Sass for nesting?',

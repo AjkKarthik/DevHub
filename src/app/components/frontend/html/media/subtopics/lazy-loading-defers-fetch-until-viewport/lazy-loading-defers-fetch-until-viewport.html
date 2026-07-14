@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Media Elements" topicRoute="/html/media" subtopicLabel="loading=&quot;lazy&quot; Defers the Fetch, Not Just the Render" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">loading="lazy" Defers the Fetch Until Near the Viewport</h1>
+  <p class="page-subtitle">An eager image starts downloading the instant the parser sees it, no matter how far down the page it sits. A lazy image withholds the network request entirely until it nears the viewport.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two images sit 3000px below the fold — one <code>loading="eager"</code>, one <code>loading="lazy"</code>. Check <code>naturalWidth</code> immediately on page load, then again after scrolling the lazy one into view.</p>
+    <app-live-playground title="eager vs lazy image fetch timing" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Knowing exactly when the fetch happens explains why <code>sizes</code> matters just as much as <code>srcset</code> for controlling what gets downloaded — see the next subtopic — and why sandboxing an untrusted embed (the third subtopic) is a completely separate, orthogonal concern from loading performance. Return to the <a routerLink="/html/media">Media Elements</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Media Elements"
+    topicRoute="/html/media"
+    [next]="{ label: 'sizes, Not Media Queries, Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' }"
+  />
+</div>

@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Server & SignalR" topicRoute="/blazor/server-signalr" subtopicLabel="A Custom Hub and the Render Circuit Are Separate SignalR Mechanisms" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">A Custom Hub and the Render Circuit Are Separate SignalR Mechanisms</h1>
+  <p class="page-subtitle">Injecting IHubContext directly into a component compiles and even works mechanically — but the component never becomes a connected client of that Hub, so it can broadcast to others while never receiving its own messages back.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's mistake entry into exactly why a component cannot "reach into" a custom Hub, and what the correct client-connection pattern actually provides. Next: what genuinely happens to component state during the reconnection window when a circuit briefly disconnects.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Server & SignalR" topicRoute="/blazor/server-signalr"
+    [next]="{ label: 'The Reconnection Window Only Preserves State for the Same Circuit', route: '/blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit' }" />
+</div>

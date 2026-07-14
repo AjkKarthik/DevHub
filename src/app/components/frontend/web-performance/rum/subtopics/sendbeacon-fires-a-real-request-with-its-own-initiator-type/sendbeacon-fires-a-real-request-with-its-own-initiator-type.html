@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Real User Monitoring (RUM)" topicRoute="/performance/rum" subtopicLabel="sendBeacon() Fires a Real Request With Its Own Initiator Type" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">sendBeacon() Fires a Real Request With Its Own Initiator Type</h1>
+  <p class="page-subtitle">navigator.sendBeacon() returns true and produces a genuine resource-timing entry with initiatorType: "beacon" — a distinct browser-level request category, not a thin fetch() wrapper.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Beacon API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Call navigator.sendBeacon() and inspect the real resource-timing entry it produces, including its distinct initiatorType.</p>
+    <app-live-playground title="sendBeacon() fires a real request with its own initiator type" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "sendBeacon over fetch on unload" guidance with the real browser-level distinction behind it. Next: how P75 and average can disagree entirely on whether a metric passes, demonstrated with real computed numbers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Real User Monitoring (RUM)" topicRoute="/performance/rum"
+    [next]="{ label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' }" />
+</div>

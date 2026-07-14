@@ -1440,6 +1440,428 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'novalidate Disables Blocking, Not checkValidity()', route: '/html/forms/novalidate-disables-blocking-but-checkvalidity-still-works' },
     { label: 'enctype Only Affects Native Submission', route: '/html/forms/enctype-only-affects-native-submission-not-formdata-api' },
   ],
+  media: [
+    { label: 'loading="lazy" Defers the Fetch', route: '/html/media/lazy-loading-defers-fetch-until-viewport' },
+    { label: 'sizes Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' },
+    { label: 'Empty sandbox Blocks Scripts', route: '/html/media/empty-sandbox-blocks-script-execution' },
+  ],
+  tables: [
+    { label: 'Leftover rowspan Cell Shifts Everything', route: '/html/tables/rowspan-covered-cells-shift-every-later-cell' },
+    { label: 'table-layout: fixed Uses Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' },
+    { label: 'col Only Supports 4 CSS Properties', route: '/html/tables/col-only-supports-background-border-visibility-width' },
+  ],
+  'links-navigation': [
+    { label: 'noopener Genuinely Nulls window.opener', route: '/html/links-navigation/rel-noopener-genuinely-nulls-window-opener' },
+    { label: 'href-less Anchor Skips Tab Navigation', route: '/html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation' },
+    { label: 'LVHFA Order Decides the Winner', route: '/html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner' },
+  ],
+  // NOTE: keyed 'html-accessibility', NOT bare 'accessibility' — the Angular
+  // hub's own /angular/accessibility topic already claims the bare key.
+  'html-accessibility': [
+    { label: 'aria-labelledby Order and Missing-id Skip', route: '/html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids' },
+    { label: 'aria-hidden vs the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' },
+    { label: 'button vs div role=button Keyboard Activation', route: '/html/accessibility/native-button-translates-enter-space-div-role-button-does-not' },
+  ],
+  'head-metadata': [
+    { label: 'Font preload Without crossorigin Fetches Twice', route: '/html/head-metadata/font-preload-without-crossorigin-fetches-twice' },
+    { label: 'preload Without as= Is Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' },
+    { label: 'Relative canonical Resolves Differently', route: '/html/head-metadata/relative-canonical-resolves-differently-per-page' },
+  ],
+  'custom-elements': [
+    { label: 'cloneNode(true) Is Required', route: '/html/custom-elements/clonenode-required-appendchild-consumes-the-template' },
+    { label: 'composed:true Crosses the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' },
+    { label: 'attributeChangedCallback Before connectedCallback', route: '/html/custom-elements/attributechangedcallback-fires-before-connectedcallback' },
+  ],
+  'iframes-embeds': [
+    { label: 'allow-scripts + allow-same-origin Sandbox Escape', route: '/html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape' },
+    { label: 'Missing width/height Causes Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' },
+    { label: 'srcdoc vs src Network Requests', route: '/html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one' },
+  ],
+  'canvas-svg': [
+    { label: 'Canvas Resolution vs CSS Display Size', route: '/html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels' },
+    { label: 'Missing beginPath() Merges Paths', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' },
+    { label: 'SVG Without viewBox Ignores CSS Resize', route: '/html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates' },
+  ],
+  // NOTE: keyed 'html-performance', NOT bare 'performance' — that bare key
+  // is already claimed elsewhere in this shared map.
+  'html-performance': [
+    { label: 'Too Many High-Priority Resources Dilutes It', route: '/html/performance/too-many-high-priority-resources-dilutes-the-signal' },
+    { label: 'defer Guarantees Order + DOMContentLoaded Timing', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' },
+    { label: 'content-visibility: auto Genuinely Skips Rendering', route: '/html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering' },
+  ],
+  'pwa-service-workers': [
+    { label: 'Registration Scope From Script Location', route: '/html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location' },
+    { label: 'No DOM Access Inside a Service Worker', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' },
+    { label: 'New SW Waits Without skipWaiting()', route: '/html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting' },
+  ],
+  seo: [
+    { label: 'document.title Uses Only the First title', route: '/html/seo/document-title-deterministically-uses-only-the-first-title' },
+    { label: 'Malformed JSON-LD Renders Fine, Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' },
+    { label: 'og:image Dimensions Checkable via Image API', route: '/html/seo/og-image-dimensions-are-checkable-live-via-the-image-api' },
+  ],
+  apis: [
+    { label: 'FileReaderSync Only Exists in Workers', route: '/html/apis/filereadersync-only-exists-inside-a-real-web-worker' },
+    { label: 'navigator.share Feature Detection', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' },
+    { label: 'Notification.permission Never Throws', route: '/html/apis/notification-permission-is-readable-anytime-construction-never-throws' },
+  ],
+  // NOTE: keyed 'html-fundamentals', NOT bare 'fundamentals' — the
+  // JavaScript hub's own /javascript/fundamentals topic already claims
+  // the bare key.
+  'html-fundamentals': [
+    { label: 'Attribute vs Property Divergence', route: '/html/fundamentals/attribute-vs-property-input-value-genuinely-diverges' },
+    { label: 'Unknown Elements Fall Back to Inline', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' },
+    { label: 'Stray br End Tag Inserts a Second Break', route: '/html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break' },
+  ],
+  'headings-paragraphs': [
+    { label: 'strong/b and em/i Are Visually Identical', route: '/html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default' },
+    { label: 'Nesting strong Doesn’t Compound', route: '/html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis' },
+    { label: 'Multiple h1s Never Auto-Demoted', route: '/html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth' },
+  ],
+  'input-types': [
+    { label: 'Number Input’s Empty Value for Invalid Text', route: '/html/input-types/number-input-empty-value-for-invalid-text' },
+    { label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' },
+    { label: 'step Mismatch Is Checkable via Validity', route: '/html/input-types/step-mismatch-checkable-via-validity' },
+  ],
+  'landmark-elements': [
+    { label: 'Multiple main Elements Don’t Error', route: '/html/landmark-elements/multiple-main-elements-dont-error' },
+    { label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' },
+    { label: 'Nested header Loses Implicit Banner Role', route: '/html/landmark-elements/nested-header-loses-implicit-banner-role' },
+  ],
+  'aria-roles': [
+    { label: 'div role=button Lacks Keyboard Activation', route: '/html/aria-roles/div-role-button-lacks-keyboard-activation' },
+    { label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' },
+    { label: 'disabled vs aria-disabled Blocks Events', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' },
+  ],
+  'focus-management': [
+    { label: 'Roving Tabindex Keeps Exactly One at Zero', route: '/html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero' },
+    { label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' },
+    { label: 'dialog close() Restores Last-Focused Element', route: '/html/focus-management/dialog-close-restores-last-focused-element' },
+  ],
+  'storage-apis': [
+    { label: 'localStorage Only Stores Strings, Not Objects', route: '/html/storage-apis/localstorage-only-stores-strings-not-objects' },
+    { label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' },
+    { label: 'QuotaExceededError Is a Real, Catchable Exception', route: '/html/storage-apis/quotaexceedederror-is-a-real-catchable-exception' },
+  ],
+  'drag-drop': [
+    { label: 'getData Returns Empty String for a Missing Type', route: '/html/drag-drop/getdata-returns-empty-string-for-missing-type' },
+    { label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' },
+    { label: 'No Native Keyboard-to-dragstart Mapping Exists', route: '/html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists' },
+  ],
+  'box-model': [
+    { label: 'Margin Collapse Uses the Larger Value', route: '/css/box-model/margin-collapse-uses-larger-value-not-the-sum' },
+    { label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' },
+    { label: 'Parent-Child Collapse Moves the Parent’s Own Box', route: '/css/box-model/parent-child-collapse-moves-the-parents-own-box' },
+  ],
+  'flexbox': [
+    { label: 'min-width: auto Lets Items Overflow', route: '/css/flexbox/min-width-auto-lets-items-overflow-container' },
+    { label: 'flex-basis Wins Over width', route: '/css/flexbox/flex-basis-wins-over-width-when-both-are-set' },
+    { label: 'order Changes Visual Position, Not DOM Order', route: '/css/flexbox/order-changes-visual-position-not-dom-order' },
+  ],
+  'grid': [
+    { label: 'auto-fit Collapses Tracks, auto-fill Keeps Them', route: '/css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them' },
+    { label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' },
+    { label: 'Dense Packing Reorders Visually, Not in the DOM', route: '/css/grid/dense-packing-reorders-visually-not-in-dom' },
+  ],
+  'positioning': [
+    { label: 'z-index Does Nothing Without position Set', route: '/css/positioning/z-index-does-nothing-without-position-set' },
+    { label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' },
+    { label: 'sticky Without an Offset Behaves Like static', route: '/css/positioning/sticky-without-an-offset-behaves-like-static' },
+  ],
+  'custom-properties': [
+    { label: 'var() Fallback Only Fires When Undefined', route: '/css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid' },
+    { label: 'Circular References Resolve to the Initial Value', route: '/css/custom-properties/circular-references-resolve-to-the-initial-value' },
+    { label: 'setProperty() Updates Everything Using the Variable', route: '/css/custom-properties/setproperty-updates-everything-using-the-variable' },
+  ],
+  'selectors': [
+    { label: ':is() Takes Highest Specificity, :where() Stays Zero', route: '/css/selectors/is-takes-highest-specificity-where-stays-zero' },
+    { label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' },
+    { label: ':has() Actually Selects the Parent', route: '/css/selectors/has-parent-selector-actually-selects-the-parent' },
+  ],
+  'typography': [
+    { label: 'Unitless line-height Scales, Fixed px Does Not', route: '/css/typography/unitless-line-height-scales-fixed-px-does-not' },
+    { label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' },
+    { label: 'ch Unit Scales With Font-Size, Not Fixed Pixels', route: '/css/typography/ch-unit-scales-with-font-size-not-fixed-pixels' },
+  ],
+  'responsive': [
+    { label: 'min() Picks the Smaller Value, Not the Larger', route: '/css/responsive/min-picks-the-smaller-value-not-the-larger' },
+    { label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' },
+    { label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' },
+  ],
+  'transitions': [
+    { label: 'Negative Delay Starts Mid-Cycle, Not After a Pause', route: '/css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause' },
+    { label: 'A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value', route: '/css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last' },
+    { label: 'A Hover-Only Transition Snaps Back Instead of Reversing', route: '/css/transitions/hover-only-transition-snaps-back-instead-of-reversing' },
+  ],
+  // NOTE: keyed 'css-animations', NOT bare 'animations' — Angular's
+  // own /angular/animations topic already claims the bare key.
+  'css-animations': [
+    { label: 'fill-mode: both Retains the Final Keyframe State', route: '/css/animations/fill-mode-both-retains-the-final-keyframe-state' },
+    { label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' },
+    { label: 'display Cannot Be Smoothly Interpolated, Only Flips', route: '/css/animations/display-cannot-be-smoothly-interpolated-only-flips' },
+  ],
+  'colors-theming': [
+    { label: 'color-mix in oklch Preserves Vividness, sRGB Doesn’t', route: '/css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt' },
+    { label: 'color-mix() Always Produces an Opaque Result', route: '/css/colors-theming/color-mix-always-produces-an-opaque-result' },
+    { label: 'WCAG Contrast Ratio Is Directly Computable From RGB', route: '/css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb' },
+  ],
+  'backgrounds-borders': [
+    { label: 'The background Shorthand Resets Unlisted Sub-Properties', route: '/css/backgrounds-borders/background-shorthand-resets-unlisted-sub-properties' },
+    { label: 'object-fit Does Nothing Without Explicit Dimensions', route: '/css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions' },
+    { label: 'border-radius: 50% Is an Ellipse, Not a Circle', route: '/css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle' },
+  ],
+  'container-queries': [
+    { label: 'Container Queries Silently Do Nothing Without container-type', route: '/css/container-queries/container-queries-silently-do-nothing-without-container-type' },
+    { label: 'container-type: size Collapses Height Without Explicit Sizing', route: '/css/container-queries/container-type-size-collapses-height-without-explicit-sizing' },
+    { label: 'A Container Cannot Query or Style Itself', route: '/css/container-queries/a-container-cannot-query-or-style-itself' },
+  ],
+  'css-layers': [
+    { label: 'Unlayered Styles Always Beat Every Layer, Regardless of Specificity', route: '/css/css-layers/unlayered-styles-always-beat-every-layer-regardless-of-specificity' },
+    { label: '!important Reverses Layer Priority — Lower Layers Win', route: '/css/css-layers/important-reverses-layer-priority-lower-layers-win' },
+    { label: 'The First @layer Encountered Sets Its Position, Not Declaration Order', route: '/css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order' },
+  ],
+  'css-nesting': [
+    { label: 'Omitting & Before a Pseudo-Class Creates a Descendant Selector', route: '/css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector' },
+    { label: '& Followed by a Bare Identifier Is Invalid and Silently Dropped', route: '/css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped' },
+    { label: 'Nesting Adds Zero Specificity — Ties Are Broken by Source Order', route: '/css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order' },
+  ],
+  'logical-properties': [
+    { label: 'margin-inline-start Flips With Direction, Not Writing Mode', route: '/css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode' },
+    { label: 'inline-size Maps to Width or Height Depending on Writing Mode', route: '/css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode' },
+    { label: 'border-start-start-radius Flips Corners in RTL', route: '/css/logical-properties/border-start-start-radius-flips-corners-in-rtl' },
+  ],
+  'css-architecture': [
+    { label: 'BEM Flat Elements Lose to Accidental Descendant Selectors', route: '/css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors' },
+    { label: 'ITCSS Layer Order Works Because Class Selectors Beat Element Selectors', route: '/css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors' },
+    { label: 'Composable Modifiers Merge by Source Order, Not Special Priority', route: '/css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority' },
+  ],
+  // NOTE: keyed 'css-tailwind', NOT bare 'tailwind' — the Angular
+  // hub's own /angular/tailwind topic already claims the bare key.
+  'css-tailwind': [
+    { label: 'Dynamic Class Strings Are Invisible to the JIT Scanner', route: '/css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner' },
+    { label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' },
+    { label: 'Responsive Variants Are Mobile-First, Not Breakpoint-Specific', route: '/css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific' },
+  ],
+  'scroll-driven-animations': [
+    { label: 'animation-duration Is Ignored — Scroll Timeline Progress Is Positional', route: '/css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional' },
+    { label: 'Named Timelines Are Invisible to Siblings Without timeline-scope', route: '/css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope' },
+    { label: 'Bare scroll() Defaults to the Nearest Ancestor Scroll Container', route: '/css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container' },
+  ],
+  'css-transforms': [
+    { label: 'Rotate Before Translate Changes the Direction of Movement', route: '/css/css-transforms/rotate-before-translate-changes-the-direction-of-movement' },
+    { label: 'Transforms Never Affect Sibling Layout Positions', route: '/css/css-transforms/transforms-never-affect-sibling-layout-positions' },
+    { label: 'Transform Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children' },
+  ],
+  'css-filters': [
+    { label: 'backdrop-filter Has Zero Effect Without a Transparent Background', route: '/css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background' },
+    { label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' },
+    { label: 'filter Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children' },
+  ],
+  // NOTE: keyed 'css-fundamentals', NOT bare 'fundamentals' — the HTML
+  // hub's own /html/fundamentals topic already claims the bare key
+  // (see the 'html-fundamentals' NOTE above).
+  'css-fundamentals': [
+    { label: 'Specificity Is Not a Decimal — a Single ID Beats Any Number of Classes', route: '/css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes' },
+    { label: 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit', route: '/css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit' },
+    { label: 'Percentage padding-top Resolves Against the Parent’s Width, Not Height', route: '/css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height' },
+  ],
+  'core-web-vitals': [
+    { label: 'transform Avoids CLS While top and left Trigger It', route: '/performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it' },
+    { label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' },
+    { label: 'The LCP Candidate Changes as Larger Elements Appear', route: '/performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear' },
+  ],
+  'lcp': [
+    { label: 'Text Can Be the LCP Candidate — Not Only Images', route: '/performance/lcp/text-can-be-the-lcp-candidate' },
+    { label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' },
+    { label: 'loading="lazy" Defers the Fetch Until Near the Viewport', route: '/performance/lcp/lazy-loading-defers-fetch-until-near-viewport' },
+  ],
+  'inp': [
+    { label: 'Long Tasks Register as Real longtask Entries', route: '/performance/inp/long-tasks-register-as-real-longtask-entries' },
+    { label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' },
+    { label: 'scheduler.yield() Turns One longtask Into Zero', route: '/performance/inp/scheduler-yield-turns-one-longtask-into-zero' },
+  ],
+  'cls': [
+    { label: 'hadRecentInput Excludes Click-Caused Shifts', route: '/performance/cls/hadrecentinput-excludes-click-caused-shifts' },
+    { label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' },
+    { label: 'Fixed Positioning Eliminates the Shift In-Flow Insertion Causes', route: '/performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes' },
+  ],
+  'critical-rendering-path': [
+    { label: 'media="print" Downloads But Never Blocks Render', route: '/performance/critical-rendering-path/media-print-downloads-but-never-blocks-render' },
+    { label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' },
+    { label: 'type="module" Is Deferred by Default', route: '/performance/critical-rendering-path/type-module-is-deferred-by-default' },
+  ],
+  'browser-rendering': [
+    { label: 'Three Structurally Different Kinds of Invisible', route: '/performance/browser-rendering/three-structurally-different-kinds-of-invisible' },
+    { label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' },
+    { label: 'content-visibility Defers Work, It Doesn’t Eliminate It', route: '/performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it' },
+  ],
+  'resource-hints': [
+    { label: 'Font Preload Without crossorigin Causes a Genuine Double-Fetch', route: '/performance/resource-hints/font-preload-without-crossorigin-causes-a-genuine-double-fetch' },
+    { label: 'A Mismatched Preload URL Causes a Genuine Double-Fetch', route: '/performance/resource-hints/mismatched-preload-url-causes-a-genuine-double-fetch' },
+    { label: 'Missing as= Silently Does Nothing — Not a Double-Fetch', route: '/performance/resource-hints/missing-as-silently-does-nothing-not-a-double-fetch' },
+  ],
+  'http2-http3': [
+    { label: 'nextHopProtocol Reveals the Real HTTP Version Per Resource', route: '/performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource' },
+    { label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' },
+    { label: 'Early Hints Lets the Browser Fetch Before HTML Finishes', route: '/performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes' },
+  ],
+  // NOTE: keyed bare 'caching' — no collision found; ASP.NET already
+  // resolved its own prior collision as 'aspnet-caching' (see that entry).
+  'caching': [
+    { label: 'The Cache API Only Stores GET Requests', route: '/performance/caching/the-cache-api-only-stores-get-requests' },
+    { label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' },
+    { label: 'Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones', route: '/performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones' },
+  ],
+  'image-optimisation': [
+    { label: 'sizes Controls Which srcset Candidate Wins', route: '/performance/image-optimisation/sizes-controls-which-srcset-candidate-wins' },
+    { label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' },
+    { label: 'image-set() Performs Real DPR-Aware Background Selection', route: '/performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection' },
+  ],
+  'font-performance': [
+    { label: 'unicode-range Skips Font Files for Unused Character Ranges', route: '/performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges' },
+    { label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' },
+    { label: 'The Font Loading API Tracks Real Load State, Not a Guess', route: '/performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess' },
+  ],
+  'js-performance': [
+    { label: 'structuredClone and spread Do Fundamentally Different Jobs', route: '/performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs' },
+    { label: 'Event Delegation Catches Dynamically Added Elements', route: '/performance/js-performance/event-delegation-catches-dynamically-added-elements' },
+    { label: 'Memoization Genuinely Skips Recomputation for Repeated Inputs', route: '/performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs' },
+  ],
+  'third-party-scripts': [
+    { label: 'Subresource Integrity Genuinely Blocks a Mismatched Script', route: '/performance/third-party-scripts/subresource-integrity-genuinely-blocks-a-mismatched-script' },
+    { label: 'A Facade Loads Zero Third-Party Bytes Until Interaction', route: '/performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction' },
+    { label: 'Resource Timing Correctly Separates First-Party From Third-Party', route: '/performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party' },
+  ],
+  'measurement': [
+    { label: 'performance.mark() Creates Real Timeline Entries — performance.now() Does Not', route: '/performance/measurement/performance-mark-creates-real-timeline-entries-performance-now-does-not' },
+    { label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' },
+    { label: 'Navigation Timing’s responseStart Genuinely Computes TTFB', route: '/performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb' },
+  ],
+  'rum': [
+    { label: 'sendBeacon() Fires a Real Request With Its Own Initiator Type', route: '/performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type' },
+    { label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' },
+    { label: 'Batching Metrics Into One Beacon Genuinely Cuts Requests', route: '/performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests' },
+  ],
+  'ssr-streaming': [
+    { label: 'A ReadableStream Genuinely Delivers Chunks at Different Real Times', route: '/performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times' },
+    { label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' },
+    { label: 'Reading Chunk-by-Chunk Beats Waiting for the Full Response', route: '/performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response' },
+  ],
+  'css-performance': [
+    { label: 'Selector Complexity Barely Moves Recalc-Style Time at Scale', route: '/performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale' },
+    { label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' },
+    { label: 'contain: content Clips Overflow Like overflow: hidden', route: '/performance/css-performance/contain-content-clips-overflow-like-overflow-hidden' },
+  ],
+  'perf-web-workers': [
+    { label: 'Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)', route: '/performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy' },
+    { label: 'A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work', route: '/performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work' },
+    { label: 'Reusing a Worker Is Dramatically Faster Than Creating One Per Task', route: '/performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task' },
+  ],
+  'performance-budgets': [
+    { label: 'The size × 0.3 Gzip Approximation Is Wildly Inaccurate', route: '/performance/performance-budgets/gzip-approximation-is-wildly-inaccurate' },
+    { label: 'A Median of 3 Runs Genuinely Narrows Measurement Variance', route: '/performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance' },
+    { label: 'Initial vs anyScript Budgets Catch Genuinely Different Failure Modes', route: '/performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes' },
+  ],
+  'speculation-rules': [
+    { label: 'Feature Detection Genuinely Confirms Support Before You Speculate', route: '/performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate' },
+    { label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' },
+    { label: 'Malformed Speculation Rules JSON Is Not Silently Ignored', route: '/performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored' },
+  ],
+  // NOTE: keyed 'blazor-fundamentals', NOT bare 'fundamentals' — the
+  // JavaScript hub's own /javascript/fundamentals topic already claims
+  // the bare key.
+  'blazor-fundamentals': [
+    { label: 'StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere', route: '/blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere' },
+    { label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' },
+    { label: 'Static SSR Parents Cannot Make Children Interactive', route: '/blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive' },
+  ],
+  'render-modes': [
+    { label: 'InteractiveAuto Loses State When It Switches From Server to WebAssembly', route: '/blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly' },
+    { label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' },
+    { label: 'StreamRendering Flushes Placeholder HTML Before Async Data Resolves', route: '/blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves' },
+  ],
+  'razor-components': [
+    { label: 'RenderFragment<T> Compiles to a Delegate the Framework Invokes Per Item', route: '/blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item' },
+    { label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' },
+    { label: 'ShouldRender Cannot Suppress a Component’s First Render', route: '/blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render' },
+  ],
+  'component-communication': [
+    { label: 'EventCallback’s Auto-StateHasChanged Targets the Receiver, Not the Invoker', route: '/blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker' },
+    { label: 'bind-Value Desugars Into Two Separate Parameters, Not Magic Binding', route: '/blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding' },
+    { label: 'IsFixed=true Permanently Freezes a Cascading Value’s Re-Traversal', route: '/blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal' },
+  ],
+  // NOTE: keyed 'blazor-forms', NOT bare 'forms' — the Angular hub's own
+  // /angular/forms topic already claims the bare key.
+  'blazor-forms': [
+    { label: 'NotifyValidationStateChanged Is Required — EditContext Can’t See ValidationMessageStore Adds', route: '/blazor/forms/notifyvalidationstatechanged-is-required-editcontext-cant-see-msgstore-adds' },
+    { label: 'DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType', route: '/blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype' },
+    { label: 'SupplyParameterFromForm Only Binds on a Real POST, Not First Load', route: '/blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load' },
+  ],
+  'data-binding': [
+    { label: '@key Prevents Blazor From Misattributing State When a List Reorders', route: '/blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders' },
+    { label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' },
+    { label: 'A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer', route: '/blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer' },
+  ],
+  // NOTE: keyed 'blazor-routing', NOT bare 'routing' — the Angular hub's
+  // own /angular/routing topic already claims the bare key, and the
+  // ASP.NET Core hub already resolved the same collision as 'aspnet-routing'.
+  'blazor-routing': [
+    { label: 'OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component', route: '/blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component' },
+    { label: 'NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs', route: '/blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs' },
+    { label: 'Catch-All Routes Capture Everything After the Prefix as One String', route: '/blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string' },
+  ],
+  // NOTE: keyed 'blazor-dependency-injection', NOT bare 'dependency-injection' —
+  // already claimed elsewhere; ASP.NET Core resolved the same collision as
+  // 'aspnet-dependency-injection'.
+  'blazor-dependency-injection': [
+    { label: 'OwningComponentBase Gives Each Instance Its Own Scoped Service', route: '/blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service' },
+    { label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' },
+    { label: 'IServiceScopeFactory Must Dispose Its Scope Immediately After Use', route: '/blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use' },
+  ],
+  // NOTE: keyed 'blazor-state-management', NOT bare 'state-management' —
+  // the React hub's own /react/state-management topic already claims the
+  // bare key.
+  'blazor-state-management': [
+    { label: 'ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory', route: '/blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory' },
+    { label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' },
+    { label: 'A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event', route: '/blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event' },
+  ],
+  'js-interop': [
+    { label: 'JSON.stringify Throws a Real TypeError on Circular References', route: '/blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references' },
+    { label: 'Dynamic import() Genuinely Scopes Exports, Never Touching window', route: '/blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window' },
+    { label: 'IJSInProcessRuntime Only Works in WASM — Same-Process Execution', route: '/blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution' },
+  ],
+  'server-signalr': [
+    { label: 'A Custom Hub and the Render Circuit Are Separate SignalR Mechanisms', route: '/blazor/server-signalr/a-custom-hub-and-the-render-circuit-are-separate-signalr-mechanisms' },
+    { label: 'The Reconnection Window Only Preserves State for the Same Circuit', route: '/blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit' },
+    { label: 'Azure SignalR Service Routes Messages, It Doesn’t Replicate Circuit State', route: '/blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state' },
+  ],
+  'maui-hybrid': [
+    { label: 'A Wrong HostPage Path Produces a Blank Screen With No Error', route: '/blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error' },
+    { label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' },
+    { label: 'Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection', route: '/blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection' },
+  ],
+  // Bare 'authentication' is free — the ASP.NET Core hub pre-emptively
+  // hub-prefixed its own collision to 'aspnet-authentication' in
+  // anticipation of the Blazor hub claiming this bare key.
+  'authentication': [
+    { label: 'NotifyAuthenticationStateChanged Is the Only Trigger for AuthorizeView', route: '/blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview' },
+    { label: 'Pre-render and Post-Hydration Auth State Come From Different Sources', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' },
+    { label: 'OIDC Roles Often Use a Different Claim Type Than Authorize Expects', route: '/blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects' },
+  ],
+  // NOTE: keyed 'blazor-error-handling', NOT bare 'error-handling' — the
+  // JavaScript hub's own /javascript/error-handling topic already claims
+  // the bare key, and the ASP.NET Core hub already resolved the same
+  // collision as 'aspnet-error-handling'.
+  'blazor-error-handling': [
+    { label: 'ErrorBoundary.Recover() Clears the Error, Not the Child’s Own State', route: '/blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state' },
+    { label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' },
+    { label: 'Async void Event Handlers Bypass ErrorBoundary Entirely', route: '/blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely' },
+  ],
+  'streaming-rendering': [
+    { label: 'Enhanced Navigation Can Undo DOM Changes Unless Marked data-permanent', route: '/blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent' },
+    { label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' },
+    { label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' },
+  ],
 };
 
 @Component({

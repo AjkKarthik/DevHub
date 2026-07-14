@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Web Workers &amp; Off-Main-Thread" topicRoute="/performance/web-workers" subtopicLabel="A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work</h1>
+  <p class="page-subtitle">A setInterval on the main thread ticked 0 times during a 300ms busy-loop run directly on the main thread, but ticked 4 times during the identical work run inside a real Worker — direct, measured proof of what "off the main thread" actually buys you.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Web Workers, universally supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Run the identical 300ms busy-loop two ways — directly on the main thread, then inside a real Worker — and count main-thread timer ticks during each.</p>
+    <app-live-playground title="a Worker genuinely keeps the main thread responsive during heavy work" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This is the direct, measured mechanism behind the main page's INP claim — moving work off the main thread doesn't speed up the work, it frees the main thread. Next: why reusing one Worker is dramatically faster than creating a new one per task.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Web Workers &amp; Off-Main-Thread" topicRoute="/performance/web-workers"
+    [prev]="{ label: 'Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)', route: '/performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy' }"
+    [next]="{ label: 'Reusing a Worker Is Dramatically Faster Than Creating One Per Task', route: '/performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task' }" />
+</div>

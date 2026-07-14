@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Forms" topicRoute="/blazor/forms" subtopicLabel="DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType</h1>
+  <p class="page-subtitle">The default DataAnnotationsValidator only checks the root model's own properties — a nested Address object's [Required] attributes are silently never evaluated unless both [ValidateComplexType] and ObjectGraphDataAnnotationsValidator are added together.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's own quiz answer into a full worked example of the fix and its two-piece requirement. Next: why [SupplyParameterFromForm] only binds on a real POST, not on the form's first load.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Forms" topicRoute="/blazor/forms"
+    [prev]="{ label: 'NotifyValidationStateChanged Is Required — EditContext Can’t See ValidationMessageStore Adds', route: '/blazor/forms/notifyvalidationstatechanged-is-required-editcontext-cant-see-msgstore-adds' }"
+    [next]="{ label: 'SupplyParameterFromForm Only Binds on a Real POST, Not First Load', route: '/blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load' }" />
+</div>

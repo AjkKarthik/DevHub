@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Speculation Rules API" topicRoute="/performance/speculation-rules" subtopicLabel="Malformed Speculation Rules JSON Is Not Silently Ignored" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Malformed Speculation Rules JSON Is Not Silently Ignored</h1>
+  <p class="page-subtitle">Broken JSON inside a speculationrules block triggered a real, catchable window error event ("Uncaught TypeError: Line: 1, column: 3, Syntax error.") in a supporting browser — a completely different signal from an unsupported browser's silent no-op.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 109+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Inject a speculationrules block with deliberately broken JSON and confirm a real, catchable error fires.</p>
+    <app-live-playground title="malformed speculation rules JSON is not silently ignored" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by distinguishing two easily-confused "nothing happened" scenarios. Together with the earlier two subtopics, this batch confirms feature detection genuinely reflects real support, document.prerendering genuinely reports the correct state, and broken rules JSON in a supporting browser is loud, not silent.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Speculation Rules API" topicRoute="/performance/speculation-rules"
+    [prev]="{ label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' }" />
+</div>

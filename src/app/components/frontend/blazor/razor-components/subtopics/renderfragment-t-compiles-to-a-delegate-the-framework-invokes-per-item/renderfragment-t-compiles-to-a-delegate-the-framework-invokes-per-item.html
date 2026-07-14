@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Razor Components" topicRoute="/blazor/razor-components" subtopicLabel="RenderFragment&lt;T&gt; Compiles to a Delegate the Framework Invokes Per Item" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">RenderFragment&lt;T&gt; Compiles to a Delegate the Framework Invokes Per Item</h1>
+  <p class="page-subtitle">RenderFragment&lt;T&gt; is not pre-rendered HTML the parent hands over once — it's a Func&lt;T, RenderFragment&gt; the child invokes once per item, meaning the parent's template code genuinely re-executes every time it's called.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's generic-component code sample into the actual delegate mechanism behind RenderFragment&lt;T&gt;. Next: how CascadingParameter flows through any depth of the render tree without each intermediate component needing to forward it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Razor Components" topicRoute="/blazor/razor-components"
+    [next]="{ label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' }" />
+</div>

@@ -44,8 +44,8 @@ export class BlazorDataBinding {
     },
     {
       heading: 'Event binding and lambda arguments',
-      points: ['Event directives like `@onclick`, `@oninput`, and `@onkeydown` accept a method reference or a lambda. Event args are available as `MouseEventArgs`, `ChangeEventArgs`, `KeyboardEventArgs`, etc. When iterating a list and capturing the loop variable in a lambda, always copy it to a local variable first to avoid the captured-variable closure bug.',
-      'Event directives accept method references or lambdas.', 'Event arg types: MouseEventArgs, ChangeEventArgs, KeyboardEventArgs, etc.', 'Capture loop variables with var local = item; before using in lambda.', 'async lambdas are fine: @onclick="async () => await Load()"']
+      points: ['Event directives like `@onclick`, `@oninput`, and `@onkeydown` accept a method reference or a lambda. Event args are available as `MouseEventArgs`, `ChangeEventArgs`, `KeyboardEventArgs`, etc. Modern Razor codegen matches C#\'s own per-iteration `foreach` capture semantics, so a lambda like `@onclick="() => Select(item)"` inside `@foreach` correctly captures that iteration\'s own item — add `@key` on the rendered element instead when the underlying list can be reordered or filtered.',
+      'Event directives accept method references or lambdas.', 'Event arg types: MouseEventArgs, ChangeEventArgs, KeyboardEventArgs, etc.', '@key="item.Id" keeps component state correctly attached when a list is reordered or filtered.', 'async lambdas are fine: @onclick="async () => await Load()"']
     },
     {
       heading: 'Custom Component Two-Way Binding with @bind-Value',
@@ -103,12 +103,14 @@ export class BlazorDataBinding {
 }`
     },
     {
-      label: 'Loop variable capture',
+      label: '@key on a reorderable list',
       language: 'csharp',
       code: `@foreach (var item in items)
 {
-    var localItem = item;  // capture to local to avoid closure bug
-    <button @onclick="() => Select(localItem)">
+    <!-- @key="item.Id" gives Blazor a stable identity to diff by —
+         without it, reordering "items" can reassign DOM state
+         (input focus, CSS transitions) to the wrong element. -->
+    <button @key="item.Id" @onclick="() => Select(item)">
         @item.Name
     </button>
 }
@@ -118,6 +120,10 @@ export class BlazorDataBinding {
     private List<Product> items = [new(1,"A"), new(2,"B"), new(3,"C")];
     private Product? selected;
     private void Select(Product p) => selected = p;
+    // The lambda above correctly captures EACH iteration's own
+    // "item" — modern Razor codegen matches C#'s per-iteration
+    // foreach capture semantics, so this needs no local-variable
+    // workaround.
 }`
     },
     {
@@ -146,10 +152,10 @@ export class BlazorDataBinding {
       explanation: 'Blazor input components (InputText, InputNumber, etc.) expose a Value parameter. @bind targets an element attribute; @bind-Value targets the component parameter.'
     },
     {
-      title: 'Forgetting the loop variable capture',
-      wrong: '@foreach (var item in items) { <button @onclick="() => Select(item)"> }',
-      right: '@foreach (var item in items) { var local = item; <button @onclick="() => Select(local)"> }',
-      explanation: 'The foreach variable is captured by reference. By the time the button is clicked, item points to the last element. Capturing to a local fixes this.'
+      title: 'Rendering a list without @key when it can be reordered or filtered',
+      wrong: '@foreach (var item in items) { <ItemRow Data="item" /> }',
+      right: '@foreach (var item in items) { <ItemRow @key="item.Id" Data="item" /> }',
+      explanation: 'Without @key, Blazor\'s diffing algorithm matches old and new render output by POSITION, not identity. If items are reordered, filtered, or spliced, component instances (and any state or focus they hold) can get reassigned to the wrong data. @key="item.Id" tells Blazor to track each element by its own stable identity across renders.'
     },
     {
       title: 'Using @oninput on an EditForm field expecting onchange',
@@ -207,7 +213,7 @@ export class BlazorDataBinding {
   quiz: QuizQuestion[] = [
     { q: 'What does @bind expand to on a native <input>?', options: ['Only @onchange', 'value="@x" + @onchange that sets x', '@oninput + @value', 'Just @value'], answer: 1, explanation: '@bind is syntactic sugar for setting the value attribute and subscribing to the change event that updates the bound field.' },
     { q: 'Which event is triggered by @bind:event="oninput"?', options: ['On blur', 'On form submit', 'On every keystroke', 'On enter key'], answer: 2, explanation: 'oninput fires synchronously on every character input, making it suitable for live search or character counters.' },
-    { q: 'How do you fix the foreach loop variable capture bug?', options: ['Use a for loop instead', 'Assign item to a local variable inside the loop body', 'Use @key directive', 'Use index instead of item'], answer: 1, explanation: 'var local = item inside the foreach loop creates a new capture per iteration. This is a common C# closure gotcha.' },
+    { q: 'What does the @key directive prevent when rendering a @foreach list in Blazor?', options: ['Duplicate keys in a dictionary', 'Blazor misattributing component state/DOM elements when the list is reordered, filtered, or spliced', 'The foreach loop variable capture bug', 'CSS class name collisions'], answer: 1, explanation: '@key tells Blazor\'s diffing algorithm to match old and new render output by a stable identity instead of by position. Without it, reordering or filtering a list can reassign component state (like input focus) to the wrong underlying data.' },
     { q: 'What attribute is used for two-way binding on Blazor InputText?', options: ['@bind', '@bind-Value', '@twoway', '@model'], answer: 1, explanation: '@bind-Value targets the Value parameter of Blazor input components. @bind targets the native HTML element\'s value attribute.' },
     { q: 'What should you always do with async event lambdas?', options: ['Return void', 'Use async and await', 'Suppress warnings', 'Run on background thread'], answer: 1, explanation: 'Always await async calls in event handlers to ensure exceptions are not silently swallowed and state is updated correctly.' },
     { q: 'How do you set the format string for date inputs with @bind?', options: ['@bind-format="yyyy-MM-dd"', '@bind:format="yyyy-MM-dd"', 'format="yyyy-MM-dd"', 'Use a custom converter'], answer: 1, explanation: '@bind:format="yyyy-MM-dd" on an <input type="date"> tells Blazor how to parse and format the DateTime. Without it, browsers and locales may parse dates differently, causing silent null/wrong-value bugs.' },

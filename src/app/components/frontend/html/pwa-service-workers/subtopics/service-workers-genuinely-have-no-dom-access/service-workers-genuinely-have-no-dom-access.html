@@ -1,0 +1,31 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="PWA &amp; Service Workers" topicRoute="/html/pwa-service-workers" subtopicLabel="Service Workers Genuinely Have No DOM Access" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Service Workers Genuinely Have No DOM Access</h1>
+  <p class="page-subtitle">document and window aren't blocked from a service worker — they're simply never defined in its global scope. typeof proves it with no error at all.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>A service worker checks <code>typeof document</code>/<code>typeof window</code> from inside its own script and reports the result back to the page via <code>postMessage</code>.</p>
+    <app-live-playground title="a service worker self-checking its own global scope" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Both scope (previous subtopic) and DOM access are fixed architectural facts about every service worker. The final subtopic covers something that changes over time — how a worker actually transitions through its own update lifecycle. Return to the <a routerLink="/html/pwa-service-workers">PWA &amp; Service Workers</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="PWA &amp; Service Workers"
+    topicRoute="/html/pwa-service-workers"
+    [prev]="{ label: 'Registration Scope Is Set by the Script File’s Own Location', route: '/html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location' }"
+    [next]="{ label: 'A New SW Sits in registration.waiting Without skipWaiting()', route: '/html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting' }"
+  />
+</div>

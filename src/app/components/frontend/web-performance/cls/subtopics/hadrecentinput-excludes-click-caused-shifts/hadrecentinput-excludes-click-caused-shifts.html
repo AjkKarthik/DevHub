@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cumulative Layout Shift" topicRoute="/performance/cls" subtopicLabel="hadRecentInput Excludes Click-Caused Shifts" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">hadRecentInput Excludes Click-Caused Shifts</h1>
+  <p class="page-subtitle">A real, trusted click produces a layout-shift entry with hadRecentInput: true; an identical shift with no preceding input reports false — measured with the real Layout Instability API.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Layout Instability API, Chrome 77+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Click the button in the preview to trigger a real, trusted layout shift, then compare it against an unprompted shift with no click at all.</p>
+    <app-live-playground title="hadRecentInput excludes click-caused shifts" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This makes the main page's "user-initiated shifts are excluded" rule concrete with the actual field the browser uses to decide, verified with a genuinely trusted click rather than a simulated one. Next: how content-visibility: auto without contain-intrinsic-size collapses an element's height to zero.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cumulative Layout Shift" topicRoute="/performance/cls"
+    [next]="{ label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' }" />
+</div>

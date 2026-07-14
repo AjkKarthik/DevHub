@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Critical Rendering Path" topicRoute="/performance/critical-rendering-path" subtopicLabel="type=&quot;module&quot; Is Deferred by Default" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">type="module" Is Deferred by Default</h1>
+  <p class="page-subtitle">A module script with no defer attribute at all still sees a fully parsed document, exactly like an explicitly deferred script — proven with the same parser-state check used in the previous subtopic.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="ES Modules in the browser, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare a plain classic script (parser genuinely paused) against a type="module" script with no defer attribute (sees the fully parsed document anyway).</p>
+    <app-live-playground title="type=module is deferred by default" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This closes out the set by confirming the main page's "module scripts are deferred by default" claim directly, reusing the same parser-state proof technique from the previous subtopic. Together, these three subtopics turn the main page's render-blocking and script-loading theory into real, observable browser behaviour.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Critical Rendering Path" topicRoute="/performance/critical-rendering-path"
+    [prev]="{ label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' }" />
+</div>

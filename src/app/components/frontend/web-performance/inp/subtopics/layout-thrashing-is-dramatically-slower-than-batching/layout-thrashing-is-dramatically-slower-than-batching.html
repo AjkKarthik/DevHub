@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Interaction to Next Paint" topicRoute="/performance/inp" subtopicLabel="Layout Thrashing Is Dramatically Slower Than Batching" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Layout Thrashing Is Dramatically Slower Than Batching</h1>
+  <p class="page-subtitle">The same 300-element read and write, interleaved vs batched, measured a real ~95× slowdown using nothing but performance.now() — same operations, same total work, just different order.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Fundamental browser layout behaviour" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare an interleaved read/write loop against a batched read-then-write loop over 300 identical elements, measured with real performance.now() timestamps.</p>
+    <app-live-playground title="layout thrashing is dramatically slower than batching" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "layout thrashing" mistake with a real, dramatic timing measurement instead of just a warning. Next: how scheduler.yield() can turn one guaranteed long task into zero, verified with the same Long Tasks API from the previous subtopic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Interaction to Next Paint" topicRoute="/performance/inp"
+    [prev]="{ label: 'Long Tasks Register as Real longtask Entries', route: '/performance/inp/long-tasks-register-as-real-longtask-entries' }"
+    [next]="{ label: 'scheduler.yield() Turns One longtask Into Zero', route: '/performance/inp/scheduler-yield-turns-one-longtask-into-zero' }" />
+</div>

@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Razor Components" topicRoute="/blazor/razor-components" subtopicLabel="ShouldRender Cannot Suppress a Component’s First Render" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">ShouldRender Cannot Suppress a Component’s First Render</h1>
+  <p class="page-subtitle">Blazor unconditionally performs a component's first render no matter what ShouldRender() would return — and even after that, a false return only suppresses that one component's own markup, never its children's independent updates.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's brief ShouldRender() mention into its two easy-to-miss edge cases. Together with the earlier two subtopics, this batch covers RenderFragment&lt;T&gt;'s delegate mechanism, CascadingParameter's any-depth reach, and the real scope of ShouldRender()'s render-suppression.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Razor Components" topicRoute="/blazor/razor-components"
+    [prev]="{ label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' }" />
+</div>

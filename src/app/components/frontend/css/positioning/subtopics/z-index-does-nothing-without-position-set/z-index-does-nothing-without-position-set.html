@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Positioning &amp; Stacking" topicRoute="/css/positioning" subtopicLabel="z-index Does Nothing Without position Set" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">z-index Does Nothing Without position Set</h1>
+  <p class="page-subtitle">A static element with z-index: 999 loses to a positioned sibling with z-index: 1 — provable directly via document.elementFromPoint().</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Check which element document.elementFromPoint() actually reports as topmost where a high-z-index static element overlaps a low-z-index positioned one.</p>
+    <app-live-playground title="z-index does nothing without position set" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This establishes the basic z-index/position dependency the main page's Common Mistakes already flags. Next, see the same theme one level deeper — how even a positioned element's z-index can lose to a sibling, once stacking contexts are involved.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Positioning &amp; Stacking" topicRoute="/css/positioning"
+    [next]="{ label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' }" />
+</div>

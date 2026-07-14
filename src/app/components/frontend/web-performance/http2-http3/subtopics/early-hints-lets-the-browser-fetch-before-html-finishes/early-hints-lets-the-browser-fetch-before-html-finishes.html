@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTTP/2 &amp; HTTP/3" topicRoute="/performance/http2-http3" subtopicLabel="Early Hints Lets the Browser Fetch Before HTML Finishes" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Early Hints Lets the Browser Fetch Before HTML Finishes</h1>
+  <p class="page-subtitle">A 103 Early Hints response lets asset downloads start while the server is still generating the real HTML — hiding download time behind server processing time, without Server Push's cache-blindness problem.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="103 Early Hints, Chrome 103+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <p>A timeline comparison showing how Early Hints overlaps asset downloads with slow server-side processing, plus a working Nginx configuration.</p>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This closes out the set by explaining exactly why the main page recommends Early Hints over HTTP/2 Server Push — the cache-aware mechanism, not just a newer status code. Together with the previous two subtopics, this set covers real per-resource protocol detection, why an old optimisation becomes harmful, and how a new one helps with slow backends.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTTP/2 &amp; HTTP/3" topicRoute="/performance/http2-http3"
+    [prev]="{ label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' }" />
+</div>

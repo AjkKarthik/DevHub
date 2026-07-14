@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Canvas &amp; SVG" topicRoute="/html/canvas-svg" subtopicLabel="Canvas HTML Attributes Set Resolution, CSS Only Stretches Pixels" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Canvas HTML Attributes Set Resolution, CSS Only Stretches Pixels</h1>
+  <p class="page-subtitle">canvas.width/height control the real internal pixel buffer. CSS width/height only stretch that fixed buffer — mismatch them and the browser has to interpolate, producing measurable blur.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two canvases, both CSS-stretched to the same display size — one with a matching internal buffer, one badly undersized. Compute the exact stretch ratio for each.</p>
+    <app-live-playground title="measuring canvas buffer vs display size mismatch" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a sizing mistake specific to Canvas's raster nature. The next subtopic covers a different Canvas mistake — paths merging when beginPath() is forgotten — before the final subtopic turns to SVG's own, very different scaling behavior. Return to the <a routerLink="/html/canvas-svg">Canvas &amp; SVG</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Canvas &amp; SVG"
+    topicRoute="/html/canvas-svg"
+    [next]="{ label: 'Missing beginPath() Merges Paths — Provable via Pixel Data', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' }"
+  />
+</div>

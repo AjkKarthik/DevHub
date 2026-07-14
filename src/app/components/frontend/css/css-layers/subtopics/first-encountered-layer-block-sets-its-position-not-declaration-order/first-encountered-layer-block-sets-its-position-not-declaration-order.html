@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Cascade Layers" topicRoute="/css/css-layers" subtopicLabel="The First @layer Encountered Sets Its Position, Not Declaration Order" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">The First &#64;layer Encountered Sets Its Position, Not Declaration Order</h1>
+  <p class="page-subtitle">A layer block filled in before the explicit order statement locks its position immediately — the later order statement can't move it.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 99+, Firefox 97+, Safari 15.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare computed color to reveal that a layer's position came from its first source-order appearance, not the later explicit order list.</p>
+    <app-live-playground title="first encountered layer sets its position" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own first "Common Mistake" made directly measurable via computed styles, completing the trio of cascade-layer priority gotchas alongside unlayered-styles and !important reversal.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Cascade Layers" topicRoute="/css/css-layers"
+    [prev]="{ label: '!important Reverses Layer Priority — Lower Layers Win', route: '/css/css-layers/important-reverses-layer-priority-lower-layers-win' }" />
+</div>

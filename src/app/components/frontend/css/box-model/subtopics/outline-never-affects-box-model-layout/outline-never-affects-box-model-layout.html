@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Box Model" topicRoute="/css/box-model" subtopicLabel="outline Never Affects Box Model Layout" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">outline Never Affects Box Model Layout</h1>
+  <p class="page-subtitle">A 20px outline with a 10px offset leaves a sibling's position completely unchanged — reserving zero layout space at any size.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Measure a sibling's exact position before and after adding a large outline plus offset to a preceding element — the coordinates stay identical.</p>
+    <app-live-playground title="outline never affects layout" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>Where the first subtopic showed margins collapsing INTO less space than expected, this shows outline taking up NO space regardless of size — two ways box-model layers can defy naive intuition. The final subtopic returns to margin collapse from a different angle: how it can move a PARENT's own box, not just the gap between siblings.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Box Model" topicRoute="/css/box-model"
+    [prev]="{ label: 'Margin Collapse Uses the Larger Value', route: '/css/box-model/margin-collapse-uses-larger-value-not-the-sum' }"
+    [next]="{ label: 'Parent-Child Collapse Moves the Parent’s Own Box', route: '/css/box-model/parent-child-collapse-moves-the-parents-own-box' }" />
+</div>

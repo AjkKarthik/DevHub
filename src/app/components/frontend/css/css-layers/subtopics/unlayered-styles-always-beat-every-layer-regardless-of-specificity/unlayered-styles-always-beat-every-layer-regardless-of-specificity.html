@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Cascade Layers" topicRoute="/css/css-layers" subtopicLabel="Unlayered Styles Always Beat Every Layer, Regardless of Specificity" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Unlayered Styles Always Beat Every Layer, Regardless of Specificity</h1>
+  <p class="page-subtitle">A one-element-selector unlayered rule wins over a triple-ID-and-class selector inside a layer — the specificity comparison never even happens.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 99+, Firefox 97+, Safari 15.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare computed color between a deliberately over-specific layered rule and a deliberately low-specificity unlayered rule targeting the same element.</p>
+    <app-live-playground title="unlayered styles always beat every layer" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own second "Common Mistake" made directly measurable via computed styles. The next subtopic turns to another priority-reversal gotcha inside the layer system — how !important behaves inside &#64;layer.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Cascade Layers" topicRoute="/css/css-layers"
+    [next]="{ label: '!important Reverses Layer Priority — Lower Layers Win', route: '/css/css-layers/important-reverses-layer-priority-lower-layers-win' }" />
+</div>

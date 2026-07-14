@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Component Communication" topicRoute="/blazor/component-communication" subtopicLabel="bind-Value Desugars Into Two Separate Parameters, Not Magic Binding" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">bind-Value Desugars Into Two Separate Parameters, Not Magic Binding</h1>
+  <p class="page-subtitle">&#64;bind-Value is pure compile-time text expansion into two ordinary attributes (Value and ValueChanged) based on an exact name match — no runtime reflection, no flexible matching, and a mismatched name fails completely silently.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's naming-convention mistake entry into the actual compile-time desugaring mechanism behind it. Next: how IsFixed=true permanently freezes a cascading value's re-traversal, even if the value later changes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Component Communication" topicRoute="/blazor/component-communication"
+    [prev]="{ label: 'EventCallback’s Auto-StateHasChanged Targets the Receiver, Not the Invoker', route: '/blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker' }"
+    [next]="{ label: 'IsFixed=true Permanently Freezes a Cascading Value’s Re-Traversal', route: '/blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal' }" />
+</div>

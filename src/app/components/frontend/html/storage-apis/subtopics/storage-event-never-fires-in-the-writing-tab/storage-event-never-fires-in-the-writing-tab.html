@@ -1,0 +1,26 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML5 Storage APIs" topicRoute="/html/storage-apis" subtopicLabel="storage Event Never Fires in the Writing Tab" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">storage Event Never Fires in the Writing Tab</h1>
+  <p class="page-subtitle">Attaching a storage listener and writing to localStorage in the same tab reliably produces zero listener invocations — proving the exclusion, not just describing it.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Attach a storage listener, write to localStorage in the same script, and confirm the listener never fires — the spec's cross-tab-only design made directly observable.</p>
+    <app-live-playground title="storage event same-tab exclusion" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>Where the previous subtopic covered a silent data-loss gotcha, this is a silent no-op gotcha — code that looks correct but the listener it depends on simply never runs for same-tab writes. The final subtopic turns to what happens when storage genuinely runs out of room.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="HTML5 Storage APIs" topicRoute="/html/storage-apis"
+    [prev]="{ label: 'localStorage Only Stores Strings, Not Objects', route: '/html/storage-apis/localstorage-only-stores-strings-not-objects' }"
+    [next]="{ label: 'QuotaExceededError Is a Real, Catchable Exception', route: '/html/storage-apis/quotaexceedederror-is-a-real-catchable-exception' }" />
+</div>

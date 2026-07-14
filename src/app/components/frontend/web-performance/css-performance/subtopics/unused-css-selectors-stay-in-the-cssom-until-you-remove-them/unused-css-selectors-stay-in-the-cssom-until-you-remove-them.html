@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Performance" topicRoute="/performance/css-performance" subtopicLabel="Unused CSS Selectors Stay in the CSSOM Until You Remove Them" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Unused CSS Selectors Stay in the CSSOM Until You Remove Them</h1>
+  <p class="page-subtitle">A rule for a class matching zero elements was still fully parsed and stored in the live CSSOM — the browser has no mechanism to skip or discard CSS that nothing on the page currently uses.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSSOM, universally supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Inject a CSS rule for a class used nowhere in the document, then check whether the browser stores it anyway.</p>
+    <app-live-playground title="unused CSS selectors stay in the CSSOM until you remove them" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms why the main page's PurgeCSS/Tailwind JIT recommendation is necessary rather than optional — the browser genuinely cannot do this work for you. Next: how contain: content actually clips overflowing content, similar to overflow: hidden.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Performance" topicRoute="/performance/css-performance"
+    [prev]="{ label: 'Selector Complexity Barely Moves Recalc-Style Time at Scale', route: '/performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale' }"
+    [next]="{ label: 'contain: content Clips Overflow Like overflow: hidden', route: '/performance/css-performance/contain-content-clips-overflow-like-overflow-hidden' }" />
+</div>

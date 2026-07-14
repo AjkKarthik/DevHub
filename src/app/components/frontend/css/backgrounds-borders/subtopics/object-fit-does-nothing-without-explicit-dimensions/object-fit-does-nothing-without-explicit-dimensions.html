@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Backgrounds &amp; Borders" topicRoute="/css/backgrounds-borders" subtopicLabel="object-fit Does Nothing Without Explicit Dimensions" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">object-fit Does Nothing Without Explicit Dimensions</h1>
+  <p class="page-subtitle">object-fit: cover only crops an image into a box the element already has — without an explicit width/height, that box is just the image's own intrinsic size.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare the rendered size of the same object-fit: cover image with and without explicit width/height set.</p>
+    <app-live-playground title="object-fit does nothing without explicit dimensions" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own "object-fit without defined container dimensions" mistake made measurable via getBoundingClientRect(). The final subtopic turns to border-radius — another sizing-dependent property, this time about what shape 50% actually produces on a non-square element.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Backgrounds &amp; Borders" topicRoute="/css/backgrounds-borders"
+    [prev]="{ label: 'The background Shorthand Resets Unlisted Sub-Properties', route: '/css/backgrounds-borders/background-shorthand-resets-unlisted-sub-properties' }"
+    [next]="{ label: 'border-radius: 50% Is an Ellipse, Not a Circle', route: '/css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle' }" />
+</div>

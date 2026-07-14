@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Box Model" topicRoute="/css/box-model" subtopicLabel="Parent-Child Collapse Moves the Parent’s Own Box" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Parent-Child Collapse Moves the Parent’s Own Box</h1>
+  <p class="page-subtitle">A first child's top margin doesn't create internal space — it escapes and shifts the parent's own getBoundingClientRect() position instead.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="CSS1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Measure a wrapper's own top position before and after fixing parent-child collapse with overflow: hidden — the wrapper's coordinates genuinely change.</p>
+    <app-live-playground title="Parent-child collapse moves the parent's own box" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This closes out three box-model measurement gotchas — sibling margin collapse, outline's total layout invisibility, and now parent-child collapse literally relocating a container's own box. Return to the CSS Box Model overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Box Model" topicRoute="/css/box-model"
+    [prev]="{ label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' }" />
+</div>

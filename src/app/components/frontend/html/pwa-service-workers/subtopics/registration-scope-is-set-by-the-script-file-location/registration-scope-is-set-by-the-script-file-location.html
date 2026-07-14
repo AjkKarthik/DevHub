@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="PWA &amp; Service Workers" topicRoute="/html/pwa-service-workers" subtopicLabel="Registration Scope Is Set by the Script File's Own Location" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">Registration Scope Is Set by the Script File's Own Location</h1>
+  <p class="page-subtitle">No config option sets a service worker's scope by default — the URL path the script lives at IS the scope, verified directly via registration.scope.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Register a worker from a subdirectory path with no other configuration. Read the resulting <code>registration.scope</code> directly.</p>
+    <app-live-playground title="reading registration.scope after a subdirectory registration" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>Scope determines WHICH pages a worker manages. The next subtopic covers a genuine capability limit — no DOM access at all — before the final subtopic covers the update lifecycle itself. Return to the <a routerLink="/html/pwa-service-workers">PWA &amp; Service Workers</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="PWA &amp; Service Workers"
+    topicRoute="/html/pwa-service-workers"
+    [next]="{ label: 'Service Workers Genuinely Have No DOM Access', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' }"
+  />
+</div>

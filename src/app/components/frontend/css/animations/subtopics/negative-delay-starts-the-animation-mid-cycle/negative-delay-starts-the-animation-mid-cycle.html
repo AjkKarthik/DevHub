@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Animations" topicRoute="/css/animations" subtopicLabel="Negative Delay Starts the Animation Mid-Cycle" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Negative Delay Starts the Animation Mid-Cycle</h1>
+  <p class="page-subtitle">animation-delay: -1s on a 2s animation starts at exactly the 50% midpoint (100px of a 0-200px growth), on the very first frame, no waiting needed.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS Animations Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare the starting width of a paused animation with no delay against one with a negative delay — the negative-delay element starts already partway through its own timeline.</p>
+    <app-live-playground title="negative animation-delay starts mid-cycle" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>Where the first subtopic covered what happens AFTER an animation ends, this covers where it STARTS. The final subtopic turns to a completely different kind of limitation — properties that can't be smoothly interpolated at all, no matter how the timing is configured.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Animations" topicRoute="/css/animations"
+    [prev]="{ label: 'fill-mode: both Retains the Final Keyframe State', route: '/css/animations/fill-mode-both-retains-the-final-keyframe-state' }"
+    [next]="{ label: 'display Cannot Be Smoothly Interpolated, Only Flips', route: '/css/animations/display-cannot-be-smoothly-interpolated-only-flips' }" />
+</div>

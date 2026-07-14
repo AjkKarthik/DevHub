@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="HTML5 Browser APIs" topicRoute="/html/apis" subtopicLabel="FileReaderSync Only Exists Inside a Real Web Worker" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">FileReaderSync Only Exists Inside a Real Web Worker</h1>
+  <p class="page-subtitle">Not merely discouraged on the main thread — the constructor genuinely isn't defined there. typeof FileReaderSync proves it from both sides at once.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Check <code>typeof FileReaderSync</code> on the main thread, then spin up a real <code>Worker</code> and check the same expression from inside it.</p>
+    <app-live-playground title="FileReaderSync scope confirmed from both sides" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a scope-restriction mistake. The next subtopic covers a similar-shaped but distinct problem — an API that DOES exist on the main thread but only in SOME browsers, and what actually happens if you skip feature detection. Return to the <a routerLink="/html/apis">HTML5 Browser APIs</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTML5 Browser APIs"
+    topicRoute="/html/apis"
+    [next]="{ label: 'navigator.share Feature Detection Prevents a Real TypeError', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' }"
+  />
+</div>

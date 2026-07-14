@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Largest Contentful Paint" topicRoute="/performance/lcp" subtopicLabel="Preloading the LCP Image Beats a Blocking Resource" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Preloading the LCP Image Beats a Blocking Resource</h1>
+  <p class="page-subtitle">A preload hint starts the LCP image fetch immediately, skipping right past a simulated render-blocking delay — measured with the real Resource Timing API's fetchStart, not an estimate.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Resource Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare the real fetchStart timing of a preloaded image against an equivalent un-preloaded image discovered only after a simulated 300ms render-blocking delay.</p>
+    <app-live-playground title="preload beats a blocking resource for LCP" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This backs up the main page's "Missing preload hint" mistake with a real fetchStart measurement showing the gap tracks the blocking delay almost exactly. Next: how loading="lazy" defers an image's fetch until it is near the viewport — and why that is dangerous on the LCP element.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Largest Contentful Paint" topicRoute="/performance/lcp"
+    [prev]="{ label: 'Text Can Be the LCP Candidate — Not Only Images', route: '/performance/lcp/text-can-be-the-lcp-candidate' }"
+    [next]="{ label: 'loading=&quot;lazy&quot; Defers the Fetch Until Near the Viewport', route: '/performance/lcp/lazy-loading-defers-fetch-until-near-viewport' }" />
+</div>

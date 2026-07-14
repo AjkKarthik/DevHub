@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Image Optimisation" topicRoute="/performance/image-optimisation" subtopicLabel="picture Picks the First Matching source in Document Order" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">picture Picks the First Matching source in Document Order</h1>
+  <p class="page-subtitle">Given two equally-supported sources, swapping their order changes which one is picked every time — confirmed via img.currentSrc, not a quality comparison.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="picture element, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Swap the order of two equally-valid sources and confirm the first one always wins, regardless of which URL it points to.</p>
+    <app-live-playground title="picture picks the first matching source in document order" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This explains exactly why the main page insists on AVIF-then-WebP-then-JPEG ordering — reversing it silently defeats format negotiation with no visible symptom. Next: how image-set() applies this same DPR-aware selection logic to CSS backgrounds, which cannot use srcset at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Image Optimisation" topicRoute="/performance/image-optimisation"
+    [prev]="{ label: 'sizes Controls Which srcset Candidate Wins', route: '/performance/image-optimisation/sizes-controls-which-srcset-candidate-wins' }"
+    [next]="{ label: 'image-set() Performs Real DPR-Aware Background Selection', route: '/performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection' }" />
+</div>

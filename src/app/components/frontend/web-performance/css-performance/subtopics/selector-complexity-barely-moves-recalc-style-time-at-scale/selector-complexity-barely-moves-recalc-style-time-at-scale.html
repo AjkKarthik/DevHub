@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Performance" topicRoute="/performance/css-performance" subtopicLabel="Selector Complexity Barely Moves Recalc-Style Time at Scale" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Selector Complexity Barely Moves Recalc-Style Time at Scale</h1>
+  <p class="page-subtitle">A flat class selector and a 4-level descendant selector recalculated style for 5,000 elements in statistically identical time — 25.02ms vs 25.00ms, a 0.07% gap — confirming selector depth isn't the real CSS performance lever.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Modern browser engines" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Time recalc-style cost for a flat class selector vs a deep descendant selector across 5,000 elements, with a warm-up pass and alternating trial order to cancel out ordering bias.</p>
+    <app-live-playground title="selector complexity barely moves recalc-style time at scale" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This grounds the main page's own QnA claim about selector complexity with a real, methodologically-corrected measurement. Next: why unused CSS selectors don't disappear on their own, even when nothing on the page matches them.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Performance" topicRoute="/performance/css-performance"
+    [next]="{ label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' }" />
+</div>

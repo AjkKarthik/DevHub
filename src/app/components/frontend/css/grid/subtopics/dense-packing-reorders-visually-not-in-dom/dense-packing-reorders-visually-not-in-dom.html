@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Grid" topicRoute="/css/grid" subtopicLabel="Dense Packing Reorders Visually, Not in the DOM" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Dense Packing Reorders Visually, Not in the DOM</h1>
+  <p class="page-subtitle">grid-auto-flow: row dense can render a later item before an earlier one — with zero effect on DOM order, Tab order, or screen reader order.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="CSS Grid Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare DOM order against visual position order for three items under dense packing — C genuinely jumps ahead of B on screen while staying after it in the DOM.</p>
+    <app-live-playground title="dense packing reorders visually, not in the DOM" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This closes out three CSS Grid gotchas — auto-fill vs auto-fit's dramatically different track sizing, grid-column's line-number counting trap, and now dense packing's automatic (not manual) DOM/visual divergence. Return to the CSS Grid overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Grid" topicRoute="/css/grid"
+    [prev]="{ label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' }" />
+</div>

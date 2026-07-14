@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Performance Measurement" topicRoute="/performance/measurement" subtopicLabel="performance.mark() Creates Real Timeline Entries — performance.now() Does Not" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">performance.mark() Creates Real Timeline Entries — performance.now() Does Not</h1>
+  <p class="page-subtitle">A performance.now() timing produces zero entries anywhere the Performance API can query — the identical timing via mark()/measure() creates a real, named entry findable from anywhere.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="User Timing API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare what the Performance API can find after timing the same work with performance.now() versus performance.mark()/measure().</p>
+    <app-live-playground title="performance.mark() creates real timeline entries — performance.now() does not" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Using performance.now() instead of marks" mistake with a real, queryable-entries comparison. Next: whether FCP and LCP genuinely measure different moments, verified with real timestamps from this very page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Performance Measurement" topicRoute="/performance/measurement"
+    [next]="{ label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' }" />
+</div>

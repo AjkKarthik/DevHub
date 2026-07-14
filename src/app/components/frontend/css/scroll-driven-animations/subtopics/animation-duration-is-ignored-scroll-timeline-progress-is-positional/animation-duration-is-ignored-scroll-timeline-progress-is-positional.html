@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Scroll-Driven Animations" topicRoute="/css/scroll-driven-animations" subtopicLabel="animation-duration Is Ignored — Scroll Timeline Progress Is Positional" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">animation-duration Is Ignored — Scroll Timeline Progress Is Positional</h1>
+  <p class="page-subtitle">A declared animation-duration: 1s has zero effect once animation-timeline is a scroll timeline — currentTime becomes a scroll-progress percentage, not elapsed seconds.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Chrome 115+, Firefox 110+, Safari 18+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Scrub a scroll-linked animation's currentTime as a percentage and watch every keyframe value apply instantly, despite a declared 1s duration.</p>
+    <app-live-playground title="animation-duration is ignored on scroll timelines" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the main page's own first "Common Mistake" made directly measurable via the real ScrollTimeline object. The next subtopic turns to named timelines — confirming siblings genuinely cannot share one without timeline-scope.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Scroll-Driven Animations" topicRoute="/css/scroll-driven-animations"
+    [next]="{ label: 'Named Timelines Are Invisible to Siblings Without timeline-scope', route: '/css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Positioning &amp; Stacking" topicRoute="/css/positioning" subtopicLabel="Child z-index Can’t Escape Parent Stacking Context" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Child z-index Can’t Escape Parent Stacking Context</h1>
+  <p class="page-subtitle">A tooltip with z-index: 9999 still loses to a sibling card with z-index: 2 — the tooltip is trapped inside its parent's own, lower-ranked stacking context.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="CSS2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Check which element actually renders topmost where a deeply-nested, huge-z-index tooltip overlaps a sibling card with a modest z-index — the sibling wins.</p>
+    <app-live-playground title="child z-index can't escape parent stacking context" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This deepens the z-index/position relationship from the first subtopic into stacking contexts specifically. The final subtopic moves to a different positioning value entirely — how sticky silently no-ops without an offset, the same way z-index silently no-ops without position.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Positioning &amp; Stacking" topicRoute="/css/positioning"
+    [prev]="{ label: 'z-index Does Nothing Without position Set', route: '/css/positioning/z-index-does-nothing-without-position-set' }"
+    [next]="{ label: 'sticky Without an Offset Behaves Like static', route: '/css/positioning/sticky-without-an-offset-behaves-like-static' }" />
+</div>

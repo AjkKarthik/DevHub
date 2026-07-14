@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Colors &amp; Theming" topicRoute="/css/colors-theming" subtopicLabel="color-mix() Always Produces an Opaque Result" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">color-mix() Always Produces an Opaque Result</h1>
+  <p class="page-subtitle">rgba(0,0,255,0.5) reports an explicit alpha value in its computed style; color-mix(in oklch, blue 50%, white) reports none at all — genuinely opaque.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="CSS Color Module Level 5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare the computed background color strings for a color-mix() tint and an rgba() tint — only one includes an explicit alpha value.</p>
+    <app-live-playground title="color-mix produces an opaque result" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This directly answers the main page's own Q&amp;A about when to use color-mix() vs rgba for tinting. The final subtopic turns to accessibility — computing the actual WCAG contrast ratio from real rendered colors to confirm the main page's own pass/fail claims.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Colors &amp; Theming" topicRoute="/css/colors-theming"
+    [prev]="{ label: 'color-mix in oklch Preserves Vividness, sRGB Doesn’t', route: '/css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt' }"
+    [next]="{ label: 'WCAG Contrast Ratio Is Directly Computable From RGB', route: '/css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb' }" />
+</div>

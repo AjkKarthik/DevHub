@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ARIA Roles & Attributes" topicRoute="/html/aria-roles" subtopicLabel="disabled vs aria-disabled Blocks Events Differently" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">disabled vs aria-disabled Blocks Events Differently</h1>
+  <p class="page-subtitle">Only the native disabled attribute is enforced by the browser's event system — aria-disabled changes nothing about whether click listeners actually fire.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="WAI-ARIA 1.1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Call <code>.click()</code> programmatically on a native-disabled button and an aria-disabled button, and count how many click listeners actually fire on each.</p>
+    <app-live-playground title="disabled vs aria-disabled" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This closes out three ARIA gotchas grounded in the same theme: ARIA attributes change what's announced, and only rarely what actually happens on the platform. Return to the ARIA Roles & Attributes overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="ARIA Roles & Attributes" topicRoute="/html/aria-roles"
+    [prev]="{ label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' }" />
+</div>

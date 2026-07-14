@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Injection" topicRoute="/blazor/dependency-injection" subtopicLabel="OwningComponentBase Gives Each Instance Its Own Scoped Service" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">OwningComponentBase Gives Each Instance Its Own Scoped Service</h1>
+  <p class="page-subtitle">A regular Scoped service is shared by every component in the same circuit — OwningComponentBase creates a genuinely separate child scope for one component alone, disposed when that component unmounts rather than when the circuit ends.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's own OwningComponentBase code sample into the actual concurrent-access danger it solves. Next: why injecting a Scoped service into a Singleton freezes the Scoped instance at the Singleton's own construction time, not per circuit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dependency Injection" topicRoute="/blazor/dependency-injection"
+    [next]="{ label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' }" />
+</div>

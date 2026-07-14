@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Font Performance" topicRoute="/performance/font-performance" subtopicLabel="unicode-range Skips Font Files for Unused Character Ranges" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">unicode-range Skips Font Files for Unused Character Ranges</h1>
+  <p class="page-subtitle">A Cyrillic-range &#64;font-face with zero matching characters on the page produced zero network requests — the Latin file, which matches the actual text, was the only one fetched.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="unicode-range, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Two &#64;font-face rules for the same font-family, different unicode-range each — check which one actually gets fetched for plain Latin text.</p>
+    <app-live-playground title="unicode-range skips font files for unused character ranges" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "Not subsetting fonts" mistake with a real, measured demonstration of the underlying mechanism. Next: whether size-adjust actually changes rendered text dimensions, or just tweaks an internal metric nobody can observe.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Font Performance" topicRoute="/performance/font-performance"
+    [next]="{ label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' }" />
+</div>

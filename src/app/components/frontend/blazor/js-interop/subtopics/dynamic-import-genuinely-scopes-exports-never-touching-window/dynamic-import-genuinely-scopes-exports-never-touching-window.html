@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JavaScript Interop" topicRoute="/blazor/js-interop" subtopicLabel="Dynamic import() Genuinely Scopes Exports, Never Touching window" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Dynamic import() Genuinely Scopes Exports, Never Touching window</h1>
+  <p class="page-subtitle">Confirmed directly — window stays completely unchanged before and after a dynamic import, structurally preventing the naming collisions the older window-global JS interop pattern was genuinely vulnerable to.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's IJSObjectReference recommendation is a genuine structural improvement, not just cleaner-looking code. Next: why IJSInProcessRuntime only works in WASM — a real architectural constraint, not an arbitrary API restriction.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JavaScript Interop" topicRoute="/blazor/js-interop"
+    [prev]="{ label: 'JSON.stringify Throws a Real TypeError on Circular References', route: '/blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references' }"
+    [next]="{ label: 'IJSInProcessRuntime Only Works in WASM — Same-Process Execution', route: '/blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution' }" />
+</div>

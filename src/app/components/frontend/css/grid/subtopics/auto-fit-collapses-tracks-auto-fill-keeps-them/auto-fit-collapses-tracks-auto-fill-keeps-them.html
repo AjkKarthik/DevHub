@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Grid" topicRoute="/css/grid" subtopicLabel="auto-fit Collapses Tracks, auto-fill Keeps Them" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">auto-fit Collapses Tracks, auto-fill Keeps Them</h1>
+  <p class="page-subtitle">One item in a 600px container renders at 150px under auto-fill but the full 600px under auto-fit — a 4x difference from one keyword.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS Grid Level 1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Measure a single item's rendered width in two otherwise-identical 600px grids — one auto-fill, one auto-fit — to see exactly how far apart they land.</p>
+    <app-live-playground title="auto-fit vs auto-fill" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This is the classic responsive-grid gotcha the main page's Common Mistakes already flags. Next, see a different kind of counting mistake — how grid-column line numbers relate to the actual number of columns spanned.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Grid" topicRoute="/css/grid"
+    [next]="{ label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' }" />
+</div>

@@ -21474,6 +21474,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/box-model/margin-collapse-uses-larger-value-not-the-sum': {
+    apis: ['margin', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Box Model (overview)', route: '/css/box-model' },
+      { label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' },
+      { label: 'Parent-Child Collapse Moves the Parent’s Own Box', route: '/css/box-model/parent-child-collapse-moves-the-parents-own-box' },
+    ],
+    tip: 'Adjacent vertical margins collapse to the LARGER of the two, not their sum — directly measurable with getBoundingClientRect().',
+    docs: [
+      { label: 'MDN — Mastering margin collapsing', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Box Model', url: 'https://css-tricks.com/the-css-box-model/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Margin collapse only happens between adjacent block-level elements in normal flow — flex and grid containers never collapse their children\'s margins.',
+      'getBoundingClientRect() gives the true rendered layout, making margin collapse claims directly verifiable rather than something you have to eyeball.',
+    ],
+  },
+
+  'css/box-model/outline-never-affects-box-model-layout': {
+    apis: ['outline', 'outline-offset', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Box Model (overview)', route: '/css/box-model' },
+      { label: 'Margin Collapse Uses the Larger Value', route: '/css/box-model/margin-collapse-uses-larger-value-not-the-sum' },
+      { label: 'Parent-Child Collapse Moves the Parent’s Own Box', route: '/css/box-model/parent-child-collapse-moves-the-parents-own-box' },
+    ],
+    tip: 'outline reserves zero layout space at any width or offset — exactly why it\'s the recommended tool for focus indicators, which must never cause a layout shift.',
+    docs: [
+      { label: 'MDN — outline', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/outline' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Box Model', url: 'https://css-tricks.com/the-css-box-model/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Unlike border, outline never adds to an element\'s rendered size in any box-sizing mode.',
+      'outline-offset repositions the already layout-inert outline — it also has zero effect on layout.',
+    ],
+  },
+
+  'css/box-model/parent-child-collapse-moves-the-parents-own-box': {
+    apis: ['margin', 'overflow', 'display: flow-root', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Box Model (overview)', route: '/css/box-model' },
+      { label: 'Margin Collapse Uses the Larger Value', route: '/css/box-model/margin-collapse-uses-larger-value-not-the-sum' },
+      { label: 'outline Never Affects Box Model Layout', route: '/css/box-model/outline-never-affects-box-model-layout' },
+    ],
+    tip: 'A first child\'s collapsing top margin doesn\'t create internal space — it shifts the PARENT\'s own bounding box, measurably, until a Block Formatting Context blocks it.',
+    docs: [
+      { label: 'MDN — Mastering margin collapsing', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Box Model', url: 'https://css-tricks.com/the-css-box-model/', badge: 'blog' },
+    ],
+    gotchas: [
+      'overflow: hidden (or display: flow-root) on the parent creates a BFC, specifically blocking this collapse.',
+      'Before the fix, the wrapper\'s own getBoundingClientRect().top equals the child\'s — proof the margin escaped rather than being absorbed.',
+    ],
+  },
+
   // ── CSS: Backgrounds & Borders ────────────────────────────────────────────
   'css/backgrounds-borders': {
     apis: ['background-size', 'background-image', 'linear-gradient()', 'radial-gradient()', 'border-radius', 'box-shadow', 'object-fit', 'aspect-ratio', 'outline'],
@@ -21495,6 +21555,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'background shorthand resets all sub-properties — use slash notation (position / size) inside it to set background-size.',
       'object-fit has no effect without explicit width and height on the img/video element.',
+    ],
+  },
+
+  'css/backgrounds-borders/background-shorthand-resets-unlisted-sub-properties': {
+    apis: ['background (shorthand)', 'background-size', 'getComputedStyle()'],
+    related: [
+      { label: 'Backgrounds & Borders (overview)', route: '/css/backgrounds-borders' },
+      { label: 'object-fit Does Nothing Without Explicit Dimensions', route: '/css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions' },
+      { label: 'border-radius: 50% Is an Ellipse, Not a Circle', route: '/css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle' },
+    ],
+    tip: 'A background-size: cover set earlier reverts to auto the moment a later background shorthand omits it — confirmed directly via getComputedStyle().backgroundSize before and after.',
+    docs: [
+      { label: 'MDN — background', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/background' },
+    ],
+    resources: [
+      { label: 'MDN — background-size', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/background-size', badge: 'docs' },
+    ],
+    gotchas: [
+      'The shorthand always sets all eight background sub-properties — anything not mentioned reverts to its initial value, it never merges with prior declarations.',
+      'Re-state the affected sub-property after the shorthand, or avoid the shorthand entirely and set only background-image, to preserve earlier sizing.',
+    ],
+  },
+
+  'css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions': {
+    apis: ['object-fit', 'getBoundingClientRect()', 'naturalWidth/naturalHeight'],
+    related: [
+      { label: 'Backgrounds & Borders (overview)', route: '/css/backgrounds-borders' },
+      { label: 'The background Shorthand Resets Unlisted Sub-Properties', route: '/css/backgrounds-borders/background-shorthand-resets-unlisted-sub-properties' },
+      { label: 'border-radius: 50% Is an Ellipse, Not a Circle', route: '/css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle' },
+    ],
+    tip: 'Without explicit width/height, an object-fit: cover image renders at its raw intrinsic size — confirmed via getBoundingClientRect() matching naturalWidth/naturalHeight exactly until sizing is added.',
+    docs: [
+      { label: 'MDN — object-fit', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit' },
+    ],
+    resources: [
+      { label: 'MDN — object-fit', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit', badge: 'docs' },
+    ],
+    gotchas: [
+      'object-fit only governs fitting within the element\'s OWN box — it never sizes a surrounding container or itself.',
+      'A gallery grid still needs explicit width/height (or aspect-ratio) on every image element for uniform, cropped thumbnails.',
+    ],
+  },
+
+  'css/backgrounds-borders/border-radius-50pct-is-an-ellipse-not-a-circle': {
+    apis: ['border-radius', 'elementFromPoint()'],
+    related: [
+      { label: 'Backgrounds & Borders (overview)', route: '/css/backgrounds-borders' },
+      { label: 'The background Shorthand Resets Unlisted Sub-Properties', route: '/css/backgrounds-borders/background-shorthand-resets-unlisted-sub-properties' },
+      { label: 'object-fit Does Nothing Without Explicit Dimensions', route: '/css/backgrounds-borders/object-fit-does-nothing-without-explicit-dimensions' },
+    ],
+    tip: 'A corner hit-test with document.elementFromPoint() proves a 200x100 box with border-radius: 50% clips a point that the equivalent 100x100 square does not — the two shapes are genuinely different.',
+    docs: [
+      { label: 'MDN — border-radius', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius' },
+    ],
+    resources: [
+      { label: 'MDN — border-radius', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius', badge: 'docs' },
+    ],
+    gotchas: [
+      'Percentage border-radius resolves against width and height independently — only equal dimensions produce a true circle.',
+      'For a pill/stadium shape on a non-square element, use a fixed radius (e.g. 999px or height/2), not a percentage.',
     ],
   },
 
@@ -21549,6 +21669,1534 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes': {
+    apis: ['specificity', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Fundamentals (overview)', route: '/css/fundamentals' },
+      { label: 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit', route: '/css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit' },
+      { label: 'Percentage padding-top Resolves Against the Parent’s Width, Not Height', route: '/css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height' },
+    ],
+    tip: 'A selector with ten chained classes still loses to a single ID selector — confirmed via getComputedStyle(), since specificity compares column by column, never sums into one number.',
+    docs: [
+      { label: 'MDN: Cascade & Specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade' },
+    ],
+    resources: [],
+    gotchas: [
+      'The comparison stops at the first differing column — the ID column decides before the class column is ever checked.',
+      'Avoiding ID selectors entirely (using classes + @layer instead) sidesteps this specificity ceiling.',
+    ],
+  },
+
+  'css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit': {
+    apis: ['inherit', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Fundamentals (overview)', route: '/css/fundamentals' },
+      { label: 'Specificity Is Not a Decimal — a Single ID Beats Any Number of Classes', route: '/css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes' },
+      { label: 'Percentage padding-top Resolves Against the Parent’s Width, Not Height', route: '/css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height' },
+    ],
+    tip: 'A parent\'s border and padding never reach an unstyled child (both compute to 0), while color correctly inherits — confirmed via getComputedStyle() on both properties.',
+    docs: [
+      { label: 'MDN: Inheritance', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Inheritance' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only a short, mostly text-related list of properties inherits by default — the majority of CSS properties, especially layout ones, do not.',
+      'Use the explicit inherit keyword (e.g. border: inherit;) to force a non-inherited property to follow the parent.',
+    ],
+  },
+
+  'css/fundamentals/percentage-padding-top-resolves-against-the-parents-width-not-height': {
+    apis: ['padding-top', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Fundamentals (overview)', route: '/css/fundamentals' },
+      { label: 'Specificity Is Not a Decimal — a Single ID Beats Any Number of Classes', route: '/css/fundamentals/specificity-is-not-a-decimal-a-single-id-beats-any-classes' },
+      { label: 'Non-Inherited Properties Don’t Flow to Children Without Explicit inherit', route: '/css/fundamentals/non-inherited-properties-dont-flow-to-children-without-explicit-inherit' },
+    ],
+    tip: 'In a 400px x 100px container, padding-top: 56.25% renders at exactly 225px (56.25% of the width) — confirmed via getBoundingClientRect(), completely independent of the container\'s 100px height.',
+    docs: [
+      { label: 'MDN: Inheritance', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Inheritance' },
+    ],
+    resources: [],
+    gotchas: [
+      'This applies to margin-top, margin-bottom, padding-top, and padding-bottom equally — all resolve against the containing block\'s width.',
+      'The modern aspect-ratio property is now the preferred way to achieve this effect directly.',
+    ],
+  },
+
+  'performance/core-web-vitals': {
+    apis: ['LCP', 'INP', 'CLS', 'PerformanceObserver', 'web-vitals library', 'CrUX'],
+    related: [
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'Lighthouse (lab data) can look great while real CrUX field data still fails — Google Search ranking uses field data, not lab scores.',
+    docs: [
+      { label: 'web.dev — Core Web Vitals', url: 'https://web.dev/articles/vitals' },
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'INP replaced FID in March 2024 — it measures the worst interaction across the full page lifetime, not just the first one.',
+      'transform/opacity animations never trigger layout-shift entries; top/left/width/height animations do.',
+    ],
+  },
+
+  'performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it': {
+    apis: ['layout-shift', 'PerformanceObserver'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' },
+      { label: 'The LCP Candidate Changes as Larger Elements Appear', route: '/performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear' },
+    ],
+    tip: 'The same 300px move produces a real layout-shift entry via top but zero entries via transform — confirmed with a live PerformanceObserver, the exact mechanism Chrome DevTools and CrUX use.',
+    docs: [
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'This holds even for instant, non-animated style changes — not just CSS transitions.',
+      'transform creates a new stacking context as a side effect, worth checking against z-index-sensitive layouts.',
+    ],
+  },
+
+  'performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift': {
+    apis: ['layout-shift', 'PerformanceObserver', 'width / height attributes'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'transform Avoids CLS While top and left Trigger It', route: '/performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it' },
+      { label: 'The LCP Candidate Changes as Larger Elements Appear', route: '/performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear' },
+    ],
+    tip: 'An image with no width/height produces a genuine layout-shift entry when it loads; the identical image with dimensions set produces none — confirmed with a live PerformanceObserver.',
+    docs: [
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'width/height attributes don\'t force a fixed pixel size — combined with CSS like height: auto, the browser still uses them purely to compute the aspect ratio for space reservation.',
+      'Lazy-loaded images are equally susceptible, often more disruptive since they shift content while the user is actively scrolling.',
+    ],
+  },
+
+  'performance/core-web-vitals/the-lcp-candidate-changes-as-larger-elements-appear': {
+    apis: ['largest-contentful-paint', 'PerformanceObserver'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'transform Avoids CLS While top and left Trigger It', route: '/performance/core-web-vitals/transform-avoids-cls-while-top-and-left-trigger-it' },
+      { label: 'Missing Image Dimensions Cause a Real, Measurable Layout Shift', route: '/performance/core-web-vitals/missing-image-dimensions-cause-a-real-measurable-layout-shift' },
+    ],
+    tip: 'Adding a bigger element after a smaller one produces a SECOND, larger LCP entry — confirmed with a live largest-contentful-paint PerformanceObserver, not just theory.',
+    docs: [
+      { label: 'web.dev — Core Web Vitals', url: 'https://web.dev/articles/vitals' },
+    ],
+    resources: [],
+    gotchas: [
+      'LCP is not "whatever renders first" — it is whichever candidate is largest when measurement stops (on interaction or backgrounding).',
+      'A fast-rendering headline can be superseded by a slower hero image, making the image the real LCP bottleneck even though text appeared instantly.',
+    ],
+  },
+
+  'performance/lcp': {
+    apis: ['largest-contentful-paint', 'PerformanceObserver', 'PerformanceResourceTiming', 'fetchpriority', 'rel="preload"'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'LCP cannot beat TTFB — if the server takes 2s to respond, no amount of image optimisation gets LCP under 2s. Fix TTFB first.',
+    docs: [
+      { label: 'web.dev — Largest Contentful Paint', url: 'https://web.dev/articles/lcp' },
+      { label: 'MDN — Largest Contentful Paint API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/LargestContentfulPaint' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The LCP candidate can be text, not just an image — check entry.url (empty string means text won).',
+      'loading="lazy" on the LCP element can delay its discovery even when it looks obviously above-the-fold to a human.',
+    ],
+  },
+
+  'performance/lcp/text-can-be-the-lcp-candidate': {
+    apis: ['largest-contentful-paint', 'PerformanceObserver'],
+    related: [
+      { label: 'Largest Contentful Paint (overview)', route: '/performance/lcp' },
+      { label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' },
+      { label: 'loading="lazy" Defers the Fetch Until Near the Viewport', route: '/performance/lcp/lazy-loading-defers-fetch-until-near-viewport' },
+    ],
+    tip: 'A large heading out-covered a small photo and won as the LCP candidate in a real PerformanceObserver — entry.url was the empty string, the browser\'s own signal that text won.',
+    docs: [
+      { label: 'MDN — Largest Contentful Paint API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/LargestContentfulPaint' },
+    ],
+    resources: [],
+    gotchas: [
+      'Optimising images does nothing for LCP if the actual candidate is a text block — check the real reported element before planning fixes.',
+      'A slow custom web font can block text LCP exactly like a slow image blocks image LCP.',
+    ],
+  },
+
+  'performance/lcp/preload-beats-a-blocking-resource-for-lcp': {
+    apis: ['PerformanceResourceTiming', 'fetchStart', 'rel="preload"', 'fetchpriority'],
+    related: [
+      { label: 'Largest Contentful Paint (overview)', route: '/performance/lcp' },
+      { label: 'Text Can Be the LCP Candidate — Not Only Images', route: '/performance/lcp/text-can-be-the-lcp-candidate' },
+      { label: 'loading="lazy" Defers the Fetch Until Near the Viewport', route: '/performance/lcp/lazy-loading-defers-fetch-until-near-viewport' },
+    ],
+    tip: 'A preloaded image\'s real fetchStart landed ~308ms earlier than an un-preloaded one behind a simulated 300ms blocking resource — the win tracks the blocking delay almost exactly.',
+    docs: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing' },
+    ],
+    resources: [],
+    gotchas: [
+      'Preload controls WHEN a fetch starts; fetchpriority controls how much bandwidth it gets once started — the LCP image needs both.',
+      'If the LCP image tag is already the earliest thing the parser reaches, preload has nothing left to skip past.',
+    ],
+  },
+
+  'performance/lcp/lazy-loading-defers-fetch-until-near-viewport': {
+    apis: ['loading="lazy"', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Largest Contentful Paint (overview)', route: '/performance/lcp' },
+      { label: 'Text Can Be the LCP Candidate — Not Only Images', route: '/performance/lcp/text-can-be-the-lcp-candidate' },
+      { label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' },
+    ],
+    tip: 'A lazy image 9000px below the fold produced zero resource-timing entries; the identical eager image fetched immediately — lazy genuinely withholds the request, it does not just deprioritise it.',
+    docs: [
+      { label: 'MDN — Lazy loading', url: 'https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading' },
+    ],
+    resources: [],
+    gotchas: [
+      'The browser decides lazy vs. eager at discovery time, before layout is necessarily settled — an above-the-fold image is not automatically safe.',
+      'loading="lazy" and fetchpriority="low" are different mechanisms: one can withhold the request entirely, the other only lowers bandwidth priority.',
+    ],
+  },
+
+  'performance/inp': {
+    apis: ['longtask', 'PerformanceObserver', 'scheduler.yield()', 'isInputPending()'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'INP replaced FID in March 2024 — it tracks the WORST interaction across the whole page visit, not just the first one.',
+    docs: [
+      { label: 'web.dev — Interaction to Next Paint', url: 'https://web.dev/articles/inp' },
+      { label: 'MDN — Long Tasks API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A fast click handler can still produce a slow interaction if an unrelated long task is already running when the click happens.',
+      'scheduler.yield() does not make code run faster — it makes long work interruptible by input.',
+    ],
+  },
+
+  'performance/inp/long-tasks-register-as-real-longtask-entries': {
+    apis: ['longtask', 'PerformanceObserver'],
+    related: [
+      { label: 'Interaction to Next Paint (overview)', route: '/performance/inp' },
+      { label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' },
+      { label: 'scheduler.yield() Turns One longtask Into Zero', route: '/performance/inp/scheduler-yield-turns-one-longtask-into-zero' },
+    ],
+    tip: 'A genuine 360ms synchronous block produced one real longtask entry with duration: 360 — the exact API Chrome DevTools uses for its own long-task markers.',
+    docs: [
+      { label: 'MDN — Long Tasks API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'Input delay is the gap before a handler even STARTS — a fast handler is irrelevant if a long task was already running when the click happened.',
+      'Long tasks are not just a page-load concern — any synchronous block over 50ms at any point in the page lifecycle produces the same entry and the same risk.',
+    ],
+  },
+
+  'performance/inp/layout-thrashing-is-dramatically-slower-than-batching': {
+    apis: ['offsetHeight', 'getBoundingClientRect()', 'performance.now()'],
+    related: [
+      { label: 'Interaction to Next Paint (overview)', route: '/performance/inp' },
+      { label: 'Long Tasks Register as Real longtask Entries', route: '/performance/inp/long-tasks-register-as-real-longtask-entries' },
+      { label: 'scheduler.yield() Turns One longtask Into Zero', route: '/performance/inp/scheduler-yield-turns-one-longtask-into-zero' },
+    ],
+    tip: 'The same 300-element read and write, interleaved vs batched, measured a real ~95x slowdown (190ms vs 2ms) with nothing but performance.now() — same operations, same total work, just reordered.',
+    docs: [
+      { label: 'web.dev — Avoid large, complex layouts', url: 'https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing' },
+    ],
+    resources: [],
+    gotchas: [
+      'Reading offsetHeight/getBoundingClientRect right after a DOM write forces a synchronous layout flush — it is not a cheap property lookup.',
+      'The fix costs nothing structurally: read everything first, then write everything — no fewer elements, no virtualisation needed.',
+    ],
+  },
+
+  'performance/inp/scheduler-yield-turns-one-longtask-into-zero': {
+    apis: ['scheduler.yield()', 'longtask', 'PerformanceObserver'],
+    related: [
+      { label: 'Interaction to Next Paint (overview)', route: '/performance/inp' },
+      { label: 'Long Tasks Register as Real longtask Entries', route: '/performance/inp/long-tasks-register-as-real-longtask-entries' },
+      { label: 'Layout Thrashing Is Dramatically Slower Than Batching', route: '/performance/inp/layout-thrashing-is-dramatically-slower-than-batching' },
+    ],
+    tip: 'The same 360ms of total work produced one longtask entry unbroken, and zero longtask entries split into 12 yielding 30ms chunks — wall-clock time stayed roughly the same either way.',
+    docs: [
+      { label: 'MDN — Prioritized Task Scheduling API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Prioritized_Task_Scheduling_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'scheduler.yield() does not speed up the work — evaluating it by wall-clock time alone misses the point; check longtask entries or real responsiveness instead.',
+      'Chunks must individually stay under 50ms to avoid producing their own longtask entries — yielding with oversized chunks still leaves a long task per chunk.',
+    ],
+  },
+
+  'performance/cls': {
+    apis: ['layout-shift', 'PerformanceObserver', 'hadRecentInput', 'content-visibility', 'contain-intrinsic-size'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+    ],
+    tip: 'CLS = sum of (impact fraction × distance fraction) per shift, using the worst 5-second session window — always set width/height on img/video first, it is the single biggest win.',
+    docs: [
+      { label: 'web.dev — Cumulative Layout Shift', url: 'https://web.dev/articles/cls' },
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Only a genuinely trusted user gesture sets hadRecentInput: true — element.click() from JavaScript does not count.',
+      'content-visibility: auto collapses an element to zero height without an explicit contain-intrinsic-size hint.',
+    ],
+  },
+
+  'performance/cls/hadrecentinput-excludes-click-caused-shifts': {
+    apis: ['layout-shift', 'hadRecentInput', 'PerformanceObserver'],
+    related: [
+      { label: 'Cumulative Layout Shift (overview)', route: '/performance/cls' },
+      { label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' },
+      { label: 'Fixed Positioning Eliminates the Shift In-Flow Insertion Causes', route: '/performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes' },
+    ],
+    tip: 'A real, trusted click produced a layout-shift entry with hadRecentInput: true; the identical shift with no preceding input reported false — confirmed with genuine browser automation, not a simulated click.',
+    docs: [
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'element.click() from JavaScript is not a trusted event — shifts it causes still report hadRecentInput: false.',
+      'The exclusion is per-entry, not a blanket window — later unrelated shifts with no nearby real input still count normally.',
+    ],
+  },
+
+  'performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height': {
+    apis: ['content-visibility', 'contain-intrinsic-size', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Cumulative Layout Shift (overview)', route: '/performance/cls' },
+      { label: 'hadRecentInput Excludes Click-Caused Shifts', route: '/performance/cls/hadrecentinput-excludes-click-caused-shifts' },
+      { label: 'Fixed Positioning Eliminates the Shift In-Flow Insertion Causes', route: '/performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes' },
+    ],
+    tip: 'A 400px-tall section measured a real, verified 0px height with content-visibility: auto alone — adding contain-intrinsic-size: 0 400px restored the true 400px.',
+    docs: [
+      { label: 'MDN — content-visibility', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'The estimate in contain-intrinsic-size does not need to be pixel-perfect — a close approximation still shrinks the eventual shift dramatically.',
+      'Every content-visibility: auto section needs its own contain-intrinsic-size — there is no single global fix.',
+    ],
+  },
+
+  'performance/cls/fixed-positioning-eliminates-the-shift-in-flow-insertion-causes': {
+    apis: ['layout-shift', 'PerformanceObserver', 'position: fixed'],
+    related: [
+      { label: 'Cumulative Layout Shift (overview)', route: '/performance/cls' },
+      { label: 'hadRecentInput Excludes Click-Caused Shifts', route: '/performance/cls/hadrecentinput-excludes-click-caused-shifts' },
+      { label: 'content-visibility Without contain-intrinsic-size Collapses Height', route: '/performance/cls/content-visibility-without-contain-intrinsic-size-collapses-height' },
+    ],
+    tip: 'The same 80px banner produced a real, nonzero layout-shift entry inserted into normal flow, and zero entries inserted as position: fixed — confirmed in isolation with a live observer.',
+    docs: [
+      { label: 'web.dev — Cumulative Layout Shift', url: 'https://web.dev/articles/cls' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a structural difference, not a magnitude one — a fixed element of any size never causes CLS since it never displaces anything.',
+      'position: sticky only behaves this way once actually stuck — a newly inserted sticky element can still shift content depending on where it lands.',
+    ],
+  },
+
+  'performance/critical-rendering-path': {
+    apis: ['renderBlockingStatus', 'defer', 'async', 'type="module"', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Browser Rendering Pipeline', route: '/performance/browser-rendering' },
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+    ],
+    tip: 'CSS in <head> is render-blocking by default; a bare <script> is parser-blocking — defer and async both avoid blocking the parser during download, but only defer preserves document order.',
+    docs: [
+      { label: 'web.dev — Render-blocking resources', url: 'https://web.dev/articles/render-blocking-resources' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A stylesheet is still downloaded even when non-render-blocking (e.g. media="print") — only the render block is skipped.',
+      'type="module" scripts are deferred by default — the defer attribute adds nothing on top of it.',
+    ],
+  },
+
+  'performance/critical-rendering-path/media-print-downloads-but-never-blocks-render': {
+    apis: ['renderBlockingStatus', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Critical Rendering Path (overview)', route: '/performance/critical-rendering-path' },
+      { label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' },
+      { label: 'type="module" Is Deferred by Default', route: '/performance/critical-rendering-path/type-module-is-deferred-by-default' },
+    ],
+    tip: 'A normal stylesheet reported renderBlockingStatus: "blocking"; the identical stylesheet with media="print" reported "non-blocking" — both were still fetched, only the render classification differed.',
+    docs: [
+      { label: 'web.dev — Render-blocking resources', url: 'https://web.dev/articles/render-blocking-resources' },
+    ],
+    resources: [],
+    gotchas: [
+      'The browser decides this purely from the media attribute on the link tag, not by inspecting the CSS content itself.',
+      'media="print" does not delay the download — it only skips the render block.',
+    ],
+  },
+
+  'performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish': {
+    apis: ['document.readyState', 'defer', 'DOMContentLoaded'],
+    related: [
+      { label: 'Critical Rendering Path (overview)', route: '/performance/critical-rendering-path' },
+      { label: 'media="print" Downloads But Never Blocks Render', route: '/performance/critical-rendering-path/media-print-downloads-but-never-blocks-render' },
+      { label: 'type="module" Is Deferred by Default', route: '/performance/critical-rendering-path/type-module-is-deferred-by-default' },
+    ],
+    tip: 'A plain script sees a partially built DOM with readyState "loading"; a defer script always sees the fully parsed document with every element present, before DOMContentLoaded fires.',
+    docs: [
+      { label: 'MDN — script defer', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script#defer' },
+    ],
+    resources: [],
+    gotchas: [
+      'Multiple defer scripts always execute in document order, regardless of which finishes downloading first — unlike async.',
+      'A plain script genuinely halts the parser — elements after it in the source do not exist yet when it runs.',
+    ],
+  },
+
+  'performance/critical-rendering-path/type-module-is-deferred-by-default': {
+    apis: ['type="module"', 'document.readyState'],
+    related: [
+      { label: 'Critical Rendering Path (overview)', route: '/performance/critical-rendering-path' },
+      { label: 'media="print" Downloads But Never Blocks Render', route: '/performance/critical-rendering-path/media-print-downloads-but-never-blocks-render' },
+      { label: 'defer Genuinely Waits for Parsing to Finish', route: '/performance/critical-rendering-path/defer-genuinely-waits-for-parsing-to-finish' },
+    ],
+    tip: 'A type="module" script with NO defer attribute still sees a fully parsed document, identical to an explicitly deferred classic script — modules are deferred by default.',
+    docs: [
+      { label: 'MDN — JavaScript modules', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules' },
+    ],
+    resources: [],
+    gotchas: [
+      'This default-deferred behaviour applies to external module scripts (with src) — an inline module has no separate fetch to defer past.',
+      'Adding defer to a module script is redundant but harmless, not a conflict.',
+    ],
+  },
+
+  'performance/browser-rendering': {
+    apis: ['getBoundingClientRect()', 'elementFromPoint()', 'content-visibility', 'contain-intrinsic-size'],
+    related: [
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'transform and opacity are the only properties that run entirely on the compositor thread — everything else triggers at least paint, and many trigger layout too.',
+    docs: [
+      { label: 'web.dev — Rendering performance', url: 'https://web.dev/articles/rendering-performance' },
+    ],
+    resources: [
+      { label: 'csstriggers.com', url: 'https://csstriggers.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'opacity: 0 remains hit-testable by default — it is not the same as removing an element from interaction.',
+      'content-visibility: auto defers rendering work, it does not eliminate it — an early measurement forces it to happen anyway.',
+    ],
+  },
+
+  'performance/browser-rendering/three-structurally-different-kinds-of-invisible': {
+    apis: ['getBoundingClientRect()', 'elementFromPoint()'],
+    related: [
+      { label: 'Browser Rendering Pipeline (overview)', route: '/performance/browser-rendering' },
+      { label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' },
+      { label: 'content-visibility Defers Work, It Doesn’t Eliminate It', route: '/performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it' },
+    ],
+    tip: 'opacity: 0 and visibility: hidden both keep their full layout height; display: none collapses to 0 — and only visibility: hidden is excluded from elementFromPoint hit-testing.',
+    docs: [
+      { label: 'MDN — visibility', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'opacity: 0 elements still receive click/hover events by default — add pointer-events: none if that is not wanted.',
+      'display: none is the most expensive of the three to re-show, since the browser lays it out from scratch.',
+    ],
+  },
+
+  'performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically': {
+    apis: ['content-visibility', 'contain-intrinsic-size', 'performance.now()'],
+    related: [
+      { label: 'Browser Rendering Pipeline (overview)', route: '/performance/browser-rendering' },
+      { label: 'Three Structurally Different Kinds of Invisible', route: '/performance/browser-rendering/three-structurally-different-kinds-of-invisible' },
+      { label: 'content-visibility Defers Work, It Doesn’t Eliminate It', route: '/performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it' },
+    ],
+    tip: '60 sections of 2,400 total elements rendered roughly 14x faster with content-visibility: auto than without it — same DOM, same content, measured with performance.now().',
+    docs: [
+      { label: 'web.dev — content-visibility', url: 'https://web.dev/articles/content-visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'The saving comes from skipping style/layout/paint work, not from having fewer DOM nodes — node count is identical either way.',
+      'Pair with contain-intrinsic-size to avoid a visible pop-in as sections scroll into view.',
+    ],
+  },
+
+  'performance/browser-rendering/content-visibility-defers-work-it-doesnt-eliminate-it': {
+    apis: ['content-visibility', 'getBoundingClientRect()', 'ResizeObserver', 'IntersectionObserver'],
+    related: [
+      { label: 'Browser Rendering Pipeline (overview)', route: '/performance/browser-rendering' },
+      { label: 'Three Structurally Different Kinds of Invisible', route: '/performance/browser-rendering/three-structurally-different-kinds-of-invisible' },
+      { label: 'content-visibility: auto Cuts Render Time Dramatically', route: '/performance/browser-rendering/content-visibility-auto-cuts-render-time-dramatically' },
+    ],
+    tip: 'Querying a nested child\'s geometry inside a never-rendered content-visibility: auto section cost real, measurable milliseconds — the same query on an already-rendered section was nearly free.',
+    docs: [
+      { label: 'web.dev — content-visibility', url: 'https://web.dev/articles/content-visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'An eager ResizeObserver or getBoundingClientRect() loop over every section forces all deferred work to happen immediately, silently cancelling the optimisation.',
+      'Measure lazily instead — only query sections that are actually about to become relevant, e.g. via IntersectionObserver.',
+    ],
+  },
+
+  'performance/resource-hints': {
+    apis: ['rel="preload"', 'rel="prefetch"', 'rel="preconnect"', 'rel="modulepreload"', 'fetchpriority'],
+    related: [
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+    ],
+    tip: 'preload is for the current page, prefetch is for the next navigation — a preload must exactly match both the URL and the request mode (CORS vs not) of its consumer, or it silently wastes the fetch.',
+    docs: [
+      { label: 'web.dev — Resource hints', url: 'https://web.dev/articles/preload-critical-assets' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Fonts always fetch in CORS mode via @font-face — a preload missing crossorigin double-fetches even for same-origin fonts.',
+      'A missing as= attribute is NOT a double-fetch — modern Chrome treats it as invalid and never fetches the preload at all.',
+    ],
+  },
+
+  'performance/resource-hints/font-preload-without-crossorigin-causes-a-genuine-double-fetch': {
+    apis: ['rel="preload"', 'crossorigin', '@font-face', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Resource Hints (overview)', route: '/performance/resource-hints' },
+      { label: 'A Mismatched Preload URL Causes a Genuine Double-Fetch', route: '/performance/resource-hints/mismatched-preload-url-causes-a-genuine-double-fetch' },
+      { label: 'Missing as= Silently Does Nothing — Not a Double-Fetch', route: '/performance/resource-hints/missing-as-silently-does-nothing-not-a-double-fetch' },
+    ],
+    tip: 'A font preload with no crossorigin produced two real network requests for the same URL — one preload, one @font-face — since request modes didn\'t match. Adding crossorigin collapsed it to one.',
+    docs: [
+      { label: 'web.dev — Resource hints', url: 'https://web.dev/articles/preload-critical-assets' },
+    ],
+    resources: [],
+    gotchas: [
+      'crossorigin is needed even for same-origin fonts — @font-face always uses CORS mode regardless of origin.',
+      'The mismatch is exactly what prevents the cache match — the second request is a genuine new network fetch, not a cache hit.',
+    ],
+  },
+
+  'performance/resource-hints/mismatched-preload-url-causes-a-genuine-double-fetch': {
+    apis: ['rel="preload"', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Resource Hints (overview)', route: '/performance/resource-hints' },
+      { label: 'Font Preload Without crossorigin Causes a Genuine Double-Fetch', route: '/performance/resource-hints/font-preload-without-crossorigin-causes-a-genuine-double-fetch' },
+      { label: 'Missing as= Silently Does Nothing — Not a Double-Fetch', route: '/performance/resource-hints/missing-as-silently-does-nothing-not-a-double-fetch' },
+    ],
+    tip: 'A preload href differing from the consuming element\'s URL by even one query character produced two real network requests; an exact match produced one.',
+    docs: [
+      { label: 'web.dev — Resource hints', url: 'https://web.dev/articles/preload-critical-assets' },
+    ],
+    resources: [],
+    gotchas: [
+      'The match is a strict, exact URL comparison — no fuzzy "same resource" logic.',
+      'Build-tool-hashed filenames are a common real-world cause — the preload link needs to be generated by the same build step.',
+    ],
+  },
+
+  'performance/resource-hints/missing-as-silently-does-nothing-not-a-double-fetch': {
+    apis: ['rel="preload"', 'as=', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Resource Hints (overview)', route: '/performance/resource-hints' },
+      { label: 'Font Preload Without crossorigin Causes a Genuine Double-Fetch', route: '/performance/resource-hints/font-preload-without-crossorigin-causes-a-genuine-double-fetch' },
+      { label: 'A Mismatched Preload URL Causes a Genuine Double-Fetch', route: '/performance/resource-hints/mismatched-preload-url-causes-a-genuine-double-fetch' },
+    ],
+    tip: 'A preload with no as= attribute produced exactly ONE request — identical in count to a working preload — because the browser never fetched the invalid preload at all.',
+    docs: [
+      { label: 'web.dev — Resource hints', url: 'https://web.dev/articles/preload-critical-assets' },
+    ],
+    resources: [],
+    gotchas: [
+      'Request-counting alone cannot catch this failure mode — check for as= directly, or watch for Chrome\'s "was preloaded... but not used" console warning.',
+      'The performance cost is identical to a double-fetch (zero benefit gained) even though the network signature looks completely different.',
+    ],
+  },
+
+  'performance/http2-http3': {
+    apis: ['nextHopProtocol', 'PerformanceResourceTiming', '103 Early Hints', 'QUIC'],
+    related: [
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+    ],
+    tip: 'HTTP/2 multiplexes many requests on one connection — domain sharding and heavy bundling, both HTTP/1.1-era workarounds, actively hurt performance once you\'ve migrated.',
+    docs: [
+      { label: 'web.dev — HTTP/2', url: 'https://web.dev/articles/performance-http2' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A single page can genuinely mix protocols — each origin negotiates its own, checkable via nextHopProtocol.',
+      '103 Early Hints is cache-aware (unlike HTTP/2 Server Push) — it sends ordinary preload hints the browser evaluates normally.',
+    ],
+  },
+
+  'performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource': {
+    apis: ['nextHopProtocol', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'HTTP/2 & HTTP/3 (overview)', route: '/performance/http2-http3' },
+      { label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' },
+      { label: 'Early Hints Lets the Browser Fetch Before HTML Finishes', route: '/performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes' },
+    ],
+    tip: 'A real check on this site showed the local dev server responding over http/1.1 while Google Fonts resources on the same page reported h2 and h3 — protocol is negotiated per origin, not per page.',
+    docs: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing' },
+    ],
+    resources: [],
+    gotchas: [
+      'nextHopProtocol is the programmatic equivalent of DevTools\' Protocol column — usable in real RUM auditing, not just manual inspection.',
+      'Timing data including nextHopProtocol is still exposed for cross-origin no-cors fetches, confirmed directly — it is not withheld the way response bodies are.',
+    ],
+  },
+
+  'performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing': {
+    apis: ['Connection coalescing', 'TLS certificate matching'],
+    related: [
+      { label: 'HTTP/2 & HTTP/3 (overview)', route: '/performance/http2-http3' },
+      { label: 'nextHopProtocol Reveals the Real HTTP Version Per Resource', route: '/performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource' },
+      { label: 'Early Hints Lets the Browser Fetch Before HTML Finishes', route: '/performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes' },
+    ],
+    tip: 'Sharding solved the HTTP/1.1 6-connections-per-origin limit — a limit HTTP/2 multiplexing removes entirely. Keeping it after migrating forces redundant DNS/TCP/TLS handshakes for nothing.',
+    docs: [
+      { label: 'web.dev — HTTP/2', url: 'https://web.dev/articles/performance-http2' },
+    ],
+    resources: [],
+    gotchas: [
+      'Coalescing needs BOTH the same IP AND a certificate valid for both hostnames — sharded subdomains often fail one or both checks.',
+      'Verify with DevTools\' Connection ID column — matching IDs mean one connection was reused; different IDs mean sharding is still costing extra handshakes.',
+    ],
+  },
+
+  'performance/http2-http3/early-hints-lets-the-browser-fetch-before-html-finishes': {
+    apis: ['103 Early Hints', 'Link header', 'rel="preload"'],
+    related: [
+      { label: 'HTTP/2 & HTTP/3 (overview)', route: '/performance/http2-http3' },
+      { label: 'nextHopProtocol Reveals the Real HTTP Version Per Resource', route: '/performance/http2-http3/nexthopprotocol-reveals-the-real-http-version-per-resource' },
+      { label: 'Domain Sharding Defeats HTTP/2 Connection Coalescing', route: '/performance/http2-http3/domain-sharding-defeats-http2-connection-coalescing' },
+    ],
+    tip: 'A 103 response lets asset downloads start while the server is still generating HTML — hiding download time behind server processing time, most useful exactly when TTFB is already slow.',
+    docs: [
+      { label: 'web.dev — 103 Early Hints', url: 'https://web.dev/articles/early-hints' },
+    ],
+    resources: [],
+    gotchas: [
+      'Unlike HTTP/2 Server Push, Early Hints sends ordinary Link headers the browser checks against its own cache — no cache-blindness problem.',
+      'Typically implemented entirely at the reverse proxy/CDN layer — the origin application server usually needs no code changes.',
+    ],
+  },
+
+  'performance/caching': {
+    apis: ['Cache-Control', 'ETag', 'Cache Storage API', 'Service Worker', 'Workbox'],
+    related: [
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'HTTP/2 & HTTP/3', route: '/performance/http2-http3' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+    ],
+    tip: 'Cache versioned assets forever (immutable) + always revalidate HTML (no-cache) — the two rules that make repeat visits fast and deploys instant.',
+    docs: [
+      { label: 'MDN — Cache Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cache' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The Cache API can only store GET requests — cache.put() with a POST request throws a real TypeError.',
+      'Cache-first has no freshness check at all — only safe for content-hashed, versioned URLs.',
+    ],
+  },
+
+  'performance/caching/the-cache-api-only-stores-get-requests': {
+    apis: ['Cache Storage API', 'cache.put()'],
+    related: [
+      { label: 'Caching & Service Workers (overview)', route: '/performance/caching' },
+      { label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' },
+      { label: 'Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones', route: '/performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones' },
+    ],
+    tip: 'cache.put() with a POST request threw a real, immediate TypeError — confirmed with the exact browser error message, not a silent no-op.',
+    docs: [
+      { label: 'MDN — Cache Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cache' },
+    ],
+    resources: [],
+    gotchas: [
+      'Offline POST support needs Background Sync (IndexedDB queue + replay), not the Cache API — a structurally different mechanism.',
+      'Workbox\'s BackgroundSyncPlugin automates the IndexedDB queue-and-replay pattern.',
+    ],
+  },
+
+  'performance/caching/cache-first-genuinely-skips-the-network-entirely': {
+    apis: ['Cache Storage API', 'cache.match()', 'Workbox CacheFirst'],
+    related: [
+      { label: 'Caching & Service Workers (overview)', route: '/performance/caching' },
+      { label: 'The Cache API Only Stores GET Requests', route: '/performance/caching/the-cache-api-only-stores-get-requests' },
+      { label: 'Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones', route: '/performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones' },
+    ],
+    tip: 'A cache-first lookup for an already-cached URL never called the real network function — the fetch counter stayed at 0, proven directly rather than assumed.',
+    docs: [
+      { label: 'web.dev — Workbox strategies', url: 'https://developer.chrome.com/docs/workbox/caching-strategies-overview' },
+    ],
+    resources: [],
+    gotchas: [
+      'Cache-first has no freshness mechanism at all once a hit is found — safe only for content-hashed, versioned URLs.',
+      'Stale-while-revalidate differs specifically by still triggering a real background fetch after returning the cached response.',
+    ],
+  },
+
+  'performance/caching/selective-cache-deletion-keeps-the-current-cache-and-removes-stale-ones': {
+    apis: ['caches.keys()', 'caches.delete()', 'Service Worker activate event'],
+    related: [
+      { label: 'Caching & Service Workers (overview)', route: '/performance/caching' },
+      { label: 'The Cache API Only Stores GET Requests', route: '/performance/caching/the-cache-api-only-stores-get-requests' },
+      { label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' },
+    ],
+    tip: 'Seeding three caches and running the main page\'s own clearOldCaches() pattern left exactly the one named as current — the other two were genuinely deleted, verified by re-querying caches.keys().',
+    docs: [
+      { label: 'MDN — Cache Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cache' },
+    ],
+    resources: [],
+    gotchas: [
+      'A cache name accidentally left out of the "current caches" list is silently deleted, even if it still holds needed data — no error is thrown.',
+      'Named caches persist indefinitely with no automatic expiration by age — cleanup must be explicit.',
+    ],
+  },
+
+  'performance/image-optimisation': {
+    apis: ['srcset', 'sizes', 'picture', 'source', 'image-set()', 'currentSrc'],
+    related: [
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+    ],
+    tip: 'Serve AVIF → WebP → JPEG via picture, use srcset + sizes together (sizes is required, not optional), and never lazy-load the LCP image.',
+    docs: [
+      { label: 'web.dev — Responsive images', url: 'https://web.dev/articles/serve-responsive-images' },
+    ],
+    resources: [
+      { label: 'Squoosh', url: 'https://squoosh.app/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Without sizes, the browser defaults to 100vw and often picks the largest srcset candidate — confirmed directly via currentSrc.',
+      'picture picks the FIRST matching source in document order, not the smallest file — source order is the entire mechanism.',
+    ],
+  },
+
+  'performance/image-optimisation/sizes-controls-which-srcset-candidate-wins': {
+    apis: ['srcset', 'sizes', 'img.currentSrc'],
+    related: [
+      { label: 'Image Optimisation (overview)', route: '/performance/image-optimisation' },
+      { label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' },
+      { label: 'image-set() Performs Real DPR-Aware Background Selection', route: '/performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection' },
+    ],
+    tip: 'The exact same srcset list picked the largest candidate with no sizes, the smallest sufficient candidate for sizes="300px", and a larger one for sizes="900px" — confirmed via img.currentSrc each time.',
+    docs: [
+      { label: 'MDN — Responsive images', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images' },
+    ],
+    resources: [],
+    gotchas: [
+      'sizes is not inferred from CSS — it must be declared explicitly, evaluated at parse time before styles are guaranteed applied.',
+      'sizes accepts a media-query-like list, so it can describe a genuinely responsive rendered width, not just a fixed one.',
+    ],
+  },
+
+  'performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order': {
+    apis: ['picture', 'source', 'img.currentSrc'],
+    related: [
+      { label: 'Image Optimisation (overview)', route: '/performance/image-optimisation' },
+      { label: 'sizes Controls Which srcset Candidate Wins', route: '/performance/image-optimisation/sizes-controls-which-srcset-candidate-wins' },
+      { label: 'image-set() Performs Real DPR-Aware Background Selection', route: '/performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection' },
+    ],
+    tip: 'Swapping the order of two equally-supported source elements changed which one was picked every time — confirmed via img.currentSrc, proving order is the entire mechanism, not a quality comparison.',
+    docs: [
+      { label: 'MDN — picture element', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/picture' },
+    ],
+    resources: [],
+    gotchas: [
+      'A reversed source order (JPEG before AVIF) fails completely silently — the image still renders correctly, just larger, with no error anywhere.',
+      'Visual regression tests cannot catch this mistake — the wrong format still looks visually correct.',
+    ],
+  },
+
+  'performance/image-optimisation/image-set-performs-real-dpr-aware-background-selection': {
+    apis: ['image-set()', 'background-image', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Image Optimisation (overview)', route: '/performance/image-optimisation' },
+      { label: 'sizes Controls Which srcset Candidate Wins', route: '/performance/image-optimisation/sizes-controls-which-srcset-candidate-wins' },
+      { label: 'picture Picks the First Matching source in Document Order', route: '/performance/image-optimisation/picture-picks-the-first-matching-source-in-document-order' },
+    ],
+    tip: 'On a 1x-DPR screen, only the 1x image-set() candidate produced a real network request — the 2x candidate was never fetched at all, confirmed via Resource Timing, not getComputedStyle.',
+    docs: [
+      { label: 'MDN — image-set()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/image/image-set' },
+    ],
+    resources: [],
+    gotchas: [
+      'getComputedStyle().backgroundImage just echoes the full declaration — it does not reveal which candidate was actually fetched.',
+      'A hard-coded url("icon@2x.png") always fetches the larger file on every screen — image-set() is what gives the browser a real choice.',
+    ],
+  },
+
+  'performance/font-performance': {
+    apis: ['font-display', 'unicode-range', 'size-adjust', 'document.fonts'],
+    related: [
+      { label: 'Image Optimisation', route: '/performance/image-optimisation' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Cumulative Layout Shift', route: '/performance/cls' },
+    ],
+    tip: 'Prevent FOIT with font-display: swap, minimise CLS with size-adjust/ascent-override, and preload only the 1-2 most critical font weights with crossorigin.',
+    docs: [
+      { label: 'web.dev — Font best practices', url: 'https://web.dev/articles/font-best-practices' },
+    ],
+    resources: [
+      { label: 'Squoosh', url: 'https://squoosh.app/', badge: 'tool' },
+    ],
+    gotchas: [
+      'unicode-range genuinely skips downloading font files for character ranges not present in the page text — confirmed via real resource-timing.',
+      'size-adjust precisely, proportionally scales rendered text width — not a rough visual nudge.',
+    ],
+  },
+
+  'performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges': {
+    apis: ['unicode-range', '@font-face', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Font Performance (overview)', route: '/performance/font-performance' },
+      { label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' },
+      { label: 'The Font Loading API Tracks Real Load State, Not a Guess', route: '/performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess' },
+    ],
+    tip: 'A Cyrillic-range font-face with zero matching characters on the page produced zero network requests — the Latin file, matching the actual text, was the only one fetched.',
+    docs: [
+      { label: 'MDN — unicode-range', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/unicode-range' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is how Google Fonts serves compact per-script files under one combined CSS response with no manual splitting needed.',
+      'The browser determines this from declared ranges alone — it never downloads a file just to check its contents.',
+    ],
+  },
+
+  'performance/font-performance/size-adjust-measurably-changes-rendered-text-width': {
+    apis: ['size-adjust', '@font-face', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Font Performance (overview)', route: '/performance/font-performance' },
+      { label: 'unicode-range Skips Font Files for Unused Character Ranges', route: '/performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges' },
+      { label: 'The Font Loading API Tracks Real Load State, Not a Guess', route: '/performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess' },
+    ],
+    tip: 'Identical text at the identical font-size measured almost exactly 1.5x wider with size-adjust: 150% on the fallback — a precise, proportional, real layout change.',
+    docs: [
+      { label: 'MDN — size-adjust', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/size-adjust' },
+    ],
+    resources: [],
+    gotchas: [
+      'size-adjust changes the font\'s effective metrics at a given font-size — it does not change font-size itself.',
+      'Applying it to the FALLBACK\'s own @font-face is what prevents reflow at the moment the real webfont swaps in.',
+    ],
+  },
+
+  'performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess': {
+    apis: ['document.fonts.check()', 'document.fonts.load()', 'document.fonts.ready'],
+    related: [
+      { label: 'Font Performance (overview)', route: '/performance/font-performance' },
+      { label: 'unicode-range Skips Font Files for Unused Character Ranges', route: '/performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges' },
+      { label: 'size-adjust Measurably Changes Rendered Text Width', route: '/performance/font-performance/size-adjust-measurably-changes-rendered-text-width' },
+    ],
+    tip: 'document.fonts.check() reported false before loading, load() triggered a real network fetch, and check() flipped to true only once that fetch genuinely completed.',
+    docs: [
+      { label: 'MDN — Font Loading API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CSS_Font_Loading_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'load() actively triggers a network fetch — it is not a passive check the way check() is.',
+      'Gate layout measurements that depend on final font metrics behind check()/ready to avoid cold-cache-only visual bugs.',
+    ],
+  },
+
+  'performance/js-performance': {
+    apis: ['structuredClone()', 'Event delegation', 'Memoization', 'PerformanceObserver longtask'],
+    related: [
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+    ],
+    tip: 'Ship less JS: tree-shake ES modules, code-split routes, break long tasks with yield, and memoize expensive pure functions.',
+    docs: [
+      { label: 'web.dev — Optimize JavaScript', url: 'https://web.dev/articles/optimize-long-tasks' },
+    ],
+    resources: [
+      { label: 'bundlephobia.com', url: 'https://bundlephobia.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Spread only shallow-copies — nested objects/arrays remain shared references with the original, unlike structuredClone.',
+      'Per-element event listeners silently miss elements added after the listener setup ran — delegation does not.',
+    ],
+  },
+
+  'performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs': {
+    apis: ['structuredClone()', 'spread operator'],
+    related: [
+      { label: 'JavaScript Performance (overview)', route: '/performance/js-performance' },
+      { label: 'Event Delegation Catches Dynamically Added Elements', route: '/performance/js-performance/event-delegation-catches-dynamically-added-elements' },
+      { label: 'Memoization Genuinely Skips Recomputation for Repeated Inputs', route: '/performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs' },
+    ],
+    tip: 'Mutating a nested property through a spread copy changed the original object too — structuredClone left it untouched. For nested data, the speed gap is also far beyond 10x.',
+    docs: [
+      { label: 'MDN — structuredClone()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone' },
+    ],
+    resources: [],
+    gotchas: [
+      'The "~10x slower" figure applies specifically to flat objects — nested data reveals spread and structuredClone are not even doing the same job.',
+      'Spread is the correct choice when shared nested references are fine; structuredClone is required when genuine independence matters.',
+    ],
+  },
+
+  'performance/js-performance/event-delegation-catches-dynamically-added-elements': {
+    apis: ['addEventListener()', 'Event bubbling', 'event.target'],
+    related: [
+      { label: 'JavaScript Performance (overview)', route: '/performance/js-performance' },
+      { label: 'structuredClone and spread Do Fundamentally Different Jobs', route: '/performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs' },
+      { label: 'Memoization Genuinely Skips Recomputation for Repeated Inputs', route: '/performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs' },
+    ],
+    tip: 'A per-element listener setup silently missed clicks on an item added afterward — the identical setup using delegation caught both, including the one added after the listener was attached.',
+    docs: [
+      { label: 'MDN — Event bubbling', url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Event_bubbling' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a correctness bug, not just an efficiency loss — per-element setups need re-running for every dynamic addition, easy to forget.',
+      'Delegation works for nested markup too via event.target.closest(selector).',
+    ],
+  },
+
+  'performance/js-performance/memoization-genuinely-skips-recomputation-for-repeated-inputs': {
+    apis: ['Map', 'JSON.stringify()', 'useMemo', 'computed()'],
+    related: [
+      { label: 'JavaScript Performance (overview)', route: '/performance/js-performance' },
+      { label: 'structuredClone and spread Do Fundamentally Different Jobs', route: '/performance/js-performance/structuredclone-and-spread-do-fundamentally-different-jobs' },
+      { label: 'Event Delegation Catches Dynamically Added Elements', route: '/performance/js-performance/event-delegation-catches-dynamically-added-elements' },
+    ],
+    tip: '5 wrapper calls with only 2 distinct argument sets resulted in the real underlying function running exactly 2 times — confirmed with a real call counter.',
+    docs: [
+      { label: 'MDN — Memoization', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Memoization' },
+    ],
+    resources: [],
+    gotchas: [
+      'The benefit scales with call FREQUENCY as much as per-call cost — even a cheap function called thousands of times can bottleneck without memoization.',
+      'useMemo (React) and computed signals (Angular) are the same caching pattern with a framework-managed cache key.',
+    ],
+  },
+
+  'performance/third-party-scripts': {
+    apis: ['integrity attribute', 'Facade pattern', 'PerformanceResourceTiming', 'Partytown'],
+    related: [
+      { label: 'JavaScript Performance', route: '/performance/js-performance' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+    ],
+    tip: 'Third-party scripts cost main-thread time and INP — load them deferred, behind facades, or in Web Workers; audit impact with Resource Timing and Lighthouse.',
+    docs: [
+      { label: 'web.dev — Third-party JavaScript', url: 'https://web.dev/articles/fast#optimize-your-third-party-resources' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'SRI genuinely blocks execution on a hash mismatch — confirmed via onerror, not just a console warning.',
+      'A facade produces zero network requests for the real widget until the user actually interacts.',
+    ],
+  },
+
+  'performance/third-party-scripts/subresource-integrity-genuinely-blocks-a-mismatched-script': {
+    apis: ['integrity attribute', 'crypto.subtle.digest()'],
+    related: [
+      { label: 'Third-Party Scripts (overview)', route: '/performance/third-party-scripts' },
+      { label: 'A Facade Loads Zero Third-Party Bytes Until Interaction', route: '/performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction' },
+      { label: 'Resource Timing Correctly Separates First-Party From Third-Party', route: '/performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party' },
+    ],
+    tip: 'A script with a wrong integrity hash failed to execute at all; the identical script with a live-computed correct hash loaded and ran, confirmed by checking its own side effect actually happened.',
+    docs: [
+      { label: 'MDN — Subresource Integrity', url: 'https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity' },
+    ],
+    resources: [],
+    gotchas: [
+      'SRI only works safely against versioned, immutable URLs — a vendor updating content at the same URL breaks the integration.',
+      'SRI verifies the file has not been tampered with — it says nothing about whether the vendor\'s own unmodified code is trustworthy.',
+    ],
+  },
+
+  'performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction': {
+    apis: ['PerformanceResourceTiming', 'Facade pattern'],
+    related: [
+      { label: 'Third-Party Scripts (overview)', route: '/performance/third-party-scripts' },
+      { label: 'Subresource Integrity Genuinely Blocks a Mismatched Script', route: '/performance/third-party-scripts/subresource-integrity-genuinely-blocks-a-mismatched-script' },
+      { label: 'Resource Timing Correctly Separates First-Party From Third-Party', route: '/performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party' },
+    ],
+    tip: 'Zero resource-timing entries for the widget script before any click, exactly one immediately after — the widget genuinely never gets requested for visitors who never interact.',
+    docs: [
+      { label: 'web.dev — lite-youtube-embed', url: 'https://web.dev/articles/fast#optimize-your-third-party-resources' },
+    ],
+    resources: [],
+    gotchas: [
+      'A rarely-clicked widget benefits MOST from a facade — the majority of visitors are the ones who skip the cost entirely.',
+      'This is fundamentally different from deferred/lazy loading, which still eventually loads unconditionally for every visitor.',
+    ],
+  },
+
+  'performance/third-party-scripts/resource-timing-correctly-separates-first-party-from-third-party': {
+    apis: ['PerformanceResourceTiming', 'location.origin'],
+    related: [
+      { label: 'Third-Party Scripts (overview)', route: '/performance/third-party-scripts' },
+      { label: 'Subresource Integrity Genuinely Blocks a Mismatched Script', route: '/performance/third-party-scripts/subresource-integrity-genuinely-blocks-a-mismatched-script' },
+      { label: 'A Facade Loads Zero Third-Party Bytes Until Interaction', route: '/performance/third-party-scripts/a-facade-loads-zero-third-party-bytes-until-interaction' },
+    ],
+    tip: 'The main page\'s audit pattern correctly split real first-party and third-party requests and grouped them by hostname — confirmed live on this actual production page.',
+    docs: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing' },
+    ],
+    resources: [],
+    gotchas: [
+      'This audit can be run entirely from the DevTools console on live production, no code changes needed.',
+      'The resource-timing buffer has a default size limit — increase it with performance.setResourceTimingBufferSize() on request-heavy pages.',
+    ],
+  },
+
+  'performance/measurement': {
+    apis: ['performance.mark()', 'performance.measure()', 'PerformanceObserver', 'PerformanceNavigationTiming'],
+    related: [
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Largest Contentful Paint', route: '/performance/lcp' },
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+    ],
+    tip: 'Measure in both lab (Lighthouse, WebPageTest) and field (CrUX, RUM) — Google ranks on field data; lab tools identify root causes.',
+    docs: [
+      { label: 'web.dev — User Timing API', url: 'https://web.dev/articles/user-timing' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'performance.now() produces zero queryable Performance API entries — only mark()/measure() do.',
+      'FCP and LCP are separate entry types with separate real timestamps, not the same measurement renamed.',
+    ],
+  },
+
+  'performance/measurement/performance-mark-creates-real-timeline-entries-performance-now-does-not': {
+    apis: ['performance.mark()', 'performance.measure()', 'performance.now()'],
+    related: [
+      { label: 'Performance Measurement (overview)', route: '/performance/measurement' },
+      { label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' },
+      { label: 'Navigation Timing’s responseStart Genuinely Computes TTFB', route: '/performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb' },
+    ],
+    tip: 'A performance.now() timing produced zero entries anywhere queryable; the identical timing via mark()/measure() created a real, named entry findable from anywhere.',
+    docs: [
+      { label: 'MDN — User Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/User_timing' },
+    ],
+    resources: [],
+    gotchas: [
+      'Both use the same underlying high-resolution clock — the difference is whether the timing gets recorded as a queryable entry, not precision.',
+      'Only mark()/measure() entries appear in DevTools\' Performance panel "Timings" lane.',
+    ],
+  },
+
+  'performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps': {
+    apis: ['paint entries', 'largest-contentful-paint', 'PerformanceObserver'],
+    related: [
+      { label: 'Performance Measurement (overview)', route: '/performance/measurement' },
+      { label: 'performance.mark() Creates Real Timeline Entries — performance.now() Does Not', route: '/performance/measurement/performance-mark-creates-real-timeline-entries-performance-now-does-not' },
+      { label: 'Navigation Timing’s responseStart Genuinely Computes TTFB', route: '/performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb' },
+    ],
+    tip: 'On this very page, FCP fired at 360ms while the final LCP candidate settled at 460ms and covered roughly 6.5x more pixel area — two separate entry types, not the same measurement renamed.',
+    docs: [
+      { label: 'MDN — Paint Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/PerformancePaintTiming' },
+    ],
+    resources: [],
+    gotchas: [
+      'Google ranks on LCP, not FCP — a fast FCP with a slow-arriving hero element is exactly the scenario checking only FCP misses.',
+      'LCP can update even without new DOM insertions — an already-present element that finishes painting later can still become a new candidate.',
+    ],
+  },
+
+  'performance/measurement/navigation-timings-responsestart-genuinely-computes-ttfb': {
+    apis: ['PerformanceNavigationTiming', 'responseStart', 'requestStart'],
+    related: [
+      { label: 'Performance Measurement (overview)', route: '/performance/measurement' },
+      { label: 'performance.mark() Creates Real Timeline Entries — performance.now() Does Not', route: '/performance/measurement/performance-mark-creates-real-timeline-entries-performance-now-does-not' },
+      { label: 'FCP and LCP Are Genuinely Different Real Timestamps', route: '/performance/measurement/fcp-and-lcp-are-genuinely-different-real-timestamps' },
+    ],
+    tip: 'Real timestamps from this page\'s own navigation entry — fetchStart 2ms, requestStart 5ms, responseStart 8ms — produced a genuine, computed TTFB of 3ms.',
+    docs: [
+      { label: 'MDN — Navigation Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigationTiming' },
+    ],
+    resources: [],
+    gotchas: [
+      'There is no dedicated "ttfb" field — it is always computed as responseStart minus requestStart.',
+      'Client-measured TTFB includes network/infrastructure time invisible to server-side application-only logging.',
+    ],
+  },
+
+  'performance/rum': {
+    apis: ['web-vitals', 'navigator.sendBeacon()', 'visibilitychange', 'Attribution'],
+    related: [
+      { label: 'Performance Measurement', route: '/performance/measurement' },
+      { label: 'Core Web Vitals (overview)', route: '/performance/core-web-vitals' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+    ],
+    tip: 'RUM is your ground truth — use web-vitals + sendBeacon, report P75 by device type, and include attribution data to pinpoint the element or interaction causing poor metrics.',
+    docs: [
+      { label: 'web.dev — web-vitals library', url: 'https://github.com/GoogleChrome/web-vitals' },
+    ],
+    resources: [
+      { label: 'PageSpeed Insights', url: 'https://pagespeed.web.dev/', badge: 'tool' },
+    ],
+    gotchas: [
+      'sendBeacon() is a genuinely distinct request category (initiatorType: "beacon"), not a fetch() wrapper.',
+      'Average and P75 can disagree entirely on whether a metric is "good" — always report P75 to match Google\'s methodology.',
+    ],
+  },
+
+  'performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type': {
+    apis: ['navigator.sendBeacon()', 'PerformanceResourceTiming'],
+    related: [
+      { label: 'Real User Monitoring (overview)', route: '/performance/rum' },
+      { label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' },
+      { label: 'Batching Metrics Into One Beacon Genuinely Cuts Requests', route: '/performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests' },
+    ],
+    tip: 'navigator.sendBeacon() returned true and produced a genuine resource-timing entry with initiatorType: "beacon" — a distinct browser-level request category, not a thin fetch() wrapper.',
+    docs: [
+      { label: 'MDN — Beacon API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Beacon_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'A true return value only means the browser queued the request — it says nothing about whether the server received or processed it.',
+      'fetch(url, { keepalive: true }) is the documented fallback when sendBeacon() is unavailable, not a full replacement.',
+    ],
+  },
+
+  'performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely': {
+    apis: ['Array.prototype.sort()', 'Percentile calculation'],
+    related: [
+      { label: 'Real User Monitoring (overview)', route: '/performance/rum' },
+      { label: 'sendBeacon() Fires a Real Request With Its Own Initiator Type', route: '/performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type' },
+      { label: 'Batching Metrics Into One Beacon Genuinely Cuts Requests', route: '/performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests' },
+    ],
+    tip: 'A realistic 20-session dataset produced an average of 1,839ms ("good") and a P75 of 2,600ms ("poor") — the identical underlying data, two completely different pass/fail outcomes.',
+    docs: [
+      { label: 'web.dev — Core Web Vitals thresholds', url: 'https://web.dev/articles/defining-core-web-vitals-thresholds' },
+    ],
+    resources: [],
+    gotchas: [
+      'CrUX and Google Search Console\'s CWV report use P75 — the same methodology this subtopic verifies.',
+      'The disagreement is structural, not a small-sample artifact — it persists at any sample size as long as the slow-tail fraction stays consistent.',
+    ],
+  },
+
+  'performance/rum/batching-metrics-into-one-beacon-genuinely-cuts-requests': {
+    apis: ['navigator.sendBeacon()', 'PerformanceResourceTiming', 'visibilitychange'],
+    related: [
+      { label: 'Real User Monitoring (overview)', route: '/performance/rum' },
+      { label: 'sendBeacon() Fires a Real Request With Its Own Initiator Type', route: '/performance/rum/sendbeacon-fires-a-real-request-with-its-own-initiator-type' },
+      { label: 'P75 and Average Can Disagree on the Pass/Fail Rating Entirely', route: '/performance/rum/p75-and-average-can-disagree-on-the-pass-fail-rating-entirely' },
+    ],
+    tip: 'Firing 5 separate sendBeacon() calls (one per metric) produced 5 real network requests; batching into one payload produced exactly 1 — the same data, a real 5x request-count difference.',
+    docs: [
+      { label: 'web.dev — web-vitals library', url: 'https://github.com/GoogleChrome/web-vitals' },
+    ],
+    resources: [],
+    gotchas: [
+      'Batching does not require waiting for all metrics to fire — whatever has fired by visibilitychange gets included in the one beacon.',
+      'At real production traffic volumes, request COUNT (not just payload size) is the primary saving.',
+    ],
+  },
+
+  'performance/ssr-streaming': {
+    apis: ['ReadableStream', 'renderToPipeableStream()', 'res.write()', 'provideClientHydration()'],
+    related: [
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Performance Measurement', route: '/performance/measurement' },
+      { label: 'Real User Monitoring (RUM)', route: '/performance/rum' },
+    ],
+    tip: 'A real ReadableStream delivers a shell chunk at +0ms while slower, data-dependent chunks arrive hundreds of ms later — the browser can act on the shell immediately, well before the rest exists.',
+    docs: [
+      { label: 'MDN — Streams API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Streams_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'Non-deterministic values (Date.now(), Math.random()) in render output cause hydration mismatches essentially every time, not as a rare edge case.',
+      'A streaming producer is fully negated by a buffering consumer anywhere downstream (client code, reverse proxy, CDN).',
+    ],
+  },
+
+  'performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times': {
+    apis: ['ReadableStream', 'ReadableStreamDefaultReader', 'performance.now()'],
+    related: [
+      { label: 'SSR & Streaming HTML (overview)', route: '/performance/ssr-streaming' },
+      { label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' },
+      { label: 'Reading Chunk-by-Chunk Beats Waiting for the Full Response', route: '/performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response' },
+    ],
+    tip: 'A real stream enqueuing 3 chunks with setTimeout delays between them produced measured arrival times of roughly 0ms, then several hundred ms later, then later still — read via a real reader.read() loop.',
+    docs: [
+      { label: 'MDN — ReadableStream', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream' },
+    ],
+    resources: [],
+    gotchas: [
+      'enqueue() makes a chunk available to readers immediately — it does not wait for close() or later enqueue() calls.',
+      'ReadableStream is a standard Web API usable in any browser script, not a Node.js/server-only construct.',
+    ],
+  },
+
+  'performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders': {
+    apis: ['Date', 'Math.random()'],
+    related: [
+      { label: 'SSR & Streaming HTML (overview)', route: '/performance/ssr-streaming' },
+      { label: 'A ReadableStream Genuinely Delivers Chunks at Different Real Times', route: '/performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times' },
+      { label: 'Reading Chunk-by-Chunk Beats Waiting for the Full Response', route: '/performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response' },
+    ],
+    tip: 'Calling the identical rendering function twice — once as a "server render," once 1.2s later as a "client render" — produced two different Date/Math.random() values essentially every time.',
+    docs: [
+      { label: 'React docs — Hydration mismatches', url: 'https://react.dev/link/hydration-mismatch' },
+    ],
+    resources: [],
+    gotchas: [
+      'Moving a non-deterministic call to a lifecycle hook does not fix a mismatch — it just moves WHEN it becomes visible.',
+      'suppressHydrationWarning only hides the console message; the underlying re-render/flash still happens unless the value is computed once and passed down.',
+    ],
+  },
+
+  'performance/ssr-streaming/reading-chunk-by-chunk-beats-waiting-for-the-full-response': {
+    apis: ['ReadableStream', 'Response', 'reader.read()'],
+    related: [
+      { label: 'SSR & Streaming HTML (overview)', route: '/performance/ssr-streaming' },
+      { label: 'A ReadableStream Genuinely Delivers Chunks at Different Real Times', route: '/performance/ssr-streaming/a-readablestream-genuinely-delivers-chunks-at-different-real-times' },
+      { label: 'Non-Deterministic Values Genuinely Differ Between Renders', route: '/performance/ssr-streaming/non-deterministic-values-genuinely-differ-between-renders' },
+    ],
+    tip: 'Against the identical stream, reader.read() returned the first chunk at +0ms while await new Response(stream).text() blocked for the full 1020ms — the benefit lives in HOW a stream is consumed.',
+    docs: [
+      { label: 'MDN — Response', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Response' },
+    ],
+    resources: [],
+    gotchas: [
+      'A streaming server is fully negated if anything downstream (buffering reverse proxy, response.text() consumer) waits for the full response before acting.',
+      'The performance gap comes from timing gaps between chunks becoming ready, not from raw byte size — even small HTML pages benefit.',
+    ],
+  },
+
+  'performance/css-performance': {
+    apis: ['content-visibility', 'contain', 'CSSStyleSheet', 'will-change'],
+    related: [
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Browser Rendering Pipeline', route: '/performance/browser-rendering' },
+      { label: 'JavaScript Performance', route: '/performance/js-performance' },
+    ],
+    tip: 'A flat class selector and a 4-level descendant selector recalculated style for 5,000 elements in statistically identical time (25.02ms vs 25.00ms) — selector depth is not where CSS performance work should go.',
+    docs: [
+      { label: 'web.dev — content-visibility', url: 'https://web.dev/articles/content-visibility' },
+    ],
+    resources: [],
+    gotchas: [
+      'Unused CSS rules stay fully parsed and stored in the CSSOM regardless of DOM usage — the browser has no automatic removal mechanism.',
+      'contain: content bundles paint containment, which clips overflowing content like overflow: hidden — a real side effect beyond layout isolation.',
+    ],
+  },
+
+  'performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale': {
+    apis: ['CSSStyleDeclaration', 'classList', 'performance.now()'],
+    related: [
+      { label: 'CSS Performance (overview)', route: '/performance/css-performance' },
+      { label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' },
+      { label: 'contain: content Clips Overflow Like overflow: hidden', route: '/performance/css-performance/contain-content-clips-overflow-like-overflow-hidden' },
+    ],
+    tip: 'A first naive test showed a misleading ~7x gap purely from warm-up bias — a corrected methodology (warm-up pass + alternating trial order) collapsed it to a 0.07% difference.',
+    docs: [
+      { label: 'MDN — CSS selector performance', url: 'https://developer.mozilla.org/en-US/docs/Web/Performance/CSS_JavaScript_animation_performance' },
+    ],
+    resources: [],
+    gotchas: [
+      'Always control for warm-up/ordering effects before trusting a timing result — the first pass in any loop pays a one-time setup cost.',
+      'Render-blocking CSS size and layout-triggering animations are the real CSS performance levers, not selector depth.',
+    ],
+  },
+
+  'performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them': {
+    apis: ['document.styleSheets', 'CSSStyleSheet.cssRules', 'querySelectorAll()'],
+    related: [
+      { label: 'CSS Performance (overview)', route: '/performance/css-performance' },
+      { label: 'Selector Complexity Barely Moves Recalc-Style Time at Scale', route: '/performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale' },
+      { label: 'contain: content Clips Overflow Like overflow: hidden', route: '/performance/css-performance/contain-content-clips-overflow-like-overflow-hidden' },
+    ],
+    tip: 'A rule for a class matching zero elements was still fully present in document.styleSheets\' cssRules — the browser has no lazy or on-demand parsing based on DOM matches.',
+    docs: [
+      { label: 'MDN — CSSStyleSheet', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet' },
+    ],
+    resources: [],
+    gotchas: [
+      'PurgeCSS/Tailwind JIT work entirely at build time by scanning source files as plain text — there is no browser-level "used CSS" API they rely on.',
+      'A 200 KB framework where 3% is used still costs the full 200 KB of download and parse time.',
+    ],
+  },
+
+  'performance/css-performance/contain-content-clips-overflow-like-overflow-hidden': {
+    apis: ['contain', 'document.elementFromPoint()', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Performance (overview)', route: '/performance/css-performance' },
+      { label: 'Selector Complexity Barely Moves Recalc-Style Time at Scale', route: '/performance/css-performance/selector-complexity-barely-moves-recalc-style-time-at-scale' },
+      { label: 'Unused CSS Selectors Stay in the CSSOM Until You Remove Them', route: '/performance/css-performance/unused-css-selectors-stay-in-the-cssom-until-you-remove-them' },
+    ],
+    tip: 'An overflowing child was fully hit-testable with no containment, and completely non-hit-testable with contain: content applied — geometry is identical in both cases, only what paints differs.',
+    docs: [
+      { label: 'MDN — CSS Containment', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment' },
+    ],
+    resources: [],
+    gotchas: [
+      'contain: layout alone does NOT include paint containment — overflowing content stays visible while still getting the layout-isolation benefit.',
+      'Adding contain: content to an existing component for its performance benefit can silently clip a tooltip, dropdown, or badge relying on overflow.',
+    ],
+  },
+
+  'performance/web-workers': {
+    apis: ['Worker', 'postMessage()', 'Transferable', 'Comlink', 'navigator.hardwareConcurrency'],
+    related: [
+      { label: 'JavaScript Performance', route: '/performance/js-performance' },
+      { label: 'Interaction to Next Paint', route: '/performance/inp' },
+      { label: 'SSR & Streaming HTML', route: '/performance/ssr-streaming' },
+    ],
+    tip: 'A setInterval ticked 0 times during a 300ms busy-loop on the main thread, but 4 times during the identical work run inside a real Worker — direct, measured proof of what "off the main thread" buys you.',
+    docs: [
+      { label: 'MDN — Web Workers API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'A transferred ArrayBuffer becomes detached (byteLength 0) on the sending side immediately — the data is never duplicated.',
+      'Creating a fresh Worker per task measured 17.8x slower than reusing one Worker for the same 20 tasks — always pool and reuse.',
+    ],
+  },
+
+  'performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy': {
+    apis: ['ArrayBuffer', 'Worker.postMessage()', 'Transferable'],
+    related: [
+      { label: 'Web Workers (overview)', route: '/performance/web-workers' },
+      { label: 'A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work', route: '/performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work' },
+      { label: 'Reusing a Worker Is Dramatically Faster Than Creating One Per Task', route: '/performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task' },
+    ],
+    tip: 'A real 1MB ArrayBuffer sent via the transfer list dropped to byteLength 0 on the main thread immediately after postMessage() returned, while the Worker received the full 1,048,576 bytes.',
+    docs: [
+      { label: 'MDN — Transferable objects', url: 'https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only specific types (ArrayBuffer, MessagePort, ImageBitmap, OffscreenCanvas) support transfer — others throw a DataCloneError in the transfer list.',
+      'Detachment is synchronous — capture any size/data needed from the buffer BEFORE calling postMessage with a transfer list, not after.',
+    ],
+  },
+
+  'performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work': {
+    apis: ['Worker', 'setInterval()', 'performance.now()'],
+    related: [
+      { label: 'Web Workers (overview)', route: '/performance/web-workers' },
+      { label: 'Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)', route: '/performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy' },
+      { label: 'Reusing a Worker Is Dramatically Faster Than Creating One Per Task', route: '/performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task' },
+    ],
+    tip: 'The identical 300ms synchronous busy-loop produced 0 main-thread timer ticks when run directly on the main thread, and 4 ticks when run inside a real Worker — the CPU work took the same time either way, only main-thread availability changed.',
+    docs: [
+      { label: 'web.dev — Off-main-thread work', url: 'https://web.dev/articles/off-main-thread' },
+    ],
+    resources: [],
+    gotchas: [
+      'A Worker does not make CPU work faster — it moves where the work happens, not how fast it executes.',
+      'A Worker is a genuine OS thread, not a chunking trick — an unbroken synchronous loop inside a Worker still leaves the main thread fully free.',
+    ],
+  },
+
+  'performance/web-workers/reusing-a-worker-is-dramatically-faster-than-creating-one-per-task': {
+    apis: ['Worker', 'Worker.terminate()', 'navigator.hardwareConcurrency'],
+    related: [
+      { label: 'Web Workers (overview)', route: '/performance/web-workers' },
+      { label: 'Transferred ArrayBuffers Become Genuinely Detached (Zero-Copy)', route: '/performance/web-workers/transferred-arraybuffers-become-genuinely-detached-zero-copy' },
+      { label: 'A Worker Genuinely Keeps the Main Thread Responsive During Heavy Work', route: '/performance/web-workers/a-worker-genuinely-keeps-the-main-thread-responsive-during-heavy-work' },
+    ],
+    tip: '20 trivial tasks took 89ms with a fresh Worker per task versus 5ms reusing one Worker for all 20 — a measured 17.8x overhead penalty entirely from Worker creation/teardown, not the work itself.',
+    docs: [
+      { label: 'MDN — Worker()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker' },
+    ],
+    resources: [],
+    gotchas: [
+      'terminate() is for tearing down a feature entirely, not a per-task cleanup ritual — a reused idle Worker is not "leaking" anything.',
+      'Worker startup cost compounds with how many times new Worker() is called, not once per page load.',
+    ],
+  },
+
+  'performance/performance-budgets': {
+    apis: ['CompressionStream', 'Lighthouse CI', 'angular.json budgets', 'bundlesize'],
+    related: [
+      { label: 'CSS Performance', route: '/performance/css-performance' },
+      { label: 'JavaScript Performance', route: '/performance/js-performance' },
+      { label: 'Real User Monitoring (RUM)', route: '/performance/rum' },
+    ],
+    tip: 'Real CompressionStream(\'gzip\') measurements showed the classic "size × 0.3" shortcut overstated a repetitive sample by ~12x and understated a high-entropy sample by 60% — wrong in opposite directions depending on content.',
+    docs: [
+      { label: 'Google — Lighthouse CI', url: 'https://github.com/GoogleChrome/lighthouse-ci' },
+    ],
+    resources: [],
+    gotchas: [
+      'A median-of-3 measured a real, narrower variance than single runs on genuinely noisy data — but noise reduction, not noise elimination.',
+      '"initial" and "anyScript" Angular CLI budgets catch different failure modes — a healthy total can still hide one oversized chunk, and vice versa.',
+    ],
+  },
+
+  'performance/performance-budgets/gzip-approximation-is-wildly-inaccurate': {
+    apis: ['CompressionStream', 'TextEncoder'],
+    related: [
+      { label: 'Performance Budgets (overview)', route: '/performance/performance-budgets' },
+      { label: 'A Median of 3 Runs Genuinely Narrows Measurement Variance', route: '/performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance' },
+      { label: 'Initial vs anyScript Budgets Catch Genuinely Different Failure Modes', route: '/performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes' },
+    ],
+    tip: 'A repetitive minified-JS-like sample real-gzipped to 2.3% of its raw size (ratio 0.023) — the ×0.3 approximation overstated it by roughly 12x.',
+    docs: [
+      { label: 'MDN — CompressionStream', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CompressionStream' },
+    ],
+    resources: [],
+    gotchas: [
+      'Compression ratio depends entirely on content redundancy, not file type or "looking compact" — minified code can still compress far better than 0.3×.',
+      'CompressionStream is a standard Web API — real gzip size can be measured without any build tool or Node.js dependency.',
+    ],
+  },
+
+  'performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance': {
+    apis: ['performance.now()', 'fetch()'],
+    related: [
+      { label: 'Performance Budgets (overview)', route: '/performance/performance-budgets' },
+      { label: 'The size × 0.3 Gzip Approximation Is Wildly Inaccurate', route: '/performance/performance-budgets/gzip-approximation-is-wildly-inaccurate' },
+      { label: 'Initial vs anyScript Budgets Catch Genuinely Different Failure Modes', route: '/performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes' },
+    ],
+    tip: '30 real fetch() timings had a range of 2.7ms–7.3ms; grouping into medians of 3 narrowed the range to 2.9ms–5.5ms — single-run outliers get filtered out.',
+    docs: [
+      { label: 'web.dev — Lighthouse CI variability', url: 'https://github.com/GoogleChrome/lighthouse-ci/blob/main/docs/variability.md' },
+    ],
+    resources: [],
+    gotchas: [
+      'Median resists outliers better than average — a single extreme run pulls an average directly, but needs a majority of its group to shift a median.',
+      'A single unblocked CI run (numberOfRuns: 1) is exactly as susceptible to this measured noise as any other single measurement.',
+    ],
+  },
+
+  'performance/performance-budgets/initial-vs-anyscript-budgets-catch-genuinely-different-failure-modes': {
+    apis: ['angular.json budgets', 'ng build'],
+    related: [
+      { label: 'Performance Budgets (overview)', route: '/performance/performance-budgets' },
+      { label: 'The size × 0.3 Gzip Approximation Is Wildly Inaccurate', route: '/performance/performance-budgets/gzip-approximation-is-wildly-inaccurate' },
+      { label: 'A Median of 3 Runs Genuinely Narrows Measurement Variance', route: '/performance/performance-budgets/a-median-of-3-runs-genuinely-narrows-measurement-variance' },
+    ],
+    tip: 'A build with ten 40KB chunks can fail "initial" while passing "anyScript"; a build with one legitimate 180KB chunk can fail "anyScript" while passing "initial" — same numbers, opposite verdicts.',
+    docs: [
+      { label: 'Angular — Build budgets', url: 'https://angular.dev/tools/cli/build-system-migration' },
+    ],
+    resources: [],
+    gotchas: [
+      'A lazy-loaded chunk is NOT part of the "initial" total by definition — only "anyScript" (checking every chunk, lazy included) catches unbounded lazy-chunk growth.',
+      'Setting only one budget type leaves a real blind spot for the failure mode the other type is specifically designed to catch.',
+    ],
+  },
+
+  'performance/speculation-rules': {
+    apis: ['HTMLScriptElement.supports()', 'document.prerendering', 'prerenderingchange'],
+    related: [
+      { label: 'Critical Rendering Path', route: '/performance/critical-rendering-path' },
+      { label: 'Resource Hints', route: '/performance/resource-hints' },
+      { label: 'Caching & Service Workers', route: '/performance/caching' },
+    ],
+    tip: 'HTMLScriptElement.supports(\'speculationrules\') returned true in a real Chromium browser, and document.prerendering correctly reported false on this normal page load — both real, verified capability/state checks.',
+    docs: [
+      { label: 'Chrome Developers — Speculation Rules API', url: 'https://developer.chrome.com/docs/web-platform/prerender-pages' },
+    ],
+    resources: [],
+    gotchas: [
+      'An unsupported browser silently ignores a speculationrules block; a SUPPORTING browser given malformed JSON produces a real, catchable window error event — two very different signals.',
+      'The error for malformed rules JSON is asynchronous — a synchronous try/catch around the script injection will not catch it.',
+    ],
+  },
+
+  'performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate': {
+    apis: ['HTMLScriptElement.supports()'],
+    related: [
+      { label: 'Speculation Rules API (overview)', route: '/performance/speculation-rules' },
+      { label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' },
+      { label: 'Malformed Speculation Rules JSON Is Not Silently Ignored', route: '/performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored' },
+    ],
+    tip: 'HTMLScriptElement.supports(\'speculationrules\') returned true in a real Chromium 148-based browser, and a dynamically injected rules block was accepted into the DOM without error.',
+    docs: [
+      { label: 'MDN — HTMLScriptElement: supports() static method', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement/supports_static' },
+    ],
+    resources: [],
+    gotchas: [
+      'User-agent string sniffing is unreliable for this feature — many non-Chrome browsers include "Chrome" in their UA string.',
+      'A truthy result only confirms the browser WOULD act on a rules block — it says nothing about whether any rules currently exist on the page.',
+    ],
+  },
+
+  'performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load': {
+    apis: ['document.prerendering', 'prerenderingchange event'],
+    related: [
+      { label: 'Speculation Rules API (overview)', route: '/performance/speculation-rules' },
+      { label: 'Feature Detection Genuinely Confirms Support Before You Speculate', route: '/performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate' },
+      { label: 'Malformed Speculation Rules JSON Is Not Silently Ignored', route: '/performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored' },
+    ],
+    tip: 'document.prerendering reported false on this actual page (loaded via normal navigation), and prerenderingchange listener registration succeeded without error — the analytics-guard pattern\'s real, verified foundation.',
+    docs: [
+      { label: 'MDN — Document: prerendering property', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/prerendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'document.prerendering reflects CURRENT state, not history — it correctly becomes false again after a prerendered page is activated.',
+      'Testing the guard by opening a URL directly (not via a link with speculation rules pointing at it) will never trigger the deferred branch — that is correct, not a sign the guard is broken.',
+    ],
+  },
+
+  'performance/speculation-rules/malformed-speculation-rules-json-is-not-silently-ignored': {
+    apis: ['window error event', 'JSON'],
+    related: [
+      { label: 'Speculation Rules API (overview)', route: '/performance/speculation-rules' },
+      { label: 'Feature Detection Genuinely Confirms Support Before You Speculate', route: '/performance/speculation-rules/feature-detection-genuinely-confirms-support-before-you-speculate' },
+      { label: 'document.prerendering Genuinely Reports False on a Normal Page Load', route: '/performance/speculation-rules/document-prerendering-genuinely-reports-false-on-a-normal-page-load' },
+    ],
+    tip: 'Broken JSON inside a speculationrules block triggered a real window error event ("Uncaught TypeError: Line: 1, column: 3, Syntax error.") — a completely different signal from an unsupported browser\'s silent no-op.',
+    docs: [
+      { label: 'MDN — Speculation Rules', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API' },
+    ],
+    resources: [],
+    gotchas: [
+      'A global window.addEventListener(\'error\', ...) handler (common for error-tracking setups) will catch broken speculation rules JSON — a local try/catch around the injection will not.',
+      'The error surfaces asynchronously, shortly after script injection — not synchronously at the appendChild() call.',
+    ],
+  },
+
   'css/css-filters': {
     apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
     related: [
@@ -21566,6 +23214,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'drop-shadow has no spread radius — only x, y, blur, color. box-shadow has the 4th spread value.',
       'backdrop-filter always needs -webkit-backdrop-filter for Safari (even Safari 17).',
+    ],
+  },
+
+  'css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background': {
+    apis: ['backdrop-filter', 'canvas rasterization'],
+    related: [
+      { label: 'CSS Filters & Effects (overview)', route: '/css/css-filters' },
+      { label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' },
+      { label: 'filter Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children' },
+    ],
+    tip: 'The identical backdrop-filter: blur(8px) renders pure white with an opaque background and a red-tinted blend with a 20% transparent one — pixel-verified via SVG foreignObject + canvas rasterization.',
+    docs: [
+      { label: 'MDN: backdrop-filter', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter' },
+    ],
+    resources: [],
+    gotchas: [
+      'The declaration is valid and doing real work even when invisible — an opaque background just paints completely over the blurred result.',
+      'Any degree of transparency works, not just a fully absent background.',
+    ],
+  },
+
+  'css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree': {
+    apis: ['mix-blend-mode', 'isolation: isolate', 'canvas rasterization'],
+    related: [
+      { label: 'CSS Filters & Effects (overview)', route: '/css/css-filters' },
+      { label: 'backdrop-filter Has Zero Effect Without a Transparent Background', route: '/css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background' },
+      { label: 'filter Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children' },
+    ],
+    tip: 'The same red, multiply-blended element renders black over a green page background but pure red once isolated in a white wrapper — pixel-verified with the actual multiply color math.',
+    docs: [
+      { label: 'MDN: mix-blend-mode', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode' },
+    ],
+    resources: [],
+    gotchas: [
+      'isolation: isolate belongs on a wrapping ancestor of both the blended element and its intended blend partners — not on the blended element itself.',
+      'Without it, the blend reaches back through the whole stacking context, including the page background.',
+    ],
+  },
+
+  'css/css-filters/filter-creates-a-stacking-context-trapping-negative-z-index-children': {
+    apis: ['filter', 'z-index', 'document.elementFromPoint()'],
+    related: [
+      { label: 'CSS Filters & Effects (overview)', route: '/css/css-filters' },
+      { label: 'backdrop-filter Has Zero Effect Without a Transparent Background', route: '/css/css-filters/backdrop-filter-has-zero-effect-without-a-transparent-background' },
+      { label: 'isolation: isolate Confines mix-blend-mode to Its Own Subtree', route: '/css/css-filters/isolation-isolate-confines-mix-blend-mode-to-its-own-subtree' },
+    ],
+    tip: 'Even filter: brightness(1) — a value that visually changes nothing — still traps a z-index: -1 child in front of its parent, confirmed via real hit-testing with document.elementFromPoint().',
+    docs: [
+      { label: 'MDN: filter', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/filter' },
+    ],
+    resources: [],
+    gotchas: [
+      'filter, backdrop-filter, and transform all independently trigger this same stacking-context creation.',
+      'The browser checks only for the PRESENCE of a filter value other than none — it never evaluates whether that value is a visual no-op.',
     ],
   },
 
@@ -21589,6 +23291,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-transforms/rotate-before-translate-changes-the-direction-of-movement': {
+    apis: ['transform', 'rotate()', 'translateX()', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Transforms (overview)', route: '/css/css-transforms' },
+      { label: 'Transforms Never Affect Sibling Layout Positions', route: '/css/css-transforms/transforms-never-affect-sibling-layout-positions' },
+      { label: 'Transform Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children' },
+    ],
+    tip: 'rotate(90deg) translateX(100px) moves an element down, not right — confirmed by measuring the actual pixel displacement with getBoundingClientRect() and comparing against the reversed order.',
+    docs: [
+      { label: 'MDN: transform', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform' },
+    ],
+    resources: [],
+    gotchas: [
+      'Each transform function modifies the local coordinate system for every function listed after it — order genuinely changes the result.',
+      'Individual transform properties (translate, rotate, scale) avoid this entirely by using a fixed composition order.',
+    ],
+  },
+
+  'css/css-transforms/transforms-never-affect-sibling-layout-positions': {
+    apis: ['transform', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Transforms (overview)', route: '/css/css-transforms' },
+      { label: 'Rotate Before Translate Changes the Direction of Movement', route: '/css/css-transforms/rotate-before-translate-changes-the-direction-of-movement' },
+      { label: 'Transform Creates a Stacking Context, Trapping Negative z-index Children', route: '/css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children' },
+    ],
+    tip: 'A sibling\'s getBoundingClientRect() position stays identical even after a dramatic translateX(200px) scale(2) transform is applied to its neighbor — layout is calculated entirely from the pre-transform box.',
+    docs: [
+      { label: 'MDN: transform', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform' },
+    ],
+    resources: [],
+    gotchas: [
+      'A large transform can cause visual OVERLAP with siblings (subject to stacking order) without ever triggering an actual layout reflow.',
+      'This is exactly why translate(-50%, -50%) works for centering — it never recalculates the element\'s own layout position.',
+    ],
+  },
+
+  'css/css-transforms/transform-creates-a-stacking-context-trapping-negative-z-index-children': {
+    apis: ['transform', 'z-index', 'document.elementFromPoint()'],
+    related: [
+      { label: 'CSS Transforms (overview)', route: '/css/css-transforms' },
+      { label: 'Rotate Before Translate Changes the Direction of Movement', route: '/css/css-transforms/rotate-before-translate-changes-the-direction-of-movement' },
+      { label: 'Transforms Never Affect Sibling Layout Positions', route: '/css/css-transforms/transforms-never-affect-sibling-layout-positions' },
+    ],
+    tip: 'A z-index: -1 child correctly hides behind a plain parent, but stays trapped IN FRONT of a transformed one — confirmed via document.elementFromPoint() hit-testing the overlapping region on both.',
+    docs: [
+      { label: 'MDN: transform', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform' },
+    ],
+    resources: [],
+    gotchas: [
+      'transform alone (any value other than none) creates a new stacking context — no z-index or position needs to be set on the transformed element.',
+      'This is a genuinely confusing bug to diagnose since transform doesn\'t look related to z-index at all.',
+    ],
+  },
+
   'css/scroll-driven-animations': {
     apis: ['animation-timeline: scroll()', 'animation-timeline: view()', 'animation-range', 'scroll-timeline-name', 'view-timeline-name', 'timeline-scope'],
     related: [
@@ -21608,6 +23364,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'animation-duration is ignored for scroll timelines — progress is positional. Omit it or set "auto".',
       'Siblings cannot share a named timeline without timeline-scope on a common ancestor.',
+    ],
+  },
+
+  'css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional': {
+    apis: ['ScrollTimeline', 'getAnimations()', 'currentTime'],
+    related: [
+      { label: 'Scroll-Driven Animations (overview)', route: '/css/scroll-driven-animations' },
+      { label: 'Named Timelines Are Invisible to Siblings Without timeline-scope', route: '/css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope' },
+      { label: 'Bare scroll() Defaults to the Nearest Ancestor Scroll Container', route: '/css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container' },
+    ],
+    tip: 'A declared animation-duration: 1s has zero effect once animation-timeline is scroll() — currentTime becomes a scroll-progress percentage, confirmed directly on the real ScrollTimeline object.',
+    docs: [
+      { label: 'MDN: animation-timeline', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline' },
+    ],
+    resources: [
+      { label: 'Scroll-driven demos', url: 'https://scroll-driven-animations.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'animation-timing-function still fully applies — only the fixed-real-seconds concept of duration is meaningless, not easing.',
+      'Omit animation-duration or set it to auto for scroll/view timelines to avoid reader confusion.',
+    ],
+  },
+
+  'css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope': {
+    apis: ['view-timeline-name', 'timeline-scope', 'getAnimations()'],
+    related: [
+      { label: 'Scroll-Driven Animations (overview)', route: '/css/scroll-driven-animations' },
+      { label: 'animation-duration Is Ignored — Scroll Timeline Progress Is Positional', route: '/css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional' },
+      { label: 'Bare scroll() Defaults to the Nearest Ancestor Scroll Container', route: '/css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container' },
+    ],
+    tip: 'A sibling referencing a named timeline with no timeline-scope gets a real CSSAnimation object whose timeline is null — confirmed directly via getAnimations(), not just inferred from a silent visual bug.',
+    docs: [
+      { label: 'MDN: animation-timeline', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline' },
+    ],
+    resources: [
+      { label: 'Scroll-driven demos', url: 'https://scroll-driven-animations.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'timeline-scope belongs on the common ancestor of both elements, not on the timeline-defining element itself.',
+      'There is no console warning — the declaration is valid CSS that simply resolves to no timeline.',
+    ],
+  },
+
+  'css/scroll-driven-animations/bare-scroll-defaults-to-the-nearest-ancestor-scroll-container': {
+    apis: ['scroll()', 'ScrollTimeline.source'],
+    related: [
+      { label: 'Scroll-Driven Animations (overview)', route: '/css/scroll-driven-animations' },
+      { label: 'animation-duration Is Ignored — Scroll Timeline Progress Is Positional', route: '/css/scroll-driven-animations/animation-duration-is-ignored-scroll-timeline-progress-is-positional' },
+      { label: 'Named Timelines Are Invisible to Siblings Without timeline-scope', route: '/css/scroll-driven-animations/named-timelines-are-invisible-to-siblings-without-timeline-scope' },
+    ],
+    tip: 'animation-timeline: scroll() with no scroller keyword is exactly scroll(nearest) — confirmed via the ScrollTimeline object\'s own source property binding to the closest scrollable ancestor, not the document.',
+    docs: [
+      { label: 'MDN: animation-timeline', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline' },
+    ],
+    resources: [
+      { label: 'Scroll-driven demos', url: 'https://scroll-driven-animations.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Any element nested inside its own scrollable container (a modal, a scrollable card) binds to that inner scroller by default, not the page.',
+      'Use an explicit scroll(root block) when a component genuinely needs to track the page scroll regardless of nesting.',
     ],
   },
 
@@ -21634,6 +23450,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner': {
+    apis: ['JIT scanner', 'content array'],
+    related: [
+      { label: 'Tailwind CSS (overview)', route: '/css/tailwind' },
+      { label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' },
+      { label: 'Responsive Variants Are Mobile-First, Not Breakpoint-Specific', route: '/css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific' },
+    ],
+    tip: 'The JIT scanner reads files as raw text at build time — it never executes JavaScript, so a template-literal class name that is 100% correct at runtime is completely invisible to it.',
+    docs: [
+      { label: 'Tailwind CSS Docs', url: 'https://tailwindcss.com/docs' },
+    ],
+    resources: [
+      { label: 'Tailwind UI components', url: 'https://tailwindui.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The failure is completely silent — correct build, correct runtime DOM, just a missing style with zero error anywhere.',
+      'Fix: use a lookup object where every complete class name string appears literally in the source.',
+    ],
+  },
+
+  'css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes': {
+    apis: ['content array', 'JIT scanner'],
+    related: [
+      { label: 'Tailwind CSS (overview)', route: '/css/tailwind' },
+      { label: 'Dynamic Class Strings Are Invisible to the JIT Scanner', route: '/css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner' },
+      { label: 'Responsive Variants Are Mobile-First, Not Breakpoint-Specific', route: '/css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific' },
+    ],
+    tip: 'content is not a performance filter on top of a broader default scan — it is the complete, exhaustive list of what gets opened at all. A missing file extension means that file is never read.',
+    docs: [
+      { label: 'Tailwind CSS Docs', url: 'https://tailwindcss.com/docs' },
+    ],
+    resources: [
+      { label: 'Tailwind UI components', url: 'https://tailwindui.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Angular components with inline templates keep their class names inside .ts files — easy to miss if content only lists .html.',
+      'A project can look "mostly fine" while a smaller, uncovered part silently has zero generated styles.',
+    ],
+  },
+
+  'css/tailwind/responsive-variants-are-mobile-first-not-breakpoint-specific': {
+    apis: ['md:', 'lg:', 'min-width media queries'],
+    related: [
+      { label: 'Tailwind CSS (overview)', route: '/css/tailwind' },
+      { label: 'Dynamic Class Strings Are Invisible to the JIT Scanner', route: '/css/tailwind/dynamic-class-strings-are-invisible-to-the-jit-scanner' },
+      { label: 'Missing File Extensions in the content Array Silently Drop Classes', route: '/css/tailwind/missing-file-extensions-in-the-content-array-silently-drop-classes' },
+    ],
+    tip: 'md:grid-cols-2 compiles to a min-width: 768px media query with no upper bound — it stays active through every larger breakpoint unless a later, wider variant is explicitly added.',
+    docs: [
+      { label: 'Tailwind CSS Docs', url: 'https://tailwindcss.com/docs' },
+    ],
+    resources: [
+      { label: 'Tailwind UI components', url: 'https://tailwindui.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A layout using only md: classes is fully intentional at every width from 768px up, including a 4K monitor.',
+      'To change behavior at a larger size, add an explicit later variant (lg:, xl:) — nothing reverts automatically.',
+    ],
+  },
+
   'css/css-architecture': {
     apis: ['BEM', 'ITCSS', 'CSS Modules', '@layer + ITCSS'],
     related: [
@@ -21653,6 +23529,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'BEM elements are flat siblings in CSS — never nest .card__title inside .card { } or you get a descendant selector.',
       'ITCSS Objects layer is structure-only — no colors, shadows, or fonts. Those go in Components.',
+    ],
+  },
+
+  'css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors': {
+    apis: ['BEM', 'specificity', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Architecture (overview)', route: '/css/css-architecture' },
+      { label: 'ITCSS Layer Order Works Because Class Selectors Beat Element Selectors', route: '/css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors' },
+      { label: 'Composable Modifiers Merge by Source Order, Not Special Priority', route: '/css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority' },
+    ],
+    tip: 'A flat .card__title (0,1,0) genuinely loses to a stray .card .title (0,2,0) targeting the same element — confirmed via getComputedStyle(), regardless of which rule was declared first.',
+    docs: [
+      { label: 'BEM Official Docs', url: 'https://getbem.com/' },
+    ],
+    resources: [
+      { label: 'CUBE CSS (modern take)', url: 'https://cube.fyi/', badge: 'docs' },
+    ],
+    gotchas: [
+      'BEM\'s flat-specificity promise is a naming convention, not a browser-enforced rule — one leftover descendant selector anywhere in the codebase can defeat it.',
+      'The fix is removing the conflicting descendant selector entirely, not just adding the correct BEM rule alongside it.',
+    ],
+  },
+
+  'css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors': {
+    apis: ['ITCSS', 'specificity', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Architecture (overview)', route: '/css/css-architecture' },
+      { label: 'BEM Flat Elements Lose to Accidental Descendant Selectors', route: '/css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors' },
+      { label: 'Composable Modifiers Merge by Source Order, Not Special Priority', route: '/css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority' },
+    ],
+    tip: 'A Generic-layer element selector declared LAST still cannot override an earlier Components-layer class selector — confirmed via getComputedStyle(), proving the Generic/Components boundary is structural, not order-dependent.',
+    docs: [
+      { label: 'ITCSS — Harry Roberts', url: 'https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/' },
+    ],
+    resources: [
+      { label: 'CUBE CSS (modern take)', url: 'https://cube.fyi/', badge: 'docs' },
+    ],
+    gotchas: [
+      'This specificity protection only holds ACROSS genuinely different selector-type tiers — within the same tier (two class selectors), file order still fully determines the winner.',
+      '@layer still adds real value for same-specificity conflicts across ITCSS layers, even though the Generic-vs-Components boundary already worked without it.',
+    ],
+  },
+
+  'css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority': {
+    apis: ['BEM modifiers', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Architecture (overview)', route: '/css/css-architecture' },
+      { label: 'BEM Flat Elements Lose to Accidental Descendant Selectors', route: '/css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors' },
+      { label: 'ITCSS Layer Order Works Because Class Selectors Beat Element Selectors', route: '/css/css-architecture/itcss-layer-order-works-because-class-selectors-beat-element-selectors' },
+    ],
+    tip: 'Two composed modifiers merge their different properties cleanly, but a property BOTH set resolves purely to whichever modifier class is declared LATER in the CSS — the HTML class attribute order has no effect, confirmed via getComputedStyle().',
+    docs: [
+      { label: 'BEM Official Docs', url: 'https://getbem.com/' },
+    ],
+    resources: [
+      { label: 'CUBE CSS (modern take)', url: 'https://cube.fyi/', badge: 'docs' },
+    ],
+    gotchas: [
+      'There is no special "BEM modifier priority" mechanism — same-property conflicts between two modifiers are ordinary same-specificity CSS conflicts.',
+      'Worth explicitly checking for property overlap when designing two independent modifier scales (e.g. size + density) that might both end up touching the same property.',
     ],
   },
 
@@ -21678,6 +23614,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode': {
+    apis: ['margin-inline-start', 'direction', 'getComputedStyle()'],
+    related: [
+      { label: 'Logical Properties (overview)', route: '/css/logical-properties' },
+      { label: 'inline-size Maps to Width or Height Depending on Writing Mode', route: '/css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode' },
+      { label: 'border-start-start-radius Flips Corners in RTL', route: '/css/logical-properties/border-start-start-radius-flips-corners-in-rtl' },
+    ],
+    tip: 'margin-inline-start: 20px resolves to margin-left under direction: ltr and margin-right under direction: rtl — confirmed directly via getComputedStyle() on both.',
+    docs: [
+      { label: 'MDN — margin-inline-start', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-start' },
+    ],
+    resources: [
+      { label: 'CSS Logical Properties Guide', url: 'https://web.dev/learn/css/logical-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'The flip follows the direction property specifically — not writing-mode, which governs a separate axis mapping (see inline-size/block-size).',
+      'No [dir="rtl"] override selector is needed — the same declaration re-resolves automatically.',
+    ],
+  },
+
+  'css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode': {
+    apis: ['inline-size', 'block-size', 'writing-mode', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Logical Properties (overview)', route: '/css/logical-properties' },
+      { label: 'margin-inline-start Flips With Direction, Not Writing Mode', route: '/css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode' },
+      { label: 'border-start-start-radius Flips Corners in RTL', route: '/css/logical-properties/border-start-start-radius-flips-corners-in-rtl' },
+    ],
+    tip: 'The identical inline-size: 300px; block-size: 100px; renders as 300x100 under horizontal-tb and 100x300 under vertical-rl — width and height fully swapped, confirmed via getBoundingClientRect().',
+    docs: [
+      { label: 'MDN — inline-size', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/inline-size' },
+    ],
+    resources: [
+      { label: 'CSS Logical Properties Guide', url: 'https://web.dev/learn/css/logical-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'This mapping follows writing-mode, a genuinely different axis-control mechanism than the direction-based inline-start/end flip.',
+      'The same axis swap applies to every logical sizing property: max-inline-size, min-inline-size, max-block-size, min-block-size.',
+    ],
+  },
+
+  'css/logical-properties/border-start-start-radius-flips-corners-in-rtl': {
+    apis: ['border-start-start-radius', 'direction', 'getComputedStyle()'],
+    related: [
+      { label: 'Logical Properties (overview)', route: '/css/logical-properties' },
+      { label: 'margin-inline-start Flips With Direction, Not Writing Mode', route: '/css/logical-properties/margin-inline-start-flips-with-direction-not-writing-mode' },
+      { label: 'inline-size Maps to Width or Height Depending on Writing Mode', route: '/css/logical-properties/inline-size-maps-to-width-or-height-depending-on-writing-mode' },
+    ],
+    tip: 'border-start-start-radius: 20px rounds the top-left corner under direction: ltr and the top-right corner under direction: rtl — confirmed via getComputedStyle() on borderTopLeftRadius/borderTopRightRadius.',
+    docs: [
+      { label: 'MDN — border-start-start-radius', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/border-start-start-radius' },
+    ],
+    resources: [
+      { label: 'CSS Logical Properties Guide', url: 'https://web.dev/learn/css/logical-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'Logical border-radius names combine two axes (block position + inline position) — start-start is not directly analogous to a single-axis property like margin-inline-start.',
+      'Most valuable for asymmetric shapes (chat bubble tails, tag pills, accent cards) where rounding is not naturally symmetric.',
+    ],
+  },
+
   'css/css-nesting': {
     apis: ['& (parent selector)', 'nested @media', 'nested @container', 'nested @supports'],
     related: [
@@ -21697,6 +23693,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       '.card { :hover { } } targets any hovered descendant — use &:hover to target .card itself.',
       'Native nesting does NOT concatenate strings — .block { &__element { } } is NOT .block__element.',
+    ],
+  },
+
+  'css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector': {
+    apis: ['& (parent selector)', 'cssRules'],
+    related: [
+      { label: 'CSS Nesting (overview)', route: '/css/css-nesting' },
+      { label: '& Followed by a Bare Identifier Is Invalid and Silently Dropped', route: '/css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped' },
+      { label: 'Nesting Adds Zero Specificity — Ties Are Broken by Source Order', route: '/css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order' },
+    ],
+    tip: '.card { :hover { } } is parsed as .card :hover (with a space) — confirmed directly via the browser\'s own serialized cssRules, not just the spec text.',
+    docs: [
+      { label: 'MDN — & selector', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Nesting_selector' },
+    ],
+    resources: [
+      { label: 'CSS Nesting Playground', url: 'https://codepen.io/web-dot-dev/pen/OJoKJeK', badge: 'tool' },
+    ],
+    gotchas: [
+      'Every pseudo-class, pseudo-element, and attribute selector needs & the same way — &:focus-visible, &::before, &[disabled] all require it.',
+      'There is no console warning for this — the selector is valid CSS, just not the one you meant.',
+    ],
+  },
+
+  'css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped': {
+    apis: ['& (parent selector)', 'cssRules'],
+    related: [
+      { label: 'CSS Nesting (overview)', route: '/css/css-nesting' },
+      { label: 'Omitting & Before a Pseudo-Class Creates a Descendant Selector', route: '/css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector' },
+      { label: 'Nesting Adds Zero Specificity — Ties Are Broken by Source Order', route: '/css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order' },
+    ],
+    tip: '&__element is not valid CSS at all — a bare identifier cannot follow & in a compound selector, so the entire rule is silently dropped, confirmed directly via the browser\'s own parsed cssRules.',
+    docs: [
+      { label: 'MDN — & selector', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Nesting_selector' },
+    ],
+    resources: [
+      { label: 'CSS Nesting Playground', url: 'https://codepen.io/web-dot-dev/pen/OJoKJeK', badge: 'tool' },
+    ],
+    gotchas: [
+      'This corrects a common assumption (including one previously on this hub\'s own main topic page) that &__element compiles to a descendant selector — it does not, it is dropped entirely.',
+      'To combine & with a full BEM modifier/element class, include the leading dot: &.block__element--modifier.',
+    ],
+  },
+
+  'css/css-nesting/nesting-adds-zero-specificity-ties-are-broken-by-source-order': {
+    apis: ['specificity', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Nesting (overview)', route: '/css/css-nesting' },
+      { label: 'Omitting & Before a Pseudo-Class Creates a Descendant Selector', route: '/css/css-nesting/omitting-ampersand-before-pseudo-class-creates-a-descendant-selector' },
+      { label: '& Followed by a Bare Identifier Is Invalid and Silently Dropped', route: '/css/css-nesting/ampersand-followed-by-a-bare-identifier-is-invalid-and-silently-dropped' },
+    ],
+    tip: 'A nested rule declared first loses to an equally-specific flat rule declared second — confirmed via getComputedStyle(), proving nesting adds no hidden specificity weight.',
+    docs: [
+      { label: 'MDN — CSS Nesting', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting' },
+    ],
+    resources: [
+      { label: 'CSS Nesting Playground', url: 'https://codepen.io/web-dot-dev/pen/OJoKJeK', badge: 'tool' },
+    ],
+    gotchas: [
+      'Nesting depth has no effect on specificity — only the actual selector components (classes, IDs, pseudo-classes) in the expanded selector matter.',
+      'A losing tie against a nested rule needs the same fixes as any flat CSS specificity issue — it is not fixed by nesting more or less deeply.',
     ],
   },
 
@@ -21722,6 +23778,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-layers/unlayered-styles-always-beat-every-layer-regardless-of-specificity': {
+    apis: ['@layer', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Cascade Layers (overview)', route: '/css/css-layers' },
+      { label: '!important Reverses Layer Priority — Lower Layers Win', route: '/css/css-layers/important-reverses-layer-priority-lower-layers-win' },
+      { label: 'The First @layer Encountered Sets Its Position, Not Declaration Order', route: '/css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order' },
+    ],
+    tip: 'A one-selector unlayered rule beats a triple-ID-and-class layered rule on the same element — confirmed via getComputedStyle(), since the layer/unlayered comparison happens before specificity is ever checked.',
+    docs: [
+      { label: 'MDN — @layer', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@layer' },
+    ],
+    resources: [
+      { label: 'CSS Cascade Layers Explainer', url: 'https://css.oddbird.net/layers/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Migrating to @layer only controls styles that actually participate in the layer system — any leftover unlayered CSS keeps outranking every layer.',
+      'This is exactly why adopting layers incrementally is considered safe: existing unlayered code keeps winning by default.',
+    ],
+  },
+
+  'css/css-layers/important-reverses-layer-priority-lower-layers-win': {
+    apis: ['@layer', '!important', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Cascade Layers (overview)', route: '/css/css-layers' },
+      { label: 'Unlayered Styles Always Beat Every Layer, Regardless of Specificity', route: '/css/css-layers/unlayered-styles-always-beat-every-layer-regardless-of-specificity' },
+      { label: 'The First @layer Encountered Sets Its Position, Not Declaration Order', route: '/css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order' },
+    ],
+    tip: 'Two identical !important rules, only differing by layer order — the earliest-declared layer wins, the exact opposite of normal layer priority, confirmed via getComputedStyle().',
+    docs: [
+      { label: 'MDN — @layer', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@layer' },
+    ],
+    resources: [
+      { label: 'CSS Cascade Layers Explainer', url: 'https://css.oddbird.net/layers/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Reserve !important inside layers for reset-style rules meant to never be overridden — not for typical utility overrides, which expect the normal (non-reversed) order.',
+      'This reversal only kicks in when BOTH competing declarations use !important — a single !important rule still just beats non-important rules normally.',
+    ],
+  },
+
+  'css/css-layers/first-encountered-layer-block-sets-its-position-not-declaration-order': {
+    apis: ['@layer', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Cascade Layers (overview)', route: '/css/css-layers' },
+      { label: 'Unlayered Styles Always Beat Every Layer, Regardless of Specificity', route: '/css/css-layers/unlayered-styles-always-beat-every-layer-regardless-of-specificity' },
+      { label: '!important Reverses Layer Priority — Lower Layers Win', route: '/css/css-layers/important-reverses-layer-priority-lower-layers-win' },
+    ],
+    tip: 'A layer filled in as a block before the explicit order statement locks its position immediately — the later order statement can only append layers not yet registered, confirmed via getComputedStyle().',
+    docs: [
+      { label: 'MDN — @layer', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@layer' },
+    ],
+    resources: [
+      { label: 'CSS Cascade Layers Explainer', url: 'https://css.oddbird.net/layers/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Always put the explicit @layer order statement as the very first line of a stylesheet to avoid this trap entirely.',
+      'A partial/imported file that fills in a layer\'s styles before the main stylesheet\'s order statement runs is a realistic way to trigger this by accident.',
+    ],
+  },
+
   'css/container-queries': {
     apis: ['container-type', 'container-name', 'container', '@container', 'cqw', 'cqh', 'cqi', 'cqb'],
     related: [
@@ -21741,6 +23857,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A container cannot query itself — only descendants respond to @container rules on that container.',
       'cqw / cqh only work when there is a container-type ancestor in scope — without one, they resolve to 0.',
+    ],
+  },
+
+  'css/container-queries/container-queries-silently-do-nothing-without-container-type': {
+    apis: ['container-type', '@container', 'getComputedStyle()'],
+    related: [
+      { label: 'Container Queries (overview)', route: '/css/container-queries' },
+      { label: 'container-type: size Collapses Height Without Explicit Sizing', route: '/css/container-queries/container-type-size-collapses-height-without-explicit-sizing' },
+      { label: 'A Container Cannot Query or Style Itself', route: '/css/container-queries/a-container-cannot-query-or-style-itself' },
+    ],
+    tip: 'An @container rule with no container-type ancestor produces no error at all — it is valid CSS that can simply never match, confirmed via identical getComputedStyle() checks with and without the ancestor.',
+    docs: [
+      { label: 'MDN — container-type', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type' },
+    ],
+    resources: [
+      { label: 'MDN — container-type', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type', badge: 'docs' },
+    ],
+    gotchas: [
+      'No console warning appears — a missing container-type ancestor makes the @container rule permanently, silently inactive.',
+      'Every form of @container query needs a container-type ancestor, not just ones using cqw/cqh units.',
+    ],
+  },
+
+  'css/container-queries/container-type-size-collapses-height-without-explicit-sizing': {
+    apis: ['container-type: size', 'container-type: inline-size', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Container Queries (overview)', route: '/css/container-queries' },
+      { label: 'Container Queries Silently Do Nothing Without container-type', route: '/css/container-queries/container-queries-silently-do-nothing-without-container-type' },
+      { label: 'A Container Cannot Query or Style Itself', route: '/css/container-queries/a-container-cannot-query-or-style-itself' },
+    ],
+    tip: 'Identical content and width, but container-type: size measures 0px height while inline-size sizes normally — confirmed directly via getBoundingClientRect().',
+    docs: [
+      { label: 'MDN — container-type', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type' },
+    ],
+    resources: [
+      { label: 'MDN — container-type', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type', badge: 'docs' },
+    ],
+    gotchas: [
+      'Block-size containment from container-type: size blocks the element from growing to fit its children in the block direction.',
+      'Default to inline-size unless height-based @container queries are genuinely needed — set an explicit height if size is required.',
+    ],
+  },
+
+  'css/container-queries/a-container-cannot-query-or-style-itself': {
+    apis: ['@container', 'container-type', 'getComputedStyle()'],
+    related: [
+      { label: 'Container Queries (overview)', route: '/css/container-queries' },
+      { label: 'Container Queries Silently Do Nothing Without container-type', route: '/css/container-queries/container-queries-silently-do-nothing-without-container-type' },
+      { label: 'container-type: size Collapses Height Without Explicit Sizing', route: '/css/container-queries/container-type-size-collapses-height-without-explicit-sizing' },
+    ],
+    tip: 'The same @container block, targeting both the container\'s own class and a descendant\'s class, only ever applies to the descendant — confirmed via a direct computed-style comparison.',
+    docs: [
+      { label: 'MDN — @container', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@container' },
+    ],
+    resources: [
+      { label: 'MDN — @container', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@container', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is a fundamental spec restriction, not a specificity conflict — the self-targeting rule is never evaluated at all.',
+      'The CSS-only fix is an extra wrapping element: move container-type up one level, let the original element become the styled descendant.',
     ],
   },
 
@@ -21768,6 +23944,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt': {
+    apis: ['color-mix()', 'oklch()', 'getComputedStyle()'],
+    related: [
+      { label: 'Colors & Theming (overview)', route: '/css/colors-theming' },
+      { label: 'color-mix() Always Produces an Opaque Result', route: '/css/colors-theming/color-mix-always-produces-an-opaque-result' },
+      { label: 'WCAG Contrast Ratio Is Directly Computable From RGB', route: '/css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb' },
+    ],
+    tip: 'Mixing red and blue in oklch reports a genuinely high chroma value directly in the computed style — sRGB mixing has no equivalent vividness measure at all.',
+    docs: [
+      { label: 'MDN — color-mix()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix' },
+    ],
+    resources: [
+      { label: 'oklch.com palette tool', url: 'https://oklch.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The "muddy midpoint" problem with sRGB gradients/mixes is a structural consequence of having no chroma channel, not a rendering bug.',
+      'Comparing vividness is directly measurable from the computed chroma number, not just a visual judgment.',
+    ],
+  },
+
+  'css/colors-theming/color-mix-always-produces-an-opaque-result': {
+    apis: ['color-mix()', 'rgba()', 'getComputedStyle()'],
+    related: [
+      { label: 'Colors & Theming (overview)', route: '/css/colors-theming' },
+      { label: 'color-mix in oklch Preserves Vividness, sRGB Doesn’t', route: '/css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt' },
+      { label: 'WCAG Contrast Ratio Is Directly Computable From RGB', route: '/css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb' },
+    ],
+    tip: 'rgba(0,0,255,0.5) reports an explicit alpha value in its computed style; color-mix(in oklch, blue 50%, white) reports none at all — genuinely opaque, not simulated transparency.',
+    docs: [
+      { label: 'MDN — color-mix()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix' },
+    ],
+    resources: [
+      { label: 'oklch.com palette tool', url: 'https://oklch.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A color-mix() tint renders identically over any background — no bleed-through, unlike a genuinely transparent color.',
+      'Use color-mix() for solid tint badges/buttons; rgba for overlays and shadows that should blend with what is behind them.',
+    ],
+  },
+
+  'css/colors-theming/wcag-contrast-ratio-is-directly-computable-from-rgb': {
+    apis: ['relative luminance formula', 'contrast ratio formula'],
+    related: [
+      { label: 'Colors & Theming (overview)', route: '/css/colors-theming' },
+      { label: 'color-mix in oklch Preserves Vividness, sRGB Doesn’t', route: '/css/colors-theming/color-mix-in-oklch-preserves-vividness-srgb-doesnt' },
+      { label: 'color-mix() Always Produces an Opaque Result', route: '/css/colors-theming/color-mix-always-produces-an-opaque-result' },
+    ],
+    tip: 'Implementing the WCAG luminance formula in plain JavaScript reproduces #aaa on white as exactly 2.32:1 (fails) and #767676 on white as 4.54:1 (passes) — precise, not approximate.',
+    docs: [
+      { label: 'WCAG — Contrast Minimum', url: 'https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html' },
+    ],
+    resources: [
+      { label: 'oklch.com palette tool', url: 'https://oklch.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The formula weighs green, red, and blue differently and applies gamma correction — a naive RGB average produces an incorrect number.',
+      'The formula is short enough to implement directly for automated contrast checking in design systems or tests.',
+    ],
+  },
+
   // ── CSS: Transitions ──────────────────────────────────────────────────────
   'css/transitions': {
     apis: ['transition', 'transition-duration', 'transition-timing-function', 'transition-delay', 'cubic-bezier()', 'prefers-reduced-motion'],
@@ -21788,6 +24024,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'transition: all watches every property — always list specific properties to avoid wasted recalculations.',
       'transition on :hover only = one-way animation. Put it on the base element for both-way transitions.',
+    ],
+  },
+
+  'css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause': {
+    apis: ['transition-delay', 'getAnimations()', 'CSSTransition', 'currentTime'],
+    related: [
+      { label: 'CSS Transitions (overview)', route: '/css/transitions' },
+      { label: 'A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value', route: '/css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last' },
+      { label: 'A Hover-Only Transition Snaps Back Instead of Reversing', route: '/css/transitions/hover-only-transition-snaps-back-instead-of-reversing' },
+    ],
+    tip: 'transition-delay: -0.5s on a 1s transition starts already halfway through on its very first frame — confirmed via the real CSSTransition object\'s reported delay and interpolated value at zero elapsed time.',
+    docs: [
+      { label: 'MDN — transition-delay', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transition-delay' },
+    ],
+    resources: [
+      { label: 'MDN — CSSTransition', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CSSTransition', badge: 'docs' },
+    ],
+    gotchas: [
+      'A negative delay does not pause or shorten the transition — it shifts the starting point later on the same internal timeline.',
+      'Useful deliberately for staggered groups that should all finish at the same moment despite starting at different progress points.',
+    ],
+  },
+
+  'css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last': {
+    apis: ['transition-property', 'transition-duration', 'getAnimations()', 'effect.getTiming()'],
+    related: [
+      { label: 'CSS Transitions (overview)', route: '/css/transitions' },
+      { label: 'Negative Delay Starts Mid-Cycle, Not After a Pause', route: '/css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause' },
+      { label: 'A Hover-Only Transition Snaps Back Instead of Reversing', route: '/css/transitions/hover-only-transition-snaps-back-instead-of-reversing' },
+    ],
+    tip: 'With 3 properties and only 2 durations, the third property cycles back to the FIRST duration — confirmed by reading the live CSSTransition object\'s own effective duration directly.',
+    docs: [
+      { label: 'MDN — transition-duration', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transition-duration' },
+    ],
+    resources: [
+      { label: 'MDN — transition-duration', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transition-duration', badge: 'docs' },
+    ],
+    gotchas: [
+      'This happens any time transition-property gains a property without transition-duration/timing-function being extended to match.',
+      'The shorter list repeats from its start — it never drops the extra properties or reuses only the last value.',
+    ],
+  },
+
+  'css/transitions/hover-only-transition-snaps-back-instead-of-reversing': {
+    apis: ['transition', ':hover', 'getAnimations()'],
+    related: [
+      { label: 'CSS Transitions (overview)', route: '/css/transitions' },
+      { label: 'Negative Delay Starts Mid-Cycle, Not After a Pause', route: '/css/transitions/negative-delay-starts-mid-cycle-not-after-a-pause' },
+      { label: 'A Shorter Duration List Cycles, It Doesn’t Drop or Inherit the Last Value', route: '/css/transitions/shorter-duration-list-cycles-not-drops-or-inherits-last' },
+    ],
+    tip: 'Declaring transition only inside :hover means hover-out reverts to a rule with no transition at all — confirmed via getAnimations() returning zero active transitions on the reverse direction.',
+    docs: [
+      { label: 'MDN — Using CSS transitions', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions' },
+    ],
+    resources: [
+      { label: 'MDN — Using CSS transitions', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions', badge: 'docs' },
+    ],
+    gotchas: [
+      'Always define transition on the base rule, not the :hover/:focus/:active/.is-open rule, for a two-way animation.',
+      'One of the most common real-world transition bugs — a component that animates in but jerks out on state removal.',
     ],
   },
 
@@ -21814,6 +24110,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/animations/fill-mode-both-retains-the-final-keyframe-state': {
+    apis: ['animation-fill-mode', 'element.getAnimations()', 'Animation.currentTime'],
+    related: [
+      { label: 'CSS Animations (overview)', route: '/css/animations' },
+      { label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' },
+      { label: 'display Cannot Be Smoothly Interpolated, Only Flips', route: '/css/animations/display-cannot-be-smoothly-interpolated-only-flips' },
+    ],
+    tip: 'Without fill-mode: both/forwards, an element genuinely reverts to its own declared value once the animation ends — the last keyframe never "sticks" on its own.',
+    docs: [
+      { label: 'MDN — CSS Animations', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations' },
+    ],
+    resources: [
+      { label: 'Animate.css', url: 'https://animate.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'element.getAnimations()[0].currentTime can be set directly to jump to any point in the timeline instantly, avoiding real-time waits when testing fill-mode behavior.',
+      'fill-mode: both and forwards only differ during the DELAY period before the animation starts.',
+    ],
+  },
+
+  'css/animations/negative-delay-starts-the-animation-mid-cycle': {
+    apis: ['animation-delay', 'element.getAnimations()'],
+    related: [
+      { label: 'CSS Animations (overview)', route: '/css/animations' },
+      { label: 'fill-mode: both Retains the Final Keyframe State', route: '/css/animations/fill-mode-both-retains-the-final-keyframe-state' },
+      { label: 'display Cannot Be Smoothly Interpolated, Only Flips', route: '/css/animations/display-cannot-be-smoothly-interpolated-only-flips' },
+    ],
+    tip: 'animation-delay: -1s on a 2s animation starts the very first rendered frame already at the 50% mark — the standard technique for staggering list animations without sequential waits.',
+    docs: [
+      { label: 'MDN — CSS Animations', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations' },
+    ],
+    resources: [
+      { label: 'Animate.css', url: 'https://animate.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A negative delay does not reverse playback direction — it only changes the starting point within the timeline.',
+      'Staggered lists reuse the SAME @keyframes rule across items, varying only the (often negative) delay per item.',
+    ],
+  },
+
+  'css/animations/display-cannot-be-smoothly-interpolated-only-flips': {
+    apis: ['display', 'discrete animation', 'element.getAnimations()'],
+    related: [
+      { label: 'CSS Animations (overview)', route: '/css/animations' },
+      { label: 'fill-mode: both Retains the Final Keyframe State', route: '/css/animations/fill-mode-both-retains-the-final-keyframe-state' },
+      { label: 'Negative Delay Starts the Animation Mid-Cycle', route: '/css/animations/negative-delay-starts-the-animation-mid-cycle' },
+    ],
+    tip: 'display is a discrete property — at any sampled point during a none-to-block animation, the computed value is always EXACTLY one of the two keywords, never a blended intermediate.',
+    docs: [
+      { label: 'MDN — CSS Animations', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations' },
+    ],
+    resources: [
+      { label: 'web.dev — Animations guide', url: 'https://web.dev/articles/animations-guide', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is exactly why fade animations should use opacity instead of display — opacity genuinely interpolates across a continuous 0-to-1 range.',
+      'No easing function or timing adjustment changes discrete-property behavior — it always flips cleanly, never blends.',
+    ],
+  },
+
   // ── CSS: Responsive Design ────────────────────────────────────────────────
   'css/responsive': {
     apis: ['@media (min-width)', '@container', 'container-type', 'clamp()', 'min()', 'max()', 'auto-fit', 'minmax()', 'prefers-reduced-motion'],
@@ -21834,6 +24190,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Without <meta name="viewport" content="width=device-width, initial-scale=1">, media queries won\'t behave on mobile.',
       'prefers-reduced-motion: reduce must disable or simplify animations — WCAG requires this for accessibility.',
+    ],
+  },
+
+  'css/responsive/min-picks-the-smaller-value-not-the-larger': {
+    apis: ['min()', 'max()', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Responsive Design (overview)', route: '/css/responsive' },
+      { label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' },
+      { label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' },
+    ],
+    tip: 'min(100%, 600px) is a continuous comparison re-evaluated at layout time — the winning argument genuinely switches as the container resizes, not a fixed decision.',
+    docs: [
+      { label: 'MDN — min()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/min' },
+    ],
+    resources: [
+      { label: 'Utopia fluid type & space', url: 'https://utopia.fyi/', badge: 'tool' },
+    ],
+    gotchas: [
+      'min() is directly usable inside calc() and as a grid-template-columns track — max-width + width can only be separate box properties.',
+      'Neither argument in min()/max() has a "primary" position — the comparison is symmetric.',
+    ],
+  },
+
+  'css/responsive/container-queries-respond-to-container-width-not-viewport': {
+    apis: ['@container', 'container-type: inline-size', 'getComputedStyle()'],
+    related: [
+      { label: 'Responsive Design (overview)', route: '/css/responsive' },
+      { label: 'min() Picks the Smaller Value, Not the Larger', route: '/css/responsive/min-picks-the-smaller-value-not-the-larger' },
+      { label: 'currentSrc Reveals Which srcset Candidate Was Picked', route: '/css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked' },
+    ],
+    tip: 'The identical @container rule can produce different computed styles for two component instances at the exact same viewport width — each is measured against its OWN container.',
+    docs: [
+      { label: 'MDN — Container queries', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries' },
+    ],
+    resources: [
+      { label: 'Utopia fluid type & space', url: 'https://utopia.fyi/', badge: 'tool' },
+    ],
+    gotchas: [
+      'container-type: inline-size must be explicitly declared on the parent — this opt-in is what makes per-instance responses possible.',
+      'A media query can never do this — the viewport is implicitly shared by every element on the page.',
+    ],
+  },
+
+  'css/responsive/currentsrc-reveals-which-srcset-candidate-was-picked': {
+    apis: ['srcset', 'sizes', 'img.currentSrc', 'img.src'],
+    related: [
+      { label: 'Responsive Design (overview)', route: '/css/responsive' },
+      { label: 'min() Picks the Smaller Value, Not the Larger', route: '/css/responsive/min-picks-the-smaller-value-not-the-larger' },
+      { label: 'Container Queries Respond to Container Width, Not Viewport', route: '/css/responsive/container-queries-respond-to-container-width-not-viewport' },
+    ],
+    tip: 'img.src always reflects the plain src attribute; img.currentSrc reflects whichever srcset candidate the browser\'s own selection algorithm actually chose — the two can genuinely differ.',
+    docs: [
+      { label: 'MDN — HTMLImageElement.currentSrc', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/currentSrc' },
+    ],
+    resources: [
+      { label: 'Utopia fluid type & space', url: 'https://utopia.fyi/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The srcset attribute string only shows what candidates were OFFERED, not which one WON — only currentSrc reveals the resolved decision.',
+      'currentSrc can update again later if a viewport resize changes which candidate is the best fit.',
     ],
   },
 
@@ -21861,6 +24277,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/typography/unitless-line-height-scales-fixed-px-does-not': {
+    apis: ['line-height', 'getComputedStyle()'],
+    related: [
+      { label: 'Typography (overview)', route: '/css/typography' },
+      { label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' },
+      { label: 'ch Unit Scales With Font-Size, Not Fixed Pixels', route: '/css/typography/ch-unit-scales-with-font-size-not-fixed-pixels' },
+    ],
+    tip: 'line-height: 1.5 recomputes automatically when font-size changes; line-height: 24px stays permanently fixed regardless — measurably different, not just style preference.',
+    docs: [
+      { label: 'MDN — line-height', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/line-height' },
+    ],
+    resources: [
+      { label: 'Fluid Type Scale', url: 'https://www.fluid-type-scale.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Headings need proportionally tighter line-height at larger font-sizes — only a unitless value adapts automatically.',
+      'The two values can coincidentally compute to the same pixels at ONE font-size, masking the difference until font-size changes.',
+    ],
+  },
+
+  'css/typography/em-compounds-in-nested-elements-rem-does-not': {
+    apis: ['em', 'rem', 'getComputedStyle()'],
+    related: [
+      { label: 'Typography (overview)', route: '/css/typography' },
+      { label: 'Unitless line-height Scales, Fixed px Does Not', route: '/css/typography/unitless-line-height-scales-fixed-px-does-not' },
+      { label: 'ch Unit Scales With Font-Size, Not Fixed Pixels', route: '/css/typography/ch-unit-scales-with-font-size-not-fixed-pixels' },
+    ],
+    tip: 'A parent and child both using font-size: 1.25em compute to 20px and 25px — em is relative to the PARENT, not the root, so it genuinely compounds with nesting depth.',
+    docs: [
+      { label: 'MDN — CSS values and units', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units' },
+    ],
+    resources: [
+      { label: 'Fluid Type Scale', url: 'https://www.fluid-type-scale.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The fix is simply using rem for font-size, not calculating compensating em values per nesting level.',
+      'rem is always relative to the html element specifically, never the immediate parent, regardless of nesting depth.',
+    ],
+  },
+
+  'css/typography/ch-unit-scales-with-font-size-not-fixed-pixels': {
+    apis: ['ch unit', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Typography (overview)', route: '/css/typography' },
+      { label: 'Unitless line-height Scales, Fixed px Does Not', route: '/css/typography/unitless-line-height-scales-fixed-px-does-not' },
+      { label: 'em Compounds in Nested Elements, rem Does Not', route: '/css/typography/em-compounds-in-nested-elements-rem-does-not' },
+    ],
+    tip: 'A width: 65ch container roughly doubles its rendered pixel width when font-size doubles — ch measures against the "0" glyph of the CURRENT font, not a fixed conversion.',
+    docs: [
+      { label: 'MDN — CSS values and units', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units' },
+    ],
+    resources: [
+      { label: 'Fluid Type Scale', url: 'https://www.fluid-type-scale.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is exactly why ch is useful for readable line lengths — the "60-75 characters" guidance stays roughly accurate across font-size changes and different fonts.',
+      'ch works on any length-accepting property, with or without actual text content present.',
+    ],
+  },
+
   // ── CSS: Selectors ────────────────────────────────────────────────────────
   'css/selectors': {
     apis: [':is()', ':where()', ':has()', ':not()', ':nth-child()', '::before', '::after', '[attr^=]'],
@@ -21881,6 +24357,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       ':is() takes the specificity of its most specific argument — :is(#id, .class) has ID-level specificity.',
       '::before/::after require content: "" even when empty — without it they don\'t render.',
+    ],
+  },
+
+  'css/selectors/is-takes-highest-specificity-where-stays-zero': {
+    apis: [':is()', ':where()', 'getComputedStyle()', 'specificity'],
+    related: [
+      { label: 'Selectors Deep Dive (overview)', route: '/css/selectors' },
+      { label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' },
+      { label: ':has() Actually Selects the Parent', route: '/css/selectors/has-parent-selector-actually-selects-the-parent' },
+    ],
+    tip: ':where(#id) genuinely loses to an earlier class rule even when declared last — proof it contributes zero specificity, unlike :is(#id) which wins on real specificity grounds.',
+    docs: [
+      { label: 'MDN — Specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity' },
+    ],
+    resources: [
+      { label: 'CSS Specificity Calculator', url: 'https://specificity.keegan.st/', badge: 'tool' },
+    ],
+    gotchas: [
+      'To isolate real specificity from source-order coincidence, test with the suspected-lower-specificity rule declared LAST — if it still loses, that is genuine specificity, not just tie-breaking.',
+      'Choosing :is() vs :where() incorrectly can create genuinely different, hard-to-debug override behavior.',
+    ],
+  },
+
+  'css/selectors/before-after-need-content-to-exist-at-all': {
+    apis: ['content', '::before', '::after', 'getComputedStyle()'],
+    related: [
+      { label: 'Selectors Deep Dive (overview)', route: '/css/selectors' },
+      { label: ':is() Takes Highest Specificity, :where() Stays Zero', route: '/css/selectors/is-takes-highest-specificity-where-stays-zero' },
+      { label: ':has() Actually Selects the Parent', route: '/css/selectors/has-parent-selector-actually-selects-the-parent' },
+    ],
+    tip: 'getComputedStyle(el, "::before").content reports the literal string "none" when content is never declared — proof the pseudo-element was never generated at all.',
+    docs: [
+      { label: 'MDN — ::before', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/::before' },
+    ],
+    resources: [
+      { label: 'CSS Specificity Calculator', url: 'https://specificity.keegan.st/', badge: 'tool' },
+    ],
+    gotchas: [
+      'content: \'\'; (empty string) still counts as declared — it triggers generation with zero visible text, the standard fix for decorative pseudo-elements.',
+      'Every other property on ::before/::after is moot if content was never declared — check that first when a pseudo-element "isn\'t working".',
+    ],
+  },
+
+  'css/selectors/has-parent-selector-actually-selects-the-parent': {
+    apis: [':has()', 'getComputedStyle()'],
+    related: [
+      { label: 'Selectors Deep Dive (overview)', route: '/css/selectors' },
+      { label: ':is() Takes Highest Specificity, :where() Stays Zero', route: '/css/selectors/is-takes-highest-specificity-where-stays-zero' },
+      { label: 'before/after Need content to Exist at All', route: '/css/selectors/before-after-need-content-to-exist-at-all' },
+    ],
+    tip: '.card:has(img) styles the .card, not the img — a real, testable "look inside, style outside" selector that used to require JavaScript.',
+    docs: [
+      { label: 'MDN — :has()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:has' },
+    ],
+    resources: [
+      { label: 'CSS Specificity Calculator', url: 'https://specificity.keegan.st/', badge: 'tool' },
+    ],
+    gotchas: [
+      ':has() checks for a descendant at ANY depth by default, exactly like a normal descendant combinator would.',
+      'Combining :has() with a sibling combinator (label:has(+ input:invalid)) extends the same pattern to sibling relationships.',
     ],
   },
 
@@ -21907,6 +24443,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid': {
+    apis: ['var()', 'invalid at computed-value time'],
+    related: [
+      { label: 'CSS Custom Properties (overview)', route: '/css/custom-properties' },
+      { label: 'Circular References Resolve to the Initial Value', route: '/css/custom-properties/circular-references-resolve-to-the-initial-value' },
+      { label: 'setProperty() Updates Everything Using the Variable', route: '/css/custom-properties/setproperty-updates-everything-using-the-variable' },
+    ],
+    tip: 'var(--x, fallback) only substitutes the fallback when --x is undefined — a defined-but-invalid value falls through to the property\'s own initial value instead.',
+    docs: [
+      { label: 'MDN — Using CSS custom properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties' },
+    ],
+    resources: [
+      { label: 'Open Props (token library)', url: 'https://open-props.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a well-documented common mistake — a typo\'d or wrongly-typed value silently produces a different visual result than expected.',
+      '@property with a syntax constraint is the real fix for guarding against invalid values, not the var() fallback.',
+    ],
+  },
+
+  'css/custom-properties/circular-references-resolve-to-the-initial-value': {
+    apis: ['var()', 'guaranteed-invalid value', 'getComputedStyle()'],
+    related: [
+      { label: 'CSS Custom Properties (overview)', route: '/css/custom-properties' },
+      { label: 'var() Fallback Only Fires When Undefined', route: '/css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid' },
+      { label: 'setProperty() Updates Everything Using the Variable', route: '/css/custom-properties/setproperty-updates-everything-using-the-variable' },
+    ],
+    tip: 'Two custom properties referencing each other never loop or crash — the spec defines it as a deterministic guaranteed-invalid value, resolving to the property\'s own initial value.',
+    docs: [
+      { label: 'MDN — Using CSS custom properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties' },
+    ],
+    resources: [
+      { label: 'Open Props (token library)', url: 'https://open-props.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the SAME underlying rule as an invalid value elsewhere — a circular reference is just one specific way to produce an invalid value.',
+      'The var() fallback still does not apply here, since both properties ARE declared, just unresolvable.',
+    ],
+  },
+
+  'css/custom-properties/setproperty-updates-everything-using-the-variable': {
+    apis: ['el.style.setProperty()', 'getComputedStyle()', 'CSSOM'],
+    related: [
+      { label: 'CSS Custom Properties (overview)', route: '/css/custom-properties' },
+      { label: 'var() Fallback Only Fires When Undefined', route: '/css/custom-properties/var-fallback-only-fires-when-undefined-not-invalid' },
+      { label: 'Circular References Resolve to the Initial Value', route: '/css/custom-properties/circular-references-resolve-to-the-initial-value' },
+    ],
+    tip: 'Changing a custom property with setProperty() on an ancestor recomputes every descendant style referencing it via var() automatically — no manual re-render or class toggle needed.',
+    docs: [
+      { label: 'MDN — CSS custom properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties' },
+    ],
+    resources: [
+      { label: 'web.dev — CSS Variables', url: 'https://web.dev/learn/css/custom-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is the real, fundamental difference from Sass variables for JS-driven use cases — genuinely live, runtime state.',
+      'Powers patterns beyond dark mode toggles — data-viz color scales, drag-to-resize UI, scroll-linked effects.',
+    ],
+  },
+
   // ── CSS: Positioning ──────────────────────────────────────────────────────
   'css/positioning': {
     apis: ['position: relative', 'position: absolute', 'position: fixed', 'position: sticky', 'z-index', 'inset', 'isolation: isolate'],
@@ -21927,6 +24523,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'z-index has no effect on position: static elements — add position: relative.',
       'overflow: hidden on a parent breaks sticky — the parent becomes the scroll container.',
+    ],
+  },
+
+  'css/positioning/z-index-does-nothing-without-position-set': {
+    apis: ['z-index', 'position', 'document.elementFromPoint()'],
+    related: [
+      { label: 'CSS Positioning & Stacking (overview)', route: '/css/positioning' },
+      { label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' },
+      { label: 'sticky Without an Offset Behaves Like static', route: '/css/positioning/sticky-without-an-offset-behaves-like-static' },
+    ],
+    tip: 'A position: static element\'s z-index is completely ignored, no matter how large — document.elementFromPoint() proves a lower-z-index positioned sibling still wins visually.',
+    docs: [
+      { label: 'MDN — z-index', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/z-index' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — z-index', url: 'https://css-tricks.com/almanac/properties/z/z-index/', badge: 'blog' },
+    ],
+    gotchas: [
+      'The fix is always position: relative (or another non-static value) FIRST — no z-index number alone will ever work on a static element.',
+      'document.elementFromPoint(x, y) is a reliable, code-based way to check real stacking order instead of reasoning about z-index numbers by eye.',
+    ],
+  },
+
+  'css/positioning/child-z-index-cant-escape-parent-stacking-context': {
+    apis: ['z-index', 'stacking context', 'isolation: isolate', 'document.elementFromPoint()'],
+    related: [
+      { label: 'CSS Positioning & Stacking (overview)', route: '/css/positioning' },
+      { label: 'z-index Does Nothing Without position Set', route: '/css/positioning/z-index-does-nothing-without-position-set' },
+      { label: 'sticky Without an Offset Behaves Like static', route: '/css/positioning/sticky-without-an-offset-behaves-like-static' },
+    ],
+    tip: 'A tooltip with z-index: 9999 nested in a lower-ranked stacking context still loses to a sibling with z-index: 2 — the huge number never even competes at the outer level.',
+    docs: [
+      { label: 'MDN — Stacking context', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — z-index', url: 'https://css-tricks.com/almanac/properties/z/z-index/', badge: 'blog' },
+    ],
+    gotchas: [
+      'No z-index number is high enough to fix this — the element is trapped in the wrong stacking context; isolation: isolate or DOM restructuring is the real fix.',
+      'opacity < 1, transform, filter, and will-change also create stacking contexts — a component can trap children\'s z-index without ever setting z-index itself.',
+    ],
+  },
+
+  'css/positioning/sticky-without-an-offset-behaves-like-static': {
+    apis: ['position: sticky', 'top/bottom/left/right offset', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Positioning & Stacking (overview)', route: '/css/positioning' },
+      { label: 'z-index Does Nothing Without position Set', route: '/css/positioning/z-index-does-nothing-without-position-set' },
+      { label: 'Child z-index Can’t Escape Parent Stacking Context', route: '/css/positioning/child-z-index-cant-escape-parent-stacking-context' },
+    ],
+    tip: 'sticky with no top/bottom/left/right offset never activates — it scrolls away exactly like position: static, measurably via getBoundingClientRect() before/after a simulated scroll.',
+    docs: [
+      { label: 'MDN — position', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/position' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — z-index', url: 'https://css-tricks.com/almanac/properties/z/z-index/', badge: 'blog' },
+    ],
+    gotchas: [
+      'This is a SEPARATE prerequisite from the overflow: hidden / scroll-container issue — two different missing requirements, same silent symptom.',
+      'Any offset value (even top: 0) activates sticky pinning — leaving all four unset is what causes the total no-op.',
     ],
   },
 
@@ -21954,6 +24610,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them': {
+    apis: ['auto-fit', 'auto-fill', 'minmax()', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Grid (overview)', route: '/css/grid' },
+      { label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' },
+      { label: 'Dense Packing Reorders Visually, Not in the DOM', route: '/css/grid/dense-packing-reorders-visually-not-in-dom' },
+    ],
+    tip: 'A single item in a 600px container renders at 150px under auto-fill but 600px under auto-fit — a 4x rendered-width difference from one keyword.',
+    docs: [
+      { label: 'MDN — CSS Grid Layout', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Grid Guide', url: 'https://css-tricks.com/snippets/css/complete-guide-grid/', badge: 'blog' },
+    ],
+    gotchas: [
+      'The difference is most visible in a card grid\'s last, partially-filled row — auto-fill leaves phantom empty columns there.',
+      'Switching from auto-fill to auto-fit is a one-keyword fix, no extra CSS needed.',
+    ],
+  },
+
+  'css/grid/grid-column-1-to-3-spans-two-columns-not-three': {
+    apis: ['grid-column', 'grid lines', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Grid (overview)', route: '/css/grid' },
+      { label: 'auto-fit Collapses Tracks, auto-fill Keeps Them', route: '/css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them' },
+      { label: 'Dense Packing Reorders Visually, Not in the DOM', route: '/css/grid/dense-packing-reorders-visually-not-in-dom' },
+    ],
+    tip: 'grid-column: 1 / 3 in a 3-column grid renders at 2/3 the width — both numbers are LINE numbers (an N-column grid has N+1 lines), not a column count.',
+    docs: [
+      { label: 'MDN — grid-column', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column' },
+    ],
+    resources: [
+      { label: 'Grid Garden (game)', url: 'https://cssgridgarden.com/', badge: 'tool' },
+    ],
+    gotchas: [
+      'grid-column: 1 / -1 always spans the full grid regardless of column count — no counting required.',
+      'This is the same off-by-one trap the main page\'s Common Mistakes section flags directly.',
+    ],
+  },
+
+  'css/grid/dense-packing-reorders-visually-not-in-dom': {
+    apis: ['grid-auto-flow: dense', 'DOM traversal', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Grid (overview)', route: '/css/grid' },
+      { label: 'auto-fit Collapses Tracks, auto-fill Keeps Them', route: '/css/grid/auto-fit-collapses-tracks-auto-fill-keeps-them' },
+      { label: 'grid-column: 1 / 3 Spans Two Columns, Not Three', route: '/css/grid/grid-column-1-to-3-spans-two-columns-not-three' },
+    ],
+    tip: 'dense packing can render a later item before an earlier one — automatically, no order property needed — while DOM order (and Tab/screen reader order) stays completely unchanged.',
+    docs: [
+      { label: 'MDN — grid-auto-flow', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Grid Guide', url: 'https://css-tricks.com/snippets/css/complete-guide-grid/', badge: 'blog' },
+    ],
+    gotchas: [
+      'This creates the same DOM-vs-visual divergence flexbox\'s order property does, just triggered automatically by item spans instead of manually.',
+      'Checking for this is directly scriptable — compare DOM traversal order against items sorted by rendered position.',
+    ],
+  },
+
   // ── CSS: Flexbox ──────────────────────────────────────────────────────────
   'css/flexbox': {
     apis: ['display: flex', 'justify-content', 'align-items', 'flex-wrap', 'gap', 'flex', 'align-self', 'order'],
@@ -21975,6 +24691,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'flex items have min-width: auto by default — add min-width: 0 to allow shrinking below content size.',
       'align-content only takes effect when flex-wrap: wrap is set and there are multiple rows.',
+    ],
+  },
+
+  'css/flexbox/min-width-auto-lets-items-overflow-container': {
+    apis: ['min-width', 'flex-shrink', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Flexbox (overview)', route: '/css/flexbox' },
+      { label: 'flex-basis Wins Over width', route: '/css/flexbox/flex-basis-wins-over-width-when-both-are-set' },
+      { label: 'order Changes Visual Position, Not DOM Order', route: '/css/flexbox/order-changes-visual-position-not-dom-order' },
+    ],
+    tip: 'Flex items default to min-width: auto — unbreakable content can render wider than the container despite flex-shrink being set. Add min-width: 0 to fix it.',
+    docs: [
+      { label: 'MDN — flex shorthand', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/flex' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Flexbox Guide', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', badge: 'blog' },
+    ],
+    gotchas: [
+      'A long filename or unbroken URL is enough to trigger this — normal-looking placeholder text during development can hide the bug.',
+      'min-width: 0 is the universal fix — no need to calculate a specific pixel value.',
+    ],
+  },
+
+  'css/flexbox/flex-basis-wins-over-width-when-both-are-set': {
+    apis: ['flex-basis', 'width', 'flex shorthand'],
+    related: [
+      { label: 'CSS Flexbox (overview)', route: '/css/flexbox' },
+      { label: 'min-width: auto Lets Items Overflow', route: '/css/flexbox/min-width-auto-lets-items-overflow-container' },
+      { label: 'order Changes Visual Position, Not DOM Order', route: '/css/flexbox/order-changes-visual-position-not-dom-order' },
+    ],
+    tip: 'When both width and flex-basis are set on the same item, flex-basis silently wins for main-axis sizing — width is effectively ignored.',
+    docs: [
+      { label: 'MDN — flex-basis', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Flexbox Guide', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', badge: 'blog' },
+    ],
+    gotchas: [
+      'This priority is specific to the main axis — in a column container, width behaves normally and height competes with flex-basis instead.',
+      'Prefer the flex shorthand alone (e.g. flex: 1 1 200px) over declaring width separately to avoid the conflict entirely.',
+    ],
+  },
+
+  'css/flexbox/order-changes-visual-position-not-dom-order': {
+    apis: ['order', 'DOM traversal', 'getBoundingClientRect()'],
+    related: [
+      { label: 'CSS Flexbox (overview)', route: '/css/flexbox' },
+      { label: 'min-width: auto Lets Items Overflow', route: '/css/flexbox/min-width-auto-lets-items-overflow-container' },
+      { label: 'flex-basis Wins Over width', route: '/css/flexbox/flex-basis-wins-over-width-when-both-are-set' },
+    ],
+    tip: 'order only changes where an item renders — DOM order (and therefore Tab-key order) never changes, provable by comparing DOM traversal against sorted visual position.',
+    docs: [
+      { label: 'MDN — order', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/order' },
+    ],
+    resources: [
+      { label: 'web.dev — Learn CSS Flexbox', url: 'https://web.dev/learn/css/flexbox', badge: 'docs' },
+    ],
+    gotchas: [
+      'A keyboard user tabs through elements in DOM order, not visual order — order can create a real, confusing mismatch for keyboard/screen-reader users.',
+      'A visual-only check with a mouse can never catch this — verifying requires actually tabbing through the page or checking DOM order programmatically.',
     ],
   },
 
@@ -22220,6 +24996,248 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/media': {
+    apis: ['<img srcset sizes>', '<picture>', 'loading', 'HTMLImageElement.currentSrc'],
+    related: [
+      { label: 'Forms & Input',      route: '/html/forms'          },
+      { label: 'HTML Performance',   route: '/html/performance'    },
+      { label: 'iFrames & Embeds',   route: '/html/iframes-embeds' },
+    ],
+    tip: 'loading and sizes solve two completely different problems — loading controls WHEN a fetch starts, sizes controls WHICH candidate file gets fetched.',
+    docs: [
+      { label: 'MDN — Responsive images', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images' },
+    ],
+    resources: [
+      { label: 'MDN — iframe sandbox', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox', badge: 'docs' },
+    ],
+    gotchas: [
+      'Never lazy-load your LCP candidate image — it delays the exact metric Core Web Vitals measures.',
+      'A wrong sizes value causes real over-fetching even with a perfectly correct srcset list.',
+      'An empty sandbox="" blocks script execution entirely — allow-scripts and allow-same-origin are independent tokens.',
+    ],
+  },
+
+  'html/media/lazy-loading-defers-fetch-until-viewport': {
+    apis: ['loading', 'HTMLImageElement.complete', 'HTMLImageElement.naturalWidth'],
+    related: [
+      { label: 'Media Elements (overview)', route: '/html/media' },
+      { label: 'sizes Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' },
+      { label: 'Empty sandbox Blocks Scripts', route: '/html/media/empty-sandbox-blocks-script-execution' },
+    ],
+    tip: 'naturalWidth === 0 immediately after page load is a reliable signal a lazy image has not fetched yet — an eager image at the same distance is already loaded.',
+    docs: [
+      { label: 'MDN — loading attribute', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading' },
+    ],
+    resources: [
+      { label: 'web.dev — Browser-level lazy loading', url: 'https://web.dev/articles/browser-level-image-lazy-loading', badge: 'docs' },
+    ],
+    gotchas: [
+      'eager (the default) loads the instant the parser sees the tag, regardless of position on the page — document order never determines timing on its own.',
+      'Scrolling a lazy image into view is what triggers its fetch — there is no manual "unlock" API, it is fully automatic.',
+    ],
+  },
+
+  'html/media/sizes-not-media-picks-srcset-candidate': {
+    apis: ['sizes', 'srcset', 'HTMLImageElement.currentSrc'],
+    related: [
+      { label: 'Media Elements (overview)', route: '/html/media' },
+      { label: 'loading="lazy" Defers the Fetch', route: '/html/media/lazy-loading-defers-fetch-until-viewport' },
+      { label: 'Empty sandbox Blocks Scripts', route: '/html/media/empty-sandbox-blocks-script-execution' },
+    ],
+    tip: 'currentSrc reflects the browser\'s actual resolved choice — src and srcset just echo the raw attribute strings you wrote.',
+    docs: [
+      { label: 'MDN — sizes attribute', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#sizes' },
+    ],
+    resources: [
+      { label: 'MDN — Responsive images', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images', badge: 'docs' },
+    ],
+    gotchas: [
+      'sizes is a CSS-length hint, not a media-query selector like <picture>\'s source media attribute — they answer completely different questions.',
+      'The browser resolves srcset/sizes before layout is necessarily computed, and never retroactively corrects a bad sizes guess once the real CSS width is known.',
+    ],
+  },
+
+  'html/media/empty-sandbox-blocks-script-execution': {
+    apis: ['sandbox', 'allow-scripts', 'allow-same-origin', 'iframe.contentDocument'],
+    related: [
+      { label: 'Media Elements (overview)', route: '/html/media' },
+      { label: 'loading="lazy" Defers the Fetch', route: '/html/media/lazy-loading-defers-fetch-until-viewport' },
+      { label: 'sizes Picks the srcset Candidate', route: '/html/media/sizes-not-media-picks-srcset-candidate' },
+    ],
+    tip: 'allow-scripts controls whether the frame\'s OWN code runs; allow-same-origin separately controls whether the PARENT can read into the frame afterward.',
+    docs: [
+      { label: 'MDN — iframe sandbox', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox' },
+    ],
+    resources: [
+      { label: 'MDN — Same-origin policy', url: 'https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy', badge: 'docs' },
+    ],
+    gotchas: [
+      'Without allow-scripts, a <script> tag inside the frame is present in the markup but simply never executes — there is nothing to catch with try/catch.',
+      'Without allow-same-origin, the frame gets an opaque origin — the parent\'s contentDocument access throws a SecurityError even for a same-page srcdoc frame.',
+    ],
+  },
+
+  'html/tables': {
+    apis: ['<table>', '<col>', 'rowspan', 'table-layout', 'HTMLTableRowElement.cells'],
+    related: [
+      { label: 'Media Elements',     route: '/html/media'         },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility' },
+      { label: 'HTML Performance',   route: '/html/performance'   },
+    ],
+    tip: 'HTML tables have no auto-placement algorithm like CSS Grid — a leftover rowspan cell silently shifts every following cell rather than getting dropped.',
+    docs: [
+      { label: 'MDN — Table basics', url: 'https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Basics' },
+    ],
+    resources: [
+      { label: 'MDN — table-layout', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout', badge: 'docs' },
+    ],
+    gotchas: [
+      'cellIndex only reflects DOM order within a row — it cannot detect a shift caused by an earlier row\'s rowspan.',
+      'table-layout: fixed locks column widths from row 1 alone and never revisits them, even if later rows overflow.',
+      'Only background, border, visibility, and width apply to a <col> element — everything else is silently ignored.',
+    ],
+  },
+
+  'html/tables/rowspan-covered-cells-shift-every-later-cell': {
+    apis: ['rowspan', 'HTMLTableRowElement.cells', 'HTMLTableCellElement.cellIndex'],
+    related: [
+      { label: 'Tables (overview)', route: '/html/tables' },
+      { label: 'table-layout: fixed Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' },
+      { label: 'col CSS Restrictions', route: '/html/tables/col-only-supports-background-border-visibility-width' },
+    ],
+    tip: 'A leftover cell after a rowspan is never dropped — it renders in the next unreserved column, shifting every cell after it.',
+    docs: [
+      { label: 'MDN — rowspan', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/td#rowspan' },
+    ],
+    resources: [
+      { label: 'MDN — Table basics', url: 'https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Basics', badge: 'docs' },
+    ],
+    gotchas: [
+      'cellIndex and cells.length only describe DOM order within a single row — they cannot see rowspan reservations from earlier rows.',
+      'The fix is always to remove the covered cell\'s markup — there is no auto-correction mechanism to rely on.',
+    ],
+  },
+
+  'html/tables/table-layout-fixed-sizes-columns-from-first-row': {
+    apis: ['table-layout', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Tables (overview)', route: '/html/tables' },
+      { label: 'Leftover rowspan Cell Shifts Everything', route: '/html/tables/rowspan-covered-cells-shift-every-later-cell' },
+      { label: 'col CSS Restrictions', route: '/html/tables/col-only-supports-background-border-visibility-width' },
+    ],
+    tip: 'table-layout: fixed turns an O(all cells) width-measurement pass into an O(first row) one — the documented fix for slow layout on large tables.',
+    docs: [
+      { label: 'MDN — table-layout', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout' },
+    ],
+    resources: [
+      { label: 'web.dev — Rendering performance', url: 'https://web.dev/articles/rendering-performance', badge: 'docs' },
+    ],
+    gotchas: [
+      'Content in later rows that doesn\'t fit row 1\'s column width overflows visibly by default — it does not force the column to grow.',
+      'table-layout: fixed changes how EVERY column\'s width is calculated, not just the table\'s overall width.',
+    ],
+  },
+
+  'html/tables/col-only-supports-background-border-visibility-width': {
+    apis: ['<col>', '<colgroup>', 'getComputedStyle()'],
+    related: [
+      { label: 'Tables (overview)', route: '/html/tables' },
+      { label: 'Leftover rowspan Cell Shifts Everything', route: '/html/tables/rowspan-covered-cells-shift-every-later-cell' },
+      { label: 'table-layout: fixed Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' },
+    ],
+    tip: 'A <col> never gets its own rendered box like a <td> does — only background, border, visibility, and width are special-cased to reach the real cells.',
+    docs: [
+      { label: 'MDN — <col>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/col' },
+    ],
+    resources: [
+      { label: 'MDN — <colgroup>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/colgroup', badge: 'docs' },
+    ],
+    gotchas: [
+      'Unsupported CSS on a <col> causes no error or warning — it is valid syntax that simply never reaches any rendered box.',
+      'getComputedStyle() on the <col> itself reports what you SET, not what actually rendered — check the real <td>/<th> cells instead.',
+    ],
+  },
+
+  'html/links-navigation': {
+    apis: ['window.opener', 'rel="noopener"', 'tabIndex', ':link :visited :hover :focus :active'],
+    related: [
+      { label: 'Tables',              route: '/html/tables'         },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility' },
+      { label: 'Landmark Elements',   route: '/html/landmark-elements' },
+    ],
+    tip: 'rel="noopener" doesn\'t just hide window.opener from the original tab — it genuinely nulls it from the new tab\'s own perspective too.',
+    docs: [
+      { label: 'MDN — rel=noopener', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/noopener' },
+    ],
+    resources: [
+      { label: 'web.dev — Cross-window opener access', url: 'https://web.dev/articles/referrer-best-practices', badge: 'docs' },
+    ],
+    gotchas: [
+      'An <a> with no href attribute has default tabIndex -1 — invisible to keyboard Tab navigation, with no error or warning.',
+      'a:link, a:visited, a:hover, a:focus, and a:active all tie on specificity — only LVHFA source order breaks the tie.',
+    ],
+  },
+
+  'html/links-navigation/rel-noopener-genuinely-nulls-window-opener': {
+    apis: ['window.opener', 'window.open()', 'rel="noopener"'],
+    related: [
+      { label: 'Links & Navigation (overview)', route: '/html/links-navigation' },
+      { label: 'href-less Anchor Skips Tab Navigation', route: '/html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation' },
+      { label: 'LVHFA Order Decides the Winner', route: '/html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner' },
+    ],
+    tip: 'window.open(url, target, \'noopener\') achieves the exact same severance as the HTML rel="noopener" attribute — noopener is a window-creation flag, not an HTML-only concept.',
+    docs: [
+      { label: 'MDN — rel=noopener', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/noopener' },
+    ],
+    resources: [
+      { label: 'MDN — Window.open()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/open', badge: 'docs' },
+    ],
+    gotchas: [
+      'Without noopener, window.opener is a real, working cross-origin reference the new tab can use to redirect the original page.',
+      'With noopener, the new window\'s own window.opener reads back as null from ITS OWN script — a genuine severance, not just a one-sided block.',
+    ],
+  },
+
+  'html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation': {
+    apis: ['tabIndex', 'HTMLAnchorElement', 'href attribute'],
+    related: [
+      { label: 'Links & Navigation (overview)', route: '/html/links-navigation' },
+      { label: 'noopener Genuinely Nulls window.opener', route: '/html/links-navigation/rel-noopener-genuinely-nulls-window-opener' },
+      { label: 'LVHFA Order Decides the Winner', route: '/html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner' },
+    ],
+    tip: 'The browser\'s default-focusability check only asks whether an href ATTRIBUTE is present — never whether its value actually leads anywhere.',
+    docs: [
+      { label: 'MDN — tabindex', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex' },
+    ],
+    resources: [
+      { label: 'MDN — <a> element', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a', badge: 'docs' },
+    ],
+    gotchas: [
+      'An <a> with no href has default tabIndex -1 — completely invisible to Tab navigation.',
+      'href="javascript:void(0)" has an href attribute, so it keeps full link semantics and stays keyboard-reachable despite navigating nowhere.',
+    ],
+  },
+
+  'html/links-navigation/lvhfa-source-order-decides-the-equal-specificity-winner': {
+    apis: [':link', ':visited', ':hover', ':focus', ':active', 'element.focus()'],
+    related: [
+      { label: 'Links & Navigation (overview)', route: '/html/links-navigation' },
+      { label: 'noopener Genuinely Nulls window.opener', route: '/html/links-navigation/rel-noopener-genuinely-nulls-window-opener' },
+      { label: 'href-less Anchor Skips Tab Navigation', route: '/html/links-navigation/href-less-anchor-is-skipped-by-tab-navigation' },
+    ],
+    tip: 'element.focus() triggers :focus programmatically — making the LVHFA ordering rule provable with a script instead of a screenshot.',
+    docs: [
+      { label: 'MDN — :focus', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:focus' },
+    ],
+    resources: [
+      { label: 'MDN — CSS specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Specificity', badge: 'docs' },
+    ],
+    gotchas: [
+      'All five LVHFA pseudo-classes have identical specificity — there is no built-in prioritization between them.',
+      'A focus style that silently never appears can be a correctly-written, typo-free rule simply declared in the wrong order relative to an equal-specificity rule.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],
@@ -22244,6 +25262,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/head-metadata/font-preload-without-crossorigin-fetches-twice': {
+    apis: ['<link rel="preload">', 'crossorigin', 'performance.getEntriesByType()'],
+    related: [
+      { label: 'Head & Metadata (overview)', route: '/html/head-metadata' },
+      { label: 'preload Without as= Is Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' },
+      { label: 'Relative canonical Resolves Differently', route: '/html/head-metadata/relative-canonical-resolves-differently-per-page' },
+    ],
+    tip: 'CSS font requests always use CORS mode — a preload without crossorigin never matches, so the browser fetches the font a genuine second time.',
+    docs: [
+      { label: 'MDN — Preloading content', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload' },
+    ],
+    resources: [
+      { label: 'web.dev — Preload critical assets', url: 'https://web.dev/articles/preload-critical-assets', badge: 'blog' },
+    ],
+    gotchas: [
+      'crossorigin is required on EVERY font preload, same-origin or not — the requirement comes from font-specific CORS behavior, not cross-origin URLs.',
+      'A mismatched preload still renders the font correctly — the only cost is an invisible, wasted second download, provable via Resource Timing entry counts.',
+    ],
+  },
+
+  'html/head-metadata/preload-without-as-is-silently-ignored': {
+    apis: ['<link rel="preload">', 'as attribute', 'console.warn()'],
+    related: [
+      { label: 'Head & Metadata (overview)', route: '/html/head-metadata' },
+      { label: 'Font preload Without crossorigin Fetches Twice', route: '/html/head-metadata/font-preload-without-crossorigin-fetches-twice' },
+      { label: 'Relative canonical Resolves Differently', route: '/html/head-metadata/relative-canonical-resolves-differently-per-page' },
+    ],
+    tip: 'A preload missing as= is not degraded, it is dropped entirely — the only trace is a DevTools console warning, invisible to the page\'s own JavaScript.',
+    docs: [
+      { label: 'MDN — Preloading content', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload' },
+    ],
+    resources: [
+      { label: 'web.dev — Preload critical assets', url: 'https://web.dev/articles/preload-critical-assets', badge: 'blog' },
+    ],
+    gotchas: [
+      'No exception is thrown and no event fires — a page\'s own script has no reliable way to detect a rejected preload at all.',
+      'The page still renders correctly, which is exactly why this class of bug tends to survive unnoticed in production.',
+    ],
+  },
+
+  'html/head-metadata/relative-canonical-resolves-differently-per-page': {
+    apis: ['<link rel="canonical">', 'getAttribute()', 'HTMLLinkElement.href', 'URL()'],
+    related: [
+      { label: 'Head & Metadata (overview)', route: '/html/head-metadata' },
+      { label: 'Font preload Without crossorigin Fetches Twice', route: '/html/head-metadata/font-preload-without-crossorigin-fetches-twice' },
+      { label: 'preload Without as= Is Ignored', route: '/html/head-metadata/preload-without-as-is-silently-ignored' },
+    ],
+    tip: 'link.href always returns a resolved absolute URL, even for a relative attribute — use getAttribute(\'href\') to see the real, raw, potentially-fragile value.',
+    docs: [
+      { label: 'MDN — rel=canonical', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/canonical' },
+    ],
+    resources: [
+      { label: 'Google — Consolidate duplicate URLs', url: 'https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls', badge: 'docs' },
+    ],
+    gotchas: [
+      'The exact same relative href resolves to genuinely different absolute URLs depending on which domain/page serves it.',
+      'Checking link.href in DevTools can look perfectly correct even when the underlying markup is relative and fragile.',
+    ],
+  },
+
   // ── HTML: iFrames & Embeds ─────────────────────────────────────────────────
   'html/iframes-embeds': {
     apis: ['sandbox', 'allow', 'srcdoc', 'loading="lazy"', 'X-Frame-Options', 'frame-ancestors'],
@@ -22265,6 +25343,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'sandbox allow attribute uses semicolons as separators — commas silently break the entire attribute.',
       'Combining allow-scripts + allow-same-origin in sandbox defeats it — a script can remove its own sandbox attribute.',
+    ],
+  },
+
+  'html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape': {
+    apis: ['window.frameElement', 'removeAttribute()', 'sandbox'],
+    related: [
+      { label: 'iFrames & Embeds (overview)', route: '/html/iframes-embeds' },
+      { label: 'Missing width/height Causes Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' },
+      { label: 'srcdoc vs src Network Requests', route: '/html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one' },
+    ],
+    tip: 'allow-same-origin gives a sandboxed script a real window.frameElement reference — combined with allow-scripts, that\'s enough to remove its own sandbox attribute.',
+    docs: [
+      { label: 'MDN — iframe sandbox', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox' },
+    ],
+    resources: [
+      { label: 'OWASP Clickjacking Guide', url: 'https://owasp.org/www-community/attacks/Clickjacking', badge: 'docs' },
+    ],
+    gotchas: [
+      'Neither token alone enables this escape — it is specifically the combination that grants both execution and a same-origin DOM reference.',
+      'The removal is a genuine, permanent DOM mutation on the parent\'s own element, not a one-time bypass.',
+    ],
+  },
+
+  'html/iframes-embeds/missing-width-height-causes-measurable-layout-shift': {
+    apis: ['width', 'height', 'PerformanceObserver', 'layout-shift'],
+    related: [
+      { label: 'iFrames & Embeds (overview)', route: '/html/iframes-embeds' },
+      { label: 'allow-scripts + allow-same-origin Sandbox Escape', route: '/html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape' },
+      { label: 'srcdoc vs src Network Requests', route: '/html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one' },
+    ],
+    tip: 'An unsized iframe still gets a browser-default box (not 0×0) — the shift comes from the mismatch between that default and the real content\'s eventual size.',
+    docs: [
+      { label: 'MDN — Layout Instability API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Layout_Instability_API' },
+    ],
+    resources: [
+      { label: 'web.dev — Cumulative Layout Shift', url: 'https://web.dev/articles/cls', badge: 'blog' },
+    ],
+    gotchas: [
+      'CSS-only sizing can still cause an initial shift — HTML width/height attributes are what let the browser reserve space during the very first layout pass.',
+      'LayoutShift is a real, numeric PerformanceObserver entry type — the same underlying data behind the Cumulative Layout Shift Core Web Vital.',
+    ],
+  },
+
+  'html/iframes-embeds/srcdoc-makes-zero-network-requests-src-makes-a-real-one': {
+    apis: ['srcdoc', 'src', 'performance.getEntriesByType()'],
+    related: [
+      { label: 'iFrames & Embeds (overview)', route: '/html/iframes-embeds' },
+      { label: 'allow-scripts + allow-same-origin Sandbox Escape', route: '/html/iframes-embeds/allow-scripts-plus-allow-same-origin-enables-sandbox-escape' },
+      { label: 'Missing width/height Causes Layout Shift', route: '/html/iframes-embeds/missing-width-height-causes-measurable-layout-shift' },
+    ],
+    tip: 'srcdoc content is already sitting in the attribute value — there is no URL for a network request to ever target, unlike a data: URL which still navigates through the URL pipeline.',
+    docs: [
+      { label: 'MDN — srcdoc', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#srcdoc' },
+    ],
+    resources: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'srcdoc combined with an empty sandbox is the recommended pattern for previewing untrusted, user-generated HTML — nothing ever leaves the current page context.',
+      'Resource Timing entries never appear for srcdoc content, confirmed directly via performance.getEntriesByType(\'resource\').',
     ],
   },
 
@@ -22331,6 +25469,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/apis/filereadersync-only-exists-inside-a-real-web-worker': {
+    apis: ['FileReaderSync', 'FileReader', 'Worker', 'WorkerGlobalScope'],
+    related: [
+      { label: 'HTML5 Browser APIs (overview)', route: '/html/apis' },
+      { label: 'navigator.share Feature Detection', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' },
+      { label: 'Notification.permission Never Throws', route: '/html/apis/notification-permission-is-readable-anytime-construction-never-throws' },
+    ],
+    tip: 'FileReaderSync is defined ONLY on WorkerGlobalScope — typeof FileReaderSync is "undefined" on the main thread, "function" inside a real Worker.',
+    docs: [
+      { label: 'MDN — FileReaderSync', url: 'https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync' },
+    ],
+    resources: [
+      { label: 'MDN — Web Workers API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is a genuine scope restriction, not a deprecated or permission-gated API — the constructor simply was never defined on Window.',
+      'FileReader (async) works in both contexts; only its synchronous counterpart is worker-only.',
+    ],
+  },
+
+  'html/apis/navigator-share-feature-detection-prevents-a-real-typeerror': {
+    apis: ['navigator.share()', "'share' in navigator", 'TypeError'],
+    related: [
+      { label: 'HTML5 Browser APIs (overview)', route: '/html/apis' },
+      { label: 'FileReaderSync Only Exists in Workers', route: '/html/apis/filereadersync-only-exists-inside-a-real-web-worker' },
+      { label: 'Notification.permission Never Throws', route: '/html/apis/notification-permission-is-readable-anytime-construction-never-throws' },
+    ],
+    tip: 'On an unsupported browser, navigator.share is genuinely undefined — calling it throws a synchronous TypeError, not a rejected Promise.',
+    docs: [
+      { label: 'MDN — Navigator.share()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share' },
+    ],
+    resources: [
+      { label: 'MDN — Web Share API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Share_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'A rejected Promise implies the function exists and started running — "not supported" fails one full step earlier, at the call itself.',
+      "'share' in navigator is a safe, throw-free existence check to run before ever calling the method.",
+    ],
+  },
+
+  'html/apis/notification-permission-is-readable-anytime-construction-never-throws': {
+    apis: ['Notification.permission', 'new Notification()', 'Notification.requestPermission()'],
+    related: [
+      { label: 'HTML5 Browser APIs (overview)', route: '/html/apis' },
+      { label: 'FileReaderSync Only Exists in Workers', route: '/html/apis/filereadersync-only-exists-inside-a-real-web-worker' },
+      { label: 'navigator.share Feature Detection', route: '/html/apis/navigator-share-feature-detection-prevents-a-real-typeerror' },
+    ],
+    tip: 'Notification.permission is a plain synchronous string, readable anytime with zero prompt — new Notification() never throws for a permission problem, it just silently fails to display.',
+    docs: [
+      { label: 'MDN — Notification()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification' },
+    ],
+    resources: [
+      { label: 'MDN — Notifications API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'The constructor succeeds and returns a real object regardless of permission state — only the ACTUAL DISPLAY depends on permission being "granted".',
+      'The constructor never triggers the permission prompt itself — that is a separate, required call to Notification.requestPermission().',
+    ],
+  },
+
   'html/seo': {
     apis: ['<title>', '<meta name="description">', '<link rel="canonical">', '<meta name="robots">', 'JSON-LD <script>', 'og:title / og:image', 'twitter:card', 'hreflang', 'sitemap.xml', 'Core Web Vitals'],
     related: [
@@ -22352,6 +25550,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Canonical and noindex together: if a page has both, Google will likely drop it from the index — pick one signal.',
       'og:image must be an absolute URL, not a relative path — social crawlers do not resolve relative paths.',
       'hreflang must be reciprocal — every page in the set must link back to all others, or Google ignores the tags.',
+    ],
+  },
+
+  'html/seo/document-title-deterministically-uses-only-the-first-title': {
+    apis: ['document.title', '<title>', 'querySelectorAll()'],
+    related: [
+      { label: 'HTML SEO (overview)', route: '/html/seo' },
+      { label: 'Malformed JSON-LD Renders Fine, Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' },
+      { label: 'og:image Dimensions Checkable via Image API', route: '/html/seo/og-image-dimensions-are-checkable-live-via-the-image-api' },
+    ],
+    tip: 'document.title always uses the FIRST title element in tree order — a second one is a real, findable DOM node that has zero effect on the browser itself.',
+    docs: [
+      { label: 'MDN — document.title', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/title' },
+    ],
+    resources: [
+      { label: 'Google — Title link best practices', url: 'https://developers.google.com/search/docs/appearance/title-link', badge: 'docs' },
+    ],
+    gotchas: [
+      'The browser tab always looks correct even with a duplicate title tag — this bug is invisible without viewing raw source or querySelectorAll.',
+      'The "confusion" the main page warns about is at the crawler level, not the browser level — browser behavior here is fully deterministic.',
+    ],
+  },
+
+  'html/seo/malformed-json-ld-renders-fine-but-fails-to-parse': {
+    apis: ['application/ld+json', 'JSON.parse()', 'script.textContent'],
+    related: [
+      { label: 'HTML SEO (overview)', route: '/html/seo' },
+      { label: 'document.title Uses Only the First title', route: '/html/seo/document-title-deterministically-uses-only-the-first-title' },
+      { label: 'og:image Dimensions Checkable via Image API', route: '/html/seo/og-image-dimensions-are-checkable-live-via-the-image-api' },
+    ],
+    tip: 'application/ld+json is never executed as JavaScript — a malformed block causes zero render failures and zero console errors, completely invisible to visual QA.',
+    docs: [
+      { label: 'Google — Rich Results Test', url: 'https://search.google.com/test/rich-results' },
+    ],
+    resources: [
+      { label: 'Schema.org', url: 'https://schema.org', badge: 'docs' },
+    ],
+    gotchas: [
+      'A page "looking correct" is no evidence its structured data is valid — the two are completely independent checks.',
+      'A plain JSON.parse() on the script\'s textContent catches syntax errors offline, before ever needing an external validator.',
+    ],
+  },
+
+  'html/seo/og-image-dimensions-are-checkable-live-via-the-image-api': {
+    apis: ['og:image', 'Image()', 'naturalWidth', 'naturalHeight'],
+    related: [
+      { label: 'HTML SEO (overview)', route: '/html/seo' },
+      { label: 'document.title Uses Only the First title', route: '/html/seo/document-title-deterministically-uses-only-the-first-title' },
+      { label: 'Malformed JSON-LD Renders Fine, Fails to Parse', route: '/html/seo/malformed-json-ld-renders-fine-but-fails-to-parse' },
+    ],
+    tip: 'og:image is just a string attribute — nothing validates the real image dimensions at write time. Load it for real and check naturalWidth/naturalHeight against 1200×630.',
+    docs: [
+      { label: 'Open Graph Protocol', url: 'https://ogp.me/' },
+    ],
+    resources: [
+      { label: 'Facebook Sharing Debugger', url: 'https://developers.facebook.com/tools/debug/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A too-small og:image doesn\'t break the share entirely — it just downgrades to a smaller inline thumbnail instead of a full preview card.',
+      'The exact same dimension check the demo runs is what a platform\'s own crawler effectively performs when it fetches the image.',
     ],
   },
 
@@ -22379,6 +25637,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location': {
+    apis: ['navigator.serviceWorker.register()', 'ServiceWorkerRegistration.scope'],
+    related: [
+      { label: 'PWA & Service Workers (overview)', route: '/html/pwa-service-workers' },
+      { label: 'No DOM Access Inside a Service Worker', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' },
+      { label: 'New SW Waits Without skipWaiting()', route: '/html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting' },
+    ],
+    tip: 'There is no separate scope setting for the common case — the script file\'s own URL path IS the default scope, directly readable via registration.scope.',
+    docs: [
+      { label: 'MDN — ServiceWorkerRegistration.scope', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/scope' },
+    ],
+    resources: [
+      { label: 'MDN — Service Worker API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'A worker registered from a subdirectory can only control that subdirectory and its descendants — never the site root.',
+      'Moving the script file itself (not adding config) is the standard fix for a too-narrow scope.',
+    ],
+  },
+
+  'html/pwa-service-workers/service-workers-genuinely-have-no-dom-access': {
+    apis: ['ServiceWorkerGlobalScope', 'postMessage()', 'self.clients'],
+    related: [
+      { label: 'PWA & Service Workers (overview)', route: '/html/pwa-service-workers' },
+      { label: 'Registration Scope From Script Location', route: '/html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location' },
+      { label: 'New SW Waits Without skipWaiting()', route: '/html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting' },
+    ],
+    tip: 'document and window aren\'t restricted from a service worker — they were never defined in ServiceWorkerGlobalScope, so typeof checks evaluate cleanly to \'undefined\' with no error.',
+    docs: [
+      { label: 'MDN — ServiceWorkerGlobalScope', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope' },
+    ],
+    resources: [
+      { label: 'MDN — Clients API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Clients', badge: 'docs' },
+    ],
+    gotchas: [
+      'Communication with controlled pages happens entirely through postMessage() and the Clients API — never direct DOM manipulation.',
+      'This is architectural, not a permission check — no exception is thrown when checking typeof document from inside a worker.',
+    ],
+  },
+
+  'html/pwa-service-workers/a-new-sw-sits-in-registration-waiting-without-skipwaiting': {
+    apis: ['registration.installing', 'registration.waiting', 'registration.active', 'skipWaiting()'],
+    related: [
+      { label: 'PWA & Service Workers (overview)', route: '/html/pwa-service-workers' },
+      { label: 'Registration Scope From Script Location', route: '/html/pwa-service-workers/registration-scope-is-set-by-the-script-file-location' },
+      { label: 'No DOM Access Inside a Service Worker', route: '/html/pwa-service-workers/service-workers-genuinely-have-no-dom-access' },
+    ],
+    tip: 'A freshly-installed worker never auto-promotes to active while an older worker still controls an open page — it sits in registration.waiting, directly readable and checkable.',
+    docs: [
+      { label: 'MDN — Service Worker lifecycle', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers#service_worker_lifecycle' },
+    ],
+    resources: [
+      { label: 'web.dev — Service worker lifecycle', url: 'https://web.dev/articles/service-worker-lifecycle', badge: 'blog' },
+    ],
+    gotchas: [
+      'skipWaiting() and clients.claim() act on two different lifecycle moments — both together are usually needed for a fully instant update.',
+      'This waiting behavior is a deliberate safety mechanism protecting already-open pages, not an oversight or a bug.',
+    ],
+  },
+
   'html/performance': {
     apis: ['loading="lazy"', 'fetchpriority="high"', 'rel="preload"', 'rel="prefetch"', 'rel="preconnect"', 'rel="dns-prefetch"', 'defer', 'async', 'rel="modulepreload"', 'content-visibility'],
     related: [
@@ -22400,6 +25718,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Preloading too many resources defeats the purpose — only preload the 1-3 resources the browser would not discover early enough on its own.',
       'Font preloads need both as="font" and crossorigin attributes — missing crossorigin causes a double fetch.',
       'async on a script that depends on another async script causes race conditions — use defer or modules instead.',
+    ],
+  },
+
+  'html/performance/too-many-high-priority-resources-dilutes-the-signal': {
+    apis: ['fetchpriority', 'PerformanceResourceTiming.fetchStart'],
+    related: [
+      { label: 'HTML Performance (overview)', route: '/html/performance' },
+      { label: 'defer Guarantees Order + DOMContentLoaded Timing', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' },
+      { label: 'content-visibility: auto Genuinely Skips Rendering', route: '/html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering' },
+    ],
+    tip: 'fetchpriority only means "prioritize this over other same-type resources" — mark everything high and the browser is back to guessing among equals.',
+    docs: [
+      { label: 'web.dev — fetchpriority', url: 'https://web.dev/articles/fetch-priority' },
+    ],
+    resources: [
+      { label: 'MDN — Resource Timing API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API', badge: 'docs' },
+    ],
+    gotchas: [
+      'fetchpriority only influences when a fetch STARTS, never its finish time — network conditions still decide who actually loads first.',
+      'Reserve fetchpriority="high" for the single resource that actually determines a Core Web Vital, not every important-looking element.',
+    ],
+  },
+
+  'html/performance/defer-guarantees-order-and-fires-before-domcontentloaded': {
+    apis: ['defer', 'async', 'DOMContentLoaded'],
+    related: [
+      { label: 'HTML Performance (overview)', route: '/html/performance' },
+      { label: 'Too Many High-Priority Resources Dilutes It', route: '/html/performance/too-many-high-priority-resources-dilutes-the-signal' },
+      { label: 'content-visibility: auto Genuinely Skips Rendering', route: '/html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering' },
+    ],
+    tip: 'defer scripts always execute in document order, always before DOMContentLoaded — a hard spec guarantee, independent of which file downloads fastest.',
+    docs: [
+      { label: 'MDN — <script> defer', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#defer' },
+    ],
+    resources: [
+      { label: 'MDN — DOMContentLoaded', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event', badge: 'docs' },
+    ],
+    gotchas: [
+      'async scripts execute the moment their OWN download finishes — with zero regard for other scripts\' document position.',
+      'DOMContentLoaded is spec-guaranteed to wait until every deferred script has finished executing.',
+    ],
+  },
+
+  'html/performance/content-visibility-auto-genuinely-skips-offscreen-rendering': {
+    apis: ['content-visibility', 'contentvisibilityautostatechange', 'contain-intrinsic-size'],
+    related: [
+      { label: 'HTML Performance (overview)', route: '/html/performance' },
+      { label: 'Too Many High-Priority Resources Dilutes It', route: '/html/performance/too-many-high-priority-resources-dilutes-the-signal' },
+      { label: 'defer Guarantees Order + DOMContentLoaded Timing', route: '/html/performance/defer-guarantees-order-and-fires-before-domcontentloaded' },
+    ],
+    tip: 'content-visibility: auto genuinely skips layout, style, and paint for off-screen descendants — the contentvisibilityautostatechange event reports the skipped state directly, no profiling needed.',
+    docs: [
+      { label: 'MDN — content-visibility', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility' },
+    ],
+    resources: [
+      { label: 'MDN — contentvisibilityautostatechange', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Element/contentvisibilityautostatechange_event', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is a real skip of rendering work, not a visual trick like opacity: 0 — the descendants are never laid out or painted while off-screen.',
+      'The element itself still reserves layout space (via contain-intrinsic-size) — only its descendants\' rendering is skipped.',
     ],
   },
 
@@ -22427,6 +25805,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels': {
+    apis: ['canvas.width', 'canvas.height', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Canvas & SVG (overview)', route: '/html/canvas-svg' },
+      { label: 'Missing beginPath() Merges Paths', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' },
+      { label: 'SVG Without viewBox Ignores CSS Resize', route: '/html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates' },
+    ],
+    tip: 'canvas.width/height set the real internal pixel buffer; CSS width/height only stretch that fixed buffer — mismatch them and the browser has to interpolate.',
+    docs: [
+      { label: 'MDN — Canvas API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API' },
+    ],
+    resources: [
+      { label: 'web.dev — Canvas tutorial', url: 'https://web.dev/articles/canvas-performance', badge: 'blog' },
+    ],
+    gotchas: [
+      'The blur ratio is precisely computable — displayPixelArea ÷ bufferPixelArea — not a subjective visual impression.',
+      'For HiDPI screens, multiply the HTML width/height attributes by devicePixelRatio, then scale the context back down.',
+    ],
+  },
+
+  'html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data': {
+    apis: ['beginPath()', 'stroke()', 'fill()', 'getImageData()'],
+    related: [
+      { label: 'Canvas & SVG (overview)', route: '/html/canvas-svg' },
+      { label: 'Canvas Resolution vs CSS Display Size', route: '/html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels' },
+      { label: 'SVG Without viewBox Ignores CSS Resize', route: '/html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates' },
+    ],
+    tip: 'A canvas path never auto-resets — every arc()/lineTo()/moveTo() appends to the SAME current path until beginPath() starts a fresh one.',
+    docs: [
+      { label: 'MDN — CanvasRenderingContext2D.beginPath()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/beginPath' },
+    ],
+    resources: [
+      { label: 'MDN — getImageData()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData', badge: 'docs' },
+    ],
+    gotchas: [
+      'stroke()/fill() never clear the current path — they only render whatever it currently contains, however large it has grown.',
+      'getImageData() gives an objective, numeric proof of merged paths — a real pixel appearing where neither shape\'s own outline should reach.',
+    ],
+  },
+
+  'html/canvas-svg/svg-without-viewbox-ignores-css-resize-of-coordinates': {
+    apis: ['viewBox', 'width', 'height', 'getBoundingClientRect()'],
+    related: [
+      { label: 'Canvas & SVG (overview)', route: '/html/canvas-svg' },
+      { label: 'Canvas Resolution vs CSS Display Size', route: '/html/canvas-svg/canvas-html-attrs-set-resolution-css-only-stretches-pixels' },
+      { label: 'Missing beginPath() Merges Paths', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' },
+    ],
+    tip: 'width/height set the SVG element\'s own box. Only viewBox tells its CONTENT to scale proportionally when that box is later resized via CSS.',
+    docs: [
+      { label: 'MDN — viewBox', url: 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox' },
+    ],
+    resources: [
+      { label: 'CSS-Tricks — Understanding SVG viewBox', url: 'https://css-tricks.com/scale-svg/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Without viewBox, the SVG\'s own box resizes with CSS fine — it\'s the CONTENT inside that keeps its literal, unscaled coordinates.',
+      'This can make content vanish off-canvas or become disproportionate in any responsively-sized icon or illustration, not just a cosmetic nuance.',
+    ],
+  },
+
   // ── HTML: Web Components ───────────────────────────────────────────────────
   'html/custom-elements': {
     apis: ['customElements.define()', 'attachShadow()', '<template>', '<slot>', 'connectedCallback()', 'observedAttributes'],
@@ -22448,6 +25886,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'super() must be the very first statement in the constructor — any this access before it throws ReferenceError.',
       'template.content.cloneNode(true) is required — appending template.content directly moves the nodes and leaves the template empty for all future instances.',
+    ],
+  },
+
+  'html/custom-elements/clonenode-required-appendchild-consumes-the-template': {
+    apis: ['<template>', 'DocumentFragment', 'cloneNode()'],
+    related: [
+      { label: 'Web Components (overview)', route: '/html/custom-elements' },
+      { label: 'composed:true Crosses the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' },
+      { label: 'attributeChangedCallback Before connectedCallback', route: '/html/custom-elements/attributechangedcallback-fires-before-connectedcallback' },
+    ],
+    tip: 'template.content is a live DocumentFragment — appending it directly MOVES its nodes rather than copying them, emptying a shared template after the first use.',
+    docs: [
+      { label: 'MDN — <template>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template' },
+    ],
+    resources: [
+      { label: 'MDN — DocumentFragment', url: 'https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment', badge: 'docs' },
+    ],
+    gotchas: [
+      'The bug is invisible with only one element instance — it only surfaces once a second instance shares the same template object.',
+      'cloneNode(true) produces a fresh, independent fragment every time, leaving the original template untouched for future clones.',
+    ],
+  },
+
+  'html/custom-elements/composed-true-required-to-cross-the-shadow-boundary': {
+    apis: ['CustomEvent', 'composed', 'bubbles', 'dispatchEvent()'],
+    related: [
+      { label: 'Web Components (overview)', route: '/html/custom-elements' },
+      { label: 'cloneNode(true) Is Required', route: '/html/custom-elements/clonenode-required-appendchild-consumes-the-template' },
+      { label: 'attributeChangedCallback Before connectedCallback', route: '/html/custom-elements/attributechangedcallback-fires-before-connectedcallback' },
+    ],
+    tip: 'bubbles and composed answer different questions — bubbles climbs through ancestors WITHIN a tree, composed is what lets an event leave a shadow root at all.',
+    docs: [
+      { label: 'MDN — Event.composed', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Event/composed' },
+    ],
+    resources: [
+      { label: 'MDN — Using shadow DOM', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM', badge: 'docs' },
+    ],
+    gotchas: [
+      'CustomEvent defaults composed to false — you must set it explicitly for a dispatched event to reach listeners outside the shadow root.',
+      'A missing composed flag fails completely silently — no error, the outside listener simply never fires.',
+    ],
+  },
+
+  'html/custom-elements/attributechangedcallback-fires-before-connectedcallback': {
+    apis: ['attributeChangedCallback()', 'connectedCallback()', 'observedAttributes', 'isConnected'],
+    related: [
+      { label: 'Web Components (overview)', route: '/html/custom-elements' },
+      { label: 'cloneNode(true) Is Required', route: '/html/custom-elements/clonenode-required-appendchild-consumes-the-template' },
+      { label: 'composed:true Crosses the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' },
+    ],
+    tip: 'For attributes already present in the HTML, attributeChangedCallback fires during upgrade — before connectedCallback, while isConnected can still be false.',
+    docs: [
+      { label: 'MDN — Using custom elements', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements' },
+    ],
+    resources: [
+      { label: 'Custom Elements Spec', url: 'https://html.spec.whatwg.org/multipage/custom-elements.html', badge: 'docs' },
+    ],
+    gotchas: [
+      'attributeChangedCallback only fires for names listed in the static observedAttributes getter — anything else is silently ignored, with no warning.',
+      'Logic inside attributeChangedCallback that assumes the element is already connected can break specifically on this first, pre-connection call.',
     ],
   },
 
@@ -22476,6 +25974,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids': {
+    apis: ['aria-labelledby', 'aria-label'],
+    related: [
+      { label: 'Accessibility & ARIA (overview)', route: '/html/accessibility' },
+      { label: 'aria-hidden vs the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' },
+      { label: 'button vs div role=button Keyboard Activation', route: '/html/accessibility/native-button-translates-enter-space-div-role-button-does-not' },
+    ],
+    tip: 'Unlike aria-label\'s single fixed string, aria-labelledby can compose a name from multiple, visually-separate elements — in the order the ids are LISTED, not the order they appear in the DOM.',
+    docs: [
+      { label: 'MDN — aria-labelledby', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-labelledby' },
+    ],
+    resources: [
+      { label: 'W3C Accessible Name Computation', url: 'https://www.w3.org/TR/accname-1.2/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A missing referenced id is silently skipped — no console warning, no error, just a shorter accessible name.',
+      'There is no standard, cross-browser JS API to read a live computed accessible name — verifying this requires replicating the spec\'s own algorithm.',
+    ],
+  },
+
+  'html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order': {
+    apis: ['aria-hidden', 'tabIndex', 'element.focus()'],
+    related: [
+      { label: 'Accessibility & ARIA (overview)', route: '/html/accessibility' },
+      { label: 'aria-labelledby Order and Missing-id Skip', route: '/html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids' },
+      { label: 'button vs div role=button Keyboard Activation', route: '/html/accessibility/native-button-translates-enter-space-div-role-button-does-not' },
+    ],
+    tip: 'aria-hidden and tabIndex control two fully independent systems — the accessibility tree and the keyboard tab order. Setting one never implicitly changes the other.',
+    docs: [
+      { label: 'MDN — aria-hidden', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden' },
+    ],
+    resources: [
+      { label: 'a11yproject.com', url: 'https://www.a11yproject.com/', badge: 'blog' },
+    ],
+    gotchas: [
+      'A button with aria-hidden="true" keeps tabIndex 0 and still accepts .focus() — a real, provable keyboard trap for a screen reader user.',
+      'The usual fix is a real accessible name (aria-label) or removing the element from the DOM — not tabindex="-1", which just trades one accessibility bug for another.',
+    ],
+  },
+
+  'html/accessibility/native-button-translates-enter-space-div-role-button-does-not': {
+    apis: ['role="button"', 'tabindex', 'keydown', 'click'],
+    related: [
+      { label: 'Accessibility & ARIA (overview)', route: '/html/accessibility' },
+      { label: 'aria-labelledby Order and Missing-id Skip', route: '/html/accessibility/aria-labelledby-concatenates-in-listed-order-skips-missing-ids' },
+      { label: 'aria-hidden vs the Tab Order', route: '/html/accessibility/aria-hidden-removes-from-a11y-tree-not-tab-order' },
+    ],
+    tip: 'Only genuinely native interactive elements (button, a[href], input) get the browser\'s automatic Enter/Space-to-click synthesis — a div never does, role attribute or not.',
+    docs: [
+      { label: 'MDN — <button>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button' },
+    ],
+    resources: [
+      { label: 'WAI-ARIA Authoring Practices', url: 'https://www.w3.org/WAI/ARIA/apg/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A div role="button" with only a click handler works fine with a mouse and silently does nothing on Enter or Space.',
+      'This gap is invisible during normal mouse-based manual testing — it only surfaces for keyboard-only users.',
+    ],
+  },
+
   // ── HTML: New topic pages ─────────────────────────────────────────────────
   'html/fundamentals': {
     apis: ['<!DOCTYPE html>', '<html lang>', '<head>', '<body>', 'void elements', 'block vs inline', 'data-*', 'id', 'class', 'charset'],
@@ -22497,6 +26055,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Void elements (img, input, br, hr, meta, link) must NOT have a closing tag — </img> is a parse error in HTML5.',
       'id values must be unique per page — duplicate IDs break querySelector, aria-labelledby, and fragment navigation.',
       'Nesting block elements inside inline elements is invalid — <a><div> will be auto-corrected by the browser in unexpected ways.',
+    ],
+  },
+
+  'html/fundamentals/attribute-vs-property-input-value-genuinely-diverges': {
+    apis: ['getAttribute()', 'HTMLInputElement.value', 'setAttribute()'],
+    related: [
+      { label: 'HTML Fundamentals (overview)', route: '/html/fundamentals' },
+      { label: 'Unknown Elements Fall Back to Inline', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' },
+      { label: 'Stray br End Tag Inserts a Second Break', route: '/html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break' },
+    ],
+    tip: 'getAttribute(\'value\') stays frozen at the original HTML string forever — the .value property is live, current state that real typing changes independently.',
+    docs: [
+      { label: 'MDN — HTMLInputElement', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement' },
+    ],
+    resources: [
+      { label: 'MDN — Attribute vs property', url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/DOM_scripting#html_attributes_and_dom_properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'Once a user types anything, the attribute and property permanently diverge for the rest of that element\'s lifetime.',
+      'setAttribute(\'value\', ...) after user interaction updates the attribute, not the live displayed value.',
+    ],
+  },
+
+  'html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering': {
+    apis: ['querySelector()', 'getComputedStyle()', 'customElements.define()'],
+    related: [
+      { label: 'HTML Fundamentals (overview)', route: '/html/fundamentals' },
+      { label: 'Attribute vs Property Divergence', route: '/html/fundamentals/attribute-vs-property-input-value-genuinely-diverges' },
+      { label: 'Stray br End Tag Inserts a Second Break', route: '/html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break' },
+    ],
+    tip: 'A made-up tag name is never rejected by the parser — it becomes a real DOM element defaulting to display: inline, exactly like an unstyled span.',
+    docs: [
+      { label: 'MDN — Unknown elements', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements' },
+    ],
+    resources: [
+      { label: 'WHATWG HTML Living Standard', url: 'https://html.spec.whatwg.org/multipage/', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is the exact mechanism that makes Custom Elements possible — customElements.define() upgrades an already-existing generic element.',
+      'The fallback default is display: inline, not display: none — unknown elements render normally, just without special layout behavior.',
+    ],
+  },
+
+  'html/fundamentals/a-stray-br-end-tag-inserts-a-second-line-break': {
+    apis: ['<br>', 'querySelectorAll()', 'HTML parsing spec'],
+    related: [
+      { label: 'HTML Fundamentals (overview)', route: '/html/fundamentals' },
+      { label: 'Attribute vs Property Divergence', route: '/html/fundamentals/attribute-vs-property-input-value-genuinely-diverges' },
+      { label: 'Unknown Elements Fall Back to Inline', route: '/html/fundamentals/unknown-elements-fall-back-to-anonymous-inline-rendering' },
+    ],
+    tip: 'A </br> end tag isn\'t discarded — the parsing spec specifically reacts to it by inserting a genuine second <br> element, doubling the line break.',
+    docs: [
+      { label: 'WHATWG — br end tag parsing', url: 'https://html.spec.whatwg.org/multipage/parsing.html#parsing-main-inbody' },
+    ],
+    resources: [
+      { label: 'MDN — <br>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br', badge: 'docs' },
+    ],
+    gotchas: [
+      'This is a deliberate, spec-mandated compatibility rule, not a browser-specific bug — every spec-compliant browser handles it identically.',
+      'Other void elements\' stray end tags are typically just ignored as ordinary parse errors — br specifically gets this "treat as start tag" recovery.',
     ],
   },
 
@@ -22523,6 +26141,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default': {
+    apis: ['getComputedStyle()', '<strong>/<b>', '<em>/<i>'],
+    related: [
+      { label: 'Headings & Paragraphs (overview)', route: '/html/headings-paragraphs' },
+      { label: 'Nesting strong Doesn’t Compound', route: '/html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis' },
+      { label: 'Multiple h1s Never Auto-Demoted', route: '/html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth' },
+    ],
+    tip: 'strong/b and em/i render with identical default computed styles — the meaningful difference lives entirely in the accessibility tree, invisible to any purely visual QA pass.',
+    docs: [
+      { label: 'MDN — <strong>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong' },
+    ],
+    resources: [
+      { label: 'MDN — <em>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/em', badge: 'docs' },
+    ],
+    gotchas: [
+      'Swapping strong for b (or vice versa) changes nothing visually but genuinely changes what a screen reader announces.',
+      'A visual QA pass can never catch a wrong choice between the semantic and presentational tag in a pair.',
+    ],
+  },
+
+  'html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis': {
+    apis: ['getComputedStyle()', '<strong>', 'accessibility tree'],
+    related: [
+      { label: 'Headings & Paragraphs (overview)', route: '/html/headings-paragraphs' },
+      { label: 'strong/b and em/i Are Visually Identical', route: '/html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default' },
+      { label: 'Multiple h1s Never Auto-Demoted', route: '/html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth' },
+    ],
+    tip: 'Semantic importance is a binary flag, not a scale — nesting the same emphasis tag repeatedly compounds neither the screen-reader announcement nor the computed font-weight.',
+    docs: [
+      { label: 'MDN — <strong>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong' },
+    ],
+    resources: [
+      { label: 'WAI-ARIA Live Regions', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions', badge: 'docs' },
+    ],
+    gotchas: [
+      'Genuinely greater urgency requires different content wording or an assertive ARIA live region, not repeated nesting of the same tag.',
+      'getComputedStyle().fontWeight reports the identical value for a single vs a doubly-nested strong, mirroring the semantic non-compounding.',
+    ],
+  },
+
+  'html/headings-paragraphs/multiple-h1s-are-never-auto-demoted-by-sectioning-depth': {
+    apis: ['getComputedStyle()', '<h1>', '<section>', 'HTML5 outline algorithm'],
+    related: [
+      { label: 'Headings & Paragraphs (overview)', route: '/html/headings-paragraphs' },
+      { label: 'strong/b and em/i Are Visually Identical', route: '/html/headings-paragraphs/strong-b-and-em-i-are-visually-identical-by-default' },
+      { label: 'Nesting strong Doesn’t Compound', route: '/html/headings-paragraphs/nesting-strong-doesnt-compound-weight-or-emphasis' },
+    ],
+    tip: 'The HTML5 outline algorithm would have demoted a deeply-nested h1 — but no browser ever implemented it, provable via identical computed font-size regardless of sectioning depth.',
+    docs: [
+      { label: 'MDN — Heading elements', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements' },
+    ],
+    resources: [
+      { label: 'HTML5 Doctor — Outline algorithm', url: 'https://html5doctor.com/computers-and-tables-and-lists-oh-no/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Multiple h1 elements are technically valid HTML, not a validity error — the "one per page" rule is a best practice, not a parsing rule.',
+      'Screen readers read a flat list of headings by their literal tag level, with no outline-algorithm-based reinterpretation.',
+    ],
+  },
+
   'html/input-types': {
     apis: ['type="email"', 'type="tel"', 'type="url"', 'type="number"', 'type="date"', 'type="range"', 'type="color"', 'type="search"', 'type="file"', 'type="checkbox"', 'autocomplete', 'inputmode'],
     related: [
@@ -22542,6 +26220,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'type="number" with step="any" still rejects non-numeric input — for phone numbers, use type="tel" with pattern validation instead.',
       'type="date" returns the value in ISO 8601 (YYYY-MM-DD) regardless of the locale displayed in the picker.',
       'Browsers may ignore autocomplete="off" for password fields — use a unique field name instead if you need to suppress autofill.',
+    ],
+  },
+
+  'html/input-types/number-input-empty-value-for-invalid-text': {
+    apis: ['.value', '.validity.badInput', '.valueAsNumber'],
+    related: [
+      { label: 'Input Types & Attributes (overview)', route: '/html/input-types' },
+      { label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' },
+      { label: 'step Mismatch Is Checkable via Validity', route: '/html/input-types/step-mismatch-checkable-via-validity' },
+    ],
+    tip: 'A number input\'s .value is empty for anything that doesn\'t parse as a complete valid number — including legal-but-incomplete strings like "1e", which no keystroke ever blocked.',
+    docs: [
+      { label: 'MDN — <input type="number">', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number' },
+    ],
+    resources: [
+      { label: 'MDN — ValidityState.badInput', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/badInput', badge: 'docs' },
+    ],
+    gotchas: [
+      '"1e" is valid keystroke-by-keystroke but reports .value === "" — an incomplete-but-legal exponential prefix.',
+      '.value can\'t distinguish "empty field" from "invalid input" — both report "". Use .validity.badInput when that matters.',
+    ],
+  },
+
+  'html/input-types/unsupported-types-fallback-to-text': {
+    apis: ['.type', 'type attribute'],
+    related: [
+      { label: 'Input Types & Attributes (overview)', route: '/html/input-types' },
+      { label: 'Number Input’s Empty Value for Invalid Text', route: '/html/input-types/number-input-empty-value-for-invalid-text' },
+      { label: 'step Mismatch Is Checkable via Validity', route: '/html/input-types/step-mismatch-checkable-via-validity' },
+    ],
+    tip: 'Setting el.type to an unrecognized keyword never throws — reading el.type back afterward proves the browser silently applied "text" instead.',
+    docs: [
+      { label: 'MDN — <input> types', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input' },
+    ],
+    resources: [
+      { label: 'web.dev — Forms best practices', url: 'https://web.dev/articles/payment-and-address-form-best-practices', badge: 'blog' },
+    ],
+    gotchas: [
+      'A bogus type value produces zero console warnings and zero errors — the fallback is completely silent by design.',
+      'It\'s always safe to use a newer input type without a support check first — the worst case is already a plain text field.',
+    ],
+  },
+
+  'html/input-types/step-mismatch-checkable-via-validity': {
+    apis: ['step attribute', '.validity.stepMismatch', '.checkValidity()', '.reportValidity()'],
+    related: [
+      { label: 'Input Types & Attributes (overview)', route: '/html/input-types' },
+      { label: 'Number Input’s Empty Value for Invalid Text', route: '/html/input-types/number-input-empty-value-for-invalid-text' },
+      { label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' },
+    ],
+    tip: 'Unlike the other two input gotchas, an off-step value is neither emptied nor rewritten — it stays exactly as set, flagged invalid via .validity.stepMismatch.',
+    docs: [
+      { label: 'MDN — ValidityState.stepMismatch', url: 'https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/stepMismatch' },
+    ],
+    resources: [
+      { label: 'MDN — Constraint validation', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation', badge: 'docs' },
+    ],
+    gotchas: [
+      'step applies to number, range, date, time and more — not just the visual snapping of a range slider.',
+      'An off-step value is never blocked from being set or typed — checkValidity() must actually be called (or native submission triggered) for it to matter.',
     ],
   },
 
@@ -22569,6 +26307,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/landmark-elements/multiple-main-elements-dont-error': {
+    apis: ['querySelectorAll()', 'hidden attribute', '<main>'],
+    related: [
+      { label: 'Landmark Elements (overview)', route: '/html/landmark-elements' },
+      { label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' },
+      { label: 'Nested header Loses Implicit Banner Role', route: '/html/landmark-elements/nested-header-loses-implicit-banner-role' },
+    ],
+    tip: 'Two <main> elements parse without a single warning — the one-main rule is checked by accessibility linters, never by the HTML parser itself.',
+    docs: [
+      { label: 'MDN — <main>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main' },
+    ],
+    resources: [
+      { label: 'W3C — Using ARIA landmarks', url: 'https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A second <main> element causes zero parse errors and zero console warnings — only an a11y audit tool catches it.',
+      'The spec only forbids more than one main WITHOUT the hidden attribute — briefly having two during a transition is fine if the outgoing one is hidden.',
+    ],
+  },
+
+  'html/landmark-elements/arialabel-distinguishes-multiple-navs': {
+    apis: ['.ariaLabel', 'aria-label', 'aria-labelledby', '<nav>'],
+    related: [
+      { label: 'Landmark Elements (overview)', route: '/html/landmark-elements' },
+      { label: 'Multiple main Elements Don’t Error', route: '/html/landmark-elements/multiple-main-elements-dont-error' },
+      { label: 'Nested header Loses Implicit Banner Role', route: '/html/landmark-elements/nested-header-loses-implicit-banner-role' },
+    ],
+    tip: 'Before labeling, every unlabeled <nav>\'s .ariaLabel reads back as identical null — there is no default value that already distinguishes them.',
+    docs: [
+      { label: 'MDN — <nav>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav' },
+    ],
+    resources: [
+      { label: 'a11yproject — Landmark regions', url: 'https://www.a11yproject.com/posts/aria-landmark-roles/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Multiple <nav> elements are completely valid — primary, breadcrumb, and footer nav commonly coexist on one page.',
+      '.ariaLabel is a live, readable/writable JS property (ARIAMixin) that stays in sync with the aria-label attribute in both directions.',
+    ],
+  },
+
+  'html/landmark-elements/nested-header-loses-implicit-banner-role': {
+    apis: ['closest()', '<header>', 'implicit ARIA role'],
+    related: [
+      { label: 'Landmark Elements (overview)', route: '/html/landmark-elements' },
+      { label: 'Multiple main Elements Don’t Error', route: '/html/landmark-elements/multiple-main-elements-dont-error' },
+      { label: 'ariaLabel Distinguishes Multiple navs', route: '/html/landmark-elements/arialabel-distinguishes-multiple-navs' },
+    ],
+    tip: 'header.closest(\'article, aside, main, nav, section\') mirrors the exact structural condition the spec uses to decide whether a header keeps its implicit banner role.',
+    docs: [
+      { label: 'MDN — <header>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/header' },
+    ],
+    resources: [
+      { label: 'MDN — ARIA landmark roles', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles#landmark_roles', badge: 'docs' },
+    ],
+    gotchas: [
+      'A header nested at ANY depth inside article/aside/main/nav/section loses the banner role — not just as a direct child.',
+      'There is no standard JS property to read a computed implicit role directly — the closest() check works by recreating the spec\'s own condition, not by querying the role.',
+    ],
+  },
+
   'html/aria-roles': {
     apis: ['role="button"', 'role="dialog"', 'role="alertdialog"', 'role="alert"', 'role="status"', 'role="tooltip"', 'role="tab"', 'role="tabpanel"', 'aria-expanded', 'aria-controls', 'aria-selected', 'aria-live'],
     related: [
@@ -22590,6 +26388,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'role="presentation" removes semantics but not focusability — pair it with tabindex="-1" when removing a table used for layout.',
       'aria-live="assertive" interrupts the current screen reader announcement — use it only for time-sensitive alerts, not status messages.',
       'Dynamic ARIA state (aria-expanded, aria-checked) must be updated via JavaScript — the attribute does not self-update on click.',
+    ],
+  },
+
+  'html/aria-roles/div-role-button-lacks-keyboard-activation': {
+    apis: ['role="button"', 'tabIndex', 'KeyboardEvent'],
+    related: [
+      { label: 'ARIA Roles & Attributes (overview)', route: '/html/aria-roles' },
+      { label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' },
+      { label: 'disabled vs aria-disabled Blocks Events', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' },
+    ],
+    tip: 'role="button" on a div changes only what a screen reader announces — it adds no focusability, tab order, or Enter/Space activation, all of which a real <button> gets for free.',
+    docs: [
+      { label: 'MDN — ARIA: button role', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/button_role' },
+    ],
+    resources: [
+      { label: 'W3C ARIA Authoring Practices', url: 'https://www.w3.org/WAI/ARIA/apg/', badge: 'docs' },
+    ],
+    gotchas: [
+      'tabindex="0" alone only handles focusability — Enter/Space activation still needs a manual keydown listener.',
+      'role="button" on an actual <button> is redundant at best and can confuse screen readers by overriding the implicit native role.',
+    ],
+  },
+
+  'html/aria-roles/aria-hidden-does-not-block-focus': {
+    apis: ['aria-hidden', 'tabindex', 'inert', 'document.activeElement'],
+    related: [
+      { label: 'ARIA Roles & Attributes (overview)', route: '/html/aria-roles' },
+      { label: 'div role=button Lacks Keyboard Activation', route: '/html/aria-roles/div-role-button-lacks-keyboard-activation' },
+      { label: 'disabled vs aria-disabled Blocks Events', route: '/html/aria-roles/disabled-vs-aria-disabled-blocks-events' },
+    ],
+    tip: 'aria-hidden="true" only removes content from the accessibility tree — a focusable descendant remains fully reachable via Tab, a real and well-documented trap.',
+    docs: [
+      { label: 'MDN — aria-hidden', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden' },
+    ],
+    resources: [
+      { label: 'W3C ARIA Authoring Practices', url: 'https://www.w3.org/WAI/ARIA/apg/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A hidden-from-AT focusable descendant is a real, documented accessibility anti-pattern — pair aria-hidden with tabindex="-1"/inert or use display:none instead.',
+      'tabindex="-1" only removes an element from the natural Tab order — a programmatic .focus() call still succeeds on it.',
+    ],
+  },
+
+  'html/aria-roles/disabled-vs-aria-disabled-blocks-events': {
+    apis: ['disabled', 'aria-disabled', 'click event'],
+    related: [
+      { label: 'ARIA Roles & Attributes (overview)', route: '/html/aria-roles' },
+      { label: 'div role=button Lacks Keyboard Activation', route: '/html/aria-roles/div-role-button-lacks-keyboard-activation' },
+      { label: 'aria-hidden Does Not Block Focus', route: '/html/aria-roles/aria-hidden-does-not-block-focus' },
+    ],
+    tip: 'Only the native disabled attribute is enforced by the browser\'s event system — aria-disabled="true" changes nothing about whether click listeners fire.',
+    docs: [
+      { label: 'MDN — aria-disabled', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-disabled' },
+    ],
+    resources: [
+      { label: 'Deque — ARIA roles reference', url: 'https://dequeuniversity.com/library/', badge: 'blog' },
+    ],
+    gotchas: [
+      'disabled removes an element from the tab order entirely; aria-disabled keeps it focusable so keyboard users can discover WHY it\'s unavailable.',
+      'Using aria-disabled means YOUR code must manually check for and respect it in every event handler — the browser never does this for you.',
     ],
   },
 
@@ -22617,6 +26475,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero': {
+    apis: ['tabindex', 'tabIndex', 'focus()', 'role="toolbar"'],
+    related: [
+      { label: 'Focus Management (overview)', route: '/html/focus-management' },
+      { label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' },
+      { label: 'dialog close() Restores the Last-Focused Element', route: '/html/focus-management/dialog-close-restores-last-focused-element' },
+    ],
+    tip: 'In a correctly-implemented roving tabindex widget, exactly one item has tabIndex 0 at any moment — checkable by simply counting.',
+    docs: [
+      { label: 'W3C APG — Toolbar pattern', url: 'https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/' },
+    ],
+    resources: [
+      { label: 'web.dev — Focus management', url: 'https://web.dev/articles/focus', badge: 'blog' },
+    ],
+    gotchas: [
+      'Giving every item tabindex="0" makes Tab stop on each one individually — worse for keyboard users, not more accessible.',
+      'Tab enters/exits the group as one stop; arrow keys move the roving tabindex WITHIN the group — mixing these up breaks the pattern.',
+    ],
+  },
+
+  'html/focus-management/positive-tabindex-breaks-natural-dom-tab-order': {
+    apis: ['tabindex', 'tabIndex', 'sequential focus navigation'],
+    related: [
+      { label: 'Focus Management (overview)', route: '/html/focus-management' },
+      { label: 'Roving Tabindex Keeps Exactly One at Zero', route: '/html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero' },
+      { label: 'dialog close() Restores the Last-Focused Element', route: '/html/focus-management/dialog-close-restores-last-focused-element' },
+    ],
+    tip: 'Positive tabindex values form their own group, sorted ascending, ahead of everything else — a single tabindex="1" can pull an element to the very front of the tab sequence.',
+    docs: [
+      { label: 'MDN — tabindex', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex' },
+    ],
+    resources: [
+      { label: 'web.dev — Focus management', url: 'https://web.dev/articles/focus', badge: 'blog' },
+    ],
+    gotchas: [
+      'tabindex > 0 creates a separate focus order before the natural DOM order — this almost always creates a confusing tab sequence.',
+      'Prefer tabindex="0" (join natural order) or reordering the DOM/CSS instead of positive values.',
+    ],
+  },
+
+  'html/focus-management/dialog-close-restores-last-focused-element': {
+    apis: ['dialog.showModal()', 'dialog.close()', 'previously focused element'],
+    related: [
+      { label: 'Focus Management (overview)', route: '/html/focus-management' },
+      { label: 'Roving Tabindex Keeps Exactly One at Zero', route: '/html/focus-management/roving-tabindex-keeps-exactly-one-item-at-zero' },
+      { label: 'Positive Tabindex Breaks Natural Tab Order', route: '/html/focus-management/positive-tabindex-breaks-natural-dom-tab-order' },
+    ],
+    tip: 'Native <dialog> genuinely restores focus automatically on close — but to whatever was focused at showModal() time, which can diverge from the visual "trigger" if focus shifted in between.',
+    docs: [
+      { label: 'MDN — <dialog>', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog' },
+    ],
+    resources: [
+      { label: 'web.dev — Focus management', url: 'https://web.dev/articles/focus', badge: 'blog' },
+    ],
+    gotchas: [
+      'The restoration mechanism snapshots whatever had focus right before showModal() runs, not necessarily the element the user visually clicked.',
+      'If intervening code shifts focus before showModal(), explicitly re-focus the real trigger immediately before opening the dialog.',
+    ],
+  },
+
   'html/storage-apis': {
     apis: ['localStorage.setItem()', 'localStorage.getItem()', 'sessionStorage', 'indexedDB.open()', 'IDBObjectStore', 'document.cookie', 'CookieStore API', 'cache.put()', 'navigator.storage.estimate()'],
     related: [
@@ -22641,6 +26559,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/storage-apis/localstorage-only-stores-strings-not-objects': {
+    apis: ['localStorage.setItem()', 'JSON.stringify()', 'JSON.parse()'],
+    related: [
+      { label: 'HTML5 Storage APIs (overview)', route: '/html/storage-apis' },
+      { label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' },
+      { label: 'QuotaExceededError Is a Real, Catchable Exception', route: '/html/storage-apis/quotaexceedederror-is-a-real-catchable-exception' },
+    ],
+    tip: 'Passing an object to setItem() never throws — it silently stores the literal text "[object Object]" via the object\'s default toString().',
+    docs: [
+      { label: 'MDN — Web Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API' },
+    ],
+    resources: [
+      { label: 'web.dev — Storage for the web', url: 'https://web.dev/articles/storage-for-the-web', badge: 'blog' },
+    ],
+    gotchas: [
+      'Forgetting JSON.stringify() on write is a common, completely silent bug — no error anywhere signals the data loss.',
+      'Always wrap JSON.parse(getItem()) in try/catch — stored data can be missing, corrupted, or from an old schema.',
+    ],
+  },
+
+  'html/storage-apis/storage-event-never-fires-in-the-writing-tab': {
+    apis: ['storage event', 'window.addEventListener()'],
+    related: [
+      { label: 'HTML5 Storage APIs (overview)', route: '/html/storage-apis' },
+      { label: 'localStorage Only Stores Strings, Not Objects', route: '/html/storage-apis/localstorage-only-stores-strings-not-objects' },
+      { label: 'QuotaExceededError Is a Real, Catchable Exception', route: '/html/storage-apis/quotaexceedederror-is-a-real-catchable-exception' },
+    ],
+    tip: 'The storage event exists purely for cross-tab communication — the tab that made the write never receives its own event, by design.',
+    docs: [
+      { label: 'MDN — Window: storage event', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event' },
+    ],
+    resources: [
+      { label: 'web.dev — Storage for the web', url: 'https://web.dev/articles/storage-for-the-web', badge: 'blog' },
+    ],
+    gotchas: [
+      'sessionStorage never fires storage events at all, cross-tab or otherwise — it has no "other tab" to notify.',
+      'Same-tab reactivity to your own writes has to come from your own application logic, never from this event.',
+    ],
+  },
+
+  'html/storage-apis/quotaexceedederror-is-a-real-catchable-exception': {
+    apis: ['QuotaExceededError', 'DOMException', 'try/catch'],
+    related: [
+      { label: 'HTML5 Storage APIs (overview)', route: '/html/storage-apis' },
+      { label: 'localStorage Only Stores Strings, Not Objects', route: '/html/storage-apis/localstorage-only-stores-strings-not-objects' },
+      { label: 'storage Event Never Fires in the Writing Tab', route: '/html/storage-apis/storage-event-never-fires-in-the-writing-tab' },
+    ],
+    tip: 'Running out of localStorage quota throws a real, catchable QuotaExceededError DOMException — the opposite of the silent "[object Object]" failure mode.',
+    docs: [
+      { label: 'MDN — QuotaExceededError', url: 'https://developer.mozilla.org/en-US/docs/Web/API/DOMException#quotaexceedederror' },
+    ],
+    resources: [
+      { label: 'web.dev — Storage for the web', url: 'https://web.dev/articles/storage-for-the-web', badge: 'blog' },
+    ],
+    gotchas: [
+      'Private/incognito mode imposes a much smaller effective quota in several browsers, making this exception more realistic in production than it seems in normal testing.',
+      'Everything written successfully before the exception remains fully intact — only the one over-limit write is prevented.',
+    ],
+  },
+
   'html/drag-drop': {
     apis: ['draggable="true"', 'dragstart', 'dragover', 'drop', 'dragend', 'dataTransfer.setData()', 'dataTransfer.getData()', 'dataTransfer.effectAllowed', 'dataTransfer.dropEffect', 'event.preventDefault()'],
     related: [
@@ -22662,6 +26640,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The HTML5 DnD API is not keyboard accessible — provide a keyboard-operable alternative (cut/paste, up/down buttons) alongside drag-and-drop.',
       'dataTransfer.setData() must be called in the dragstart handler, not in drop — the data is write-only during dragstart and read-only during drop.',
       'draggable="true" on a link or image conflicts with the browser\'s default drag behaviour — call preventDefault() in dragstart to override it.',
+    ],
+  },
+
+  'html/drag-drop/getdata-returns-empty-string-for-missing-type': {
+    apis: ['dataTransfer.getData()', 'new DataTransfer()'],
+    related: [
+      { label: 'Drag & Drop API (overview)', route: '/html/drag-drop' },
+      { label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' },
+      { label: 'No Native Keyboard-to-dragstart Mapping Exists', route: '/html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists' },
+    ],
+    tip: 'getData() for a MIME type that was never set returns "" — never null or undefined — so a strict === null check will never match.',
+    docs: [
+      { label: 'MDN — DataTransfer', url: 'https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer' },
+    ],
+    resources: [
+      { label: 'web.dev — Drag and Drop', url: 'https://web.dev/articles/drag-and-drop', badge: 'blog' },
+    ],
+    gotchas: [
+      'A DataTransfer object can be constructed and tested directly with new DataTransfer() — no real drag gesture needed to verify this behavior.',
+      'Prefer a truthiness check or an explicit === \'\' comparison over === null when checking for missing data.',
+    ],
+  },
+
+  'html/drag-drop/cleardata-selectively-removes-one-type-not-all': {
+    apis: ['dataTransfer.clearData()', 'dataTransfer.types'],
+    related: [
+      { label: 'Drag & Drop API (overview)', route: '/html/drag-drop' },
+      { label: 'getData Returns Empty String for a Missing Type', route: '/html/drag-drop/getdata-returns-empty-string-for-missing-type' },
+      { label: 'No Native Keyboard-to-dragstart Mapping Exists', route: '/html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists' },
+    ],
+    tip: 'clearData(type) removes only that one MIME type — every other type set on the same DataTransfer survives. Only the zero-argument form clears everything.',
+    docs: [
+      { label: 'MDN — DataTransfer.clearData()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/clearData' },
+    ],
+    resources: [
+      { label: 'web.dev — Drag and Drop', url: 'https://web.dev/articles/drag-and-drop', badge: 'blog' },
+    ],
+    gotchas: [
+      'The same selective-vs-total shape appears elsewhere on the platform — localStorage.removeItem(key) vs localStorage.clear().',
+      'setData() can be called again for a cleared type afterward — it works exactly like setting it on a fresh object.',
+    ],
+  },
+
+  'html/drag-drop/no-native-keyboard-to-dragstart-mapping-exists': {
+    apis: ['dragstart', 'draggable attribute', 'KeyboardEvent'],
+    related: [
+      { label: 'Drag & Drop API (overview)', route: '/html/drag-drop' },
+      { label: 'getData Returns Empty String for a Missing Type', route: '/html/drag-drop/getdata-returns-empty-string-for-missing-type' },
+      { label: 'clearData Selectively Removes One Type', route: '/html/drag-drop/cleardata-selectively-removes-one-type-not-all' },
+    ],
+    tip: 'No key or key combination natively fires dragstart, in any browser — unlike a real button\'s genuine (if untestable-by-script) Enter activation, this absence is total and directly provable.',
+    docs: [
+      { label: 'MDN — HTML Drag and Drop API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API' },
+    ],
+    resources: [
+      { label: 'MDN — Pointer Events (accessible alternative)', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events', badge: 'docs' },
+    ],
+    gotchas: [
+      'No ARIA attribute grants keyboard drag capability — a parallel interaction path (custom handlers, alternative UI, or a library) is required.',
+      'This is a different failure mode from testing a real button\'s Enter activation — there the native behavior is real but untestable by script; here there is no native behavior at all.',
     ],
   },
 
@@ -27169,6 +31207,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Blazor WebAssembly\'s initial download (the .NET runtime plus your app) is larger than a typical JS bundle, affecting first-load time.',
     ],
   },
+
+  'blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere': {
+    apis: ['StateHasChanged()', 'InvokeAsync()', 'System.Threading.Timer'],
+    related: [
+      { label: 'Blazor Fundamentals (overview)', route: '/blazor/fundamentals' },
+      { label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' },
+      { label: 'Static SSR Parents Cannot Make Children Interactive', route: '/blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive' },
+    ],
+    tip: 'Blazor only auto-renders after code paths it dispatched itself (event handlers, lifecycle methods) — a background Timer callback or an injected service\'s event subscription needs an explicit InvokeAsync(StateHasChanged) call.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor lifecycle', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'A background Timer or Task.Run callback runs on a thread-pool thread — wrap StateHasChanged() in InvokeAsync() to marshal back onto the correct circuit context.',
+      'Calling StateHasChanged() when Blazor would have re-rendered anyway is a harmless no-op, not a correctness bug.',
+    ],
+  },
+
+  'blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server': {
+    apis: ['AddScoped()', 'AddSingleton()', 'AddTransient()', 'SignalR circuit'],
+    related: [
+      { label: 'Blazor Fundamentals (overview)', route: '/blazor/fundamentals' },
+      { label: 'StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere', route: '/blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere' },
+      { label: 'Static SSR Parents Cannot Make Children Interactive', route: '/blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive' },
+    ],
+    tip: 'Blazor Server has no HTTP request/response cycle for most of its lifetime — Scoped maps to the long-lived SignalR circuit instead, one instance per browser tab session, not per request.',
+    docs: [
+      { label: 'Microsoft Learn — Blazor dependency injection', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection' },
+    ],
+    resources: [],
+    gotchas: [
+      'Singleton services in Blazor Server are shared across EVERY connected user, process-wide — never store per-user state there.',
+      'Every component rendered within the same circuit shares the identical Scoped instance, unlike Angular\'s component-tree-scoped providers.',
+    ],
+  },
+
+  'blazor/fundamentals/static-ssr-parents-cannot-make-children-interactive': {
+    apis: ['@rendermode', 'InteractiveServer', 'InteractiveWebAssembly', 'InteractiveAuto'],
+    related: [
+      { label: 'Blazor Fundamentals (overview)', route: '/blazor/fundamentals' },
+      { label: 'StateHasChanged() Is Automatic After Sync Handlers, Manual Elsewhere', route: '/blazor/fundamentals/statehaschanged-is-automatic-after-sync-handlers-manual-elsewhere' },
+      { label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' },
+    ],
+    tip: 'A Static SSR page ships as plain HTML with no live runtime wired up — @rendermode must be declared at or above the specific component that needs interactivity; it cannot flow upward from a child.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor render modes', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes' },
+    ],
+    resources: [],
+    gotchas: [
+      'An @onclick handler in a Static SSR component\'s markup renders a normal-looking button that silently does nothing — no error, no console message.',
+      'Once a component establishes an interactive boundary, its own descendants inherit that render mode automatically — no need to repeat @rendermode on every child.',
+    ],
+  },
+
   'blazor/razor-components': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27181,6 +31274,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '@key on list items prevents Blazor from misattributing state (like input focus) to the wrong element when a list is reordered.',
     ],
   },
+
+  'blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item': {
+    apis: ['RenderFragment<T>', 'RenderTreeBuilder'],
+    related: [
+      { label: 'Razor Components (overview)', route: '/blazor/razor-components' },
+      { label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' },
+      { label: 'ShouldRender Cannot Suppress a Component’s First Render', route: '/blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render' },
+    ],
+    tip: 'RenderFragment<T> is effectively Func<T, RenderFragment> — a delegate the child invokes once per item, meaning the parent\'s template code genuinely re-executes every single call, not just once total.',
+    docs: [
+      { label: 'Microsoft Learn — RenderFragment', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/index#child-content-render-fragments' },
+    ],
+    resources: [],
+    gotchas: [
+      'Rendering the same ItemTemplate twice in one render pass genuinely re-executes the parent\'s template code twice, not once with the output reused.',
+      'A "run once per render" assumption inside an ItemTemplate delegate is wrong — it runs once per invocation, typically once per item.',
+    ],
+  },
+
+  'blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding': {
+    apis: ['CascadingValue', '[CascadingParameter]'],
+    related: [
+      { label: 'Razor Components (overview)', route: '/blazor/razor-components' },
+      { label: 'RenderFragment<T> Compiles to a Delegate the Framework Invokes Per Item', route: '/blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item' },
+      { label: 'ShouldRender Cannot Suppress a Component’s First Render', route: '/blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render' },
+    ],
+    tip: 'CascadingValue bypasses intermediate components entirely, reaching any descendant depth — correct for genuine cross-cutting concerns (theme, culture, auth), a real design smell for ordinary parent-to-specific-child data with one known consumer.',
+    docs: [
+      { label: 'Microsoft Learn — Cascading values and parameters', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/cascading-values-and-parameters' },
+    ],
+    resources: [],
+    gotchas: [
+      'A [CascadingParameter] dependency is invisible at the consuming component\'s own usage site, unlike a regular [Parameter].',
+      'Using CascadingValue for a value with exactly one specific consumer hides a dependency that would be clearer as an explicit [Parameter] chain.',
+    ],
+  },
+
+  'blazor/razor-components/shouldrender-cannot-suppress-a-components-first-render': {
+    apis: ['ShouldRender()', 'OnParametersSet()'],
+    related: [
+      { label: 'Razor Components (overview)', route: '/blazor/razor-components' },
+      { label: 'RenderFragment<T> Compiles to a Delegate the Framework Invokes Per Item', route: '/blazor/razor-components/renderfragment-t-compiles-to-a-delegate-the-framework-invokes-per-item' },
+      { label: 'CascadingParameter Flows Through Any Depth Without Explicit Forwarding', route: '/blazor/razor-components/cascadingparameter-flows-through-any-depth-without-explicit-forwarding' },
+    ],
+    tip: 'Blazor unconditionally performs a component\'s first render regardless of what ShouldRender() would return, and a false return only suppresses that one component\'s own markup — never its children\'s independent updates.',
+    docs: [
+      { label: 'Microsoft Learn — ShouldRender', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle#suppress-ui-refreshing-shouldrender' },
+    ],
+    resources: [],
+    gotchas: [
+      'A parent\'s ShouldRender() returning false does not pause or freeze child components — each child responds to its own independent triggers.',
+      'ShouldRender() only intercepts the render step, which happens after lifecycle methods like OnParametersSet(Async) have already run.',
+    ],
+  },
+
   'blazor/component-communication': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27193,6 +31341,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CascadingValue provides implicit parent-to-descendant data flow without threading parameters through every intermediate component — useful for deeply nested trees.',
     ],
   },
+
+  'blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker': {
+    apis: ['EventCallback<T>', 'InvokeAsync()'],
+    related: [
+      { label: 'Component Communication (overview)', route: '/blazor/component-communication' },
+      { label: 'bind-Value Desugars Into Two Separate Parameters, Not Magic Binding', route: '/blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding' },
+      { label: 'IsFixed=true Permanently Freezes a Cascading Value’s Re-Traversal', route: '/blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal' },
+    ],
+    tip: 'The automatic StateHasChanged from EventCallback.InvokeAsync() targets only the ONE component that owns the handler — typically the parent — never the invoking child, and never every intermediate component in a multi-level forwarding chain.',
+    docs: [
+      { label: 'Microsoft Learn — EventCallback', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling' },
+    ],
+    resources: [],
+    gotchas: [
+      'A component that calls InvokeAsync() does not automatically re-render itself as part of that call.',
+      'In a multi-level forwarding chain, only the ORIGINAL owner of the handler gets the automatic re-render, not every intermediate wrapper.',
+    ],
+  },
+
+  'blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding': {
+    apis: ['@bind-{Property}', '@bind-{Property}:event'],
+    related: [
+      { label: 'Component Communication (overview)', route: '/blazor/component-communication' },
+      { label: 'EventCallback’s Auto-StateHasChanged Targets the Receiver, Not the Invoker', route: '/blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker' },
+      { label: 'IsFixed=true Permanently Freezes a Cascading Value’s Re-Traversal', route: '/blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal' },
+    ],
+    tip: '@bind-Value is pure compile-time text expansion into Value and ValueChanged attributes based on an exact name match — no runtime reflection, and a mismatched callback name fails completely silently.',
+    docs: [
+      { label: 'Microsoft Learn — Data binding', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding' },
+    ],
+    resources: [],
+    gotchas: [
+      'A mismatched callback name (not matching the base-name-plus-Changed convention) compiles fine but silently generates no second attribute at all.',
+      '@bind-Value:event overrides which callback name the desugaring targets, proving there is no hardcoded runtime concept of "Changed."',
+    ],
+  },
+
+  'blazor/component-communication/isfixed-true-permanently-freezes-a-cascading-values-re-traversal': {
+    apis: ['CascadingValue', 'IsFixed'],
+    related: [
+      { label: 'Component Communication (overview)', route: '/blazor/component-communication' },
+      { label: 'EventCallback’s Auto-StateHasChanged Targets the Receiver, Not the Invoker', route: '/blazor/component-communication/eventcallback-statehaschanged-targets-receiver-not-invoker' },
+      { label: 'bind-Value Desugars Into Two Separate Parameters, Not Magic Binding', route: '/blazor/component-communication/bind-value-desugars-into-two-separate-parameters-not-magic-binding' },
+    ],
+    tip: 'IsFixed="true" is a one-time promise the value NEVER changes again, not a "rarely changes" optimization — if it does change, descendants keep a silently stale snapshot forever, with no error or warning.',
+    docs: [
+      { label: 'Microsoft Learn — Cascading values and parameters', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/cascading-values-and-parameters#cascadingvalue-iscascading' },
+    ],
+    resources: [],
+    gotchas: [
+      'There is no detection or fallback if a fixed value changes anyway — the provider re-renders fine, but consumers stay stale forever.',
+      'Only use IsFixed for values provably constant for the CascadingValue\'s entire lifetime, not merely infrequently-changing ones.',
+    ],
+  },
+
   'blazor/data-binding': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27205,6 +31408,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '@bind without an explicit event defaults to onchange (fires on blur), not oninput — a common source of "why doesn\'t this update live" confusion.',
     ],
   },
+
+  'blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders': {
+    apis: ['@key'],
+    related: [
+      { label: 'Data Binding (overview)', route: '/blazor/data-binding' },
+      { label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' },
+      { label: 'A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer', route: '/blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer' },
+    ],
+    tip: 'Without @key, Blazor\'s diffing matches old and new render output by position, not identity — reordering or filtering a list can silently reassign a component\'s internal state to the wrong underlying item.',
+    docs: [
+      { label: 'Microsoft Learn — Use the @key directive', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/key' },
+    ],
+    resources: [],
+    gotchas: [
+      'This corrects an outdated claim: the classic foreach-loop-variable-capture closure bug was fixed for foreach at C# 5.0 and no longer reproduces in current Blazor — @key addresses a genuinely different, still-current diffing issue.',
+      'Even visually simple, uniform rows need @key if any row holds meaningful internal state (focus, an expanded flag) and the underlying list can be reordered.',
+    ],
+  },
+
+  'blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch': {
+    apis: ['@bind:format', 'CultureInfo'],
+    related: [
+      { label: 'Data Binding (overview)', route: '/blazor/data-binding' },
+      { label: '@key Prevents Blazor From Misattributing State When a List Reorders', route: '/blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders' },
+      { label: 'A Hand-Rolled Debounce Needs Cancellation, Not Just a Timer', route: '/blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer' },
+    ],
+    tip: 'The native date input\'s value is always ISO 8601 — the risk is entirely on Blazor\'s own side, where a missing @bind:format falls back to the current thread\'s culture, silently producing a string the input doesn\'t recognize.',
+    docs: [
+      { label: 'Microsoft Learn — Data binding formatting', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding' },
+    ],
+    resources: [],
+    gotchas: [
+      'The failure is completely silent — no exception, no console warning, just a blank date picker with the underlying DateTime value unaffected.',
+      'Blazor Server can resolve a different request culture per user, meaning a bug can be invisible on a developer\'s own machine and only surface for users in a different locale.',
+    ],
+  },
+
+  'blazor/data-binding/a-hand-rolled-debounce-needs-cancellation-not-just-a-timer': {
+    apis: ['CancellationTokenSource', 'Task.Delay()'],
+    related: [
+      { label: 'Data Binding (overview)', route: '/blazor/data-binding' },
+      { label: '@key Prevents Blazor From Misattributing State When a List Reorders', route: '/blazor/data-binding/key-prevents-blazor-from-misattributing-state-when-a-list-reorders' },
+      { label: 'Omitting bind:format on Dates Risks a Silent Locale Parse Mismatch', route: '/blazor/data-binding/omitting-bind-format-on-dates-risks-a-silent-locale-parse-mismatch' },
+    ],
+    tip: 'Wrapping an expensive call in Task.Delay alone only shifts WHEN each call fires, not how many times — genuine debouncing requires cancelling the previous pending delay every time a new one starts.',
+    docs: [
+      { label: 'Microsoft Learn — CancellationTokenSource', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource' },
+    ],
+    resources: [],
+    gotchas: [
+      'A TaskCanceledException from a superseded debounce delay is the EXPECTED outcome — catch and swallow it, do not log it as an error.',
+      'Dispose the CancellationTokenSource in the component\'s own Dispose method to avoid a resource leak if the component is removed mid-delay.',
+    ],
+  },
+
   'blazor/forms': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27216,6 +31474,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'InputSelect requires the bound property type to correctly implement equality comparison for a pre-selected value to display correctly.',
     ],
   },
+
+  'blazor/forms/notifyvalidationstatechanged-is-required-editcontext-cant-see-msgstore-adds': {
+    apis: ['ValidationMessageStore', 'EditContext.NotifyValidationStateChanged()'],
+    related: [
+      { label: 'Blazor Forms (overview)', route: '/blazor/forms' },
+      { label: 'DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType', route: '/blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype' },
+      { label: 'SupplyParameterFromForm Only Binds on a Real POST, Not First Load', route: '/blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load' },
+    ],
+    tip: 'ValidationMessageStore has no event of its own — ValidationSummary and ValidationMessage only refresh when NotifyValidationStateChanged() raises EditContext\'s specific validation event, not on any general re-render.',
+    docs: [
+      { label: 'Microsoft Learn — ValidationMessageStore', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/validation' },
+    ],
+    resources: [],
+    gotchas: [
+      'Calling only StateHasChanged() on the adding component does not reliably update ValidationSummary if it lives elsewhere in the tree.',
+      'A message added without NotifyValidationStateChanged() exists in memory but is invisible to the UI, with no error or warning.',
+    ],
+  },
+
+  'blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype': {
+    apis: ['[ValidateComplexType]', 'ObjectGraphDataAnnotationsValidator'],
+    related: [
+      { label: 'Blazor Forms (overview)', route: '/blazor/forms' },
+      { label: 'NotifyValidationStateChanged Is Required — EditContext Can’t See ValidationMessageStore Adds', route: '/blazor/forms/notifyvalidationstatechanged-is-required-editcontext-cant-see-msgstore-adds' },
+      { label: 'SupplyParameterFromForm Only Binds on a Real POST, Not First Load', route: '/blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load' },
+    ],
+    tip: 'The default DataAnnotationsValidator only validates the root model\'s own properties — a nested object\'s validation attributes are silently skipped unless BOTH [ValidateComplexType] and ObjectGraphDataAnnotationsValidator are added together.',
+    docs: [
+      { label: 'Microsoft.AspNetCore.Components.DataAnnotations.Validation', url: 'https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation' },
+    ],
+    resources: [],
+    gotchas: [
+      '[ValidateComplexType] alone changes nothing observable — the standard DataAnnotationsValidator does not understand that marker attribute at all.',
+      'Swapping to ObjectGraphDataAnnotationsValidator alone is also insufficient — each nested property still needs its own [ValidateComplexType] marker.',
+    ],
+  },
+
+  'blazor/forms/supplyparameterfromform-only-binds-on-a-real-post-not-first-load': {
+    apis: ['[SupplyParameterFromForm]', 'EditForm.FormName', '@formname'],
+    related: [
+      { label: 'Blazor Forms (overview)', route: '/blazor/forms' },
+      { label: 'NotifyValidationStateChanged Is Required — EditContext Can’t See ValidationMessageStore Adds', route: '/blazor/forms/notifyvalidationstatechanged-is-required-editcontext-cant-see-msgstore-adds' },
+      { label: 'DataAnnotationsValidator Skips Nested Objects Without ValidateComplexType', route: '/blazor/forms/dataannotationsvalidator-skips-nested-objects-without-validatecomplextype' },
+    ],
+    tip: 'On a first GET-request page load there is no posted data — the bound property is just its own default initializer. It only gets genuinely populated from form fields after a real POST back to the same page.',
+    docs: [
+      { label: 'Microsoft Learn — Static SSR forms with SupplyParameterFromForm', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/#binding-forms-with-the-editform-component' },
+    ],
+    resources: [],
+    gotchas: [
+      'A first-load "empty" model is not [SupplyParameterFromForm] "clearing" anything — there was simply never any posted data to bind from.',
+      'Multiple EditForm elements on one page need distinct FormName values, or the POST handler cannot tell which form\'s fields belong to which model.',
+    ],
+  },
+
   'blazor/dependency-injection': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27227,6 +31540,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'In Blazor WebAssembly, there is only one user per tab, so Scoped and Singleton effectively behave the same, unlike the meaningful distinction in Blazor Server.',
     ],
   },
+
+  'blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service': {
+    apis: ['OwningComponentBase<TService>'],
+    related: [
+      { label: 'Dependency Injection (overview)', route: '/blazor/dependency-injection' },
+      { label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' },
+      { label: 'IServiceScopeFactory Must Dispose Its Scope Immediately After Use', route: '/blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use' },
+    ],
+    tip: 'A regular Scoped service is shared by every component in the same circuit — OwningComponentBase creates a genuinely separate child scope for one component alone, disposed when that component unmounts rather than when the circuit ends.',
+    docs: [
+      { label: 'Microsoft Learn — OwningComponentBase', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection#utility-base-component-classes-to-manage-a-di-scope' },
+    ],
+    resources: [],
+    gotchas: [
+      'Multiple components sharing one Scoped DbContext can genuinely collide — EF Core is not thread-safe, and Blazor\'s render pipeline can process components\' OnInitializedAsync concurrently.',
+      'Converting only ONE component to OwningComponentBase does not protect it from OTHER components still sharing the ordinary Scoped instance with each other.',
+    ],
+  },
+
+  'blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction': {
+    apis: ['IServiceScopeFactory', 'AddSingleton()', 'AddScoped()'],
+    related: [
+      { label: 'Dependency Injection (overview)', route: '/blazor/dependency-injection' },
+      { label: 'OwningComponentBase Gives Each Instance Its Own Scoped Service', route: '/blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service' },
+      { label: 'IServiceScopeFactory Must Dispose Its Scope Immediately After Use', route: '/blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use' },
+    ],
+    tip: 'A Singleton is constructed exactly once for the entire server process — whatever Scoped instance it receives at that moment is the only one it will ever have, permanently misattributing every later call to the wrong circuit.',
+    docs: [
+      { label: 'Microsoft Learn — Scoped service dependencies in Singleton services', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection#scoped-service-as-singleton' },
+    ],
+    resources: [],
+    gotchas: [
+      '.NET\'s DI container actively throws ("Cannot consume scoped service from singleton") when scope validation is enabled — this is a real, documented guard, not just theoretical.',
+      'Changing the consuming service\'s own registration to Scoped "fixes" the exception but sacrifices its intended Singleton (one-instance-for-the-server) behavior entirely.',
+    ],
+  },
+
+  'blazor/dependency-injection/iservicescopefactory-must-dispose-its-scope-immediately-after-use': {
+    apis: ['IServiceScopeFactory.CreateScope()', 'IServiceScope'],
+    related: [
+      { label: 'Dependency Injection (overview)', route: '/blazor/dependency-injection' },
+      { label: 'OwningComponentBase Gives Each Instance Its Own Scoped Service', route: '/blazor/dependency-injection/owningcomponentbase-gives-each-instance-its-own-scoped-service' },
+      { label: 'Captive Dependency Freezes the Scoped Instance at Singleton Construction', route: '/blazor/dependency-injection/captive-dependency-freezes-scoped-instance-at-singleton-construction' },
+    ],
+    tip: 'A manually-created scope is a real disposable resource the framework does not clean up for you — caching one scope for reuse recreates the exact captive-dependency problem IServiceScopeFactory was meant to solve.',
+    docs: [
+      { label: 'Microsoft Learn — IServiceScopeFactory', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory' },
+    ],
+    resources: [],
+    gotchas: [
+      'Create, use, and dispose a fresh scope on EVERY call that needs the dependency — caching a scope at any granularity (even partitioned by category) recreates the captive-dependency risk.',
+      'Wrap scope creation in a using statement so disposal happens reliably even if an exception is thrown mid-operation.',
+    ],
+  },
+
   'blazor/state-management': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27239,6 +31607,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Untraceable state mutations scattered across a codebase are one of the hardest bug categories to track down in any stateful UI, Blazor included.',
     ],
   },
+
+  'blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory': {
+    apis: ['ProtectedLocalStorage', 'Data Protection API'],
+    related: [
+      { label: 'State Management (overview)', route: '/blazor/state-management' },
+      { label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' },
+      { label: 'A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event', route: '/blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event' },
+    ],
+    tip: 'The encryption only protects a value while it sits in browser storage as ciphertext — the moment your own code calls GetAsync, the decrypted plaintext is fully exposed in the page\'s own memory like any other data.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Data Protection', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction' },
+    ],
+    resources: [],
+    gotchas: [
+      'A genuinely sensitive credential (an API key, a token) should not be round-tripped through ProtectedLocalStorage just because it is encrypted at rest.',
+      'Data Protection keys not persisted correctly across server restarts/deployments permanently break decryption of previously-stored values.',
+    ],
+  },
+
+  'blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor': {
+    apis: ['window.addEventListener(\'storage\')', 'DotNetObjectReference'],
+    related: [
+      { label: 'State Management (overview)', route: '/blazor/state-management' },
+      { label: 'ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory', route: '/blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory' },
+      { label: 'A Forgotten Unsubscribe Throws on a Disposed Component’s Next Event', route: '/blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event' },
+    ],
+    tip: 'Every browser tab is a genuinely separate circuit or app instance with no shared C# memory — the only bridge between tabs is the browser\'s own standard \'storage\' event, which fires only in OTHER tabs, never the one that made the change.',
+    docs: [
+      { label: 'MDN — Window: storage event', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event' },
+    ],
+    resources: [],
+    gotchas: [
+      'The \'storage\' event never fires in the tab that made the change — that tab must update its own UI through its normal reactive mechanism instead.',
+      'Testing cross-tab sync with only a single open tab can never demonstrate it working, by design of the underlying browser event.',
+    ],
+  },
+
+  'blazor/state-management/a-forgotten-unsubscribe-throws-on-a-disposed-components-next-event': {
+    apis: ['IDisposable', 'event (C#)'],
+    related: [
+      { label: 'State Management (overview)', route: '/blazor/state-management' },
+      { label: 'ProtectedLocalStorage Encrypts at Rest, Not the Decrypted Value in Memory', route: '/blazor/state-management/protectedlocalstorage-encrypts-at-rest-not-the-decrypted-value-in-memory' },
+      { label: 'Cross-Tab Sync Needs the Browser’s Own StorageEvent, Not Blazor', route: '/blazor/state-management/cross-tab-sync-needs-the-browsers-own-storage-event-not-blazor' },
+    ],
+    tip: 'A missed unsubscribe is not just a memory leak — the service still holds a live delegate reference, and the next time it raises its event, it invokes StateHasChanged on a component Blazor\'s renderer no longer tracks, which can throw.',
+    docs: [
+      { label: 'Microsoft Learn — Component disposal', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle#component-disposal-with-idisposable' },
+    ],
+    resources: [],
+    gotchas: [
+      'The risk compounds over a long session — every unsubscribed component leaves a dead delegate reference that gets invoked (and can throw) on every future state change.',
+      'An exception from one dead subscriber can disrupt the whole event-raising operation, potentially affecting other, correctly-subscribed components too.',
+    ],
+  },
+
   'blazor/routing': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27250,6 +31673,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The NotFound render fragment on <Router> defines the 404 experience — a bare "not found" message with no path forward is a common, avoidable UX gap.',
     ],
   },
+
+  'blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component': {
+    apis: ['OnParametersSetAsync()', 'OnInitializedAsync()'],
+    related: [
+      { label: 'Blazor Routing (overview)', route: '/blazor/routing' },
+      { label: 'NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs', route: '/blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs' },
+      { label: 'Catch-All Routes Capture Everything After the Prefix as One String', route: '/blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string' },
+    ],
+    tip: 'Navigating between two routes handled by the same component type reuses that instance rather than recreating it — OnInitialized correctly runs only once, which is why route-parameter-dependent loading belongs in OnParametersSet instead.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor lifecycle', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'Genuinely one-time setup (a timer, a subscription unrelated to the route parameter) belongs in OnInitialized specifically because it runs only once per instance.',
+      'Component reuse only applies to same-TYPE navigation — navigating to a different component type always disposes and recreates.',
+    ],
+  },
+
+  'blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs': {
+    apis: ['NavigationManager.NavigateTo()'],
+    related: [
+      { label: 'Blazor Routing (overview)', route: '/blazor/routing' },
+      { label: 'OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component', route: '/blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component' },
+      { label: 'Catch-All Routes Capture Everything After the Prefix as One String', route: '/blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string' },
+    ],
+    tip: 'NavigateTo() schedules the navigation/reload and returns immediately — it does not halt execution like a return or a thrown exception, so code written after the call genuinely still runs on the still-alive component.',
+    docs: [
+      { label: 'Microsoft Learn — NavigationManager', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/routing#uri-and-navigation-state-helpers' },
+    ],
+    resources: [],
+    gotchas: [
+      'Finalize any state that must be correct BEFORE calling NavigateTo(), not after — nothing should depend on code after the call still mattering.',
+      'This scheduling behavior is identical for forceLoad: true and forceLoad: false — only the ultimate consequence of lingering code differs.',
+    ],
+  },
+
+  'blazor/routing/catch-all-routes-capture-everything-after-the-prefix-as-one-string': {
+    apis: ['{*catchAllParam}'],
+    related: [
+      { label: 'Blazor Routing (overview)', route: '/blazor/routing' },
+      { label: 'OnParametersSet Fires Without OnInitialized When Blazor Reuses a Component', route: '/blazor/routing/onparameterset-fires-without-oninitialized-when-blazor-reuses-a-component' },
+      { label: 'NavigateTo(forceLoad: true) Schedules the Reload — Code After It Still Runs', route: '/blazor/routing/navigateto-forceload-schedules-the-reload-code-after-it-still-runs' },
+    ],
+    tip: 'A catch-all parameter spans multiple path segments including their slashes, delivered as one string with no leading slash of its own — a more specific route always wins over the catch-all for an exact match.',
+    docs: [
+      { label: 'Microsoft Learn — Route parameters', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/routing#route-parameters' },
+    ],
+    resources: [],
+    gotchas: [
+      'The captured string never includes a leading slash — Path.Combine("content", "/" + path) treats the rooted second argument as absolute and silently drops "content" entirely.',
+      'Ordinary percent-encoded characters (like %20) are decoded before reaching the component.',
+    ],
+  },
+
   'blazor/sections-layouts': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27273,6 +31751,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Components using browser-only APIs must guard against running during server-side prerender, where no real browser exists.',
     ],
   },
+
+  'blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly': {
+    apis: ['PersistentComponentState', 'RegisterOnPersisting()', 'PersistAsJson()'],
+    related: [
+      { label: 'Render Modes (overview)', route: '/blazor/render-modes' },
+      { label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' },
+      { label: 'StreamRendering Flushes Placeholder HTML Before Async Data Resolves', route: '/blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves' },
+    ],
+    tip: 'InteractiveAuto\'s Server-to-WebAssembly switch is a full teardown and restart in a completely separate process, not an in-place upgrade — only PersistentComponentState (data embedded in the page HTML) genuinely bridges the two runtimes.',
+    docs: [
+      { label: 'Microsoft Learn — Persist state across prerendering', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/state-management' },
+    ],
+    resources: [],
+    gotchas: [
+      'A static field or Singleton service does NOT survive the transition — the server process and the browser WASM sandbox share no memory.',
+      'PersistentComponentState serializes into the page\'s own HTML, not server memory awaiting a fetch.',
+    ],
+  },
+
+  'blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate': {
+    apis: ['OnInitializedAsync()', 'InteractiveServerRenderMode', 'prerender: false'],
+    related: [
+      { label: 'Render Modes (overview)', route: '/blazor/render-modes' },
+      { label: 'InteractiveAuto Loses State When It Switches From Server to WebAssembly', route: '/blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly' },
+      { label: 'StreamRendering Flushes Placeholder HTML Before Async Data Resolves', route: '/blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves' },
+    ],
+    tip: 'Every interactive component runs its FULL lifecycle twice by default — once during server-side prerendering, once at real interactive startup. Harmless for a read-only fetch, but genuinely dangerous for a non-idempotent side effect like analytics recording.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor render modes', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes' },
+    ],
+    resources: [],
+    gotchas: [
+      'A static bool "hasRun" guard is dangerous, not just ineffective — it is shared across every user hitting the same server process, silently breaking initialization for everyone after the first request.',
+      'Disable prerendering (prerender: false) only for genuinely non-idempotent side effects — for a simple data-fetch, PersistentComponentState is the better fix.',
+    ],
+  },
+
+  'blazor/render-modes/streamrendering-flushes-placeholder-html-before-async-data-resolves': {
+    apis: ['[StreamRendering]', 'chunked transfer encoding'],
+    related: [
+      { label: 'Render Modes (overview)', route: '/blazor/render-modes' },
+      { label: 'InteractiveAuto Loses State When It Switches From Server to WebAssembly', route: '/blazor/render-modes/interactiveauto-loses-state-when-it-switches-from-server-to-webassembly' },
+      { label: 'OnInitializedAsync Genuinely Runs Twice During Prerender-Then-Hydrate', route: '/blazor/render-modes/oninitializedasync-genuinely-runs-twice-during-prerender-then-hydrate' },
+    ],
+    tip: '[StreamRendering] does not make a slow query run faster — it changes WHEN bytes reach the browser, flushing non-dependent content immediately and streaming updates as slow sections resolve, all on a purely Static SSR page with no interactive runtime.',
+    docs: [
+      { label: 'Microsoft Learn — Stream rendering', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering#streaming-rendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'The final rendered HTML is identical with or without [StreamRendering] — only the timing of when bytes reach the browser changes.',
+      'This is a genuinely different mechanism from the prerender-then-hydrate double-execution behavior — [StreamRendering] applies to Static SSR (no interactive runtime, single lifecycle run), not interactive render modes.',
+    ],
+  },
+
   'blazor/error-handling': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27284,6 +31817,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Distinguishing operational errors (an expected API timeout, handled gracefully) from programmer errors (a null reference bug, should crash visibly) shapes where to add try/catch versus letting an ErrorBoundary catch it.',
     ],
   },
+  'blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state': {
+    apis: ['ErrorBoundary.Recover()', 'ErrorBoundary', '@key'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/blazor/error-handling' },
+      { label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' },
+      { label: 'Async void Event Handlers Bypass ErrorBoundary Entirely', route: '/blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely' },
+    ],
+    tip: 'An error that reappears instantly after clicking Retry is the classic symptom of calling Recover() alone — the fix is changing a @key value to force real recreation of the child, not adding more try/catch around Recover().',
+    docs: [
+      { label: 'Microsoft Learn — Handle errors in ASP.NET Core Blazor apps', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors' },
+    ],
+    resources: [],
+    gotchas: [
+      'Recover() resets only the ErrorBoundary\'s own error-count and stored exception — it never disposes or recreates the child component instance, so lifecycle methods like OnInitializedAsync do not run again.',
+      'Calling Recover() directly from within the failing render path can produce a genuine infinite catch-recover-fail loop if the underlying bad state was never actually cleared.',
+    ],
+  },
+
+  'blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary': {
+    apis: ['IDisposable.Dispose()', 'IAsyncDisposable.DisposeAsync()'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/blazor/error-handling' },
+      { label: 'ErrorBoundary.Recover() Clears the Error, Not the Child’s Own State', route: '/blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state' },
+      { label: 'Async void Event Handlers Bypass ErrorBoundary Entirely', route: '/blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely' },
+    ],
+    tip: 'Wrap risky cleanup logic (unsubscribing from an already-torn-down event source, releasing an already-disposed dependency) in its own try-catch inside Dispose/DisposeAsync — it is one of the few places in Blazor where swallow-and-log is the correct call, since no ErrorBoundary will save the circuit from this one.',
+    docs: [
+      { label: 'Microsoft Learn — Component disposal in ASP.NET Core Blazor', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/component-disposal' },
+    ],
+    resources: [],
+    gotchas: [
+      'An unhandled exception in Dispose is fatal to the circuit on Blazor Server, by design — there is no ErrorBoundary-mediated recovery path for it, unlike almost every other lifecycle method.',
+      'DI-scope teardown races (a dependency already disposed by the container before a component\'s own Dispose runs) are a realistic, easy-to-miss trigger for this class of bug.',
+    ],
+  },
+
+  'blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely': {
+    apis: ['async Task', 'async void', 'SynchronizationContext'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/blazor/error-handling' },
+      { label: 'ErrorBoundary.Recover() Clears the Error, Not the Child’s Own State', route: '/blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state' },
+      { label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' },
+    ],
+    tip: 'If an ErrorBoundary-wrapped event handler\'s exception takes down the whole page instead of showing fallback content, check the handler\'s signature first — async void gives the renderer no Task to observe at all.',
+    docs: [
+      { label: 'Microsoft Learn — Handle errors in ASP.NET Core Blazor apps', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is not a misplaced ErrorBoundary — no placement of the boundary can catch an async void handler\'s exception, since there is no Task for its underlying mechanism to observe.',
+      'On Blazor Server the escaping exception is fatal to the circuit; on WASM there is no circuit to tear down, but the runtime can still be left in an inconsistent state.',
+    ],
+  },
+
   'blazor/js-interop': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27295,6 +31882,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing JS-to-.NET interop with bUnit requires directly invoking the [JSInvokable] method, since no real JavaScript runtime exists in the test environment.',
     ],
   },
+
+  'blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references': {
+    apis: ['JSON.stringify()', 'InvokeVoidAsync()'],
+    related: [
+      { label: 'JavaScript Interop (overview)', route: '/blazor/js-interop' },
+      { label: 'Dynamic import() Genuinely Scopes Exports, Never Touching window', route: '/blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window' },
+      { label: 'IJSInProcessRuntime Only Works in WASM — Same-Process Execution', route: '/blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution' },
+    ],
+    tip: 'Confirmed directly in a real browser console — a circular object thrown at JSON.stringify() genuinely throws a TypeError, the exact same JSON limitation Blazor\'s interop marshalling hits, not a Blazor-specific restriction.',
+    docs: [
+      { label: 'MDN — JSON.stringify()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify' },
+    ],
+    resources: [],
+    gotchas: [
+      'The serialization failure happens BEFORE the JS function is ever called — it never receives partial data, it never gets invoked at all.',
+      'Catching and swallowing the exception hides the failure without fixing it — the JS side\'s intended effect simply never happens.',
+    ],
+  },
+
+  'blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window': {
+    apis: ['import()', 'IJSObjectReference'],
+    related: [
+      { label: 'JavaScript Interop (overview)', route: '/blazor/js-interop' },
+      { label: 'JSON.stringify Throws a Real TypeError on Circular References', route: '/blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references' },
+      { label: 'IJSInProcessRuntime Only Works in WASM — Same-Process Execution', route: '/blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution' },
+    ],
+    tip: 'Confirmed directly — window stays completely unchanged before and after a dynamic import, structurally preventing the naming collisions the older window-global JS interop pattern was genuinely vulnerable to.',
+    docs: [
+      { label: 'MDN — import()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import' },
+    ],
+    resources: [],
+    gotchas: [
+      'Blazor\'s "import" interop function name triggers the browser\'s own real dynamic import() — it is not a custom Blazor mechanism.',
+      'Two components can safely reuse the identical internal function name across separate modules with zero risk of collision.',
+    ],
+  },
+
+  'blazor/js-interop/ijsinprocessruntime-only-works-in-wasm-same-process-execution': {
+    apis: ['IJSInProcessRuntime', 'IJSRuntime.InvokeAsync()'],
+    related: [
+      { label: 'JavaScript Interop (overview)', route: '/blazor/js-interop' },
+      { label: 'JSON.stringify Throws a Real TypeError on Circular References', route: '/blazor/js-interop/jsonstringify-throws-a-real-typeerror-on-circular-references' },
+      { label: 'Dynamic import() Genuinely Scopes Exports, Never Touching window', route: '/blazor/js-interop/dynamic-import-genuinely-scopes-exports-never-touching-window' },
+    ],
+    tip: 'A truly synchronous call requires the caller and callee to run in the same process — genuinely true for WASM, genuinely impossible for Blazor Server, where every interop call must cross a real network boundary.',
+    docs: [
+      { label: 'Microsoft Learn — Call JavaScript from .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/js-interop/call-javascript-from-dotnet' },
+    ],
+    resources: [],
+    gotchas: [
+      'InteractiveAuto\'s first phase always runs under InteractiveServer — a synchronous-only component becomes unsafe the moment Auto mode touches it, even in a previously WASM-only app.',
+      'This is an architectural constraint, not an arbitrary API restriction — no future .NET release could make a network round-trip genuinely synchronous.',
+    ],
+  },
+
   'blazor/authentication': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27306,6 +31948,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing authentication edge cases (expired tokens, revoked sessions) is often under-invested compared to testing the happy-path login flow.',
     ],
   },
+  'blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview': {
+    apis: ['AuthenticationStateProvider', 'AuthenticationStateProvider.NotifyAuthenticationStateChanged', 'AuthorizeView'],
+    related: [
+      { label: 'Authentication (overview)', route: '/blazor/authentication' },
+      { label: 'Pre-render and Post-Hydration Auth State Come From Different Sources', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' },
+      { label: 'OIDC Roles Often Use a Different Claim Type Than Authorize Expects', route: '/blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects' },
+    ],
+    tip: 'GetAuthenticationStateAsync() returning the correct value when manually tested proves nothing about whether already-rendered AuthorizeView components will ever see it — only NotifyAuthenticationStateChanged() actually wakes them up.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor authentication and authorization', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/security/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A custom AuthenticationStateProvider that mutates its own internal state without calling NotifyAuthenticationStateChanged() leaves every already-rendered AuthorizeView stuck on stale data until a full page reload forces re-initialization.',
+      'The event-driven model means there is no polling — AuthorizeView will never "eventually" pick up a change on its own, no matter how long you wait.',
+    ],
+  },
+
+  'blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources': {
+    apis: ['AddAuthenticationStateSerialization', 'HttpContext.User', 'PersistentAuthenticationStateProvider'],
+    related: [
+      { label: 'Authentication (overview)', route: '/blazor/authentication' },
+      { label: 'NotifyAuthenticationStateChanged Is the Only Trigger for AuthorizeView', route: '/blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview' },
+      { label: 'OIDC Roles Often Use a Different Claim Type Than Authorize Expects', route: '/blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects' },
+    ],
+    tip: 'A brief correct flash of authenticated content followed by a switch to logged-out is the classic symptom of a missing AddAuthenticationStateSerialization() call, not a race condition to work around with delays.',
+    docs: [
+      { label: 'Microsoft Learn — Blazor Web App authentication state', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/index' },
+    ],
+    resources: [],
+    gotchas: [
+      'HttpContext does not exist anymore once a SignalR circuit or WebAssembly runtime takes over — the interactive AuthenticationStateProvider cannot simply reuse it, it needs the pre-render result explicitly persisted across the boundary.',
+      'Testing this only against a Server or WASM render mode in isolation can miss the gap — the mismatch is specifically about the transition between Static SSR pre-render and interactivity.',
+    ],
+  },
+
+  'blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects': {
+    apis: ['ClaimsIdentity.RoleClaimType', 'OpenIdConnectOptions.TokenValidationParameters', 'Authorize(Roles = ...)'],
+    related: [
+      { label: 'Authentication (overview)', route: '/blazor/authentication' },
+      { label: 'NotifyAuthenticationStateChanged Is the Only Trigger for AuthorizeView', route: '/blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview' },
+      { label: 'Pre-render and Post-Hydration Auth State Come From Different Sources', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' },
+    ],
+    tip: 'A debug endpoint that dumps User.Claims is the fastest way to discover what claim type a given OIDC provider actually sends roles under, rather than guessing at RoleClaimType configuration.',
+    docs: [
+      { label: 'Microsoft Learn — Claims-based role-based access control', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/claims' },
+    ],
+    resources: [],
+    gotchas: [
+      'A role claim being present with the correct value does not guarantee [Authorize(Roles = ...)] will find it — the claim TYPE has to match RoleClaimType too.',
+      'Most mainstream OIDC providers use their own claim type for roles/groups, not the ASP.NET Core default — check before assuming Roles-based authorization will work unconfigured.',
+    ],
+  },
+
   'blazor/server-signalr': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27317,6 +32013,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For very large concurrent user counts where per-user server memory becomes prohibitive, Blazor WebAssembly (shifting state to the client) may scale more cost-effectively.',
     ],
   },
+
+  'blazor/server-signalr/a-custom-hub-and-the-render-circuit-are-separate-signalr-mechanisms': {
+    apis: ['Hub<T>', 'IHubContext<T>', 'HubConnection'],
+    related: [
+      { label: 'Blazor Server & SignalR (overview)', route: '/blazor/server-signalr' },
+      { label: 'The Reconnection Window Only Preserves State for the Same Circuit', route: '/blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit' },
+      { label: 'Azure SignalR Service Routes Messages, It Doesn’t Replicate Circuit State', route: '/blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state' },
+    ],
+    tip: 'Injecting IHubContext directly into a component compiles and even works mechanically — but the component never becomes a connected client of that Hub, so it can broadcast to others while never receiving its own messages back.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core SignalR Hubs', url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/hubs' },
+    ],
+    resources: [],
+    gotchas: [
+      'A component must open its own real HubConnection to a custom Hub to both send AND receive its messages — IHubContext alone only lets it push, one-way, as if it were server-side code.',
+      'Blazor\'s own internal render circuit and a developer-defined Hub<T> are completely separate SignalR endpoints, despite both using the SignalR protocol.',
+    ],
+  },
+
+  'blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit': {
+    apis: ['DisconnectedCircuitRetentionPeriod', 'DisconnectedCircuitMaxRetained'],
+    related: [
+      { label: 'Blazor Server & SignalR (overview)', route: '/blazor/server-signalr' },
+      { label: 'A Custom Hub and the Render Circuit Are Separate SignalR Mechanisms', route: '/blazor/server-signalr/a-custom-hub-and-the-render-circuit-are-separate-signalr-mechanisms' },
+      { label: 'Azure SignalR Service Routes Messages, It Doesn’t Replicate Circuit State', route: '/blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state' },
+    ],
+    tip: 'A disconnected circuit is held paused in server memory for DisconnectedCircuitRetentionPeriod, waiting for the exact same session to reconnect — if that window expires, the state is genuinely, permanently gone.',
+    docs: [
+      { label: 'Microsoft Learn — Blazor Server circuit handler', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/signalr#reflect-the-connection-state-in-the-ui' },
+    ],
+    resources: [],
+    gotchas: [
+      'An expired retention window falls back to a full page reload starting an entirely new circuit — not a silent recovery of the old state.',
+      'A longer retention period has a real server memory cost, since most real-world disconnections never actually reconnect.',
+    ],
+  },
+
+  'blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state': {
+    apis: ['AddAzureSignalR()'],
+    related: [
+      { label: 'Blazor Server & SignalR (overview)', route: '/blazor/server-signalr' },
+      { label: 'A Custom Hub and the Render Circuit Are Separate SignalR Mechanisms', route: '/blazor/server-signalr/a-custom-hub-and-the-render-circuit-are-separate-signalr-mechanisms' },
+      { label: 'The Reconnection Window Only Preserves State for the Same Circuit', route: '/blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit' },
+    ],
+    tip: 'Removing the sticky-session requirement is a connection-routing fix, not a state-durability one — a circuit\'s actual component tree still lives in exactly one app server\'s memory, just as vulnerable to that server\'s own crash as before.',
+    docs: [
+      { label: 'Microsoft Learn — Azure SignalR Service for Blazor Server', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/server#azure-signalr-service' },
+    ],
+    resources: [],
+    gotchas: [
+      'If the specific app server instance holding a circuit crashes or restarts, that circuit is lost just as it would be without Azure SignalR Service.',
+      'Azure SignalR Service simplifies scaling Server (routing), it does not change Server\'s fundamental per-user server memory cost the way switching to WASM would.',
+    ],
+  },
+
   'blazor/streaming-rendering': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27329,6 +32080,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing streaming behavior in bUnit is limited, since bUnit doesn\'t simulate actual HTTP streaming mechanics — real browser-based E2E testing is usually needed.',
     ],
   },
+  'blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent': {
+    apis: ['data-permanent', 'enhancedload event', 'blazor.web.js'],
+    related: [
+      { label: 'Streaming Rendering (overview)', route: '/blazor/streaming-rendering' },
+      { label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' },
+      { label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' },
+    ],
+    tip: 'A third-party widget\'s DOM state resetting after navigation, even though it visually sits outside the routed page content, is the classic symptom of enhanced navigation\'s whole-document diff — mark the element data-permanent to exempt it.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor navigation', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/navigation' },
+    ],
+    resources: [],
+    gotchas: [
+      'Location inside vs. outside @Body has no bearing on whether an element can be reverted — the diff compares the whole rendered document, not a scoped content region.',
+      'The enhancedload event is the right tool when a script needs to actively re-run setup logic after each navigation, as opposed to data-permanent which just preserves existing DOM state untouched.',
+    ],
+  },
+
+  'blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked': {
+    apis: ['[StreamRendering]', '@rendermode', 'OnInitializedAsync()'],
+    related: [
+      { label: 'Streaming Rendering (overview)', route: '/blazor/streaming-rendering' },
+      { label: 'Enhanced Navigation Can Undo DOM Changes Unless Marked data-permanent', route: '/blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent' },
+      { label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' },
+    ],
+    tip: 'The same nullable-field-plus-@if-guard placeholder pattern works correctly under both Static SSR streaming and an interactive render mode — only the delivery mechanism differs, not the component code.',
+    docs: [
+      { label: 'Microsoft Learn — Razor class libraries with static SSR', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/class-libraries-and-static-server-side-rendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'Interactive render modes are not technically incapable of streaming — they already deliver the same incremental UI update through their own normal render pipeline, making [StreamRendering] redundant there rather than blocked.',
+      'Adding [StreamRendering] to an interactive component is a genuine no-op, not a fallback with a smaller benefit — the render mode\'s own mechanism already fully covers the same use case.',
+    ],
+  },
+
+  'blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order': {
+    apis: ['Task.WhenAll()', '[StreamRendering]'],
+    related: [
+      { label: 'Streaming Rendering (overview)', route: '/blazor/streaming-rendering' },
+      { label: 'Enhanced Navigation Can Undo DOM Changes Unless Marked data-permanent', route: '/blazor/streaming-rendering/enhanced-navigation-can-undo-dom-changes-unless-marked-data-permanent' },
+      { label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' },
+    ],
+    tip: 'To genuinely prioritize which streamed section a user sees populate first, make that section\'s own data fetch resolve faster — reordering markup has zero effect on arrival order.',
+    docs: [
+      { label: 'Microsoft Learn — Stream rendering in ASP.NET Core Blazor apps', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'A page tested locally with uniformly fast mock data may never reveal out-of-order arrival — the effect only becomes visible under realistic, varying latency between sections.',
+      'Arrival order tracks actual async resolution order, not markup declaration order — a section declared last can populate before one declared first.',
+    ],
+  },
+
   'blazor/performance': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -27385,6 +32190,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Performance profiling a Hybrid app requires considering both native startup overhead AND web-layer rendering performance separately.',
     ],
   },
+
+  'blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error': {
+    apis: ['BlazorWebView.HostPage'],
+    related: [
+      { label: 'MAUI Blazor Hybrid (overview)', route: '/blazor/maui-hybrid' },
+      { label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' },
+      { label: 'Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection', route: '/blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection' },
+    ],
+    tip: 'The failure happens at the native WebView-navigation layer, before any .NET or Blazor code has started — there is no exception to catch and no error boundary to display anything.',
+    docs: [
+      { label: 'Microsoft Learn — BlazorWebView', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/tutorials/maui' },
+    ],
+    resources: [],
+    gotchas: [
+      'A correctly-spelled HostPage path is not sufficient on its own — the file must actually exist at that location in the BUILT app bundle, not just the source project.',
+      'A wrong HostPage path produces a completely blank screen, distinct from a mismatched RootComponent Selector (which shows static markup stuck forever).',
+    ],
+  },
+
+  'blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html': {
+    apis: ['RootComponent.Selector', 'BlazorWebView.RootComponents'],
+    related: [
+      { label: 'MAUI Blazor Hybrid (overview)', route: '/blazor/maui-hybrid' },
+      { label: 'A Wrong HostPage Path Produces a Blank Screen With No Error', route: '/blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error' },
+      { label: 'Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection', route: '/blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection' },
+    ],
+    tip: 'Selector is a genuine CSS selector evaluated against HostPage\'s actual markup, not a symbolic Blazor identifier — a mismatch shows the page\'s static content stuck forever, a different symptom from a wrong HostPage path.',
+    docs: [
+      { label: 'Microsoft Learn — Razor components in a hybrid app', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/routing' },
+    ],
+    resources: [],
+    gotchas: [
+      'A genuinely slow-loading app will eventually resolve — a mismatched Selector never will, regardless of how long you wait.',
+      'The mount-point element must be manually added to HostPage\'s own HTML — Blazor does not create it automatically.',
+    ],
+  },
+
+  'blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection': {
+    apis: ['Window.Resumed', 'Window.Stopped'],
+    related: [
+      { label: 'MAUI Blazor Hybrid (overview)', route: '/blazor/maui-hybrid' },
+      { label: 'A Wrong HostPage Path Produces a Blank Screen With No Error', route: '/blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error' },
+      { label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' },
+    ],
+    tip: 'A network interruption has zero effect on a Hybrid app\'s own UI state, unlike Blazor Server — the real state-loss triggers are native process lifecycle events instead: the app being force-quit or terminated by the OS under memory pressure.',
+    docs: [
+      { label: 'Microsoft Learn — .NET MAUI app lifecycle', url: 'https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/app-lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'Blazor Server patterns like CircuitHandler and DisconnectedCircuitRetentionPeriod have no direct equivalent in Hybrid — the analogous concern maps to MAUI\'s own native app lifecycle events instead.',
+      'State survives backgrounding only as long as the OS does not terminate the process under memory pressure, a real and common occurrence on mobile platforms.',
+    ],
+  },
+
   'blazor/bunit': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

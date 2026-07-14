@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Server & SignalR" topicRoute="/blazor/server-signalr" subtopicLabel="The Reconnection Window Only Preserves State for the Same Circuit" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">The Reconnection Window Only Preserves State for the Same Circuit</h1>
+  <p class="page-subtitle">A disconnected circuit is held paused in server memory for DisconnectedCircuitRetentionPeriod, waiting for the exact same session to reconnect — if that window expires, the state is genuinely, permanently gone, not recoverable another way.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's own reconnection QnA into the actual server-memory mechanism and its real tradeoff. Next: what Azure SignalR Service actually changes structurally for multi-server deployments — routing messages, not replicating circuit state.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Server & SignalR" topicRoute="/blazor/server-signalr"
+    [prev]="{ label: 'A Custom Hub and the Render Circuit Are Separate SignalR Mechanisms', route: '/blazor/server-signalr/a-custom-hub-and-the-render-circuit-are-separate-signalr-mechanisms' }"
+    [next]="{ label: 'Azure SignalR Service Routes Messages, It Doesn’t Replicate Circuit State', route: '/blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state' }" />
+</div>

@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Largest Contentful Paint" topicRoute="/performance/lcp" subtopicLabel="loading=&quot;lazy&quot; Defers the Fetch Until Near the Viewport" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">loading="lazy" Defers the Fetch Until Near the Viewport</h1>
+  <p class="page-subtitle">An image far off-screen with loading="lazy" produces zero network activity until scroll brings it close — the identical eager image fetches immediately, measured with the real Resource Timing API.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Native lazy loading, Chrome 76+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Two identical images sit 9000px below the fold — one lazy, one eager. Check the real resource-timing entries to see which one has actually fetched.</p>
+    <app-live-playground title="loading=lazy defers fetch until near viewport" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's first "Common Mistake" — lazy-loading the LCP image — with a real, measurable fetch-withholding demonstration rather than just documentation. Together with the previous two subtopics (text as LCP candidate, preload timing), this closes out the practical LCP toolkit: know your real candidate, discover it early, and never gate it behind lazy loading.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Largest Contentful Paint" topicRoute="/performance/lcp"
+    [prev]="{ label: 'Preloading the LCP Image Beats a Blocking Resource', route: '/performance/lcp/preload-beats-a-blocking-resource-for-lcp' }" />
+</div>

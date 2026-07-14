@@ -1,0 +1,25 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Input Types & Attributes" topicRoute="/html/input-types" subtopicLabel="step Mismatch Is Checkable via Validity" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">step Mismatch Is Checkable via Validity</h1>
+  <p class="page-subtitle">An off-step value isn't rejected or rewritten — it stays exactly as set, flagged invalid through a real <code>ValidityState</code>.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section"><h2>See it run</h2>
+    <p>Set values on and off a <code>step="2"</code> boundary, and read <code>.validity.stepMismatch</code>/<code>.checkValidity()</code> to see the browser's built-in constraint check in action.</p>
+    <app-live-playground title="step mismatch and ValidityState" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section"><h2>Where this fits</h2>
+    <p>This closes out the three input-types gotchas: value sanitization silently empties invalid numbers, unsupported types silently downgrade to text, and step violations do neither — they're kept and flagged instead. Return to the Input Types & Attributes overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Input Types & Attributes" topicRoute="/html/input-types"
+    [prev]="{ label: 'Unsupported Types Fall Back to Text', route: '/html/input-types/unsupported-types-fallback-to-text' }" />
+</div>

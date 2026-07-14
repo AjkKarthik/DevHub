@@ -441,6 +441,43 @@ to the topic page, not its subtopics.
 
 ### Gotchas specific to subtopic pages
 
+- **A literal void-element end tag (e.g. `</br>`) as bare TEXT in a `.html` template's own
+  markup is parsed by the Angular compiler as an actual (invalid) end tag, not literal text**,
+  and fails the build with `NG5002: Void elements do not have end tags "br"`. Confirmed via a
+  real build failure on `/html/fundamentals`'s own `</br>` subtopic (2026-07-10) — the
+  `page-subtitle` prose literally described the `</br>` mistake using the raw characters,
+  which the HTML template parser tried to parse as a real tag. **Fix: HTML-entity-escape it**
+  — `&lt;/br&gt;` — the same treatment as the pre-existing brace/`@word` gotchas below, just
+  for a different trigger character sequence. Only applies to bare TEXT nodes in the `.html`
+  file itself; the exact same raw `</br>` characters are completely safe inside a TS string
+  field (`theory.points`, `misconceptions`, etc.) since those never pass through the template
+  parser at all — confirmed by every OTHER occurrence in the same file's `.ts` needing no
+  escaping.
+- **Inside a `[innerHTML]`-bound TS string field (`theory.points`, `misconceptions.thought`/
+  `.reality`, `try-it.prompt`/`.hint`), a literal raw HTML tag you intend to appear as VISIBLE
+  TEXT (e.g. writing `<br>` or `<span>` to literally talk ABOUT that tag) is instead parsed
+  and rendered as a REAL element** — an empty `<span>` renders invisibly, a bare `<br>` inserts
+  an actual line break, silently swallowing the very text meant to describe it. Confirmed via
+  two real instances caught during browser verification (not the build, which stayed green) on
+  the same `/html/fundamentals` batch: a misconception's `reality` string discussing `<br>` and
+  `<br></br>`, and another discussing `<span>` — both needed the standard `<code>&lt;br&gt;</code>`-
+  style entity-escaping treatment already used everywhere else in the same files. **Fix: always
+  wrap literal tag-name text meant for display inside `[innerHTML]`-bound fields in
+  `<code>&lt;tag&gt;</code>`, exactly like every other reference to a tag name in this codebase**
+  — never leave a bare `<tag>` as raw text there. This is the OPPOSITE of the `heading` field on
+  the same `TheoryPoint` object, which binds via plain `{{ }}` interpolation (not `[innerHTML]`)
+  and therefore must NOT use `<code>`/entity-escaping — raw literal characters display correctly
+  as-is there (confirmed by a THIRD instance in the same batch: a `<code>&lt;br&gt;...</code>`-
+  wrapped `heading` string rendered its own `<code>` tags and un-decoded `&lt;`/`&gt;` entities
+  as ugly literal text, since interpolation never parses or decodes the string content at all —
+  removing the `<code>`/entity-wrapping and using bare `</br>`-style characters directly, matching
+  every other `heading` string in the same file, fixed it). **Net rule per shared-component field:
+  `heading` (plain interpolation) → raw characters, no entities, no tags; `points`/`thought`/
+  `reality`/`prompt`/`hint` (`[innerHTML]`) → wrap tag-name mentions in `<code>&lt;tag&gt;</code>`;
+  `solution` (plain interpolation inside `<pre><code>`) → raw characters, no entities, no tags** —
+  check which binding a shared component actually uses (grep its own `.ts` template) rather than
+  assuming based on a sibling field in the same data shape.
+
 - **Literal `@word` text (anywhere — `<h1>`, `<p>`, `<code>`, etc.) in the `.html` template**
   must be escaped as `&#64;word` — writing a literal `@if`/`@defer`/`@placeholder`/etc. as TEXT
   CONTENT between tags is parsed by the Angular compiler as the start of a control-flow/defer
@@ -948,6 +985,222 @@ Confirmed via direct file inspection before the first subtopic set (`/html/docum
 7. No `SUBTOPICS` map bare-key collision for `document-structure` (checked, confirmed collision-free)
    — but this hub is entering a `SUBTOPICS` map already shared by 8+ other hubs, so the standard
    grep-before-adding discipline still applies to every future HTML-hub topic.
+
+### Blazor hub subtopic wiring — first pilot; confirms the C#-hub "no live playground" pattern extends here, plus two new gotchas
+
+Confirmed via a dedicated Explore-agent investigation before writing (`/blazor/fundamentals`,
+2026-07-12) — do this same check before any other new hub's first subtopic set:
+1. **`BLAZOR_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching every other
+   hub's own dedicated labels map — composite subtopic keys there are bare too
+   (`'fundamentals/<slug>'`).
+2. **Progress/search keys are `blazor-` PREFIXED** (`blazor-fundamentals`), confirmed via
+   existing nav markup. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'blazor/fundamentals'`,
+   confirmed the base entry already existed) — subtopic composite keys follow suit:
+   `'blazor/fundamentals/<slug>'`.
+3. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic. Hub-prefixed to `'blazor-fundamentals'`,
+   with the same `// NOTE:` comment pattern already used for the `html-fundamentals`/
+   `css-fundamentals` collisions — the three nav-accordion helper calls in `app.html`
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) all use `'blazor-fundamentals'` too,
+   not the bare slug.
+4. **Blazor/.NET has no in-browser runtime — every subtopic dropped the live playground**,
+   using `<app-code-block>` instead, matching the established non-Angular-hub pattern (C#, SQL,
+   Python, Go). Content is grounded in documented .NET/Blazor framework behavior (expanding each
+   of the main page's own mistake entries into its underlying mechanism), not empirical browser
+   verification — there is no .NET runtime available to test claims against in this browser,
+   unlike JS/TS/CSS/HTML hubs where `javascript_tool` can verify claims directly.
+5. **A NEW variant of the raw-HTML-tag-as-text gotcha, specific to C#/Blazor generic syntax**:
+   a C# generic type expression written as plain prose inside an `[innerHTML]`-bound field
+   (e.g. `AddScoped<AuditLogBuffer>()` inside `exercise.prompt`) gets parsed by the browser as a
+   literal `<AuditLogBuffer>` HTML tag — the same failure mode as mentioning a literal `<script>`
+   tag in prose, just triggered by C# generic angle-bracket syntax (`SomeType<T>`) instead of an
+   actual HTML tag name. Caught via `get_page_text` showing a sentence truncated mid-word exactly
+   where the generic began — not caught by the build. **Fix: entity-escape any `SomeType<T>`
+   generic syntax written as prose inside an `[innerHTML]`-bound field** (`exercise.prompt`/
+   `.hint`, `misconceptions.thought`/`.reality`) — `AddScoped&lt;AuditLogBuffer&gt;()`. This is a
+   standing rule for all future C#/Blazor (or any generics-heavy language) subtopic content, in
+   addition to the pre-existing literal-tag-name rule. Code inside `codeTabs`/`solution` fields
+   (plain interpolation, not `[innerHTML]`) is unaffected — generics there render as literal text
+   correctly, confirmed by the same batch's `codeTabs` entries using `AddSingleton<T>()`,
+   `List<T>()` etc. freely with no issue.
+6. **A genuine build failure from a straight apostrophe inside a component's own single-quoted
+   TS string field** (not a `.html` bound attribute) — `'...the scenario .NET 8's per-component...'`
+   prematurely closed the string at the apostrophe in "8's", producing a cascade of unrelated
+   parser errors (`TS2322`, `TS18004`, `TS1005`) far from the actual break, the same confusing
+   error-shape pattern already documented for the backtick-in-template-literal and
+   apostrophe-in-`.html`-bound-attribute gotchas. **Confirms the general rule extends to EVERY
+   file type and EVERY single-quoted string field, not just the previously-documented `.html`
+   `[prev]`/`[next]` attribute case** — any delimiter character (`'`, `` ` ``) appearing literally
+   inside a string that uses that same delimiter breaks the string, regardless of whether it's a
+   `.ts` field or a `.html` attribute. Fixed with `\'`. Before trusting a build that touches new
+   prose content, grep for a bare `'` immediately preceded by a digit or letter in a
+   possessive/contraction pattern across the WHOLE file (not just `.html` bound attributes) —
+   the existing "grep before building" discipline was previously scoped too narrowly.
+7. **VERIFY C# LANGUAGE/FRAMEWORK CLAIMS BEFORE WRITING, THE SAME AS EMPIRICAL JS/browser CLAIMS**
+   — a real, confirmed inaccuracy was found and fixed on an ALREADY-PUBLISHED C# hub main page
+   (`/blazor/data-binding`, 2026-07-12) during subtopic authoring: the page's "loop variable
+   capture" mistake entry, matching quiz question, and code sample all described the classic
+   `foreach` closure bug (every lambda sees the LAST loop value) as still a current Blazor
+   problem — this was fixed at the C# LANGUAGE level for `foreach` specifically at C# 5.0
+   (2012, per-iteration variable capture), and current Razor `@foreach` codegen matches that
+   same semantics, confirmed via two research-agent verification passes before publishing
+   anything. The genuinely still-current gotcha in the same area is `@key` and Blazor's
+   diffing-by-position state misattribution when a list reorders — the main page's mistake
+   entry, quiz, and code sample were all corrected to this instead. **Since there is no C#/.NET
+   runtime available in this browser to empirically test claims against** (unlike JS/TS/CSS/HTML
+   hubs where `javascript_tool` can verify directly), C#/Blazor/.NET topics need the equivalent
+   discipline applied via targeted research-agent fact-checks BEFORE writing subtopic content
+   that states a "still current" bug/behavior — especially for anything with a specific language
+   version history, since docs/blog-post inertia repeats stale advice long after a language-level
+   fix lands.
+8. **A bare directive name used as the page's own SUBJECT (not just prose mentioning it) is a
+   much higher-density source of the bare-`@word`-as-text gotcha than usual** — this batch's
+   subtopic pages were literally ABOUT `@key` and `@bind:format`, so the directive name appeared
+   bare in h1 titles and page-subtitles repeatedly, not just in one or two prose asides. The
+   standard sweep caught most instances but missed one in a "Where this fits" paragraph on the
+   first pass — for any subtopic whose OWN TITLE contains a bare `@directive`, run the sweep a
+   second time on the fully-assembled batch (not just per-file while writing) before considering
+   it clean.
+9. **JS Interop topics are the one Blazor subtopic category where claims ARE empirically
+   browser-verifiable** — since Blazor's JS interop crosses into real JavaScript APIs, claims
+   about that JS-side behavior (e.g. `JSON.stringify()` throwing on circular references, dynamic
+   `import()` never touching `window`) can and should be verified via `javascript_tool` in this
+   browser before writing, exactly like JS/TS/CSS/HTML hub content — confirmed working on
+   `/blazor/js-interop`, 2026-07-12. This is narrower than "all Blazor topics are unverifiable" —
+   check whether a specific claim is about the JS SIDE of an interop boundary (testable here) or
+   the C# SIDE (not testable without a .NET runtime) before defaulting to the no-verification
+   pattern used for pure C#/.NET topics.
+10. **A grep-based apostrophe sweep can produce a false negative** — on the same `/blazor/js-interop`
+    batch, an initial sweep pass reported a file clean, but the build then failed on an unescaped
+    apostrophe in "the first's function" inside a `solution` field. The exact cause of the missed
+    match was not conclusively identified (a subtle shell-escaping interaction with the grep
+    pattern used), but the practical lesson is: treat a clean grep sweep as a strong signal, not
+    a guarantee — if the build still fails with the classic cascade of unrelated parser errors
+    (`TS2322`, `TS18004`, `TS1005`, "Unexpected '.'" etc.) after a sweep reported clean, immediately
+    suspect a missed apostrophe/backtick and re-run the sweep on the specific error line before
+    assuming a different root cause.
+10. **For claims about a specific framework MECHANISM (not just "is this still a bug"), verify
+    against actual source code, not just doc prose — but treat a source-code-only finding as
+    weaker than an official-docs-confirmed one, and don't publish the difference as fact.**
+    Before writing `/blazor/error-handling`'s subtopics, a research agent read
+    `ErrorBoundaryBase.cs` directly (dotnet/aspnetcore) to confirm `Recover()` never disposes or
+    recreates the child component instance — only doable by reading the actual method body, since
+    Microsoft Learn's prose never states this explicitly. A SEPARATE claim from the same research
+    pass (that `OnAfterRenderAsync` exceptions ARE caught by ErrorBoundary, based on
+    `NotifyRenderCompleted`/`HandleExceptionViaErrorBoundary` in `Renderer.cs`) came back
+    source-code-corroborated but NOT confirmed by any official doc text — a follow-up research
+    pass explicitly grepped the Learn docs and found zero mentions of `OnAfterRender` anywhere
+    near "error boundary". Rather than publish a surprising, doc-uncorroborated claim resting
+    solely on internal implementation detail (which can change across .NET versions without a
+    doc update), that subtopic angle was dropped and replaced with the doc-confirmed
+    Dispose/DisposeAsync-is-fatal angle instead — the same risky-claim self-correction discipline
+    already used for the earlier `%2F` URL-routing claim, just triggered by a source-vs-docs
+    confidence gap instead of a security-sensitivity judgment call.
+11. **Backticks used as markdown-style inline-code emphasis inside a SINGLE-quoted TS string
+    field (`theory.points`, `exercise.prompt`/`.hint`/`.solution`, `misconceptions.thought`/
+    `.reality`) are technically SAFE to build** (backticks don't conflict with a `'...'`
+    delimiter — this is the same rule already documented for the `solution`/`content`-field
+    backtick-collision gotcha, just the safe side of it), **but is a house-style inconsistency
+    every prior Blazor subtopic avoids** — confirmed by grepping prior batches, which uniformly
+    write inline code mentions in these fields as plain text (`OwningComponentBase`, `AppDbContext`)
+    with no backtick or `<code>` wrapping at all. Caught during the `/blazor/error-handling`
+    sweep (backtick-parity check flagged an unexpectedly high count in one file) and removed for
+    consistency — a build-passing sweep result doesn't mean the content matches house style, so a
+    parity check surfacing an outlier count is worth a manual look even when it isn't a build error.
+
+### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
+
+Confirmed via direct file inspection before the first subtopic set (`/css/box-model`, 2026-07-11):
+1. **`.css-page`'s wrapper rule is NOT global** (confirmed absent from `src/styles.scss`, same
+   situation as SQL/TypeScript/React/JavaScript) — every CSS subtopic `.scss` must include the
+   full `.css-page { max-width: 860px; margin: 0 auto; }` rule, with padding on `.subtopic-page`
+   instead (`2rem 1.25rem 4rem` — note `1.25rem` horizontal, matching the main topic page's own
+   `.scss`, NOT the HTML hub's `1.5rem`).
+2. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'css/box-model'`, confirmed the base entry
+   already existed) — subtopic composite keys follow suit: `'css/box-model/<slug>'`.
+3. **Breadcrumb uses its own dedicated `CSS_LABELS` map with bare keys** (`'box-model'`) — no
+   cross-hub collision risk here at all, since every hub has its own separate labels object
+   (unlike `app.ts`'s single flat `SUBTOPICS` map shared across all hubs) — confirmed via grep
+   showing only one `'box-model'` key in the whole file.
+4. Progress/search keys are `css-` prefixed (`css-box-model`), confirmed via existing nav markup.
+5. Theme: `$accent: #264de4`, `$tint: #eff6ff`, `.css-page`/`.css-icon`/`.css-section` CSS classes,
+   icon content the literal text `CSS` (light tint, matching the documented default), `tech="javascript"`
+   in `app-page-meta` (CSS pages share the JS/TS playground and run-it links).
+6. **Live playground uses the same `'typescript'` StackBlitz template as JS/TS/HTML subtopics**
+   (CSS runs natively in the browser) — `index.html` with an inline `<style>` block for the CSS
+   under test, plus `index.ts` doing the measurement/observation (e.g. `getBoundingClientRect()`),
+   `openFile="index.ts"`. Confirmed working end-to-end in the pilot, including StackBlitz loading
+   correctly in both light and dark mode.
+7. **Accuracy discipline carried over from a same-day HTML-hub fix**: before writing any subtopic
+   demo whose claim depends on live-measured behavior (not just documented facts), verify the
+   exact claim empirically via `javascript_tool` in the actual browser session first — do not
+   assume a plausible-sounding claim is correct. This directly followed catching and fixing a real
+   published inaccuracy in `/html/aria-roles/div-role-button-lacks-keyboard-activation` (its demo
+   claimed a synthetic/script-dispatched `Enter` keydown triggers a real `<button>`'s native click
+   activation — false: browsers only run default actions for TRUSTED events, and every
+   script-dispatched event has `isTrusted: false`, so the real button would show 0 clicks too,
+   contradicting the page's own claim). All three CSS Box Model claims (margin collapse uses the
+   larger value not the sum, outline never affects layout, parent-child collapse moves the
+   parent's own box) were confirmed via real `getBoundingClientRect()` measurements in-browser
+   before being written up — CSS layout computation has no analogous trusted-event gating, but
+   verifying first rather than assuming is now the standing practice for any live-behavior claim,
+   regardless of how confident the reasoning feels.
+8. No `SUBTOPICS` map bare-key collision for `box-model` (checked, confirmed collision-free).
+9. **The preview browser tab used for verification is backgrounded (`document.hidden === true`,
+   `document.hasFocus() === false`), which freezes real-time CSS transition/animation playback
+   AND `requestAnimationFrame` entirely** — confirmed via a real investigation during the CSS
+   Transitions batch (`/css/transitions`, 2026-07-11): a plain `transition: opacity 0.2s linear`
+   triggered via `el.style.opacity = '0'` stayed at its ORIGINAL value even 3 full seconds later
+   (`getComputedStyle` never progressed), and a nested `requestAnimationFrame` callback simply
+   never fired (a `javascript_tool` call hung to its 30s timeout). This is the same root cause as
+   the earlier CSS Animations batch's "`animationend` never fires" discovery — not two separate
+   bugs, one shared cause. **Fix — use `setTimeout`, never `requestAnimationFrame`, for any real
+   real-time wait in a verification script**, and for verifying transition/animation VALUES at a
+   specific point, retrieve the live `Animation`/`CSSTransition` object via
+   `element.getAnimations()` (reading it inside a `setTimeout` callback, not synchronously right
+   after triggering — the object only registers a tick later) and set its `currentTime` directly
+   — this bypasses the frozen real-time clock entirely and was reused successfully for CSS
+   Transitions in this batch, exactly as it was for `@keyframes` Animations in the prior batch.
+   `getAnimations()` checked synchronously (0ms after triggering) or via a forced-reflow
+   (`void el.offsetWidth`) still returned an empty array in every case tried — only a genuine
+   `setTimeout`-deferred check (even a very short one, 20–50ms) reliably returns the live
+   animation object.
+10. **`/css/tailwind` is the first CSS-hub topic to drop the live playground entirely** — same
+    reasoning already established for `/javascript/bundlers` and `/react/nextjs`: Tailwind's JIT
+    engine is a build-time static-text scanner (it reads source files as plain text, never
+    executes JavaScript), so none of its actual gotchas — a dynamic class string being invisible
+    to the scanner, a missing file extension in `content` — have any runtime behavior a browser
+    JS console can demonstrate. Used plain `<app-code-block>` instead, no
+    `LivePlaygroundComponent`/`PlaygroundFile` import. Also confirmed a real `SUBTOPICS` map
+    bare-key collision here (`tailwind` already claimed by the Angular hub's own
+    `/angular/tailwind` topic) — hub-prefixed to `css-tailwind`, matching the
+    `aspnet-routing`/`css-animations` precedent; verified via browser that the Angular hub's own
+    nav toggle and subtopics were unaffected by the fix.
+11. **New verification technique: SVG `foreignObject` + canvas rasterization for genuine pixel-level
+    proof of visual CSS effects** — discovered during the CSS Filters batch (`/css/css-filters`,
+    2026-07-12) when `getComputedStyle()`/`elementFromPoint()` couldn't verify claims about
+    `backdrop-filter` and `mix-blend-mode`, since those are pure rendering/compositing effects with
+    no CSSOM-exposed result. The technique: serialize a small HTML string into an SVG
+    `<foreignObject>`, load it into an `Image` via a `data:image/svg+xml` URL, `drawImage()` it onto
+    a `<canvas>`, then read the actual rendered pixel color with `ctx.getImageData(x, y, 1,
+    1).data`. This produced exact, reproducible pixel values (e.g. confirming `backdrop-filter:
+    blur(8px)` renders pure white `[255,255,255,255]` behind an opaque background but a red-tinted
+    blend behind a 20%-transparent one) — genuine proof, not inference from spec text. Reused
+    successfully for a second claim in the same batch (`mix-blend-mode: multiply` producing exactly
+    black `(0,0,0)` over a green background vs. exactly red `(255,0,0)` once isolated over a white
+    one — the precise multiply color math, not just "it looks different"). This is now the
+    established fallback whenever a CSS claim is about actual paint/compositing output that
+    `getComputedStyle()` cannot expose. **Gotcha found in the same batch**: an early attempt to
+    distinguish `filter: drop-shadow()` from `box-shadow` using `clip-path` to create a
+    transparent region failed — `clip-path` clips `box-shadow` identically to how it clips
+    `drop-shadow`, so both produced the same (unhelpful) result; abandoned that specific comparison
+    rather than force a misleading test. **A second, separate gotcha in the same batch**: testing
+    whether `filter`/`transform` creates a stacking context by hit-testing with
+    `document.elementFromPoint()` requires the elements under test to use `position: relative` (or
+    similar), never `position: fixed` — `position: fixed` unconditionally creates its OWN stacking
+    context regardless of `filter`/`transform`, which silently confounded the first attempt (both
+    the "with" and "without" cases showed the same trapped-child result until this was caught and
+    fixed by switching to `position: relative` on a `position: fixed` OUTER wrapper only).
 
 ## Current state (update when it changes!)
 

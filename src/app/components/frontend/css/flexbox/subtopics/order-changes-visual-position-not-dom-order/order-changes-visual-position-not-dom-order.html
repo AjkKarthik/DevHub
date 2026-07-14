@@ -1,0 +1,25 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Flexbox" topicRoute="/css/flexbox" subtopicLabel="order Changes Visual Position, Not DOM Order" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">order Changes Visual Position, Not DOM Order</h1>
+  <p class="page-subtitle">Reordering items visually with order leaves DOM traversal — and therefore Tab-key order — completely untouched, provably.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Compare DOM order against visual order (sorted by rendered position) for three items reshuffled with order — the two genuinely diverge.</p>
+    <app-live-playground title="order changes visual position, not DOM order" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This closes out three flexbox sizing and ordering gotchas — implicit minimum sizes overriding flex-shrink, flex-basis silently overriding width, and order creating a real visual/DOM divergence with accessibility consequences. Return to the CSS Flexbox overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Flexbox" topicRoute="/css/flexbox"
+    [prev]="{ label: 'flex-basis Wins Over width', route: '/css/flexbox/flex-basis-wins-over-width-when-both-are-set' }" />
+</div>

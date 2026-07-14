@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching &amp; Service Workers" topicRoute="/performance/caching" subtopicLabel="Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Selective Cache Deletion Keeps the Current Cache and Removes Stale Ones</h1>
+  <p class="page-subtitle">Seeding three caches and running the main page's own clearOldCaches() pattern leaves exactly the one named as current — the other two are genuinely deleted, verified by re-querying caches.keys().</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Cache Storage API, widely supported" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Seed three named caches, run the exact clearOldCaches pattern from the main page, and confirm which caches actually survive.</p>
+    <app-live-playground title="selective cache deletion keeps the current cache and removes stale ones" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "clear a user's Service Worker cache after a bad deploy" QnA pattern actually works as described — and surfaces the real risk of forgetting a cache name in the current-caches list. Together, these three subtopics cover the Cache API's real constraints (GET-only), its real behaviour (cache-first skips network), and its real cleanup mechanics (selective deletion).</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching &amp; Service Workers" topicRoute="/performance/caching"
+    [prev]="{ label: 'Cache-First Genuinely Skips the Network Entirely', route: '/performance/caching/cache-first-genuinely-skips-the-network-entirely' }" />
+</div>

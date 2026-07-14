@@ -1,0 +1,26 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Font Performance" topicRoute="/performance/font-performance" subtopicLabel="size-adjust Measurably Changes Rendered Text Width" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">size-adjust Measurably Changes Rendered Text Width</h1>
+  <p class="page-subtitle">Identical text at the identical font-size measured almost exactly 1.5× wider with size-adjust: 150% on the fallback — a precise, proportional, real layout change, not a rough tweak.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="size-adjust, Chrome 92+, Firefox 92+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Compare the real, measured rendered width of identical text with and without size-adjust: 150% on the font's own &#64;font-face declaration.</p>
+    <app-live-playground title="size-adjust measurably changes rendered text width" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's CLS-prevention claim about size-adjust with an exact, measured proportion rather than a general description. Next: whether document.fonts.check() genuinely tracks real load state, or just guesses.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Font Performance" topicRoute="/performance/font-performance"
+    [prev]="{ label: 'unicode-range Skips Font Files for Unused Character Ranges', route: '/performance/font-performance/unicode-range-skips-font-files-for-unused-character-ranges' }"
+    [next]="{ label: 'The Font Loading API Tracks Real Load State, Not a Guess', route: '/performance/font-performance/the-font-loading-api-tracks-real-load-state-not-a-guess' }" />
+</div>

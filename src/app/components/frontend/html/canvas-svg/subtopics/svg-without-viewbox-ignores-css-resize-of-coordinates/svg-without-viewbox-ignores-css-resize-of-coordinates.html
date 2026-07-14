@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Canvas &amp; SVG" topicRoute="/html/canvas-svg" subtopicLabel="SVG Without viewBox Ignores CSS Resize of Its Coordinates" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">SVG Without viewBox Ignores CSS Resize of Its Coordinates</h1>
+  <p class="page-subtitle">width/height set the SVG's own box. Only viewBox tells its content to scale proportionally when that box is resized via CSS — without it, shapes keep their literal, unscaled coordinates.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="SVG 1.1" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two identical circles, authored dead-center in a 100×100 space, both CSS-stretched to 300×300. Measure each circle's actual position as a fraction of its SVG's rendered box.</p>
+    <app-live-playground title="viewBox scaling vs no viewBox after CSS resize" template="typescript" openFile="index.html" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the trio of subtopics on this page's less-obvious sizing mechanics — Canvas's buffer-vs-display mismatch, its path-merging bug, and now SVG's own, very different coordinate-scaling model. Return to the <a routerLink="/html/canvas-svg">Canvas &amp; SVG</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Canvas &amp; SVG"
+    topicRoute="/html/canvas-svg"
+    [prev]="{ label: 'Missing beginPath() Merges Paths — Provable via Pixel Data', route: '/html/canvas-svg/missing-beginpath-merges-paths-provable-via-pixel-data' }"
+  />
+</div>

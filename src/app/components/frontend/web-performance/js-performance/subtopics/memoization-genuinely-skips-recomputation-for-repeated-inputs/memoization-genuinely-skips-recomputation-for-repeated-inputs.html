@@ -1,0 +1,25 @@
+<div class="perf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JavaScript Performance" topicRoute="/performance/js-performance" subtopicLabel="Memoization Genuinely Skips Recomputation for Repeated Inputs" />
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Memoization Genuinely Skips Recomputation for Repeated Inputs</h1>
+  <p class="page-subtitle">5 wrapper calls with only 2 distinct argument sets resulted in the real underlying function running exactly 2 times — confirmed with a real call counter, not assumed from the memoize() code.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="Fundamental JS caching pattern" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section"><h2>See it run</h2>
+    <p>Instrument the real function with a call counter and confirm memoization skips the underlying work for repeated inputs.</p>
+    <app-live-playground title="memoization genuinely skips recomputation for repeated inputs" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="perf-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's "re-running expensive calculations" mistake and its useMemo/computed fix with a real, countable proof rather than a description of the pattern. Together, these three subtopics cover a real copy-semantics gotcha, a real DOM-events gotcha, and a real caching gotcha — each verified with actual counters and measurements, not just documentation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="JavaScript Performance" topicRoute="/performance/js-performance"
+    [prev]="{ label: 'Event Delegation Catches Dynamically Added Elements', route: '/performance/js-performance/event-delegation-catches-dynamically-added-elements' }" />
+</div>

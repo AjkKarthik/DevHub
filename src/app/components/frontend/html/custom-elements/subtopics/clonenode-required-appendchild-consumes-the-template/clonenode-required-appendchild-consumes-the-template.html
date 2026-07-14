@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Web Components &amp; Custom Elements" topicRoute="/html/custom-elements" subtopicLabel="cloneNode(true) Is Required — appendChild Consumes the Template" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">cloneNode(true) Is Required — appendChild Consumes the Template</h1>
+  <p class="page-subtitle">template.content is a live DocumentFragment. Appending it directly MOVES its nodes — the second custom element instance built from a shared template gets nothing.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two custom elements, two instances each, built from one shared template per class — one clones correctly, one appends directly. Check which instances actually render content.</p>
+    <app-live-playground title="cloneNode vs appendChild on a shared template" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is a setup-time mistake, invisible with just one element instance. The next subtopic covers a runtime mistake that's equally invisible until you actually try to listen for an event outside the component. Return to the <a routerLink="/html/custom-elements">Web Components &amp; Custom Elements</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Web Components &amp; Custom Elements"
+    topicRoute="/html/custom-elements"
+    [next]="{ label: 'composed: true Is Required to Cross the Shadow Boundary', route: '/html/custom-elements/composed-true-required-to-cross-the-shadow-boundary' }"
+  />
+</div>

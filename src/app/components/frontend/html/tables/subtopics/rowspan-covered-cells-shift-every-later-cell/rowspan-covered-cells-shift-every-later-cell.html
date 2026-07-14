@@ -1,0 +1,30 @@
+<div class="html-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tables" topicRoute="/html/tables" subtopicLabel="A Leftover rowspan Cell Shifts Every Cell After It" />
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">A Leftover rowspan Cell Shifts Every Cell After It</h1>
+  <p class="page-subtitle">Forgetting to remove the cell a <code>rowspan</code> already covers doesn't drop that cell — it renders one column over, shifting everything after it. <code>cellIndex</code> can't even detect it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="HTML 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>See it run</h2>
+    <p>Two identical-looking tables — one with the covered cell correctly removed, one with it mistakenly left in. Compare <code>cellIndex</code> (blind to the problem) against a true grid-column audit (which reveals it).</p>
+    <app-live-playground title="rowspan leftover cell — true column audit" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="html-section">
+    <h2>Where this fits</h2>
+    <p>This is one of several ways a table's rendered structure can silently diverge from what the markup implies — the next subtopic covers a similar divergence in column WIDTH rather than column POSITION, and the one after that covers which CSS properties even reach a column at all. Return to the <a routerLink="/html/tables">Tables</a> overview for the full picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tables"
+    topicRoute="/html/tables"
+    [next]="{ label: 'table-layout: fixed Sizes Columns From Row 1 Only', route: '/html/tables/table-layout-fixed-sizes-columns-from-first-row' }"
+  />
+</div>

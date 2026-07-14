@@ -1,0 +1,26 @@
+<div class="css-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSS Architecture" topicRoute="/css/css-architecture" subtopicLabel="ITCSS Layer Order Works Because Class Selectors Beat Element Selectors" />
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">ITCSS Layer Order Works Because Class Selectors Beat Element Selectors</h1>
+  <p class="page-subtitle">A Generic-layer element selector declared LAST still can't override an earlier Components-layer class selector — pure specificity, no source-order dependency.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" since="CSS3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section"><h2>See it run</h2>
+    <p>Force a deliberately "wrong" file order and confirm the class selector still wins purely on specificity.</p>
+    <app-live-playground title="ITCSS layer order works because class beats element selectors" template="typescript" openFile="index.ts" [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="css-section"><h2>Where this fits</h2>
+    <p>This confirms the main page's own quiz claim about ITCSS's Generic layer having the lowest specificity, made directly measurable via computed styles. The final subtopic turns to BEM modifier composition — confirming modifiers merge by plain source order, not special priority.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSS Architecture" topicRoute="/css/css-architecture"
+    [prev]="{ label: 'BEM Flat Elements Lose to Accidental Descendant Selectors', route: '/css/css-architecture/bem-flat-elements-lose-to-accidental-descendant-selectors' }"
+    [next]="{ label: 'Composable Modifiers Merge by Source Order, Not Special Priority', route: '/css/css-architecture/composable-modifiers-merge-by-source-order-not-special-priority' }" />
+</div>

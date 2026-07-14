@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Fundamentals" topicRoute="/blazor/fundamentals" subtopicLabel="Static SSR Parents Cannot Make Children Interactive" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Static SSR Parents Cannot Make Children Interactive</h1>
+  <p class="page-subtitle">A Static SSR page ships as plain HTML with no live runtime wired up at all — a child component's own &#64;onclick handler renders a normal-looking button that silently does nothing unless &#64;rendermode is declared at or above that specific component.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's render-mode mistake entry into the actual "interactive island" boundary mechanism. Together with the earlier two subtopics, this batch covers when StateHasChanged() is genuinely needed, what Scoped really means in Blazor Server, and how .NET 8's interactivity boundaries actually propagate.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Blazor Fundamentals" topicRoute="/blazor/fundamentals"
+    [prev]="{ label: 'Scoped Services Are Per-Circuit, Not Per-Request, in Blazor Server', route: '/blazor/fundamentals/scoped-services-are-per-circuit-not-per-request-in-blazor-server' }" />
+</div>
