@@ -1,0 +1,40 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authentication" topicRoute="/blazor/authentication" subtopicLabel="Pre-render vs Post-Hydration Auth State" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Pre-render and Post-Hydration Auth State Come From Different Sources</h1>
+  <p class="page-subtitle">
+    Static SSR pre-render reads <code>HttpContext.User</code>; the interactive circuit reads its own, separately
+    persisted state — and the two can disagree.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered NotifyAuthenticationStateChanged as the trigger that re-evaluates already-rendered
+      AuthorizeView components — this one covers a related but distinct timing gap: the auth state itself can come
+      from two different sources depending on rendering phase, and without explicit persistence across that boundary,
+      the interactive side can disagree with what pre-render already showed. Next: OIDC role claims often use a
+      different claim type than <code>[Authorize(Roles = ...)]</code> expects by default, a mapping gap that produces
+      an authenticated-but-still-forbidden result.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authentication"
+    topicRoute="/blazor/authentication"
+    [prev]="{ label: 'NotifyAuthenticationStateChanged Is the Only Trigger for AuthorizeView', route: '/blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview' }"
+    [next]="{ label: 'OIDC Roles Often Use a Different Claim Type Than Authorize Expects', route: '/blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects' }"
+  />
+</div>

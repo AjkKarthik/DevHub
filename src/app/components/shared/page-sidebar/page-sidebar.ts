@@ -31894,6 +31894,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing authentication edge cases (expired tokens, revoked sessions) is often under-invested compared to testing the happy-path login flow.',
     ],
   },
+  'blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview': {
+    apis: ['AuthenticationStateProvider', 'AuthenticationStateProvider.NotifyAuthenticationStateChanged', 'AuthorizeView'],
+    related: [
+      { label: 'Authentication (overview)', route: '/blazor/authentication' },
+      { label: 'Pre-render and Post-Hydration Auth State Come From Different Sources', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' },
+      { label: 'OIDC Roles Often Use a Different Claim Type Than Authorize Expects', route: '/blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects' },
+    ],
+    tip: 'GetAuthenticationStateAsync() returning the correct value when manually tested proves nothing about whether already-rendered AuthorizeView components will ever see it — only NotifyAuthenticationStateChanged() actually wakes them up.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor authentication and authorization', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/security/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A custom AuthenticationStateProvider that mutates its own internal state without calling NotifyAuthenticationStateChanged() leaves every already-rendered AuthorizeView stuck on stale data until a full page reload forces re-initialization.',
+      'The event-driven model means there is no polling — AuthorizeView will never "eventually" pick up a change on its own, no matter how long you wait.',
+    ],
+  },
+
+  'blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources': {
+    apis: ['AddAuthenticationStateSerialization', 'HttpContext.User', 'PersistentAuthenticationStateProvider'],
+    related: [
+      { label: 'Authentication (overview)', route: '/blazor/authentication' },
+      { label: 'NotifyAuthenticationStateChanged Is the Only Trigger for AuthorizeView', route: '/blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview' },
+      { label: 'OIDC Roles Often Use a Different Claim Type Than Authorize Expects', route: '/blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects' },
+    ],
+    tip: 'A brief correct flash of authenticated content followed by a switch to logged-out is the classic symptom of a missing AddAuthenticationStateSerialization() call, not a race condition to work around with delays.',
+    docs: [
+      { label: 'Microsoft Learn — Blazor Web App authentication state', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/index' },
+    ],
+    resources: [],
+    gotchas: [
+      'HttpContext does not exist anymore once a SignalR circuit or WebAssembly runtime takes over — the interactive AuthenticationStateProvider cannot simply reuse it, it needs the pre-render result explicitly persisted across the boundary.',
+      'Testing this only against a Server or WASM render mode in isolation can miss the gap — the mismatch is specifically about the transition between Static SSR pre-render and interactivity.',
+    ],
+  },
+
+  'blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects': {
+    apis: ['ClaimsIdentity.RoleClaimType', 'OpenIdConnectOptions.TokenValidationParameters', 'Authorize(Roles = ...)'],
+    related: [
+      { label: 'Authentication (overview)', route: '/blazor/authentication' },
+      { label: 'NotifyAuthenticationStateChanged Is the Only Trigger for AuthorizeView', route: '/blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview' },
+      { label: 'Pre-render and Post-Hydration Auth State Come From Different Sources', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' },
+    ],
+    tip: 'A debug endpoint that dumps User.Claims is the fastest way to discover what claim type a given OIDC provider actually sends roles under, rather than guessing at RoleClaimType configuration.',
+    docs: [
+      { label: 'Microsoft Learn — Claims-based role-based access control', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/claims' },
+    ],
+    resources: [],
+    gotchas: [
+      'A role claim being present with the correct value does not guarantee [Authorize(Roles = ...)] will find it — the claim TYPE has to match RoleClaimType too.',
+      'Most mainstream OIDC providers use their own claim type for roles/groups, not the ASP.NET Core default — check before assuming Roles-based authorization will work unconfigured.',
+    ],
+  },
+
   'blazor/server-signalr': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

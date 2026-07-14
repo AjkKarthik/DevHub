@@ -1840,6 +1840,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' },
     { label: 'Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection', route: '/blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection' },
   ],
+  // Bare 'authentication' is free — the ASP.NET Core hub pre-emptively
+  // hub-prefixed its own collision to 'aspnet-authentication' in
+  // anticipation of the Blazor hub claiming this bare key.
+  'authentication': [
+    { label: 'NotifyAuthenticationStateChanged Is the Only Trigger for AuthorizeView', route: '/blazor/authentication/notifyauthenticationstatechanged-is-the-only-trigger-for-authorizeview' },
+    { label: 'Pre-render and Post-Hydration Auth State Come From Different Sources', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' },
+    { label: 'OIDC Roles Often Use a Different Claim Type Than Authorize Expects', route: '/blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,39 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authentication" topicRoute="/blazor/authentication" subtopicLabel="NotifyAuthenticationStateChanged Is the Only Trigger" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">NotifyAuthenticationStateChanged Is the Only Trigger for AuthorizeView</h1>
+  <p class="page-subtitle">
+    AuthorizeView and <code>[Authorize]</code> don't poll for auth changes — they subscribe to one event, raised by
+    <code>NotifyAuthenticationStateChanged</code>, and nothing else.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main Authentication page's mistake list already tells you to call
+      <code>NotifyAuthenticationStateChanged</code> after login — this subtopic explains WHY that call is required at
+      all: it's the only thing that raises the event every <code>AuthorizeView</code> and <code>[Authorize]</code>
+      component in the app is subscribed to. The next subtopic builds on this by looking at a related but distinct
+      timing issue — where the auth state itself comes FROM differs between server pre-render and post-hydration,
+      which can disagree even when notifications are wired correctly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authentication"
+    topicRoute="/blazor/authentication"
+    [next]="{ label: 'Pre-render vs Post-Hydration Auth State', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' }"
+  />
+</div>

@@ -1,0 +1,39 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authentication" topicRoute="/blazor/authentication" subtopicLabel="OIDC Roles vs RoleClaimType" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">OIDC Roles Often Use a Different Claim Type Than Authorize Expects</h1>
+  <p class="page-subtitle">
+    <code>[Authorize(Roles = "Admin")]</code> checks one specific claim type by default — most OIDC providers send
+    role info under a different one.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by expanding the main page's OIDC/Roles mistake entry into the exact mechanism —
+      ClaimsIdentity.RoleClaimType defaulting to a URI most providers never populate — and the specific
+      configuration fix. Together with the earlier two subtopics, this batch covers why
+      NotifyAuthenticationStateChanged is the sole trigger that re-evaluates already-rendered AuthorizeView content,
+      why pre-render and post-hydration auth state can genuinely disagree, and now why a present, correctly-valued
+      role claim can still fail a Roles-based authorization check.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authentication"
+    topicRoute="/blazor/authentication"
+    [prev]="{ label: 'Pre-render vs Post-Hydration Auth State', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' }"
+  />
+</div>

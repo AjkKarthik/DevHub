@@ -4995,7 +4995,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/authentication" routerLinkActive="active"><span class="nl-text">Authentication</span>@if(progress.isDone('blazor-authentication')){<span class="nl-done">✓</span>}@if(diff('blazor-authentication');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/authentication" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Authentication</span>
+        @if (progress.isDone('blazor-authentication')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-authentication'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('authentication')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('authentication')"
+                  (click)="toggleSubtopics('authentication', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('authentication'); as blazorAuthSubs) {
+        @if (isSubtopicsExpanded('authentication')) {
+          <div class="nav-subtopics">
+            @for (s of blazorAuthSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('blazor-error-handling')){<span class="nl-done">✓</span>}@if(diff('blazor-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/blazor/performance" routerLinkActive="active"><span class="nl-text">Blazor Performance</span>@if(progress.isDone('blazor-performance')){<span class="nl-done">✓</span>}@if(diff('blazor-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
