@@ -1061,6 +1061,24 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/blazor/f
    first pass — for any subtopic whose OWN TITLE contains a bare `@directive`, run the sweep a
    second time on the fully-assembled batch (not just per-file while writing) before considering
    it clean.
+9. **JS Interop topics are the one Blazor subtopic category where claims ARE empirically
+   browser-verifiable** — since Blazor's JS interop crosses into real JavaScript APIs, claims
+   about that JS-side behavior (e.g. `JSON.stringify()` throwing on circular references, dynamic
+   `import()` never touching `window`) can and should be verified via `javascript_tool` in this
+   browser before writing, exactly like JS/TS/CSS/HTML hub content — confirmed working on
+   `/blazor/js-interop`, 2026-07-12. This is narrower than "all Blazor topics are unverifiable" —
+   check whether a specific claim is about the JS SIDE of an interop boundary (testable here) or
+   the C# SIDE (not testable without a .NET runtime) before defaulting to the no-verification
+   pattern used for pure C#/.NET topics.
+10. **A grep-based apostrophe sweep can produce a false negative** — on the same `/blazor/js-interop`
+    batch, an initial sweep pass reported a file clean, but the build then failed on an unescaped
+    apostrophe in "the first's function" inside a `solution` field. The exact cause of the missed
+    match was not conclusively identified (a subtle shell-escaping interaction with the grep
+    pattern used), but the practical lesson is: treat a clean grep sweep as a strong signal, not
+    a guarantee — if the build still fails with the classic cascade of unrelated parser errors
+    (`TS2322`, `TS18004`, `TS1005`, "Unexpected '.'" etc.) after a sweep reported clean, immediately
+    suspect a missed apostrophe/backtick and re-run the sweep on the specific error line before
+    assuming a different root cause.
 
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
