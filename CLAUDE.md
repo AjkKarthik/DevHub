@@ -1079,6 +1079,34 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/blazor/f
     (`TS2322`, `TS18004`, `TS1005`, "Unexpected '.'" etc.) after a sweep reported clean, immediately
     suspect a missed apostrophe/backtick and re-run the sweep on the specific error line before
     assuming a different root cause.
+10. **For claims about a specific framework MECHANISM (not just "is this still a bug"), verify
+    against actual source code, not just doc prose — but treat a source-code-only finding as
+    weaker than an official-docs-confirmed one, and don't publish the difference as fact.**
+    Before writing `/blazor/error-handling`'s subtopics, a research agent read
+    `ErrorBoundaryBase.cs` directly (dotnet/aspnetcore) to confirm `Recover()` never disposes or
+    recreates the child component instance — only doable by reading the actual method body, since
+    Microsoft Learn's prose never states this explicitly. A SEPARATE claim from the same research
+    pass (that `OnAfterRenderAsync` exceptions ARE caught by ErrorBoundary, based on
+    `NotifyRenderCompleted`/`HandleExceptionViaErrorBoundary` in `Renderer.cs`) came back
+    source-code-corroborated but NOT confirmed by any official doc text — a follow-up research
+    pass explicitly grepped the Learn docs and found zero mentions of `OnAfterRender` anywhere
+    near "error boundary". Rather than publish a surprising, doc-uncorroborated claim resting
+    solely on internal implementation detail (which can change across .NET versions without a
+    doc update), that subtopic angle was dropped and replaced with the doc-confirmed
+    Dispose/DisposeAsync-is-fatal angle instead — the same risky-claim self-correction discipline
+    already used for the earlier `%2F` URL-routing claim, just triggered by a source-vs-docs
+    confidence gap instead of a security-sensitivity judgment call.
+11. **Backticks used as markdown-style inline-code emphasis inside a SINGLE-quoted TS string
+    field (`theory.points`, `exercise.prompt`/`.hint`/`.solution`, `misconceptions.thought`/
+    `.reality`) are technically SAFE to build** (backticks don't conflict with a `'...'`
+    delimiter — this is the same rule already documented for the `solution`/`content`-field
+    backtick-collision gotcha, just the safe side of it), **but is a house-style inconsistency
+    every prior Blazor subtopic avoids** — confirmed by grepping prior batches, which uniformly
+    write inline code mentions in these fields as plain text (`OwningComponentBase`, `AppDbContext`)
+    with no backtick or `<code>` wrapping at all. Caught during the `/blazor/error-handling`
+    sweep (backtick-parity check flagged an unexpectedly high count in one file) and removed for
+    consistency — a build-passing sweep result doesn't mean the content matches house style, so a
+    parity check surfacing an outlier count is worth a manual look even when it isn't a build error.
 
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
