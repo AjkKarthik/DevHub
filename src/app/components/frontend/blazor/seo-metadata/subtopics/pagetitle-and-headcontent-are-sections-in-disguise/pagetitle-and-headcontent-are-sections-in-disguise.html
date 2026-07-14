@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SEO & Metadata" topicRoute="/blazor/seo-metadata" subtopicLabel="Sections in Disguise" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">PageTitle and HeadContent Are Sections in Disguise</h1>
+  <p class="page-subtitle">
+    PageTitle wraps SectionContent, and HeadOutlet wraps SectionOutlet — "last one wins" follows the exact same
+    real-time registration mechanism.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's QnA already states the last PageTitle rendered wins — this subtopic explains the actual
+      mechanism underneath, directly extending what the Sections & Layouts topic already established about
+      registration-order timing. Next: JSON-LD structured data embedded via HeadContent has an escaping trap that
+      looks similar to, but is genuinely different from, the HTML-attribute-escaping mistake the main page already
+      covers.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SEO & Metadata"
+    topicRoute="/blazor/seo-metadata"
+    [next]="{ label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' }"
+  />
+</div>

@@ -1867,6 +1867,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' },
     { label: 'A SectionName Typo Fails Silently, With No Built-In Fallback', route: '/blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback' },
   ],
+  'seo-metadata': [
+    { label: 'PageTitle and HeadContent Are Sections in Disguise', route: '/blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise' },
+    { label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' },
+    { label: 'og:image and Other OG URLs Must Be Absolute, Not Relative', route: '/blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative' },
+  ],
 };
 
 @Component({

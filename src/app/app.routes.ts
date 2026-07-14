@@ -2033,7 +2033,12 @@ export const routes: Routes = [
       { path: 'sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped', loadComponent: () => import('./components/frontend/blazor/sections-layouts/subtopics/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped').then(m => m.SectionoutletMatchingIsAGlobalLookupNotAncestorScopedSubtopic) },
       { path: 'a-sectionname-typo-fails-silently-with-no-built-in-fallback', loadComponent: () => import('./components/frontend/blazor/sections-layouts/subtopics/a-sectionname-typo-fails-silently-with-no-built-in-fallback/a-sectionname-typo-fails-silently-with-no-built-in-fallback').then(m => m.ASectionnameTypoFailsSilentlyWithNoBuiltInFallbackSubtopic) },
     ] },
-    { path: 'seo-metadata',            loadComponent: () => import('./components/frontend/blazor/seo-metadata/seo-metadata').then(m => m.BlazorSeoMetadata) },
+    { path: 'seo-metadata', children: [
+      { path: '', loadComponent: () => import('./components/frontend/blazor/seo-metadata/seo-metadata').then(m => m.BlazorSeoMetadata) },
+      { path: 'pagetitle-and-headcontent-are-sections-in-disguise', loadComponent: () => import('./components/frontend/blazor/seo-metadata/subtopics/pagetitle-and-headcontent-are-sections-in-disguise/pagetitle-and-headcontent-are-sections-in-disguise').then(m => m.PagetitleAndHeadcontentAreSectionsInDisguiseSubtopic) },
+      { path: 'json-ld-inside-script-silently-corrupts-not-throws', loadComponent: () => import('./components/frontend/blazor/seo-metadata/subtopics/json-ld-inside-script-silently-corrupts-not-throws/json-ld-inside-script-silently-corrupts-not-throws').then(m => m.JsonLdInsideScriptSilentlyCorruptsNotThrowsSubtopic) },
+      { path: 'og-image-and-other-og-urls-must-be-absolute-not-relative', loadComponent: () => import('./components/frontend/blazor/seo-metadata/subtopics/og-image-and-other-og-urls-must-be-absolute-not-relative/og-image-and-other-og-urls-must-be-absolute-not-relative').then(m => m.OgImageAndOtherOgUrlsMustBeAbsoluteNotRelativeSubtopic) },
+    ] },
     { path: 'virtualization',          loadComponent: () => import('./components/frontend/blazor/virtualization/virtualization').then(m => m.BlazorVirtualization) },
     { path: 'progressive-enhancement', loadComponent: () => import('./components/frontend/blazor/progressive-enhancement/progressive-enhancement').then(m => m.BlazorProgressiveEnhancement) },
     { path: 'performance',             loadComponent: () => import('./components/frontend/blazor/performance/performance').then(m => m.BlazorPerformance) },

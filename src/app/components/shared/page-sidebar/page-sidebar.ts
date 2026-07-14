@@ -32233,6 +32233,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Canonical URLs (via HeadContent) prevent duplicate-content penalties for content reachable through multiple URL variations.',
     ],
   },
+  'blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise': {
+    apis: ['PageTitle', 'HeadContent', 'HeadOutlet', 'SectionContent'],
+    related: [
+      { label: 'SEO & Metadata (overview)', route: '/blazor/seo-metadata' },
+      { label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' },
+      { label: 'og:image and Other OG URLs Must Be Absolute, Not Relative', route: '/blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative' },
+    ],
+    tip: 'A page-level PageTitle gated behind an awaited data fetch can genuinely lose the "last one wins" race to its own layout\'s already-registered title — render it unconditionally with a loading-state fallback instead.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor Server SEO', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/prerendering-and-integration' },
+    ],
+    resources: [],
+    gotchas: [
+      'PageTitle and HeadContent are literal thin wrappers around SectionContent, and HeadOutlet renders SectionOutlet instances internally — every Sections & Layouts fact about registration order applies unchanged.',
+      '"Page beats layout" for PageTitle is a consequence of render order (layouts render before their own @Body), not a hardcoded precedence rule.',
+    ],
+  },
+
+  'blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws': {
+    apis: ['System.Text.Json.JsonSerializer', 'MarkupString', 'HeadContent'],
+    related: [
+      { label: 'SEO & Metadata (overview)', route: '/blazor/seo-metadata' },
+      { label: 'PageTitle and HeadContent Are Sections in Disguise', route: '/blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise' },
+      { label: 'og:image and Other OG URLs Must Be Absolute, Not Relative', route: '/blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative' },
+    ],
+    tip: 'Never let a bare @expression HTML-encode data inside a JSON-LD script tag — serialize with JsonSerializer.Serialize() and render the result via MarkupString instead.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor HeadContent', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/control-head-content' },
+    ],
+    resources: [],
+    gotchas: [
+      '<script> is an HTML "raw text element" — its content is never HTML-entity-decoded by the browser, so an HTML-encoded quote stays as the literal &quot; text forever instead of becoming a real character.',
+      'This fails silently, not with a parse error — the JSON usually stays structurally valid, but any value containing a quote or apostrophe is corrupted, which external validators (like Google Search Console) flag as malformed.',
+    ],
+  },
+
+  'blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative': {
+    apis: ['NavigationManager.BaseUri', 'NavigationManager.Uri'],
+    related: [
+      { label: 'SEO & Metadata (overview)', route: '/blazor/seo-metadata' },
+      { label: 'PageTitle and HeadContent Are Sections in Disguise', route: '/blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise' },
+      { label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' },
+    ],
+    tip: 'NavigationManager.Uri is already absolute and safe for og:url directly — a database-stored relative image path needs explicit resolution against a known base URL before it\'s valid for og:image.',
+    docs: [
+      { label: 'Open Graph protocol', url: 'https://ogp.me/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A relative og:image path renders as completely valid HTML with no visible symptom — the only way to notice the break is testing actual social sharing via a platform\'s own debugging tool.',
+      'A browser resolves a relative <img> src automatically against the current page; an external crawler reading og:image has no page context to resolve anything against.',
+    ],
+  },
+
   'blazor/maui-hybrid': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

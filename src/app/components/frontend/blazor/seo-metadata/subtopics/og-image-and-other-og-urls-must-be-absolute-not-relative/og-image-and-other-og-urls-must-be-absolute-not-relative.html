@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SEO & Metadata" topicRoute="/blazor/seo-metadata" subtopicLabel="OG URLs Must Be Absolute" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">og:image and Other OG URLs Must Be Absolute, Not Relative</h1>
+  <p class="page-subtitle">
+    A relative path resolves fine for an on-page image tag because the browser has context — an external crawler
+    reading og:image has none.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch with a third, distinct HeadContent gotcha alongside the earlier two. Together with
+      the earlier subtopics, this batch covers why PageTitle/HeadContent are Sections in disguise, why JSON-LD
+      needs JSON escaping instead of HTML escaping, and now why Open Graph URLs specifically need to be built as
+      absolute, unlike the on-page relative paths used everywhere else.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SEO & Metadata"
+    topicRoute="/blazor/seo-metadata"
+    [prev]="{ label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' }"
+  />
+</div>

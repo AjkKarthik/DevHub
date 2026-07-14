@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SEO & Metadata" topicRoute="/blazor/seo-metadata" subtopicLabel="JSON-LD Silent Corruption" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">JSON-LD Inside script Silently Corrupts, Not Throws</h1>
+  <p class="page-subtitle">
+    Razor's default HTML-encoding is actively wrong inside a script tag — the result usually parses fine, with
+    silently garbled values.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic showed PageTitle/HeadContent are literal Sections wrappers — this one covers a separate,
+      genuinely dangerous pitfall specific to embedding structured data through HeadContent. Next: Open Graph image
+      URLs have their own gotcha — a relative path that works perfectly fine for an on-page image tag breaks
+      completely for external crawlers reading og:image.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SEO & Metadata"
+    topicRoute="/blazor/seo-metadata"
+    [prev]="{ label: 'PageTitle and HeadContent Are Sections in Disguise', route: '/blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise' }"
+    [next]="{ label: 'og:image and Other OG URLs Must Be Absolute, Not Relative', route: '/blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative' }"
+  />
+</div>
