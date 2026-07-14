@@ -1835,6 +1835,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Reconnection Window Only Preserves State for the Same Circuit', route: '/blazor/server-signalr/the-reconnection-window-only-preserves-state-for-the-same-circuit' },
     { label: 'Azure SignalR Service Routes Messages, It Doesn’t Replicate Circuit State', route: '/blazor/server-signalr/azure-signalr-service-routes-messages-it-doesnt-replicate-circuit-state' },
   ],
+  'maui-hybrid': [
+    { label: 'A Wrong HostPage Path Produces a Blank Screen With No Error', route: '/blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error' },
+    { label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' },
+    { label: 'Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection', route: '/blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection' },
+  ],
 };
 
 @Component({

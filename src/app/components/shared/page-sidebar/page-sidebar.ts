@@ -32028,6 +32028,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Performance profiling a Hybrid app requires considering both native startup overhead AND web-layer rendering performance separately.',
     ],
   },
+
+  'blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error': {
+    apis: ['BlazorWebView.HostPage'],
+    related: [
+      { label: 'MAUI Blazor Hybrid (overview)', route: '/blazor/maui-hybrid' },
+      { label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' },
+      { label: 'Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection', route: '/blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection' },
+    ],
+    tip: 'The failure happens at the native WebView-navigation layer, before any .NET or Blazor code has started — there is no exception to catch and no error boundary to display anything.',
+    docs: [
+      { label: 'Microsoft Learn — BlazorWebView', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/tutorials/maui' },
+    ],
+    resources: [],
+    gotchas: [
+      'A correctly-spelled HostPage path is not sufficient on its own — the file must actually exist at that location in the BUILT app bundle, not just the source project.',
+      'A wrong HostPage path produces a completely blank screen, distinct from a mismatched RootComponent Selector (which shows static markup stuck forever).',
+    ],
+  },
+
+  'blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html': {
+    apis: ['RootComponent.Selector', 'BlazorWebView.RootComponents'],
+    related: [
+      { label: 'MAUI Blazor Hybrid (overview)', route: '/blazor/maui-hybrid' },
+      { label: 'A Wrong HostPage Path Produces a Blank Screen With No Error', route: '/blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error' },
+      { label: 'Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection', route: '/blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection' },
+    ],
+    tip: 'Selector is a genuine CSS selector evaluated against HostPage\'s actual markup, not a symbolic Blazor identifier — a mismatch shows the page\'s static content stuck forever, a different symptom from a wrong HostPage path.',
+    docs: [
+      { label: 'Microsoft Learn — Razor components in a hybrid app', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/routing' },
+    ],
+    resources: [],
+    gotchas: [
+      'A genuinely slow-loading app will eventually resolve — a mismatched Selector never will, regardless of how long you wait.',
+      'The mount-point element must be manually added to HostPage\'s own HTML — Blazor does not create it automatically.',
+    ],
+  },
+
+  'blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection': {
+    apis: ['Window.Resumed', 'Window.Stopped'],
+    related: [
+      { label: 'MAUI Blazor Hybrid (overview)', route: '/blazor/maui-hybrid' },
+      { label: 'A Wrong HostPage Path Produces a Blank Screen With No Error', route: '/blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error' },
+      { label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' },
+    ],
+    tip: 'A network interruption has zero effect on a Hybrid app\'s own UI state, unlike Blazor Server — the real state-loss triggers are native process lifecycle events instead: the app being force-quit or terminated by the OS under memory pressure.',
+    docs: [
+      { label: 'Microsoft Learn — .NET MAUI app lifecycle', url: 'https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/app-lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'Blazor Server patterns like CircuitHandler and DisconnectedCircuitRetentionPeriod have no direct equivalent in Hybrid — the analogous concern maps to MAUI\'s own native app lifecycle events instead.',
+      'State survives backgrounding only as long as the OS does not terminate the process under memory pressure, a real and common occurrence on mobile platforms.',
+    ],
+  },
+
   'blazor/bunit': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

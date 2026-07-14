@@ -1,0 +1,25 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MAUI Blazor Hybrid" topicRoute="/blazor/maui-hybrid" subtopicLabel="RootComponent’s Selector Must Match an Element in HostPage’s Own HTML" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">RootComponent's Selector Must Match an Element in HostPage's Own HTML</h1>
+  <p class="page-subtitle">Selector is a genuine CSS selector evaluated against HostPage's actual markup, not a symbolic Blazor identifier — a mismatch shows the page's static content stuck forever, a different symptom from a wrong HostPage path.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This expands the main page's BlazorWebView XAML sample into the actual mount-point mechanism and its own distinct silent-failure signature. Next: why Blazor Hybrid has no circuit at all, and where component state actually lives instead.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MAUI Blazor Hybrid" topicRoute="/blazor/maui-hybrid"
+    [prev]="{ label: 'A Wrong HostPage Path Produces a Blank Screen With No Error', route: '/blazor/maui-hybrid/a-wrong-hostpage-path-produces-a-blank-screen-with-no-error' }"
+    [next]="{ label: 'Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection', route: '/blazor/maui-hybrid/hybrid-has-no-circuit-state-lives-in-the-native-process-not-a-connection' }" />
+</div>

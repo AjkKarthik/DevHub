@@ -1,0 +1,24 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MAUI Blazor Hybrid" topicRoute="/blazor/maui-hybrid" subtopicLabel="Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Hybrid Has No Circuit — State Lives in the Native Process, Not a Connection</h1>
+  <p class="page-subtitle">A network interruption has zero effect on a Hybrid app's own UI state, unlike Blazor Server — the real state-loss triggers are native process lifecycle events instead: the app being force-quit or terminated by the OS under memory pressure.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section"><h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section"><h2>Where this fits</h2>
+    <p>This closes out the batch by expanding the main page's "no SignalR circuit" claim into what genuinely threatens Hybrid state instead, and the native lifecycle hooks that serve an analogous purpose. Together with the earlier two subtopics, this batch covers the two distinct silent-failure signatures at Hybrid startup and now the fundamentally different state-lifetime model versus Blazor Server.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="MAUI Blazor Hybrid" topicRoute="/blazor/maui-hybrid"
+    [prev]="{ label: 'RootComponent’s Selector Must Match an Element in HostPage’s Own HTML', route: '/blazor/maui-hybrid/rootcomponent-selector-must-match-an-element-in-hostpages-own-html' }" />
+</div>
