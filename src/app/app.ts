@@ -1882,6 +1882,15 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' },
     { label: 'FormName Defaults to an Empty String, With No Ancestor Scoping', route: '/blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping' },
   ],
+  // NOTE: keyed 'blazor-performance', NOT bare 'performance' — the Web
+  // Performance hub already owns a route at the same bare slug, and
+  // ASP.NET Core/SQL/React/HTML have all already resolved the same
+  // collision the same way ('aspnet-performance', 'sql-performance', etc.).
+  'blazor-performance': [
+    { label: 'Blazor Already Skips SetParametersAsync for Unchanged Primitives', route: '/blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives' },
+    { label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' },
+    { label: 'IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently', route: '/blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently' },
+  ],
 };
 
 @Component({

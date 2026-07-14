@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Performance" topicRoute="/blazor/performance" subtopicLabel="Primitives Already Skip Re-renders" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Blazor Already Skips SetParametersAsync for Unchanged Primitives</h1>
+  <p class="page-subtitle">
+    The framework compares primitive parameters by value before re-rendering — the real optimization gap is
+    reference-type parameters, not everything.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The quiz already hints that comparing parameters helps Blazor decide whether to call SetParametersAsync —
+      this subtopic pins down exactly which parameter types already get this for free, and which don't. Next:
+      ShouldRender() returning false skips more than just the DOM diff — it skips the component's OnAfterRender
+      lifecycle entirely for that cycle too.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Blazor Performance"
+    topicRoute="/blazor/performance"
+    [next]="{ label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' }"
+  />
+</div>

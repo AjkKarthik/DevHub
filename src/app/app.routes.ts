@@ -2051,7 +2051,12 @@ export const routes: Routes = [
       { path: 'a-cross-origin-redirect-after-enhanced-form-submission-hard-fails', loadComponent: () => import('./components/frontend/blazor/progressive-enhancement/subtopics/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails').then(m => m.ACrossOriginRedirectAfterEnhancedFormSubmissionHardFailsSubtopic) },
       { path: 'formname-defaults-to-empty-string-with-no-ancestor-scoping', loadComponent: () => import('./components/frontend/blazor/progressive-enhancement/subtopics/formname-defaults-to-empty-string-with-no-ancestor-scoping/formname-defaults-to-empty-string-with-no-ancestor-scoping').then(m => m.FormnameDefaultsToEmptyStringWithNoAncestorScopingSubtopic) },
     ] },
-    { path: 'performance',             loadComponent: () => import('./components/frontend/blazor/performance/performance').then(m => m.BlazorPerformance) },
+    { path: 'performance', children: [
+      { path: '', loadComponent: () => import('./components/frontend/blazor/performance/performance').then(m => m.BlazorPerformance) },
+      { path: 'blazor-already-skips-setparametersasync-for-unchanged-primitives', loadComponent: () => import('./components/frontend/blazor/performance/subtopics/blazor-already-skips-setparametersasync-for-unchanged-primitives/blazor-already-skips-setparametersasync-for-unchanged-primitives').then(m => m.BlazorAlreadySkipsSetparametersasyncForUnchangedPrimitivesSubtopic) },
+      { path: 'shouldrender-false-also-skips-onafterrender-not-just-the-diff', loadComponent: () => import('./components/frontend/blazor/performance/subtopics/shouldrender-false-also-skips-onafterrender-not-just-the-diff/shouldrender-false-also-skips-onafterrender-not-just-the-diff').then(m => m.ShouldrenderFalseAlsoSkipsOnafterrenderNotJustTheDiffSubtopic) },
+      { path: 'imemorycache-getorcreateasync-can-run-its-factory-concurrently', loadComponent: () => import('./components/frontend/blazor/performance/subtopics/imemorycache-getorcreateasync-can-run-its-factory-concurrently/imemorycache-getorcreateasync-can-run-its-factory-concurrently').then(m => m.ImemorycacheGetorcreateasyncCanRunItsFactoryConcurrentlySubtopic) },
+    ] },
     { path: 'bunit',                   loadComponent: () => import('./components/frontend/blazor/bunit/bunit').then(m => m.BlazorBunit) },
     { path: 'cheatsheet',              loadComponent: () => import('./components/frontend/blazor/cheatsheet/cheatsheet').then(m => m.BlazorCheatsheet) },
     { path: 'interview-prep',          loadComponent: () => import('./components/frontend/blazor/interview-prep/interview-prep').then(m => m.BlazorInterviewPrep) },

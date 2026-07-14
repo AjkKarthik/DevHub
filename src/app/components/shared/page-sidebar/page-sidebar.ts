@@ -32200,6 +32200,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Performance should be measured against actual user-facing metrics (perceived responsiveness), not just internal metrics like render count.',
     ],
   },
+  'blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives': {
+    apis: ['SetParametersAsync', 'ParameterView', 'ShouldRender()'],
+    related: [
+      { label: 'Performance (overview)', route: '/blazor/performance' },
+      { label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' },
+      { label: 'IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently', route: '/blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently' },
+    ],
+    tip: 'A manual ShouldRender equality check only pays off for record/class/collection parameters — Blazor already compares primitive parameters (numbers, strings, bool, enums, Guid, EventCallback) by value before calling SetParametersAsync at all.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Razor component rendering', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'Blazor\'s parameter comparison only covers a fixed whitelist of immutable types — any reference type (record, class, List<T>) always re-invokes SetParametersAsync regardless of value equality.',
+      'Adding a manual equality check on top of already-primitive parameters is redundant with an optimization the framework was already doing for free.',
+    ],
+  },
+
+  'blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff': {
+    apis: ['ShouldRender()', 'OnAfterRender()', 'OnAfterRenderAsync()'],
+    related: [
+      { label: 'Performance (overview)', route: '/blazor/performance' },
+      { label: 'Blazor Already Skips SetParametersAsync for Unchanged Primitives', route: '/blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives' },
+      { label: 'IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently', route: '/blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently' },
+    ],
+    tip: 'If OnAfterRenderAsync logic depends on a condition ShouldRender() doesn\'t check, a skipped render silently skips that logic too — make sure ShouldRender() accounts for every condition its own OnAfterRender depends on.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Razor component lifecycle', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'A component absent from a render batch (because ShouldRender() returned false) never gets OnAfterRender/OnAfterRenderAsync invoked for that cycle — this is a direct consequence, not a separate skip decision.',
+      'Per-render JS interop or DOM-measurement logic living in OnAfterRenderAsync needs to stay in sync with everything ShouldRender() checks, or it can be silently skipped for unrelated reasons.',
+    ],
+  },
+
+  'blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently': {
+    apis: ['IMemoryCache.GetOrCreateAsync()', 'SemaphoreSlim'],
+    related: [
+      { label: 'Performance (overview)', route: '/blazor/performance' },
+      { label: 'Blazor Already Skips SetParametersAsync for Unchanged Primitives', route: '/blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives' },
+      { label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' },
+    ],
+    tip: 'A burst of redundant, near-identical queries every time a popular cache entry expires under load is the classic symptom of a cache stampede — wrap the cache-miss path in a per-key SemaphoreSlim to fix it.',
+    docs: [
+      { label: 'Microsoft Learn — Cache in-memory in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/memory' },
+    ],
+    resources: [],
+    gotchas: [
+      'IMemoryCache has no built-in per-key locking — multiple concurrent callers observing a cache miss for the same key can each independently run their own copy of the factory delegate.',
+      'This fix targets hot, expensive cache keys under realistic concurrent load specifically — not a blanket requirement for every GetOrCreateAsync call in an app.',
+    ],
+  },
+
   'blazor/virtualization': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Performance" topicRoute="/blazor/performance" subtopicLabel="Also Skips OnAfterRender" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">ShouldRender False Also Skips OnAfterRender, Not Just the Diff</h1>
+  <p class="page-subtitle">
+    A component absent from a render batch never gets its OnAfterRender/OnAfterRenderAsync invoked for that cycle
+    — a real consequence for interop logic living there.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered which parameter types Blazor already compares by value before calling
+      SetParametersAsync — this one covers a downstream consequence of ShouldRender() itself: skipping a render
+      skips more than just the DOM diff. Next: IMemoryCache.GetOrCreateAsync's factory can run concurrently for
+      the same key under load, a classic cache stampede risk the main page's own code sample doesn't guard against.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Blazor Performance"
+    topicRoute="/blazor/performance"
+    [prev]="{ label: 'Blazor Already Skips SetParametersAsync for Unchanged Primitives', route: '/blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives' }"
+    [next]="{ label: 'IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently', route: '/blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently' }"
+  />
+</div>

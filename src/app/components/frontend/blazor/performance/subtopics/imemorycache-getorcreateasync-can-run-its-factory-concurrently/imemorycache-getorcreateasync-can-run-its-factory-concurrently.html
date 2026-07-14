@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Blazor Performance" topicRoute="/blazor/performance" subtopicLabel="Cache Stampede Risk" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently</h1>
+  <p class="page-subtitle">
+    There's no built-in per-key lock — multiple concurrent requests for the same missing key can each redundantly
+    run the expensive factory delegate.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — and the entire Blazor Phase 10 rollout — by extending the main page's own
+      IMemoryCache example with a real concurrency gap it doesn't mention. Together with the earlier two subtopics,
+      this batch covers which parameter types Blazor already optimizes for free, why a skipped render also skips
+      OnAfterRender, and now why a correctly-configured cache can still get stampeded under load.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Blazor Performance"
+    topicRoute="/blazor/performance"
+    [prev]="{ label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' }"
+  />
+</div>
