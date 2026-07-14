@@ -1848,6 +1848,15 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Pre-render and Post-Hydration Auth State Come From Different Sources', route: '/blazor/authentication/prerender-and-post-hydration-auth-state-come-from-different-sources' },
     { label: 'OIDC Roles Often Use a Different Claim Type Than Authorize Expects', route: '/blazor/authentication/oidc-roles-often-use-a-different-claim-type-than-authorize-expects' },
   ],
+  // NOTE: keyed 'blazor-error-handling', NOT bare 'error-handling' — the
+  // JavaScript hub's own /javascript/error-handling topic already claims
+  // the bare key, and the ASP.NET Core hub already resolved the same
+  // collision as 'aspnet-error-handling'.
+  'blazor-error-handling': [
+    { label: 'ErrorBoundary.Recover() Clears the Error, Not the Child’s Own State', route: '/blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state' },
+    { label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' },
+    { label: 'Async void Event Handlers Bypass ErrorBoundary Entirely', route: '/blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,39 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/blazor/error-handling" subtopicLabel="Dispose Exceptions Are Fatal" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary</h1>
+  <p class="page-subtitle">
+    Unlike almost every other lifecycle method, an unhandled exception in Dispose or DisposeAsync gets no
+    ErrorBoundary recovery path at all — by design.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered what Recover() actually does (and doesn't do) when an ErrorBoundary catches a
+      recoverable exception — this one covers the one lifecycle method deliberately excluded from that recovery
+      model entirely. Next: fire-and-forget async void event handlers bypass ErrorBoundary in a completely
+      different way — not because Blazor excludes them by design, but because the exception never enters the
+      pipeline ErrorBoundary is watching in the first place.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/blazor/error-handling"
+    [prev]="{ label: 'ErrorBoundary.Recover() Clears the Error, Not the Child’s Own State', route: '/blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state' }"
+    [next]="{ label: 'Async void Event Handlers Bypass ErrorBoundary Entirely', route: '/blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely' }"
+  />
+</div>

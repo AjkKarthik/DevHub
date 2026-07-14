@@ -31817,6 +31817,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Distinguishing operational errors (an expected API timeout, handled gracefully) from programmer errors (a null reference bug, should crash visibly) shapes where to add try/catch versus letting an ErrorBoundary catch it.',
     ],
   },
+  'blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state': {
+    apis: ['ErrorBoundary.Recover()', 'ErrorBoundary', '@key'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/blazor/error-handling' },
+      { label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' },
+      { label: 'Async void Event Handlers Bypass ErrorBoundary Entirely', route: '/blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely' },
+    ],
+    tip: 'An error that reappears instantly after clicking Retry is the classic symptom of calling Recover() alone — the fix is changing a @key value to force real recreation of the child, not adding more try/catch around Recover().',
+    docs: [
+      { label: 'Microsoft Learn — Handle errors in ASP.NET Core Blazor apps', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors' },
+    ],
+    resources: [],
+    gotchas: [
+      'Recover() resets only the ErrorBoundary\'s own error-count and stored exception — it never disposes or recreates the child component instance, so lifecycle methods like OnInitializedAsync do not run again.',
+      'Calling Recover() directly from within the failing render path can produce a genuine infinite catch-recover-fail loop if the underlying bad state was never actually cleared.',
+    ],
+  },
+
+  'blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary': {
+    apis: ['IDisposable.Dispose()', 'IAsyncDisposable.DisposeAsync()'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/blazor/error-handling' },
+      { label: 'ErrorBoundary.Recover() Clears the Error, Not the Child’s Own State', route: '/blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state' },
+      { label: 'Async void Event Handlers Bypass ErrorBoundary Entirely', route: '/blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely' },
+    ],
+    tip: 'Wrap risky cleanup logic (unsubscribing from an already-torn-down event source, releasing an already-disposed dependency) in its own try-catch inside Dispose/DisposeAsync — it is one of the few places in Blazor where swallow-and-log is the correct call, since no ErrorBoundary will save the circuit from this one.',
+    docs: [
+      { label: 'Microsoft Learn — Component disposal in ASP.NET Core Blazor', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/component-disposal' },
+    ],
+    resources: [],
+    gotchas: [
+      'An unhandled exception in Dispose is fatal to the circuit on Blazor Server, by design — there is no ErrorBoundary-mediated recovery path for it, unlike almost every other lifecycle method.',
+      'DI-scope teardown races (a dependency already disposed by the container before a component\'s own Dispose runs) are a realistic, easy-to-miss trigger for this class of bug.',
+    ],
+  },
+
+  'blazor/error-handling/async-void-event-handlers-bypass-errorboundary-entirely': {
+    apis: ['async Task', 'async void', 'SynchronizationContext'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/blazor/error-handling' },
+      { label: 'ErrorBoundary.Recover() Clears the Error, Not the Child’s Own State', route: '/blazor/error-handling/errorboundary-recover-clears-the-error-not-the-childs-own-state' },
+      { label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' },
+    ],
+    tip: 'If an ErrorBoundary-wrapped event handler\'s exception takes down the whole page instead of showing fallback content, check the handler\'s signature first — async void gives the renderer no Task to observe at all.',
+    docs: [
+      { label: 'Microsoft Learn — Handle errors in ASP.NET Core Blazor apps', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is not a misplaced ErrorBoundary — no placement of the boundary can catch an async void handler\'s exception, since there is no Task for its underlying mechanism to observe.',
+      'On Blazor Server the escaping exception is fatal to the circuit; on WASM there is no circuit to tear down, but the runtime can still be left in an inconsistent state.',
+    ],
+  },
+
   'blazor/js-interop': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

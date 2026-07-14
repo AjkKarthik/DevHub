@@ -5015,7 +5015,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('blazor-error-handling')){<span class="nl-done">✓</span>}@if(diff('blazor-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/error-handling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Error Handling</span>
+        @if (progress.isDone('blazor-error-handling')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-error-handling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('blazor-error-handling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('blazor-error-handling')"
+                  (click)="toggleSubtopics('blazor-error-handling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('blazor-error-handling'); as blazorErrSubs) {
+        @if (isSubtopicsExpanded('blazor-error-handling')) {
+          <div class="nav-subtopics">
+            @for (s of blazorErrSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/performance" routerLinkActive="active"><span class="nl-text">Blazor Performance</span>@if(progress.isDone('blazor-performance')){<span class="nl-done">✓</span>}@if(diff('blazor-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

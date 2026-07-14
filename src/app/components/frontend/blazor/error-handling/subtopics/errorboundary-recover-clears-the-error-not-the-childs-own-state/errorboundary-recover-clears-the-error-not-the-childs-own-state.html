@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/blazor/error-handling" subtopicLabel="Recover() Doesn't Reset Child State" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">ErrorBoundary.Recover() Clears the Error, Not the Child's Own State</h1>
+  <p class="page-subtitle">
+    Recover() only resets the boundary's own error flag and re-renders — the same child instance keeps whatever
+    state caused the original exception.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main Error Handling page's mistake list already tells you to call Recover() when the user takes corrective
+      action — this subtopic explains exactly what Recover() does and doesn't do, since assuming it re-runs the
+      child's lifecycle is a common and confusing trap. Next: unlike most lifecycle exceptions ErrorBoundary can
+      recover from, an exception thrown inside Dispose or DisposeAsync is deliberately treated as fatal, by design.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/blazor/error-handling"
+    [next]="{ label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' }"
+  />
+</div>

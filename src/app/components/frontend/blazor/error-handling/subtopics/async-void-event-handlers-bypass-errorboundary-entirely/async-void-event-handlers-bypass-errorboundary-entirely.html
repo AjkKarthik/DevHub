@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/blazor/error-handling" subtopicLabel="Async void Bypasses ErrorBoundary" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Async void Event Handlers Bypass ErrorBoundary Entirely</h1>
+  <p class="page-subtitle">
+    ErrorBoundary watches a Task for faults — an async void method returns no Task, so there's nothing for it to
+    observe at all.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by expanding the main page's async-void mistake entry into the exact reason it
+      escapes ErrorBoundary — a missing Task for the renderer to observe, not a misconfigured boundary. Together
+      with the earlier two subtopics, this batch covers what Recover() actually resets (and doesn't), why Dispose
+      exceptions get no recovery path at all by design, and now why async void handlers were never reachable by
+      ErrorBoundary in the first place.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/blazor/error-handling"
+    [prev]="{ label: 'Dispose Exceptions Are Fatal, Not Recoverable via ErrorBoundary', route: '/blazor/error-handling/dispose-exceptions-are-fatal-not-recoverable-via-errorboundary' }"
+  />
+</div>
