@@ -4879,7 +4879,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/virtualization" routerLinkActive="active"><span class="nl-text">Component Virtualization</span>@if(progress.isDone('blazor-virtualization')){<span class="nl-done">✓</span>}@if(diff('blazor-virtualization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/virtualization" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Component Virtualization</span>
+        @if (progress.isDone('blazor-virtualization')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-virtualization'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('virtualization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('virtualization')"
+                  (click)="toggleSubtopics('virtualization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('virtualization'); as blazorVirtSubs) {
+        @if (isSubtopicsExpanded('virtualization')) {
+          <div class="nav-subtopics">
+            @for (s of blazorVirtSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

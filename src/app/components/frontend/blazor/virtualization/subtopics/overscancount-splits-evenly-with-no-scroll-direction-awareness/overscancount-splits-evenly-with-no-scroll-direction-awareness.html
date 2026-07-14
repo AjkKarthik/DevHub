@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Virtualization" topicRoute="/blazor/virtualization" subtopicLabel="No Scroll-Direction Awareness" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">OverscanCount Splits Evenly, With No Scroll-Direction Awareness</h1>
+  <p class="page-subtitle">
+    The exact same buffer value applies above and below the visible range at all times — there's no way to bias it
+    toward the direction of travel.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by refining the main page's own OverscanCount description with a precise mechanism
+      detail. Together with the earlier two subtopics, this batch covers why &#64;key matters most in Virtualize's
+      highest-churn scenario, why CancellationToken forwarding is about efficiency rather than correctness, and now
+      why OverscanCount can only be tuned as a single symmetric value.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Virtualization"
+    topicRoute="/blazor/virtualization"
+    [prev]="{ label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' }"
+  />
+</div>

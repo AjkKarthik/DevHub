@@ -1872,6 +1872,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' },
     { label: 'og:image and Other OG URLs Must Be Absolute, Not Relative', route: '/blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative' },
   ],
+  'virtualization': [
+    { label: 'Virtualize Recreates Item DOM on Every Filter Without @key', route: '/blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key' },
+    { label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' },
+    { label: 'OverscanCount Splits Evenly, With No Scroll-Direction Awareness', route: '/blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness' },
+  ],
 };
 
 @Component({

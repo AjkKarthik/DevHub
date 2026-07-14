@@ -32211,6 +32211,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Combining virtualization with animated list transitions is genuinely difficult, since Virtualize aggressively creates/destroys DOM elements outside the visible range.',
     ],
   },
+  'blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key': {
+    apis: ['@key', 'Virtualize.Items'],
+    related: [
+      { label: 'Virtualization (overview)', route: '/blazor/virtualization' },
+      { label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' },
+      { label: 'OverscanCount Splits Evenly, With No Scroll-Direction Awareness', route: '/blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness' },
+    ],
+    tip: 'A brief visual flicker on rows that remain visible before and after a filter keystroke is the classic symptom of missing @key — Blazor is rebuilding DOM nodes for items that never actually left the results.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor Virtualize component', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/virtualization' },
+    ],
+    resources: [],
+    gotchas: [
+      'Without @key, Blazor diffs list items purely by position — a filter operation that reshuffles which item occupies which position causes unnecessary DOM teardown/rebuild even for items still present in the results.',
+      'This cost compounds specifically in high-churn scenarios like live search-as-you-type filtering, where it happens on every keystroke rather than once.',
+    ],
+  },
+
+  'blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself': {
+    apis: ['ItemsProviderRequest.CancellationToken', 'ItemsProviderResult<T>'],
+    related: [
+      { label: 'Virtualization (overview)', route: '/blazor/virtualization' },
+      { label: 'Virtualize Recreates Item DOM on Every Filter Without @key', route: '/blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key' },
+      { label: 'OverscanCount Splits Evenly, With No Scroll-Direction Awareness', route: '/blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness' },
+    ],
+    tip: 'Forwarding the CancellationToken to an ItemsProvider\'s underlying call is a resource-efficiency optimization, not a correctness requirement — Virtualize discards stale results on its own regardless.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor Virtualize component', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/virtualization' },
+    ],
+    resources: [],
+    gotchas: [
+      'Virtualize cancels the previous request\'s token the moment a newer request starts, and checks that same token before applying any result — a stale, non-cooperative provider\'s late result is discarded regardless.',
+      'Skipping CancellationToken forwarding still wastes real bandwidth/server load on work that gets silently discarded, even though the on-screen result stays correct.',
+    ],
+  },
+
+  'blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness': {
+    apis: ['OverscanCount'],
+    related: [
+      { label: 'Virtualization (overview)', route: '/blazor/virtualization' },
+      { label: 'Virtualize Recreates Item DOM on Every Filter Without @key', route: '/blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key' },
+      { label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' },
+    ],
+    tip: 'There is no per-direction OverscanCount setting — if fast one-directional scrolling shows blank-spacer flashes, the only lever is raising the single value, which grows the buffer in both directions equally.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor Virtualize component', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/virtualization' },
+    ],
+    resources: [],
+    gotchas: [
+      'The exact same OverscanCount value applies above and below the visible range at all times — there is no scroll-direction or velocity signal anywhere in the calculation.',
+      'Raising OverscanCount to fix a directional symptom also grows the unused-direction buffer proportionally, at the cost of more total live DOM nodes.',
+    ],
+  },
+
   'blazor/progressive-enhancement': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

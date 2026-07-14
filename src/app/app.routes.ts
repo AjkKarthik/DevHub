@@ -2039,7 +2039,12 @@ export const routes: Routes = [
       { path: 'json-ld-inside-script-silently-corrupts-not-throws', loadComponent: () => import('./components/frontend/blazor/seo-metadata/subtopics/json-ld-inside-script-silently-corrupts-not-throws/json-ld-inside-script-silently-corrupts-not-throws').then(m => m.JsonLdInsideScriptSilentlyCorruptsNotThrowsSubtopic) },
       { path: 'og-image-and-other-og-urls-must-be-absolute-not-relative', loadComponent: () => import('./components/frontend/blazor/seo-metadata/subtopics/og-image-and-other-og-urls-must-be-absolute-not-relative/og-image-and-other-og-urls-must-be-absolute-not-relative').then(m => m.OgImageAndOtherOgUrlsMustBeAbsoluteNotRelativeSubtopic) },
     ] },
-    { path: 'virtualization',          loadComponent: () => import('./components/frontend/blazor/virtualization/virtualization').then(m => m.BlazorVirtualization) },
+    { path: 'virtualization', children: [
+      { path: '', loadComponent: () => import('./components/frontend/blazor/virtualization/virtualization').then(m => m.BlazorVirtualization) },
+      { path: 'virtualize-recreates-item-dom-on-every-filter-without-key', loadComponent: () => import('./components/frontend/blazor/virtualization/subtopics/virtualize-recreates-item-dom-on-every-filter-without-key/virtualize-recreates-item-dom-on-every-filter-without-key').then(m => m.VirtualizeRecreatesItemDomOnEveryFilterWithoutKeySubtopic) },
+      { path: 'virtualize-discards-stale-itemsprovider-results-itself', loadComponent: () => import('./components/frontend/blazor/virtualization/subtopics/virtualize-discards-stale-itemsprovider-results-itself/virtualize-discards-stale-itemsprovider-results-itself').then(m => m.VirtualizeDiscardsStaleItemsProviderResultsItselfSubtopic) },
+      { path: 'overscancount-splits-evenly-with-no-scroll-direction-awareness', loadComponent: () => import('./components/frontend/blazor/virtualization/subtopics/overscancount-splits-evenly-with-no-scroll-direction-awareness/overscancount-splits-evenly-with-no-scroll-direction-awareness').then(m => m.OverscancountSplitsEvenlyWithNoScrollDirectionAwarenessSubtopic) },
+    ] },
     { path: 'progressive-enhancement', loadComponent: () => import('./components/frontend/blazor/progressive-enhancement/progressive-enhancement').then(m => m.BlazorProgressiveEnhancement) },
     { path: 'performance',             loadComponent: () => import('./components/frontend/blazor/performance/performance').then(m => m.BlazorPerformance) },
     { path: 'bunit',                   loadComponent: () => import('./components/frontend/blazor/bunit/bunit').then(m => m.BlazorBunit) },
