@@ -31739,6 +31739,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing a layout with bUnit requires particular attention to @Body placement and surrounding chrome rendering correctly.',
     ],
   },
+  'blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared': {
+    apis: ['SectionContent', 'SectionOutlet', 'SectionRegistry'],
+    related: [
+      { label: 'Sections & Layouts (overview)', route: '/blazor/sections-layouts' },
+      { label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' },
+      { label: 'A SectionName Typo Fails Silently, With No Built-In Fallback', route: '/blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback' },
+    ],
+    tip: 'If a SectionOutlet\'s content unexpectedly switches from one component\'s to another\'s after a short delay, suspect a slow async SectionContent provider registering later than a faster sibling — not a markup-order bug.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor sections', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/sections' },
+    ],
+    resources: [],
+    gotchas: [
+      'Registration order tracks real-time completion of SetParametersAsync, not markup declaration order — an async component declared first can still register, and win, last.',
+      'Two SectionContent providers competing for the same name is resolved by which one most recently registered, with zero awareness of file or component-tree position.',
+    ],
+  },
+
+  'blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped': {
+    apis: ['SectionName', 'SectionId', 'Dispatcher.SectionRegistry'],
+    related: [
+      { label: 'Sections & Layouts (overview)', route: '/blazor/sections-layouts' },
+      { label: 'Last SectionContent Wins Means Last Registered, Not Last Declared', route: '/blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared' },
+      { label: 'A SectionName Typo Fails Silently, With No Built-In Fallback', route: '/blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback' },
+    ],
+    tip: 'Treat SectionName strings as a genuinely app-wide namespace, not a locally-scoped slot name — use distinctive, feature-specific names to avoid accidental collisions between unrelated components.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor sections', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/sections' },
+    ],
+    resources: [],
+    gotchas: [
+      'Matching has zero ancestor-relationship awareness — any SectionContent anywhere in the current render tree can target any SectionOutlet sharing its name, regardless of structural relationship.',
+      'A second active SectionOutlet with the same SectionName throws an exception rather than silently picking one, a different failure mode than the SectionContent side.',
+    ],
+  },
+
+  'blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback': {
+    apis: ['SectionOutlet', 'SectionContent'],
+    related: [
+      { label: 'Sections & Layouts (overview)', route: '/blazor/sections-layouts' },
+      { label: 'Last SectionContent Wins Means Last Registered, Not Last Declared', route: '/blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared' },
+      { label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' },
+    ],
+    tip: 'Use shared string constants instead of literal strings for SectionName across a codebase — it turns a silent typo into a compiler error instead of a mysteriously empty section.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor sections', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/sections' },
+    ],
+    resources: [],
+    gotchas: [
+      'A mismatched SectionName produces no exception and no console warning in either direction — an unmatched SectionContent and an unmatched SectionOutlet both fail silently.',
+      'SectionOutlet has no built-in fallback/default content parameter — achieving default content requires an explicit workaround, not a framework feature.',
+    ],
+  },
+
   'blazor/render-modes': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

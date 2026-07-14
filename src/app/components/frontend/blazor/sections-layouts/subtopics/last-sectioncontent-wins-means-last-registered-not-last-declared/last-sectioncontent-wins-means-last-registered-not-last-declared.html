@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sections & Layouts" topicRoute="/blazor/sections-layouts" subtopicLabel="Last Registered, Not Last Declared" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">"Last SectionContent Wins" Means Last Registered, Not Last Declared</h1>
+  <p class="page-subtitle">
+    SectionOutlet displays whichever provider most recently finished setting its parameters — a timing race, not a
+    markup-order rule.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's QnA already states duplicate SectionContent providers resolve by "last one wins" — this
+      subtopic pins down exactly what "last" means, since it's a real timing race, not a file-order rule. Next: the
+      registry matching SectionContent to SectionOutlet has no concept of ancestor relationships at all — it's a
+      flat, app-wide lookup by name.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Sections & Layouts"
+    topicRoute="/blazor/sections-layouts"
+    [next]="{ label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' }"
+  />
+</div>

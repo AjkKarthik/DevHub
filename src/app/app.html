@@ -4840,7 +4840,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/sections-layouts" routerLinkActive="active"><span class="nl-text">Sections &amp; Layouts</span>@if(progress.isDone('blazor-sections-layouts')){<span class="nl-done">✓</span>}@if(diff('blazor-sections-layouts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/sections-layouts" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Sections &amp; Layouts</span>
+        @if (progress.isDone('blazor-sections-layouts')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-sections-layouts'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sections-layouts')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sections-layouts')"
+                  (click)="toggleSubtopics('sections-layouts', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sections-layouts'); as blazorSectionsSubs) {
+        @if (isSubtopicsExpanded('sections-layouts')) {
+          <div class="nav-subtopics">
+            @for (s of blazorSectionsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/blazor/virtualization" routerLinkActive="active"><span class="nl-text">Component Virtualization</span>@if(progress.isDone('blazor-virtualization')){<span class="nl-done">✓</span>}@if(diff('blazor-virtualization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

@@ -1862,6 +1862,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' },
     { label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' },
   ],
+  'sections-layouts': [
+    { label: 'Last SectionContent Wins Means Last Registered, Not Last Declared', route: '/blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared' },
+    { label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' },
+    { label: 'A SectionName Typo Fails Silently, With No Built-In Fallback', route: '/blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback' },
+  ],
 };
 
 @Component({

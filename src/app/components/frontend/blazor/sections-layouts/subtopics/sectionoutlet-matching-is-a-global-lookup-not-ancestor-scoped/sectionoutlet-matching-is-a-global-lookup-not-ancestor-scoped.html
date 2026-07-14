@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sections & Layouts" topicRoute="/blazor/sections-layouts" subtopicLabel="Global Lookup, Not Ancestor-Scoped" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped</h1>
+  <p class="page-subtitle">
+    SectionName strings form a genuinely app-wide namespace — any SectionContent anywhere in the render tree can
+    target a matching outlet, with no ancestor relationship required.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered when a SectionContent's registration actually happens — this one covers WHO it
+      can collide with, since matching has no ancestor awareness at all. Next: what happens when a SectionName
+      typo means a SectionContent and SectionOutlet never actually match — and why SectionOutlet has no built-in
+      way to show fallback content when that happens.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Sections & Layouts"
+    topicRoute="/blazor/sections-layouts"
+    [prev]="{ label: 'Last SectionContent Wins Means Last Registered, Not Last Declared', route: '/blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared' }"
+    [next]="{ label: 'A SectionName Typo Fails Silently, With No Built-In Fallback', route: '/blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback' }"
+  />
+</div>
