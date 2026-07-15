@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MongoDB with Mongoose" topicRoute="/node/mongoose" subtopicLabel="Dangling References" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">populate() Resolves a Dangling Reference to null — Not an Error</h1>
+  <p class="page-subtitle">
+    Mongoose's own docs compare this to a SQL LEFT JOIN — a deleted referenced document leaves the field null, with
+    no referential-integrity enforcement anywhere.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Mongoose 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own SQL-JOIN analogy for populate() with the one place it actually diverges. The
+      final subtopic in this batch turns to a completely different mechanic — why mutating a Mixed-typed field
+      directly can silently fail to save at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MongoDB with Mongoose"
+    topicRoute="/node/mongoose"
+    [prev]="{ label: 'Update Validators Are Off by Default', route: '/node/mongoose/update-validators-are-off-by-default-need-runvalidators' }"
+    [next]="{ label: 'Mixed Type Mutations Need markModified()', route: '/node/mongoose/mixed-type-mutations-need-markmodified-to-persist' }"
+  />
+</div>

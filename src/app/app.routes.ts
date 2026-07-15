@@ -2273,7 +2273,12 @@ export const routes: Routes = [
       { path: 'queryraw-can-return-bigint-json-stringify-throws', loadComponent: () => import('./components/backend/nodejs/prisma/subtopics/queryraw-can-return-bigint-json-stringify-throws/queryraw-can-return-bigint-json-stringify-throws').then(m => m.QueryrawCanReturnBigintJsonStringifyThrowsSubtopic) },
       { path: 'prismaclient-singleton-needs-globalthis-caching-in-dev', loadComponent: () => import('./components/backend/nodejs/prisma/subtopics/prismaclient-singleton-needs-globalthis-caching-in-dev/prismaclient-singleton-needs-globalthis-caching-in-dev').then(m => m.PrismaclientSingletonNeedsGlobalthisCachingInDevSubtopic) },
     ] },
-    { path: 'mongoose',       loadComponent: () => import('./components/backend/nodejs/mongoose/mongoose').then(m => m.NodeMongoose) },
+    { path: 'mongoose', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/mongoose/mongoose').then(m => m.NodeMongoose) },
+      { path: 'update-validators-are-off-by-default-need-runvalidators', loadComponent: () => import('./components/backend/nodejs/mongoose/subtopics/update-validators-are-off-by-default-need-runvalidators/update-validators-are-off-by-default-need-runvalidators').then(m => m.UpdateValidatorsAreOffByDefaultNeedRunvalidatorsSubtopic) },
+      { path: 'populate-resolves-a-dangling-reference-to-null', loadComponent: () => import('./components/backend/nodejs/mongoose/subtopics/populate-resolves-a-dangling-reference-to-null/populate-resolves-a-dangling-reference-to-null').then(m => m.PopulateResolvesADanglingReferenceToNullSubtopic) },
+      { path: 'mixed-type-mutations-need-markmodified-to-persist', loadComponent: () => import('./components/backend/nodejs/mongoose/subtopics/mixed-type-mutations-need-markmodified-to-persist/mixed-type-mutations-need-markmodified-to-persist').then(m => m.MixedTypeMutationsNeedMarkmodifiedToPersistSubtopic) },
+    ] },
     { path: 'caching',        loadComponent: () => import('./components/backend/nodejs/caching/caching').then(m => m.NodeCaching) },
     { path: 'jwt-auth',       loadComponent: () => import('./components/backend/nodejs/jwt-auth/jwt-auth').then(m => m.NodeJwtAuth) },
     { path: 'security',       loadComponent: () => import('./components/backend/nodejs/security/security').then(m => m.NodeSecurity) },

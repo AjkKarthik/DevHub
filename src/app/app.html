@@ -5462,7 +5462,26 @@
           </div>
         }
       }
-      <a routerLink="/node/mongoose" routerLinkActive="active"><span class="nl-text">MongoDB with Mongoose</span>@if(progress.isDone('node-mongoose')){<span class="nl-done">✓</span>}@if(diff('node-mongoose');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/mongoose" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">MongoDB with Mongoose</span>
+        @if (progress.isDone('node-mongoose')) {<span class="nl-done">✓</span>}
+        @if (diff('node-mongoose'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('mongoose')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mongoose')"
+                  (click)="toggleSubtopics('mongoose', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mongoose'); as nodeMongooseSubs) {
+        @if (isSubtopicsExpanded('mongoose')) {
+          <div class="nav-subtopics">
+            @for (s of nodeMongooseSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/caching" routerLinkActive="active"><span class="nl-text">Caching with Redis</span>@if(progress.isDone('node-caching')){<span class="nl-done">✓</span>}@if(diff('node-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

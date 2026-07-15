@@ -1964,6 +1964,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '$queryRaw Can Return BigInt — JSON.stringify() Throws on It', route: '/node/prisma/queryraw-can-return-bigint-json-stringify-throws' },
     { label: 'PrismaClient Singleton Needs globalThis Caching in Dev', route: '/node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev' },
   ],
+  'mongoose': [
+    { label: 'Update Validators Are Off by Default', route: '/node/mongoose/update-validators-are-off-by-default-need-runvalidators' },
+    { label: 'populate() Resolves a Dangling Reference to null', route: '/node/mongoose/populate-resolves-a-dangling-reference-to-null' },
+    { label: 'Mixed Type Mutations Need markModified() to Persist', route: '/node/mongoose/mixed-type-mutations-need-markmodified-to-persist' },
+  ],
 };
 
 @Component({

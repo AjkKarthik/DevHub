@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MongoDB with Mongoose" topicRoute="/node/mongoose" subtopicLabel="Update Validators" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Update Validators Are Off by Default — Need runValidators: true</h1>
+  <p class="page-subtitle">
+    Mongoose's own docs state it plainly — updateOne(), updateMany(), and findOneAndUpdate() skip schema validation
+    entirely unless explicitly told not to.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Mongoose 4.8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sharpens the main page's own validation claim with the exact scope it doesn't apply to. The next
+      subtopic moves to a different Mongoose method entirely — what populate() actually does when the document it's
+      supposed to resolve no longer exists.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MongoDB with Mongoose"
+    topicRoute="/node/mongoose"
+    [next]="{ label: 'populate() Resolves a Dangling Reference to null', route: '/node/mongoose/populate-resolves-a-dangling-reference-to-null' }"
+  />
+</div>

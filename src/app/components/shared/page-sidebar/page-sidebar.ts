@@ -31547,6 +31547,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Reusing a single connection (not creating one per request) is essential — Mongoose manages connection pooling internally when used correctly.',
     ],
   },
+  'node/mongoose/update-validators-are-off-by-default-need-runvalidators': {
+    apis: ['runValidators', 'updateOne()', 'findOneAndUpdate()'],
+    related: [
+      { label: 'MongoDB with Mongoose (overview)', route: '/node/mongoose' },
+      { label: 'populate() Resolves a Dangling Reference to null', route: '/node/mongoose/populate-resolves-a-dangling-reference-to-null' },
+      { label: 'Mixed Type Mutations Need markModified()', route: '/node/mongoose/mixed-type-mutations-need-markmodified-to-persist' },
+    ],
+    tip: 'Mongoose\'s own docs state update validators are off by default — updateOne()/findOneAndUpdate() write invalid data with no error unless { runValidators: true } is passed explicitly.',
+    docs: [
+      { label: 'Mongoose — Validation', url: 'https://mongoosejs.com/docs/validation.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Inside an update validator, "this" refers to the Query, not the document — a real difference from a .save()-triggered validator context.',
+      'Update validators only check paths actually present in the update (for $set/$unset/$push/etc.) — untouched fields are never re-validated, even with runValidators: true.',
+    ],
+  },
+  'node/mongoose/populate-resolves-a-dangling-reference-to-null': {
+    apis: ['populate()', 'Schema.Types.ObjectId'],
+    related: [
+      { label: 'MongoDB with Mongoose (overview)', route: '/node/mongoose' },
+      { label: 'Update Validators Are Off by Default', route: '/node/mongoose/update-validators-are-off-by-default-need-runvalidators' },
+      { label: 'Mixed Type Mutations Need markModified()', route: '/node/mongoose/mixed-type-mutations-need-markmodified-to-persist' },
+    ],
+    tip: 'Mongoose\'s own docs compare populate() to a SQL LEFT JOIN — a reference to a deleted document resolves to null, never an error, since Mongoose enforces no referential integrity.',
+    docs: [
+      { label: 'Mongoose — Populate', url: 'https://mongoosejs.com/docs/populate.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Code accessing a populated field\'s properties without a null check (post.author.name) throws a TypeError the moment it hits a dangling reference.',
+      'A soft-delete pattern (deletedAt instead of an actual delete) sidesteps this entirely, since the referenced document still physically exists for populate() to find.',
+    ],
+  },
+  'node/mongoose/mixed-type-mutations-need-markmodified-to-persist': {
+    apis: ['Schema.Types.Mixed', 'markModified()'],
+    related: [
+      { label: 'MongoDB with Mongoose (overview)', route: '/node/mongoose' },
+      { label: 'Update Validators Are Off by Default', route: '/node/mongoose/update-validators-are-off-by-default-need-runvalidators' },
+      { label: 'populate() Resolves a Dangling Reference to null', route: '/node/mongoose/populate-resolves-a-dangling-reference-to-null' },
+    ],
+    tip: 'Mongoose\'s own docs state Mixed "loses the ability to auto detect and save" in-place changes — mutating a nested property without reassigning the whole field silently never persists.',
+    docs: [
+      { label: 'Mongoose — Schema Types (Mixed)', url: 'https://mongoosejs.com/docs/schematypes.html#mixed' },
+    ],
+    resources: [],
+    gotchas: [
+      'A full reassignment (doc.field = {...}) IS detected normally — only in-place mutation of an existing Mixed object\'s properties is invisible to Mongoose.',
+      'markModified() only affects the current pending save — every subsequent in-place mutation needs its own call, with no persistent tracking carried forward.',
+    ],
+  },
   'node/prisma': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
