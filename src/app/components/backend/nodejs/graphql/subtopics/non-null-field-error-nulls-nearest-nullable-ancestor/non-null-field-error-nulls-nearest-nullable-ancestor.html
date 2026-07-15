@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL API with Node.js" topicRoute="/node/graphql" subtopicLabel="Null Bubbling" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">A Non-Null Field Error Nulls the Nearest Nullable Ancestor, Not Just Itself</h1>
+  <p class="page-subtitle">
+    A single failing non-null field can silently wipe out an entire parent object, or the whole response — a
+    spec-mandated behavior, not a bug.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having established that errors live in the response body rather than the status code, and now exactly how
+      far one field's error can spread through that body, the final subtopic in this batch turns to a completely
+      different mechanic: the two-round-trip protocol behind the main page's brief mention of persisted queries.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GraphQL API with Node.js"
+    topicRoute="/node/graphql"
+    [prev]="{ label: 'GraphQL Returns 200 Even When Errors Is Present', route: '/node/graphql/graphql-returns-200-even-when-errors-is-present' }"
+    [next]="{ label: 'APQ: a Hash Miss Triggers a Retry With the Full Query', route: '/node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query' }"
+  />
+</div>

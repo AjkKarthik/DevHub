@@ -31146,6 +31146,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GraphQL\'s single endpoint bypasses traditional URL-based HTTP caching that a REST API in the same Express app would benefit from.',
     ],
   },
+  'node/graphql/graphql-returns-200-even-when-errors-is-present': {
+    apis: ['GraphQL-over-HTTP spec', 'errors[]', 'extensions.code'],
+    related: [
+      { label: 'GraphQL API (overview)', route: '/node/graphql' },
+      { label: 'A Non-Null Field Error Nulls the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' },
+      { label: 'APQ: a Hash Miss Triggers a Retry With the Full Query', route: '/node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query' },
+    ],
+    tip: 'Checking response.ok tells you nothing about GraphQL-level failures — always inspect the parsed JSON body\'s own errors array, regardless of the HTTP status code.',
+    docs: [
+      { label: 'GraphQL-over-HTTP spec draft', url: 'https://graphql.github.io/graphql-over-http/draft/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A response can contain both data (with some fields null) and errors at the same time — this is a "partial success" model, not one-status-code-per-outcome like REST.',
+      '4xx/5xx statuses are reserved for requests that never executed at all (malformed JSON, invalid syntax) — not for resolver-level errors during execution.',
+    ],
+  },
+  'node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor': {
+    apis: ['GraphQL spec — Errors and Non-Nullability'],
+    related: [
+      { label: 'GraphQL API (overview)', route: '/node/graphql' },
+      { label: 'GraphQL Returns 200 Even When the Response Contains Errors', route: '/node/graphql/graphql-returns-200-even-when-errors-is-present' },
+      { label: 'APQ: a Hash Miss Triggers a Retry With the Full Query', route: '/node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query' },
+    ],
+    tip: 'A field typed non-null that fails cannot become null in place — the null propagates to the nearest ancestor position that is actually allowed to be null, which can wipe out an entire object or more.',
+    docs: [
+      { label: 'GraphQL spec — Handling Field Errors', url: 'https://spec.graphql.org/October2021/#sec-Handling-Field-Errors' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a spec-mandated behavior, identical across every compliant GraphQL server — not an implementation quirk of Apollo Server specifically.',
+      'A field that can legitimately fail (an external API call) is often a better candidate for a nullable type, specifically to contain a failure\'s blast radius to just that field.',
+    ],
+  },
+  'node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query': {
+    apis: ['extensions.persistedQuery', 'PersistedQueryNotFound'],
+    related: [
+      { label: 'GraphQL API (overview)', route: '/node/graphql' },
+      { label: 'GraphQL Returns 200 Even When the Response Contains Errors', route: '/node/graphql/graphql-returns-200-even-when-errors-is-present' },
+      { label: 'A Non-Null Field Error Nulls the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' },
+    ],
+    tip: 'Seeing two round trips the very first time a query ever runs after a server restart is APQ working correctly, not a sign it\'s broken — the server\'s persisted-query cache was cleared and needs re-registering.',
+    docs: [
+      { label: 'Apollo Server — Automatic Persisted Queries', url: 'https://www.apollographql.com/docs/apollo-server/performance/apq' },
+    ],
+    resources: [],
+    gotchas: [
+      'The hash-only first attempt is optimistic — a genuinely new query always costs an extra round trip on its very first run, only benefiting subsequent runs.',
+      'The error message string "PersistedQueryNotFound" and the extensions.code "PERSISTED_QUERY_NOT_FOUND" use different formats — prefer matching on extensions.code.',
+    ],
+  },
   'node/jwt-auth': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

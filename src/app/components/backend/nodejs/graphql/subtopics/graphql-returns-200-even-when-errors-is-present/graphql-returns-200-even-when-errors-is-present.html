@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL API with Node.js" topicRoute="/node/graphql" subtopicLabel="200 With Errors Present" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">GraphQL Returns 200 Even When the Response Contains Errors</h1>
+  <p class="page-subtitle">
+    data and errors can coexist in one response — checking response.ok tells you nothing about whether a resolver
+    actually failed.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sets up the next subtopic directly — once you know errors live in the response body rather than the
+      status code, the natural next question is exactly how far a single field's error can spread through that
+      body, which is where non-null propagation comes in.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GraphQL API with Node.js"
+    topicRoute="/node/graphql"
+    [next]="{ label: 'Non-Null Errors Bubble to the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' }"
+  />
+</div>

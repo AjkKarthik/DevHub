@@ -2237,7 +2237,12 @@ export const routes: Routes = [
       { path: 'engineio-ping-pong-not-websocket-protocol-frames', loadComponent: () => import('./components/backend/nodejs/websockets/subtopics/engineio-ping-pong-not-websocket-protocol-frames/engineio-ping-pong-not-websocket-protocol-frames').then(m => m.EngineioPingPongNotWebsocketProtocolFramesSubtopic) },
       { path: 'close-code-1006-is-reserved-never-sent-on-the-wire', loadComponent: () => import('./components/backend/nodejs/websockets/subtopics/close-code-1006-is-reserved-never-sent-on-the-wire/close-code-1006-is-reserved-never-sent-on-the-wire').then(m => m.CloseCode1006IsReservedNeverSentOnTheWireSubtopic) },
     ] },
-    { path: 'graphql',        loadComponent: () => import('./components/backend/nodejs/graphql/graphql').then(m => m.NodeGraphql) },
+    { path: 'graphql', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/graphql/graphql').then(m => m.NodeGraphql) },
+      { path: 'graphql-returns-200-even-when-errors-is-present', loadComponent: () => import('./components/backend/nodejs/graphql/subtopics/graphql-returns-200-even-when-errors-is-present/graphql-returns-200-even-when-errors-is-present').then(m => m.GraphqlReturns200EvenWhenErrorsIsPresentSubtopic) },
+      { path: 'non-null-field-error-nulls-nearest-nullable-ancestor', loadComponent: () => import('./components/backend/nodejs/graphql/subtopics/non-null-field-error-nulls-nearest-nullable-ancestor/non-null-field-error-nulls-nearest-nullable-ancestor').then(m => m.NonNullFieldErrorNullsNearestNullableAncestorSubtopic) },
+      { path: 'apq-hash-miss-triggers-a-retry-with-the-full-query', loadComponent: () => import('./components/backend/nodejs/graphql/subtopics/apq-hash-miss-triggers-a-retry-with-the-full-query/apq-hash-miss-triggers-a-retry-with-the-full-query').then(m => m.ApqHashMissTriggersARetryWithTheFullQuerySubtopic) },
+    ] },
     { path: 'nestjs',         loadComponent: () => import('./components/backend/nodejs/nestjs/nestjs').then(m => m.NodeNestjs) },
     { path: 'promises-async', loadComponent: () => import('./components/backend/nodejs/promises-async/promises-async').then(m => m.NodePromisesAsync) },
     { path: 'streams',        loadComponent: () => import('./components/backend/nodejs/streams/streams').then(m => m.NodeStreams) },

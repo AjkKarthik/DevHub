@@ -1933,6 +1933,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Socket.io’s Heartbeat Is Engine.IO’s Own Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' },
     { label: 'Close Code 1006 Is Reserved — It Never Appears on the Wire', route: '/node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire' },
   ],
+  'graphql': [
+    { label: 'GraphQL Returns 200 Even When the Response Contains Errors', route: '/node/graphql/graphql-returns-200-even-when-errors-is-present' },
+    { label: 'A Non-Null Field Error Nulls the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' },
+    { label: 'APQ: a Hash Miss Triggers a Retry With the Full Query', route: '/node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query' },
+  ],
 };
 
 @Component({

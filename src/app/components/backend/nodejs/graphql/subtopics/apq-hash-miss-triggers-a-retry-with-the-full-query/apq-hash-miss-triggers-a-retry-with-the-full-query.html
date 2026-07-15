@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GraphQL API with Node.js" topicRoute="/node/graphql" subtopicLabel="APQ Two-Step Protocol" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Automatic Persisted Queries: a Hash Miss Triggers a Retry With the Full Query</h1>
+  <p class="page-subtitle">
+    Registration isn't a separate out-of-band step — it's an automatic, inline two-round-trip protocol triggered by
+    a specific PersistedQueryNotFound error.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three response-level mechanics the main page introduces but doesn't fully unpack: the
+      status-code-versus-body-errors split, exactly how far a non-null field's failure spreads, and now the exact
+      handshake behind persisted queries. All three are the kind of detail that only becomes visible once you're
+      reading raw network traffic instead of trusting a client library's abstraction.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GraphQL API with Node.js"
+    topicRoute="/node/graphql"
+    [prev]="{ label: 'Non-Null Errors Bubble to the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' }"
+  />
+</div>
