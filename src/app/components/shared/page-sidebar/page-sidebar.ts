@@ -31072,6 +31072,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The framework\'s opinionated structure pays off most for larger, longer-lived services — a tiny microservice may not need its full ceremony.',
     ],
   },
+  'node/nestjs/useglobalpipes-bypasses-di-use-app-pipe-instead': {
+    apis: ['APP_PIPE', 'APP_GUARD', 'APP_INTERCEPTOR', 'APP_FILTER'],
+    related: [
+      { label: 'NestJS (overview)', route: '/node/nestjs' },
+      { label: 'Middleware Exceptions Bypass Exception Filters', route: '/node/nestjs/middleware-exceptions-bypass-exception-filters' },
+      { label: 'Skipping next.handle() Skips the Handler', route: '/node/nestjs/interceptor-skipping-next-handle-skips-the-handler' },
+    ],
+    tip: 'A pipe/guard/interceptor/filter registered via useGlobalXxx() works fine until it needs an injected dependency — at which point APP_PIPE-style module registration is the only version that supports DI.',
+    docs: [
+      { label: 'NestJS — Pipes (global scope)', url: 'https://docs.nestjs.com/pipes#global-scoped-pipes' },
+    ],
+    resources: [],
+    gotchas: [
+      'Both approaches apply globally to every route — APP_PIPE is not a more limited alternative, it is the DI-capable version of the same global scope.',
+      'The failure mode is silent: a missing dependency inside a useGlobalXxx()-registered class shows up as undefined at runtime, not a clear startup error pointing at the cause.',
+    ],
+  },
+  'node/nestjs/middleware-exceptions-bypass-exception-filters': {
+    apis: ['NestMiddleware', 'ExceptionFilter', '@Catch()'],
+    related: [
+      { label: 'NestJS (overview)', route: '/node/nestjs' },
+      { label: 'app.useGlobalPipes() Bypasses Nest’s DI Container', route: '/node/nestjs/useglobalpipes-bypasses-di-use-app-pipe-instead' },
+      { label: 'Skipping next.handle() Skips the Handler', route: '/node/nestjs/interceptor-skipping-next-handle-skips-the-handler' },
+    ],
+    tip: 'For rejection logic that needs Nest\'s exception-filter-formatted responses, use a Guard instead of middleware — middleware runs entirely before Nest\'s own exception-handling chain begins.',
+    docs: [
+      { label: 'NestJS — Request lifecycle', url: 'https://docs.nestjs.com/faq/request-lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'This specific limitation is not stated explicitly anywhere in NestJS\'s own docs — it follows from the documented pipeline ordering, not a direct doc quote.',
+      'A thrown exception in middleware falls through to the underlying Express/Fastify platform\'s own error handling, which looks and behaves differently from Nest\'s filter-formatted output.',
+    ],
+  },
+  'node/nestjs/interceptor-skipping-next-handle-skips-the-handler': {
+    apis: ['CallHandler.handle()', 'NestInterceptor', 'RxJS Observable'],
+    related: [
+      { label: 'NestJS (overview)', route: '/node/nestjs' },
+      { label: 'app.useGlobalPipes() Bypasses Nest’s DI Container', route: '/node/nestjs/useglobalpipes-bypasses-di-use-app-pipe-instead' },
+      { label: 'Middleware Exceptions Bypass Exception Filters', route: '/node/nestjs/middleware-exceptions-bypass-exception-filters' },
+    ],
+    tip: 'next.handle() returns a cold Observable — nothing about the route handler executes until it\'s subscribed to, which is exactly the mechanism a caching interceptor exploits by returning a different Observable instead.',
+    docs: [
+      { label: 'NestJS — Interceptors', url: 'https://docs.nestjs.com/interceptors' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is not "the result gets discarded" — the handler\'s method body, including any side effects, genuinely never runs when next.handle() is skipped.',
+      'Logging or checking a condition inside intercept() has no effect on whether the handler runs — only whether next.handle() is actually called does.',
+    ],
+  },
   'node/rest-api': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

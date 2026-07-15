@@ -5354,7 +5354,26 @@
           </div>
         }
       }
-      <a routerLink="/node/nestjs" routerLinkActive="active"><span class="nl-text">NestJS</span>@if(progress.isDone('node-nestjs')){<span class="nl-done">✓</span>}@if(diff('node-nestjs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/nestjs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">NestJS</span>
+        @if (progress.isDone('node-nestjs')) {<span class="nl-done">✓</span>}
+        @if (diff('node-nestjs'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('nestjs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('nestjs')"
+                  (click)="toggleSubtopics('nestjs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('nestjs'); as nodeNestjsSubs) {
+        @if (isSubtopicsExpanded('nestjs')) {
+          <div class="nav-subtopics">
+            @for (s of nodeNestjsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

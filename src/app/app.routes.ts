@@ -2243,7 +2243,12 @@ export const routes: Routes = [
       { path: 'non-null-field-error-nulls-nearest-nullable-ancestor', loadComponent: () => import('./components/backend/nodejs/graphql/subtopics/non-null-field-error-nulls-nearest-nullable-ancestor/non-null-field-error-nulls-nearest-nullable-ancestor').then(m => m.NonNullFieldErrorNullsNearestNullableAncestorSubtopic) },
       { path: 'apq-hash-miss-triggers-a-retry-with-the-full-query', loadComponent: () => import('./components/backend/nodejs/graphql/subtopics/apq-hash-miss-triggers-a-retry-with-the-full-query/apq-hash-miss-triggers-a-retry-with-the-full-query').then(m => m.ApqHashMissTriggersARetryWithTheFullQuerySubtopic) },
     ] },
-    { path: 'nestjs',         loadComponent: () => import('./components/backend/nodejs/nestjs/nestjs').then(m => m.NodeNestjs) },
+    { path: 'nestjs', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/nestjs/nestjs').then(m => m.NodeNestjs) },
+      { path: 'useglobalpipes-bypasses-di-use-app-pipe-instead', loadComponent: () => import('./components/backend/nodejs/nestjs/subtopics/useglobalpipes-bypasses-di-use-app-pipe-instead/useglobalpipes-bypasses-di-use-app-pipe-instead').then(m => m.UseglobalpipesBypassesDiUseAppPipeInsteadSubtopic) },
+      { path: 'middleware-exceptions-bypass-exception-filters', loadComponent: () => import('./components/backend/nodejs/nestjs/subtopics/middleware-exceptions-bypass-exception-filters/middleware-exceptions-bypass-exception-filters').then(m => m.MiddlewareExceptionsBypassExceptionFiltersSubtopic) },
+      { path: 'interceptor-skipping-next-handle-skips-the-handler', loadComponent: () => import('./components/backend/nodejs/nestjs/subtopics/interceptor-skipping-next-handle-skips-the-handler/interceptor-skipping-next-handle-skips-the-handler').then(m => m.InterceptorSkippingNextHandleSkipsTheHandlerSubtopic) },
+    ] },
     { path: 'promises-async', loadComponent: () => import('./components/backend/nodejs/promises-async/promises-async').then(m => m.NodePromisesAsync) },
     { path: 'streams',        loadComponent: () => import('./components/backend/nodejs/streams/streams').then(m => m.NodeStreams) },
     { path: 'error-handling', loadComponent: () => import('./components/backend/nodejs/error-handling/error-handling').then(m => m.NodeErrorHandling) },

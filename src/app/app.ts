@@ -1938,6 +1938,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Non-Null Field Error Nulls the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' },
     { label: 'APQ: a Hash Miss Triggers a Retry With the Full Query', route: '/node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query' },
   ],
+  'nestjs': [
+    { label: 'app.useGlobalPipes() Bypasses Nest’s DI Container', route: '/node/nestjs/useglobalpipes-bypasses-di-use-app-pipe-instead' },
+    { label: 'Middleware Exceptions Bypass Exception Filters Entirely', route: '/node/nestjs/middleware-exceptions-bypass-exception-filters' },
+    { label: 'An Interceptor That Never Calls next.handle() Skips the Handler', route: '/node/nestjs/interceptor-skipping-next-handle-skips-the-handler' },
+  ],
 };
 
 @Component({

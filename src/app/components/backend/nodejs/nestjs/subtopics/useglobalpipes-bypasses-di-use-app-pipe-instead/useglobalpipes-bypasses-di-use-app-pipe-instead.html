@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="NestJS" topicRoute="/node/nestjs" subtopicLabel="APP_PIPE vs useGlobalPipes" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">app.useGlobalPipes() Bypasses Nest's DI Container — Use APP_PIPE Instead</h1>
+  <p class="page-subtitle">
+    Constructed with a plain "new" call outside any module, a global pipe/guard/interceptor/filter registered this
+    way cannot have its own injected dependencies.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own bootstrap() code sample with a limitation it doesn't mention. The next
+      subtopic stays in the same request-lifecycle territory but looks at a different boundary: what happens when
+      middleware — which runs even earlier than any of this — throws.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NestJS"
+    topicRoute="/node/nestjs"
+    [next]="{ label: 'Middleware Exceptions Bypass Exception Filters', route: '/node/nestjs/middleware-exceptions-bypass-exception-filters' }"
+  />
+</div>

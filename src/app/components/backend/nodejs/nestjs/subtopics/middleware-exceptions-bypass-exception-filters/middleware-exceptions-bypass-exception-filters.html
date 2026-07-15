@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="NestJS" topicRoute="/node/nestjs" subtopicLabel="Middleware Errors" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Exceptions Thrown in Middleware Bypass Exception Filters Entirely</h1>
+  <p class="page-subtitle">
+    Middleware runs before Nest's own request chain even begins — a thrown exception there falls through to raw
+    platform error handling instead.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having covered a boundary at the START of the pipeline (middleware) and one around global provider
+      construction, the final subtopic in this batch looks at a mechanic INSIDE the pipeline itself — exactly what
+      happens if an interceptor never calls the one method that actually runs the handler.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NestJS"
+    topicRoute="/node/nestjs"
+    [prev]="{ label: 'app.useGlobalPipes() Bypasses Nest’s DI Container', route: '/node/nestjs/useglobalpipes-bypasses-di-use-app-pipe-instead' }"
+    [next]="{ label: 'Skipping next.handle() Skips the Handler Entirely', route: '/node/nestjs/interceptor-skipping-next-handle-skips-the-handler' }"
+  />
+</div>
