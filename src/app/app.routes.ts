@@ -2267,7 +2267,12 @@ export const routes: Routes = [
       { path: 'process-exit-can-truncate-unflushed-output', loadComponent: () => import('./components/backend/nodejs/error-handling/subtopics/process-exit-can-truncate-unflushed-output/process-exit-can-truncate-unflushed-output').then(m => m.ProcessExitCanTruncateUnflushedOutputSubtopic) },
       { path: 'uncaughtexception-listener-disables-default-crash', loadComponent: () => import('./components/backend/nodejs/error-handling/subtopics/uncaughtexception-listener-disables-default-crash/uncaughtexception-listener-disables-default-crash').then(m => m.UncaughtexceptionListenerDisablesDefaultCrashSubtopic) },
     ] },
-    { path: 'prisma',         loadComponent: () => import('./components/backend/nodejs/prisma/prisma').then(m => m.NodePrisma) },
+    { path: 'prisma', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/prisma/prisma').then(m => m.NodePrisma) },
+      { path: 'interactive-transactions-have-a-default-5-second-timeout', loadComponent: () => import('./components/backend/nodejs/prisma/subtopics/interactive-transactions-have-a-default-5-second-timeout/interactive-transactions-have-a-default-5-second-timeout').then(m => m.InteractiveTransactionsHaveADefault5SecondTimeoutSubtopic) },
+      { path: 'queryraw-can-return-bigint-json-stringify-throws', loadComponent: () => import('./components/backend/nodejs/prisma/subtopics/queryraw-can-return-bigint-json-stringify-throws/queryraw-can-return-bigint-json-stringify-throws').then(m => m.QueryrawCanReturnBigintJsonStringifyThrowsSubtopic) },
+      { path: 'prismaclient-singleton-needs-globalthis-caching-in-dev', loadComponent: () => import('./components/backend/nodejs/prisma/subtopics/prismaclient-singleton-needs-globalthis-caching-in-dev/prismaclient-singleton-needs-globalthis-caching-in-dev').then(m => m.PrismaclientSingletonNeedsGlobalthisCachingInDevSubtopic) },
+    ] },
     { path: 'mongoose',       loadComponent: () => import('./components/backend/nodejs/mongoose/mongoose').then(m => m.NodeMongoose) },
     { path: 'caching',        loadComponent: () => import('./components/backend/nodejs/caching/caching').then(m => m.NodeCaching) },
     { path: 'jwt-auth',       loadComponent: () => import('./components/backend/nodejs/jwt-auth/jwt-auth').then(m => m.NodeJwtAuth) },

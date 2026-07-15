@@ -5442,7 +5442,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Database</p>
-      <a routerLink="/node/prisma" routerLinkActive="active"><span class="nl-text">Database with Prisma</span>@if(progress.isDone('node-prisma')){<span class="nl-done">✓</span>}@if(diff('node-prisma');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/prisma" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Database with Prisma</span>
+        @if (progress.isDone('node-prisma')) {<span class="nl-done">✓</span>}
+        @if (diff('node-prisma'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('prisma')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('prisma')"
+                  (click)="toggleSubtopics('prisma', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('prisma'); as nodePrismaSubs) {
+        @if (isSubtopicsExpanded('prisma')) {
+          <div class="nav-subtopics">
+            @for (s of nodePrismaSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/mongoose" routerLinkActive="active"><span class="nl-text">MongoDB with Mongoose</span>@if(progress.isDone('node-mongoose')){<span class="nl-done">✓</span>}@if(diff('node-mongoose');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/caching" routerLinkActive="active"><span class="nl-text">Caching with Redis</span>@if(progress.isDone('node-caching')){<span class="nl-done">✓</span>}@if(diff('node-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

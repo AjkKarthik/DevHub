@@ -1959,6 +1959,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'process.exit() Can Truncate Unflushed Output', route: '/node/error-handling/process-exit-can-truncate-unflushed-output' },
     { label: 'An uncaughtException Listener Disables the Default Crash', route: '/node/error-handling/uncaughtexception-listener-disables-default-crash' },
   ],
+  'prisma': [
+    { label: 'Interactive Transactions Have a 5-Second Timeout', route: '/node/prisma/interactive-transactions-have-a-default-5-second-timeout' },
+    { label: '$queryRaw Can Return BigInt — JSON.stringify() Throws on It', route: '/node/prisma/queryraw-can-return-bigint-json-stringify-throws' },
+    { label: 'PrismaClient Singleton Needs globalThis Caching in Dev', route: '/node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev' },
+  ],
 };
 
 @Component({

@@ -31558,6 +31558,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The Prisma Client instance should be a SINGLETON reused across the app, not instantiated per request, to avoid exhausting database connections.',
     ],
   },
+  'node/prisma/interactive-transactions-have-a-default-5-second-timeout': {
+    apis: ['$transaction()', 'maxWait', 'timeout', 'P2028'],
+    related: [
+      { label: 'Database with Prisma (overview)', route: '/node/prisma' },
+      { label: '$queryRaw Can Return BigInt', route: '/node/prisma/queryraw-can-return-bigint-json-stringify-throws' },
+      { label: 'PrismaClient Singleton Needs globalThis Caching', route: '/node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev' },
+    ],
+    tip: 'Prisma\'s own docs warn against network requests inside a transaction callback — the default 5-second timeout can roll back an otherwise-successful transaction if a slow external call is mixed in.',
+    docs: [
+      { label: 'Prisma — Transactions and batch queries', url: 'https://www.prisma.io/docs/orm/prisma-client/queries/transactions' },
+    ],
+    resources: [],
+    gotchas: [
+      'maxWait (2000ms default) and timeout (5000ms default) are two separate limits — one for acquiring a transaction slot, one for the callback\'s own execution time.',
+      'The documented fix is architectural — move slow, non-database work outside the transaction callback — not simply raising the timeout value.',
+    ],
+  },
+  'node/prisma/queryraw-can-return-bigint-json-stringify-throws': {
+    apis: ['$queryRaw', 'JSON.stringify()', 'BigInt'],
+    related: [
+      { label: 'Database with Prisma (overview)', route: '/node/prisma' },
+      { label: 'Interactive Transactions Have a 5-Second Timeout', route: '/node/prisma/interactive-transactions-have-a-default-5-second-timeout' },
+      { label: 'PrismaClient Singleton Needs globalThis Caching', route: '/node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev' },
+    ],
+    tip: 'A COUNT() aggregate or 64-bit integer column from a raw query can map to JS BigInt — res.json() crashes with a 500 the instant one reaches JSON.stringify().',
+    docs: [
+      { label: 'Prisma — Fields & types (BigInt)', url: 'https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types' },
+    ],
+    resources: [],
+    gotchas: [
+      'Whether a result maps to BigInt depends on the database column TYPE category, not the actual numeric value — a count of 3 and a count of 3 million behave identically.',
+      'The documented fix is a JSON.stringify() replacer function converting BigInt to a string, not res.json() directly on raw query results.',
+    ],
+  },
+  'node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev': {
+    apis: ['globalThis', 'PrismaClient', 'NODE_ENV'],
+    related: [
+      { label: 'Database with Prisma (overview)', route: '/node/prisma' },
+      { label: 'Interactive Transactions Have a 5-Second Timeout', route: '/node/prisma/interactive-transactions-have-a-default-5-second-timeout' },
+      { label: '$queryRaw Can Return BigInt', route: '/node/prisma/queryraw-can-return-bigint-json-stringify-throws' },
+    ],
+    tip: 'A plain module-level singleton is correct in production, but hot-module-reloading in dev can re-evaluate the module and create a new connection pool on every save — Prisma\'s own Next.js docs recommend caching on globalThis instead.',
+    docs: [
+      { label: 'Prisma ORM with Next.js', url: 'https://www.prisma.io/docs/orm/more/troubleshooting/nextjs' },
+    ],
+    resources: [],
+    gotchas: [
+      'Prisma\'s documented pattern only writes to globalThis when NODE_ENV !== "production" — production\'s single module evaluation never had this problem.',
+      'globalThis persists across a hot-reload cycle in a way a re-evaluated module\'s own local scope does not.',
+    ],
+  },
   'node/deployment': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
