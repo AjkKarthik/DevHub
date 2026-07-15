@@ -1156,6 +1156,18 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/node/arc
    routing) were verified this way — one claim (`UV_THREADPOOL_SIZE` takes effect "before Node
    starts") needed a precision correction to "before the first thread-pool-requiring call,"
    since libuv creates the pool lazily on first use, not unconditionally at process boot.
+8. **The two established apostrophe-escaping rules are file-type-specific, not interchangeable
+   — mixing them up is a real, easy mistake.** During `/node/core-modules`, a `[prev]`/`[next]`
+   label string in a `.html` file was written with a backslash-escaped apostrophe (`exec()\'s
+   Default...`) — the rule that correctly applies to single-quoted `.ts` string fields — instead
+   of the typographic `’` (U+2019) the `.html` bound-attribute case actually requires. Caught by
+   manual review before the sweep, not by the sweep itself (the sweep's `[prev]`/`[next]`
+   backslash-pattern check only looks for `\\'`, and a *correctly*-escaped `\'` doesn't trigger
+   it — it's a valid escape, just for the wrong file type). Since Node.js subtopic content is
+   plain JavaScript/TypeScript with no Razor `@`-directive risk at all, apostrophe-escaping is
+   proportionally a LARGER share of the total gotcha surface for this hub than for Blazor/C# —
+   worth double-checking which delimiter rule applies (`.ts` field → `\'`; `.html` bound
+   attribute → `’`) rather than defaulting to whichever one was used most recently.
 
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
