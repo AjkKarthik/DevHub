@@ -5230,7 +5230,26 @@
           </div>
         }
       }
-      <a routerLink="/node/env-config" routerLinkActive="active"><span class="nl-text">Env Config &amp; dotenv</span>@if(progress.isDone('node-env-config')){<span class="nl-done">✓</span>}@if(diff('node-env-config');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/env-config" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Env Config &amp; dotenv</span>
+        @if (progress.isDone('node-env-config')) {<span class="nl-done">✓</span>}
+        @if (diff('node-env-config'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('env-config')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('env-config')"
+                  (click)="toggleSubtopics('env-config', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('env-config'); as nodeEnvSubs) {
+        @if (isSubtopicsExpanded('env-config')) {
+          <div class="nav-subtopics">
+            @for (s of nodeEnvSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

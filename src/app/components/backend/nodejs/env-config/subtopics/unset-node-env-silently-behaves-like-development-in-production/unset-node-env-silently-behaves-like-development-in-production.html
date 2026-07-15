@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Env Config & dotenv" topicRoute="/node/env-config" subtopicLabel="Unset NODE_ENV Risk" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">An Unset NODE_ENV Silently Behaves Like Development in Production</h1>
+  <p class="page-subtitle">
+    Node.js sets no default for NODE_ENV at all — an entirely unset value is treated identically to "development" by
+    the libraries that check it.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page already says to always set NODE_ENV=production — this subtopic shows precisely why forgetting
+      it produces silent, undetected misbehavior rather than an obvious failure. Next: Zod's z.coerce.number()
+      quietly turns a blank environment variable into 0 instead of a validation error, undermining the fail-fast
+      goal the main page emphasizes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Env Config & dotenv"
+    topicRoute="/node/env-config"
+    [next]="{ label: 'z.coerce.number() Turns an Empty String Into 0, Not an Error', route: '/node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error' }"
+  />
+</div>

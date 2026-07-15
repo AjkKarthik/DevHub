@@ -31023,6 +31023,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Missing required environment variables should fail LOUDLY at startup, not silently default to undefined and fail mysteriously later at runtime.',
     ],
   },
+  'node/env-config/unset-node-env-silently-behaves-like-development-in-production': {
+    apis: ['process.env.NODE_ENV'],
+    related: [
+      { label: 'Env Config & dotenv (overview)', route: '/node/env-config' },
+      { label: 'z.coerce.number() Turns an Empty String Into 0, Not an Error', route: '/node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error' },
+      { label: 'dotenv.config() Never Throws on a Missing .env File', route: '/node/env-config/dotenv-config-never-throws-on-a-missing-env-file' },
+    ],
+    tip: 'Verbose, stack-trace-containing error responses in production, with no explicit debug setting anywhere, is the classic symptom of a deployment that never explicitly set NODE_ENV=production.',
+    docs: [
+      { label: 'Express — Production best practices: performance', url: 'https://expressjs.com/en/advanced/best-practice-performance.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Node.js itself sets no default for NODE_ENV — it is purely a community convention, so an unset value is genuinely undefined, not a fallback "development" string.',
+      'undefined !== \'production\' evaluates to true, so libraries checking for production mode treat an unset NODE_ENV exactly the same as an explicit "development" — no error, no warning, ever.',
+    ],
+  },
+
+  'node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error': {
+    apis: ['z.coerce.number()', 'Number()'],
+    related: [
+      { label: 'Env Config & dotenv (overview)', route: '/node/env-config' },
+      { label: 'An Unset NODE_ENV Silently Behaves Like Development in Production', route: '/node/env-config/unset-node-env-silently-behaves-like-development-in-production' },
+      { label: 'dotenv.config() Never Throws on a Missing .env File', route: '/node/env-config/dotenv-config-never-throws-on-a-missing-env-file' },
+    ],
+    tip: 'A numeric env var that "silently defaults to zero" with no validation error is the classic symptom of a bare z.coerce.number() with no further constraint — add .min() to catch an accidentally-blank value.',
+    docs: [
+      { label: 'Zod — coerce API reference', url: 'https://zod.dev/api' },
+    ],
+    resources: [],
+    gotchas: [
+      'Number("") is 0 in JavaScript, not NaN — a real, technically-set-but-blank environment variable coerces to a valid-looking zero, not a validation error.',
+      'Whether this gets caught depends entirely on whether the schema has additional constraints beyond coerce — a bare z.coerce.number() provides no protection at all.',
+    ],
+  },
+
+  'node/env-config/dotenv-config-never-throws-on-a-missing-env-file': {
+    apis: ['dotenv.config()', 'import(\'dotenv/config\')'],
+    related: [
+      { label: 'Env Config & dotenv (overview)', route: '/node/env-config' },
+      { label: 'An Unset NODE_ENV Silently Behaves Like Development in Production', route: '/node/env-config/unset-node-env-silently-behaves-like-development-in-production' },
+      { label: 'z.coerce.number() Turns an Empty String Into 0, Not an Error', route: '/node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error' },
+    ],
+    tip: 'Always pair dotenv\'s file loading with a separate, mandatory validation step (Zod or otherwise) — dotenv alone gives no signal at all if the .env file itself is simply missing.',
+    docs: [
+      { label: 'dotenv — README, config() return value', url: 'https://github.com/motdotla/dotenv#config' },
+    ],
+    resources: [],
+    gotchas: [
+      'dotenv.config() returns a result object with an error property instead of throwing — checking it is opt-in, not automatic.',
+      'The common import \'dotenv/config\' shorthand discards that return value entirely, making a missing-file failure structurally impossible to detect from the importing file.',
+    ],
+  },
+
   'node/logging': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

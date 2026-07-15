@@ -2207,7 +2207,12 @@ export const routes: Routes = [
       { path: 'buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool', loadComponent: () => import('./components/backend/nodejs/core-modules/subtopics/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool').then(m => m.BufferAllocunsafeCanLeakPreviousDataViaTheSharedPoolSubtopic) },
       { path: 'exec-default-maxbuffer-kills-the-process-not-truncates', loadComponent: () => import('./components/backend/nodejs/core-modules/subtopics/exec-default-maxbuffer-kills-the-process-not-truncates/exec-default-maxbuffer-kills-the-process-not-truncates').then(m => m.ExecDefaultMaxbufferKillsTheProcessNotTruncatesSubtopic) },
     ] },
-    { path: 'env-config',     loadComponent: () => import('./components/backend/nodejs/env-config/env-config').then(m => m.NodeEnvConfig) },
+    { path: 'env-config', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/env-config/env-config').then(m => m.NodeEnvConfig) },
+      { path: 'unset-node-env-silently-behaves-like-development-in-production', loadComponent: () => import('./components/backend/nodejs/env-config/subtopics/unset-node-env-silently-behaves-like-development-in-production/unset-node-env-silently-behaves-like-development-in-production').then(m => m.UnsetNodeEnvSilentlyBehavesLikeDevelopmentInProductionSubtopic) },
+      { path: 'zod-coerce-number-turns-an-empty-string-into-zero-not-an-error', loadComponent: () => import('./components/backend/nodejs/env-config/subtopics/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error').then(m => m.ZodCoerceNumberTurnsAnEmptyStringIntoZeroNotAnErrorSubtopic) },
+      { path: 'dotenv-config-never-throws-on-a-missing-env-file', loadComponent: () => import('./components/backend/nodejs/env-config/subtopics/dotenv-config-never-throws-on-a-missing-env-file/dotenv-config-never-throws-on-a-missing-env-file').then(m => m.DotenvConfigNeverThrowsOnAMissingEnvFileSubtopic) },
+    ] },
     { path: 'express',        loadComponent: () => import('./components/backend/nodejs/express/express').then(m => m.NodeExpress) },
     { path: 'fastify',        loadComponent: () => import('./components/backend/nodejs/fastify/fastify').then(m => m.NodeFastify) },
     { path: 'rest-api',       loadComponent: () => import('./components/backend/nodejs/rest-api/rest-api').then(m => m.NodeRestApi) },

@@ -1908,6 +1908,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool', route: '/node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool' },
     { label: 'exec()’s Default maxBuffer Kills the Process, Not Truncates', route: '/node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates' },
   ],
+  'env-config': [
+    { label: 'An Unset NODE_ENV Silently Behaves Like Development in Production', route: '/node/env-config/unset-node-env-silently-behaves-like-development-in-production' },
+    { label: 'z.coerce.number() Turns an Empty String Into 0, Not an Error', route: '/node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error' },
+    { label: 'dotenv.config() Never Throws on a Missing .env File', route: '/node/env-config/dotenv-config-never-throws-on-a-missing-env-file' },
+  ],
 };
 
 @Component({
