@@ -30957,6 +30957,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Global uncaughtException/unhandledRejection handlers are a last-resort safety net for logging, not a substitute for proper error handling at the source.',
     ],
   },
+  'node/error-handling/error-cause-does-not-survive-json-stringify': {
+    apis: ['Error.cause', 'JSON.stringify()'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/node/error-handling' },
+      { label: 'process.exit() Can Truncate Unflushed Output', route: '/node/error-handling/process-exit-can-truncate-unflushed-output' },
+      { label: 'An uncaughtException Listener Disables the Default Crash', route: '/node/error-handling/uncaughtexception-listener-disables-default-crash' },
+    ],
+    tip: 'message, stack, and cause are all non-enumerable on an Error instance — JSON.stringify(someError) produces "{}" unless you manually extract those fields first, recursively down the cause chain.',
+    docs: [
+      { label: 'MDN — Error.prototype.cause', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause' },
+    ],
+    resources: [],
+    gotchas: [
+      'A cause chain compounds the problem — err.cause is typically another Error with the same non-enumerable-property issue, so a single-level extraction still loses the nested cause.',
+      'Structured-logging setups that call JSON.stringify(err) directly, rather than extracting fields first, silently produce empty log entries for exactly the errors most worth investigating.',
+    ],
+  },
+  'node/error-handling/process-exit-can-truncate-unflushed-output': {
+    apis: ['process.exit()', 'process.exitCode'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/node/error-handling' },
+      { label: 'Error.cause Doesn’t Survive JSON.stringify()', route: '/node/error-handling/error-cause-does-not-survive-json-stringify' },
+      { label: 'An uncaughtException Listener Disables the Default Crash', route: '/node/error-handling/uncaughtexception-listener-disables-default-crash' },
+    ],
+    tip: 'Node\'s own docs recommend setting process.exitCode and letting the process exit naturally over calling process.exit() directly, specifically to avoid truncating pending stdout/stderr writes.',
+    docs: [
+      { label: 'Node.js — process.exit()', url: 'https://nodejs.org/api/process.html#processexitcode' },
+    ],
+    resources: [],
+    gotchas: [
+      'The console.error()/logger call made immediately before process.exit() in a crash handler is exactly the kind of write most at risk of truncation.',
+      'Writes to a piped destination (common in production, via a log collector or container runtime) are more likely to be asynchronous than writes to a plain interactive terminal.',
+    ],
+  },
+  'node/error-handling/uncaughtexception-listener-disables-default-crash': {
+    apis: ['process.on(\'uncaughtException\')', 'EventEmitter'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/node/error-handling' },
+      { label: 'Error.cause Doesn’t Survive JSON.stringify()', route: '/node/error-handling/error-cause-does-not-survive-json-stringify' },
+      { label: 'process.exit() Can Truncate Unflushed Output', route: '/node/error-handling/process-exit-can-truncate-unflushed-output' },
+    ],
+    tip: 'Registering an uncaughtException listener overrides Node\'s default crash-and-exit behavior — if no registered listener calls process.exit(), the process keeps running in an undefined state.',
+    docs: [
+      { label: 'Node.js — Event: \'uncaughtException\'', url: 'https://nodejs.org/api/process.html#event-uncaughtexception' },
+    ],
+    resources: [],
+    gotchas: [
+      'process is a regular EventEmitter — multiple uncaughtException listeners (yours plus a third-party monitoring SDK\'s) all run, but the process only exits if at least one of them actually calls process.exit().',
+      'An exception thrown inside the uncaughtException handler itself is not caught by that same mechanism — Node exits nonzero via a different path.',
+    ],
+  },
   'node/streams': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

@@ -1953,6 +1953,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'close, Not finish/end, Signals Resources Are Released', route: '/node/streams/close-not-finish-end-signals-resources-are-released' },
     { label: 'highWaterMark Counts Objects, Not Bytes, in Object Mode', route: '/node/streams/highwatermark-counts-objects-not-bytes-in-object-mode' },
   ],
+  // NOTE: hub-prefixed — bare 'error-handling' is already claimed by the JavaScript hub's own topic.
+  'node-error-handling': [
+    { label: 'Error.cause Doesn’t Survive JSON.stringify()', route: '/node/error-handling/error-cause-does-not-survive-json-stringify' },
+    { label: 'process.exit() Can Truncate Unflushed Output', route: '/node/error-handling/process-exit-can-truncate-unflushed-output' },
+    { label: 'An uncaughtException Listener Disables the Default Crash', route: '/node/error-handling/uncaughtexception-listener-disables-default-crash' },
+  ],
 };
 
 @Component({

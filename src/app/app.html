@@ -5418,7 +5418,26 @@
           </div>
         }
       }
-      <a routerLink="/node/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('node-error-handling')){<span class="nl-done">✓</span>}@if(diff('node-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/error-handling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Error Handling</span>
+        @if (progress.isDone('node-error-handling')) {<span class="nl-done">✓</span>}
+        @if (diff('node-error-handling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-error-handling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-error-handling')"
+                  (click)="toggleSubtopics('node-error-handling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-error-handling'); as nodeErrorHandlingSubs) {
+        @if (isSubtopicsExpanded('node-error-handling')) {
+          <div class="nav-subtopics">
+            @for (s of nodeErrorHandlingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

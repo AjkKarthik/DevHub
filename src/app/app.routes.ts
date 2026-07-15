@@ -2261,7 +2261,12 @@ export const routes: Routes = [
       { path: 'close-not-finish-end-signals-resources-are-released', loadComponent: () => import('./components/backend/nodejs/streams/subtopics/close-not-finish-end-signals-resources-are-released/close-not-finish-end-signals-resources-are-released').then(m => m.CloseNotFinishEndSignalsResourcesAreReleasedSubtopic) },
       { path: 'highwatermark-counts-objects-not-bytes-in-object-mode', loadComponent: () => import('./components/backend/nodejs/streams/subtopics/highwatermark-counts-objects-not-bytes-in-object-mode/highwatermark-counts-objects-not-bytes-in-object-mode').then(m => m.HighwatermarkCountsObjectsNotBytesInObjectModeSubtopic) },
     ] },
-    { path: 'error-handling', loadComponent: () => import('./components/backend/nodejs/error-handling/error-handling').then(m => m.NodeErrorHandling) },
+    { path: 'error-handling', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/error-handling/error-handling').then(m => m.NodeErrorHandling) },
+      { path: 'error-cause-does-not-survive-json-stringify', loadComponent: () => import('./components/backend/nodejs/error-handling/subtopics/error-cause-does-not-survive-json-stringify/error-cause-does-not-survive-json-stringify').then(m => m.ErrorCauseDoesNotSurviveJsonStringifySubtopic) },
+      { path: 'process-exit-can-truncate-unflushed-output', loadComponent: () => import('./components/backend/nodejs/error-handling/subtopics/process-exit-can-truncate-unflushed-output/process-exit-can-truncate-unflushed-output').then(m => m.ProcessExitCanTruncateUnflushedOutputSubtopic) },
+      { path: 'uncaughtexception-listener-disables-default-crash', loadComponent: () => import('./components/backend/nodejs/error-handling/subtopics/uncaughtexception-listener-disables-default-crash/uncaughtexception-listener-disables-default-crash').then(m => m.UncaughtexceptionListenerDisablesDefaultCrashSubtopic) },
+    ] },
     { path: 'prisma',         loadComponent: () => import('./components/backend/nodejs/prisma/prisma').then(m => m.NodePrisma) },
     { path: 'mongoose',       loadComponent: () => import('./components/backend/nodejs/mongoose/mongoose').then(m => m.NodeMongoose) },
     { path: 'caching',        loadComponent: () => import('./components/backend/nodejs/caching/caching').then(m => m.NodeCaching) },

@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/node/error-handling" subtopicLabel="Error.cause vs JSON" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Error.cause Doesn't Survive JSON.stringify() — Properties Are Non-Enumerable</h1>
+  <p class="page-subtitle">
+    message, stack, and cause are all non-enumerable — a raw Error passed to a JSON-based logger serializes to an
+    empty object, cause chain included.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 16.9+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own Error.cause recommendation with the serialization gotcha it doesn't mention.
+      The next subtopic moves to a different corner of production error handling — the exact way process.exit()
+      itself can silently lose data on the way out.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/node/error-handling"
+    [next]="{ label: 'process.exit() Can Truncate Unflushed Output', route: '/node/error-handling/process-exit-can-truncate-unflushed-output' }"
+  />
+</div>
