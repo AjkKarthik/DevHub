@@ -2219,7 +2219,12 @@ export const routes: Routes = [
       { path: 'next-err-from-an-error-handler-chains-to-the-next-error-handler', loadComponent: () => import('./components/backend/nodejs/express/subtopics/next-err-from-an-error-handler-chains-to-the-next-error-handler/next-err-from-an-error-handler-chains-to-the-next-error-handler').then(m => m.NextErrFromAnErrorHandlerChainsToTheNextErrorHandlerSubtopic) },
       { path: 'app-use-matches-path-segments-not-raw-string-prefix', loadComponent: () => import('./components/backend/nodejs/express/subtopics/app-use-matches-path-segments-not-raw-string-prefix/app-use-matches-path-segments-not-raw-string-prefix').then(m => m.AppUseMatchesPathSegmentsNotRawStringPrefixSubtopic) },
     ] },
-    { path: 'fastify',        loadComponent: () => import('./components/backend/nodejs/fastify/fastify').then(m => m.NodeFastify) },
+    { path: 'fastify', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/fastify/fastify').then(m => m.NodeFastify) },
+      { path: 'response-schema-silently-strips-unlisted-fields-forgotten-ones-too', loadComponent: () => import('./components/backend/nodejs/fastify/subtopics/response-schema-silently-strips-unlisted-fields-forgotten-ones-too/response-schema-silently-strips-unlisted-fields-forgotten-ones-too').then(m => m.ResponseSchemaSilentlyStripsUnlistedFieldsForgottenOnesTooSubtopic) },
+      { path: 'sibling-plugins-never-see-each-others-decorators', loadComponent: () => import('./components/backend/nodejs/fastify/subtopics/sibling-plugins-never-see-each-others-decorators/sibling-plugins-never-see-each-others-decorators').then(m => m.SiblingPluginsNeverSeeEachOthersDecoratorsSubtopic) },
+      { path: 'onerror-hooks-run-before-seterrorhandler-not-after', loadComponent: () => import('./components/backend/nodejs/fastify/subtopics/onerror-hooks-run-before-seterrorhandler-not-after/onerror-hooks-run-before-seterrorhandler-not-after').then(m => m.OnerrorHooksRunBeforeSeterrorhandlerNotAfterSubtopic) },
+    ] },
     { path: 'rest-api',       loadComponent: () => import('./components/backend/nodejs/rest-api/rest-api').then(m => m.NodeRestApi) },
     { path: 'websockets',     loadComponent: () => import('./components/backend/nodejs/websockets/websockets').then(m => m.NodeWebsockets) },
     { path: 'graphql',        loadComponent: () => import('./components/backend/nodejs/graphql/graphql').then(m => m.NodeGraphql) },

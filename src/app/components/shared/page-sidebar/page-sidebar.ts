@@ -31007,6 +31007,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The performance advantage over Express is most pronounced under high request volume with JSON-heavy payloads — for low-traffic services, the difference is rarely the deciding factor.',
     ],
   },
+  'node/fastify/response-schema-silently-strips-unlisted-fields-forgotten-ones-too': {
+    apis: ['fast-json-stringify', 'schema.response'],
+    related: [
+      { label: 'Fastify (overview)', route: '/node/fastify' },
+      { label: 'Sibling Plugins Never See Each Other’s Decorators', route: '/node/fastify/sibling-plugins-never-see-each-others-decorators' },
+      { label: 'onError Hooks Run Before setErrorHandler, Not After', route: '/node/fastify/onerror-hooks-run-before-seterrorhandler-not-after' },
+    ],
+    tip: 'A field confirmed present via logging before the return statement, but missing from the actual HTTP response, is the classic symptom of a response schema that was never updated alongside a new field.',
+    docs: [
+      { label: 'Fastify — Validation and Serialization', url: 'https://fastify.dev/docs/latest/Reference/Validation-and-Serialization/' },
+    ],
+    resources: [],
+    gotchas: [
+      'The response schema strips ANY unlisted field uniformly — it cannot distinguish a deliberately-omitted sensitive field from a legitimate one nobody remembered to add.',
+      'This failure is completely silent — a well-formed 200 response with no error, warning, or failed validation anywhere.',
+    ],
+  },
+
+  'node/fastify/sibling-plugins-never-see-each-others-decorators': {
+    apis: ['fastify.decorate()', 'fastify.register()', 'fastify-plugin'],
+    related: [
+      { label: 'Fastify (overview)', route: '/node/fastify' },
+      { label: 'Response Schema Silently Strips Unlisted Fields — Forgotten Ones Too', route: '/node/fastify/response-schema-silently-strips-unlisted-fields-forgotten-ones-too' },
+      { label: 'onError Hooks Run Before setErrorHandler, Not After', route: '/node/fastify/onerror-hooks-run-before-seterrorhandler-not-after' },
+    ],
+    tip: 'Registration order between two sibling plugins has no bearing on decorator visibility — only wrapping the providing plugin with fastify-plugin (fp) promotes its decorators to the shared parent scope.',
+    docs: [
+      { label: 'Fastify — Plugins Guide', url: 'https://fastify.dev/docs/latest/Guides/Plugins-Guide/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Fastify\'s own docs state encapsulation applies to "ancestors and siblings, but not the children" — decorations flow strictly downward through the ancestor chain, never sideways.',
+      'A route registered directly on root DOES see a plugin\'s fp()-wrapped decorations registered earlier on that same root — that\'s parent-to-child inheritance, a different relationship than sibling-to-sibling.',
+    ],
+  },
+
+  'node/fastify/onerror-hooks-run-before-seterrorhandler-not-after': {
+    apis: ['addHook(\'onError\')', 'setErrorHandler()'],
+    related: [
+      { label: 'Fastify (overview)', route: '/node/fastify' },
+      { label: 'Response Schema Silently Strips Unlisted Fields — Forgotten Ones Too', route: '/node/fastify/response-schema-silently-strips-unlisted-fields-forgotten-ones-too' },
+      { label: 'Sibling Plugins Never See Each Other’s Decorators', route: '/node/fastify/sibling-plugins-never-see-each-others-decorators' },
+    ],
+    tip: 'onError hooks always observe the original, untransformed error — they run before setErrorHandler, so anything setErrorHandler later rewrites has no effect on what the hook already logged.',
+    docs: [
+      { label: 'Fastify — Hooks reference', url: 'https://fastify.dev/docs/latest/Reference/Hooks/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Both onError and setErrorHandler genuinely fire for the same error — they are not mutually exclusive alternatives, they compose in a specific order.',
+      'This exact ordering was stated the opposite way in some earlier Fastify documentation revisions — a real, tracked inconsistency worth double-checking against current docs.',
+    ],
+  },
+
   'node/nestjs': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
