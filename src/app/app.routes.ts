@@ -2213,7 +2213,12 @@ export const routes: Routes = [
       { path: 'zod-coerce-number-turns-an-empty-string-into-zero-not-an-error', loadComponent: () => import('./components/backend/nodejs/env-config/subtopics/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error').then(m => m.ZodCoerceNumberTurnsAnEmptyStringIntoZeroNotAnErrorSubtopic) },
       { path: 'dotenv-config-never-throws-on-a-missing-env-file', loadComponent: () => import('./components/backend/nodejs/env-config/subtopics/dotenv-config-never-throws-on-a-missing-env-file/dotenv-config-never-throws-on-a-missing-env-file').then(m => m.DotenvConfigNeverThrowsOnAMissingEnvFileSubtopic) },
     ] },
-    { path: 'express',        loadComponent: () => import('./components/backend/nodejs/express/express').then(m => m.NodeExpress) },
+    { path: 'express', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/express/express').then(m => m.NodeExpress) },
+      { path: 'express-catches-synchronous-throws-automatically-not-async-rejections', loadComponent: () => import('./components/backend/nodejs/express/subtopics/express-catches-synchronous-throws-automatically-not-async-rejections/express-catches-synchronous-throws-automatically-not-async-rejections').then(m => m.ExpressCatchesSynchronousThrowsAutomaticallyNotAsyncRejectionsSubtopic) },
+      { path: 'next-err-from-an-error-handler-chains-to-the-next-error-handler', loadComponent: () => import('./components/backend/nodejs/express/subtopics/next-err-from-an-error-handler-chains-to-the-next-error-handler/next-err-from-an-error-handler-chains-to-the-next-error-handler').then(m => m.NextErrFromAnErrorHandlerChainsToTheNextErrorHandlerSubtopic) },
+      { path: 'app-use-matches-path-segments-not-raw-string-prefix', loadComponent: () => import('./components/backend/nodejs/express/subtopics/app-use-matches-path-segments-not-raw-string-prefix/app-use-matches-path-segments-not-raw-string-prefix').then(m => m.AppUseMatchesPathSegmentsNotRawStringPrefixSubtopic) },
+    ] },
     { path: 'fastify',        loadComponent: () => import('./components/backend/nodejs/fastify/fastify').then(m => m.NodeFastify) },
     { path: 'rest-api',       loadComponent: () => import('./components/backend/nodejs/rest-api/rest-api').then(m => m.NodeRestApi) },
     { path: 'websockets',     loadComponent: () => import('./components/backend/nodejs/websockets/websockets').then(m => m.NodeWebsockets) },

@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Express.js" topicRoute="/node/express" subtopicLabel="Error Handlers Can Chain" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">next(err) From an Error Handler Chains to the Next Error Handler</h1>
+  <p class="page-subtitle">
+    Calling next(err) inside an error handler skips remaining regular middleware but continues to the next
+    error-handling middleware — a real, documented multi-handler pattern.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Express 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page shows one centralized error handler — this subtopic covers Express's own documented support
+      for splitting that into several focused, chained handlers instead. Next: app.use('/api') matches on path
+      segment boundaries, not raw string prefix — a request to /apiv2 never accidentally matches it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Express.js"
+    topicRoute="/node/express"
+    [prev]="{ label: 'Express Catches Synchronous Throws Automatically, Not Async Rejections', route: '/node/express/express-catches-synchronous-throws-automatically-not-async-rejections' }"
+    [next]="{ label: 'app.use() Matches Path Segments, Not Raw String Prefix', route: '/node/express/app-use-matches-path-segments-not-raw-string-prefix' }"
+  />
+</div>

@@ -30942,6 +30942,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Unhandled errors in an async route handler are NOT automatically caught by Express\'s error middleware in versions before Express 5 — a try/catch or wrapper utility is needed.',
     ],
   },
+  'node/express/express-catches-synchronous-throws-automatically-not-async-rejections': {
+    apis: ['app.use()', 'next(err)'],
+    related: [
+      { label: 'Express.js (overview)', route: '/node/express' },
+      { label: 'next(err) From an Error Handler Chains to the Next Error Handler', route: '/node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler' },
+      { label: 'app.use() Matches Path Segments, Not Raw String Prefix', route: '/node/express/app-use-matches-path-segments-not-raw-string-prefix' },
+    ],
+    tip: 'A synchronous route handler that throws is already caught by Express automatically — express-async-errors and manual try/catch only close the gap for async/Promise-based errors specifically.',
+    docs: [
+      { label: 'Express — Error handling guide', url: 'https://expressjs.com/en/guide/error-handling.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'An async function that throws returns a rejected Promise rather than throwing synchronously — Express\'s try/catch around the handler call has already returned before that rejection settles.',
+      'Adding defensive try/catch to an already-working synchronous handler is unnecessary code, not a fix for a real gap.',
+    ],
+  },
+
+  'node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler': {
+    apis: ['next(err)', 'app.use()'],
+    related: [
+      { label: 'Express.js (overview)', route: '/node/express' },
+      { label: 'Express Catches Synchronous Throws Automatically, Not Async Rejections', route: '/node/express/express-catches-synchronous-throws-automatically-not-async-rejections' },
+      { label: 'app.use() Matches Path Segments, Not Raw String Prefix', route: '/node/express/app-use-matches-path-segments-not-raw-string-prefix' },
+    ],
+    tip: 'Splitting one large error handler into several focused, chained ones is a real, Express-documented pattern — just make sure each handler calls next(err) in its non-matching branch, or the error silently stops propagating.',
+    docs: [
+      { label: 'Express — Error handling guide', url: 'https://expressjs.com/en/guide/error-handling.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'next(err) skips remaining REGULAR middleware but continues to the next ERROR-handling middleware — the two categories are skipped/continued independently.',
+      'A specialized error handler that forgets next(err) in its non-matching branch silently swallows the error, leaving the request hanging.',
+    ],
+  },
+
+  'node/express/app-use-matches-path-segments-not-raw-string-prefix': {
+    apis: ['app.use()', 'path-to-regexp'],
+    related: [
+      { label: 'Express.js (overview)', route: '/node/express' },
+      { label: 'Express Catches Synchronous Throws Automatically, Not Async Rejections', route: '/node/express/express-catches-synchronous-throws-automatically-not-async-rejections' },
+      { label: 'next(err) From an Error Handler Chains to the Next Error Handler', route: '/node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler' },
+    ],
+    tip: 'Mount-path-scoped middleware (app.use(\'/admin\', authCheck)) is safe from accidental matches on similarly-named routes like /admin-status by design — no extra defensive path checking needed.',
+    docs: [
+      { label: 'Express — Routing guide', url: 'https://expressjs.com/en/guide/routing.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Express\'s path-to-regexp-based matching requires the character after a matched segment to be a slash or end-of-string — genuinely different from a naive string-prefix check.',
+      'This precise matching rule is a path-to-regexp implementation detail, not something spelled out explicitly in Express\'s own high-level routing guide.',
+    ],
+  },
+
   'node/fastify': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

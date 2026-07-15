@@ -5254,7 +5254,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">HTTP &amp; APIs</p>
-      <a routerLink="/node/express" routerLinkActive="active"><span class="nl-text">Express.js</span>@if(progress.isDone('node-express')){<span class="nl-done">✓</span>}@if(diff('node-express');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/express" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Express.js</span>
+        @if (progress.isDone('node-express')) {<span class="nl-done">✓</span>}
+        @if (diff('node-express'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('express')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('express')"
+                  (click)="toggleSubtopics('express', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('express'); as nodeExpressSubs) {
+        @if (isSubtopicsExpanded('express')) {
+          <div class="nav-subtopics">
+            @for (s of nodeExpressSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/fastify" routerLinkActive="active"><span class="nl-text">Fastify</span>@if(progress.isDone('node-fastify')){<span class="nl-done">✓</span>}@if(diff('node-fastify');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/rest-api" routerLinkActive="active"><span class="nl-text">REST API Design</span>@if(progress.isDone('node-rest-api')){<span class="nl-done">✓</span>}@if(diff('node-rest-api');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/websockets" routerLinkActive="active"><span class="nl-text">WebSockets &amp; Socket.io</span>@if(progress.isDone('node-websockets')){<span class="nl-done">✓</span>}@if(diff('node-websockets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
