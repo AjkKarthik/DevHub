@@ -31536,6 +31536,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'An unbounded in-memory cache (no max size, no eviction) is a memory leak waiting to happen in a long-running process.',
     ],
   },
+  'node/caching/lock-ttl-can-expire-while-the-holder-is-still-working': {
+    apis: ['SET NX EX', 'EXPIRE', 'Distributed Locks'],
+    related: [
+      { label: 'Caching with Redis (overview)', route: '/node/caching' },
+      { label: 'SCAN Does Not Guarantee a Consistent Snapshot', route: '/node/caching/scan-does-not-guarantee-a-consistent-snapshot' },
+      { label: 'SET NX Lock Is Not Safe Across a Redis Failover', route: '/node/caching/set-nx-lock-is-not-safe-across-a-redis-failover' },
+    ],
+    tip: 'Redis\'s own docs state mutual exclusion holds only "as long as the client... terminates its work within the lock validity time" — a fixed TTL and slow fetchFn() can let a second process duplicate the work.',
+    docs: [
+      { label: 'Redis — Distributed Locks', url: 'https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/' },
+    ],
+    resources: [],
+    gotchas: [
+      'The documented mitigation is periodic lock extension (a watchdog) while work is genuinely ongoing, not simply picking a longer fixed TTL.',
+      'Redis\'s own docs go further and recommend fencing tokens as the real safeguard for operations where a stale lock-holder writing anyway would cause real damage.',
+    ],
+  },
+  'node/caching/scan-does-not-guarantee-a-consistent-snapshot': {
+    apis: ['SCAN', 'HSCAN', 'SSCAN'],
+    related: [
+      { label: 'Caching with Redis (overview)', route: '/node/caching' },
+      { label: 'Lock TTL Can Expire While the Holder Is Still Working', route: '/node/caching/lock-ttl-can-expire-while-the-holder-is-still-working' },
+      { label: 'SET NX Lock Is Not Safe Across a Redis Failover', route: '/node/caching/set-nx-lock-is-not-safe-across-a-redis-failover' },
+    ],
+    tip: 'SCAN only guarantees a key present for the ENTIRE scan duration is returned at least once — keys added or removed mid-scan are explicitly left undefined by Redis\'s own docs, and duplicates are possible.',
+    docs: [
+      { label: 'Redis — SCAN command', url: 'https://redis.io/docs/latest/commands/scan/' },
+    ],
+    resources: [],
+    gotchas: [
+      '"Non-blocking" (why SCAN replaces KEYS) and "consistent snapshot" are different properties — SCAN only provides the former.',
+      'Code that counts or processes each scanned key (not just deletes it) needs explicit deduplication, since the same key can be returned more than once.',
+    ],
+  },
+  'node/caching/set-nx-lock-is-not-safe-across-a-redis-failover': {
+    apis: ['Redlock', 'Fencing Tokens', 'Replication'],
+    related: [
+      { label: 'Caching with Redis (overview)', route: '/node/caching' },
+      { label: 'Lock TTL Can Expire While the Holder Is Still Working', route: '/node/caching/lock-ttl-can-expire-while-the-holder-is-still-working' },
+      { label: 'SCAN Does Not Guarantee a Consistent Snapshot', route: '/node/caching/scan-does-not-guarantee-a-consistent-snapshot' },
+    ],
+    tip: 'Redis\'s own docs walk through a primary crashing before replicating a lock write, letting a promoted replica grant the "same" lock to a second client — labeled outright a "SAFETY VIOLATION!"',
+    docs: [
+      { label: 'Redis — Distributed Locks (failover safety)', url: 'https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a genuinely separate failure mode from TTL expiry — it can happen for near-instantaneous work, with no slow operation involved at all.',
+      'For a cache-population lock specifically, the worst case is a harmless duplicate refresh — full Redlock is usually disproportionate; reserve it for genuinely irreversible operations.',
+    ],
+  },
   'node/mongoose': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

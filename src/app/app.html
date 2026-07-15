@@ -5482,7 +5482,26 @@
           </div>
         }
       }
-      <a routerLink="/node/caching" routerLinkActive="active"><span class="nl-text">Caching with Redis</span>@if(progress.isDone('node-caching')){<span class="nl-done">✓</span>}@if(diff('node-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/caching" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Caching with Redis</span>
+        @if (progress.isDone('node-caching')) {<span class="nl-done">✓</span>}
+        @if (diff('node-caching'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-caching')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-caching')"
+                  (click)="toggleSubtopics('node-caching', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-caching'); as nodeCachingSubs) {
+        @if (isSubtopicsExpanded('node-caching')) {
+          <div class="nav-subtopics">
+            @for (s of nodeCachingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

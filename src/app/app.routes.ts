@@ -2279,7 +2279,12 @@ export const routes: Routes = [
       { path: 'populate-resolves-a-dangling-reference-to-null', loadComponent: () => import('./components/backend/nodejs/mongoose/subtopics/populate-resolves-a-dangling-reference-to-null/populate-resolves-a-dangling-reference-to-null').then(m => m.PopulateResolvesADanglingReferenceToNullSubtopic) },
       { path: 'mixed-type-mutations-need-markmodified-to-persist', loadComponent: () => import('./components/backend/nodejs/mongoose/subtopics/mixed-type-mutations-need-markmodified-to-persist/mixed-type-mutations-need-markmodified-to-persist').then(m => m.MixedTypeMutationsNeedMarkmodifiedToPersistSubtopic) },
     ] },
-    { path: 'caching',        loadComponent: () => import('./components/backend/nodejs/caching/caching').then(m => m.NodeCaching) },
+    { path: 'caching', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/caching/caching').then(m => m.NodeCaching) },
+      { path: 'lock-ttl-can-expire-while-the-holder-is-still-working', loadComponent: () => import('./components/backend/nodejs/caching/subtopics/lock-ttl-can-expire-while-the-holder-is-still-working/lock-ttl-can-expire-while-the-holder-is-still-working').then(m => m.LockTtlCanExpireWhileTheHolderIsStillWorkingSubtopic) },
+      { path: 'scan-does-not-guarantee-a-consistent-snapshot', loadComponent: () => import('./components/backend/nodejs/caching/subtopics/scan-does-not-guarantee-a-consistent-snapshot/scan-does-not-guarantee-a-consistent-snapshot').then(m => m.ScanDoesNotGuaranteeAConsistentSnapshotSubtopic) },
+      { path: 'set-nx-lock-is-not-safe-across-a-redis-failover', loadComponent: () => import('./components/backend/nodejs/caching/subtopics/set-nx-lock-is-not-safe-across-a-redis-failover/set-nx-lock-is-not-safe-across-a-redis-failover').then(m => m.SetNxLockIsNotSafeAcrossARedisFailoverSubtopic) },
+    ] },
     { path: 'jwt-auth',       loadComponent: () => import('./components/backend/nodejs/jwt-auth/jwt-auth').then(m => m.NodeJwtAuth) },
     { path: 'security',       loadComponent: () => import('./components/backend/nodejs/security/security').then(m => m.NodeSecurity) },
     { path: 'performance',    loadComponent: () => import('./components/backend/nodejs/performance/performance').then(m => m.NodePerformance) },

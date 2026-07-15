@@ -1969,6 +1969,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'populate() Resolves a Dangling Reference to null', route: '/node/mongoose/populate-resolves-a-dangling-reference-to-null' },
     { label: 'Mixed Type Mutations Need markModified() to Persist', route: '/node/mongoose/mixed-type-mutations-need-markmodified-to-persist' },
   ],
+  // NOTE: hub-prefixed — bare 'caching' is already claimed by the Web Performance hub's own topic.
+  'node-caching': [
+    { label: 'Lock TTL Can Expire While the Holder Is Still Working', route: '/node/caching/lock-ttl-can-expire-while-the-holder-is-still-working' },
+    { label: 'SCAN Does Not Guarantee a Consistent Snapshot', route: '/node/caching/scan-does-not-guarantee-a-consistent-snapshot' },
+    { label: 'The Simple SET NX Lock Isn’t Safe Across a Redis Failover', route: '/node/caching/set-nx-lock-is-not-safe-across-a-redis-failover' },
+  ],
 };
 
 @Component({
