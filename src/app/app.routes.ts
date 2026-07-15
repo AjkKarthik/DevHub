@@ -2225,7 +2225,12 @@ export const routes: Routes = [
       { path: 'sibling-plugins-never-see-each-others-decorators', loadComponent: () => import('./components/backend/nodejs/fastify/subtopics/sibling-plugins-never-see-each-others-decorators/sibling-plugins-never-see-each-others-decorators').then(m => m.SiblingPluginsNeverSeeEachOthersDecoratorsSubtopic) },
       { path: 'onerror-hooks-run-before-seterrorhandler-not-after', loadComponent: () => import('./components/backend/nodejs/fastify/subtopics/onerror-hooks-run-before-seterrorhandler-not-after/onerror-hooks-run-before-seterrorhandler-not-after').then(m => m.OnerrorHooksRunBeforeSeterrorhandlerNotAfterSubtopic) },
     ] },
-    { path: 'rest-api',       loadComponent: () => import('./components/backend/nodejs/rest-api/rest-api').then(m => m.NodeRestApi) },
+    { path: 'rest-api', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/rest-api/rest-api').then(m => m.NodeRestApi) },
+      { path: 'json-merge-patch-null-vs-omitted-field-semantics', loadComponent: () => import('./components/backend/nodejs/rest-api/subtopics/json-merge-patch-null-vs-omitted-field-semantics/json-merge-patch-null-vs-omitted-field-semantics').then(m => m.JsonMergePatchNullVsOmittedFieldSemanticsSubtopic) },
+      { path: 'post-retry-duplicates-without-idempotency-key', loadComponent: () => import('./components/backend/nodejs/rest-api/subtopics/post-retry-duplicates-without-idempotency-key/post-retry-duplicates-without-idempotency-key').then(m => m.PostRetryDuplicatesWithoutIdempotencyKeySubtopic) },
+      { path: 'etag-if-match-mismatch-returns-412-not-409', loadComponent: () => import('./components/backend/nodejs/rest-api/subtopics/etag-if-match-mismatch-returns-412-not-409/etag-if-match-mismatch-returns-412-not-409').then(m => m.EtagIfMatchMismatchReturns412Not409Subtopic) },
+    ] },
     { path: 'websockets',     loadComponent: () => import('./components/backend/nodejs/websockets/websockets').then(m => m.NodeWebsockets) },
     { path: 'graphql',        loadComponent: () => import('./components/backend/nodejs/graphql/graphql').then(m => m.NodeGraphql) },
     { path: 'nestjs',         loadComponent: () => import('./components/backend/nodejs/nestjs/nestjs').then(m => m.NodeNestjs) },

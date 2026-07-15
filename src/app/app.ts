@@ -1923,6 +1923,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sibling Plugins Never See Each Other’s Decorators', route: '/node/fastify/sibling-plugins-never-see-each-others-decorators' },
     { label: 'onError Hooks Run Before setErrorHandler, Not After', route: '/node/fastify/onerror-hooks-run-before-seterrorhandler-not-after' },
   ],
+  'rest-api': [
+    { label: 'JSON Merge Patch: null Means Delete, Omitted Means Unchanged', route: '/node/rest-api/json-merge-patch-null-vs-omitted-field-semantics' },
+    { label: 'Why POST Retries Need an Idempotency-Key Header', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' },
+    { label: 'ETag If-Match Mismatch Returns 412, Not 409', route: '/node/rest-api/etag-if-match-mismatch-returns-412-not-409' },
+  ],
 };
 
 @Component({

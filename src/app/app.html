@@ -5294,7 +5294,26 @@
           </div>
         }
       }
-      <a routerLink="/node/rest-api" routerLinkActive="active"><span class="nl-text">REST API Design</span>@if(progress.isDone('node-rest-api')){<span class="nl-done">✓</span>}@if(diff('node-rest-api');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/rest-api" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">REST API Design</span>
+        @if (progress.isDone('node-rest-api')) {<span class="nl-done">✓</span>}
+        @if (diff('node-rest-api'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('rest-api')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rest-api')"
+                  (click)="toggleSubtopics('rest-api', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rest-api'); as nodeRestApiSubs) {
+        @if (isSubtopicsExpanded('rest-api')) {
+          <div class="nav-subtopics">
+            @for (s of nodeRestApiSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/websockets" routerLinkActive="active"><span class="nl-text">WebSockets &amp; Socket.io</span>@if(progress.isDone('node-websockets')){<span class="nl-done">✓</span>}@if(diff('node-websockets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/graphql" routerLinkActive="active"><span class="nl-text">GraphQL API</span>@if(progress.isDone('node-graphql')){<span class="nl-done">✓</span>}@if(diff('node-graphql');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/nestjs" routerLinkActive="active"><span class="nl-text">NestJS</span>@if(progress.isDone('node-nestjs')){<span class="nl-done">✓</span>}@if(diff('node-nestjs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

@@ -1,0 +1,38 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="REST API Design" topicRoute="/node/rest-api" subtopicLabel="Idempotency-Key for POST" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Why POST Retries Need an Idempotency-Key Header</h1>
+  <p class="page-subtitle">
+    POST is not idempotent by HTTP semantics — a client that doesn't know if its request succeeded can't safely
+    retry it without a mechanism the server can use to detect the duplicate.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This builds directly on the previous subtopic's theme of "HTTP methods carry precise, specification-level
+      guarantees that a naive handler easily violates" — there it was PATCH's null semantics, here it's POST's
+      non-idempotency. The final subtopic in this batch turns to a different HTTP-level mechanism entirely:
+      ETag-based optimistic concurrency, and the exact status code a mismatch must return.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="REST API Design"
+    topicRoute="/node/rest-api"
+    [prev]="{ label: 'JSON Merge Patch: null Means Delete', route: '/node/rest-api/json-merge-patch-null-vs-omitted-field-semantics' }"
+    [next]="{ label: 'ETag Mismatch Returns 412, Not 409', route: '/node/rest-api/etag-if-match-mismatch-returns-412-not-409' }"
+  />
+</div>

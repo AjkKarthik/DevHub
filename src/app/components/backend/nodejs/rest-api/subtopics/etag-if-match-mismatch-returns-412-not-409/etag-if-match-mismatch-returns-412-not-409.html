@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="REST API Design" topicRoute="/node/rest-api" subtopicLabel="ETag Mismatch Status Code" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">ETag If-Match Mismatch Returns 412, Not 409</h1>
+  <p class="page-subtitle">
+    RFC 9110 reserves a specific status code for a failed precondition header — and weak ETags can never satisfy
+    If-Match, even with an identical value.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three places where the main page's REST conventions hide a precise, spec-level rule: null
+      semantics in a PATCH body, POST's non-idempotency under network retries, and now the exact status code and
+      comparison rule for ETag-based optimistic concurrency. All three are the kind of detail that looks optional
+      until a production incident makes it very much not optional.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="REST API Design"
+    topicRoute="/node/rest-api"
+    [prev]="{ label: 'POST Retries Need an Idempotency-Key', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' }"
+  />
+</div>

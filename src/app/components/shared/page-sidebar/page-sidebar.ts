@@ -31084,6 +31084,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Not setting explicit request body size limits can let a single oversized request exhaust server memory.',
     ],
   },
+  'node/rest-api/json-merge-patch-null-vs-omitted-field-semantics': {
+    apis: ['RFC 7396', 'RFC 6902'],
+    related: [
+      { label: 'REST API Design (overview)', route: '/node/rest-api' },
+      { label: 'Why POST Retries Need an Idempotency-Key Header', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' },
+      { label: 'ETag If-Match Mismatch Returns 412, Not 409', route: '/node/rest-api/etag-if-match-mismatch-returns-412-not-409' },
+    ],
+    tip: 'A naive Object.assign(record, req.body) PATCH handler leaves omitted fields alone correctly, but has no concept of "null means delete" — it just sets the literal null value, which can violate a NOT NULL constraint.',
+    docs: [
+      { label: 'RFC 7396 — JSON Merge Patch', url: 'https://www.rfc-editor.org/rfc/rfc7396' },
+    ],
+    resources: [],
+    gotchas: [
+      'Under JSON Merge Patch, an explicit null in the PATCH body means "delete this field," not "set the value to null" — the two are easy to conflate but are different operations.',
+      'A field that is meant to genuinely hold the value null (not just be absent) cannot be represented in plain Merge Patch — it needs a sentinel value or full JSON Patch (RFC 6902) instead.',
+    ],
+  },
+  'node/rest-api/post-retry-duplicates-without-idempotency-key': {
+    apis: ['Idempotency-Key header', 'crypto.randomUUID()'],
+    related: [
+      { label: 'REST API Design (overview)', route: '/node/rest-api' },
+      { label: 'JSON Merge Patch: null Means Delete, Omitted Means Unchanged', route: '/node/rest-api/json-merge-patch-null-vs-omitted-field-semantics' },
+      { label: 'ETag If-Match Mismatch Returns 412, Not 409', route: '/node/rest-api/etag-if-match-mismatch-returns-412-not-409' },
+    ],
+    tip: 'Generate the Idempotency-Key once per logical operation, outside the retry loop — regenerating it on every retry attempt defeats the entire deduplication mechanism.',
+    docs: [
+      { label: 'IETF Draft — The Idempotency-Key HTTP Header Field', url: 'https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/' },
+    ],
+    resources: [],
+    gotchas: [
+      'POST (and PATCH with side effects) is not idempotent per HTTP semantics — blindly retrying it after a lost response can create a duplicate resource or charge.',
+      'This is a widely-adopted industry convention (used by Stripe), but the header is still an active IETF Internet-Draft, not yet a published RFC.',
+    ],
+  },
+  'node/rest-api/etag-if-match-mismatch-returns-412-not-409': {
+    apis: ['If-Match', 'ETag', 'RFC 9110 §13.1.1'],
+    related: [
+      { label: 'REST API Design (overview)', route: '/node/rest-api' },
+      { label: 'JSON Merge Patch: null Means Delete, Omitted Means Unchanged', route: '/node/rest-api/json-merge-patch-null-vs-omitted-field-semantics' },
+      { label: 'Why POST Retries Need an Idempotency-Key Header', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' },
+    ],
+    tip: 'A weak ETag (W/ prefix) can never satisfy an If-Match precondition, even against an identical opaque value — RFC 9110\'s strong comparison rule requires both tags to be non-weak.',
+    docs: [
+      { label: 'RFC 9110 — HTTP Semantics, §13.1.1 If-Match', url: 'https://www.rfc-editor.org/rfc/rfc9110#section-13.1.1' },
+    ],
+    resources: [],
+    gotchas: [
+      'An If-Match mismatch must return 412 Precondition Failed, not 409 Conflict — 409 is for conflicts the server detects on its own, not a failed client-stated precondition header.',
+      'If-Match uses strong comparison while If-None-Match uses weak comparison — the two headers are not simple inverses of the same equality rule.',
+    ],
+  },
   'node/graphql': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
