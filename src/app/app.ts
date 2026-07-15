@@ -1943,6 +1943,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Middleware Exceptions Bypass Exception Filters Entirely', route: '/node/nestjs/middleware-exceptions-bypass-exception-filters' },
     { label: 'An Interceptor That Never Calls next.handle() Skips the Handler', route: '/node/nestjs/interceptor-skipping-next-handle-skips-the-handler' },
   ],
+  'promises-async': [
+    { label: 'unhandledRejection Fires After a Turn, Not Instantly', route: '/node/promises-async/unhandledrejection-fires-after-a-turn-not-instantly' },
+    { label: 'Top-Level await Delays the Import Chain, Not the Whole Graph', route: '/node/promises-async/top-level-await-delays-the-import-chain-not-the-graph' },
+    { label: 'enterWith() Leaks Context — run() Restores It Automatically', route: '/node/promises-async/enterwith-leaks-context-run-restores-it-automatically' },
+  ],
 };
 
 @Component({

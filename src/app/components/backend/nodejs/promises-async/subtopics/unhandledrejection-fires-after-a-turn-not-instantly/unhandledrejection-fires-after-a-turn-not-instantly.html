@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Promises & Async/Await" topicRoute="/node/promises-async" subtopicLabel="unhandledRejection Timing" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">unhandledRejection Fires After a Turn of the Event Loop, Not Instantly</h1>
+  <p class="page-subtitle">
+    A .catch() attached in a later turn doesn't prevent the crash — Node emits a companion rejectionHandled event
+    too late to matter once process.exit() has already run.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sharpens the main page's own unhandledRejection recommendation with the timing detail behind it. The
+      next subtopic moves to a completely different corner of the same topic — how top-level await, mentioned only
+      briefly on the main page, actually affects module loading beyond the module that uses it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Promises & Async/Await"
+    topicRoute="/node/promises-async"
+    [next]="{ label: 'Top-Level await Delays the Import Chain', route: '/node/promises-async/top-level-await-delays-the-import-chain-not-the-graph' }"
+  />
+</div>

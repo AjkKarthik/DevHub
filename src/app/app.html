@@ -5378,7 +5378,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Async &amp; Streams</p>
-      <a routerLink="/node/promises-async" routerLinkActive="active"><span class="nl-text">Promises &amp; Async/Await</span>@if(progress.isDone('node-promises-async')){<span class="nl-done">✓</span>}@if(diff('node-promises-async');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/promises-async" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Promises &amp; Async/Await</span>
+        @if (progress.isDone('node-promises-async')) {<span class="nl-done">✓</span>}
+        @if (diff('node-promises-async'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('promises-async')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('promises-async')"
+                  (click)="toggleSubtopics('promises-async', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('promises-async'); as nodePromisesAsyncSubs) {
+        @if (isSubtopicsExpanded('promises-async')) {
+          <div class="nav-subtopics">
+            @for (s of nodePromisesAsyncSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/streams" routerLinkActive="active"><span class="nl-text">Streams &amp; Buffers</span>@if(progress.isDone('node-streams')){<span class="nl-done">✓</span>}@if(diff('node-streams');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('node-error-handling')){<span class="nl-done">✓</span>}@if(diff('node-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

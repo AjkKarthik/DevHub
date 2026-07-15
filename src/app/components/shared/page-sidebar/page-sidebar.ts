@@ -30894,6 +30894,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Forgetting await before an async function call means the calling code continues without waiting for it — a subtle and common source of race conditions.',
     ],
   },
+  'node/promises-async/unhandledrejection-fires-after-a-turn-not-instantly': {
+    apis: ['unhandledRejection', 'rejectionHandled'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/node/promises-async' },
+      { label: 'Top-Level await Delays the Import Chain', route: '/node/promises-async/top-level-await-delays-the-import-chain-not-the-graph' },
+      { label: 'enterWith() Leaks Context, run() Restores It', route: '/node/promises-async/enterwith-leaks-context-run-restores-it-automatically' },
+    ],
+    tip: 'A .catch() attached synchronously, within the same turn as the rejection, never triggers unhandledRejection at all — only a handler attached in a later turn does, and even then a companion rejectionHandled event fires to correct the record.',
+    docs: [
+      { label: 'Node.js — process: unhandledRejection', url: 'https://nodejs.org/api/process.html#event-unhandledrejection' },
+    ],
+    resources: [],
+    gotchas: [
+      'A global unhandledRejection handler that calls process.exit(1) can crash the process before a genuinely-late .catch() ever gets the chance to run and correct the record.',
+      'Node\'s docs describe the timing as "a turn of the event loop," not a specific documented internal mechanism — avoid over-claiming exactly how that\'s implemented.',
+    ],
+  },
+  'node/promises-async/top-level-await-delays-the-import-chain-not-the-graph': {
+    apis: ['top-level await', 'ES Modules'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/node/promises-async' },
+      { label: 'unhandledRejection Fires After a Turn, Not Instantly', route: '/node/promises-async/unhandledrejection-fires-after-a-turn-not-instantly' },
+      { label: 'enterWith() Leaks Context, run() Restores It', route: '/node/promises-async/enterwith-leaks-context-run-restores-it-automatically' },
+    ],
+    tip: 'A slow top-level await delays every module that imports it, directly or transitively — but modules on an unrelated branch of the import graph are unaffected, since the delay follows actual dependency edges, not the whole graph.',
+    docs: [
+      { label: 'TC39 — Top-level await proposal', url: 'https://github.com/tc39/proposal-top-level-await' },
+    ],
+    resources: [],
+    gotchas: [
+      'A commonly-imported module with a slow top-level await can meaningfully delay the startup of many seemingly-unrelated modules, simply because they transitively import it.',
+      'If a truly unrelated module appears delayed too, suspect a hidden transitive import rather than assuming top-level await affects the whole graph indiscriminately.',
+    ],
+  },
+  'node/promises-async/enterwith-leaks-context-run-restores-it-automatically': {
+    apis: ['AsyncLocalStorage.run()', 'AsyncLocalStorage.enterWith()'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/node/promises-async' },
+      { label: 'unhandledRejection Fires After a Turn, Not Instantly', route: '/node/promises-async/unhandledrejection-fires-after-a-turn-not-instantly' },
+      { label: 'Top-Level await Delays the Import Chain', route: '/node/promises-async/top-level-await-delays-the-import-chain-not-the-graph' },
+    ],
+    tip: 'Node\'s own docs recommend run() over enterWith() unless there\'s a strong reason otherwise — enterWith() mutates the current context for the rest of the synchronous execution with no automatic restoration.',
+    docs: [
+      { label: 'Node.js — AsyncLocalStorage', url: 'https://nodejs.org/api/async_context.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'enterWith()\'s context can bleed into subsequent, unrelated event handlers running in the same synchronous stretch — a real, documented risk run() specifically avoids by auto-restoring the previous context.',
+      'The main page\'s own middleware pattern (wrapping next() inside a run() callback) is the safe, leak-proof choice — not just one stylistic option among equals.',
+    ],
+  },
   'node/error-handling': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

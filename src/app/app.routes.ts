@@ -2249,7 +2249,12 @@ export const routes: Routes = [
       { path: 'middleware-exceptions-bypass-exception-filters', loadComponent: () => import('./components/backend/nodejs/nestjs/subtopics/middleware-exceptions-bypass-exception-filters/middleware-exceptions-bypass-exception-filters').then(m => m.MiddlewareExceptionsBypassExceptionFiltersSubtopic) },
       { path: 'interceptor-skipping-next-handle-skips-the-handler', loadComponent: () => import('./components/backend/nodejs/nestjs/subtopics/interceptor-skipping-next-handle-skips-the-handler/interceptor-skipping-next-handle-skips-the-handler').then(m => m.InterceptorSkippingNextHandleSkipsTheHandlerSubtopic) },
     ] },
-    { path: 'promises-async', loadComponent: () => import('./components/backend/nodejs/promises-async/promises-async').then(m => m.NodePromisesAsync) },
+    { path: 'promises-async', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/promises-async/promises-async').then(m => m.NodePromisesAsync) },
+      { path: 'unhandledrejection-fires-after-a-turn-not-instantly', loadComponent: () => import('./components/backend/nodejs/promises-async/subtopics/unhandledrejection-fires-after-a-turn-not-instantly/unhandledrejection-fires-after-a-turn-not-instantly').then(m => m.UnhandledrejectionFiresAfterATurnNotInstantlySubtopic) },
+      { path: 'top-level-await-delays-the-import-chain-not-the-graph', loadComponent: () => import('./components/backend/nodejs/promises-async/subtopics/top-level-await-delays-the-import-chain-not-the-graph/top-level-await-delays-the-import-chain-not-the-graph').then(m => m.TopLevelAwaitDelaysTheImportChainNotTheGraphSubtopic) },
+      { path: 'enterwith-leaks-context-run-restores-it-automatically', loadComponent: () => import('./components/backend/nodejs/promises-async/subtopics/enterwith-leaks-context-run-restores-it-automatically/enterwith-leaks-context-run-restores-it-automatically').then(m => m.EnterwithLeaksContextRunRestoresItAutomaticallySubtopic) },
+    ] },
     { path: 'streams',        loadComponent: () => import('./components/backend/nodejs/streams/streams').then(m => m.NodeStreams) },
     { path: 'error-handling', loadComponent: () => import('./components/backend/nodejs/error-handling/error-handling').then(m => m.NodeErrorHandling) },
     { path: 'prisma',         loadComponent: () => import('./components/backend/nodejs/prisma/prisma').then(m => m.NodePrisma) },

@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Promises & Async/Await" topicRoute="/node/promises-async" subtopicLabel="enterWith() vs run()" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">enterWith() Leaks Context Into Later Code — run() Restores It Automatically</h1>
+  <p class="page-subtitle">
+    Node's own docs recommend run() over enterWith() unless there's a strong reason otherwise — the difference is a
+    real, documented leakage risk, not a style choice.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 13.10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three timing- and scoping-precision details underneath concepts the main page introduces
+      more broadly: exactly when a rejection counts as unhandled, how far a top-level await's delay actually
+      spreads, and now which AsyncLocalStorage method safely scopes context versus which one can leak it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Promises & Async/Await"
+    topicRoute="/node/promises-async"
+    [prev]="{ label: 'Top-Level await Delays the Import Chain', route: '/node/promises-async/top-level-await-delays-the-import-chain-not-the-graph' }"
+  />
+</div>
