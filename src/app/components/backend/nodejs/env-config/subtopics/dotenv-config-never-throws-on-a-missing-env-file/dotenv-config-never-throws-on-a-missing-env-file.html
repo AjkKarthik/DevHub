@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Env Config & dotenv" topicRoute="/node/env-config" subtopicLabel="Missing .env Fails Silently" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">dotenv.config() Never Throws on a Missing .env File</h1>
+  <p class="page-subtitle">
+    A missing .env file produces zero visible symptoms on its own — catching it requires either checking dotenv's
+    own return value or relying on separate downstream validation.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by covering a third source of silent failure alongside the earlier two. Together,
+      this batch covers why an unset NODE_ENV silently mimics development mode, why an empty-string env var can
+      silently coerce to a valid-looking zero, and now why a missing .env file itself produces no error unless
+      something downstream is specifically checking for it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Env Config & dotenv"
+    topicRoute="/node/env-config"
+    [prev]="{ label: 'z.coerce.number() Turns an Empty String Into 0, Not an Error', route: '/node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error' }"
+  />
+</div>

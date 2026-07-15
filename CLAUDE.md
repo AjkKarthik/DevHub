@@ -1108,6 +1108,67 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/blazor/f
     consistency — a build-passing sweep result doesn't mean the content matches house style, so a
     parity check surfacing an outlier count is worth a manual look even when it isn't a build error.
 
+### Node.js hub subtopic wiring — first pilot, confirms conventions and settles the live-playground question
+
+Confirmed via a dedicated Explore-agent investigation before writing (`/node/architecture`,
+2026-07-14) — do this same check before any other new hub's first subtopic set:
+1. **`NODE_LABELS` breadcrumb map uses bare keys** (`'architecture'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are
+   bare too (`'architecture/<slug>'`).
+2. **Progress/search keys are `node-` PREFIXED** (`node-architecture`), confirmed via existing
+   nav markup. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'node/architecture'`, confirmed
+   the base entry already existed) — subtopic composite keys follow suit:
+   `'node/architecture/<slug>'`.
+3. **No `SUBTOPICS` map bare-key collision** for `architecture` (checked, confirmed
+   collision-free) — but this hub is entering a `SUBTOPICS` map already shared by 10+ other
+   hubs, so the standard grep-before-adding discipline still applies to every future
+   Node.js-hub topic.
+4. **Nav accordion is INLINE in `app.html`**, not extracted into a separate `NodeNavComponent`
+   the way Go/Redis/GraphQL/Messaging/Testing/DSA/AI hubs are — confirmed by finding the
+   existing `@if (currentSection() === 'node')` block directly in `app.html`. Add the
+   chevron+accordion pattern directly there, copying from an inline hub like Blazor's, not
+   from a `*-nav.ts` component file.
+5. **`.node-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`, same
+   situation as SQL/TypeScript/React/JavaScript/CSS) — every Node.js subtopic `.scss` must
+   include the full `.node-page { max-width: 860px; margin: 0 auto; }` rule. Padding matches
+   the main page's own `.scss`: `2rem 1.25rem 4rem`.
+6. **Live playground: settled on NO live playground for this hub, matching the non-Angular-hub
+   pattern (C#, SQL, Blazor)** — despite Node.js code being JavaScript/TypeScript syntactically,
+   it is fundamentally SERVER-SIDE (event loop internals, libuv thread pool, `fs`/`dns`/`crypto`
+   module behavior, Express servers) with no meaningful client-browser execution model.
+   StackBlitz's SDK does expose a `'node'` project template in its `PROJECT_TEMPLATES` union
+   (confirmed via the same source already cited for React's `create-react-app` discovery), but
+   grepping the entire codebase found **zero prior usage anywhere** — genuinely untested. Rather
+   than gamble the whole hub's first pilot on an unverified template, defaulted to the safe,
+   proven `<app-code-block>` pattern (`tech="javascript"` in `page-meta` auto-renders
+   PlayCode/CodePen run-it links, same as the JS/HTML/CSS hubs' external-link convention) — no
+   `LivePlaygroundComponent`/`PlaygroundFile` import at all. If a future Node.js subtopic's core
+   claim is genuinely observable via a runnable Node sandbox and worth the risk, verify the
+   `'node'` template actually works in a live pilot page BEFORE committing to it hub-wide, rather
+   than assuming it works from the SDK type union alone.
+7. **No .NET-style runtime is available to empirically test Node.js/libuv internals claims
+   either** — same verification discipline as C#/Blazor applies: research claims against
+   official Node.js docs (nodejs.org) and libuv's own docs/source before writing subtopic
+   content that states specific internal behavior (event loop phase mechanics, thread pool
+   timing, per-function I/O routing) rather than assuming a plausible-sounding claim is
+   correct. All three pilot subtopics (recursive `process.nextTick()` starvation,
+   `UV_THREADPOOL_SIZE` initialization timing, `dns.lookup()` vs `dns.resolve()` thread-pool
+   routing) were verified this way — one claim (`UV_THREADPOOL_SIZE` takes effect "before Node
+   starts") needed a precision correction to "before the first thread-pool-requiring call,"
+   since libuv creates the pool lazily on first use, not unconditionally at process boot.
+8. **The two established apostrophe-escaping rules are file-type-specific, not interchangeable
+   — mixing them up is a real, easy mistake.** During `/node/core-modules`, a `[prev]`/`[next]`
+   label string in a `.html` file was written with a backslash-escaped apostrophe (`exec()\'s
+   Default...`) — the rule that correctly applies to single-quoted `.ts` string fields — instead
+   of the typographic `’` (U+2019) the `.html` bound-attribute case actually requires. Caught by
+   manual review before the sweep, not by the sweep itself (the sweep's `[prev]`/`[next]`
+   backslash-pattern check only looks for `\\'`, and a *correctly*-escaped `\'` doesn't trigger
+   it — it's a valid escape, just for the wrong file type). Since Node.js subtopic content is
+   plain JavaScript/TypeScript with no Razor `@`-directive risk at all, apostrophe-escaping is
+   proportionally a LARGER share of the total gotcha surface for this hub than for Blazor/C# —
+   worth double-checking which delimiter rule applies (`.ts` field → `\'`; `.html` bound
+   attribute → `’`) rather than defaulting to whichever one was used most recently.
+
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
 Confirmed via direct file inspection before the first subtopic set (`/css/box-model`, 2026-07-11):

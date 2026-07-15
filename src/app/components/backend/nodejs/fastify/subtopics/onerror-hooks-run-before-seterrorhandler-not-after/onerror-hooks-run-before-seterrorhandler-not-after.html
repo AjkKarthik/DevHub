@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Fastify" topicRoute="/node/fastify" subtopicLabel="onError Runs First" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">onError Hooks Run Before setErrorHandler, Not After</h1>
+  <p class="page-subtitle">
+    Both fire for the same error and compose in a specific order — onError observes the raw error first, unaffected
+    by whatever setErrorHandler later does to the response.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by clarifying the relationship between two error-handling mechanisms the main page
+      mentions separately. Together with the earlier two subtopics, this batch covers a delayed-discovery response
+      schema bug, precise plugin encapsulation direction, and now the documented execution order between onError
+      and setErrorHandler.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Fastify"
+    topicRoute="/node/fastify"
+    [prev]="{ label: 'Sibling Plugins Never See Each Other’s Decorators', route: '/node/fastify/sibling-plugins-never-see-each-others-decorators' }"
+  />
+</div>

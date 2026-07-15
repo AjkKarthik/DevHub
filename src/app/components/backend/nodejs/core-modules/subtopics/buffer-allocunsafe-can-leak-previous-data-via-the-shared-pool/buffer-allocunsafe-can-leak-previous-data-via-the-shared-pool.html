@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Core Modules" topicRoute="/node/core-modules" subtopicLabel="allocUnsafe() Pool Leak Risk" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool</h1>
+  <p class="page-subtitle">
+    Smaller unsafe allocations slice from a reused internal pool Node never clears — a partially-written buffer can
+    expose an unrelated earlier allocation's leftover bytes.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered EventEmitter's built-in leak-detection heuristic — this one covers a
+      genuinely different, memory-level leak risk the main page only briefly names. Next: child_process.exec()'s
+      default maxBuffer doesn't truncate large output gracefully — it kills the process and throws.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Core Modules"
+    topicRoute="/node/core-modules"
+    [prev]="{ label: 'EventEmitter Warns After 10 Listeners — a Leak Heuristic, Not a Limit', route: '/node/core-modules/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit' }"
+    [next]="{ label: 'exec()’s Default maxBuffer Kills the Process, Not Truncates', route: '/node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates' }"
+  />
+</div>

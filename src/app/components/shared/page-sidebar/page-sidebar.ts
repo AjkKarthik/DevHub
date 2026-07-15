@@ -30697,6 +30697,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'path.join correctly handles OS-specific separators — string-concatenating paths manually breaks cross-platform compatibility.',
     ],
   },
+  'node/core-modules/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit': {
+    apis: ['emitter.setMaxListeners()', 'EventEmitter.defaultMaxListeners'],
+    related: [
+      { label: 'Core Modules (overview)', route: '/node/core-modules' },
+      { label: 'Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool', route: '/node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool' },
+      { label: 'exec()’s Default maxBuffer Kills the Process, Not Truncates', route: '/node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates' },
+    ],
+    tip: 'Before silencing a MaxListenersExceededWarning with setMaxListeners(), check whether the listener count is genuinely intentional and stable, or whether listeners are being added without ever being removed.',
+    docs: [
+      { label: 'Node.js — events module, emitter.setMaxListeners()', url: 'https://nodejs.org/api/events.html#emittersetmaxlistenersn' },
+    ],
+    resources: [],
+    gotchas: [
+      'The 11th and later listeners still register and fire normally — the warning is purely informational, with zero effect on which listeners actually run.',
+      'Node\'s own docs frame 10 as a heuristic default for leak detection, not a real architectural limit — "not all events should be limited to just 10 listeners."',
+    ],
+  },
+
+  'node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool': {
+    apis: ['Buffer.allocUnsafe()', 'Buffer.alloc()', 'Buffer.poolSize'],
+    related: [
+      { label: 'Core Modules (overview)', route: '/node/core-modules' },
+      { label: 'EventEmitter Warns After 10 Listeners — a Leak Heuristic, Not a Limit', route: '/node/core-modules/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit' },
+      { label: 'exec()’s Default maxBuffer Kills the Process, Not Truncates', route: '/node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates' },
+    ],
+    tip: 'Only use Buffer.allocUnsafe() when every byte will be immediately, completely overwritten before being read or exposed — otherwise use Buffer.alloc(), which explicitly zero-fills.',
+    docs: [
+      { label: 'Node.js — Buffer, Buffer.allocUnsafe()', url: 'https://nodejs.org/api/buffer.html#static-method-bufferallocunsafesize' },
+    ],
+    resources: [],
+    gotchas: [
+      'Allocations at or under half of Buffer.poolSize (4KB by default) slice from a shared, reused internal pool Node never clears between uses.',
+      'This is a genuine security risk in server applications — one request\'s leftover buffer data can surface in a later, completely unrelated request\'s buffer.',
+    ],
+  },
+
+  'node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates': {
+    apis: ['child_process.exec()', 'child_process.spawn()', 'maxBuffer'],
+    related: [
+      { label: 'Core Modules (overview)', route: '/node/core-modules' },
+      { label: 'EventEmitter Warns After 10 Listeners — a Leak Heuristic, Not a Limit', route: '/node/core-modules/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit' },
+      { label: 'Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool', route: '/node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool' },
+    ],
+    tip: 'A maxBuffer error appearing after months of stable operation usually means the EXECUTED COMMAND\'s output volume grew, not that the exec()-calling code changed — check the command\'s real-world output size, not the script.',
+    docs: [
+      { label: 'Node.js — child_process, exec()', url: 'https://nodejs.org/api/child_process.html#child_processexeccommand-options-callback' },
+    ],
+    resources: [],
+    gotchas: [
+      'Exceeding maxBuffer (1MB default) kills the child process and throws an error — it does not return a truncated, partial result.',
+      'For genuinely unbounded output, switch from exec() to spawn() and stream the output incrementally, sidestepping the buffer-size ceiling entirely.',
+    ],
+  },
+
   'node/architecture': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30709,6 +30763,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Understanding the phases of the event loop (timers, I/O callbacks, setImmediate) explains subtle ordering bugs between setTimeout(fn, 0) and process.nextTick.',
     ],
   },
+  'node/architecture/recursive-nexttick-starves-io-forever': {
+    apis: ['process.nextTick()', 'setImmediate()'],
+    related: [
+      { label: 'Architecture (overview)', route: '/node/architecture' },
+      { label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' },
+      { label: 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does', route: '/node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does' },
+    ],
+    tip: 'A process that appears completely frozen — no requests served, no timers firing, not even an in-flight file read completing — is the classic symptom of an unconditionally self-scheduling process.nextTick() call.',
+    docs: [
+      { label: 'Node.js — The Event Loop, Timers, and process.nextTick()', url: 'https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick' },
+    ],
+    resources: [],
+    gotchas: [
+      'The nextTick queue drains completely — including callbacks newly added while draining — before any other phase runs, so a self-scheduling callback never lets the loop advance.',
+      'setImmediate() is the documented fix for cases that genuinely need to reschedule work, since it runs in the check phase, after poll, giving pending I/O a chance to run between iterations.',
+    ],
+  },
+
+  'node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call': {
+    apis: ['UV_THREADPOOL_SIZE', 'uv_queue_work()'],
+    related: [
+      { label: 'Architecture (overview)', route: '/node/architecture' },
+      { label: 'Recursive nextTick Starves I/O Forever', route: '/node/architecture/recursive-nexttick-starves-io-forever' },
+      { label: 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does', route: '/node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does' },
+    ],
+    tip: 'Set UV_THREADPOOL_SIZE in the shell, a process manager\'s config, or a container\'s ENV directive — never via a process.env assignment inside the script libuv is already running under.',
+    docs: [
+      { label: 'libuv — Thread pool work scheduling', url: 'https://docs.libuv.org/en/v1.x/threadpool.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'libuv creates its pool lazily, on the first call that actually needs it — not necessarily at the exact instant the process boots, though in practice this rarely changes the guidance.',
+      'A process.env assignment inside your own script always runs after libuv\'s own runtime initialization has already completed, regardless of how early it appears in your code.',
+    ],
+  },
+
+  'node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does': {
+    apis: ['dns.lookup()', 'dns.resolve()', 'getaddrinfo()'],
+    related: [
+      { label: 'Architecture (overview)', route: '/node/architecture' },
+      { label: 'Recursive nextTick Starves I/O Forever', route: '/node/architecture/recursive-nexttick-starves-io-forever' },
+      { label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' },
+    ],
+    tip: 'A file-processing slowdown that correlates with DNS resolution volume is a classic thread-pool contention symptom — switching from dns.lookup() to dns.resolve4() removes DNS work from the shared pool entirely.',
+    docs: [
+      { label: 'Node.js — dns module documentation', url: 'https://nodejs.org/api/dns.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'dns.lookup() delegates to the OS\'s own blocking getaddrinfo(), sharing the same thread pool as fs and crypto operations — a burst of lookups can genuinely delay unrelated file reads.',
+      'dns.resolve()/resolve4()/resolve6() use the c-ares library to query DNS servers directly over the network, entirely bypassing the thread pool and the OS resolver\'s own behavior (/etc/hosts, NSS, OS-level caching).',
+    ],
+  },
+
   'node/modules': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30720,6 +30828,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Circular requires between two modules can silently produce a partially-initialized export depending on load order.',
     ],
   },
+  'node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not': {
+    apis: ['require.cache', 'module.exports'],
+    related: [
+      { label: 'Modules & CommonJS (overview)', route: '/node/modules' },
+      { label: 'The Dual Package Hazard — require() and import() Never Share a Cache', route: '/node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache' },
+      { label: 'ESM Named Imports Are Live Bindings, CJS Destructuring Is a Snapshot', route: '/node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot' },
+    ],
+    tip: 'A module that only mutates module.exports (never fully reassigns it) after a circular require point keeps every already-captured reference correctly in sync — a full reassignment permanently disconnects them.',
+    docs: [
+      { label: 'Node.js — Modules: CommonJS modules, Cycles', url: 'https://nodejs.org/api/modules.html#cycles' },
+    ],
+    resources: [],
+    gotchas: [
+      'A circular require returns the SAME object reference the module holds at that moment, not a copy — later mutations to it are visible, but a later full reassignment is not.',
+      'Mixing a circular require with a later module.exports reassignment can leave different requiring files holding two genuinely different objects for what should be one module.',
+    ],
+  },
+
+  'node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache': {
+    apis: ['require.cache', 'import()'],
+    related: [
+      { label: 'Modules & CommonJS (overview)', route: '/node/modules' },
+      { label: 'Circular Requires Share a Reference, Mutation Is Visible, Reassignment Isn’t', route: '/node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not' },
+      { label: 'ESM Named Imports Are Live Bindings, CJS Destructuring Is a Snapshot', route: '/node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot' },
+    ],
+    tip: 'A failed instanceof check between two objects that "should" be the same class, with a correct and matching package version, is the classic symptom of the dual package hazard — not a version mismatch.',
+    docs: [
+      { label: 'Node.js — Modules: Packages, Dual package hazard', url: 'https://nodejs.org/api/packages.html#dual-package-hazard' },
+    ],
+    resources: [],
+    gotchas: [
+      'require.cache and the ESM module registry are genuinely separate caches with zero cross-awareness — the same package version can be loaded and evaluated twice.',
+      'This breaks shared singleton state silently — code registering something via one loading path is invisible to code reading via the other.',
+    ],
+  },
+
+  'node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot': {
+    apis: ['import', 'module.exports'],
+    related: [
+      { label: 'Modules & CommonJS (overview)', route: '/node/modules' },
+      { label: 'Circular Requires Share a Reference, Mutation Is Visible, Reassignment Isn’t', route: '/node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not' },
+      { label: 'The Dual Package Hazard — require() and import() Never Share a Cache', route: '/node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache' },
+    ],
+    tip: 'To expose a value that changes over time in CommonJS, export a getter function (or the containing object, accessed without destructuring) — destructuring a primitive value directly never sees later updates.',
+    docs: [
+      { label: 'Node.js — Modules: ECMAScript modules', url: 'https://nodejs.org/api/esm.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'ESM named imports are true live bindings defined by the ECMAScript spec — not the same operation as CJS object destructuring, despite the similar-looking syntax.',
+      'ESM live bindings are read-only from the importing side — only the exporting module itself may reassign the underlying variable.',
+    ],
+  },
+
   'node/promises-async': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30780,6 +30942,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Unhandled errors in an async route handler are NOT automatically caught by Express\'s error middleware in versions before Express 5 — a try/catch or wrapper utility is needed.',
     ],
   },
+  'node/express/express-catches-synchronous-throws-automatically-not-async-rejections': {
+    apis: ['app.use()', 'next(err)'],
+    related: [
+      { label: 'Express.js (overview)', route: '/node/express' },
+      { label: 'next(err) From an Error Handler Chains to the Next Error Handler', route: '/node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler' },
+      { label: 'app.use() Matches Path Segments, Not Raw String Prefix', route: '/node/express/app-use-matches-path-segments-not-raw-string-prefix' },
+    ],
+    tip: 'A synchronous route handler that throws is already caught by Express automatically — express-async-errors and manual try/catch only close the gap for async/Promise-based errors specifically.',
+    docs: [
+      { label: 'Express — Error handling guide', url: 'https://expressjs.com/en/guide/error-handling.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'An async function that throws returns a rejected Promise rather than throwing synchronously — Express\'s try/catch around the handler call has already returned before that rejection settles.',
+      'Adding defensive try/catch to an already-working synchronous handler is unnecessary code, not a fix for a real gap.',
+    ],
+  },
+
+  'node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler': {
+    apis: ['next(err)', 'app.use()'],
+    related: [
+      { label: 'Express.js (overview)', route: '/node/express' },
+      { label: 'Express Catches Synchronous Throws Automatically, Not Async Rejections', route: '/node/express/express-catches-synchronous-throws-automatically-not-async-rejections' },
+      { label: 'app.use() Matches Path Segments, Not Raw String Prefix', route: '/node/express/app-use-matches-path-segments-not-raw-string-prefix' },
+    ],
+    tip: 'Splitting one large error handler into several focused, chained ones is a real, Express-documented pattern — just make sure each handler calls next(err) in its non-matching branch, or the error silently stops propagating.',
+    docs: [
+      { label: 'Express — Error handling guide', url: 'https://expressjs.com/en/guide/error-handling.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'next(err) skips remaining REGULAR middleware but continues to the next ERROR-handling middleware — the two categories are skipped/continued independently.',
+      'A specialized error handler that forgets next(err) in its non-matching branch silently swallows the error, leaving the request hanging.',
+    ],
+  },
+
+  'node/express/app-use-matches-path-segments-not-raw-string-prefix': {
+    apis: ['app.use()', 'path-to-regexp'],
+    related: [
+      { label: 'Express.js (overview)', route: '/node/express' },
+      { label: 'Express Catches Synchronous Throws Automatically, Not Async Rejections', route: '/node/express/express-catches-synchronous-throws-automatically-not-async-rejections' },
+      { label: 'next(err) From an Error Handler Chains to the Next Error Handler', route: '/node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler' },
+    ],
+    tip: 'Mount-path-scoped middleware (app.use(\'/admin\', authCheck)) is safe from accidental matches on similarly-named routes like /admin-status by design — no extra defensive path checking needed.',
+    docs: [
+      { label: 'Express — Routing guide', url: 'https://expressjs.com/en/guide/routing.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Express\'s path-to-regexp-based matching requires the character after a matched segment to be a slash or end-of-string — genuinely different from a naive string-prefix check.',
+      'This precise matching rule is a path-to-regexp implementation detail, not something spelled out explicitly in Express\'s own high-level routing guide.',
+    ],
+  },
+
   'node/fastify': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30791,6 +31007,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The performance advantage over Express is most pronounced under high request volume with JSON-heavy payloads — for low-traffic services, the difference is rarely the deciding factor.',
     ],
   },
+  'node/fastify/response-schema-silently-strips-unlisted-fields-forgotten-ones-too': {
+    apis: ['fast-json-stringify', 'schema.response'],
+    related: [
+      { label: 'Fastify (overview)', route: '/node/fastify' },
+      { label: 'Sibling Plugins Never See Each Other’s Decorators', route: '/node/fastify/sibling-plugins-never-see-each-others-decorators' },
+      { label: 'onError Hooks Run Before setErrorHandler, Not After', route: '/node/fastify/onerror-hooks-run-before-seterrorhandler-not-after' },
+    ],
+    tip: 'A field confirmed present via logging before the return statement, but missing from the actual HTTP response, is the classic symptom of a response schema that was never updated alongside a new field.',
+    docs: [
+      { label: 'Fastify — Validation and Serialization', url: 'https://fastify.dev/docs/latest/Reference/Validation-and-Serialization/' },
+    ],
+    resources: [],
+    gotchas: [
+      'The response schema strips ANY unlisted field uniformly — it cannot distinguish a deliberately-omitted sensitive field from a legitimate one nobody remembered to add.',
+      'This failure is completely silent — a well-formed 200 response with no error, warning, or failed validation anywhere.',
+    ],
+  },
+
+  'node/fastify/sibling-plugins-never-see-each-others-decorators': {
+    apis: ['fastify.decorate()', 'fastify.register()', 'fastify-plugin'],
+    related: [
+      { label: 'Fastify (overview)', route: '/node/fastify' },
+      { label: 'Response Schema Silently Strips Unlisted Fields — Forgotten Ones Too', route: '/node/fastify/response-schema-silently-strips-unlisted-fields-forgotten-ones-too' },
+      { label: 'onError Hooks Run Before setErrorHandler, Not After', route: '/node/fastify/onerror-hooks-run-before-seterrorhandler-not-after' },
+    ],
+    tip: 'Registration order between two sibling plugins has no bearing on decorator visibility — only wrapping the providing plugin with fastify-plugin (fp) promotes its decorators to the shared parent scope.',
+    docs: [
+      { label: 'Fastify — Plugins Guide', url: 'https://fastify.dev/docs/latest/Guides/Plugins-Guide/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Fastify\'s own docs state encapsulation applies to "ancestors and siblings, but not the children" — decorations flow strictly downward through the ancestor chain, never sideways.',
+      'A route registered directly on root DOES see a plugin\'s fp()-wrapped decorations registered earlier on that same root — that\'s parent-to-child inheritance, a different relationship than sibling-to-sibling.',
+    ],
+  },
+
+  'node/fastify/onerror-hooks-run-before-seterrorhandler-not-after': {
+    apis: ['addHook(\'onError\')', 'setErrorHandler()'],
+    related: [
+      { label: 'Fastify (overview)', route: '/node/fastify' },
+      { label: 'Response Schema Silently Strips Unlisted Fields — Forgotten Ones Too', route: '/node/fastify/response-schema-silently-strips-unlisted-fields-forgotten-ones-too' },
+      { label: 'Sibling Plugins Never See Each Other’s Decorators', route: '/node/fastify/sibling-plugins-never-see-each-others-decorators' },
+    ],
+    tip: 'onError hooks always observe the original, untransformed error — they run before setErrorHandler, so anything setErrorHandler later rewrites has no effect on what the hook already logged.',
+    docs: [
+      { label: 'Fastify — Hooks reference', url: 'https://fastify.dev/docs/latest/Reference/Hooks/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Both onError and setErrorHandler genuinely fire for the same error — they are not mutually exclusive alternatives, they compose in a specific order.',
+      'This exact ordering was stated the opposite way in some earlier Fastify documentation revisions — a real, tracked inconsistency worth double-checking against current docs.',
+    ],
+  },
+
   'node/nestjs': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30814,6 +31084,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Not setting explicit request body size limits can let a single oversized request exhaust server memory.',
     ],
   },
+  'node/rest-api/json-merge-patch-null-vs-omitted-field-semantics': {
+    apis: ['RFC 7396', 'RFC 6902'],
+    related: [
+      { label: 'REST API Design (overview)', route: '/node/rest-api' },
+      { label: 'Why POST Retries Need an Idempotency-Key Header', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' },
+      { label: 'ETag If-Match Mismatch Returns 412, Not 409', route: '/node/rest-api/etag-if-match-mismatch-returns-412-not-409' },
+    ],
+    tip: 'A naive Object.assign(record, req.body) PATCH handler leaves omitted fields alone correctly, but has no concept of "null means delete" — it just sets the literal null value, which can violate a NOT NULL constraint.',
+    docs: [
+      { label: 'RFC 7396 — JSON Merge Patch', url: 'https://www.rfc-editor.org/rfc/rfc7396' },
+    ],
+    resources: [],
+    gotchas: [
+      'Under JSON Merge Patch, an explicit null in the PATCH body means "delete this field," not "set the value to null" — the two are easy to conflate but are different operations.',
+      'A field that is meant to genuinely hold the value null (not just be absent) cannot be represented in plain Merge Patch — it needs a sentinel value or full JSON Patch (RFC 6902) instead.',
+    ],
+  },
+  'node/rest-api/post-retry-duplicates-without-idempotency-key': {
+    apis: ['Idempotency-Key header', 'crypto.randomUUID()'],
+    related: [
+      { label: 'REST API Design (overview)', route: '/node/rest-api' },
+      { label: 'JSON Merge Patch: null Means Delete, Omitted Means Unchanged', route: '/node/rest-api/json-merge-patch-null-vs-omitted-field-semantics' },
+      { label: 'ETag If-Match Mismatch Returns 412, Not 409', route: '/node/rest-api/etag-if-match-mismatch-returns-412-not-409' },
+    ],
+    tip: 'Generate the Idempotency-Key once per logical operation, outside the retry loop — regenerating it on every retry attempt defeats the entire deduplication mechanism.',
+    docs: [
+      { label: 'IETF Draft — The Idempotency-Key HTTP Header Field', url: 'https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/' },
+    ],
+    resources: [],
+    gotchas: [
+      'POST (and PATCH with side effects) is not idempotent per HTTP semantics — blindly retrying it after a lost response can create a duplicate resource or charge.',
+      'This is a widely-adopted industry convention (used by Stripe), but the header is still an active IETF Internet-Draft, not yet a published RFC.',
+    ],
+  },
+  'node/rest-api/etag-if-match-mismatch-returns-412-not-409': {
+    apis: ['If-Match', 'ETag', 'RFC 9110 §13.1.1'],
+    related: [
+      { label: 'REST API Design (overview)', route: '/node/rest-api' },
+      { label: 'JSON Merge Patch: null Means Delete, Omitted Means Unchanged', route: '/node/rest-api/json-merge-patch-null-vs-omitted-field-semantics' },
+      { label: 'Why POST Retries Need an Idempotency-Key Header', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' },
+    ],
+    tip: 'A weak ETag (W/ prefix) can never satisfy an If-Match precondition, even against an identical opaque value — RFC 9110\'s strong comparison rule requires both tags to be non-weak.',
+    docs: [
+      { label: 'RFC 9110 — HTTP Semantics, §13.1.1 If-Match', url: 'https://www.rfc-editor.org/rfc/rfc9110#section-13.1.1' },
+    ],
+    resources: [],
+    gotchas: [
+      'An If-Match mismatch must return 412 Precondition Failed, not 409 Conflict — 409 is for conflicts the server detects on its own, not a failed client-stated precondition header.',
+      'If-Match uses strong comparison while If-None-Match uses weak comparison — the two headers are not simple inverses of the same equality rule.',
+    ],
+  },
   'node/graphql': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30823,6 +31144,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Apollo Server\'s context function runs once per request — the correct place to instantiate a fresh DataLoader instance, avoiding cross-request cache leaks.',
       'GraphQL\'s single endpoint bypasses traditional URL-based HTTP caching that a REST API in the same Express app would benefit from.',
+    ],
+  },
+  'node/graphql/graphql-returns-200-even-when-errors-is-present': {
+    apis: ['GraphQL-over-HTTP spec', 'errors[]', 'extensions.code'],
+    related: [
+      { label: 'GraphQL API (overview)', route: '/node/graphql' },
+      { label: 'A Non-Null Field Error Nulls the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' },
+      { label: 'APQ: a Hash Miss Triggers a Retry With the Full Query', route: '/node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query' },
+    ],
+    tip: 'Checking response.ok tells you nothing about GraphQL-level failures — always inspect the parsed JSON body\'s own errors array, regardless of the HTTP status code.',
+    docs: [
+      { label: 'GraphQL-over-HTTP spec draft', url: 'https://graphql.github.io/graphql-over-http/draft/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A response can contain both data (with some fields null) and errors at the same time — this is a "partial success" model, not one-status-code-per-outcome like REST.',
+      '4xx/5xx statuses are reserved for requests that never executed at all (malformed JSON, invalid syntax) — not for resolver-level errors during execution.',
+    ],
+  },
+  'node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor': {
+    apis: ['GraphQL spec — Errors and Non-Nullability'],
+    related: [
+      { label: 'GraphQL API (overview)', route: '/node/graphql' },
+      { label: 'GraphQL Returns 200 Even When the Response Contains Errors', route: '/node/graphql/graphql-returns-200-even-when-errors-is-present' },
+      { label: 'APQ: a Hash Miss Triggers a Retry With the Full Query', route: '/node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query' },
+    ],
+    tip: 'A field typed non-null that fails cannot become null in place — the null propagates to the nearest ancestor position that is actually allowed to be null, which can wipe out an entire object or more.',
+    docs: [
+      { label: 'GraphQL spec — Handling Field Errors', url: 'https://spec.graphql.org/October2021/#sec-Handling-Field-Errors' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a spec-mandated behavior, identical across every compliant GraphQL server — not an implementation quirk of Apollo Server specifically.',
+      'A field that can legitimately fail (an external API call) is often a better candidate for a nullable type, specifically to contain a failure\'s blast radius to just that field.',
+    ],
+  },
+  'node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query': {
+    apis: ['extensions.persistedQuery', 'PersistedQueryNotFound'],
+    related: [
+      { label: 'GraphQL API (overview)', route: '/node/graphql' },
+      { label: 'GraphQL Returns 200 Even When the Response Contains Errors', route: '/node/graphql/graphql-returns-200-even-when-errors-is-present' },
+      { label: 'A Non-Null Field Error Nulls the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' },
+    ],
+    tip: 'Seeing two round trips the very first time a query ever runs after a server restart is APQ working correctly, not a sign it\'s broken — the server\'s persisted-query cache was cleared and needs re-registering.',
+    docs: [
+      { label: 'Apollo Server — Automatic Persisted Queries', url: 'https://www.apollographql.com/docs/apollo-server/performance/apq' },
+    ],
+    resources: [],
+    gotchas: [
+      'The hash-only first attempt is optimistic — a genuinely new query always costs an extra round trip on its very first run, only benefiting subsequent runs.',
+      'The error message string "PersistedQueryNotFound" and the extensions.code "PERSISTED_QUERY_NOT_FOUND" use different formats — prefer matching on extensions.code.',
     ],
   },
   'node/jwt-auth': {
@@ -30861,6 +31233,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Missing required environment variables should fail LOUDLY at startup, not silently default to undefined and fail mysteriously later at runtime.',
     ],
   },
+  'node/env-config/unset-node-env-silently-behaves-like-development-in-production': {
+    apis: ['process.env.NODE_ENV'],
+    related: [
+      { label: 'Env Config & dotenv (overview)', route: '/node/env-config' },
+      { label: 'z.coerce.number() Turns an Empty String Into 0, Not an Error', route: '/node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error' },
+      { label: 'dotenv.config() Never Throws on a Missing .env File', route: '/node/env-config/dotenv-config-never-throws-on-a-missing-env-file' },
+    ],
+    tip: 'Verbose, stack-trace-containing error responses in production, with no explicit debug setting anywhere, is the classic symptom of a deployment that never explicitly set NODE_ENV=production.',
+    docs: [
+      { label: 'Express — Production best practices: performance', url: 'https://expressjs.com/en/advanced/best-practice-performance.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Node.js itself sets no default for NODE_ENV — it is purely a community convention, so an unset value is genuinely undefined, not a fallback "development" string.',
+      'undefined !== \'production\' evaluates to true, so libraries checking for production mode treat an unset NODE_ENV exactly the same as an explicit "development" — no error, no warning, ever.',
+    ],
+  },
+
+  'node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error': {
+    apis: ['z.coerce.number()', 'Number()'],
+    related: [
+      { label: 'Env Config & dotenv (overview)', route: '/node/env-config' },
+      { label: 'An Unset NODE_ENV Silently Behaves Like Development in Production', route: '/node/env-config/unset-node-env-silently-behaves-like-development-in-production' },
+      { label: 'dotenv.config() Never Throws on a Missing .env File', route: '/node/env-config/dotenv-config-never-throws-on-a-missing-env-file' },
+    ],
+    tip: 'A numeric env var that "silently defaults to zero" with no validation error is the classic symptom of a bare z.coerce.number() with no further constraint — add .min() to catch an accidentally-blank value.',
+    docs: [
+      { label: 'Zod — coerce API reference', url: 'https://zod.dev/api' },
+    ],
+    resources: [],
+    gotchas: [
+      'Number("") is 0 in JavaScript, not NaN — a real, technically-set-but-blank environment variable coerces to a valid-looking zero, not a validation error.',
+      'Whether this gets caught depends entirely on whether the schema has additional constraints beyond coerce — a bare z.coerce.number() provides no protection at all.',
+    ],
+  },
+
+  'node/env-config/dotenv-config-never-throws-on-a-missing-env-file': {
+    apis: ['dotenv.config()', 'import(\'dotenv/config\')'],
+    related: [
+      { label: 'Env Config & dotenv (overview)', route: '/node/env-config' },
+      { label: 'An Unset NODE_ENV Silently Behaves Like Development in Production', route: '/node/env-config/unset-node-env-silently-behaves-like-development-in-production' },
+      { label: 'z.coerce.number() Turns an Empty String Into 0, Not an Error', route: '/node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error' },
+    ],
+    tip: 'Always pair dotenv\'s file loading with a separate, mandatory validation step (Zod or otherwise) — dotenv alone gives no signal at all if the .env file itself is simply missing.',
+    docs: [
+      { label: 'dotenv — README, config() return value', url: 'https://github.com/motdotla/dotenv#config' },
+    ],
+    resources: [],
+    gotchas: [
+      'dotenv.config() returns a result object with an error property instead of throwing — checking it is opt-in, not automatic.',
+      'The common import \'dotenv/config\' shorthand discards that return value entirely, making a missing-file failure structurally impossible to detect from the importing file.',
+    ],
+  },
+
   'node/logging': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30949,6 +31375,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Each open WebSocket connection consumes server memory for as long as it stays open — capacity planning for WebSocket-heavy services is about CONCURRENT CONNECTION count, not request rate.',
       'Forgetting to handle the "close" event to clean up associated resources (subscriptions, timers) per connection is a common memory-leak source.',
+    ],
+  },
+  'node/websockets/redis-adapter-broadcasts-to-every-instance': {
+    apis: ['@socket.io/redis-adapter', 'Redis pub/sub'],
+    related: [
+      { label: 'WebSockets & Socket.io (overview)', route: '/node/websockets' },
+      { label: 'Engine.IO Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' },
+      { label: 'Close Code 1006 Is Reserved', route: '/node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire' },
+    ],
+    tip: 'Redis pub/sub has no per-subscriber targeting — every cluster instance receives every published broadcast and filters against its own local room membership after the fact.',
+    docs: [
+      { label: 'Socket.IO — Redis adapter', url: 'https://socket.io/docs/v4/redis-adapter/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Broadcast fanout cost scales with (broadcast volume) × (number of instances), not with the number of sockets actually in the target room.',
+      'This is a separate, additive cost from per-instance connection memory — both matter independently when reasoning about cluster capacity.',
+    ],
+  },
+  'node/websockets/engineio-ping-pong-not-websocket-protocol-frames': {
+    apis: ['pingInterval', 'pingTimeout', 'Engine.IO protocol'],
+    related: [
+      { label: 'WebSockets & Socket.io (overview)', route: '/node/websockets' },
+      { label: 'Redis Adapter Broadcasts to Every Instance', route: '/node/websockets/redis-adapter-broadcasts-to-every-instance' },
+      { label: 'Close Code 1006 Is Reserved', route: '/node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire' },
+    ],
+    tip: 'There is no ws.on(\'pong\', ...) equivalent in Socket.io — the heartbeat is handled entirely inside Engine.IO\'s own packet protocol, invisible to application code, and works identically over WebSocket or HTTP long-polling.',
+    docs: [
+      { label: 'Engine.IO protocol reference', url: 'https://github.com/socketio/engine.io-protocol' },
+    ],
+    resources: [],
+    gotchas: [
+      'Socket.io does not use WebSocket\'s RFC 6455 protocol-level ping/pong control frames at all — it needs one heartbeat that also works over HTTP long-polling, which has no control frames.',
+      'The Engine.IO ping is server-initiated, not client-initiated — the opposite of what the raw ws library\'s typical usage pattern might suggest is universal.',
+    ],
+  },
+  'node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire': {
+    apis: ['CloseEvent.code', 'ws.close()', 'RFC 6455 §7.4.1'],
+    related: [
+      { label: 'WebSockets & Socket.io (overview)', route: '/node/websockets' },
+      { label: 'Redis Adapter Broadcasts to Every Instance', route: '/node/websockets/redis-adapter-broadcasts-to-every-instance' },
+      { label: 'Engine.IO Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' },
+    ],
+    tip: 'Seeing close code 1006 means no close frame was ever sent or received at all — it is a client-API sentinel for an abnormal disconnect, not a code any endpoint can actually transmit.',
+    docs: [
+      { label: 'RFC 6455 §7.4.1 — Status Codes', url: 'https://www.rfc-editor.org/rfc/rfc6455.html#section-7.4.1' },
+    ],
+    resources: [],
+    gotchas: [
+      'Code 1006 MUST NOT be set in an actual Close control frame by any endpoint — attempting to explicitly send it is a contradiction in terms.',
+      'Use 1001 (Going Away) or a custom 4000-4999 application code instead if you need to intentionally signal an abnormal-disconnect-like condition through a real close frame.',
     ],
   },
 
@@ -31739,6 +32216,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing a layout with bUnit requires particular attention to @Body placement and surrounding chrome rendering correctly.',
     ],
   },
+  'blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared': {
+    apis: ['SectionContent', 'SectionOutlet', 'SectionRegistry'],
+    related: [
+      { label: 'Sections & Layouts (overview)', route: '/blazor/sections-layouts' },
+      { label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' },
+      { label: 'A SectionName Typo Fails Silently, With No Built-In Fallback', route: '/blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback' },
+    ],
+    tip: 'If a SectionOutlet\'s content unexpectedly switches from one component\'s to another\'s after a short delay, suspect a slow async SectionContent provider registering later than a faster sibling — not a markup-order bug.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor sections', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/sections' },
+    ],
+    resources: [],
+    gotchas: [
+      'Registration order tracks real-time completion of SetParametersAsync, not markup declaration order — an async component declared first can still register, and win, last.',
+      'Two SectionContent providers competing for the same name is resolved by which one most recently registered, with zero awareness of file or component-tree position.',
+    ],
+  },
+
+  'blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped': {
+    apis: ['SectionName', 'SectionId', 'Dispatcher.SectionRegistry'],
+    related: [
+      { label: 'Sections & Layouts (overview)', route: '/blazor/sections-layouts' },
+      { label: 'Last SectionContent Wins Means Last Registered, Not Last Declared', route: '/blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared' },
+      { label: 'A SectionName Typo Fails Silently, With No Built-In Fallback', route: '/blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback' },
+    ],
+    tip: 'Treat SectionName strings as a genuinely app-wide namespace, not a locally-scoped slot name — use distinctive, feature-specific names to avoid accidental collisions between unrelated components.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor sections', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/sections' },
+    ],
+    resources: [],
+    gotchas: [
+      'Matching has zero ancestor-relationship awareness — any SectionContent anywhere in the current render tree can target any SectionOutlet sharing its name, regardless of structural relationship.',
+      'A second active SectionOutlet with the same SectionName throws an exception rather than silently picking one, a different failure mode than the SectionContent side.',
+    ],
+  },
+
+  'blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback': {
+    apis: ['SectionOutlet', 'SectionContent'],
+    related: [
+      { label: 'Sections & Layouts (overview)', route: '/blazor/sections-layouts' },
+      { label: 'Last SectionContent Wins Means Last Registered, Not Last Declared', route: '/blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared' },
+      { label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' },
+    ],
+    tip: 'Use shared string constants instead of literal strings for SectionName across a codebase — it turns a silent typo into a compiler error instead of a mysteriously empty section.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor sections', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/sections' },
+    ],
+    resources: [],
+    gotchas: [
+      'A mismatched SectionName produces no exception and no console warning in either direction — an unmatched SectionContent and an unmatched SectionOutlet both fail silently.',
+      'SectionOutlet has no built-in fallback/default content parameter — achieving default content requires an explicit workaround, not a framework feature.',
+    ],
+  },
+
   'blazor/render-modes': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -32146,6 +32677,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Performance should be measured against actual user-facing metrics (perceived responsiveness), not just internal metrics like render count.',
     ],
   },
+  'blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives': {
+    apis: ['SetParametersAsync', 'ParameterView', 'ShouldRender()'],
+    related: [
+      { label: 'Performance (overview)', route: '/blazor/performance' },
+      { label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' },
+      { label: 'IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently', route: '/blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently' },
+    ],
+    tip: 'A manual ShouldRender equality check only pays off for record/class/collection parameters — Blazor already compares primitive parameters (numbers, strings, bool, enums, Guid, EventCallback) by value before calling SetParametersAsync at all.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Razor component rendering', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering' },
+    ],
+    resources: [],
+    gotchas: [
+      'Blazor\'s parameter comparison only covers a fixed whitelist of immutable types — any reference type (record, class, List<T>) always re-invokes SetParametersAsync regardless of value equality.',
+      'Adding a manual equality check on top of already-primitive parameters is redundant with an optimization the framework was already doing for free.',
+    ],
+  },
+
+  'blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff': {
+    apis: ['ShouldRender()', 'OnAfterRender()', 'OnAfterRenderAsync()'],
+    related: [
+      { label: 'Performance (overview)', route: '/blazor/performance' },
+      { label: 'Blazor Already Skips SetParametersAsync for Unchanged Primitives', route: '/blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives' },
+      { label: 'IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently', route: '/blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently' },
+    ],
+    tip: 'If OnAfterRenderAsync logic depends on a condition ShouldRender() doesn\'t check, a skipped render silently skips that logic too — make sure ShouldRender() accounts for every condition its own OnAfterRender depends on.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Razor component lifecycle', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'A component absent from a render batch (because ShouldRender() returned false) never gets OnAfterRender/OnAfterRenderAsync invoked for that cycle — this is a direct consequence, not a separate skip decision.',
+      'Per-render JS interop or DOM-measurement logic living in OnAfterRenderAsync needs to stay in sync with everything ShouldRender() checks, or it can be silently skipped for unrelated reasons.',
+    ],
+  },
+
+  'blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently': {
+    apis: ['IMemoryCache.GetOrCreateAsync()', 'SemaphoreSlim'],
+    related: [
+      { label: 'Performance (overview)', route: '/blazor/performance' },
+      { label: 'Blazor Already Skips SetParametersAsync for Unchanged Primitives', route: '/blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives' },
+      { label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' },
+    ],
+    tip: 'A burst of redundant, near-identical queries every time a popular cache entry expires under load is the classic symptom of a cache stampede — wrap the cache-miss path in a per-key SemaphoreSlim to fix it.',
+    docs: [
+      { label: 'Microsoft Learn — Cache in-memory in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/memory' },
+    ],
+    resources: [],
+    gotchas: [
+      'IMemoryCache has no built-in per-key locking — multiple concurrent callers observing a cache miss for the same key can each independently run their own copy of the factory delegate.',
+      'This fix targets hot, expensive cache keys under realistic concurrent load specifically — not a blanket requirement for every GetOrCreateAsync call in an app.',
+    ],
+  },
+
   'blazor/virtualization': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -32157,6 +32742,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Combining virtualization with animated list transitions is genuinely difficult, since Virtualize aggressively creates/destroys DOM elements outside the visible range.',
     ],
   },
+  'blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key': {
+    apis: ['@key', 'Virtualize.Items'],
+    related: [
+      { label: 'Virtualization (overview)', route: '/blazor/virtualization' },
+      { label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' },
+      { label: 'OverscanCount Splits Evenly, With No Scroll-Direction Awareness', route: '/blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness' },
+    ],
+    tip: 'A brief visual flicker on rows that remain visible before and after a filter keystroke is the classic symptom of missing @key — Blazor is rebuilding DOM nodes for items that never actually left the results.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor Virtualize component', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/virtualization' },
+    ],
+    resources: [],
+    gotchas: [
+      'Without @key, Blazor diffs list items purely by position — a filter operation that reshuffles which item occupies which position causes unnecessary DOM teardown/rebuild even for items still present in the results.',
+      'This cost compounds specifically in high-churn scenarios like live search-as-you-type filtering, where it happens on every keystroke rather than once.',
+    ],
+  },
+
+  'blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself': {
+    apis: ['ItemsProviderRequest.CancellationToken', 'ItemsProviderResult<T>'],
+    related: [
+      { label: 'Virtualization (overview)', route: '/blazor/virtualization' },
+      { label: 'Virtualize Recreates Item DOM on Every Filter Without @key', route: '/blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key' },
+      { label: 'OverscanCount Splits Evenly, With No Scroll-Direction Awareness', route: '/blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness' },
+    ],
+    tip: 'Forwarding the CancellationToken to an ItemsProvider\'s underlying call is a resource-efficiency optimization, not a correctness requirement — Virtualize discards stale results on its own regardless.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor Virtualize component', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/virtualization' },
+    ],
+    resources: [],
+    gotchas: [
+      'Virtualize cancels the previous request\'s token the moment a newer request starts, and checks that same token before applying any result — a stale, non-cooperative provider\'s late result is discarded regardless.',
+      'Skipping CancellationToken forwarding still wastes real bandwidth/server load on work that gets silently discarded, even though the on-screen result stays correct.',
+    ],
+  },
+
+  'blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness': {
+    apis: ['OverscanCount'],
+    related: [
+      { label: 'Virtualization (overview)', route: '/blazor/virtualization' },
+      { label: 'Virtualize Recreates Item DOM on Every Filter Without @key', route: '/blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key' },
+      { label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' },
+    ],
+    tip: 'There is no per-direction OverscanCount setting — if fast one-directional scrolling shows blank-spacer flashes, the only lever is raising the single value, which grows the buffer in both directions equally.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor Virtualize component', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/virtualization' },
+    ],
+    resources: [],
+    gotchas: [
+      'The exact same OverscanCount value applies above and below the visible range at all times — there is no scroll-direction or velocity signal anywhere in the calculation.',
+      'Raising OverscanCount to fix a directional symptom also grows the unused-direction buffer proportionally, at the cost of more total live DOM nodes.',
+    ],
+  },
+
   'blazor/progressive-enhancement': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -32168,6 +32807,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Testing both the enhanced and baseline (no-JS) submission paths ensures the progressive enhancement genuinely works, not just the happy path.',
     ],
   },
+  'blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline': {
+    apis: ['data-enhance', 'data-permanent', 'blazor.web.js'],
+    related: [
+      { label: 'Progressive Enhancement (overview)', route: '/blazor/progressive-enhancement' },
+      { label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' },
+      { label: 'FormName Defaults to an Empty String, With No Ancestor Scoping', route: '/blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping' },
+    ],
+    tip: 'A data-enhance form and an intercepted link click go through the exact same fetch-and-patch pipeline — any DOM content that needs data-permanent protection from enhanced navigation needs it from enhanced forms too.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor forms overview', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Enhanced navigation and enhanced form handling are documented together as one shared mechanism, not two independently-implemented features.',
+      'There is no separate "form-permanent" attribute — data-permanent works identically regardless of which interaction (link or form) triggers the patch.',
+    ],
+  },
+
+  'blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails': {
+    apis: ['fetch()', 'Response.type: opaque'],
+    related: [
+      { label: 'Progressive Enhancement (overview)', route: '/blazor/progressive-enhancement' },
+      { label: 'Enhanced Forms Share Enhanced Navigation’s Fetch-and-Patch Pipeline', route: '/blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline' },
+      { label: 'FormName Defaults to an Empty String, With No Ancestor Scoping', route: '/blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping' },
+    ],
+    tip: 'A data-enhance form submission that silently fails with no error is the classic symptom of a redirect to an external origin (a common OAuth flow) — remove data-enhance to restore native browser redirect handling.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor navigation', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/navigation' },
+    ],
+    resources: [],
+    gotchas: [
+      'Same-origin redirects via fetch actually do set cookies correctly — the real failure is specific to cross-origin redirects becoming opaque responses.',
+      'Even a working same-origin redirect only updates the URL via the JS History API, not a genuine page reload, so the circuit never freshly re-initializes.',
+    ],
+  },
+
+  'blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping': {
+    apis: ['FormName', '[SupplyParameterFromForm]', 'FormMappingScope'],
+    related: [
+      { label: 'Progressive Enhancement (overview)', route: '/blazor/progressive-enhancement' },
+      { label: 'Enhanced Forms Share Enhanced Navigation’s Fetch-and-Patch Pipeline', route: '/blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline' },
+      { label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' },
+    ],
+    tip: 'Give every form an explicit, distinct FormName — omitting it defaults to an empty string, so two unnamed forms silently share the same identifier and can cross-contaminate bound data.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor forms binding', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/binding' },
+    ],
+    resources: [],
+    gotchas: [
+      'FormName uniqueness is never validated at build or render time — the collision only surfaces as silent, incorrect binding when an actual POST arrives.',
+      'FormName is a flat, page-independent namespace by default, the same pattern as SectionName — FormMappingScope is the dedicated escape hatch for reusable component libraries.',
+    ],
+  },
+
   'blazor/seo-metadata': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [
@@ -32179,6 +32872,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Canonical URLs (via HeadContent) prevent duplicate-content penalties for content reachable through multiple URL variations.',
     ],
   },
+  'blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise': {
+    apis: ['PageTitle', 'HeadContent', 'HeadOutlet', 'SectionContent'],
+    related: [
+      { label: 'SEO & Metadata (overview)', route: '/blazor/seo-metadata' },
+      { label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' },
+      { label: 'og:image and Other OG URLs Must Be Absolute, Not Relative', route: '/blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative' },
+    ],
+    tip: 'A page-level PageTitle gated behind an awaited data fetch can genuinely lose the "last one wins" race to its own layout\'s already-registered title — render it unconditionally with a loading-state fallback instead.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor Server SEO', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/prerendering-and-integration' },
+    ],
+    resources: [],
+    gotchas: [
+      'PageTitle and HeadContent are literal thin wrappers around SectionContent, and HeadOutlet renders SectionOutlet instances internally — every Sections & Layouts fact about registration order applies unchanged.',
+      '"Page beats layout" for PageTitle is a consequence of render order (layouts render before their own @Body), not a hardcoded precedence rule.',
+    ],
+  },
+
+  'blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws': {
+    apis: ['System.Text.Json.JsonSerializer', 'MarkupString', 'HeadContent'],
+    related: [
+      { label: 'SEO & Metadata (overview)', route: '/blazor/seo-metadata' },
+      { label: 'PageTitle and HeadContent Are Sections in Disguise', route: '/blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise' },
+      { label: 'og:image and Other OG URLs Must Be Absolute, Not Relative', route: '/blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative' },
+    ],
+    tip: 'Never let a bare @expression HTML-encode data inside a JSON-LD script tag — serialize with JsonSerializer.Serialize() and render the result via MarkupString instead.',
+    docs: [
+      { label: 'Microsoft Learn — ASP.NET Core Blazor HeadContent', url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/components/control-head-content' },
+    ],
+    resources: [],
+    gotchas: [
+      '<script> is an HTML "raw text element" — its content is never HTML-entity-decoded by the browser, so an HTML-encoded quote stays as the literal &quot; text forever instead of becoming a real character.',
+      'This fails silently, not with a parse error — the JSON usually stays structurally valid, but any value containing a quote or apostrophe is corrupted, which external validators (like Google Search Console) flag as malformed.',
+    ],
+  },
+
+  'blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative': {
+    apis: ['NavigationManager.BaseUri', 'NavigationManager.Uri'],
+    related: [
+      { label: 'SEO & Metadata (overview)', route: '/blazor/seo-metadata' },
+      { label: 'PageTitle and HeadContent Are Sections in Disguise', route: '/blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise' },
+      { label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' },
+    ],
+    tip: 'NavigationManager.Uri is already absolute and safe for og:url directly — a database-stored relative image path needs explicit resolution against a known base URL before it\'s valid for og:image.',
+    docs: [
+      { label: 'Open Graph protocol', url: 'https://ogp.me/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A relative og:image path renders as completely valid HTML with no visible symptom — the only way to notice the break is testing actual social sharing via a platform\'s own debugging tool.',
+      'A browser resolves a relative <img> src automatically against the current page; an external crawler reading og:image has no page context to resolve anything against.',
+    ],
+  },
+
   'blazor/maui-hybrid': {
     apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
     related: [

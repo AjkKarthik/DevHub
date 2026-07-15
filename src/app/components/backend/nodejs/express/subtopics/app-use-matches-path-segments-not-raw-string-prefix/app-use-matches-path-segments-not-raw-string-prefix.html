@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Express.js" topicRoute="/node/express" subtopicLabel="Path Segments, Not String Prefix" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">app.use() Matches Path Segments, Not Raw String Prefix</h1>
+  <p class="page-subtitle">
+    A request to /apiv2 never accidentally matches app.use('/api', ...) — Express requires the next character to be
+    a slash or end-of-string.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Express 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by pinning down exactly what "path prefix" means in the main page's own app.use()
+      description. Together with the earlier two subtopics, this batch covers which errors Express catches for
+      free, how error handlers can chain, and now the precise mechanics behind mount-path matching.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Express.js"
+    topicRoute="/node/express"
+    [prev]="{ label: 'next(err) From an Error Handler Chains to the Next Error Handler', route: '/node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler' }"
+  />
+</div>

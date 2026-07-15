@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Modules & CommonJS" topicRoute="/node/modules" subtopicLabel="Mutation vs Reassignment in Cycles" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Circular Requires Share a Reference — Mutation Is Visible, Reassignment Isn't</h1>
+  <p class="page-subtitle">
+    A circularly-required module hands back the same object, not a copy — but a later full module.exports
+    reassignment permanently disconnects anyone who already captured it.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page already covers circular dependencies returning partial exports — this subtopic pins down the
+      exact reference-vs-copy mechanism, and the mutation-vs-reassignment distinction that determines whether it
+      stays correct. Next: publishing a package in both CJS and ESM formats risks the documented "dual package
+      hazard," where require() and import() load two genuinely separate copies of the same file.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Modules & CommonJS"
+    topicRoute="/node/modules"
+    [next]="{ label: 'The Dual Package Hazard — require() and import() Never Share a Cache', route: '/node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache' }"
+  />
+</div>

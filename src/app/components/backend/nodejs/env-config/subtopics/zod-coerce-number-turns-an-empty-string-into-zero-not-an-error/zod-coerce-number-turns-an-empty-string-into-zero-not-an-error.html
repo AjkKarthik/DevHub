@@ -1,0 +1,38 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Env Config & dotenv" topicRoute="/node/env-config" subtopicLabel="Empty String Coerces to 0" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">z.coerce.number() Turns an Empty String Into 0, Not an Error</h1>
+  <p class="page-subtitle">
+    A real, technically-set-but-blank environment variable silently passes validation as zero unless a further
+    constraint happens to reject it.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered NODE_ENV silently defaulting to development behavior when unset — this one
+      covers a related "silent pass, not silent fail" gap in the fail-fast validation the main page recommends.
+      Next: dotenv.config() never throws when the .env file itself is missing, and checking for that failure is
+      opt-in, not automatic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Env Config & dotenv"
+    topicRoute="/node/env-config"
+    [prev]="{ label: 'An Unset NODE_ENV Silently Behaves Like Development in Production', route: '/node/env-config/unset-node-env-silently-behaves-like-development-in-production' }"
+    [next]="{ label: 'dotenv.config() Never Throws on a Missing .env File', route: '/node/env-config/dotenv-config-never-throws-on-a-missing-env-file' }"
+  />
+</div>

@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sections & Layouts" topicRoute="/blazor/sections-layouts" subtopicLabel="Typos Fail Silently, No Fallback" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">A SectionName Typo Fails Silently, With No Built-In Fallback</h1>
+  <p class="page-subtitle">
+    An unmatched SectionContent or SectionOutlet produces no error in either direction — and SectionOutlet has no
+    default-content parameter to fall back on.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by expanding on the app-wide namespace covered in the previous subtopic — a
+      mismatched name doesn't just risk collision, it can also mean total, silent non-delivery. Together with the
+      earlier two subtopics, this batch covers what "last one wins" actually means in real time, why Sections have
+      no ancestor scoping at all, and now why a typo produces zero diagnostic signal anywhere in the stack.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Sections & Layouts"
+    topicRoute="/blazor/sections-layouts"
+    [prev]="{ label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' }"
+  />
+</div>

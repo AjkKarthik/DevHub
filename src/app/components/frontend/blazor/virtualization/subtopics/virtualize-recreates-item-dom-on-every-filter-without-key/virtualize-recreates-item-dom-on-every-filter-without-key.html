@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Virtualization" topicRoute="/blazor/virtualization" subtopicLabel="Recreates DOM Without @key" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Virtualize Recreates Item DOM on Every Filter Without &#64;key</h1>
+  <p class="page-subtitle">
+    Without a stable key, Blazor diffs list items by position, not identity — a filter that reshuffles positions
+    rebuilds DOM nodes that never actually left the results.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The quiz already names &#64;key as the fix for reorder-triggered remounting — this subtopic shows exactly why the
+      main page's own Contact List search challenge is the highest-stakes place to apply it. Next: the QnA's advice
+      to forward the ItemsProvider's CancellationToken through to the underlying call is good practice — but
+      Virtualize actually protects itself from stale results regardless, a distinction worth knowing precisely.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Virtualization"
+    topicRoute="/blazor/virtualization"
+    [next]="{ label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' }"
+  />
+</div>

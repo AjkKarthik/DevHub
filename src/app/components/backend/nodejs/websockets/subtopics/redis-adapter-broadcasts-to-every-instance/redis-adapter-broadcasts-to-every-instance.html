@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WebSockets & Socket.io" topicRoute="/node/websockets" subtopicLabel="Redis Adapter Fanout" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Redis Adapter Broadcasts to Every Instance, Not Just Matching Sockets</h1>
+  <p class="page-subtitle">
+    Redis pub/sub has no concept of per-subscriber targeting — every instance receives every broadcast and filters
+    locally, so fanout cost scales with instance count, not matching sockets.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's "Redis adapter syncs events across all server instances" line is accurate but glosses over
+      the mechanism — this subtopic makes it precise. The next subtopic turns to a different scaling-adjacent
+      mechanic: what Socket.io's heartbeat actually is, and why it isn't what the main page's quick-ref implies.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WebSockets & Socket.io"
+    topicRoute="/node/websockets"
+    [next]="{ label: 'Engine.IO Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' }"
+  />
+</div>

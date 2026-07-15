@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Fastify" topicRoute="/node/fastify" subtopicLabel="Schema Strips Forgotten Fields Too" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Response Schema Silently Strips Unlisted Fields — Forgotten Ones Too</h1>
+  <p class="page-subtitle">
+    The same whitelist mechanism that prevents accidental data leaks can't distinguish a deliberately-omitted field
+    from a legitimate one nobody remembered to add.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page already frames response schema stripping as a security win — this subtopic shows the same
+      mechanism's flip side, a delayed-discovery correctness bug. Next: sibling plugins registered under the same
+      parent never see each other's decorators — only the ancestor chain is inherited.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Fastify"
+    topicRoute="/node/fastify"
+    [next]="{ label: 'Sibling Plugins Never See Each Other’s Decorators', route: '/node/fastify/sibling-plugins-never-see-each-others-decorators' }"
+  />
+</div>

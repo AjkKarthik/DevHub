@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Architecture" topicRoute="/node/architecture" subtopicLabel="Recursive nextTick Starves I/O" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Recursive nextTick Starves I/O Forever</h1>
+  <p class="page-subtitle">
+    The nextTick queue drains completely — including newly-added callbacks — before any other phase runs, so a
+    self-scheduling callback never lets the loop advance.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's theory already states nextTick callbacks "run before the next event loop phase" — this
+      subtopic shows exactly what that guarantee costs when a callback keeps rescheduling itself. Next:
+      UV_THREADPOOL_SIZE only takes effect if set before the first call that actually needs the thread pool, not
+      simply "before Node starts" as commonly assumed.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Architecture"
+    topicRoute="/node/architecture"
+    [next]="{ label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' }"
+  />
+</div>

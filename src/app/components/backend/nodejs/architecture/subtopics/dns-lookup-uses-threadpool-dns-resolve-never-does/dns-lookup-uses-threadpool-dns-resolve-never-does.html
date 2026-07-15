@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Architecture" topicRoute="/node/architecture" subtopicLabel="dns.lookup() vs dns.resolve()" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">dns.lookup() Uses the Thread Pool, dns.resolve() Never Does</h1>
+  <p class="page-subtitle">
+    dns.lookup() delegates to the OS's blocking getaddrinfo() on the thread pool — dns.resolve() queries DNS
+    servers directly over the network via c-ares, bypassing it entirely.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by pinning down exactly why the main page lists dns.lookup() among the thread-pool
+      consumers alongside fs and crypto. Together with the earlier two subtopics, this batch covers how a
+      recursive nextTick call can starve I/O entirely, why UV_THREADPOOL_SIZE has a precise timing requirement, and
+      now why one dns function shares the thread pool while its siblings never do.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Architecture"
+    topicRoute="/node/architecture"
+    [prev]="{ label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' }"
+  />
+</div>

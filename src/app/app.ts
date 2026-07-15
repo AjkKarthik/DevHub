@@ -1862,6 +1862,82 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'StreamRendering Is Redundant on Interactive Modes, Not Blocked', route: '/blazor/streaming-rendering/streamrendering-is-redundant-on-interactive-modes-not-blocked' },
     { label: 'Streamed Sections Patch in Resolution Order, Not Markup Order', route: '/blazor/streaming-rendering/streamed-sections-patch-in-resolution-order-not-markup-order' },
   ],
+  'sections-layouts': [
+    { label: 'Last SectionContent Wins Means Last Registered, Not Last Declared', route: '/blazor/sections-layouts/last-sectioncontent-wins-means-last-registered-not-last-declared' },
+    { label: 'SectionOutlet Matching Is a Global Lookup, Not Ancestor-Scoped', route: '/blazor/sections-layouts/sectionoutlet-matching-is-a-global-lookup-not-ancestor-scoped' },
+    { label: 'A SectionName Typo Fails Silently, With No Built-In Fallback', route: '/blazor/sections-layouts/a-sectionname-typo-fails-silently-with-no-built-in-fallback' },
+  ],
+  'seo-metadata': [
+    { label: 'PageTitle and HeadContent Are Sections in Disguise', route: '/blazor/seo-metadata/pagetitle-and-headcontent-are-sections-in-disguise' },
+    { label: 'JSON-LD Inside script Silently Corrupts, Not Throws', route: '/blazor/seo-metadata/json-ld-inside-script-silently-corrupts-not-throws' },
+    { label: 'og:image and Other OG URLs Must Be Absolute, Not Relative', route: '/blazor/seo-metadata/og-image-and-other-og-urls-must-be-absolute-not-relative' },
+  ],
+  'virtualization': [
+    { label: 'Virtualize Recreates Item DOM on Every Filter Without @key', route: '/blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key' },
+    { label: 'Virtualize Discards Stale ItemsProvider Results Itself', route: '/blazor/virtualization/virtualize-discards-stale-itemsprovider-results-itself' },
+    { label: 'OverscanCount Splits Evenly, With No Scroll-Direction Awareness', route: '/blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness' },
+  ],
+  'progressive-enhancement': [
+    { label: 'Enhanced Forms Share Enhanced Navigation’s Fetch-and-Patch Pipeline', route: '/blazor/progressive-enhancement/enhanced-forms-share-enhanced-navigations-fetch-and-patch-pipeline' },
+    { label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' },
+    { label: 'FormName Defaults to an Empty String, With No Ancestor Scoping', route: '/blazor/progressive-enhancement/formname-defaults-to-empty-string-with-no-ancestor-scoping' },
+  ],
+  // NOTE: keyed 'blazor-performance', NOT bare 'performance' — the Web
+  // Performance hub already owns a route at the same bare slug, and
+  // ASP.NET Core/SQL/React/HTML have all already resolved the same
+  // collision the same way ('aspnet-performance', 'sql-performance', etc.).
+  'blazor-performance': [
+    { label: 'Blazor Already Skips SetParametersAsync for Unchanged Primitives', route: '/blazor/performance/blazor-already-skips-setparametersasync-for-unchanged-primitives' },
+    { label: 'ShouldRender False Also Skips OnAfterRender, Not Just the Diff', route: '/blazor/performance/shouldrender-false-also-skips-onafterrender-not-just-the-diff' },
+    { label: 'IMemoryCache.GetOrCreateAsync Can Run Its Factory Concurrently', route: '/blazor/performance/imemorycache-getorcreateasync-can-run-its-factory-concurrently' },
+  ],
+  'architecture': [
+    { label: 'Recursive nextTick Starves I/O Forever', route: '/node/architecture/recursive-nexttick-starves-io-forever' },
+    { label: 'UV_THREADPOOL_SIZE Must Be Set Before the First Thread-Pool Call', route: '/node/architecture/uv-threadpool-size-must-be-set-before-first-threadpool-call' },
+    { label: 'dns.lookup() Uses the Thread Pool, dns.resolve() Never Does', route: '/node/architecture/dns-lookup-uses-threadpool-dns-resolve-never-does' },
+  ],
+  // NOTE: keyed 'node-modules', NOT bare 'modules' — already claimed
+  // elsewhere in this map (grep confirmed).
+  'node-modules': [
+    { label: 'Circular Requires Share a Reference, Mutation Is Visible, Reassignment Isn’t', route: '/node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not' },
+    { label: 'The Dual Package Hazard — require() and import() Never Share a Cache', route: '/node/modules/the-dual-package-hazard-require-and-import-never-share-a-cache' },
+    { label: 'ESM Named Imports Are Live Bindings, CJS Destructuring Is a Snapshot', route: '/node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot' },
+  ],
+  'core-modules': [
+    { label: 'EventEmitter Warns After 10 Listeners — a Leak Heuristic, Not a Limit', route: '/node/core-modules/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit' },
+    { label: 'Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool', route: '/node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool' },
+    { label: 'exec()’s Default maxBuffer Kills the Process, Not Truncates', route: '/node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates' },
+  ],
+  'env-config': [
+    { label: 'An Unset NODE_ENV Silently Behaves Like Development in Production', route: '/node/env-config/unset-node-env-silently-behaves-like-development-in-production' },
+    { label: 'z.coerce.number() Turns an Empty String Into 0, Not an Error', route: '/node/env-config/zod-coerce-number-turns-an-empty-string-into-zero-not-an-error' },
+    { label: 'dotenv.config() Never Throws on a Missing .env File', route: '/node/env-config/dotenv-config-never-throws-on-a-missing-env-file' },
+  ],
+  'express': [
+    { label: 'Express Catches Synchronous Throws Automatically, Not Async Rejections', route: '/node/express/express-catches-synchronous-throws-automatically-not-async-rejections' },
+    { label: 'next(err) From an Error Handler Chains to the Next Error Handler', route: '/node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler' },
+    { label: 'app.use() Matches Path Segments, Not Raw String Prefix', route: '/node/express/app-use-matches-path-segments-not-raw-string-prefix' },
+  ],
+  'fastify': [
+    { label: 'Response Schema Silently Strips Unlisted Fields — Forgotten Ones Too', route: '/node/fastify/response-schema-silently-strips-unlisted-fields-forgotten-ones-too' },
+    { label: 'Sibling Plugins Never See Each Other’s Decorators', route: '/node/fastify/sibling-plugins-never-see-each-others-decorators' },
+    { label: 'onError Hooks Run Before setErrorHandler, Not After', route: '/node/fastify/onerror-hooks-run-before-seterrorhandler-not-after' },
+  ],
+  'rest-api': [
+    { label: 'JSON Merge Patch: null Means Delete, Omitted Means Unchanged', route: '/node/rest-api/json-merge-patch-null-vs-omitted-field-semantics' },
+    { label: 'Why POST Retries Need an Idempotency-Key Header', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' },
+    { label: 'ETag If-Match Mismatch Returns 412, Not 409', route: '/node/rest-api/etag-if-match-mismatch-returns-412-not-409' },
+  ],
+  'websockets': [
+    { label: 'Redis Adapter Broadcasts to Every Instance, Not Just Matching Sockets', route: '/node/websockets/redis-adapter-broadcasts-to-every-instance' },
+    { label: 'Socket.io’s Heartbeat Is Engine.IO’s Own Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' },
+    { label: 'Close Code 1006 Is Reserved — It Never Appears on the Wire', route: '/node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire' },
+  ],
+  'graphql': [
+    { label: 'GraphQL Returns 200 Even When the Response Contains Errors', route: '/node/graphql/graphql-returns-200-even-when-errors-is-present' },
+    { label: 'A Non-Null Field Error Nulls the Nearest Nullable Ancestor', route: '/node/graphql/non-null-field-error-nulls-nearest-nullable-ancestor' },
+    { label: 'APQ: a Hash Miss Triggers a Retry With the Full Query', route: '/node/graphql/apq-hash-miss-triggers-a-retry-with-the-full-query' },
+  ],
 };
 
 @Component({

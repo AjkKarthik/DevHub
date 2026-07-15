@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="REST API Design" topicRoute="/node/rest-api" subtopicLabel="null vs Omitted in PATCH" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">JSON Merge Patch: null Means Delete, Omitted Means Unchanged</h1>
+  <p class="page-subtitle">
+    A PATCH body's null and its absence are two different instructions — conflating them is a real, common bug
+    in hand-rolled partial-update handlers.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's PUT/PATCH quick-ref line treats "partial update" as a single, simple idea — this subtopic
+      shows the real ambiguity hiding inside it. The next subtopic moves from PATCH's data semantics to POST's
+      network-retry semantics: why a client that doesn't know if its POST succeeded needs a completely different
+      mechanism than "just PATCH again."
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="REST API Design"
+    topicRoute="/node/rest-api"
+    [next]="{ label: 'POST Retries Need an Idempotency-Key', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' }"
+  />
+</div>

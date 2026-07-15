@@ -1,0 +1,37 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Progressive Enhancement" topicRoute="/blazor/progressive-enhancement" subtopicLabel="Forms Share Navigation's Pipeline" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Enhanced Forms Share Enhanced Navigation's Fetch-and-Patch Pipeline</h1>
+  <p class="page-subtitle">
+    A data-enhance form submission and an intercepted link click go through the exact same whole-document diff —
+    and the same data-permanent escape hatch.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page introduces enhanced forms and enhanced navigation as related but distinct concepts — this
+      subtopic clarifies they are literally the same mechanism under the hood. Next: the main page's own advice
+      about why login forms shouldn't use data-enhance gets a more precise mechanism — the real failure is a hard
+      fetch error for external redirects, not a cookie-setting problem.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Progressive Enhancement"
+    topicRoute="/blazor/progressive-enhancement"
+    [next]="{ label: 'A Cross-Origin Redirect After Enhanced Form Submission Hard-Fails', route: '/blazor/progressive-enhancement/a-cross-origin-redirect-after-enhanced-form-submission-hard-fails' }"
+  />
+</div>

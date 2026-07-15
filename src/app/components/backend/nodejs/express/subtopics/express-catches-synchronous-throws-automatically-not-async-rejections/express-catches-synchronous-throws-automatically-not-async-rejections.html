@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Express.js" topicRoute="/node/express" subtopicLabel="Sync Throws Caught Automatically" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Express Catches Synchronous Throws Automatically, Not Async Rejections</h1>
+  <p class="page-subtitle">
+    A plain, non-async handler that throws is caught by Express's own internal try/catch — no library or manual
+    handling needed for that specific case.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Express 4" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's async-error mistake entry is correct but easy to over-generalize — this subtopic scopes it
+      precisely to async handlers, since synchronous throws were never actually broken. Next: calling next(err) from
+      inside an error handler chains to the NEXT error handler, not back to regular middleware, enabling a real,
+      documented multi-handler pattern.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Express.js"
+    topicRoute="/node/express"
+    [next]="{ label: 'next(err) From an Error Handler Chains to the Next Error Handler', route: '/node/express/next-err-from-an-error-handler-chains-to-the-next-error-handler' }"
+  />
+</div>

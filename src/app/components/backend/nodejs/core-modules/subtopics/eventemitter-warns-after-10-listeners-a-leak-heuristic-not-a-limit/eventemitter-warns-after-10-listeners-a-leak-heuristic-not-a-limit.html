@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Core Modules" topicRoute="/node/core-modules" subtopicLabel="10-Listener Warning Is a Heuristic" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">EventEmitter Warns After 10 Listeners — a Leak Heuristic, Not a Limit</h1>
+  <p class="page-subtitle">
+    The 11th listener still registers and fires normally — the warning is a memory-leak signal, not a functional
+    restriction.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page already warns forgotten listeners are a common leak source — this subtopic covers Node's
+      built-in early-warning mechanism for exactly that, which the main page doesn't mention at all. Next:
+      Buffer.allocUnsafe() can hand back memory containing leftover data from a completely unrelated previous
+      allocation, a real security concern in server applications.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Core Modules"
+    topicRoute="/node/core-modules"
+    [next]="{ label: 'Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool', route: '/node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool' }"
+  />
+</div>

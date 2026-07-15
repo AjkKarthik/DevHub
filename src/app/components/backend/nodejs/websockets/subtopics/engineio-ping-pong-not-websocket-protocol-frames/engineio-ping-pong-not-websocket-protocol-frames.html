@@ -1,0 +1,38 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WebSockets & Socket.io" topicRoute="/node/websockets" subtopicLabel="Engine.IO Heartbeat" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Socket.io's Heartbeat Is Engine.IO's Own Ping/Pong, Not WebSocket Frames</h1>
+  <p class="page-subtitle">
+    Engine.IO builds its own transport-agnostic heartbeat because HTTP long-polling has no concept of a WebSocket
+    control frame at all.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This continues the theme of Socket.io wrapping raw WebSocket concepts in its own, differently-implemented
+      abstraction — first the Redis adapter's fanout mechanics, now the heartbeat itself. The final subtopic in
+      this batch moves to a client-visible detail: what a WebSocket close code of 1006 actually means, and why it
+      can never appear in an actual close frame.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WebSockets & Socket.io"
+    topicRoute="/node/websockets"
+    [prev]="{ label: 'Redis Adapter Broadcasts to Every Instance', route: '/node/websockets/redis-adapter-broadcasts-to-every-instance' }"
+    [next]="{ label: 'Close Code 1006 Is Reserved', route: '/node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire' }"
+  />
+</div>

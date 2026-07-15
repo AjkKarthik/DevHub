@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Fastify" topicRoute="/node/fastify" subtopicLabel="Sibling Plugin Isolation" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Sibling Plugins Never See Each Other's Decorators</h1>
+  <p class="page-subtitle">
+    Encapsulation applies to ancestors and siblings, not just children — registration order between two sibling
+    plugins has no bearing on visibility.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered a different silent-failure mode in Fastify's schema system — this one pins down
+      exactly which direction plugin encapsulation flows. Next: onError hooks and setErrorHandler() both fire for
+      the same error, in a specific, sometimes-misremembered order.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Fastify"
+    topicRoute="/node/fastify"
+    [prev]="{ label: 'Response Schema Silently Strips Unlisted Fields — Forgotten Ones Too', route: '/node/fastify/response-schema-silently-strips-unlisted-fields-forgotten-ones-too' }"
+    [next]="{ label: 'onError Hooks Run Before setErrorHandler, Not After', route: '/node/fastify/onerror-hooks-run-before-seterrorhandler-not-after' }"
+  />
+</div>

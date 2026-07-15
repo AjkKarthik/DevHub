@@ -4794,8 +4794,46 @@
           </div>
         }
       }
-      <a routerLink="/blazor/progressive-enhancement" routerLinkActive="active"><span class="nl-text">Progressive Enhancement</span>@if(progress.isDone('blazor-progressive-enhancement')){<span class="nl-done">✓</span>}@if(diff('blazor-progressive-enhancement');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/blazor/seo-metadata" routerLinkActive="active"><span class="nl-text">SEO &amp; Head Metadata</span>@if(progress.isDone('blazor-seo-metadata')){<span class="nl-done">✓</span>}@if(diff('blazor-seo-metadata');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/progressive-enhancement" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Progressive Enhancement</span>
+        @if (progress.isDone('blazor-progressive-enhancement')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-progressive-enhancement'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('progressive-enhancement')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('progressive-enhancement')"
+                  (click)="toggleSubtopics('progressive-enhancement', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('progressive-enhancement'); as blazorProgEnhSubs) {
+        @if (isSubtopicsExpanded('progressive-enhancement')) {
+          <div class="nav-subtopics">
+            @for (s of blazorProgEnhSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/blazor/seo-metadata" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">SEO &amp; Head Metadata</span>
+        @if (progress.isDone('blazor-seo-metadata')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-seo-metadata'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('seo-metadata')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('seo-metadata')"
+                  (click)="toggleSubtopics('seo-metadata', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('seo-metadata'); as blazorSeoSubs) {
+        @if (isSubtopicsExpanded('seo-metadata')) {
+          <div class="nav-subtopics">
+            @for (s of blazorSeoSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -4840,8 +4878,46 @@
           </div>
         }
       }
-      <a routerLink="/blazor/sections-layouts" routerLinkActive="active"><span class="nl-text">Sections &amp; Layouts</span>@if(progress.isDone('blazor-sections-layouts')){<span class="nl-done">✓</span>}@if(diff('blazor-sections-layouts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/blazor/virtualization" routerLinkActive="active"><span class="nl-text">Component Virtualization</span>@if(progress.isDone('blazor-virtualization')){<span class="nl-done">✓</span>}@if(diff('blazor-virtualization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/sections-layouts" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Sections &amp; Layouts</span>
+        @if (progress.isDone('blazor-sections-layouts')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-sections-layouts'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sections-layouts')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sections-layouts')"
+                  (click)="toggleSubtopics('sections-layouts', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sections-layouts'); as blazorSectionsSubs) {
+        @if (isSubtopicsExpanded('sections-layouts')) {
+          <div class="nav-subtopics">
+            @for (s of blazorSectionsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/blazor/virtualization" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Component Virtualization</span>
+        @if (progress.isDone('blazor-virtualization')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-virtualization'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('virtualization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('virtualization')"
+                  (click)="toggleSubtopics('virtualization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('virtualization'); as blazorVirtSubs) {
+        @if (isSubtopicsExpanded('virtualization')) {
+          <div class="nav-subtopics">
+            @for (s of blazorVirtSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -5054,7 +5130,26 @@
           </div>
         }
       }
-      <a routerLink="/blazor/performance" routerLinkActive="active"><span class="nl-text">Blazor Performance</span>@if(progress.isDone('blazor-performance')){<span class="nl-done">✓</span>}@if(diff('blazor-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/blazor/performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Blazor Performance</span>
+        @if (progress.isDone('blazor-performance')) {<span class="nl-done">✓</span>}
+        @if (diff('blazor-performance'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('blazor-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('blazor-performance')"
+                  (click)="toggleSubtopics('blazor-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('blazor-performance'); as blazorPerfSubs) {
+        @if (isSubtopicsExpanded('blazor-performance')) {
+          <div class="nav-subtopics">
+            @for (s of blazorPerfSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -5075,19 +5170,190 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/node/architecture" routerLinkActive="active"><span class="nl-text">Node.js Architecture</span>@if(progress.isDone('node-architecture')){<span class="nl-done">✓</span>}@if(diff('node-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/modules" routerLinkActive="active"><span class="nl-text">Modules &amp; CommonJS</span>@if(progress.isDone('node-modules')){<span class="nl-done">✓</span>}@if(diff('node-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/core-modules" routerLinkActive="active"><span class="nl-text">Core Modules</span>@if(progress.isDone('node-core-modules')){<span class="nl-done">✓</span>}@if(diff('node-core-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/env-config" routerLinkActive="active"><span class="nl-text">Env Config &amp; dotenv</span>@if(progress.isDone('node-env-config')){<span class="nl-done">✓</span>}@if(diff('node-env-config');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/architecture" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Node.js Architecture</span>
+        @if (progress.isDone('node-architecture')) {<span class="nl-done">✓</span>}
+        @if (diff('node-architecture'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('architecture')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('architecture')"
+                  (click)="toggleSubtopics('architecture', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('architecture'); as nodeArchSubs) {
+        @if (isSubtopicsExpanded('architecture')) {
+          <div class="nav-subtopics">
+            @for (s of nodeArchSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/modules" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Modules &amp; CommonJS</span>
+        @if (progress.isDone('node-modules')) {<span class="nl-done">✓</span>}
+        @if (diff('node-modules'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-modules')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-modules')"
+                  (click)="toggleSubtopics('node-modules', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-modules'); as nodeModSubs) {
+        @if (isSubtopicsExpanded('node-modules')) {
+          <div class="nav-subtopics">
+            @for (s of nodeModSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/core-modules" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Core Modules</span>
+        @if (progress.isDone('node-core-modules')) {<span class="nl-done">✓</span>}
+        @if (diff('node-core-modules'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('core-modules')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('core-modules')"
+                  (click)="toggleSubtopics('core-modules', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('core-modules'); as nodeCoreSubs) {
+        @if (isSubtopicsExpanded('core-modules')) {
+          <div class="nav-subtopics">
+            @for (s of nodeCoreSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/env-config" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Env Config &amp; dotenv</span>
+        @if (progress.isDone('node-env-config')) {<span class="nl-done">✓</span>}
+        @if (diff('node-env-config'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('env-config')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('env-config')"
+                  (click)="toggleSubtopics('env-config', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('env-config'); as nodeEnvSubs) {
+        @if (isSubtopicsExpanded('env-config')) {
+          <div class="nav-subtopics">
+            @for (s of nodeEnvSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">HTTP &amp; APIs</p>
-      <a routerLink="/node/express" routerLinkActive="active"><span class="nl-text">Express.js</span>@if(progress.isDone('node-express')){<span class="nl-done">✓</span>}@if(diff('node-express');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/fastify" routerLinkActive="active"><span class="nl-text">Fastify</span>@if(progress.isDone('node-fastify')){<span class="nl-done">✓</span>}@if(diff('node-fastify');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/rest-api" routerLinkActive="active"><span class="nl-text">REST API Design</span>@if(progress.isDone('node-rest-api')){<span class="nl-done">✓</span>}@if(diff('node-rest-api');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/websockets" routerLinkActive="active"><span class="nl-text">WebSockets &amp; Socket.io</span>@if(progress.isDone('node-websockets')){<span class="nl-done">✓</span>}@if(diff('node-websockets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/graphql" routerLinkActive="active"><span class="nl-text">GraphQL API</span>@if(progress.isDone('node-graphql')){<span class="nl-done">✓</span>}@if(diff('node-graphql');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/express" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Express.js</span>
+        @if (progress.isDone('node-express')) {<span class="nl-done">✓</span>}
+        @if (diff('node-express'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('express')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('express')"
+                  (click)="toggleSubtopics('express', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('express'); as nodeExpressSubs) {
+        @if (isSubtopicsExpanded('express')) {
+          <div class="nav-subtopics">
+            @for (s of nodeExpressSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/fastify" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Fastify</span>
+        @if (progress.isDone('node-fastify')) {<span class="nl-done">✓</span>}
+        @if (diff('node-fastify'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('fastify')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('fastify')"
+                  (click)="toggleSubtopics('fastify', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('fastify'); as nodeFastifySubs) {
+        @if (isSubtopicsExpanded('fastify')) {
+          <div class="nav-subtopics">
+            @for (s of nodeFastifySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/rest-api" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">REST API Design</span>
+        @if (progress.isDone('node-rest-api')) {<span class="nl-done">✓</span>}
+        @if (diff('node-rest-api'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('rest-api')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rest-api')"
+                  (click)="toggleSubtopics('rest-api', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rest-api'); as nodeRestApiSubs) {
+        @if (isSubtopicsExpanded('rest-api')) {
+          <div class="nav-subtopics">
+            @for (s of nodeRestApiSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/websockets" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">WebSockets &amp; Socket.io</span>
+        @if (progress.isDone('node-websockets')) {<span class="nl-done">✓</span>}
+        @if (diff('node-websockets'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('websockets')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('websockets')"
+                  (click)="toggleSubtopics('websockets', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('websockets'); as nodeWebsocketsSubs) {
+        @if (isSubtopicsExpanded('websockets')) {
+          <div class="nav-subtopics">
+            @for (s of nodeWebsocketsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/graphql" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">GraphQL API</span>
+        @if (progress.isDone('node-graphql')) {<span class="nl-done">✓</span>}
+        @if (diff('node-graphql'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('graphql')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('graphql')"
+                  (click)="toggleSubtopics('graphql', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('graphql'); as nodeGraphqlSubs) {
+        @if (isSubtopicsExpanded('graphql')) {
+          <div class="nav-subtopics">
+            @for (s of nodeGraphqlSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/nestjs" routerLinkActive="active"><span class="nl-text">NestJS</span>@if(progress.isDone('node-nestjs')){<span class="nl-done">✓</span>}@if(diff('node-nestjs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

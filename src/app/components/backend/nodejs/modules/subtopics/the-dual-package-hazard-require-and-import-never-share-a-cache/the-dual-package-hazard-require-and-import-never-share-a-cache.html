@@ -1,0 +1,38 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Modules & CommonJS" topicRoute="/node/modules" subtopicLabel="The Dual Package Hazard" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">The Dual Package Hazard — require() and import() Never Share a Cache</h1>
+  <p class="page-subtitle">
+    A package reachable via both require() and import() in the same app can be loaded twice, producing two
+    genuinely separate instances of what should be one singleton.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 12+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered a reference-vs-reassignment subtlety within a single circular CJS dependency —
+      this one covers a related but distinct hazard across the CJS/ESM boundary entirely. Next: ESM named imports
+      are true live bindings that update automatically, while a CJS destructured require captures a frozen
+      snapshot the moment it runs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Modules & CommonJS"
+    topicRoute="/node/modules"
+    [prev]="{ label: 'Circular Requires Share a Reference, Mutation Is Visible, Reassignment Isn’t', route: '/node/modules/circular-requires-share-a-reference-mutation-visible-reassignment-not' }"
+    [next]="{ label: 'ESM Named Imports Are Live Bindings, CJS Destructuring Is a Snapshot', route: '/node/modules/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot' }"
+  />
+</div>

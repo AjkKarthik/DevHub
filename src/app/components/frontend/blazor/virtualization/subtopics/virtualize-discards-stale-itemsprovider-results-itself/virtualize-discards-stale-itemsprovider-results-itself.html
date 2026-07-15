@@ -1,0 +1,38 @@
+<div class="blazor-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Virtualization" topicRoute="/blazor/virtualization" subtopicLabel="Discards Stale Results Itself" />
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Virtualize Discards Stale ItemsProvider Results Itself</h1>
+  <p class="page-subtitle">
+    Forwarding the CancellationToken is an efficiency optimization, not a correctness requirement — Virtualize
+    already guards the rendered view either way.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="blazor-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="blazor-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered &#64;key's role in avoiding unnecessary DOM churn — this one refines the main
+      page's own CancellationToken advice with a precise correctness-vs-efficiency distinction. Next: OverscanCount
+      splits its buffer evenly above and below the viewport with no awareness of scroll direction, a detail worth
+      knowing when tuning it for fast one-directional scrolling.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Virtualization"
+    topicRoute="/blazor/virtualization"
+    [prev]="{ label: 'Virtualize Recreates Item DOM on Every Filter Without @key', route: '/blazor/virtualization/virtualize-recreates-item-dom-on-every-filter-without-key' }"
+    [next]="{ label: 'OverscanCount Splits Evenly, With No Scroll-Direction Awareness', route: '/blazor/virtualization/overscancount-splits-evenly-with-no-scroll-direction-awareness' }"
+  />
+</div>
