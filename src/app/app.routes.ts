@@ -2255,7 +2255,12 @@ export const routes: Routes = [
       { path: 'top-level-await-delays-the-import-chain-not-the-graph', loadComponent: () => import('./components/backend/nodejs/promises-async/subtopics/top-level-await-delays-the-import-chain-not-the-graph/top-level-await-delays-the-import-chain-not-the-graph').then(m => m.TopLevelAwaitDelaysTheImportChainNotTheGraphSubtopic) },
       { path: 'enterwith-leaks-context-run-restores-it-automatically', loadComponent: () => import('./components/backend/nodejs/promises-async/subtopics/enterwith-leaks-context-run-restores-it-automatically/enterwith-leaks-context-run-restores-it-automatically').then(m => m.EnterwithLeaksContextRunRestoresItAutomaticallySubtopic) },
     ] },
-    { path: 'streams',        loadComponent: () => import('./components/backend/nodejs/streams/streams').then(m => m.NodeStreams) },
+    { path: 'streams', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/streams/streams').then(m => m.NodeStreams) },
+      { path: 'never-mix-data-listener-with-for-await-of', loadComponent: () => import('./components/backend/nodejs/streams/subtopics/never-mix-data-listener-with-for-await-of/never-mix-data-listener-with-for-await-of').then(m => m.NeverMixDataListenerWithForAwaitOfSubtopic) },
+      { path: 'close-not-finish-end-signals-resources-are-released', loadComponent: () => import('./components/backend/nodejs/streams/subtopics/close-not-finish-end-signals-resources-are-released/close-not-finish-end-signals-resources-are-released').then(m => m.CloseNotFinishEndSignalsResourcesAreReleasedSubtopic) },
+      { path: 'highwatermark-counts-objects-not-bytes-in-object-mode', loadComponent: () => import('./components/backend/nodejs/streams/subtopics/highwatermark-counts-objects-not-bytes-in-object-mode/highwatermark-counts-objects-not-bytes-in-object-mode').then(m => m.HighwatermarkCountsObjectsNotBytesInObjectModeSubtopic) },
+    ] },
     { path: 'error-handling', loadComponent: () => import('./components/backend/nodejs/error-handling/error-handling').then(m => m.NodeErrorHandling) },
     { path: 'prisma',         loadComponent: () => import('./components/backend/nodejs/prisma/prisma').then(m => m.NodePrisma) },
     { path: 'mongoose',       loadComponent: () => import('./components/backend/nodejs/mongoose/mongoose').then(m => m.NodeMongoose) },

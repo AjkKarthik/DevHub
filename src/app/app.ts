@@ -1948,6 +1948,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Top-Level await Delays the Import Chain, Not the Whole Graph', route: '/node/promises-async/top-level-await-delays-the-import-chain-not-the-graph' },
     { label: 'enterWith() Leaks Context — run() Restores It Automatically', route: '/node/promises-async/enterwith-leaks-context-run-restores-it-automatically' },
   ],
+  'streams': [
+    { label: 'Never Mix a data Listener With for await...of', route: '/node/streams/never-mix-data-listener-with-for-await-of' },
+    { label: 'close, Not finish/end, Signals Resources Are Released', route: '/node/streams/close-not-finish-end-signals-resources-are-released' },
+    { label: 'highWaterMark Counts Objects, Not Bytes, in Object Mode', route: '/node/streams/highwatermark-counts-objects-not-bytes-in-object-mode' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Streams & Buffers" topicRoute="/node/streams" subtopicLabel="close vs finish/end" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">'close', Not 'finish'/'end', Signals Resources Are Actually Released</h1>
+  <p class="page-subtitle">
+    'finish' and 'end' only confirm data flow completed — 'close' is Node's documented signal that the underlying
+    file descriptor or socket has been released.
+  </p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own "not destroying streams on error" mistake with the exact event to wait for
+      afterward. The final subtopic in this batch turns to a completely different mechanic — what highWaterMark
+      actually measures once a stream switches into object mode.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Streams & Buffers"
+    topicRoute="/node/streams"
+    [prev]="{ label: 'Never Mix a data Listener With for await...of', route: '/node/streams/never-mix-data-listener-with-for-await-of' }"
+    [next]="{ label: 'highWaterMark Counts Objects, Not Bytes', route: '/node/streams/highwatermark-counts-objects-not-bytes-in-object-mode' }"
+  />
+</div>

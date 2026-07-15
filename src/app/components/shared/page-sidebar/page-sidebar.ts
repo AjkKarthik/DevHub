@@ -30969,6 +30969,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Forgetting to handle the "error" event on a stream lets stream errors go completely unhandled, unlike a promise rejection which at least crashes visibly.',
     ],
   },
+  'node/streams/never-mix-data-listener-with-for-await-of': {
+    apis: ['Readable.on(\'data\')', 'for await...of', 'Symbol.asyncIterator'],
+    related: [
+      { label: 'Streams & Buffers (overview)', route: '/node/streams' },
+      { label: 'close, Not finish/end, Signals Resources Are Released', route: '/node/streams/close-not-finish-end-signals-resources-are-released' },
+      { label: 'highWaterMark Counts Objects, Not Bytes', route: '/node/streams/highwatermark-counts-objects-not-bytes-in-object-mode' },
+    ],
+    tip: 'Node\'s own docs warn against combining on(\'data\'), on(\'readable\'), pipe(), or async iterators on one stream — pick exactly one consumption method per stream.',
+    docs: [
+      { label: 'Node.js — Stream: Two Reading Modes', url: 'https://nodejs.org/api/stream.html#two-reading-modes' },
+    ],
+    resources: [],
+    gotchas: [
+      'A Readable starts in paused mode — attaching a \'data\' listener, calling .resume(), or calling .pipe() switches it into flowing mode.',
+      'A \'data\' listener attached elsewhere in a codebase can silently starve an unrelated for await...of loop on the same stream instance.',
+    ],
+  },
+  'node/streams/close-not-finish-end-signals-resources-are-released': {
+    apis: ['\'close\' event', '\'finish\' event', '\'end\' event', 'autoDestroy'],
+    related: [
+      { label: 'Streams & Buffers (overview)', route: '/node/streams' },
+      { label: 'Never Mix a data Listener With for await...of', route: '/node/streams/never-mix-data-listener-with-for-await-of' },
+      { label: 'highWaterMark Counts Objects, Not Bytes', route: '/node/streams/highwatermark-counts-objects-not-bytes-in-object-mode' },
+    ],
+    tip: '\'finish\' and \'end\' only confirm data flow completed — \'close\' is the event Node\'s docs tie explicitly to the underlying file descriptor or socket actually being released.',
+    docs: [
+      { label: 'Node.js — Stream events', url: 'https://nodejs.org/api/stream.html#class-streamwritable' },
+    ],
+    resources: [],
+    gotchas: [
+      '\'close\' firing depends on autoDestroy and emitClose both defaulting to true — a stream constructed with autoDestroy: false won\'t emit it automatically.',
+      'Code that needs to know a file descriptor is truly released (before renaming or deleting a just-written file) should wait for \'close\', not \'finish\'.',
+    ],
+  },
+  'node/streams/highwatermark-counts-objects-not-bytes-in-object-mode': {
+    apis: ['highWaterMark', 'objectMode'],
+    related: [
+      { label: 'Streams & Buffers (overview)', route: '/node/streams' },
+      { label: 'Never Mix a data Listener With for await...of', route: '/node/streams/never-mix-data-listener-with-for-await-of' },
+      { label: 'close, Not finish/end, Signals Resources Are Released', route: '/node/streams/close-not-finish-end-signals-resources-are-released' },
+    ],
+    tip: 'Node\'s docs state the default is "16384 (16 KB), or 16 for objectMode streams" — the same option name switches units entirely depending on objectMode.',
+    docs: [
+      { label: 'Node.js — new stream.Readable(options)', url: 'https://nodejs.org/api/stream.html#new-streamreadableoptions' },
+    ],
+    resources: [],
+    gotchas: [
+      'In object mode, highWaterMark counts individual objects with zero awareness of their size — a stream of large objects can buffer far more memory than the number alone suggests.',
+      'Reusing a byte-oriented number (like 16384) as an object-mode highWaterMark configures buffering of that many OBJECTS, not bytes — often far larger than intended.',
+    ],
+  },
   'node/worker-threads': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
