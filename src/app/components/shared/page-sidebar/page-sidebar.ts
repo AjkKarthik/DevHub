@@ -30697,6 +30697,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'path.join correctly handles OS-specific separators — string-concatenating paths manually breaks cross-platform compatibility.',
     ],
   },
+  'node/core-modules/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit': {
+    apis: ['emitter.setMaxListeners()', 'EventEmitter.defaultMaxListeners'],
+    related: [
+      { label: 'Core Modules (overview)', route: '/node/core-modules' },
+      { label: 'Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool', route: '/node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool' },
+      { label: 'exec()’s Default maxBuffer Kills the Process, Not Truncates', route: '/node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates' },
+    ],
+    tip: 'Before silencing a MaxListenersExceededWarning with setMaxListeners(), check whether the listener count is genuinely intentional and stable, or whether listeners are being added without ever being removed.',
+    docs: [
+      { label: 'Node.js — events module, emitter.setMaxListeners()', url: 'https://nodejs.org/api/events.html#emittersetmaxlistenersn' },
+    ],
+    resources: [],
+    gotchas: [
+      'The 11th and later listeners still register and fire normally — the warning is purely informational, with zero effect on which listeners actually run.',
+      'Node\'s own docs frame 10 as a heuristic default for leak detection, not a real architectural limit — "not all events should be limited to just 10 listeners."',
+    ],
+  },
+
+  'node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool': {
+    apis: ['Buffer.allocUnsafe()', 'Buffer.alloc()', 'Buffer.poolSize'],
+    related: [
+      { label: 'Core Modules (overview)', route: '/node/core-modules' },
+      { label: 'EventEmitter Warns After 10 Listeners — a Leak Heuristic, Not a Limit', route: '/node/core-modules/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit' },
+      { label: 'exec()’s Default maxBuffer Kills the Process, Not Truncates', route: '/node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates' },
+    ],
+    tip: 'Only use Buffer.allocUnsafe() when every byte will be immediately, completely overwritten before being read or exposed — otherwise use Buffer.alloc(), which explicitly zero-fills.',
+    docs: [
+      { label: 'Node.js — Buffer, Buffer.allocUnsafe()', url: 'https://nodejs.org/api/buffer.html#static-method-bufferallocunsafesize' },
+    ],
+    resources: [],
+    gotchas: [
+      'Allocations at or under half of Buffer.poolSize (4KB by default) slice from a shared, reused internal pool Node never clears between uses.',
+      'This is a genuine security risk in server applications — one request\'s leftover buffer data can surface in a later, completely unrelated request\'s buffer.',
+    ],
+  },
+
+  'node/core-modules/exec-default-maxbuffer-kills-the-process-not-truncates': {
+    apis: ['child_process.exec()', 'child_process.spawn()', 'maxBuffer'],
+    related: [
+      { label: 'Core Modules (overview)', route: '/node/core-modules' },
+      { label: 'EventEmitter Warns After 10 Listeners — a Leak Heuristic, Not a Limit', route: '/node/core-modules/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit' },
+      { label: 'Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool', route: '/node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool' },
+    ],
+    tip: 'A maxBuffer error appearing after months of stable operation usually means the EXECUTED COMMAND\'s output volume grew, not that the exec()-calling code changed — check the command\'s real-world output size, not the script.',
+    docs: [
+      { label: 'Node.js — child_process, exec()', url: 'https://nodejs.org/api/child_process.html#child_processexeccommand-options-callback' },
+    ],
+    resources: [],
+    gotchas: [
+      'Exceeding maxBuffer (1MB default) kills the child process and throws an error — it does not return a truncated, partial result.',
+      'For genuinely unbounded output, switch from exec() to spawn() and stream the output incrementally, sidestepping the buffer-size ceiling entirely.',
+    ],
+  },
+
   'node/architecture': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

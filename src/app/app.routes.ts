@@ -2201,7 +2201,12 @@ export const routes: Routes = [
       { path: 'the-dual-package-hazard-require-and-import-never-share-a-cache', loadComponent: () => import('./components/backend/nodejs/modules/subtopics/the-dual-package-hazard-require-and-import-never-share-a-cache/the-dual-package-hazard-require-and-import-never-share-a-cache').then(m => m.TheDualPackageHazardRequireAndImportNeverShareACacheSubtopic) },
       { path: 'esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot', loadComponent: () => import('./components/backend/nodejs/modules/subtopics/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot/esm-named-imports-are-live-bindings-cjs-destructuring-is-a-snapshot').then(m => m.EsmNamedImportsAreLiveBindingsCjsDestructuringIsASnapshotSubtopic) },
     ] },
-    { path: 'core-modules',   loadComponent: () => import('./components/backend/nodejs/core-modules/core-modules').then(m => m.NodeCoreModules) },
+    { path: 'core-modules', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/core-modules/core-modules').then(m => m.NodeCoreModules) },
+      { path: 'eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit', loadComponent: () => import('./components/backend/nodejs/core-modules/subtopics/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit/eventemitter-warns-after-10-listeners-a-leak-heuristic-not-a-limit').then(m => m.EventemitterWarnsAfter10ListenersALeakHeuristicNotALimitSubtopic) },
+      { path: 'buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool', loadComponent: () => import('./components/backend/nodejs/core-modules/subtopics/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool').then(m => m.BufferAllocunsafeCanLeakPreviousDataViaTheSharedPoolSubtopic) },
+      { path: 'exec-default-maxbuffer-kills-the-process-not-truncates', loadComponent: () => import('./components/backend/nodejs/core-modules/subtopics/exec-default-maxbuffer-kills-the-process-not-truncates/exec-default-maxbuffer-kills-the-process-not-truncates').then(m => m.ExecDefaultMaxbufferKillsTheProcessNotTruncatesSubtopic) },
+    ] },
     { path: 'env-config',     loadComponent: () => import('./components/backend/nodejs/env-config/env-config').then(m => m.NodeEnvConfig) },
     { path: 'express',        loadComponent: () => import('./components/backend/nodejs/express/express').then(m => m.NodeExpress) },
     { path: 'fastify',        loadComponent: () => import('./components/backend/nodejs/fastify/fastify').then(m => m.NodeFastify) },

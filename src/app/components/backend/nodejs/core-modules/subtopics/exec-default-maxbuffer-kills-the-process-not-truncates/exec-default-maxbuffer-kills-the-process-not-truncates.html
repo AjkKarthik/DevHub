@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Core Modules" topicRoute="/node/core-modules" subtopicLabel="maxBuffer Kills, Doesn't Truncate" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">exec()'s Default maxBuffer Kills the Process, Not Truncates</h1>
+  <p class="page-subtitle">
+    Exceeding the 1MB default doesn't return a partial result — it kills the child process and throws an error.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch by expanding the main page's brief exec() output-buffering note into its exact,
+      disruptive failure mode. Together with the earlier two subtopics, this batch covers EventEmitter's built-in
+      leak-detection heuristic, Buffer.allocUnsafe()'s shared-pool leak risk, and now why exec() output size limits
+      can silently break in production despite working fine in development.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Core Modules"
+    topicRoute="/node/core-modules"
+    [prev]="{ label: 'Buffer.allocUnsafe() Can Leak Previous Data via the Shared Pool', route: '/node/core-modules/buffer-allocunsafe-can-leak-previous-data-via-the-shared-pool' }"
+  />
+</div>
