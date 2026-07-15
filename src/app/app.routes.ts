@@ -2285,7 +2285,12 @@ export const routes: Routes = [
       { path: 'scan-does-not-guarantee-a-consistent-snapshot', loadComponent: () => import('./components/backend/nodejs/caching/subtopics/scan-does-not-guarantee-a-consistent-snapshot/scan-does-not-guarantee-a-consistent-snapshot').then(m => m.ScanDoesNotGuaranteeAConsistentSnapshotSubtopic) },
       { path: 'set-nx-lock-is-not-safe-across-a-redis-failover', loadComponent: () => import('./components/backend/nodejs/caching/subtopics/set-nx-lock-is-not-safe-across-a-redis-failover/set-nx-lock-is-not-safe-across-a-redis-failover').then(m => m.SetNxLockIsNotSafeAcrossARedisFailoverSubtopic) },
     ] },
-    { path: 'jwt-auth',       loadComponent: () => import('./components/backend/nodejs/jwt-auth/jwt-auth').then(m => m.NodeJwtAuth) },
+    { path: 'jwt-auth', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/jwt-auth/jwt-auth').then(m => m.NodeJwtAuth) },
+      { path: 'rs256-hs256-algorithm-confusion-needs-explicit-pinning', loadComponent: () => import('./components/backend/nodejs/jwt-auth/subtopics/rs256-hs256-algorithm-confusion-needs-explicit-pinning/rs256-hs256-algorithm-confusion-needs-explicit-pinning').then(m => m.Rs256Hs256AlgorithmConfusionNeedsExplicitPinningSubtopic) },
+      { path: 'clocktolerance-handles-drift-between-distributed-servers', loadComponent: () => import('./components/backend/nodejs/jwt-auth/subtopics/clocktolerance-handles-drift-between-distributed-servers/clocktolerance-handles-drift-between-distributed-servers').then(m => m.ClocktoleranceHandlesDriftBetweenDistributedServersSubtopic) },
+      { path: 'concurrent-refresh-requests-trigger-false-theft-detection', loadComponent: () => import('./components/backend/nodejs/jwt-auth/subtopics/concurrent-refresh-requests-trigger-false-theft-detection/concurrent-refresh-requests-trigger-false-theft-detection').then(m => m.ConcurrentRefreshRequestsTriggerFalseTheftDetectionSubtopic) },
+    ] },
     { path: 'security',       loadComponent: () => import('./components/backend/nodejs/security/security').then(m => m.NodeSecurity) },
     { path: 'performance',    loadComponent: () => import('./components/backend/nodejs/performance/performance').then(m => m.NodePerformance) },
     { path: 'logging',        loadComponent: () => import('./components/backend/nodejs/logging/logging').then(m => m.NodeLogging) },

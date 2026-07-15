@@ -1975,6 +1975,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SCAN Does Not Guarantee a Consistent Snapshot', route: '/node/caching/scan-does-not-guarantee-a-consistent-snapshot' },
     { label: 'The Simple SET NX Lock Isn’t Safe Across a Redis Failover', route: '/node/caching/set-nx-lock-is-not-safe-across-a-redis-failover' },
   ],
+  'jwt-auth': [
+    { label: 'RS256 Public Keys Can Be Forged as HS256 Secrets', route: '/node/jwt-auth/rs256-hs256-algorithm-confusion-needs-explicit-pinning' },
+    { label: 'clockTolerance Handles Drift Between Distributed Servers', route: '/node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers' },
+    { label: 'Concurrent Refresh Requests Trigger a False Theft-Detection Positive', route: '/node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection' },
+  ],
 };
 
 @Component({

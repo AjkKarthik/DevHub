@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Auth with JWT & Passport" topicRoute="/node/jwt-auth" subtopicLabel="Refresh Race Condition" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Concurrent Refresh Requests Can Trigger a False Theft-Detection Positive</h1>
+  <p class="page-subtitle">
+    Two legitimate, near-simultaneous requests from the same user look identical to a real attacker replaying a
+    stolen, already-rotated token.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three security-critical gaps behind the main page's own patterns: a forged-signature attack
+      behind a one-line "validate the alg header" warning, clock drift behind exp checking, and now a genuine race
+      condition in the exact refresh-rotation code the main page presents as its reference implementation.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Auth with JWT & Passport"
+    topicRoute="/node/jwt-auth"
+    [prev]="{ label: 'clockTolerance Handles Drift Between Servers', route: '/node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers' }"
+  />
+</div>

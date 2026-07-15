@@ -31413,6 +31413,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'JWTs are stateless and cannot be revoked before expiry without an additional server-side revocation mechanism.',
     ],
   },
+  'node/jwt-auth/rs256-hs256-algorithm-confusion-needs-explicit-pinning': {
+    apis: ['jwt.verify() algorithms option', 'CVE-2022-23540'],
+    related: [
+      { label: 'Auth with JWT & Passport (overview)', route: '/node/jwt-auth' },
+      { label: 'clockTolerance Handles Drift Between Servers', route: '/node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers' },
+      { label: 'Concurrent Refresh Requests Trigger a False Positive', route: '/node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection' },
+    ],
+    tip: 'A public RS256 key is not secret — verifying without algorithms: ["RS256"] historically let an attacker forge an HS256 token signed with that same public key as an HMAC secret.',
+    docs: [
+      { label: 'jsonwebtoken — verify() options', url: 'https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback' },
+    ],
+    resources: [],
+    gotchas: [
+      'jsonwebtoken v9.0.0+ (fixing CVE-2022-23540) auto-restricts algorithms by the key\'s actual cryptographic type by default — explicit pinning is still best practice, not the only remaining safeguard.',
+      'An app pinned to jsonwebtoken@8.x or earlier without explicit algorithms pinning remains genuinely vulnerable to this exact attack.',
+    ],
+  },
+  'node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers': {
+    apis: ['clockTolerance', 'clockTimestamp'],
+    related: [
+      { label: 'Auth with JWT & Passport (overview)', route: '/node/jwt-auth' },
+      { label: 'RS256 Public Keys Can Be Forged as HS256 Secrets', route: '/node/jwt-auth/rs256-hs256-algorithm-confusion-needs-explicit-pinning' },
+      { label: 'Concurrent Refresh Requests Trigger a False Positive', route: '/node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection' },
+    ],
+    tip: 'exp is checked against the VERIFYING server\'s own clock, not the issuing server\'s — clockTolerance absorbs normal drift between distributed server instances.',
+    docs: [
+      { label: 'jsonwebtoken — clockTolerance', url: 'https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback' },
+    ],
+    resources: [],
+    gotchas: [
+      'This never surfaces in local development (one machine, one clock) — it becomes a real, intermittent bug only once an app scales to multiple hosts.',
+      'clockTolerance and clockTimestamp are different options — one absorbs real drift, the other overrides "now" entirely for deterministic tests.',
+    ],
+  },
+  'node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection': {
+    apis: ['Refresh Token Rotation', 'Grace Period'],
+    related: [
+      { label: 'Auth with JWT & Passport (overview)', route: '/node/jwt-auth' },
+      { label: 'RS256 Public Keys Can Be Forged as HS256 Secrets', route: '/node/jwt-auth/rs256-hs256-algorithm-confusion-needs-explicit-pinning' },
+      { label: 'clockTolerance Handles Drift Between Servers', route: '/node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers' },
+    ],
+    tip: 'Two legitimate, near-simultaneous refresh requests from the same user produce the exact same "already-used token" signal as real theft — a short grace period for the immediately-prior token is the common mitigation.',
+    docs: [
+      { label: 'Refresh token rotation false positives', url: 'https://danmercer.net/p/refresh-token-false-positives/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A grace period is a genuine tradeoff, not a free fix — an attacker who also has the old token gets the same window to use it.',
+      'This is a widely recognized limitation of strict refresh-token rotation generally, not a flaw specific to any one implementation.',
+    ],
+  },
   'node/security': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

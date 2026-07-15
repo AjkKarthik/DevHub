@@ -5506,7 +5506,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Auth &amp; Security</p>
-      <a routerLink="/node/jwt-auth" routerLinkActive="active"><span class="nl-text">Auth with JWT &amp; Passport</span>@if(progress.isDone('node-jwt-auth')){<span class="nl-done">✓</span>}@if(diff('node-jwt-auth');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/jwt-auth" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Auth with JWT &amp; Passport</span>
+        @if (progress.isDone('node-jwt-auth')) {<span class="nl-done">✓</span>}
+        @if (diff('node-jwt-auth'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('jwt-auth')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('jwt-auth')"
+                  (click)="toggleSubtopics('jwt-auth', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('jwt-auth'); as nodeJwtAuthSubs) {
+        @if (isSubtopicsExpanded('jwt-auth')) {
+          <div class="nav-subtopics">
+            @for (s of nodeJwtAuthSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/security" routerLinkActive="active"><span class="nl-text">Security Best Practices</span>@if(progress.isDone('node-security')){<span class="nl-done">✓</span>}@if(diff('node-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
