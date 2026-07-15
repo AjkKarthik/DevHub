@@ -5314,7 +5314,26 @@
           </div>
         }
       }
-      <a routerLink="/node/websockets" routerLinkActive="active"><span class="nl-text">WebSockets &amp; Socket.io</span>@if(progress.isDone('node-websockets')){<span class="nl-done">✓</span>}@if(diff('node-websockets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/websockets" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">WebSockets &amp; Socket.io</span>
+        @if (progress.isDone('node-websockets')) {<span class="nl-done">✓</span>}
+        @if (diff('node-websockets'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('websockets')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('websockets')"
+                  (click)="toggleSubtopics('websockets', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('websockets'); as nodeWebsocketsSubs) {
+        @if (isSubtopicsExpanded('websockets')) {
+          <div class="nav-subtopics">
+            @for (s of nodeWebsocketsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/graphql" routerLinkActive="active"><span class="nl-text">GraphQL API</span>@if(progress.isDone('node-graphql')){<span class="nl-done">✓</span>}@if(diff('node-graphql');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/nestjs" routerLinkActive="active"><span class="nl-text">NestJS</span>@if(progress.isDone('node-nestjs')){<span class="nl-done">✓</span>}@if(diff('node-nestjs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

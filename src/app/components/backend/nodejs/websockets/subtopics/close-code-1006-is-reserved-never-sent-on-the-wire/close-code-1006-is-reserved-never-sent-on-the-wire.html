@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="WebSockets & Socket.io" topicRoute="/node/websockets" subtopicLabel="Close Code 1006" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Close Code 1006 Is Reserved — It Never Appears on the Wire</h1>
+  <p class="page-subtitle">
+    RFC 6455 forbids any endpoint from sending code 1006 — it's a client-API sentinel for "no close frame was ever
+    transmitted at all."
+  </p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three precise mechanics behind concepts the main page introduces at a higher level: how
+      Redis-adapter fanout actually works, why Socket.io's heartbeat is its own protocol rather than raw WebSocket
+      ping/pong, and now what a specific close code can and cannot mean. All three connect back to the same theme —
+      detecting and reasoning about connections that die in ways short of a clean, intentional close.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WebSockets & Socket.io"
+    topicRoute="/node/websockets"
+    [prev]="{ label: 'Engine.IO Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' }"
+  />
+</div>

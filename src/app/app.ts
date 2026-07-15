@@ -1928,6 +1928,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why POST Retries Need an Idempotency-Key Header', route: '/node/rest-api/post-retry-duplicates-without-idempotency-key' },
     { label: 'ETag If-Match Mismatch Returns 412, Not 409', route: '/node/rest-api/etag-if-match-mismatch-returns-412-not-409' },
   ],
+  'websockets': [
+    { label: 'Redis Adapter Broadcasts to Every Instance, Not Just Matching Sockets', route: '/node/websockets/redis-adapter-broadcasts-to-every-instance' },
+    { label: 'Socket.io’s Heartbeat Is Engine.IO’s Own Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' },
+    { label: 'Close Code 1006 Is Reserved — It Never Appears on the Wire', route: '/node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire' },
+  ],
 };
 
 @Component({

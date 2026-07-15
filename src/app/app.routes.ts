@@ -2231,7 +2231,12 @@ export const routes: Routes = [
       { path: 'post-retry-duplicates-without-idempotency-key', loadComponent: () => import('./components/backend/nodejs/rest-api/subtopics/post-retry-duplicates-without-idempotency-key/post-retry-duplicates-without-idempotency-key').then(m => m.PostRetryDuplicatesWithoutIdempotencyKeySubtopic) },
       { path: 'etag-if-match-mismatch-returns-412-not-409', loadComponent: () => import('./components/backend/nodejs/rest-api/subtopics/etag-if-match-mismatch-returns-412-not-409/etag-if-match-mismatch-returns-412-not-409').then(m => m.EtagIfMatchMismatchReturns412Not409Subtopic) },
     ] },
-    { path: 'websockets',     loadComponent: () => import('./components/backend/nodejs/websockets/websockets').then(m => m.NodeWebsockets) },
+    { path: 'websockets', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/websockets/websockets').then(m => m.NodeWebsockets) },
+      { path: 'redis-adapter-broadcasts-to-every-instance', loadComponent: () => import('./components/backend/nodejs/websockets/subtopics/redis-adapter-broadcasts-to-every-instance/redis-adapter-broadcasts-to-every-instance').then(m => m.RedisAdapterBroadcastsToEveryInstanceSubtopic) },
+      { path: 'engineio-ping-pong-not-websocket-protocol-frames', loadComponent: () => import('./components/backend/nodejs/websockets/subtopics/engineio-ping-pong-not-websocket-protocol-frames/engineio-ping-pong-not-websocket-protocol-frames').then(m => m.EngineioPingPongNotWebsocketProtocolFramesSubtopic) },
+      { path: 'close-code-1006-is-reserved-never-sent-on-the-wire', loadComponent: () => import('./components/backend/nodejs/websockets/subtopics/close-code-1006-is-reserved-never-sent-on-the-wire/close-code-1006-is-reserved-never-sent-on-the-wire').then(m => m.CloseCode1006IsReservedNeverSentOnTheWireSubtopic) },
+    ] },
     { path: 'graphql',        loadComponent: () => import('./components/backend/nodejs/graphql/graphql').then(m => m.NodeGraphql) },
     { path: 'nestjs',         loadComponent: () => import('./components/backend/nodejs/nestjs/nestjs').then(m => m.NodeNestjs) },
     { path: 'promises-async', loadComponent: () => import('./components/backend/nodejs/promises-async/promises-async').then(m => m.NodePromisesAsync) },

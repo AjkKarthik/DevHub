@@ -31326,6 +31326,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Forgetting to handle the "close" event to clean up associated resources (subscriptions, timers) per connection is a common memory-leak source.',
     ],
   },
+  'node/websockets/redis-adapter-broadcasts-to-every-instance': {
+    apis: ['@socket.io/redis-adapter', 'Redis pub/sub'],
+    related: [
+      { label: 'WebSockets & Socket.io (overview)', route: '/node/websockets' },
+      { label: 'Engine.IO Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' },
+      { label: 'Close Code 1006 Is Reserved', route: '/node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire' },
+    ],
+    tip: 'Redis pub/sub has no per-subscriber targeting — every cluster instance receives every published broadcast and filters against its own local room membership after the fact.',
+    docs: [
+      { label: 'Socket.IO — Redis adapter', url: 'https://socket.io/docs/v4/redis-adapter/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Broadcast fanout cost scales with (broadcast volume) × (number of instances), not with the number of sockets actually in the target room.',
+      'This is a separate, additive cost from per-instance connection memory — both matter independently when reasoning about cluster capacity.',
+    ],
+  },
+  'node/websockets/engineio-ping-pong-not-websocket-protocol-frames': {
+    apis: ['pingInterval', 'pingTimeout', 'Engine.IO protocol'],
+    related: [
+      { label: 'WebSockets & Socket.io (overview)', route: '/node/websockets' },
+      { label: 'Redis Adapter Broadcasts to Every Instance', route: '/node/websockets/redis-adapter-broadcasts-to-every-instance' },
+      { label: 'Close Code 1006 Is Reserved', route: '/node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire' },
+    ],
+    tip: 'There is no ws.on(\'pong\', ...) equivalent in Socket.io — the heartbeat is handled entirely inside Engine.IO\'s own packet protocol, invisible to application code, and works identically over WebSocket or HTTP long-polling.',
+    docs: [
+      { label: 'Engine.IO protocol reference', url: 'https://github.com/socketio/engine.io-protocol' },
+    ],
+    resources: [],
+    gotchas: [
+      'Socket.io does not use WebSocket\'s RFC 6455 protocol-level ping/pong control frames at all — it needs one heartbeat that also works over HTTP long-polling, which has no control frames.',
+      'The Engine.IO ping is server-initiated, not client-initiated — the opposite of what the raw ws library\'s typical usage pattern might suggest is universal.',
+    ],
+  },
+  'node/websockets/close-code-1006-is-reserved-never-sent-on-the-wire': {
+    apis: ['CloseEvent.code', 'ws.close()', 'RFC 6455 §7.4.1'],
+    related: [
+      { label: 'WebSockets & Socket.io (overview)', route: '/node/websockets' },
+      { label: 'Redis Adapter Broadcasts to Every Instance', route: '/node/websockets/redis-adapter-broadcasts-to-every-instance' },
+      { label: 'Engine.IO Ping/Pong, Not WebSocket Frames', route: '/node/websockets/engineio-ping-pong-not-websocket-protocol-frames' },
+    ],
+    tip: 'Seeing close code 1006 means no close frame was ever sent or received at all — it is a client-API sentinel for an abnormal disconnect, not a code any endpoint can actually transmit.',
+    docs: [
+      { label: 'RFC 6455 §7.4.1 — Status Codes', url: 'https://www.rfc-editor.org/rfc/rfc6455.html#section-7.4.1' },
+    ],
+    resources: [],
+    gotchas: [
+      'Code 1006 MUST NOT be set in an actual Close control frame by any endpoint — attempting to explicitly send it is a contradiction in terms.',
+      'Use 1001 (Going Away) or a custom 4000-4999 application code instead if you need to intentionally signal an abnormal-disconnect-like condition through a real close frame.',
+    ],
+  },
 
   // ── Go: per-page entries ────────────────────────────────────────────────────
   'go/fundamentals': {
