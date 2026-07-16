@@ -31083,6 +31083,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Spawning a new worker thread has real startup overhead — a worker pool reused across requests is usually more appropriate than spawning one per request.',
     ],
   },
+  'node/worker-threads/each-worker-gets-its-own-process-env-snapshot': {
+    apis: ['new Worker(url, { env })', 'worker.SHARE_ENV', 'process.env'],
+    related: [
+      { label: 'Worker Threads (overview)', route: '/node/worker-threads' },
+      { label: 'terminate() Cannot Interrupt Synchronous CPU Work', route: '/node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work' },
+      { label: 'stdout: true Makes You Responsible for Draining the Stream', route: '/node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream' },
+    ],
+    tip: 'A worker\'s process.env is a copy taken at creation time — a long-lived worker pool created once at startup will keep using stale environment values indefinitely unless env: worker.SHARE_ENV is explicitly requested.',
+    docs: [
+      { label: 'Node.js — Worker Threads', url: 'https://nodejs.org/api/worker_threads.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Setting process.env inside a worker after creation has zero effect on the main thread or any sibling worker\'s environment — the isolation runs in both directions.',
+      'SHARE_ENV shares the ENTIRE environment object, not just the one variable that changed — often broader sharing than actually needed.',
+    ],
+  },
+  'node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work': {
+    apis: ['worker.terminate()', 'Promise'],
+    related: [
+      { label: 'Worker Threads (overview)', route: '/node/worker-threads' },
+      { label: 'Each Worker Gets Its Own process.env Snapshot', route: '/node/worker-threads/each-worker-gets-its-own-process-env-snapshot' },
+      { label: 'stdout: true Makes You Responsible for Draining the Stream', route: '/node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream' },
+    ],
+    tip: 'terminate() stops execution "as soon as possible," not instantly — a worker stuck in a tight synchronous loop can\'t be interrupted until that loop finishes on its own, since a pending termination request can only be processed once the worker\'s single-threaded event loop is free.',
+    docs: [
+      { label: 'Node.js — Worker Threads (terminate)', url: 'https://nodejs.org/api/worker_threads.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A worker-pool "cancel task" feature built on terminate() alone is reliable only for tasks with async yield points — a genuinely interruptible CPU-bound task needs cooperative cancellation built into the computation itself.',
+      'This follows from JavaScript\'s general single-threaded, run-to-completion execution model, not a worker_threads-specific documented caveat stated in those exact terms.',
+    ],
+  },
+  'node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream': {
+    apis: ['new Worker(url, { stdout })', 'worker.stdout', 'stream.on(\'data\')'],
+    related: [
+      { label: 'Worker Threads (overview)', route: '/node/worker-threads' },
+      { label: 'Each Worker Gets Its Own process.env Snapshot', route: '/node/worker-threads/each-worker-gets-its-own-process-env-snapshot' },
+      { label: 'terminate() Cannot Interrupt Synchronous CPU Work', route: '/node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work' },
+    ],
+    tip: 'By default a worker\'s console output auto-pipes to the parent process\'s own stdout — passing { stdout: true } turns that off and hands you a readable worker.stdout stream that produces nothing until your own code explicitly consumes it.',
+    docs: [
+      { label: 'Node.js — Worker Threads (stdout)', url: 'https://nodejs.org/api/worker_threads.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only opt into { stdout: true } when there is a genuine reason to capture a worker\'s output separately — and always attach a real consumer immediately, rather than leaving the stream unread.',
+      'The "unconsumed stream data risks backing up" consequence is an inference from Node\'s general streams backpressure model, not a documented warning specific to this exact scenario.',
+    ],
+  },
   'node/express': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

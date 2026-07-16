@@ -1,0 +1,38 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Worker Threads" topicRoute="/node/worker-threads" subtopicLabel="terminate() Limits" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">terminate() Cannot Interrupt Synchronous CPU Work</h1>
+  <p class="page-subtitle">
+    "As soon as possible" is doing real work in Node's own wording — a worker stuck in a tight synchronous loop
+    can't be stopped until that loop finishes on its own.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 10.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic showed a worker's process.env is isolated from the parent; this one shows the worker's
+      execution itself is similarly resistant to outside interruption once a synchronous computation is underway.
+      The final subtopic turns to a subtler default — what happens to a worker's own console output if you never
+      touch it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Worker Threads"
+    topicRoute="/node/worker-threads"
+    [prev]="{ label: 'Each Worker Gets Its Own process.env Snapshot', route: '/node/worker-threads/each-worker-gets-its-own-process-env-snapshot' }"
+    [next]="{ label: 'stdout: true Makes You Responsible for Draining the Stream', route: '/node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream' }"
+  />
+</div>

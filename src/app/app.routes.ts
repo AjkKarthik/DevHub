@@ -2309,7 +2309,12 @@ export const routes: Routes = [
       { path: 'pino-base-option-replaces-not-merges-pid-and-hostname', loadComponent: () => import('./components/backend/nodejs/logging/subtopics/pino-base-option-replaces-not-merges-pid-and-hostname/pino-base-option-replaces-not-merges-pid-and-hostname').then(m => m.PinoBaseOptionReplacesNotMergesPidAndHostnameSubtopic) },
       { path: 'pino-redact-never-touches-the-log-message-string', loadComponent: () => import('./components/backend/nodejs/logging/subtopics/pino-redact-never-touches-the-log-message-string/pino-redact-never-touches-the-log-message-string').then(m => m.PinoRedactNeverTouchesTheLogMessageStringSubtopic) },
     ] },
-    { path: 'worker-threads', loadComponent: () => import('./components/backend/nodejs/worker-threads/worker-threads').then(m => m.NodeWorkerThreads) },
+    { path: 'worker-threads', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/worker-threads/worker-threads').then(m => m.NodeWorkerThreads) },
+      { path: 'each-worker-gets-its-own-process-env-snapshot', loadComponent: () => import('./components/backend/nodejs/worker-threads/subtopics/each-worker-gets-its-own-process-env-snapshot/each-worker-gets-its-own-process-env-snapshot').then(m => m.EachWorkerGetsItsOwnProcessEnvSnapshotSubtopic) },
+      { path: 'worker-terminate-cannot-interrupt-synchronous-cpu-work', loadComponent: () => import('./components/backend/nodejs/worker-threads/subtopics/worker-terminate-cannot-interrupt-synchronous-cpu-work/worker-terminate-cannot-interrupt-synchronous-cpu-work').then(m => m.WorkerTerminateCannotInterruptSynchronousCpuWorkSubtopic) },
+      { path: 'stdout-true-makes-you-responsible-for-draining-the-stream', loadComponent: () => import('./components/backend/nodejs/worker-threads/subtopics/stdout-true-makes-you-responsible-for-draining-the-stream/stdout-true-makes-you-responsible-for-draining-the-stream').then(m => m.StdoutTrueMakesYouResponsibleForDrainingTheStreamSubtopic) },
+    ] },
     { path: 'testing',        loadComponent: () => import('./components/backend/nodejs/testing/testing').then(m => m.NodeTesting) },
     { path: 'deployment',     loadComponent: () => import('./components/backend/nodejs/deployment/deployment').then(m => m.NodeDeployment) },
     { path: 'cheatsheet',     loadComponent: () => import('./components/backend/nodejs/cheatsheet/cheatsheet').then(m => m.NodeCheatsheet) },

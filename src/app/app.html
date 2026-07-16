@@ -5590,7 +5590,26 @@
           </div>
         }
       }
-      <a routerLink="/node/worker-threads" routerLinkActive="active"><span class="nl-text">Worker Threads</span>@if(progress.isDone('node-worker-threads')){<span class="nl-done">✓</span>}@if(diff('node-worker-threads');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/worker-threads" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Worker Threads</span>
+        @if (progress.isDone('node-worker-threads')) {<span class="nl-done">✓</span>}
+        @if (diff('node-worker-threads'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('worker-threads')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('worker-threads')"
+                  (click)="toggleSubtopics('worker-threads', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('worker-threads'); as nodeWorkerThreadsSubs) {
+        @if (isSubtopicsExpanded('worker-threads')) {
+          <div class="nav-subtopics">
+            @for (s of nodeWorkerThreadsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/testing" routerLinkActive="active"><span class="nl-text">Testing Node.js Apps</span>@if(progress.isDone('node-testing')){<span class="nl-done">✓</span>}@if(diff('node-testing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/deployment" routerLinkActive="active"><span class="nl-text">Deploying Node.js Apps</span>@if(progress.isDone('node-deployment')){<span class="nl-done">✓</span>}@if(diff('node-deployment');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

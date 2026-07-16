@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Worker Threads" topicRoute="/node/worker-threads" subtopicLabel="stdout: true" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">stdout: true Makes You Responsible for Draining the Stream</h1>
+  <p class="page-subtitle">
+    By default a worker's console output is auto-piped to the parent's own stdout — opting out with stdout: true
+    hands you a stream that goes nowhere until you read it yourself.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 10.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of worker-thread defaults that look automatic
+      until you opt out of them — process.env stops syncing, terminate() stops being instant, and now stdout stops
+      forwarding itself — each one trading a convenient default for explicit control the moment you ask for it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Worker Threads"
+    topicRoute="/node/worker-threads"
+    [prev]="{ label: 'terminate() Cannot Interrupt Synchronous CPU Work', route: '/node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work' }"
+  />
+</div>

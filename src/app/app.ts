@@ -1996,6 +1996,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'base Option Replaces, Not Merges, pid and hostname', route: '/node/logging/pino-base-option-replaces-not-merges-pid-and-hostname' },
     { label: 'redact() Never Touches the Log Message String', route: '/node/logging/pino-redact-never-touches-the-log-message-string' },
   ],
+  'worker-threads': [
+    { label: 'Each Worker Gets Its Own process.env Snapshot', route: '/node/worker-threads/each-worker-gets-its-own-process-env-snapshot' },
+    { label: 'terminate() Cannot Interrupt Synchronous CPU Work', route: '/node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work' },
+    { label: 'stdout: true Makes You Responsible for Draining the Stream', route: '/node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream' },
+  ],
 };
 
 @Component({
