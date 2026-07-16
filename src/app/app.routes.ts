@@ -2303,7 +2303,12 @@ export const routes: Routes = [
       { path: 'monitoreventloopdelay-is-a-purpose-built-lag-histogram', loadComponent: () => import('./components/backend/nodejs/performance/subtopics/monitoreventloopdelay-is-a-purpose-built-lag-histogram/monitoreventloopdelay-is-a-purpose-built-lag-histogram').then(m => m.MonitoreventloopdelayIsAPurposeBuiltLagHistogramSubtopic) },
       { path: 'max-old-space-size-does-not-cap-total-process-memory', loadComponent: () => import('./components/backend/nodejs/performance/subtopics/max-old-space-size-does-not-cap-total-process-memory/max-old-space-size-does-not-cap-total-process-memory').then(m => m.MaxOldSpaceSizeDoesNotCapTotalProcessMemorySubtopic) },
     ] },
-    { path: 'logging',        loadComponent: () => import('./components/backend/nodejs/logging/logging').then(m => m.NodeLogging) },
+    { path: 'logging', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/logging/logging').then(m => m.NodeLogging) },
+      { path: 'pino-redact-paths-must-match-the-exact-log-object-shape', loadComponent: () => import('./components/backend/nodejs/logging/subtopics/pino-redact-paths-must-match-the-exact-log-object-shape/pino-redact-paths-must-match-the-exact-log-object-shape').then(m => m.PinoRedactPathsMustMatchTheExactLogObjectShapeSubtopic) },
+      { path: 'pino-base-option-replaces-not-merges-pid-and-hostname', loadComponent: () => import('./components/backend/nodejs/logging/subtopics/pino-base-option-replaces-not-merges-pid-and-hostname/pino-base-option-replaces-not-merges-pid-and-hostname').then(m => m.PinoBaseOptionReplacesNotMergesPidAndHostnameSubtopic) },
+      { path: 'pino-redact-never-touches-the-log-message-string', loadComponent: () => import('./components/backend/nodejs/logging/subtopics/pino-redact-never-touches-the-log-message-string/pino-redact-never-touches-the-log-message-string').then(m => m.PinoRedactNeverTouchesTheLogMessageStringSubtopic) },
+    ] },
     { path: 'worker-threads', loadComponent: () => import('./components/backend/nodejs/worker-threads/worker-threads').then(m => m.NodeWorkerThreads) },
     { path: 'testing',        loadComponent: () => import('./components/backend/nodejs/testing/testing').then(m => m.NodeTesting) },
     { path: 'deployment',     loadComponent: () => import('./components/backend/nodejs/deployment/deployment').then(m => m.NodeDeployment) },

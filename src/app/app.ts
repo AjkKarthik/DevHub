@@ -1991,6 +1991,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'monitorEventLoopDelay() Is a Purpose-Built Alternative', route: '/node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram' },
     { label: '--max-old-space-size Does Not Cap Total Process Memory', route: '/node/performance/max-old-space-size-does-not-cap-total-process-memory' },
   ],
+  'logging': [
+    { label: 'Pino Redact Paths Must Match the Exact Log Object Shape', route: '/node/logging/pino-redact-paths-must-match-the-exact-log-object-shape' },
+    { label: 'base Option Replaces, Not Merges, pid and hostname', route: '/node/logging/pino-base-option-replaces-not-merges-pid-and-hostname' },
+    { label: 'redact() Never Touches the Log Message String', route: '/node/logging/pino-redact-never-touches-the-log-message-string' },
+  ],
 };
 
 @Component({

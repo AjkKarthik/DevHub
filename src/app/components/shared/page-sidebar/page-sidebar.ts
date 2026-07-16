@@ -31604,6 +31604,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Logging sensitive data (passwords, tokens, full request bodies) is a common compliance and security failure mode worth explicitly guarding against.',
     ],
   },
+  'node/logging/pino-redact-paths-must-match-the-exact-log-object-shape': {
+    apis: ['pino({ redact })', 'fast-redact'],
+    related: [
+      { label: 'Logging with Pino/Winston (overview)', route: '/node/logging' },
+      { label: 'base Option Replaces, Not Merges, pid and hostname', route: '/node/logging/pino-base-option-replaces-not-merges-pid-and-hostname' },
+      { label: 'redact() Never Touches the Log Message String', route: '/node/logging/pino-redact-never-touches-the-log-message-string' },
+    ],
+    tip: 'A redact path that doesn\'t match the logged object\'s real shape fails completely silently — no error, no warning, the field just stays in plain text.',
+    docs: [
+      { label: 'Pino — Redaction', url: 'https://github.com/pinojs/pino/blob/main/docs/redaction.md' },
+    ],
+    resources: [],
+    gotchas: [
+      'The main page\'s own two code samples use genuinely different, non-interchangeable redact paths (headers.authorization vs req.headers.authorization) for what looks like the same intent.',
+      'A redact path that was correct can silently stop matching anything after a refactor changes the shape of the logged object, with zero indication anywhere.',
+    ],
+  },
+  'node/logging/pino-base-option-replaces-not-merges-pid-and-hostname': {
+    apis: ['pino({ base })', 'process.pid', 'os.hostname()'],
+    related: [
+      { label: 'Logging with Pino/Winston (overview)', route: '/node/logging' },
+      { label: 'Pino Redact Paths Must Match the Exact Log Object Shape', route: '/node/logging/pino-redact-paths-must-match-the-exact-log-object-shape' },
+      { label: 'redact() Never Touches the Log Message String', route: '/node/logging/pino-redact-never-touches-the-log-message-string' },
+    ],
+    tip: 'Pino\'s own docs confirm base\'s default is a single value ({ pid, hostname }) that gets entirely replaced, not merged, once explicitly set — the main page\'s own config silently drops both.',
+    docs: [
+      { label: 'Pino — API (base option)', url: 'https://github.com/pinojs/pino/blob/main/docs/api.md' },
+    ],
+    resources: [],
+    gotchas: [
+      'In any multi-instance deployment, pid/hostname are often the only fields distinguishing which process/pod produced a given log line — losing them silently hurts incident response.',
+      'The fix is including process.pid and os.hostname() manually inside the same custom base object, not choosing between defaults and custom fields.',
+    ],
+  },
+  'node/logging/pino-redact-never-touches-the-log-message-string': {
+    apis: ['pino({ redact })', 'template literals'],
+    related: [
+      { label: 'Logging with Pino/Winston (overview)', route: '/node/logging' },
+      { label: 'Pino Redact Paths Must Match the Exact Log Object Shape', route: '/node/logging/pino-redact-paths-must-match-the-exact-log-object-shape' },
+      { label: 'base Option Replaces, Not Merges, pid and hostname', route: '/node/logging/pino-base-option-replaces-not-merges-pid-and-hostname' },
+    ],
+    tip: 'redact only ever examines the structured object argument\'s properties — a value interpolated directly into the message string is completely invisible to it, regardless of configuration.',
+    docs: [
+      { label: 'Pino — Redaction', url: 'https://github.com/pinojs/pino/blob/main/docs/redaction.md' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is not a misconfiguration bug like the earlier subtopics in this batch — it\'s a category of leak redact was never designed to address at all.',
+      'The reliable discipline: sensitive values always go in the object argument, never the message string, specifically so redact has any chance of protecting them.',
+    ],
+  },
   'node/testing': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

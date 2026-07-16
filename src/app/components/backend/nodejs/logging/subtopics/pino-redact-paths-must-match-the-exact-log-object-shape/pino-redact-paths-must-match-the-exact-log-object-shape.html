@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Logging with Pino/Winston" topicRoute="/node/logging" subtopicLabel="Redact Path Matching" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Pino Redact Paths Must Match the Exact Log Object Shape</h1>
+  <p class="page-subtitle">
+    A mismatched path fails completely silently — no error, no warning, the sensitive field just stays in plain
+    text, exactly like the main page's own two code samples' differing paths.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This examines a real inconsistency between the main page's own two code samples. The next subtopic stays
+      with Pino's config surface but turns to a different option entirely — one whose default behavior can silently
+      drop identifying fields from every log line.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging with Pino/Winston"
+    topicRoute="/node/logging"
+    [next]="{ label: 'base Option Replaces, Not Merges, pid and hostname', route: '/node/logging/pino-base-option-replaces-not-merges-pid-and-hostname' }"
+  />
+</div>
