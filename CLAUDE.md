@@ -1250,6 +1250,15 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/python/f
    itself does not catch this — it's valid TS, just semantically wrong output). **Fix: never try
    to force a line break inside a single-quoted prose field this way — rephrase with punctuation
    (a comma, an em dash, "then") instead of relying on an embedded newline escape.**
+10. **Confirms the standard bare-`@word`-in-`.html`-bare-text gotcha applies to Python content too**,
+    despite Python having no Razor-style `@` syntax of its own to worry about — the trigger is
+    Angular's own template compiler, not anything about the hub's source language. Hit for real on
+    `/python/functions-closures`'s wraps-on-a-partial subtopic: a `page-subtitle` sentence mentioning
+    `@wraps` as plain prose (describing the `@functools.wraps` decorator by its short name) was parsed
+    by Angular as the start of a control-flow block. Fixed with the standard `&#64;wraps` entity
+    escape. **Any hub whose subject matter involves decorator syntax (`@something`) needs the same
+    `.html`-bare-text sweep as the Blazor/ASP.NET hubs' own `@if`/`@page` Razor-syntax gotcha, for
+    the same underlying reason (Angular's compiler, not the source language, is what's parsing it).**
 
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
