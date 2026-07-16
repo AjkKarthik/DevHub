@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Deploying Node.js Apps" topicRoute="/node/deployment" subtopicLabel="HEALTHCHECK vs Probes" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Docker HEALTHCHECK Is Invisible to Kubernetes Probes</h1>
+  <p class="page-subtitle">
+    A Dockerfile's HEALTHCHECK instruction and Kubernetes' readinessProbe/livenessProbe are two entirely separate
+    systems — the kubelet never reads the Dockerfile's own check at all.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Kubernetes 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This corrects an easy assumption about the main page's own Dockerfile and Kubernetes theory sections looking
+      like one coordinated system when they are not. The final subtopic moves to the npm ci step in that same
+      Dockerfile, correcting a different assumption about what actually makes repeated builds fast.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Deploying Node.js Apps"
+    topicRoute="/node/deployment"
+    [prev]="{ label: 'server.close() and Idle Keep-Alive Connections Since Node 19', route: '/node/deployment/server-close-and-idle-keep-alive-connections-since-node-19' }"
+    [next]="{ label: 'npm ci Deletes node_modules Before Installing', route: '/node/deployment/npm-ci-deletes-node-modules-before-installing' }"
+  />
+</div>

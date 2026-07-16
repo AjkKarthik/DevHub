@@ -32029,6 +32029,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Health check endpoints should verify genuine readiness (DB connectivity, dependent service availability), not just "the process is running."',
     ],
   },
+  'node/deployment/server-close-and-idle-keep-alive-connections-since-node-19': {
+    apis: ['server.close()', 'server.closeIdleConnections()', 'server.closeAllConnections()'],
+    related: [
+      { label: 'Deploying Node.js Apps (overview)', route: '/node/deployment' },
+      { label: 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes', route: '/node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes' },
+      { label: 'npm ci Deletes node_modules Before Installing', route: '/node/deployment/npm-ci-deletes-node-modules-before-installing' },
+    ],
+    tip: 'Before Node 19, an idle keep-alive connection could keep server.close()\'s callback from ever firing — Node 19 changed the default to close idle connections automatically; closeAllConnections() still matters for a hard cutoff on any version.',
+    docs: [
+      { label: 'Node.js — HTTP (server.close)', url: 'https://nodejs.org/api/http.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'The main page\'s own force-exit timeout is still worth keeping even on Node 19+ — it protects against genuinely slow in-flight requests, a different scenario than an idle connection with no work at all.',
+      'Shutdown code shared across services on different Node versions can behave differently — check the actual pinned Node version before assuming an older workaround is now redundant.',
+    ],
+  },
+  'node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes': {
+    apis: ['Dockerfile HEALTHCHECK', 'readinessProbe', 'livenessProbe'],
+    related: [
+      { label: 'Deploying Node.js Apps (overview)', route: '/node/deployment' },
+      { label: 'server.close() and Idle Keep-Alive Connections Since Node 19', route: '/node/deployment/server-close-and-idle-keep-alive-connections-since-node-19' },
+      { label: 'npm ci Deletes node_modules Before Installing', route: '/node/deployment/npm-ci-deletes-node-modules-before-installing' },
+    ],
+    tip: 'Kubernetes\' kubelet never reads a Dockerfile\'s own HEALTHCHECK instruction — it relies entirely on readinessProbe/livenessProbe defined separately in the pod spec, even if both check the exact same endpoint.',
+    docs: [
+      { label: 'Kubernetes — Liveness, Readiness, Startup Probes', url: 'https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A pod with no readinessProbe/livenessProbe defined in its manifest has NO functioning Kubernetes-level health check, no matter how correct the image\'s own Dockerfile HEALTHCHECK is.',
+      'Under plain docker run, a --restart policy only triggers when the process actually exits, not merely because HEALTHCHECK reports unhealthy — only Docker Swarm actively reschedules on that status.',
+    ],
+  },
+  'node/deployment/npm-ci-deletes-node-modules-before-installing': {
+    apis: ['npm ci', 'BuildKit --mount=type=cache'],
+    related: [
+      { label: 'Deploying Node.js Apps (overview)', route: '/node/deployment' },
+      { label: 'server.close() and Idle Keep-Alive Connections Since Node 19', route: '/node/deployment/server-close-and-idle-keep-alive-connections-since-node-19' },
+      { label: 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes', route: '/node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes' },
+    ],
+    tip: 'npm ci deletes any existing node_modules before installing, per npm\'s own docs — a BuildKit cache mount targeting node_modules gives it no benefit; cache npm\'s own download directory (~/.npm) instead.',
+    docs: [
+      { label: 'npm Docs — npm ci', url: 'https://docs.npmjs.com/cli/v10/commands/npm-ci' },
+    ],
+    resources: [],
+    gotchas: [
+      'The main page\'s own Dockerfile already gets its speedup from Docker LAYER caching (copying the lockfile before source code), not from any caching of node_modules\' actual contents.',
+      'npm install does NOT delete node_modules first — this delete-then-install behavior is specific to npm ci.',
+    ],
+  },
   'node/websockets': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

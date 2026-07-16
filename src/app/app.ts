@@ -2011,6 +2011,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'clearAllMocks() Does Not Reset Module-Level State', route: '/node/testing/clearallmocks-does-not-reset-module-level-state' },
     { label: 'Supertest Still Binds a Real Ephemeral Port', route: '/node/testing/supertest-still-binds-a-real-ephemeral-port' },
   ],
+  'deployment': [
+    { label: 'server.close() and Idle Keep-Alive Connections Since Node 19', route: '/node/deployment/server-close-and-idle-keep-alive-connections-since-node-19' },
+    { label: 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes', route: '/node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes' },
+    { label: 'npm ci Deletes node_modules Before Installing', route: '/node/deployment/npm-ci-deletes-node-modules-before-installing' },
+  ],
 };
 
 @Component({

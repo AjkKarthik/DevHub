@@ -2321,7 +2321,12 @@ export const routes: Routes = [
       { path: 'clearallmocks-does-not-reset-module-level-state', loadComponent: () => import('./components/backend/nodejs/testing/subtopics/clearallmocks-does-not-reset-module-level-state/clearallmocks-does-not-reset-module-level-state').then(m => m.ClearallmocksDoesNotResetModuleLevelStateSubtopic) },
       { path: 'supertest-still-binds-a-real-ephemeral-port', loadComponent: () => import('./components/backend/nodejs/testing/subtopics/supertest-still-binds-a-real-ephemeral-port/supertest-still-binds-a-real-ephemeral-port').then(m => m.SupertestStillBindsARealEphemeralPortSubtopic) },
     ] },
-    { path: 'deployment',     loadComponent: () => import('./components/backend/nodejs/deployment/deployment').then(m => m.NodeDeployment) },
+    { path: 'deployment', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/deployment/deployment').then(m => m.NodeDeployment) },
+      { path: 'server-close-and-idle-keep-alive-connections-since-node-19', loadComponent: () => import('./components/backend/nodejs/deployment/subtopics/server-close-and-idle-keep-alive-connections-since-node-19/server-close-and-idle-keep-alive-connections-since-node-19').then(m => m.ServerCloseAndIdleKeepAliveConnectionsSinceNode19Subtopic) },
+      { path: 'docker-healthcheck-is-invisible-to-kubernetes-probes', loadComponent: () => import('./components/backend/nodejs/deployment/subtopics/docker-healthcheck-is-invisible-to-kubernetes-probes/docker-healthcheck-is-invisible-to-kubernetes-probes').then(m => m.DockerHealthcheckIsInvisibleToKubernetesProbesSubtopic) },
+      { path: 'npm-ci-deletes-node-modules-before-installing', loadComponent: () => import('./components/backend/nodejs/deployment/subtopics/npm-ci-deletes-node-modules-before-installing/npm-ci-deletes-node-modules-before-installing').then(m => m.NpmCiDeletesNodeModulesBeforeInstallingSubtopic) },
+    ] },
     { path: 'cheatsheet',     loadComponent: () => import('./components/backend/nodejs/cheatsheet/cheatsheet').then(m => m.NodeCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/backend/nodejs/interview-prep/interview-prep').then(m => m.NodeInterviewPrep) },
   ] },

@@ -1719,6 +1719,9 @@ const NODE_LABELS: Record<string, string> = {
   'testing/clearallmocks-does-not-reset-module-level-state': 'clearAllMocks() Does Not Reset Module-Level State',
   'testing/supertest-still-binds-a-real-ephemeral-port': 'Supertest Still Binds a Real Ephemeral Port',
   'deployment':      'Deploying Node.js Apps',
+  'deployment/server-close-and-idle-keep-alive-connections-since-node-19': 'server.close() and Idle Keep-Alive Connections Since Node 19',
+  'deployment/docker-healthcheck-is-invisible-to-kubernetes-probes': 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes',
+  'deployment/npm-ci-deletes-node-modules-before-installing': 'npm ci Deletes node_modules Before Installing',
   'cheatsheet':      'Node.js Cheat Sheet',
   'interview-prep':  'Node.js Interview Prep',
 };
