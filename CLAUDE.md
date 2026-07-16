@@ -1182,6 +1182,20 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/node/arc
    surrounding prose, or use backticks (safe inside a `'...'`-delimited string) instead.** Add a
    second sweep pattern going forward: grep for `: '` or ` '` followed later by another bare `'`
    mid-string (not just letter-adjacent) when a file discusses code identifiers/paths in prose.
+10. **Grepping only the QUOTED form of a `SUBTOPICS` map key before adding a new entry misses a
+    collision if the existing key was written unquoted.** JS/TS object literals allow bare
+    identifier keys (`testing: [...]`) alongside quoted ones (`'testing': [...]`) — both compile
+    to the exact same property, but they don't look alike in a grep for `'testing':`. Hit for real
+    on `/node/testing`: Angular's own `testing` topic had been keyed as a bare, unquoted `testing:`
+    (not `'testing':`) elsewhere in the same `SUBTOPICS` map; the standard quoted-form grep before
+    adding `'testing':` for the Node.js hub came back clean, and the collision only surfaced as a
+    `TS1117: An object literal cannot have multiple properties with the same name` build error.
+    **Fix: grep for BOTH forms of a candidate key before adding — `'<slug>':` AND `\b<slug>:`
+    (bare identifier followed by a colon)** — not just the quoted form this file's own established
+    collision-checking guidance has focused on until now. Resolved the same way as every other
+    collision: hub-prefixed the new entry (`node-testing`), left Angular's pre-existing bare
+    `testing` key untouched, and updated only the Node.js hub's own three nav-accordion helper
+    calls in `app.html` to the prefixed key.
 
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
