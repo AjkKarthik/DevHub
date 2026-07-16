@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Performance" topicRoute="/node/performance" subtopicLabel="Worker Data Copying" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">worker_threads' postMessage() Copies Data by Default</h1>
+  <p class="page-subtitle">
+    workerData and postMessage() use the structured clone algorithm — a real, size-proportional cost avoided only
+    by SharedArrayBuffer or transferList.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 10.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own worker_threads mistake-fix with the real cost of the data hand-off. The next
+      subtopic turns to a different tool entirely — the purpose-built alternative to the main page's own
+      hand-rolled event loop lag monitor.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Performance"
+    topicRoute="/node/performance"
+    [next]="{ label: 'monitorEventLoopDelay() Is a Purpose-Built Alternative', route: '/node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram' }"
+  />
+</div>

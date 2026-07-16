@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Performance" topicRoute="/node/performance" subtopicLabel="Event Loop Delay Histogram" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">monitorEventLoopDelay() Is a Purpose-Built Alternative</h1>
+  <p class="page-subtitle">
+    A one-line histogram with mean, max, and percentile() built in — no rolling buffer, no percentile math, no
+    measurement callback competing for the same event loop time it's measuring.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 11.10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This offers a purpose-built alternative to the exact tool the main page's own challenge asks you to build by
+      hand. The final subtopic in this batch turns to memory — a real gap between what the main page's own
+      --max-old-space-size flag limits and what actually determines whether a process gets OOM-killed.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Performance"
+    topicRoute="/node/performance"
+    [prev]="{ label: 'worker_threads postMessage() Copies Data by Default', route: '/node/performance/worker-threads-postmessage-copies-data-by-default' }"
+    [next]="{ label: '--max-old-space-size Does Not Cap Total Process Memory', route: '/node/performance/max-old-space-size-does-not-cap-total-process-memory' }"
+  />
+</div>

@@ -5550,7 +5550,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Performance &amp; Tooling</p>
-      <a routerLink="/node/performance" routerLinkActive="active"><span class="nl-text">Node.js Performance</span>@if(progress.isDone('node-performance')){<span class="nl-done">✓</span>}@if(diff('node-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Node.js Performance</span>
+        @if (progress.isDone('node-performance')) {<span class="nl-done">✓</span>}
+        @if (diff('node-performance'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('performance')"
+                  (click)="toggleSubtopics('performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('performance'); as nodePerformanceSubs) {
+        @if (isSubtopicsExpanded('performance')) {
+          <div class="nav-subtopics">
+            @for (s of nodePerformanceSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/node/logging" routerLinkActive="active"><span class="nl-text">Logging with Pino/Winston</span>@if(progress.isDone('node-logging')){<span class="nl-done">✓</span>}@if(diff('node-logging');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/worker-threads" routerLinkActive="active"><span class="nl-text">Worker Threads</span>@if(progress.isDone('node-worker-threads')){<span class="nl-done">✓</span>}@if(diff('node-worker-threads');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/node/testing" routerLinkActive="active"><span class="nl-text">Testing Node.js Apps</span>@if(progress.isDone('node-testing')){<span class="nl-done">✓</span>}@if(diff('node-testing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

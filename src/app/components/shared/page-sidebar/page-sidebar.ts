@@ -31627,6 +31627,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Clustering (running multiple Node processes) is required to use more than one CPU core, since a single Node process is fundamentally single-threaded for JS execution.',
     ],
   },
+  'node/performance/worker-threads-postmessage-copies-data-by-default': {
+    apis: ['postMessage()', 'SharedArrayBuffer', 'transferList'],
+    related: [
+      { label: 'Node.js Performance (overview)', route: '/node/performance' },
+      { label: 'monitorEventLoopDelay() Is a Purpose-Built Alternative', route: '/node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram' },
+      { label: '--max-old-space-size Does Not Cap Total Process Memory', route: '/node/performance/max-old-space-size-does-not-cap-total-process-memory' },
+    ],
+    tip: 'Node\'s own docs confirm postMessage()/workerData use the structured clone algorithm by default — a real, size-proportional copy avoided only by SharedArrayBuffer or transferList.',
+    docs: [
+      { label: 'Node.js — worker_threads', url: 'https://nodejs.org/api/worker_threads.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A transferred ArrayBuffer becomes unusable (zero-length) in the sending thread afterward — a hand-off, not a copy, with a real consequence for the original reference.',
+      'SharedArrayBuffer and transferList solve different problems — ongoing shared access versus a one-shot zero-copy hand-off — not interchangeable optimizations.',
+    ],
+  },
+  'node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram': {
+    apis: ['perf_hooks.monitorEventLoopDelay()', 'Histogram'],
+    related: [
+      { label: 'Node.js Performance (overview)', route: '/node/performance' },
+      { label: 'worker_threads postMessage() Copies Data by Default', route: '/node/performance/worker-threads-postmessage-copies-data-by-default' },
+      { label: '--max-old-space-size Does Not Cap Total Process Memory', route: '/node/performance/max-old-space-size-does-not-cap-total-process-memory' },
+    ],
+    tip: 'A one-line histogram.enable() replaces a hand-rolled rolling-buffer lag monitor — .mean, .max, and .percentile(n) are computed internally, in nanoseconds.',
+    docs: [
+      { label: 'Node.js — perf_hooks', url: 'https://nodejs.org/api/perf_hooks.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Histogram values are reported in NANOSECONDS — divide by 1e6 to get milliseconds, an easy unit mismatch when porting from a millisecond-based hand-rolled implementation.',
+      'A hand-rolled setInterval-based lag monitor is itself application code competing for the same event loop time it\'s trying to measure — Node\'s own internal sampling mechanism avoids that specific confound.',
+    ],
+  },
+  'node/performance/max-old-space-size-does-not-cap-total-process-memory': {
+    apis: ['process.memoryUsage()', '--max-old-space-size', 'Buffer'],
+    related: [
+      { label: 'Node.js Performance (overview)', route: '/node/performance' },
+      { label: 'worker_threads postMessage() Copies Data by Default', route: '/node/performance/worker-threads-postmessage-copies-data-by-default' },
+      { label: 'monitorEventLoopDelay() Is a Purpose-Built Alternative', route: '/node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram' },
+    ],
+    tip: 'Buffer instances are allocated outside the V8 heap entirely, per Node\'s own docs — a Buffer-heavy workload can be OOM-killed by a container with heapUsed staying low the whole time.',
+    docs: [
+      { label: 'Node.js — Buffer', url: 'https://nodejs.org/api/buffer.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'An OOM kill from external/Buffer memory growth produces NO "JavaScript heap out of memory" error — V8 never approached its own limit, so there\'s nothing for it to throw.',
+      'rss (not heapUsed/heapTotal) is the figure that actually corresponds to what a container orchestrator measures against a memory limit.',
+    ],
+  },
   'node/caching': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

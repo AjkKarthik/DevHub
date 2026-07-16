@@ -2297,7 +2297,12 @@ export const routes: Routes = [
       { path: 'trust-proxy-must-be-configured-behind-a-reverse-proxy', loadComponent: () => import('./components/backend/nodejs/security/subtopics/trust-proxy-must-be-configured-behind-a-reverse-proxy/trust-proxy-must-be-configured-behind-a-reverse-proxy').then(m => m.TrustProxyMustBeConfiguredBehindAReverseProxySubtopic) },
       { path: 'bcrypt-silently-truncates-passwords-longer-than-72-bytes', loadComponent: () => import('./components/backend/nodejs/security/subtopics/bcrypt-silently-truncates-passwords-longer-than-72-bytes/bcrypt-silently-truncates-passwords-longer-than-72-bytes').then(m => m.BcryptSilentlyTruncatesPasswordsLongerThan72BytesSubtopic) },
     ] },
-    { path: 'performance',    loadComponent: () => import('./components/backend/nodejs/performance/performance').then(m => m.NodePerformance) },
+    { path: 'performance', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/performance/performance').then(m => m.NodePerformance) },
+      { path: 'worker-threads-postmessage-copies-data-by-default', loadComponent: () => import('./components/backend/nodejs/performance/subtopics/worker-threads-postmessage-copies-data-by-default/worker-threads-postmessage-copies-data-by-default').then(m => m.WorkerThreadsPostmessageCopiesDataByDefaultSubtopic) },
+      { path: 'monitoreventloopdelay-is-a-purpose-built-lag-histogram', loadComponent: () => import('./components/backend/nodejs/performance/subtopics/monitoreventloopdelay-is-a-purpose-built-lag-histogram/monitoreventloopdelay-is-a-purpose-built-lag-histogram').then(m => m.MonitoreventloopdelayIsAPurposeBuiltLagHistogramSubtopic) },
+      { path: 'max-old-space-size-does-not-cap-total-process-memory', loadComponent: () => import('./components/backend/nodejs/performance/subtopics/max-old-space-size-does-not-cap-total-process-memory/max-old-space-size-does-not-cap-total-process-memory').then(m => m.MaxOldSpaceSizeDoesNotCapTotalProcessMemorySubtopic) },
+    ] },
     { path: 'logging',        loadComponent: () => import('./components/backend/nodejs/logging/logging').then(m => m.NodeLogging) },
     { path: 'worker-threads', loadComponent: () => import('./components/backend/nodejs/worker-threads/worker-threads').then(m => m.NodeWorkerThreads) },
     { path: 'testing',        loadComponent: () => import('./components/backend/nodejs/testing/testing').then(m => m.NodeTesting) },

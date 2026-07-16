@@ -1986,6 +1986,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'trust proxy Must Be Configured Behind a Reverse Proxy', route: '/node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy' },
     { label: 'bcrypt Silently Truncates Passwords Longer Than 72 Bytes', route: '/node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes' },
   ],
+  'performance': [
+    { label: 'worker_threads postMessage() Copies Data by Default', route: '/node/performance/worker-threads-postmessage-copies-data-by-default' },
+    { label: 'monitorEventLoopDelay() Is a Purpose-Built Alternative', route: '/node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram' },
+    { label: '--max-old-space-size Does Not Cap Total Process Memory', route: '/node/performance/max-old-space-size-does-not-cap-total-process-memory' },
+  ],
 };
 
 @Component({
