@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functions & Closures" topicRoute="/python/functions-closures" subtopicLabel="Decorator Execution Order" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Stacked Decorators Apply Bottom-Up but Run Top-Down</h1>
+  <p class="page-subtitle">
+    fn = A(B(fn)) describes the application order — but calling the result means A's wrapper code runs first,
+    the exact reverse of how the stack was built.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This completes the main page's own "applied bottom-up when stacked" rule with the call-time consequence it
+      doesn't spell out. The final subtopic returns to functools.wraps specifically — what actually happens when
+      there's nothing meaningful for it to copy.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functions & Closures"
+    topicRoute="/python/functions-closures"
+    [prev]="{ label: 'lru_cache on a Method Keeps the Instance Alive', route: '/python/functions-closures/lru-cache-on-a-method-keeps-the-instance-alive' }"
+    [next]="{ label: 'wraps() Silently Skips Metadata Missing From a partial', route: '/python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial' }"
+  />
+</div>

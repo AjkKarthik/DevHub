@@ -2027,6 +2027,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'for/else Runs on Empty Iterables Too', route: '/python/fundamentals/for-else-runs-on-empty-iterables-too' },
     { label: 'Comprehensions Get Their Own Scope in Python 3', route: '/python/fundamentals/comprehensions-get-their-own-scope-in-python-3' },
   ],
+  'functions-closures': [
+    { label: 'lru_cache on a Method Keeps the Instance Alive', route: '/python/functions-closures/lru-cache-on-a-method-keeps-the-instance-alive' },
+    { label: 'Stacked Decorators Apply Bottom-Up but Run Top-Down', route: '/python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down' },
+    { label: 'wraps() Silently Skips Metadata Missing From a partial', route: '/python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial' },
+  ],
 };
 
 @Component({

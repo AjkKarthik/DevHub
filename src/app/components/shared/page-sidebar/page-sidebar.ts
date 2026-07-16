@@ -28821,6 +28821,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'This late-binding trap is a frequent source of bugs creating callback lists in a loop.',
     ],
   },
+  'python/functions-closures/lru-cache-on-a-method-keeps-the-instance-alive': {
+    apis: ['functools.lru_cache', 'functools.cached_property'],
+    related: [
+      { label: 'Functions & Closures (overview)', route: '/python/functions-closures' },
+      { label: 'Stacked Decorators Apply Bottom-Up but Run Top-Down', route: '/python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down' },
+      { label: 'wraps() Silently Skips Metadata Missing From a partial', route: '/python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial' },
+    ],
+    tip: 'Python\'s own docs confirm self is part of the cache key when lru_cache decorates a method — the cache keeps that instance alive until the entry ages out or is cleared. Use cached_property for per-instance caching instead.',
+    docs: [
+      { label: 'Python FAQ — How do I cache method calls?', url: 'https://docs.python.org/3/faq/programming.html#faq-cache-method-calls' },
+    ],
+    resources: [],
+    gotchas: [
+      'maxsize=None means entries never age out on their own — every instance that ever called the cached method is retained forever.',
+      'cached_property stores its value on the instance itself, so it never creates an external reference keeping the instance alive.',
+    ],
+  },
+  'python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down': {
+    apis: ['decorator syntax', '@functools.wraps'],
+    related: [
+      { label: 'Functions & Closures (overview)', route: '/python/functions-closures' },
+      { label: 'lru_cache on a Method Keeps the Instance Alive', route: '/python/functions-closures/lru-cache-on-a-method-keeps-the-instance-alive' },
+      { label: 'wraps() Silently Skips Metadata Missing From a partial', route: '/python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial' },
+    ],
+    tip: 'fn = A(B(fn)) describes bottom-up application at definition time — but calling fn() invokes A\'s wrapper first, meaning execution order is actually top-down, the reverse of how the stack was built.',
+    docs: [
+      { label: 'Python Docs — Function definitions (decorators)', url: 'https://docs.python.org/3/reference/compound_stmts.html#function-definitions' },
+    ],
+    resources: [],
+    gotchas: [
+      'Stacking order genuinely changes behavior when decorators aren\'t independent — e.g. timing the whole retry loop vs. timing one attempt at a time.',
+      'An outer decorator (like a cache) can skip calling into an inner decorator entirely under some conditions, not just delay it.',
+    ],
+  },
+  'python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial': {
+    apis: ['functools.wraps', 'functools.update_wrapper', 'functools.partial'],
+    related: [
+      { label: 'Functions & Closures (overview)', route: '/python/functions-closures' },
+      { label: 'lru_cache on a Method Keeps the Instance Alive', route: '/python/functions-closures/lru-cache-on-a-method-keeps-the-instance-alive' },
+      { label: 'Stacked Decorators Apply Bottom-Up but Run Top-Down', route: '/python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down' },
+    ],
+    tip: 'A functools.partial has no __name__ of its own — Python\'s own update_wrapper docs confirm missing attributes are silently skipped, not an AttributeError, so @wraps on a partial "succeeds" while copying nothing useful.',
+    docs: [
+      { label: 'Python Docs — functools (partial, update_wrapper)', url: 'https://docs.python.org/3/library/functools.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'No error being raised does not mean metadata copying fully succeeded — check wrapper.__name__ directly rather than assuming.',
+      'The fix is assigning __name__/__doc__ to the partial explicitly before wrapping it, not changing anything about @wraps itself.',
+    ],
+  },
   'python/decorators-context-managers': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

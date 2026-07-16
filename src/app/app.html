@@ -5689,7 +5689,26 @@
           </div>
         }
       }
-      <a routerLink="/python/functions-closures" routerLinkActive="active"><span class="nl-text">Functions &amp; Closures</span>@if(progress.isDone('py-functions-closures')){<span class="nl-done">✓</span>}@if(diff('py-functions-closures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/functions-closures" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Functions &amp; Closures</span>
+        @if (progress.isDone('py-functions-closures')) {<span class="nl-done">✓</span>}
+        @if (diff('py-functions-closures'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('functions-closures')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('functions-closures')"
+                  (click)="toggleSubtopics('functions-closures', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('functions-closures'); as pyFuncClosuresSubs) {
+        @if (isSubtopicsExpanded('functions-closures')) {
+          <div class="nav-subtopics">
+            @for (s of pyFuncClosuresSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/comprehensions-generators" routerLinkActive="active"><span class="nl-text">Comprehensions &amp; Generators</span>@if(progress.isDone('py-comprehensions-generators')){<span class="nl-done">✓</span>}@if(diff('py-comprehensions-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/python/file-io" routerLinkActive="active"><span class="nl-text">File I/O &amp; Pathlib</span>@if(progress.isDone('py-file-io')){<span class="nl-done">✓</span>}@if(diff('py-file-io');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

@@ -2338,7 +2338,12 @@ export const routes: Routes = [
       { path: 'for-else-runs-on-empty-iterables-too', loadComponent: () => import('./components/backend/python/fundamentals/subtopics/for-else-runs-on-empty-iterables-too/for-else-runs-on-empty-iterables-too').then(m => m.ForElseRunsOnEmptyIterablesTooSubtopic) },
       { path: 'comprehensions-get-their-own-scope-in-python-3', loadComponent: () => import('./components/backend/python/fundamentals/subtopics/comprehensions-get-their-own-scope-in-python-3/comprehensions-get-their-own-scope-in-python-3').then(m => m.ComprehensionsGetTheirOwnScopeInPython3Subtopic) },
     ] },
-    { path: 'functions-closures',       loadComponent: () => import('./components/backend/python/functions-closures/functions-closures').then(m => m.PythonFunctionsClosures) },
+    { path: 'functions-closures', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/functions-closures/functions-closures').then(m => m.PythonFunctionsClosures) },
+      { path: 'lru-cache-on-a-method-keeps-the-instance-alive', loadComponent: () => import('./components/backend/python/functions-closures/subtopics/lru-cache-on-a-method-keeps-the-instance-alive/lru-cache-on-a-method-keeps-the-instance-alive').then(m => m.LruCacheOnAMethodKeepsTheInstanceAliveSubtopic) },
+      { path: 'stacked-decorators-apply-bottom-up-but-run-top-down', loadComponent: () => import('./components/backend/python/functions-closures/subtopics/stacked-decorators-apply-bottom-up-but-run-top-down/stacked-decorators-apply-bottom-up-but-run-top-down').then(m => m.StackedDecoratorsApplyBottomUpButRunTopDownSubtopic) },
+      { path: 'wraps-silently-skips-metadata-missing-from-a-partial', loadComponent: () => import('./components/backend/python/functions-closures/subtopics/wraps-silently-skips-metadata-missing-from-a-partial/wraps-silently-skips-metadata-missing-from-a-partial').then(m => m.WrapsSilentlySkipsMetadataMissingFromAPartialSubtopic) },
+    ] },
     { path: 'comprehensions-generators',loadComponent: () => import('./components/backend/python/comprehensions-generators/comprehensions-generators').then(m => m.PythonComprehensionsGenerators) },
     { path: 'file-io',                  loadComponent: () => import('./components/backend/python/file-io/file-io').then(m => m.PythonFileIo) },
     { path: 'oop',                      loadComponent: () => import('./components/backend/python/oop/oop').then(m => m.PythonOop) },
