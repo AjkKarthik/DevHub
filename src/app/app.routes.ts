@@ -2350,7 +2350,12 @@ export const routes: Routes = [
       { path: 'abandoning-a-generator-still-triggers-its-finally-block', loadComponent: () => import('./components/backend/python/comprehensions-generators/subtopics/abandoning-a-generator-still-triggers-its-finally-block/abandoning-a-generator-still-triggers-its-finally-block').then(m => m.AbandoningAGeneratorStillTriggersItsFinallyBlockSubtopic) },
       { path: 'islice-does-not-support-negative-start-stop-or-step', loadComponent: () => import('./components/backend/python/comprehensions-generators/subtopics/islice-does-not-support-negative-start-stop-or-step/islice-does-not-support-negative-start-stop-or-step').then(m => m.IsliceDoesNotSupportNegativeStartStopOrStepSubtopic) },
     ] },
-    { path: 'file-io',                  loadComponent: () => import('./components/backend/python/file-io/file-io').then(m => m.PythonFileIo) },
+    { path: 'file-io', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/file-io/file-io').then(m => m.PythonFileIo) },
+      { path: 'mkdir-exist-ok-still-raises-if-a-file-blocks-the-path', loadComponent: () => import('./components/backend/python/file-io/subtopics/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path').then(m => m.MkdirExistOkStillRaisesIfAFileBlocksThePathSubtopic) },
+      { path: 'shutil-copy-does-not-preserve-timestamps-copy2-does', loadComponent: () => import('./components/backend/python/file-io/subtopics/shutil-copy-does-not-preserve-timestamps-copy2-does/shutil-copy-does-not-preserve-timestamps-copy2-does').then(m => m.ShutilCopyDoesNotPreserveTimestampsCopy2DoesSubtopic) },
+      { path: 'path-glob-matches-dotfiles-unlike-shell-globbing', loadComponent: () => import('./components/backend/python/file-io/subtopics/path-glob-matches-dotfiles-unlike-shell-globbing/path-glob-matches-dotfiles-unlike-shell-globbing').then(m => m.PathGlobMatchesDotfilesUnlikeShellGlobbingSubtopic) },
+    ] },
     { path: 'oop',                      loadComponent: () => import('./components/backend/python/oop/oop').then(m => m.PythonOop) },
     { path: 'dataclasses-pydantic',     loadComponent: () => import('./components/backend/python/dataclasses-pydantic/dataclasses-pydantic').then(m => m.PythonDataclassesPydantic) },
     { path: 'decorators-context-managers', loadComponent: () => import('./components/backend/python/decorators-context-managers/decorators-context-managers').then(m => m.PythonDecoratorsContextManagers) },

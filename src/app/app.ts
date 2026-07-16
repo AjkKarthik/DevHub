@@ -2037,6 +2037,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Abandoning a Generator Still Triggers Its finally Block', route: '/python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block' },
     { label: 'islice Does Not Support Negative start, stop, or step', route: '/python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step' },
   ],
+  'file-io': [
+    { label: 'mkdir(exist_ok=True) Still Raises If a File Blocks the Path', route: '/python/file-io/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path' },
+    { label: 'shutil.copy() Does Not Preserve Timestamps — copy2() Does', route: '/python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does' },
+    { label: 'Path.glob() Matches Dotfiles, Unlike Shell Globbing', route: '/python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing' },
+  ],
 };
 
 @Component({

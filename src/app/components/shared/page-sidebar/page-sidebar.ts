@@ -29003,6 +29003,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'File handle leaks accumulate silently until the OS descriptor limit is hit, often invisible in dev but a production surprise.',
     ],
   },
+  'python/file-io/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path': {
+    apis: ['Path.mkdir(exist_ok)'],
+    related: [
+      { label: 'File I/O & Pathlib (overview)', route: '/python/file-io' },
+      { label: 'shutil.copy() Does Not Preserve Timestamps — copy2() Does', route: '/python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does' },
+      { label: 'Path.glob() Matches Dotfiles, Unlike Shell Globbing', route: '/python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing' },
+    ],
+    tip: 'Python\'s own docs confirm exist_ok=True only suppresses FileExistsError if the existing path is a directory — a plain file already at that path still raises, matching POSIX mkdir -p semantics.',
+    docs: [
+      { label: 'Python Docs — pathlib (Path.mkdir)', url: 'https://docs.python.org/3/library/pathlib.html#pathlib.Path.mkdir' },
+    ],
+    resources: [],
+    gotchas: [
+      'This surfaces most often when a path is repurposed from a file to a directory (or vice versa) across a codebase\'s lifetime, leaving a stale file blocking a later mkdir call.',
+      'Catching FileExistsError and checking .is_file() on the target path gives a much clearer error than letting it propagate unexplained.',
+    ],
+  },
+  'python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does': {
+    apis: ['shutil.copy()', 'shutil.copy2()', 'shutil.copystat()'],
+    related: [
+      { label: 'File I/O & Pathlib (overview)', route: '/python/file-io' },
+      { label: 'mkdir(exist_ok=True) Still Raises If a File Blocks the Path', route: '/python/file-io/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path' },
+      { label: 'Path.glob() Matches Dotfiles, Unlike Shell Globbing', route: '/python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing' },
+    ],
+    tip: 'shutil.copy() preserves only content and permission bits — Python\'s own docs state creation/modification times are "not preserved." Use copy2() when a downstream sync/build/pipeline step depends on the original mtime.',
+    docs: [
+      { label: 'Python Docs — shutil (copy, copy2)', url: 'https://docs.python.org/3/library/shutil.html#shutil.copy2' },
+    ],
+    resources: [],
+    gotchas: [
+      'The two functions produce byte-identical file content, so choosing the wrong one rarely produces a visible bug immediately.',
+      'Incremental sync tools, build systems, and pipelines that compare mtimes are the most common place this silently breaks.',
+    ],
+  },
+  'python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing': {
+    apis: ['Path.glob()', 'Path.rglob()'],
+    related: [
+      { label: 'File I/O & Pathlib (overview)', route: '/python/file-io' },
+      { label: 'mkdir(exist_ok=True) Still Raises If a File Blocks the Path', route: '/python/file-io/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path' },
+      { label: 'shutil.copy() Does Not Preserve Timestamps — copy2() Does', route: '/python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does' },
+    ],
+    tip: 'Pathlib\'s own docs state dotfiles "are not special in pathlib" — Path.glob("*") matches .env, .git, and every other hidden file by default, the opposite of shell globbing and the standalone glob module.',
+    docs: [
+      { label: 'Python Docs — pathlib (Comparison to the glob module)', url: 'https://docs.python.org/3/library/pathlib.html#comparison-to-the-glob-module' },
+    ],
+    resources: [],
+    gotchas: [
+      'A broad rglob("*") used to collect files for archiving/uploading will silently include .git internals and .env secrets unless explicitly filtered.',
+      'Code migrated from the standalone glob module to pathlib can silently change behavior with the identical pattern string.',
+    ],
+  },
   'python/asyncio': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

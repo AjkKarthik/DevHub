@@ -5729,7 +5729,26 @@
           </div>
         }
       }
-      <a routerLink="/python/file-io" routerLinkActive="active"><span class="nl-text">File I/O &amp; Pathlib</span>@if(progress.isDone('py-file-io')){<span class="nl-done">✓</span>}@if(diff('py-file-io');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/file-io" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">File I/O &amp; Pathlib</span>
+        @if (progress.isDone('py-file-io')) {<span class="nl-done">✓</span>}
+        @if (diff('py-file-io'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('file-io')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('file-io')"
+                  (click)="toggleSubtopics('file-io', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('file-io'); as pyFileIoSubs) {
+        @if (isSubtopicsExpanded('file-io')) {
+          <div class="nav-subtopics">
+            @for (s of pyFileIoSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

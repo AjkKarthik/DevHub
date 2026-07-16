@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="File I/O & Pathlib" topicRoute="/python/file-io" subtopicLabel="copy() vs copy2()" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">shutil.copy() Does Not Preserve Timestamps — copy2() Does</h1>
+  <p class="page-subtitle">
+    Identical content, identical permission bits — but shutil.copy() gives the copy a fresh modification time, and
+    only shutil.copy2() preserves the original's mtime/atime.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This clarifies a real, invisible-by-default difference the main page's own "shutil.copy(src, dst) copies a
+      file with metadata" phrasing glosses over. The final subtopic moves to Path.glob() — a genuine reversal of
+      what shell-familiar developers expect from wildcard matching.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="File I/O & Pathlib"
+    topicRoute="/python/file-io"
+    [prev]="{ label: 'mkdir(exist_ok=True) Still Raises If a File Blocks the Path', route: '/python/file-io/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path' }"
+    [next]="{ label: 'Path.glob() Matches Dotfiles, Unlike Shell Globbing', route: '/python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing' }"
+  />
+</div>
