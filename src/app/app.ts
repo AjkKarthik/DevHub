@@ -2001,6 +2001,16 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'terminate() Cannot Interrupt Synchronous CPU Work', route: '/node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work' },
     { label: 'stdout: true Makes You Responsible for Draining the Stream', route: '/node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream' },
   ],
+  // NOTE: keyed 'node-testing', NOT bare 'testing' — the Angular hub
+  // already owns the bare 'testing' key above (its own /angular/testing
+  // subtopics). This is the shared flat SUBTOPICS map's documented
+  // collision risk, hit for real here; resolved by hub-prefixing this
+  // one entry rather than restructuring the whole map.
+  'node-testing': [
+    { label: 't.mock Auto-Restores; the Top-Level mock Import Does Not', route: '/node/testing/context-mock-auto-restores-top-level-mock-does-not' },
+    { label: 'clearAllMocks() Does Not Reset Module-Level State', route: '/node/testing/clearallmocks-does-not-reset-module-level-state' },
+    { label: 'Supertest Still Binds a Real Ephemeral Port', route: '/node/testing/supertest-still-binds-a-real-ephemeral-port' },
+  ],
 };
 
 @Component({

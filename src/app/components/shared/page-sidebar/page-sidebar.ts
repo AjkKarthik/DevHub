@@ -31711,10 +31711,61 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     related: [
       { label: 'Express',   route: '/node/express' },
     ],
-    tip: 'Testing an Express/Fastify app with supertest lets you make real HTTP requests against the app in-process, without actually binding to a network port — fast, reliable integration-style tests of routing and middleware behavior.',
+    tip: 'Testing an Express/Fastify app with supertest makes real HTTP requests against an OS-assigned ephemeral port bound automatically for you — no hardcoded port to manage or coordinate across parallel test files, for fast, reliable integration-style tests of routing and middleware behavior.',
     gotchas: [
       'Mocking a database call versus using a real test database (via Testcontainers) is the same integration-vs-unit tradeoff that applies to testing any backend — both have their place.',
       'Async test code that forgets to await a promise can report false passes, since the test completes before the assertion actually runs.',
+    ],
+  },
+  'node/testing/context-mock-auto-restores-top-level-mock-does-not': {
+    apis: ['t.mock.method()', 'node:test mock (top-level)', 'MockTracker'],
+    related: [
+      { label: 'Testing Node.js Apps (overview)', route: '/node/testing' },
+      { label: 'clearAllMocks() Does Not Reset Module-Level State', route: '/node/testing/clearallmocks-does-not-reset-module-level-state' },
+      { label: 'Supertest Still Binds a Real Ephemeral Port', route: '/node/testing/supertest-still-binds-a-real-ephemeral-port' },
+    ],
+    tip: 'Node\'s own docs guarantee t.mock (the per-test context mock tracker) auto-restores everything once that test finishes — the top-level mock import has no such guarantee and needs an explicit mock.restoreAll(), typically in afterEach.',
+    docs: [
+      { label: 'Node.js — Test Runner (Mocking)', url: 'https://nodejs.org/api/test.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Mixing the two mock sources in the same file is an easy mistake — anything set up via the top-level mock import needs its own explicit cleanup, unlike t.mock.',
+      'Preferring t.mock whenever a mock does not need to outlive its own test removes an entire category of cleanup bugs by construction.',
+    ],
+  },
+  'node/testing/clearallmocks-does-not-reset-module-level-state': {
+    apis: ['jest.clearAllMocks()', 'jest.resetAllMocks()', 'jest.resetModules()'],
+    related: [
+      { label: 'Testing Node.js Apps (overview)', route: '/node/testing' },
+      { label: 't.mock Auto-Restores; the Top-Level mock Import Does Not', route: '/node/testing/context-mock-auto-restores-top-level-mock-does-not' },
+      { label: 'Supertest Still Binds a Real Ephemeral Port', route: '/node/testing/supertest-still-binds-a-real-ephemeral-port' },
+    ],
+    tip: 'clearAllMocks()/resetAllMocks() only reset Jest\'s own mock-function bookkeeping — a module\'s own top-level state (a counter, a Map) is untouched by either, and survives across tests in the same file until jest.resetModules() clears the require cache.',
+    docs: [
+      { label: 'Jest — The Jest Object', url: 'https://jestjs.io/docs/jest-object' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is an easy over-generalization of the main page\'s own "clear mocks in afterEach" fix — that rule only ever covered mock call history, not a module\'s own internal state.',
+      'The real fix for leaking module-level state is an explicit reset export the tests call directly, or jest.resetModules() plus a fresh re-require.',
+    ],
+  },
+  'node/testing/supertest-still-binds-a-real-ephemeral-port': {
+    apis: ['supertest(app)', 'http.createServer()', '.listen(0)'],
+    related: [
+      { label: 'Testing Node.js Apps (overview)', route: '/node/testing' },
+      { label: 't.mock Auto-Restores; the Top-Level mock Import Does Not', route: '/node/testing/context-mock-auto-restores-top-level-mock-does-not' },
+      { label: 'clearAllMocks() Does Not Reset Module-Level State', route: '/node/testing/clearallmocks-does-not-reset-module-level-state' },
+    ],
+    tip: 'No visible app.listen() call does not mean no networking — Supertest wraps an unlistening Express app via http.createServer(app) and binds a real, OS-assigned ephemeral port with .listen(0) on the first request.',
+    docs: [
+      { label: 'Supertest — README', url: 'https://github.com/ladjs/supertest' },
+    ],
+    resources: [],
+    gotchas: [
+      'The genuine benefit is never having to pick or coordinate a port number yourself — not the absence of networking, which is a common misreading of Supertest\'s ergonomics.',
+      'Because a real port is bound, code paths gated on the server actually listening can genuinely execute during a Supertest-driven test.',
     ],
   },
   'node/performance': {

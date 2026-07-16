@@ -2315,7 +2315,12 @@ export const routes: Routes = [
       { path: 'worker-terminate-cannot-interrupt-synchronous-cpu-work', loadComponent: () => import('./components/backend/nodejs/worker-threads/subtopics/worker-terminate-cannot-interrupt-synchronous-cpu-work/worker-terminate-cannot-interrupt-synchronous-cpu-work').then(m => m.WorkerTerminateCannotInterruptSynchronousCpuWorkSubtopic) },
       { path: 'stdout-true-makes-you-responsible-for-draining-the-stream', loadComponent: () => import('./components/backend/nodejs/worker-threads/subtopics/stdout-true-makes-you-responsible-for-draining-the-stream/stdout-true-makes-you-responsible-for-draining-the-stream').then(m => m.StdoutTrueMakesYouResponsibleForDrainingTheStreamSubtopic) },
     ] },
-    { path: 'testing',        loadComponent: () => import('./components/backend/nodejs/testing/testing').then(m => m.NodeTesting) },
+    { path: 'testing', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/testing/testing').then(m => m.NodeTesting) },
+      { path: 'context-mock-auto-restores-top-level-mock-does-not', loadComponent: () => import('./components/backend/nodejs/testing/subtopics/context-mock-auto-restores-top-level-mock-does-not/context-mock-auto-restores-top-level-mock-does-not').then(m => m.ContextMockAutoRestoresTopLevelMockDoesNotSubtopic) },
+      { path: 'clearallmocks-does-not-reset-module-level-state', loadComponent: () => import('./components/backend/nodejs/testing/subtopics/clearallmocks-does-not-reset-module-level-state/clearallmocks-does-not-reset-module-level-state').then(m => m.ClearallmocksDoesNotResetModuleLevelStateSubtopic) },
+      { path: 'supertest-still-binds-a-real-ephemeral-port', loadComponent: () => import('./components/backend/nodejs/testing/subtopics/supertest-still-binds-a-real-ephemeral-port/supertest-still-binds-a-real-ephemeral-port').then(m => m.SupertestStillBindsARealEphemeralPortSubtopic) },
+    ] },
     { path: 'deployment',     loadComponent: () => import('./components/backend/nodejs/deployment/deployment').then(m => m.NodeDeployment) },
     { path: 'cheatsheet',     loadComponent: () => import('./components/backend/nodejs/cheatsheet/cheatsheet').then(m => m.NodeCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/backend/nodejs/interview-prep/interview-prep').then(m => m.NodeInterviewPrep) },

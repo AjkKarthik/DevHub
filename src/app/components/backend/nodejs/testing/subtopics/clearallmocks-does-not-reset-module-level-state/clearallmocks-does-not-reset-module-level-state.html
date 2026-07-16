@@ -1,0 +1,38 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing Node.js Apps" topicRoute="/node/testing" subtopicLabel="Module State vs Mocks" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">clearAllMocks() Does Not Reset Module-Level State</h1>
+  <p class="page-subtitle">
+    Jest's mock-clearing functions only reset mock-function bookkeeping — a module's own top-level variables
+    survive across tests in the same file until resetModules() clears the registry.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Jest 27+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This corrects an easy over-generalization of the main page's own "clear mocks in afterEach" fix — that rule
+      only covers Jest's own mock bookkeeping, not a module's own state. The final subtopic moves to a different
+      kind of inaccurate assumption entirely — what Supertest is actually doing when a test has no visible
+      app.listen() call.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing Node.js Apps"
+    topicRoute="/node/testing"
+    [prev]="{ label: 't.mock Auto-Restores; the Top-Level mock Import Does Not', route: '/node/testing/context-mock-auto-restores-top-level-mock-does-not' }"
+    [next]="{ label: 'Supertest Still Binds a Real Ephemeral Port', route: '/node/testing/supertest-still-binds-a-real-ephemeral-port' }"
+  />
+</div>
