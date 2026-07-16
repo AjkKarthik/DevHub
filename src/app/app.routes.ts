@@ -2362,7 +2362,12 @@ export const routes: Routes = [
       { path: 'zero-arg-super-breaks-inside-a-nested-function', loadComponent: () => import('./components/backend/python/oop/subtopics/zero-arg-super-breaks-inside-a-nested-function/zero-arg-super-breaks-inside-a-nested-function').then(m => m.ZeroArgSuperBreaksInsideANestedFunctionSubtopic) },
       { path: 'a-mismatched-setter-name-creates-a-second-attribute', loadComponent: () => import('./components/backend/python/oop/subtopics/a-mismatched-setter-name-creates-a-second-attribute/a-mismatched-setter-name-creates-a-second-attribute').then(m => m.AMismatchedSetterNameCreatesASecondAttributeSubtopic) },
     ] },
-    { path: 'dataclasses-pydantic',     loadComponent: () => import('./components/backend/python/dataclasses-pydantic/dataclasses-pydantic').then(m => m.PythonDataclassesPydantic) },
+    { path: 'dataclasses-pydantic', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/dataclasses-pydantic/dataclasses-pydantic').then(m => m.PythonDataclassesPydantic) },
+      { path: 'dataclass-eq-requires-the-identical-class-not-just-fields', loadComponent: () => import('./components/backend/python/dataclasses-pydantic/subtopics/dataclass-eq-requires-the-identical-class-not-just-fields/dataclass-eq-requires-the-identical-class-not-just-fields').then(m => m.DataclassEqRequiresTheIdenticalClassNotJustFieldsSubtopic) },
+      { path: 'model-validator-before-mode-receives-unvalidated-raw-input', loadComponent: () => import('./components/backend/python/dataclasses-pydantic/subtopics/model-validator-before-mode-receives-unvalidated-raw-input/model-validator-before-mode-receives-unvalidated-raw-input').then(m => m.ModelValidatorBeforeModeReceivesUnvalidatedRawInputSubtopic) },
+      { path: 'mutating-a-frozen-dataclass-list-field-corrupts-its-hash', loadComponent: () => import('./components/backend/python/dataclasses-pydantic/subtopics/mutating-a-frozen-dataclass-list-field-corrupts-its-hash/mutating-a-frozen-dataclass-list-field-corrupts-its-hash').then(m => m.MutatingAFrozenDataclassListFieldCorruptsItsHashSubtopic) },
+    ] },
     { path: 'decorators-context-managers', loadComponent: () => import('./components/backend/python/decorators-context-managers/decorators-context-managers').then(m => m.PythonDecoratorsContextManagers) },
     { path: 'type-hints',               loadComponent: () => import('./components/backend/python/type-hints/type-hints').then(m => m.PythonTypeHints) },
     { path: 'collections-itertools',    loadComponent: () => import('./components/backend/python/collections-itertools/collections-itertools').then(m => m.PythonCollectionsItertools) },

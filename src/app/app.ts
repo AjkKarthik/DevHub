@@ -2052,6 +2052,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Zero-Arg super() Breaks Inside a Nested Function', route: '/python/oop/zero-arg-super-breaks-inside-a-nested-function' },
     { label: 'A Mismatched Setter Name Creates a Second Attribute', route: '/python/oop/a-mismatched-setter-name-creates-a-second-attribute' },
   ],
+  'dataclasses-pydantic': [
+    { label: 'dataclass __eq__ Requires the Identical Class, Not Just Fields', route: '/python/dataclasses-pydantic/dataclass-eq-requires-the-identical-class-not-just-fields' },
+    { label: 'model_validator(mode="before") Receives Unvalidated Raw Input', route: '/python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input' },
+    { label: 'Mutating a Frozen Dataclass List Field Corrupts Its Hash', route: '/python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash' },
+  ],
 };
 
 @Component({

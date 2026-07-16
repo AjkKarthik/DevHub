@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dataclasses & Pydantic" topicRoute="/python/dataclasses-pydantic" subtopicLabel="Validator Mode Semantics" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">model_validator(mode="before") Receives Unvalidated Raw Input</h1>
+  <p class="page-subtitle">
+    Pydantic's own docs confirm a "before" validator sees raw, uncoerced input — only "after" validators get a
+    fully validated model instance with fields already typed.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Pydantic v2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This fills in the "before" half of a distinction the main page's own example only demonstrates via "after".
+      The final subtopic returns to plain dataclasses — a real hash-corruption consequence of the main page's own
+      "frozen doesn't make mutable fields immutable" QnA answer.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dataclasses & Pydantic"
+    topicRoute="/python/dataclasses-pydantic"
+    [prev]="{ label: 'dataclass __eq__ Requires the Identical Class, Not Just Fields', route: '/python/dataclasses-pydantic/dataclass-eq-requires-the-identical-class-not-just-fields' }"
+    [next]="{ label: 'Mutating a Frozen Dataclass List Field Corrupts Its Hash', route: '/python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash' }"
+  />
+</div>

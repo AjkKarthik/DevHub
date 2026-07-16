@@ -28970,6 +28970,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'FastAPI\'s deep Pydantic integration (auto OpenAPI schema, request/response validation) is a major reason for Pydantic\'s dominance in modern Python APIs.',
     ],
   },
+  'python/dataclasses-pydantic/dataclass-eq-requires-the-identical-class-not-just-fields': {
+    apis: ['dataclass(eq=True)', '__eq__'],
+    related: [
+      { label: 'Dataclasses & Pydantic (overview)', route: '/python/dataclasses-pydantic' },
+      { label: 'model_validator(mode="before") Receives Unvalidated Raw Input', route: '/python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input' },
+      { label: 'Mutating a Frozen Dataclass List Field Corrupts Its Hash', route: '/python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash' },
+    ],
+    tip: 'Python\'s own docs confirm the generated __eq__ requires "both instances... to be of the identical type" — a subclass instance is never == to a parent instance, even with identical field values.',
+    docs: [
+      { label: 'Python Docs — dataclasses (eq parameter)', url: 'https://docs.python.org/3/library/dataclasses.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is the opposite of duck typing — dataclass equality is deliberately strict about exact type, not structural compatibility.',
+      'Surfaces most often in tests comparing against a base type when a function actually returns a subclass instance.',
+    ],
+  },
+  'python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input': {
+    apis: ['@model_validator(mode="before")', '@model_validator(mode="after")'],
+    related: [
+      { label: 'Dataclasses & Pydantic (overview)', route: '/python/dataclasses-pydantic' },
+      { label: 'dataclass __eq__ Requires the Identical Class, Not Just Fields', route: '/python/dataclasses-pydantic/dataclass-eq-requires-the-identical-class-not-just-fields' },
+      { label: 'Mutating a Frozen Dataclass List Field Corrupts Its Hash', route: '/python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash' },
+    ],
+    tip: 'Pydantic\'s own docs confirm "before" validators "have to deal with the raw input" — no field coercion has run yet. Only "after" validators are guaranteed fields are already validated Python types.',
+    docs: [
+      { label: 'Pydantic Docs — Model Validators', url: 'https://docs.pydantic.dev/latest/concepts/validators/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A "before" validator can receive a numeric field as a string, or any arbitrary object — never assume it\'s already the declared type.',
+      'Code that works in tests (hand-constructed, already-typed data) can fail in production against real JSON input with different apparent types.',
+    ],
+  },
+  'python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash': {
+    apis: ['dataclass(frozen=True)', '__hash__'],
+    related: [
+      { label: 'Dataclasses & Pydantic (overview)', route: '/python/dataclasses-pydantic' },
+      { label: 'dataclass __eq__ Requires the Identical Class, Not Just Fields', route: '/python/dataclasses-pydantic/dataclass-eq-requires-the-identical-class-not-just-fields' },
+      { label: 'model_validator(mode="before") Receives Unvalidated Raw Input', route: '/python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input' },
+    ],
+    tip: 'frozen=True only locks attribute assignment — a mutable field\'s contents can still change, which changes hash(instance) live, breaking Python\'s own "hashable objects must not change their hash while stored" invariant.',
+    docs: [
+      { label: 'Python Docs — Glossary (hashable)', url: 'https://docs.python.org/3/glossary.html#term-hashable' },
+    ],
+    resources: [],
+    gotchas: [
+      'A corrupted object can remain physically present in a set/dict while becoming permanently unfindable via normal lookup.',
+      'The reliable fix is using genuinely immutable field types (tuple, frozenset) on any frozen dataclass relied on for hashability.',
+    ],
+  },
   'python/comprehensions-generators': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

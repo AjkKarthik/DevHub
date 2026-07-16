@@ -5773,7 +5773,26 @@
           </div>
         }
       }
-      <a routerLink="/python/dataclasses-pydantic" routerLinkActive="active"><span class="nl-text">Dataclasses &amp; Pydantic</span>@if(progress.isDone('py-dataclasses-pydantic')){<span class="nl-done">✓</span>}@if(diff('py-dataclasses-pydantic');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/dataclasses-pydantic" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Dataclasses &amp; Pydantic</span>
+        @if (progress.isDone('py-dataclasses-pydantic')) {<span class="nl-done">✓</span>}
+        @if (diff('py-dataclasses-pydantic'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('dataclasses-pydantic')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dataclasses-pydantic')"
+                  (click)="toggleSubtopics('dataclasses-pydantic', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dataclasses-pydantic'); as pyDataclassesSubs) {
+        @if (isSubtopicsExpanded('dataclasses-pydantic')) {
+          <div class="nav-subtopics">
+            @for (s of pyDataclassesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/decorators-context-managers" routerLinkActive="active"><span class="nl-text">Decorators &amp; Context Managers</span>@if(progress.isDone('py-decorators-context-managers')){<span class="nl-done">✓</span>}@if(diff('py-decorators-context-managers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
