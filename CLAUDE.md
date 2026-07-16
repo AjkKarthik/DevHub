@@ -1168,6 +1168,20 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/node/arc
    proportionally a LARGER share of the total gotcha surface for this hub than for Blazor/C# —
    worth double-checking which delimiter rule applies (`.ts` field → `\'`; `.html` bound
    attribute → `’`) rather than defaulting to whichever one was used most recently.
+9. **A NEW variant of the delimiter-collision gotcha: bare straight-quote marks used as inline
+   emphasis inside an already single-quoted `.ts` string field breaks the build the same way a
+   stray apostrophe does — but this one isn't a possessive/contraction, so the "grep for a bare
+   `'` after a letter" sweep pattern doesn't reliably catch it.** During `/node/logging`, a
+   `theory.points` entry wrote `...illustration: 'headers.authorization' as a redact path...`
+   — using bare `'` marks purely for emphasis (quoting a code term), not as an apostrophe — inside
+   a field already delimited by `'...'`. The first `'` prematurely closed the string; everything
+   after became loose, invalid syntax. Caught by manual review before the sweep (the string
+   visibly "looked wrong" reading it back), not by the standard apostrophe grep, since the
+   character immediately before the quote was a space/colon, not a letter. **Fix: never use bare
+   quote marks for inline emphasis inside a single-quoted TS field — drop the quotes and rely on
+   surrounding prose, or use backticks (safe inside a `'...'`-delimited string) instead.** Add a
+   second sweep pattern going forward: grep for `: '` or ` '` followed later by another bare `'`
+   mid-string (not just letter-adjacent) when a file discusses code identifiers/paths in prose.
 
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
