@@ -31476,6 +31476,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Environment variables holding secrets should never be logged or included in error responses — a surprisingly common accidental leak.',
     ],
   },
+  'node/security/csp-nonces-must-be-regenerated-on-every-single-request': {
+    apis: ['Content-Security-Policy nonce', 'crypto.randomBytes()'],
+    related: [
+      { label: 'Security Best Practices (overview)', route: '/node/security' },
+      { label: 'trust proxy Must Be Configured Behind a Reverse Proxy', route: '/node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy' },
+      { label: 'bcrypt Silently Truncates Passwords Longer Than 72 Bytes', route: '/node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes' },
+    ],
+    tip: 'MDN\'s own docs state a nonce "should be generated differently each time the page loads" — a value reused across requests is readable via one view-source and defeats the entire protection.',
+    docs: [
+      { label: 'MDN — nonce global attribute', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce' },
+    ],
+    resources: [],
+    gotchas: [
+      'A nonce computed once at server startup (a module-level constant) is functionally equivalent to no nonce at all, once the first page load leaks it.',
+      'Nonce-based CSP and full-page HTTP/CDN caching are in genuine tension — most deployments exclude nonce-bearing pages from cache entirely.',
+    ],
+  },
+  'node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy': {
+    apis: ['app.set(\'trust proxy\')', 'req.ip', 'X-Forwarded-For'],
+    related: [
+      { label: 'Security Best Practices (overview)', route: '/node/security' },
+      { label: 'CSP Nonces Must Be Regenerated on Every Request', route: '/node/security/csp-nonces-must-be-regenerated-on-every-single-request' },
+      { label: 'bcrypt Silently Truncates Passwords Longer Than 72 Bytes', route: '/node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes' },
+    ],
+    tip: 'A Redis-backed rate limiter shares counter state correctly across instances, but does nothing to fix req.ip itself — that depends entirely on the trust proxy setting matching the app\'s real network topology.',
+    docs: [
+      { label: 'Express — Behind proxies', url: 'https://expressjs.com/en/guide/behind-proxies.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Left unset behind a proxy, req.ip returns the proxy\'s own IP for every request — express-rate-limit\'s own docs describe this as "effectively a global" limiter shared by all users.',
+      'Set to bare true, trust proxy trusts every hop unconditionally, letting a client spoof X-Forwarded-For to bypass IP-based rate limiting entirely.',
+    ],
+  },
+  'node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes': {
+    apis: ['bcrypt.hash()', 'Buffer.byteLength()'],
+    related: [
+      { label: 'Security Best Practices (overview)', route: '/node/security' },
+      { label: 'CSP Nonces Must Be Regenerated on Every Request', route: '/node/security/csp-nonces-must-be-regenerated-on-every-single-request' },
+      { label: 'trust proxy Must Be Configured Behind a Reverse Proxy', route: '/node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy' },
+    ],
+    tip: 'bcrypt only processes the first 72 BYTES of a password — not 72 characters — per the algorithm\'s own npm README; two passwords sharing that prefix hash identically and both authenticate.',
+    docs: [
+      { label: 'OWASP — Password Storage Cheat Sheet', url: 'https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A character-count validation (like the main page\'s own max(128)) does not prevent this — multi-byte UTF-8 characters (emoji, accents) can cross 72 bytes in far fewer than 72 characters.',
+      'Argon2id does not share this limitation — its spec supports inputs up to 2^32−1 bytes, one concrete reason OWASP lists it as the primary recommendation over bcrypt.',
+    ],
+  },
   'node/env-config': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [

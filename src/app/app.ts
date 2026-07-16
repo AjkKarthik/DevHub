@@ -1980,6 +1980,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'clockTolerance Handles Drift Between Distributed Servers', route: '/node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers' },
     { label: 'Concurrent Refresh Requests Trigger a False Theft-Detection Positive', route: '/node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection' },
   ],
+  // NOTE: hub-prefixed — bare 'security' is already claimed by the SQL hub's own topic.
+  'node-security': [
+    { label: 'CSP Nonces Must Be Regenerated on Every Request', route: '/node/security/csp-nonces-must-be-regenerated-on-every-single-request' },
+    { label: 'trust proxy Must Be Configured Behind a Reverse Proxy', route: '/node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy' },
+    { label: 'bcrypt Silently Truncates Passwords Longer Than 72 Bytes', route: '/node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes' },
+  ],
 };
 
 @Component({

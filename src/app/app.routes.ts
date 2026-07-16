@@ -2291,7 +2291,12 @@ export const routes: Routes = [
       { path: 'clocktolerance-handles-drift-between-distributed-servers', loadComponent: () => import('./components/backend/nodejs/jwt-auth/subtopics/clocktolerance-handles-drift-between-distributed-servers/clocktolerance-handles-drift-between-distributed-servers').then(m => m.ClocktoleranceHandlesDriftBetweenDistributedServersSubtopic) },
       { path: 'concurrent-refresh-requests-trigger-false-theft-detection', loadComponent: () => import('./components/backend/nodejs/jwt-auth/subtopics/concurrent-refresh-requests-trigger-false-theft-detection/concurrent-refresh-requests-trigger-false-theft-detection').then(m => m.ConcurrentRefreshRequestsTriggerFalseTheftDetectionSubtopic) },
     ] },
-    { path: 'security',       loadComponent: () => import('./components/backend/nodejs/security/security').then(m => m.NodeSecurity) },
+    { path: 'security', children: [
+      { path: '', loadComponent: () => import('./components/backend/nodejs/security/security').then(m => m.NodeSecurity) },
+      { path: 'csp-nonces-must-be-regenerated-on-every-single-request', loadComponent: () => import('./components/backend/nodejs/security/subtopics/csp-nonces-must-be-regenerated-on-every-single-request/csp-nonces-must-be-regenerated-on-every-single-request').then(m => m.CspNoncesMustBeRegeneratedOnEverySingleRequestSubtopic) },
+      { path: 'trust-proxy-must-be-configured-behind-a-reverse-proxy', loadComponent: () => import('./components/backend/nodejs/security/subtopics/trust-proxy-must-be-configured-behind-a-reverse-proxy/trust-proxy-must-be-configured-behind-a-reverse-proxy').then(m => m.TrustProxyMustBeConfiguredBehindAReverseProxySubtopic) },
+      { path: 'bcrypt-silently-truncates-passwords-longer-than-72-bytes', loadComponent: () => import('./components/backend/nodejs/security/subtopics/bcrypt-silently-truncates-passwords-longer-than-72-bytes/bcrypt-silently-truncates-passwords-longer-than-72-bytes').then(m => m.BcryptSilentlyTruncatesPasswordsLongerThan72BytesSubtopic) },
+    ] },
     { path: 'performance',    loadComponent: () => import('./components/backend/nodejs/performance/performance').then(m => m.NodePerformance) },
     { path: 'logging',        loadComponent: () => import('./components/backend/nodejs/logging/logging').then(m => m.NodeLogging) },
     { path: 'worker-threads', loadComponent: () => import('./components/backend/nodejs/worker-threads/worker-threads').then(m => m.NodeWorkerThreads) },

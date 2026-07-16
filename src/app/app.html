@@ -5526,7 +5526,26 @@
           </div>
         }
       }
-      <a routerLink="/node/security" routerLinkActive="active"><span class="nl-text">Security Best Practices</span>@if(progress.isDone('node-security')){<span class="nl-done">✓</span>}@if(diff('node-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Security Best Practices</span>
+        @if (progress.isDone('node-security')) {<span class="nl-done">✓</span>}
+        @if (diff('node-security'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-security')"
+                  (click)="toggleSubtopics('node-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-security'); as nodeSecuritySubs) {
+        @if (isSubtopicsExpanded('node-security')) {
+          <div class="nav-subtopics">
+            @for (s of nodeSecuritySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
