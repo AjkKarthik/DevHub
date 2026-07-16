@@ -5793,7 +5793,26 @@
           </div>
         }
       }
-      <a routerLink="/python/decorators-context-managers" routerLinkActive="active"><span class="nl-text">Decorators &amp; Context Managers</span>@if(progress.isDone('py-decorators-context-managers')){<span class="nl-done">✓</span>}@if(diff('py-decorators-context-managers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/decorators-context-managers" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Decorators &amp; Context Managers</span>
+        @if (progress.isDone('py-decorators-context-managers')) {<span class="nl-done">✓</span>}
+        @if (diff('py-decorators-context-managers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('decorators-context-managers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('decorators-context-managers')"
+                  (click)="toggleSubtopics('decorators-context-managers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('decorators-context-managers'); as pyDecoratorsCmSubs) {
+        @if (isSubtopicsExpanded('decorators-context-managers')) {
+          <div class="nav-subtopics">
+            @for (s of pyDecoratorsCmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Decorators & Context Managers" topicRoute="/python/decorators-context-managers" subtopicLabel="ExitStack.callback()" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">ExitStack.callback() Unwinds in the Same LIFO Order</h1>
+  <p class="page-subtitle">
+    ExitStack can register plain cleanup callables alongside context managers — both share one single stack,
+    unwound together in reverse registration order.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own ExitStack coverage (which only shows enter_context()) with a genuinely
+      useful second capability. The next subtopic moves to a real limitation of &#64;contextmanager the main page's
+      own safe usage pattern never has to confront.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Decorators & Context Managers"
+    topicRoute="/python/decorators-context-managers"
+    [next]="{ label: 'A @contextmanager Generator Is Single-Use Only', route: '/python/decorators-context-managers/a-contextmanager-generator-is-single-use-only' }"
+  />
+</div>

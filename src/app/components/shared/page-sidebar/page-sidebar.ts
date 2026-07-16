@@ -28884,6 +28884,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'contextlib.contextmanager lets a single generator function implement a full context manager without a class.',
     ],
   },
+  'python/decorators-context-managers/exitstack-callback-unwinds-in-the-same-lifo-order': {
+    apis: ['ExitStack.callback()', 'ExitStack.enter_context()'],
+    related: [
+      { label: 'Decorators & Context Managers (overview)', route: '/python/decorators-context-managers' },
+      { label: 'A @contextmanager Generator Is Single-Use Only', route: '/python/decorators-context-managers/a-contextmanager-generator-is-single-use-only' },
+      { label: 'ContextDecorator Discards the __enter__() Return Value', route: '/python/decorators-context-managers/contextdecorator-discards-the-enter-return-value' },
+    ],
+    tip: 'ExitStack.callback() registers a plain cleanup callable — Python\'s own docs confirm it shares ONE stack with enter_context(), unwound together in reverse registration order, not as two separate phases.',
+    docs: [
+      { label: 'Python Docs — contextlib.ExitStack', url: 'https://docs.python.org/3/library/contextlib.html#contextlib.ExitStack' },
+    ],
+    resources: [],
+    gotchas: [
+      'A callback registered via callback() cannot suppress an exception — it is never passed the exception details, unlike a real context manager\'s __exit__.',
+      'Registration order matters: register unconditional cleanup FIRST if it needs to run LAST, since LIFO means first-registered unwinds last.',
+    ],
+  },
+  'python/decorators-context-managers/a-contextmanager-generator-is-single-use-only': {
+    apis: ['@contextlib.contextmanager', 'RuntimeError'],
+    related: [
+      { label: 'Decorators & Context Managers (overview)', route: '/python/decorators-context-managers' },
+      { label: 'ExitStack.callback() Unwinds in the Same LIFO Order', route: '/python/decorators-context-managers/exitstack-callback-unwinds-in-the-same-lifo-order' },
+      { label: 'ContextDecorator Discards the __enter__() Return Value', route: '/python/decorators-context-managers/contextdecorator-discards-the-enter-return-value' },
+    ],
+    tip: 'Python\'s own docs confirm @contextmanager objects "are also single use" — reusing the same instance a second time raises RuntimeError: generator didn\'t yield. Always call the decorated function fresh.',
+    docs: [
+      { label: 'Python Docs — contextlib.contextmanager', url: 'https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager' },
+    ],
+    resources: [],
+    gotchas: [
+      'Caching a context manager instance for "efficiency" saves nothing — creating one is cheap, and it guarantees a RuntimeError on the second use.',
+      'Using the decorated function AS a decorator is safe — each invocation calls the underlying generator function fresh.',
+    ],
+  },
+  'python/decorators-context-managers/contextdecorator-discards-the-enter-return-value': {
+    apis: ['contextlib.ContextDecorator', '__enter__()'],
+    related: [
+      { label: 'Decorators & Context Managers (overview)', route: '/python/decorators-context-managers' },
+      { label: 'ExitStack.callback() Unwinds in the Same LIFO Order', route: '/python/decorators-context-managers/exitstack-callback-unwinds-in-the-same-lifo-order' },
+      { label: 'A @contextmanager Generator Is Single-Use Only', route: '/python/decorators-context-managers/a-contextmanager-generator-is-single-use-only' },
+    ],
+    tip: 'Python\'s own docs confirm decorator syntax has no equivalent to a with statement\'s "as" clause — used as @cm, there\'s no way to access __enter__()\'s return value at all.',
+    docs: [
+      { label: 'Python Docs — contextlib.ContextDecorator', url: 'https://docs.python.org/3/library/contextlib.html#contextlib.ContextDecorator' },
+    ],
+    resources: [],
+    gotchas: [
+      'A dual-purpose context manager must treat its __enter__() return value as optional — code relying on it loses that capability entirely when used as a decorator.',
+      'The fix when the return value IS needed is switching to an explicit with ... as x: statement, not trying to work around the decorator syntax.',
+    ],
+  },
   'python/type-hints': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

@@ -2368,7 +2368,12 @@ export const routes: Routes = [
       { path: 'model-validator-before-mode-receives-unvalidated-raw-input', loadComponent: () => import('./components/backend/python/dataclasses-pydantic/subtopics/model-validator-before-mode-receives-unvalidated-raw-input/model-validator-before-mode-receives-unvalidated-raw-input').then(m => m.ModelValidatorBeforeModeReceivesUnvalidatedRawInputSubtopic) },
       { path: 'mutating-a-frozen-dataclass-list-field-corrupts-its-hash', loadComponent: () => import('./components/backend/python/dataclasses-pydantic/subtopics/mutating-a-frozen-dataclass-list-field-corrupts-its-hash/mutating-a-frozen-dataclass-list-field-corrupts-its-hash').then(m => m.MutatingAFrozenDataclassListFieldCorruptsItsHashSubtopic) },
     ] },
-    { path: 'decorators-context-managers', loadComponent: () => import('./components/backend/python/decorators-context-managers/decorators-context-managers').then(m => m.PythonDecoratorsContextManagers) },
+    { path: 'decorators-context-managers', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/decorators-context-managers/decorators-context-managers').then(m => m.PythonDecoratorsContextManagers) },
+      { path: 'exitstack-callback-unwinds-in-the-same-lifo-order', loadComponent: () => import('./components/backend/python/decorators-context-managers/subtopics/exitstack-callback-unwinds-in-the-same-lifo-order/exitstack-callback-unwinds-in-the-same-lifo-order').then(m => m.ExitstackCallbackUnwindsInTheSameLifoOrderSubtopic) },
+      { path: 'a-contextmanager-generator-is-single-use-only', loadComponent: () => import('./components/backend/python/decorators-context-managers/subtopics/a-contextmanager-generator-is-single-use-only/a-contextmanager-generator-is-single-use-only').then(m => m.AContextmanagerGeneratorIsSingleUseOnlySubtopic) },
+      { path: 'contextdecorator-discards-the-enter-return-value', loadComponent: () => import('./components/backend/python/decorators-context-managers/subtopics/contextdecorator-discards-the-enter-return-value/contextdecorator-discards-the-enter-return-value').then(m => m.ContextdecoratorDiscardsTheEnterReturnValueSubtopic) },
+    ] },
     { path: 'type-hints',               loadComponent: () => import('./components/backend/python/type-hints/type-hints').then(m => m.PythonTypeHints) },
     { path: 'collections-itertools',    loadComponent: () => import('./components/backend/python/collections-itertools/collections-itertools').then(m => m.PythonCollectionsItertools) },
     { path: 'asyncio',                  loadComponent: () => import('./components/backend/python/asyncio/asyncio').then(m => m.PythonAsyncio) },

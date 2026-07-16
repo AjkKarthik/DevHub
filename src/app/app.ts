@@ -2057,6 +2057,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'model_validator(mode="before") Receives Unvalidated Raw Input', route: '/python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input' },
     { label: 'Mutating a Frozen Dataclass List Field Corrupts Its Hash', route: '/python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash' },
   ],
+  'decorators-context-managers': [
+    { label: 'ExitStack.callback() Unwinds in the Same LIFO Order', route: '/python/decorators-context-managers/exitstack-callback-unwinds-in-the-same-lifo-order' },
+    { label: 'A @contextmanager Generator Is Single-Use Only', route: '/python/decorators-context-managers/a-contextmanager-generator-is-single-use-only' },
+    { label: 'ContextDecorator Discards the __enter__() Return Value', route: '/python/decorators-context-managers/contextdecorator-discards-the-enter-return-value' },
+  ],
 };
 
 @Component({
