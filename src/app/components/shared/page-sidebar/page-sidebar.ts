@@ -28907,6 +28907,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Two unrelated classes implementing the same method signature can be used interchangeably without sharing a common base class.',
     ],
   },
+  'python/oop/slots-and-a-class-level-default-value-conflict': {
+    apis: ['__slots__', 'ValueError'],
+    related: [
+      { label: 'OOP in Python (overview)', route: '/python/oop' },
+      { label: 'Zero-Arg super() Breaks Inside a Nested Function', route: '/python/oop/zero-arg-super-breaks-inside-a-nested-function' },
+      { label: 'A Mismatched Setter Name Creates a Second Attribute', route: '/python/oop/a-mismatched-setter-name-creates-a-second-attribute' },
+    ],
+    tip: 'A name listed in __slots__ becomes a class-level descriptor — Python\'s own data model docs confirm a plain class-level value of the same name conflicts with it, raising ValueError at class-creation time, before any instance exists.',
+    docs: [
+      { label: 'Python Docs — Data Model (__slots__)', url: 'https://docs.python.org/3/reference/datamodel.html#slots' },
+    ],
+    resources: [],
+    gotchas: [
+      'A slotted attribute\'s default must be provided in __init__ — __slots__ has no default-value mechanism of its own.',
+      'This most often bites when refactoring a plain class into a __slots__-based one without also moving existing class-level defaults into __init__.',
+    ],
+  },
+  'python/oop/zero-arg-super-breaks-inside-a-nested-function': {
+    apis: ['super()', '__class__ cell'],
+    related: [
+      { label: 'OOP in Python (overview)', route: '/python/oop' },
+      { label: '__slots__ and a Class-Level Default Value Conflict', route: '/python/oop/slots-and-a-class-level-default-value-conflict' },
+      { label: 'A Mismatched Setter Name Creates a Second Attribute', route: '/python/oop/a-mismatched-setter-name-creates-a-second-attribute' },
+    ],
+    tip: 'Python\'s own docs warn that zero-argument super() "will not work as expected within nested functions" — the compiler-injected __class__ cell it relies on is tied to the method\'s own top-level body.',
+    docs: [
+      { label: 'Python Docs — super()', url: 'https://docs.python.org/3/library/functions.html#super' },
+    ],
+    resources: [],
+    gotchas: [
+      'The failure manifests as RuntimeError: super(): __class__ cell not found — confusing since the code looks like it\'s inside a normal method.',
+      'The fix inside a nested function/lambda is the explicit two-argument form, super(ClassName, self), which doesn\'t depend on the __class__ cell at all.',
+    ],
+  },
+  'python/oop/a-mismatched-setter-name-creates-a-second-attribute': {
+    apis: ['property', '@x.setter'],
+    related: [
+      { label: 'OOP in Python (overview)', route: '/python/oop' },
+      { label: '__slots__ and a Class-Level Default Value Conflict', route: '/python/oop/slots-and-a-class-level-default-value-conflict' },
+      { label: 'Zero-Arg super() Breaks Inside a Nested Function', route: '/python/oop/zero-arg-super-breaks-inside-a-nested-function' },
+    ],
+    tip: 'property.setter() returns a NEW property object bound to whatever name follows def — naming the setter function differently from the getter silently creates a second, separate attribute instead of updating the original.',
+    docs: [
+      { label: 'Python Docs — property', url: 'https://docs.python.org/3/library/functions.html#property' },
+    ],
+    resources: [],
+    gotchas: [
+      'No error is raised anywhere in this process — the only visible symptom is a delayed AttributeError the first time code tries to use the setter through the original property name.',
+      'This is most likely when a getter and setter are defined far apart in a large class body, or a getter is renamed during a refactor without updating its setter/deleter to match.',
+    ],
+  },
   'python/dataclasses-pydantic': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

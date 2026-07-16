@@ -2042,6 +2042,16 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'shutil.copy() Does Not Preserve Timestamps — copy2() Does', route: '/python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does' },
     { label: 'Path.glob() Matches Dotfiles, Unlike Shell Globbing', route: '/python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing' },
   ],
+  // NOTE: keyed 'python-oop', NOT bare 'oop' — the C# hub already owns
+  // the bare 'oop' key above (its own /csharp/oop subtopics). This is
+  // the shared flat SUBTOPICS map's documented collision risk, hit for
+  // real here; resolved by hub-prefixing this one entry rather than
+  // restructuring the whole map.
+  'python-oop': [
+    { label: '__slots__ and a Class-Level Default Value Conflict', route: '/python/oop/slots-and-a-class-level-default-value-conflict' },
+    { label: 'Zero-Arg super() Breaks Inside a Nested Function', route: '/python/oop/zero-arg-super-breaks-inside-a-nested-function' },
+    { label: 'A Mismatched Setter Name Creates a Second Attribute', route: '/python/oop/a-mismatched-setter-name-creates-a-second-attribute' },
+  ],
 };
 
 @Component({

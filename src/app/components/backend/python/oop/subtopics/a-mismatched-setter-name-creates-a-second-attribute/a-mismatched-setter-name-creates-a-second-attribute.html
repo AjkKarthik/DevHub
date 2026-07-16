@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OOP in Python" topicRoute="/python/oop" subtopicLabel="@property Naming Trap" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">A Mismatched Setter Name Creates a Second Attribute</h1>
+  <p class="page-subtitle">
+    &#64;x.setter binds its result to whatever name follows def — get that name wrong, and you silently create a
+    second, separate property instead of updating the original.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of Python OOP internals that look simpler
+      than they are — __slots__'s default-value conflict, super()'s compiler-dependent magic, and now &#64;property's
+      silent naming trap — each correcting a plausible but incomplete mental model with the actual documented
+      mechanics.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OOP in Python"
+    topicRoute="/python/oop"
+    [prev]="{ label: 'Zero-Arg super() Breaks Inside a Nested Function', route: '/python/oop/zero-arg-super-breaks-inside-a-nested-function' }"
+  />
+</div>

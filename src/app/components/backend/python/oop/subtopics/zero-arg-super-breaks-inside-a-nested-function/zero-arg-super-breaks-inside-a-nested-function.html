@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OOP in Python" topicRoute="/python/oop" subtopicLabel="super() Internals" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Zero-Arg super() Breaks Inside a Nested Function</h1>
+  <p class="page-subtitle">
+    Bare super() relies on a compiler-injected __class__ cell tied to the method's own top-level body — a nested
+    function or lambda inside that method doesn't automatically get it.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 3.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This explains the actual mechanism behind the main page's own "always use super()" advice, and its one real
+      limitation. The final subtopic moves to &#64;property — a genuinely silent failure mode when a setter's own name
+      doesn't match its getter's.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OOP in Python"
+    topicRoute="/python/oop"
+    [prev]="{ label: '__slots__ and a Class-Level Default Value Conflict', route: '/python/oop/slots-and-a-class-level-default-value-conflict' }"
+    [next]="{ label: 'A Mismatched Setter Name Creates a Second Attribute', route: '/python/oop/a-mismatched-setter-name-creates-a-second-attribute' }"
+  />
+</div>

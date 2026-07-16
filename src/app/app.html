@@ -5753,7 +5753,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">OOP &amp; Patterns</p>
-      <a routerLink="/python/oop" routerLinkActive="active"><span class="nl-text">OOP in Python</span>@if(progress.isDone('py-oop')){<span class="nl-done">✓</span>}@if(diff('py-oop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/oop" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">OOP in Python</span>
+        @if (progress.isDone('py-oop')) {<span class="nl-done">✓</span>}
+        @if (diff('py-oop'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('python-oop')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('python-oop')"
+                  (click)="toggleSubtopics('python-oop', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('python-oop'); as pyOopSubs) {
+        @if (isSubtopicsExpanded('python-oop')) {
+          <div class="nav-subtopics">
+            @for (s of pyOopSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/dataclasses-pydantic" routerLinkActive="active"><span class="nl-text">Dataclasses &amp; Pydantic</span>@if(progress.isDone('py-dataclasses-pydantic')){<span class="nl-done">✓</span>}@if(diff('py-dataclasses-pydantic');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/python/decorators-context-managers" routerLinkActive="active"><span class="nl-text">Decorators &amp; Context Managers</span>@if(progress.isDone('py-decorators-context-managers')){<span class="nl-done">✓</span>}@if(diff('py-decorators-context-managers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

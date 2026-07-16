@@ -2356,7 +2356,12 @@ export const routes: Routes = [
       { path: 'shutil-copy-does-not-preserve-timestamps-copy2-does', loadComponent: () => import('./components/backend/python/file-io/subtopics/shutil-copy-does-not-preserve-timestamps-copy2-does/shutil-copy-does-not-preserve-timestamps-copy2-does').then(m => m.ShutilCopyDoesNotPreserveTimestampsCopy2DoesSubtopic) },
       { path: 'path-glob-matches-dotfiles-unlike-shell-globbing', loadComponent: () => import('./components/backend/python/file-io/subtopics/path-glob-matches-dotfiles-unlike-shell-globbing/path-glob-matches-dotfiles-unlike-shell-globbing').then(m => m.PathGlobMatchesDotfilesUnlikeShellGlobbingSubtopic) },
     ] },
-    { path: 'oop',                      loadComponent: () => import('./components/backend/python/oop/oop').then(m => m.PythonOop) },
+    { path: 'oop', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/oop/oop').then(m => m.PythonOop) },
+      { path: 'slots-and-a-class-level-default-value-conflict', loadComponent: () => import('./components/backend/python/oop/subtopics/slots-and-a-class-level-default-value-conflict/slots-and-a-class-level-default-value-conflict').then(m => m.SlotsAndAClassLevelDefaultValueConflictSubtopic) },
+      { path: 'zero-arg-super-breaks-inside-a-nested-function', loadComponent: () => import('./components/backend/python/oop/subtopics/zero-arg-super-breaks-inside-a-nested-function/zero-arg-super-breaks-inside-a-nested-function').then(m => m.ZeroArgSuperBreaksInsideANestedFunctionSubtopic) },
+      { path: 'a-mismatched-setter-name-creates-a-second-attribute', loadComponent: () => import('./components/backend/python/oop/subtopics/a-mismatched-setter-name-creates-a-second-attribute/a-mismatched-setter-name-creates-a-second-attribute').then(m => m.AMismatchedSetterNameCreatesASecondAttributeSubtopic) },
+    ] },
     { path: 'dataclasses-pydantic',     loadComponent: () => import('./components/backend/python/dataclasses-pydantic/dataclasses-pydantic').then(m => m.PythonDataclassesPydantic) },
     { path: 'decorators-context-managers', loadComponent: () => import('./components/backend/python/decorators-context-managers/decorators-context-managers').then(m => m.PythonDecoratorsContextManagers) },
     { path: 'type-hints',               loadComponent: () => import('./components/backend/python/type-hints/type-hints').then(m => m.PythonTypeHints) },
