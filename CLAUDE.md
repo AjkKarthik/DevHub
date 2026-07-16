@@ -1197,6 +1197,60 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/node/arc
     `testing` key untouched, and updated only the Node.js hub's own three nav-accordion helper
     calls in `app.html` to the prefixed key.
 
+### Python hub subtopic wiring — first pilot, confirms conventions and catches a stale CLAUDE.md note
+
+Confirmed via a dedicated Explore-agent investigation before writing (`/python/fundamentals`,
+2026-07-16) — do this same check before any other new hub's first subtopic set:
+1. **`PYTHON_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+2. **Progress/search keys are `py-` PREFIXED** (`py-fundamentals`), confirmed via existing nav
+   markup. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'python/fundamentals'`, confirmed the
+   base entry already existed) — subtopic composite keys follow suit:
+   `'python/fundamentals/<subtopic-slug>'`.
+3. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked BOTH quoted and unquoted forms,
+   per the collision-detection gap this same file documents from the `/node/testing` batch).
+   Hub-prefixed to `'python-fundamentals'`, with the same `// NOTE:` comment pattern used for
+   every other resolved collision — the three nav-accordion helper calls in `app.html`
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) all use `'python-fundamentals'` too,
+   not the bare slug.
+4. **Nav accordion is INLINE in `app.html`**, not extracted into a separate `PythonNavComponent` —
+   confirmed by finding the existing `@if (currentSection() === 'python')` block directly in
+   `app.html`, same pattern as Node.js/Blazor.
+5. **CORRECTED A STALE NOTE IN THIS FILE'S OWN "Current state" SECTION**: the Python hub's page
+   wrapper/section classes were previously documented here as `.python-page`/`.python-section` —
+   this was WRONG. Direct inspection of the real `fundamentals.html`/`.scss` confirms the actual
+   classes are **`.py-page`/`.py-icon`/`.py-section`** (the icon class was already correctly
+   documented; only the wrapper and section classes were stale). **`.py-page`'s wrapper rule is
+   NOT global** (absent from `src/styles.scss`) — every Python subtopic `.scss` must include the
+   full `.py-page { max-width: 860px; margin: 0 auto; }` rule, padding `2rem 1.25rem 4rem`.
+   **Lesson: a hub's own "Current state" summary in this file can itself be stale — verify
+   against the real component files before trusting a documented class name, the same
+   verify-before-recommend discipline that applies to any other kind of memory/documentation.**
+6. **Icon is LIGHT TINT** (`background: $tint; color: $accent;`), content `🐍` at
+   `font-size: 1.8rem` — confirmed matching the documented default and the real `.scss`.
+   `$accent: #3776ab`, `$tint: #eff8ff`.
+7. `tech="javascript"` in `app-page-meta` — confirmed via the real main page (not a copy-paste
+   bug despite initially looking like one; `'python'` IS a valid value in `PageMetaComponent`'s
+   own type union, but the template has no branch for it, so every one of the hub's 21 existing
+   topic pages consistently uses `tech="javascript"` instead, matching the CSS/HTML hubs' own
+   "share the JS playground" convention) — subtopic pages should match this existing, consistent
+   hub-wide choice, not "fix" it to `tech="python"` unilaterally.
+8. **No in-browser Python runtime** — every subtopic uses `<app-code-block>`, matching the
+   established C#/SQL/Blazor/Node.js pattern; no `LivePlaygroundComponent`/`PlaygroundFile`
+   import.
+9. **A genuine rendering bug, distinct from every previously-documented gotcha**: writing a
+   literal `\n` (backslash-n) inside a plain single-quoted `.ts` string field (a `TryItExercise
+   .solution`) to represent "insert a line break here" in the rendered prose does NOT work the
+   way a template literal's `\n` would — a bare `\\n` (double-backslash-n, needed to survive the
+   JS string literal's own escaping) renders as the LITERAL two characters `\n` visible to the
+   reader, not an actual line break, since `solution` binds via plain interpolation (no HTML
+   parsing to convert anything). Caught by direct browser inspection after the build (the build
+   itself does not catch this — it's valid TS, just semantically wrong output). **Fix: never try
+   to force a line break inside a single-quoted prose field this way — rephrase with punctuation
+   (a comma, an em dash, "then") instead of relying on an embedded newline escape.**
+
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
 Confirmed via direct file inspection before the first subtopic set (`/css/box-model`, 2026-07-11):
