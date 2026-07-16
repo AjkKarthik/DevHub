@@ -2344,7 +2344,12 @@ export const routes: Routes = [
       { path: 'stacked-decorators-apply-bottom-up-but-run-top-down', loadComponent: () => import('./components/backend/python/functions-closures/subtopics/stacked-decorators-apply-bottom-up-but-run-top-down/stacked-decorators-apply-bottom-up-but-run-top-down').then(m => m.StackedDecoratorsApplyBottomUpButRunTopDownSubtopic) },
       { path: 'wraps-silently-skips-metadata-missing-from-a-partial', loadComponent: () => import('./components/backend/python/functions-closures/subtopics/wraps-silently-skips-metadata-missing-from-a-partial/wraps-silently-skips-metadata-missing-from-a-partial').then(m => m.WrapsSilentlySkipsMetadataMissingFromAPartialSubtopic) },
     ] },
-    { path: 'comprehensions-generators',loadComponent: () => import('./components/backend/python/comprehensions-generators/comprehensions-generators').then(m => m.PythonComprehensionsGenerators) },
+    { path: 'comprehensions-generators', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/comprehensions-generators/comprehensions-generators').then(m => m.PythonComprehensionsGenerators) },
+      { path: 'generator-locals-stay-alive-while-the-generator-is-alive', loadComponent: () => import('./components/backend/python/comprehensions-generators/subtopics/generator-locals-stay-alive-while-the-generator-is-alive/generator-locals-stay-alive-while-the-generator-is-alive').then(m => m.GeneratorLocalsStayAliveWhileTheGeneratorIsAliveSubtopic) },
+      { path: 'abandoning-a-generator-still-triggers-its-finally-block', loadComponent: () => import('./components/backend/python/comprehensions-generators/subtopics/abandoning-a-generator-still-triggers-its-finally-block/abandoning-a-generator-still-triggers-its-finally-block').then(m => m.AbandoningAGeneratorStillTriggersItsFinallyBlockSubtopic) },
+      { path: 'islice-does-not-support-negative-start-stop-or-step', loadComponent: () => import('./components/backend/python/comprehensions-generators/subtopics/islice-does-not-support-negative-start-stop-or-step/islice-does-not-support-negative-start-stop-or-step').then(m => m.IsliceDoesNotSupportNegativeStartStopOrStepSubtopic) },
+    ] },
     { path: 'file-io',                  loadComponent: () => import('./components/backend/python/file-io/file-io').then(m => m.PythonFileIo) },
     { path: 'oop',                      loadComponent: () => import('./components/backend/python/oop/oop').then(m => m.PythonOop) },
     { path: 'dataclasses-pydantic',     loadComponent: () => import('./components/backend/python/dataclasses-pydantic/dataclasses-pydantic').then(m => m.PythonDataclassesPydantic) },

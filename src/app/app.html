@@ -5709,7 +5709,26 @@
           </div>
         }
       }
-      <a routerLink="/python/comprehensions-generators" routerLinkActive="active"><span class="nl-text">Comprehensions &amp; Generators</span>@if(progress.isDone('py-comprehensions-generators')){<span class="nl-done">✓</span>}@if(diff('py-comprehensions-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/comprehensions-generators" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Comprehensions &amp; Generators</span>
+        @if (progress.isDone('py-comprehensions-generators')) {<span class="nl-done">✓</span>}
+        @if (diff('py-comprehensions-generators'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('comprehensions-generators')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('comprehensions-generators')"
+                  (click)="toggleSubtopics('comprehensions-generators', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('comprehensions-generators'); as pyCompGenSubs) {
+        @if (isSubtopicsExpanded('comprehensions-generators')) {
+          <div class="nav-subtopics">
+            @for (s of pyCompGenSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/file-io" routerLinkActive="active"><span class="nl-text">File I/O &amp; Pathlib</span>@if(progress.isDone('py-file-io')){<span class="nl-done">✓</span>}@if(diff('py-file-io');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

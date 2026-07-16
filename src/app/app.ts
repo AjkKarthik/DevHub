@@ -2032,6 +2032,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Stacked Decorators Apply Bottom-Up but Run Top-Down', route: '/python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down' },
     { label: 'wraps() Silently Skips Metadata Missing From a partial', route: '/python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial' },
   ],
+  'comprehensions-generators': [
+    { label: 'Generator Locals Stay Alive While the Generator Is Alive', route: '/python/comprehensions-generators/generator-locals-stay-alive-while-the-generator-is-alive' },
+    { label: 'Abandoning a Generator Still Triggers Its finally Block', route: '/python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block' },
+    { label: 'islice Does Not Support Negative start, stop, or step', route: '/python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step' },
+  ],
 };
 
 @Component({

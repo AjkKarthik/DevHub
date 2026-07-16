@@ -28930,6 +28930,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Nested comprehensions past two levels usually hurt readability more than an explicit loop would.',
     ],
   },
+  'python/comprehensions-generators/generator-locals-stay-alive-while-the-generator-is-alive': {
+    apis: ['generator frame', 'yield'],
+    related: [
+      { label: 'Comprehensions & Generators (overview)', route: '/python/comprehensions-generators' },
+      { label: 'Abandoning a Generator Still Triggers Its finally Block', route: '/python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block' },
+      { label: 'islice Does Not Support Negative start, stop, or step', route: '/python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step' },
+    ],
+    tip: 'Python\'s own docs confirm a paused generator retains all local state — a large local variable stays alive in memory for the generator\'s entire lifetime, not just while it\'s actively running, unless the generator is written so nothing large ever crosses a yield.',
+    docs: [
+      { label: 'Python Docs — Yield expressions', url: 'https://docs.python.org/3/reference/expressions.html#yield-expressions' },
+    ],
+    resources: [],
+    gotchas: [
+      'Using yield alone does not automatically make a generator memory-efficient — it depends on whether large data ever lives in a local variable across a yield.',
+      'A generator that loads everything into a local variable before its first yield gets none of the lazy-evaluation memory benefit, despite still using yield.',
+    ],
+  },
+  'python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block': {
+    apis: ['generator.close()', 'GeneratorExit', 'try/finally'],
+    related: [
+      { label: 'Comprehensions & Generators (overview)', route: '/python/comprehensions-generators' },
+      { label: 'Generator Locals Stay Alive While the Generator Is Alive', route: '/python/comprehensions-generators/generator-locals-stay-alive-while-the-generator-is-alive' },
+      { label: 'islice Does Not Support Negative start, stop, or step', route: '/python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step' },
+    ],
+    tip: 'Per Python\'s own docs, an un-exhausted generator that gets garbage collected still has close() called on it, raising GeneratorExit at the paused yield — any pending finally or with-block cleanup still runs, even if the caller stopped early.',
+    docs: [
+      { label: 'Python Docs — Generator-iterator methods', url: 'https://docs.python.org/3/reference/expressions.html#generator-iterator-methods' },
+    ],
+    resources: [],
+    gotchas: [
+      'Cleanup is guaranteed to eventually happen per the language spec, but its exact TIMING is not guaranteed to be immediate on every Python implementation.',
+      'Code with strict timing requirements (a small connection pool under load) should call close() explicitly rather than rely on garbage-collection timing.',
+    ],
+  },
+  'python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step': {
+    apis: ['itertools.islice', 'collections.deque(maxlen)', 'reversed()'],
+    related: [
+      { label: 'Comprehensions & Generators (overview)', route: '/python/comprehensions-generators' },
+      { label: 'Generator Locals Stay Alive While the Generator Is Alive', route: '/python/comprehensions-generators/generator-locals-stay-alive-while-the-generator-is-alive' },
+      { label: 'Abandoning a Generator Still Triggers Its finally Block', route: '/python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block' },
+    ],
+    tip: 'itertools.islice\'s own docs state it "does not support negative values for start, stop, or step" — a structural limitation since islice works on iterables with no known length or ability to look backward, not just an unimplemented feature.',
+    docs: [
+      { label: 'Python Docs — itertools.islice', url: 'https://docs.python.org/3/library/itertools.html#itertools.islice' },
+    ],
+    resources: [],
+    gotchas: [
+      'For "the last N items" of a lazy iterable, use collections.deque(iterable, maxlen=n) instead — still O(n) memory, still fully consumes the iterable, but never materializes the whole thing.',
+      'reversed() only works on sequences with __reversed__ or __len__/__getitem__ — not on a plain generator, which must be materialized to a list first.',
+    ],
+  },
   'python/collections-itertools': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

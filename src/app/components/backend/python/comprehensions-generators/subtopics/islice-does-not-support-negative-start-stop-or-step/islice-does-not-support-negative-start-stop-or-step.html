@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Comprehensions & Generators" topicRoute="/python/comprehensions-generators" subtopicLabel="islice Limitations" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">islice Does Not Support Negative start, stop, or step</h1>
+  <p class="page-subtitle">
+    "The equivalent of slicing for iterables" is only a partial equivalent — islice rejects negative indices and a
+    negative step entirely, by documented design.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of generator/itertools internals that look
+      simpler than they are — a generator's frame memory cost, its guaranteed-but-not-instant cleanup, and now
+      islice's real, structural limitation — each correcting a plausible but incomplete mental model with the
+      actual documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Comprehensions & Generators"
+    topicRoute="/python/comprehensions-generators"
+    [prev]="{ label: 'Abandoning a Generator Still Triggers Its finally Block', route: '/python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block' }"
+  />
+</div>

@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Comprehensions & Generators" topicRoute="/python/comprehensions-generators" subtopicLabel="Generator Cleanup" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Abandoning a Generator Still Triggers Its finally Block</h1>
+  <p class="page-subtitle">
+    Never exhausting a generator doesn't skip its cleanup — garbage collection calls close(), which raises
+    GeneratorExit at the paused yield and runs any pending finally or with-block logic.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 2.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This resolves a real question the main page's own read_lines() file-reading generator leaves open — what
+      happens if a caller stops early. The final subtopic moves to itertools.islice — a genuine gap between what
+      it looks like it should do and what it's actually documented to support.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Comprehensions & Generators"
+    topicRoute="/python/comprehensions-generators"
+    [prev]="{ label: 'Generator Locals Stay Alive While the Generator Is Alive', route: '/python/comprehensions-generators/generator-locals-stay-alive-while-the-generator-is-alive' }"
+    [next]="{ label: 'islice Does Not Support Negative start, stop, or step', route: '/python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step' }"
+  />
+</div>
