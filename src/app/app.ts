@@ -2016,6 +2016,17 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes', route: '/node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes' },
     { label: 'npm ci Deletes node_modules Before Installing', route: '/node/deployment/npm-ci-deletes-node-modules-before-installing' },
   ],
+  // NOTE: keyed 'python-fundamentals', NOT bare 'fundamentals' — the
+  // JavaScript hub already owns the bare 'fundamentals' key above (its
+  // own /javascript/fundamentals subtopics). This is the shared flat
+  // SUBTOPICS map's documented collision risk, hit for real here;
+  // resolved by hub-prefixing this one entry rather than restructuring
+  // the whole map.
+  'python-fundamentals': [
+    { label: 'Why is Sometimes Works for Small Ints and Strings', route: '/python/fundamentals/why-is-sometimes-works-for-small-ints-and-strings' },
+    { label: 'for/else Runs on Empty Iterables Too', route: '/python/fundamentals/for-else-runs-on-empty-iterables-too' },
+    { label: 'Comprehensions Get Their Own Scope in Python 3', route: '/python/fundamentals/comprehensions-get-their-own-scope-in-python-3' },
+  ],
 };
 
 @Component({

@@ -2332,7 +2332,12 @@ export const routes: Routes = [
   ] },
   { path: 'python', children: [
     { path: '',                         loadComponent: () => import('./components/backend/python/home/home').then(m => m.PythonHome) },
-    { path: 'fundamentals',             loadComponent: () => import('./components/backend/python/fundamentals/fundamentals').then(m => m.PythonFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/fundamentals/fundamentals').then(m => m.PythonFundamentals) },
+      { path: 'why-is-sometimes-works-for-small-ints-and-strings', loadComponent: () => import('./components/backend/python/fundamentals/subtopics/why-is-sometimes-works-for-small-ints-and-strings/why-is-sometimes-works-for-small-ints-and-strings').then(m => m.WhyIsSometimesWorksForSmallIntsAndStringsSubtopic) },
+      { path: 'for-else-runs-on-empty-iterables-too', loadComponent: () => import('./components/backend/python/fundamentals/subtopics/for-else-runs-on-empty-iterables-too/for-else-runs-on-empty-iterables-too').then(m => m.ForElseRunsOnEmptyIterablesTooSubtopic) },
+      { path: 'comprehensions-get-their-own-scope-in-python-3', loadComponent: () => import('./components/backend/python/fundamentals/subtopics/comprehensions-get-their-own-scope-in-python-3/comprehensions-get-their-own-scope-in-python-3').then(m => m.ComprehensionsGetTheirOwnScopeInPython3Subtopic) },
+    ] },
     { path: 'functions-closures',       loadComponent: () => import('./components/backend/python/functions-closures/functions-closures').then(m => m.PythonFunctionsClosures) },
     { path: 'comprehensions-generators',loadComponent: () => import('./components/backend/python/comprehensions-generators/comprehensions-generators').then(m => m.PythonComprehensionsGenerators) },
     { path: 'file-io',                  loadComponent: () => import('./components/backend/python/file-io/file-io').then(m => m.PythonFileIo) },

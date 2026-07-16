@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Python Fundamentals" topicRoute="/python/fundamentals" subtopicLabel="for/else Semantics" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">for/else Runs on Empty Iterables Too</h1>
+  <p class="page-subtitle">
+    else only checks whether a break happened — not whether the loop body ever ran at all, which means an empty
+    iterable takes the else branch too.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.x+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This corrects an easy over-reading of the main page's own "search and not found" for/else example. The
+      final subtopic moves to comprehensions — a genuine Python 3 scoping change the main page's own speed-focused
+      framing doesn't mention at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Python Fundamentals"
+    topicRoute="/python/fundamentals"
+    [prev]="{ label: 'Why is Sometimes Works for Small Ints and Strings', route: '/python/fundamentals/why-is-sometimes-works-for-small-ints-and-strings' }"
+    [next]="{ label: 'Comprehensions Get Their Own Scope in Python 3', route: '/python/fundamentals/comprehensions-get-their-own-scope-in-python-3' }"
+  />
+</div>

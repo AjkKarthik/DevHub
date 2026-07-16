@@ -5669,7 +5669,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/python/fundamentals" routerLinkActive="active"><span class="nl-text">Python Fundamentals</span>@if(progress.isDone('py-fundamentals')){<span class="nl-done">✓</span>}@if(diff('py-fundamentals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/fundamentals" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Python Fundamentals</span>
+        @if (progress.isDone('py-fundamentals')) {<span class="nl-done">✓</span>}
+        @if (diff('py-fundamentals'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('python-fundamentals')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('python-fundamentals')"
+                  (click)="toggleSubtopics('python-fundamentals', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('python-fundamentals'); as pyFundamentalsSubs) {
+        @if (isSubtopicsExpanded('python-fundamentals')) {
+          <div class="nav-subtopics">
+            @for (s of pyFundamentalsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/functions-closures" routerLinkActive="active"><span class="nl-text">Functions &amp; Closures</span>@if(progress.isDone('py-functions-closures')){<span class="nl-done">✓</span>}@if(diff('py-functions-closures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/python/comprehensions-generators" routerLinkActive="active"><span class="nl-text">Comprehensions &amp; Generators</span>@if(progress.isDone('py-comprehensions-generators')){<span class="nl-done">✓</span>}@if(diff('py-comprehensions-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/python/file-io" routerLinkActive="active"><span class="nl-text">File I/O &amp; Pathlib</span>@if(progress.isDone('py-file-io')){<span class="nl-done">✓</span>}@if(diff('py-file-io');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

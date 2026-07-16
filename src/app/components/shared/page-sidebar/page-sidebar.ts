@@ -28758,6 +28758,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Python passes references by value — a mutable argument can be modified in place with the change visible to the caller, but reassigning the parameter name is not.',
     ],
   },
+  'python/fundamentals/why-is-sometimes-works-for-small-ints-and-strings': {
+    apis: ['id()', 'sys.intern()', 'is'],
+    related: [
+      { label: 'Python Fundamentals (overview)', route: '/python/fundamentals' },
+      { label: 'for/else Runs on Empty Iterables Too', route: '/python/fundamentals/for-else-runs-on-empty-iterables-too' },
+      { label: 'Comprehensions Get Their Own Scope in Python 3', route: '/python/fundamentals/comprehensions-get-their-own-scope-in-python-3' },
+    ],
+    tip: 'CPython caches integers -5 to 256 and commonly interns identifier-like string literals — Python\'s own docs say this "should not be relied upon"; only == is guaranteed to check value equality.',
+    docs: [
+      { label: 'Python Docs — Data Model (object identity)', url: 'https://docs.python.org/3/reference/datamodel.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Modern CPython emits a SyntaxWarning for is comparisons written directly against literals, specifically because this caching boundary was never meant to be programmed against.',
+      'is remains correct for singleton checks (is None, is True, is False) — the issue is specifically using it for int/str value comparison.',
+    ],
+  },
+  'python/fundamentals/for-else-runs-on-empty-iterables-too': {
+    apis: ['for...else', 'break'],
+    related: [
+      { label: 'Python Fundamentals (overview)', route: '/python/fundamentals' },
+      { label: 'Why is Sometimes Works for Small Ints and Strings', route: '/python/fundamentals/why-is-sometimes-works-for-small-ints-and-strings' },
+      { label: 'Comprehensions Get Their Own Scope in Python 3', route: '/python/fundamentals/comprehensions-get-their-own-scope-in-python-3' },
+    ],
+    tip: 'else on a for loop only checks "did a break happen" — per Python\'s own docs, an empty iterable is exhausted with zero iterations and no break, so else still fires, same as a fully-iterated non-empty loop.',
+    docs: [
+      { label: 'Python Docs — The for statement', url: 'https://docs.python.org/3/reference/compound_stmts.html#the-for-statement' },
+    ],
+    resources: [],
+    gotchas: [
+      'for/else cannot distinguish "searched real items and found nothing" from "had nothing to search at all" — both hit the same else branch.',
+      'If that distinction matters, add an explicit emptiness check before the loop rather than relying on for/else to express it.',
+    ],
+  },
+  'python/fundamentals/comprehensions-get-their-own-scope-in-python-3': {
+    apis: ['list/set/dict comprehensions', 'generator expressions'],
+    related: [
+      { label: 'Python Fundamentals (overview)', route: '/python/fundamentals' },
+      { label: 'Why is Sometimes Works for Small Ints and Strings', route: '/python/fundamentals/why-is-sometimes-works-for-small-ints-and-strings' },
+      { label: 'for/else Runs on Empty Iterables Too', route: '/python/fundamentals/for-else-runs-on-empty-iterables-too' },
+    ],
+    tip: 'A comprehension runs in its own implicit nested scope in Python 3 — per the language reference, this "ensures that names assigned to in the target list don\'t leak into the enclosing scope," unlike a plain for loop.',
+    docs: [
+      { label: 'Python Docs — Displays for lists, sets, dictionaries', url: 'https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries' },
+    ],
+    resources: [],
+    gotchas: [
+      'This was a deliberate Python 3.0 change — Python 2\'s list comprehensions DID leak their loop variable into the enclosing scope.',
+      'Code relying on a comprehension\'s loop variable surviving afterward (the way a plain for loop\'s does) raises NameError instead.',
+    ],
+  },
   'python/functions-closures': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

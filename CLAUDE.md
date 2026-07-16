@@ -1363,7 +1363,8 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
   GoNavComponent at `shared/go-nav/go-nav.ts` extracts Go navigation (prevents TS2563 in app.ts).
 - **Python hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
   Blue theme `$accent: #3776ab`, tint `#eff8ff`. Search prefix `py-`. Route: `/python`.
-  CSS classes: `.python-page`, `.py-icon`, `.python-section`. Icon content: `🐍` at `font-size: 1.8rem`. `tech="javascript"`.
+  CSS classes: `.py-page`, `.py-icon`, `.py-section` (corrected 2026-07-16 — previously misdocumented as
+  `.python-page`/`.python-section`; confirmed against the real `fundamentals.html`/`.scss`). Icon content: `🐍` at `font-size: 1.8rem`. `tech="javascript"`.
   Nav groups: Foundations, OOP & Patterns, Data & Types, Async, Web & APIs, Data Science, Tooling, Reference.
   All 23 cards `available: true` in `backend/python/home/home.ts`. Progress: `pyTotal=21` in progress.service.ts.
   Python pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.

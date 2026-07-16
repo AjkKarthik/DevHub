@@ -1477,6 +1477,9 @@ const BLAZOR_LABELS: Record<string, string> = {
 
 const PYTHON_LABELS: Record<string, string> = {
   'fundamentals':              'Python Fundamentals',
+  'fundamentals/why-is-sometimes-works-for-small-ints-and-strings': 'Why is Sometimes Works for Small Ints and Strings',
+  'fundamentals/for-else-runs-on-empty-iterables-too': 'for/else Runs on Empty Iterables Too',
+  'fundamentals/comprehensions-get-their-own-scope-in-python-3': 'Comprehensions Get Their Own Scope in Python 3',
   'functions-closures':        'Functions & Closures',
   'comprehensions-generators': 'Comprehensions & Generators',
   'file-io':                   'File I/O & Pathlib',
