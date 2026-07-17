@@ -2102,6 +2102,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Autobegin Starts a New Transaction After Commit', route: '/python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit' },
     { label: 'delete-orphan Needs ORM-Tracked Disassociation', route: '/python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation' },
   ],
+  'celery': [
+    { label: 'PENDING Can’t Distinguish Unknown from Queued', route: '/python/celery/pending-state-cannot-distinguish-unknown-from-queued' },
+    { label: 'chain() Prepends One Argument, Not an Unpacked Tuple', route: '/python/celery/chain-prepends-one-argument-not-unpacked-tuple' },
+    { label: 'Redis visibility_timeout Can Redeliver Long Tasks', route: '/python/celery/redis-visibility-timeout-can-redeliver-long-tasks' },
+  ],
 };
 
 @Component({

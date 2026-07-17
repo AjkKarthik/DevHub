@@ -2422,7 +2422,12 @@ export const routes: Routes = [
       { path: 'autobegin-starts-a-new-transaction-after-commit', loadComponent: () => import('./components/backend/python/sqlalchemy/subtopics/autobegin-starts-a-new-transaction-after-commit/autobegin-starts-a-new-transaction-after-commit').then(m => m.AutobeginStartsANewTransactionAfterCommitSubtopic) },
       { path: 'delete-orphan-needs-orm-tracked-disassociation', loadComponent: () => import('./components/backend/python/sqlalchemy/subtopics/delete-orphan-needs-orm-tracked-disassociation/delete-orphan-needs-orm-tracked-disassociation').then(m => m.DeleteOrphanNeedsOrmTrackedDisassociationSubtopic) },
     ] },
-    { path: 'celery',                   loadComponent: () => import('./components/backend/python/celery/celery').then(m => m.PythonCelery) },
+    { path: 'celery', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/celery/celery').then(m => m.PythonCelery) },
+      { path: 'pending-state-cannot-distinguish-unknown-from-queued', loadComponent: () => import('./components/backend/python/celery/subtopics/pending-state-cannot-distinguish-unknown-from-queued/pending-state-cannot-distinguish-unknown-from-queued').then(m => m.PendingStateCannotDistinguishUnknownFromQueuedSubtopic) },
+      { path: 'chain-prepends-one-argument-not-unpacked-tuple', loadComponent: () => import('./components/backend/python/celery/subtopics/chain-prepends-one-argument-not-unpacked-tuple/chain-prepends-one-argument-not-unpacked-tuple').then(m => m.ChainPrependsOneArgumentNotUnpackedTupleSubtopic) },
+      { path: 'redis-visibility-timeout-can-redeliver-long-tasks', loadComponent: () => import('./components/backend/python/celery/subtopics/redis-visibility-timeout-can-redeliver-long-tasks/redis-visibility-timeout-can-redeliver-long-tasks').then(m => m.RedisVisibilityTimeoutCanRedeliverLongTasksSubtopic) },
+    ] },
     { path: 'numpy-pandas',             loadComponent: () => import('./components/backend/python/numpy-pandas/numpy-pandas').then(m => m.PythonNumpyPandas) },
     { path: 'scikit-learn',             loadComponent: () => import('./components/backend/python/scikit-learn/scikit-learn').then(m => m.PythonScikitLearn) },
     { path: 'pytest',                   loadComponent: () => import('./components/backend/python/pytest/pytest').then(m => m.PythonPytest) },

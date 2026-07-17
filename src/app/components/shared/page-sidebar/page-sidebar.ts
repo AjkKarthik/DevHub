@@ -29756,6 +29756,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Retries with exponential backoff avoid overwhelming an already-struggling downstream service with near-simultaneous retry attempts.',
     ],
   },
+  'python/celery/pending-state-cannot-distinguish-unknown-from-queued': {
+    apis: ['AsyncResult.state', 'task_track_started'],
+    related: [
+      { label: 'Celery & Task Queues (overview)', route: '/python/celery' },
+      { label: 'chain() Prepends One Argument, Not an Unpacked Tuple', route: '/python/celery/chain-prepends-one-argument-not-unpacked-tuple' },
+      { label: 'Redis visibility_timeout Can Redeliver Long Tasks', route: '/python/celery/redis-visibility-timeout-can-redeliver-long-tasks' },
+    ],
+    tip: 'Celery\'s own docs state any unknown task ID "is implied to be in the pending state" — a bogus ID and a genuinely queued task report the identical PENDING string, with no distinguishing error.',
+    docs: [
+      { label: 'Celery Docs — Task States', url: 'https://docs.celeryq.dev/en/stable/userguide/tasks.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'task_track_started adds a STARTED signal for real tasks but does nothing for a bogus ID, which never reaches any state a worker would set.',
+      'Celery has no built-in "does this task ID exist" check — track dispatched IDs independently if that distinction matters.',
+    ],
+  },
+  'python/celery/chain-prepends-one-argument-not-unpacked-tuple': {
+    apis: ['celery.chain', 'Signature._merge()'],
+    related: [
+      { label: 'Celery & Task Queues (overview)', route: '/python/celery' },
+      { label: 'PENDING Can’t Distinguish Unknown from Queued', route: '/python/celery/pending-state-cannot-distinguish-unknown-from-queued' },
+      { label: 'Redis visibility_timeout Can Redeliver Long Tasks', route: '/python/celery/redis-visibility-timeout-can-redeliver-long-tasks' },
+    ],
+    tip: 'A chain link always prepends the previous task\'s WHOLE return value as one argument — a returned tuple is never automatically unpacked into multiple arguments for the next task.',
+    docs: [
+      { label: 'Celery Docs — Canvas (chains)', url: 'https://docs.celeryq.dev/en/stable/userguide/canvas.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'The receiving task must manually destructure a tuple/list argument, or the sending task should return a dict instead.',
+      'chord callbacks use the identical mechanism — the group\'s entire results list arrives as one argument, never unpacked per-member.',
+    ],
+  },
+  'python/celery/redis-visibility-timeout-can-redeliver-long-tasks': {
+    apis: ['broker_transport_options', 'task_acks_late'],
+    related: [
+      { label: 'Celery & Task Queues (overview)', route: '/python/celery' },
+      { label: 'PENDING Can’t Distinguish Unknown from Queued', route: '/python/celery/pending-state-cannot-distinguish-unknown-from-queued' },
+      { label: 'chain() Prepends One Argument, Not an Unpacked Tuple', route: '/python/celery/chain-prepends-one-argument-not-unpacked-tuple' },
+    ],
+    tip: 'Redis\'s default visibility_timeout is 1 hour — a task with acks_late=True that runs longer gets redelivered to another worker mid-run, with no actual crash required.',
+    docs: [
+      { label: 'Celery Docs — Redis Broker (Caveats)', url: 'https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/redis.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Celery\'s own docs warn a task exceeding visibility_timeout can execute "again, and again in a loop."',
+      'Raising visibility_timeout app-wide is explicitly discouraged — scope it per-queue instead, matched to that queue\'s realistic task durations.',
+    ],
+  },
   'python/interview-prep': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

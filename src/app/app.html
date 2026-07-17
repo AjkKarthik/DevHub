@@ -5985,7 +5985,26 @@
           </div>
         }
       }
-      <a routerLink="/python/celery" routerLinkActive="active"><span class="nl-text">Celery &amp; Task Queues</span>@if(progress.isDone('py-celery')){<span class="nl-done">✓</span>}@if(diff('py-celery');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/celery" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Celery &amp; Task Queues</span>
+        @if (progress.isDone('py-celery')) {<span class="nl-done">✓</span>}
+        @if (diff('py-celery'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('celery')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('celery')"
+                  (click)="toggleSubtopics('celery', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('celery'); as pyCelerySubs) {
+        @if (isSubtopicsExpanded('celery')) {
+          <div class="nav-subtopics">
+            @for (s of pyCelerySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

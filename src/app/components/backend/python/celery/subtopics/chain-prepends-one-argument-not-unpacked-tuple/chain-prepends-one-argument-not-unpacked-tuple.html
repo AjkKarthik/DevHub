@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Celery &amp; Task Queues" topicRoute="/python/celery" subtopicLabel="Chain Argument Passing" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">chain() Prepends One Argument, Not an Unpacked Tuple</h1>
+  <p class="page-subtitle">
+    A chain link always hands the previous task's entire return value to the next task as ONE argument — a
+    returned tuple never automatically splits into separate positional arguments.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Celery 5.x+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own chain example only ever passes a single string between tasks, hiding this mechanic — this
+      subtopic shows what actually happens with a multi-value return, and how it explains the main page's own chord
+      callback signature too. The final subtopic moves to a broker-level concern: what happens when a task simply
+      runs longer than Redis is willing to wait for it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Celery &amp; Task Queues"
+    topicRoute="/python/celery"
+    [prev]="{ label: 'PENDING Can’t Distinguish Unknown from Queued', route: '/python/celery/pending-state-cannot-distinguish-unknown-from-queued' }"
+    [next]="{ label: 'Redis visibility_timeout Can Redeliver Long Tasks', route: '/python/celery/redis-visibility-timeout-can-redeliver-long-tasks' }"
+  />
+</div>

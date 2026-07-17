@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Celery &amp; Task Queues" topicRoute="/python/celery" subtopicLabel="PENDING State Ambiguity" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">PENDING Can't Distinguish Unknown from Queued</h1>
+  <p class="page-subtitle">
+    A genuinely queued task and a completely bogus task ID report the identical "PENDING" state — Celery has no
+    separate signal for "this task never existed."
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Celery 5.x+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory never digs into AsyncResult states beyond mentioning result.get() — this subtopic
+      fills that gap with a documented ambiguity worth knowing before building any status-polling endpoint. The
+      next subtopic moves to canvas mechanics: what a chain link actually does with a task's return value.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Celery &amp; Task Queues"
+    topicRoute="/python/celery"
+    [next]="{ label: 'chain() Prepends One Argument, Not an Unpacked Tuple', route: '/python/celery/chain-prepends-one-argument-not-unpacked-tuple' }"
+  />
+</div>
