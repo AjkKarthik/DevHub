@@ -1354,6 +1354,76 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
     the "with" and "without" cases showed the same trapped-child result until this was caught and
     fixed by switching to `position: relative` on a `position: fixed` OUTER wrapper only).
 
+### Go hub subtopic wiring — first `*NavComponent`-based hub to get Phase 10 subtopics; a real structural fix required
+
+Confirmed via a dedicated Explore-agent investigation before writing (`/go/fundamentals`,
+2026-07-17) — do this same check before any other `*NavComponent`-based hub's first
+subtopic set (Redis, GraphQL, Messaging, Testing, DSA, AI, DevOps, Containers, AWS, Azure,
+Linux, Terraform, Service Mesh, Sysdesign, Arch Patterns, Design Patterns, Security, API
+Design, Observability, Mongo — every hub whose nav is extracted into its own component
+rather than inline in `app.html`):
+
+1. **`GO_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are
+   bare too (`'fundamentals/<subtopic-slug>'`).
+2. **Progress/search keys are `go-` PREFIXED** (`go-fundamentals`). **`SIDEBAR_MAP` keys
+   are FULL-PATH PREFIXED** (`'go/fundamentals'`, confirmed the base entry already
+   existed) — subtopic composite keys follow suit: `'go/fundamentals/<subtopic-slug>'`.
+3. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and
+   unquoted forms). Hub-prefixed to `'go-fundamentals'`, same `// NOTE:` comment pattern
+   as every other resolved collision.
+4. **THE STRUCTURAL DISCOVERY — Go's own nav is NOT inline in `app.html` at all.** Unlike
+   every hub whose Phase 10 subtopics had been built before this one, Go's left-nav is a
+   dedicated standalone component, `GoNavComponent` at `shared/go-nav/go-nav.ts` (built
+   earlier specifically "to prevent TS2563 in app.ts" per this file's own "Current state"
+   notes) — confirmed by finding **no** `@if (currentSection() === 'go')` block anywhere in
+   `app.html`, and confirmed `GoNavComponent` had **zero** subtopics-accordion support:
+   no `subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` methods, no accordion markup,
+   nothing. Adding subtopic support meant building this from scratch for the component,
+   not copying an existing inline block the way every previous hub's pilot did.
+5. **The naive fix — importing `SUBTOPICS` from `app.ts` into `go-nav.ts` — creates a
+   circular import** and must not be done: `app.ts` already imports `GoNavComponent`
+   (`import { GoNavComponent } from './components/shared/go-nav/go-nav'`), so
+   `go-nav.ts` importing anything back from `'../../../app'` forms a cycle. **The actual
+   fix**: extracted the ENTIRE `SUBTOPICS: Record<string, SubtopicNavEntry[]>` map (at the
+   time, ~2100 lines covering every hub's subtopics so far) and the `SubtopicNavEntry`
+   interface OUT of `app.ts` into a new standalone file, **`src/app/data/subtopics.ts`**,
+   with both `export`ed. `app.ts` now does
+   `import { SUBTOPICS, SubtopicNavEntry } from './data/subtopics'` instead of declaring
+   the map locally — its own `subtopicsOf()`/`isSubtopicsExpanded()`/`toggleSubtopics()`/
+   `autoExpandForCurrentUrl()` methods are otherwise byte-identical, just reading from the
+   imported binding instead of a local `const`. This is now the **shared, canonical
+   location** for the subtopics map — every future hub's own `SUBTOPICS` entries (whether
+   consumed by inline `app.html` markup or a `*NavComponent`) get added to
+   `src/app/data/subtopics.ts`, not `app.ts`.
+6. **`GoNavComponent` needed its own LOCAL copy of the accordion-state pattern**, since it
+   is a separate component instance with no access to `AppComponent`'s own private state —
+   added directly to the component class: a private `expandedTopics = signal<Set<string>>
+   (new Set())`, the same three methods (`subtopicsOf`, `isSubtopicsExpanded`,
+   `toggleSubtopics`) reading/writing that LOCAL signal (not `AppComponent`'s), and the
+   identical router-subscription-based `autoExpandForCurrentUrl()` logic in the
+   constructor (`inject(Router)`, subscribe to `NavigationEnd`, call once eagerly too for
+   the initial render). The template markup itself (chevron toggle button + nested
+   `<div class="nav-subtopics">` list) is otherwise the exact same block copied from any
+   inline-`app.html` hub, just referencing the component's own local methods instead of
+   `AppComponent`'s.
+7. **No `.go-page` wrapper-global gotcha** — confirmed already documented and current:
+   `.go-page` is defined in the topic's OWN component `.scss` (not globally in
+   `src/styles.scss`), so every subtopic `.scss` needs the standard
+   `.go-page { max-width: 860px; margin: 0 auto; }` redeclaration, same as every other
+   non-global hub.
+8. **A raw Go backtick inside a code sample remains the standing hazard this file already
+   documented in the Go hub's own main "Current state" line** ("Go backticks in code
+   examples must use string concatenation — they terminate TS template literals") — this
+   pilot batch's own Go code samples happened to need zero raw backticks (no Go raw-string
+   literals were used), so the hazard didn't surface here, but the discipline still applies
+   to any future Go subtopic whose sample code needs one.
+9. **Theme, icon, `tech=` attribute**: unchanged from the hub's own established values —
+   `$accent: #00add8`, `$tint: #e8f8fd`, `.go-page`/`.go-icon`/`.go-section` CSS classes,
+   icon content the literal text `Go`, `tech="javascript"` in `app-page-meta` (Go pages
+   share the JS/TS playground and run-it links, same as CSS/HTML/Node.js/Python).
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -1424,6 +1494,9 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
   Challenge.language must be `'typescript'` — never `'go'`. `{}` in HTML must be escaped as `&#123;&#125;`.
   Go backticks in code examples must use string concatenation — they terminate TS template literals.
   GoNavComponent at `shared/go-nav/go-nav.ts` extracts Go navigation (prevents TS2563 in app.ts).
+  Phase 10: 1 of 21 topics have subtopics (`/go/fundamentals`, pilot batch, 2026-07-17) — see
+  "Go hub subtopic wiring" section above for the `SUBTOPICS` circular-import fix
+  (`src/app/data/subtopics.ts`) every future `*NavComponent`-based hub's own pilot needs too.
 - **Python hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
   Blue theme `$accent: #3776ab`, tint `#eff8ff`. Search prefix `py-`. Route: `/python`.
   CSS classes: `.py-page`, `.py-icon`, `.py-section` (corrected 2026-07-16 — previously misdocumented as
