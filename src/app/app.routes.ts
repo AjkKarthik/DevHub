@@ -2392,7 +2392,12 @@ export const routes: Routes = [
       { path: 'gather-does-not-cancel-siblings-on-failure', loadComponent: () => import('./components/backend/python/asyncio/subtopics/gather-does-not-cancel-siblings-on-failure/gather-does-not-cancel-siblings-on-failure').then(m => m.GatherDoesNotCancelSiblingsOnFailureSubtopic) },
       { path: 'shield-protects-inner-work-not-the-outer-awaiter', loadComponent: () => import('./components/backend/python/asyncio/subtopics/shield-protects-inner-work-not-the-outer-awaiter/shield-protects-inner-work-not-the-outer-awaiter').then(m => m.ShieldProtectsInnerWorkNotTheOuterAwaiterSubtopic) },
     ] },
-    { path: 'threading-multiprocessing',loadComponent: () => import('./components/backend/python/threading-multiprocessing/threading-multiprocessing').then(m => m.PythonThreadingMultiprocessing) },
+    { path: 'threading-multiprocessing', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/threading-multiprocessing/threading-multiprocessing').then(m => m.PythonThreadingMultiprocessing) },
+      { path: 'an-unread-future-exception-is-silently-swallowed', loadComponent: () => import('./components/backend/python/threading-multiprocessing/subtopics/an-unread-future-exception-is-silently-swallowed/an-unread-future-exception-is-silently-swallowed').then(m => m.AnUnreadFutureExceptionIsSilentlySwallowedSubtopic) },
+      { path: 'fork-vs-spawn-changes-what-a-child-process-inherits', loadComponent: () => import('./components/backend/python/threading-multiprocessing/subtopics/fork-vs-spawn-changes-what-a-child-process-inherits/fork-vs-spawn-changes-what-a-child-process-inherits').then(m => m.ForkVsSpawnChangesWhatAChildProcessInheritsSubtopic) },
+      { path: 'a-crashed-worker-breaks-the-whole-process-pool', loadComponent: () => import('./components/backend/python/threading-multiprocessing/subtopics/a-crashed-worker-breaks-the-whole-process-pool/a-crashed-worker-breaks-the-whole-process-pool').then(m => m.ACrashedWorkerBreaksTheWholeProcessPoolSubtopic) },
+    ] },
     { path: 'concurrency-patterns',     loadComponent: () => import('./components/backend/python/concurrency-patterns/concurrency-patterns').then(m => m.PythonConcurrencyPatterns) },
     { path: 'fastapi',                  loadComponent: () => import('./components/backend/python/fastapi/fastapi').then(m => m.PythonFastapi) },
     { path: 'django',                   loadComponent: () => import('./components/backend/python/django/django').then(m => m.PythonDjango) },

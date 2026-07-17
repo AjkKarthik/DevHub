@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Threading & Multiprocessing" topicRoute="/python/threading-multiprocessing" subtopicLabel="BrokenProcessPool" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">A Crashed Worker Breaks the Whole Process Pool</h1>
+  <p class="page-subtitle">
+    A non-clean worker crash doesn't just fail its own task — Python's own docs confirm it poisons the whole
+    executor, failing every other pending and future submission too.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 3.3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of threading/multiprocessing internals that
+      look simpler than they are — Future's silent-failure mode, fork/spawn's real inheritance difference, and now
+      BrokenProcessPool's pool-wide blast radius — each correcting a plausible but incomplete mental model with
+      the actual documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Threading & Multiprocessing"
+    topicRoute="/python/threading-multiprocessing"
+    [prev]="{ label: 'fork vs. spawn Changes What a Child Process Inherits', route: '/python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits' }"
+  />
+</div>

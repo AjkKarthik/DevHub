@@ -29384,6 +29384,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Deadlock from acquiring multiple locks in inconsistent order across code paths is a common bug — always acquire in a consistent, globally-agreed order.',
     ],
   },
+  'python/threading-multiprocessing/an-unread-future-exception-is-silently-swallowed': {
+    apis: ['Future.result()', 'Future.exception()'],
+    related: [
+      { label: 'Threading & Multiprocessing (overview)', route: '/python/threading-multiprocessing' },
+      { label: 'fork vs. spawn Changes What a Child Process Inherits', route: '/python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits' },
+      { label: 'A Crashed Worker Breaks the Whole Process Pool', route: '/python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool' },
+    ],
+    tip: 'A submitted task\'s exception is stored on its Future, not raised automatically — Python\'s own docs describe it surfacing only via .result() or .exception(), with no documented logging if neither is ever called.',
+    docs: [
+      { label: 'Python Docs — concurrent.futures (Future)', url: 'https://docs.python.org/3/library/concurrent.futures.html#future-objects' },
+    ],
+    resources: [],
+    gotchas: [
+      'Side-effect-only tasks (no return value needed) still need .result()/.exception() checked — otherwise a failure has no documented way to surface anywhere.',
+      'A program can report normal, error-free completion while individual submitted tasks silently failed.',
+    ],
+  },
+  'python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits': {
+    apis: ['multiprocessing.get_start_method()', 'os.fork()'],
+    related: [
+      { label: 'Threading & Multiprocessing (overview)', route: '/python/threading-multiprocessing' },
+      { label: 'An Unread Future Exception Is Silently Swallowed', route: '/python/threading-multiprocessing/an-unread-future-exception-is-silently-swallowed' },
+      { label: 'A Crashed Worker Breaks the Whole Process Pool', route: '/python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool' },
+    ],
+    tip: 'fork copies parent memory via os.fork(); spawn starts a fresh interpreter re-importing __main__. Windows/macOS default to spawn (macOS since 3.8, for safety) — Linux\'s own default is changing again in Python 3.14.',
+    docs: [
+      { label: 'Python Docs — multiprocessing (start methods)', url: 'https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is the deeper mechanism behind the main page\'s own Windows "if __name__ == \'__main__\'" requirement.',
+      'The reliable, cross-platform-safe pattern is passing all needed state explicitly as arguments, never relying on implicit inheritance.',
+    ],
+  },
+  'python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool': {
+    apis: ['concurrent.futures.process.BrokenProcessPool'],
+    related: [
+      { label: 'Threading & Multiprocessing (overview)', route: '/python/threading-multiprocessing' },
+      { label: 'An Unread Future Exception Is Silently Swallowed', route: '/python/threading-multiprocessing/an-unread-future-exception-is-silently-swallowed' },
+      { label: 'fork vs. spawn Changes What a Child Process Inherits', route: '/python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits' },
+    ],
+    tip: 'A worker terminating non-cleanly (a crash) raises BrokenProcessPool — Python\'s own docs confirm this affects the executor broadly, not just the one task; every other pending/future submission on that instance also fails.',
+    docs: [
+      { label: 'Python Docs — concurrent.futures (BrokenProcessPool)', url: 'https://docs.python.org/3/library/concurrent.futures.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'No amount of per-task try/except fixes this — the POOL itself is broken and must be discarded and recreated, not retried.',
+      'A rare per-task crash probability compounds into a real operational concern over enough total task volume in a long-running service.',
+    ],
+  },
   'python/concurrency-patterns': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

@@ -2077,6 +2077,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'gather() Does Not Cancel Siblings on Failure', route: '/python/asyncio/gather-does-not-cancel-siblings-on-failure' },
     { label: 'shield() Protects Inner Work, Not the Outer Awaiter', route: '/python/asyncio/shield-protects-inner-work-not-the-outer-awaiter' },
   ],
+  'threading-multiprocessing': [
+    { label: 'An Unread Future Exception Is Silently Swallowed', route: '/python/threading-multiprocessing/an-unread-future-exception-is-silently-swallowed' },
+    { label: 'fork vs. spawn Changes What a Child Process Inherits', route: '/python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits' },
+    { label: 'A Crashed Worker Breaks the Whole Process Pool', route: '/python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool' },
+  ],
 };
 
 @Component({

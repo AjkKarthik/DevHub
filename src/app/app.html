@@ -5881,7 +5881,26 @@
           </div>
         }
       }
-      <a routerLink="/python/threading-multiprocessing" routerLinkActive="active"><span class="nl-text">Threading &amp; Multiprocessing</span>@if(progress.isDone('py-threading-multiprocessing')){<span class="nl-done">✓</span>}@if(diff('py-threading-multiprocessing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/threading-multiprocessing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Threading &amp; Multiprocessing</span>
+        @if (progress.isDone('py-threading-multiprocessing')) {<span class="nl-done">✓</span>}
+        @if (diff('py-threading-multiprocessing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('threading-multiprocessing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('threading-multiprocessing')"
+                  (click)="toggleSubtopics('threading-multiprocessing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('threading-multiprocessing'); as pyThreadingSubs) {
+        @if (isSubtopicsExpanded('threading-multiprocessing')) {
+          <div class="nav-subtopics">
+            @for (s of pyThreadingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/concurrency-patterns" routerLinkActive="active"><span class="nl-text">Concurrency Patterns</span>@if(progress.isDone('py-concurrency-patterns')){<span class="nl-done">✓</span>}@if(diff('py-concurrency-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
