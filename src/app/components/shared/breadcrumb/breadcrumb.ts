@@ -1557,6 +1557,9 @@ const PYTHON_LABELS: Record<string, string> = {
   'packaging/pip-resolver-refuses-conflicting-requirements': 'pip’s Resolver Refuses Conflicting Requirements Since 20.3',
   'packaging/pip-freeze-editable-installs-output-local-path': 'pip freeze Outputs a Local Path for Editable Installs',
   'debugging-profiling':       'Debugging & Profiling',
+  'debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion': 'cProfile Overhead Distorts Tight Loops and Recursion',
+  'debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback': 'tracemalloc Defaults to One Frame of Traceback',
+  'debugging-profiling/gc-module-only-matters-for-reference-cycles': 'The gc Module Only Matters for Reference Cycles',
   'cheatsheet':                'Python Cheat Sheet',
   'interview-prep':            'Python Interview Prep',
 };

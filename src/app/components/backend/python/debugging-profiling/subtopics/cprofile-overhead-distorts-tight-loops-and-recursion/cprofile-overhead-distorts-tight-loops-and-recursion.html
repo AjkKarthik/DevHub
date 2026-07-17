@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Debugging &amp; Profiling" topicRoute="/python/debugging-profiling" subtopicLabel="cProfile Overhead" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">cProfile Overhead Distorts Tight Loops and Recursion</h1>
+  <p class="page-subtitle">
+    cProfile instruments every call and return — Python's own docs confirm functions called many times "typically
+    accumulate" measurement error, inflating their reported cost.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Python 3.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory presents cProfile's tottime and cumtime as straightforward measurements without
+      mentioning this documented distortion — this subtopic fills that gap. The next subtopic stays with memory
+      tooling instead: what tracemalloc actually captures by default, and what it misses.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Debugging &amp; Profiling"
+    topicRoute="/python/debugging-profiling"
+    [next]="{ label: 'tracemalloc Defaults to One Frame of Traceback', route: '/python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback' }"
+  />
+</div>

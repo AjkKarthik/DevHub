@@ -6093,7 +6093,26 @@
           </div>
         }
       }
-      <a routerLink="/python/debugging-profiling" routerLinkActive="active"><span class="nl-text">Debugging &amp; Profiling</span>@if(progress.isDone('py-debugging-profiling')){<span class="nl-done">✓</span>}@if(diff('py-debugging-profiling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/debugging-profiling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Debugging &amp; Profiling</span>
+        @if (progress.isDone('py-debugging-profiling')) {<span class="nl-done">✓</span>}
+        @if (diff('py-debugging-profiling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('debugging-profiling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('debugging-profiling')"
+                  (click)="toggleSubtopics('debugging-profiling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('debugging-profiling'); as pyDebugSubs) {
+        @if (isSubtopicsExpanded('debugging-profiling')) {
+          <div class="nav-subtopics">
+            @for (s of pyDebugSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

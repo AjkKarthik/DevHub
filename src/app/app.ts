@@ -2127,6 +2127,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'pip’s Resolver Refuses Conflicting Requirements Since 20.3', route: '/python/packaging/pip-resolver-refuses-conflicting-requirements' },
     { label: 'pip freeze Outputs a Local Path for Editable Installs', route: '/python/packaging/pip-freeze-editable-installs-output-local-path' },
   ],
+  'debugging-profiling': [
+    { label: 'cProfile Overhead Distorts Tight Loops and Recursion', route: '/python/debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion' },
+    { label: 'tracemalloc Defaults to One Frame of Traceback', route: '/python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback' },
+    { label: 'The gc Module Only Matters for Reference Cycles', route: '/python/debugging-profiling/gc-module-only-matters-for-reference-cycles' },
+  ],
 };
 
 @Component({

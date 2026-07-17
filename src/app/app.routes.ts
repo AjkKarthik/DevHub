@@ -2452,7 +2452,12 @@ export const routes: Routes = [
       { path: 'pip-resolver-refuses-conflicting-requirements', loadComponent: () => import('./components/backend/python/packaging/subtopics/pip-resolver-refuses-conflicting-requirements/pip-resolver-refuses-conflicting-requirements').then(m => m.PipResolverRefusesConflictingRequirementsSubtopic) },
       { path: 'pip-freeze-editable-installs-output-local-path', loadComponent: () => import('./components/backend/python/packaging/subtopics/pip-freeze-editable-installs-output-local-path/pip-freeze-editable-installs-output-local-path').then(m => m.PipFreezeEditableInstallsOutputLocalPathSubtopic) },
     ] },
-    { path: 'debugging-profiling',      loadComponent: () => import('./components/backend/python/debugging-profiling/debugging-profiling').then(m => m.PythonDebuggingProfiling) },
+    { path: 'debugging-profiling', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/debugging-profiling/debugging-profiling').then(m => m.PythonDebuggingProfiling) },
+      { path: 'cprofile-overhead-distorts-tight-loops-and-recursion', loadComponent: () => import('./components/backend/python/debugging-profiling/subtopics/cprofile-overhead-distorts-tight-loops-and-recursion/cprofile-overhead-distorts-tight-loops-and-recursion').then(m => m.CprofileOverheadDistortsTightLoopsAndRecursionSubtopic) },
+      { path: 'tracemalloc-defaults-to-one-frame-of-traceback', loadComponent: () => import('./components/backend/python/debugging-profiling/subtopics/tracemalloc-defaults-to-one-frame-of-traceback/tracemalloc-defaults-to-one-frame-of-traceback').then(m => m.TracemallocDefaultsToOneFrameOfTracebackSubtopic) },
+      { path: 'gc-module-only-matters-for-reference-cycles', loadComponent: () => import('./components/backend/python/debugging-profiling/subtopics/gc-module-only-matters-for-reference-cycles/gc-module-only-matters-for-reference-cycles').then(m => m.GcModuleOnlyMattersForReferenceCyclesSubtopic) },
+    ] },
     { path: 'cheatsheet',               loadComponent: () => import('./components/backend/python/cheatsheet/cheatsheet').then(m => m.PythonCheatsheet) },
     { path: 'interview-prep',           loadComponent: () => import('./components/backend/python/interview-prep/interview-prep').then(m => m.PythonInterviewPrep) },
   ] },

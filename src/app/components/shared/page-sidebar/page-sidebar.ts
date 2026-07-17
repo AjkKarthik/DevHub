@@ -29886,6 +29886,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A debugger is best for understanding WHY logic produces an unexpected value; a profiler is best for WHERE time/memory is spent — conflating the two wastes debugging effort.',
     ],
   },
+  'python/debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion': {
+    apis: ['cProfile.Profile', 'py-spy'],
+    related: [
+      { label: 'Debugging & Profiling (overview)', route: '/python/debugging-profiling' },
+      { label: 'tracemalloc Defaults to One Frame of Traceback', route: '/python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback' },
+      { label: 'The gc Module Only Matters for Reference Cycles', route: '/python/debugging-profiling/gc-module-only-matters-for-reference-cycles' },
+    ],
+    tip: 'Python\'s own profile docs warn functions "called many times, or call many functions, will typically accumulate this error" — cProfile\'s own per-call instrumentation cost can dominate a trivial function\'s reported tottime.',
+    docs: [
+      { label: 'Python Docs — profile / cProfile', url: 'https://docs.python.org/3/library/profile.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A candidate hot function that is ALSO called an unusually large number of times deserves cross-checking with py-spy, which has no per-call instrumentation cost.',
+      'Narrowing cProfile\'s scope to just the suspected function (already the main page\'s own advice) also reduces this accumulated distortion.',
+    ],
+  },
+  'python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback': {
+    apis: ['tracemalloc.start(nframe)', 'snapshot.statistics("traceback")'],
+    related: [
+      { label: 'Debugging & Profiling (overview)', route: '/python/debugging-profiling' },
+      { label: 'cProfile Overhead Distorts Tight Loops and Recursion', route: '/python/debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion' },
+      { label: 'The gc Module Only Matters for Reference Cycles', route: '/python/debugging-profiling/gc-module-only-matters-for-reference-cycles' },
+    ],
+    tip: 'Python\'s own docs state tracemalloc.start() defaults to nframe=1 — a shared helper called from many places collapses every caller into one line unless a deeper frame count is requested up front.',
+    docs: [
+      { label: 'Python Docs — tracemalloc', url: 'https://docs.python.org/3/library/tracemalloc.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A larger nframe alone is not enough — statistics must also be grouped by "traceback" (not "lineno") to actually surface the deeper caller chain.',
+      'Deeper frame capture has its own memory/CPU cost — reach for it deliberately when a shared allocation site needs disambiguating, not as a default.',
+    ],
+  },
+  'python/debugging-profiling/gc-module-only-matters-for-reference-cycles': {
+    apis: ['gc.collect()', 'weakref.ref'],
+    related: [
+      { label: 'Debugging & Profiling (overview)', route: '/python/debugging-profiling' },
+      { label: 'cProfile Overhead Distorts Tight Loops and Recursion', route: '/python/debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion' },
+      { label: 'tracemalloc Defaults to One Frame of Traceback', route: '/python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback' },
+    ],
+    tip: 'Python\'s own gc docs confirm the collector "supplements" reference counting — ordinary objects are freed immediately with no gc.collect() involved; the cyclic collector exists only for reference cycles refcounting cannot resolve alone.',
+    docs: [
+      { label: 'Python Docs — gc', url: 'https://docs.python.org/3/library/gc.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'gc.collect() consistently finding thousands of objects is a signal of ongoing cycle CREATION somewhere in the code, not routine, healthy cleanup.',
+      'An ever-growing cache with no eviction is a genuine memory leak but involves no cycle at all — gc.collect() would find nothing wrong with it.',
+    ],
+  },
   'python/packaging': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
