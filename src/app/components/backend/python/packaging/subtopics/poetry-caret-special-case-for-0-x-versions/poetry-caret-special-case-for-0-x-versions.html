@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Python Packaging &amp; venv" topicRoute="/python/packaging" subtopicLabel="Poetry Caret Semantics" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Poetry's Caret Has a Special Case for 0.x Versions</h1>
+  <p class="page-subtitle">
+    ^1.2.3 fixes the major version — but ^0.2.3 fixes the minor version instead, and ^0.0.3 fixes the patch
+    version. The rule is "the left-most non-zero digit," not "the major version."
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Poetry" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory states the caret rule with only a post-1.0 example — this subtopic covers the
+      documented nested special case that example doesn't reveal. The next subtopic leaves Poetry behind for a
+      pip-specific mechanic: what actually happens when two installed packages have conflicting requirements.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Python Packaging &amp; venv"
+    topicRoute="/python/packaging"
+    [next]="{ label: 'pip’s Resolver Refuses Conflicting Requirements Since 20.3', route: '/python/packaging/pip-resolver-refuses-conflicting-requirements' }"
+  />
+</div>

@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Python Packaging &amp; venv" topicRoute="/python/packaging" subtopicLabel="pip freeze and Editable Installs" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">pip freeze Outputs a Local Path for Editable Installs</h1>
+  <p class="page-subtitle">
+    A plain pip freeze captures an editable-installed project as a machine-specific -e path line, not a version
+    pin — making the resulting requirements.txt fail on any other machine.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="pip" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory recommends both pip install -e . for development and pip freeze &gt;
+      requirements.txt for reproducibility, without covering how the two interact — this subtopic fills that gap.
+      Together with the previous two subtopics, this completes the pattern: how Poetry's caret behaves differently
+      for pre-1.0 versions, how pip's resolver handles genuine conflicts, and what pip freeze actually captures
+      for a locally-developed package.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Python Packaging &amp; venv"
+    topicRoute="/python/packaging"
+    [prev]="{ label: 'pip’s Resolver Refuses Conflicting Requirements Since 20.3', route: '/python/packaging/pip-resolver-refuses-conflicting-requirements' }"
+  />
+</div>

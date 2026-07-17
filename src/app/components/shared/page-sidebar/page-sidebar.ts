@@ -29897,6 +29897,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'pyproject.toml has become the modern standard, replacing the older setup.py-based approach.',
     ],
   },
+  'python/packaging/poetry-caret-special-case-for-0-x-versions': {
+    apis: ['Poetry caret requirements'],
+    related: [
+      { label: 'Packaging & venv (overview)', route: '/python/packaging' },
+      { label: 'pip’s Resolver Refuses Conflicting Requirements Since 20.3', route: '/python/packaging/pip-resolver-refuses-conflicting-requirements' },
+      { label: 'pip freeze Outputs a Local Path for Editable Installs', route: '/python/packaging/pip-freeze-editable-installs-output-local-path' },
+    ],
+    tip: 'Poetry\'s own docs state the caret rule as "the left-most non-zero digit" staying fixed — for a 0.x version that\'s the minor (or patch) digit, not the major, so ^0.2.3 allows only <0.3.0.',
+    docs: [
+      { label: 'Poetry Docs — Dependency Specification', url: 'https://python-poetry.org/docs/dependency-specification/' },
+    ],
+    resources: [],
+    gotchas: [
+      '^0.0.3 is the tightest case — >=0.0.3, <0.0.4 — since Poetry treats 0.0.x as "not considered compatible with any other version" at all.',
+      'A pre-1.0 dependency constraint that visually looks as permissive as a post-1.0 one can silently block a minor version bump poetry update would otherwise pick up.',
+    ],
+  },
+  'python/packaging/pip-resolver-refuses-conflicting-requirements': {
+    apis: ['pip 20.3+ resolver', 'ResolutionImpossible'],
+    related: [
+      { label: 'Packaging & venv (overview)', route: '/python/packaging' },
+      { label: 'Poetry’s Caret Has a Special Case for 0.x Versions', route: '/python/packaging/poetry-caret-special-case-for-0-x-versions' },
+      { label: 'pip freeze Outputs a Local Path for Editable Installs', route: '/python/packaging/pip-freeze-editable-installs-output-local-path' },
+    ],
+    tip: 'pip\'s own docs confirm the resolver defaulted to the new, stricter version since pip 20.3 — it "will no longer install a combination of packages that is mutually inconsistent," refusing with a named conflict instead.',
+    docs: [
+      { label: 'pip Docs — Dependency Resolution', url: 'https://pip.pypa.io/en/stable/topics/dependency-resolution/' },
+    ],
+    resources: [],
+    gotchas: [
+      'The strict check is scoped to one install command — pip explicitly documents it "may break already-installed packages" across separate installs; pip check audits an existing environment.',
+      'A pip 19.x "successful" install of conflicting packages does not mean the packages are compatible — it means the old resolver never checked.',
+    ],
+  },
+  'python/packaging/pip-freeze-editable-installs-output-local-path': {
+    apis: ['pip freeze --exclude-editable'],
+    related: [
+      { label: 'Packaging & venv (overview)', route: '/python/packaging' },
+      { label: 'Poetry’s Caret Has a Special Case for 0.x Versions', route: '/python/packaging/poetry-caret-special-case-for-0-x-versions' },
+      { label: 'pip’s Resolver Refuses Conflicting Requirements Since 20.3', route: '/python/packaging/pip-resolver-refuses-conflicting-requirements' },
+    ],
+    tip: 'A plain pip freeze captures a pip install -e . package as an -e <local path> line, not a version pin — per pip\'s own documented requirement-line format — making requirements.txt non-portable unless generated with --exclude-editable.',
+    docs: [
+      { label: 'pip Docs — pip freeze', url: 'https://pip.pypa.io/en/stable/cli/pip_freeze/' },
+    ],
+    resources: [],
+    gotchas: [
+      'The two-step fix: pip freeze --exclude-editable for portable third-party pins, plus a separate documented pip install -e . step for the project itself.',
+      'This affects any project following the main page\'s own recommended editable-install development workflow, not just unusual VCS-based setups.',
+    ],
+  },
   'python/celery': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

@@ -6073,7 +6073,26 @@
           </div>
         }
       }
-      <a routerLink="/python/packaging" routerLinkActive="active"><span class="nl-text">Packaging &amp; venv</span>@if(progress.isDone('py-packaging')){<span class="nl-done">✓</span>}@if(diff('py-packaging');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/packaging" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Packaging &amp; venv</span>
+        @if (progress.isDone('py-packaging')) {<span class="nl-done">✓</span>}
+        @if (diff('py-packaging'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('packaging')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('packaging')"
+                  (click)="toggleSubtopics('packaging', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('packaging'); as pyPackagingSubs) {
+        @if (isSubtopicsExpanded('packaging')) {
+          <div class="nav-subtopics">
+            @for (s of pyPackagingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/debugging-profiling" routerLinkActive="active"><span class="nl-text">Debugging &amp; Profiling</span>@if(progress.isDone('py-debugging-profiling')){<span class="nl-done">✓</span>}@if(diff('py-debugging-profiling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

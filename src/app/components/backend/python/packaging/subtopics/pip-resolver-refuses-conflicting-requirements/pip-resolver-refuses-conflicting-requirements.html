@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Python Packaging &amp; venv" topicRoute="/python/packaging" subtopicLabel="pip's Resolver" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">pip's Resolver Refuses Conflicting Requirements Since 20.3</h1>
+  <p class="page-subtitle">
+    Modern pip refuses to install packages with genuinely incompatible requirements, naming the exact conflict —
+    older pip would silently install a broken combination instead.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="pip 20.3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory covers requirements.txt without mentioning pip's own resolver has a documented
+      history and a real limitation. The final subtopic moves to a different pip mechanic: what pip freeze
+      actually captures for a package installed in editable mode.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Python Packaging &amp; venv"
+    topicRoute="/python/packaging"
+    [prev]="{ label: 'Poetry’s Caret Has a Special Case for 0.x Versions', route: '/python/packaging/poetry-caret-special-case-for-0-x-versions' }"
+    [next]="{ label: 'pip freeze Outputs a Local Path for Editable Installs', route: '/python/packaging/pip-freeze-editable-installs-output-local-path' }"
+  />
+</div>

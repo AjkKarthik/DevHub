@@ -2122,6 +2122,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'pytest.raises() Matches Subclasses Too', route: '/python/pytest/pytest-raises-matches-subclasses-too' },
     { label: 'A Test File’s Fixture Overrides conftest.py by Name', route: '/python/pytest/a-test-file-fixture-overrides-conftest-by-name' },
   ],
+  'packaging': [
+    { label: 'Poetry’s Caret Has a Special Case for 0.x Versions', route: '/python/packaging/poetry-caret-special-case-for-0-x-versions' },
+    { label: 'pip’s Resolver Refuses Conflicting Requirements Since 20.3', route: '/python/packaging/pip-resolver-refuses-conflicting-requirements' },
+    { label: 'pip freeze Outputs a Local Path for Editable Installs', route: '/python/packaging/pip-freeze-editable-installs-output-local-path' },
+  ],
 };
 
 @Component({

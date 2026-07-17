@@ -2446,7 +2446,12 @@ export const routes: Routes = [
       { path: 'pytest-raises-matches-subclasses-too', loadComponent: () => import('./components/backend/python/pytest/subtopics/pytest-raises-matches-subclasses-too/pytest-raises-matches-subclasses-too').then(m => m.PytestRaisesMatchesSubclassesTooSubtopic) },
       { path: 'a-test-file-fixture-overrides-conftest-by-name', loadComponent: () => import('./components/backend/python/pytest/subtopics/a-test-file-fixture-overrides-conftest-by-name/a-test-file-fixture-overrides-conftest-by-name').then(m => m.ATestFileFixtureOverridesConftestByNameSubtopic) },
     ] },
-    { path: 'packaging',                loadComponent: () => import('./components/backend/python/packaging/packaging').then(m => m.PythonPackaging) },
+    { path: 'packaging', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/packaging/packaging').then(m => m.PythonPackaging) },
+      { path: 'poetry-caret-special-case-for-0-x-versions', loadComponent: () => import('./components/backend/python/packaging/subtopics/poetry-caret-special-case-for-0-x-versions/poetry-caret-special-case-for-0-x-versions').then(m => m.PoetryCaretSpecialCaseFor0XVersionsSubtopic) },
+      { path: 'pip-resolver-refuses-conflicting-requirements', loadComponent: () => import('./components/backend/python/packaging/subtopics/pip-resolver-refuses-conflicting-requirements/pip-resolver-refuses-conflicting-requirements').then(m => m.PipResolverRefusesConflictingRequirementsSubtopic) },
+      { path: 'pip-freeze-editable-installs-output-local-path', loadComponent: () => import('./components/backend/python/packaging/subtopics/pip-freeze-editable-installs-output-local-path/pip-freeze-editable-installs-output-local-path').then(m => m.PipFreezeEditableInstallsOutputLocalPathSubtopic) },
+    ] },
     { path: 'debugging-profiling',      loadComponent: () => import('./components/backend/python/debugging-profiling/debugging-profiling').then(m => m.PythonDebuggingProfiling) },
     { path: 'cheatsheet',               loadComponent: () => import('./components/backend/python/cheatsheet/cheatsheet').then(m => m.PythonCheatsheet) },
     { path: 'interview-prep',           loadComponent: () => import('./components/backend/python/interview-prep/interview-prep').then(m => m.PythonInterviewPrep) },
