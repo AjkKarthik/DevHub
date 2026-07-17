@@ -29513,6 +29513,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'select_related and prefetch_related solve structurally different relationship types — using the wrong one still leaves N+1 queries.',
     ],
   },
+  'python/django/queryset-caching-is-per-object-not-per-query': {
+    apis: ['QuerySet._result_cache', 'QuerySet.count()'],
+    related: [
+      { label: 'Django & DRF (overview)', route: '/python/django' },
+      { label: 'transaction.on_commit() Defers Signal Side Effects', route: '/python/django/transaction-on-commit-defers-signal-side-effects' },
+      { label: 'has_object_permission() Skips List and Create', route: '/python/django/has-object-permission-skips-list-and-create' },
+    ],
+    tip: 'A QuerySet caches results after full evaluation (iteration, list(), bool()) — but each fresh filter() call builds a brand-new object with its own empty cache. Reuse the same variable to benefit from it.',
+    docs: [
+      { label: 'Django Docs — QuerySet API (caching)', url: 'https://docs.djangoproject.com/en/5.0/ref/models/querysets/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Slicing an unevaluated queryset generates a fresh LIMIT/OFFSET query; the identical slice on an already-evaluated queryset is served from the in-memory cache instead.',
+      'Printing a queryset does NOT populate its cache — __repr__() only evaluates a small slice for display.',
+    ],
+  },
+  'python/django/transaction-on-commit-defers-signal-side-effects': {
+    apis: ['django.db.transaction.on_commit()', 'django.db.models.signals.post_save'],
+    related: [
+      { label: 'Django & DRF (overview)', route: '/python/django' },
+      { label: 'QuerySet Caching Is Per-Object, Not Per-Query', route: '/python/django/queryset-caching-is-per-object-not-per-query' },
+      { label: 'has_object_permission() Skips List and Create', route: '/python/django/has-object-permission-skips-list-and-create' },
+    ],
+    tip: 'A signal handler runs synchronously the instant .save() is called, mid-transaction. Wrap external side effects in transaction.on_commit() so they only fire if the transaction actually commits.',
+    docs: [
+      { label: 'Django Docs — Performing actions after commit', url: 'https://docs.djangoproject.com/en/5.0/topics/db/transactions/#performing-actions-after-commit' },
+    ],
+    resources: [],
+    gotchas: [
+      'Calling on_commit() with no open transaction executes the callback immediately — it only defers anything inside an actual atomic() block.',
+      'TestCase rolls back its wrapping transaction after each test, so on_commit() callbacks never run unless the test uses captureOnCommitCallbacks().',
+    ],
+  },
+  'python/django/has-object-permission-skips-list-and-create': {
+    apis: ['rest_framework.permissions.BasePermission', 'GenericAPIView.get_object()'],
+    related: [
+      { label: 'Django & DRF (overview)', route: '/python/django' },
+      { label: 'QuerySet Caching Is Per-Object, Not Per-Query', route: '/python/django/queryset-caching-is-per-object-not-per-query' },
+      { label: 'transaction.on_commit() Defers Signal Side Effects', route: '/python/django/transaction-on-commit-defers-signal-side-effects' },
+    ],
+    tip: 'has_object_permission() only runs when a view calls get_object() — list() and create() never do. A permission class that only overrides it provides zero protection for those two actions.',
+    docs: [
+      { label: 'DRF Docs — Permissions (object level)', url: 'https://www.django-rest-framework.org/api-guide/permissions/#limitations-of-object-level-permissions' },
+    ],
+    resources: [],
+    gotchas: [
+      'Fix list() by filtering get_queryset() itself, not by strengthening has_object_permission().',
+      'Fix create() in perform_create() or the serializer — there is no existing object for has_object_permission() to check yet.',
+    ],
+  },
   'python/fastapi': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

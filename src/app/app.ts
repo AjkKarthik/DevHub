@@ -2092,6 +2092,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'BackgroundTasks Merge Into One Sequential List', route: '/python/fastapi/background-tasks-merge-into-one-sequential-list' },
     { label: 'response_model Needs from_attributes for ORM Objects', route: '/python/fastapi/response-model-needs-from-attributes-for-orm-objects' },
   ],
+  'django': [
+    { label: 'QuerySet Caching Is Per-Object, Not Per-Query', route: '/python/django/queryset-caching-is-per-object-not-per-query' },
+    { label: 'transaction.on_commit() Defers Signal Side Effects', route: '/python/django/transaction-on-commit-defers-signal-side-effects' },
+    { label: 'has_object_permission() Skips List and Create', route: '/python/django/has-object-permission-skips-list-and-create' },
+  ],
 };
 
 @Component({

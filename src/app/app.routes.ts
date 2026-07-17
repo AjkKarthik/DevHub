@@ -2410,7 +2410,12 @@ export const routes: Routes = [
       { path: 'background-tasks-merge-into-one-sequential-list', loadComponent: () => import('./components/backend/python/fastapi/subtopics/background-tasks-merge-into-one-sequential-list/background-tasks-merge-into-one-sequential-list').then(m => m.BackgroundTasksMergeIntoOneSequentialListSubtopic) },
       { path: 'response-model-needs-from-attributes-for-orm-objects', loadComponent: () => import('./components/backend/python/fastapi/subtopics/response-model-needs-from-attributes-for-orm-objects/response-model-needs-from-attributes-for-orm-objects').then(m => m.ResponseModelNeedsFromAttributesForOrmObjectsSubtopic) },
     ] },
-    { path: 'django',                   loadComponent: () => import('./components/backend/python/django/django').then(m => m.PythonDjango) },
+    { path: 'django', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/django/django').then(m => m.PythonDjango) },
+      { path: 'queryset-caching-is-per-object-not-per-query', loadComponent: () => import('./components/backend/python/django/subtopics/queryset-caching-is-per-object-not-per-query/queryset-caching-is-per-object-not-per-query').then(m => m.QuerysetCachingIsPerObjectNotPerQuerySubtopic) },
+      { path: 'transaction-on-commit-defers-signal-side-effects', loadComponent: () => import('./components/backend/python/django/subtopics/transaction-on-commit-defers-signal-side-effects/transaction-on-commit-defers-signal-side-effects').then(m => m.TransactionOnCommitDefersSignalSideEffectsSubtopic) },
+      { path: 'has-object-permission-skips-list-and-create', loadComponent: () => import('./components/backend/python/django/subtopics/has-object-permission-skips-list-and-create/has-object-permission-skips-list-and-create').then(m => m.HasObjectPermissionSkipsListAndCreateSubtopic) },
+    ] },
     { path: 'sqlalchemy',               loadComponent: () => import('./components/backend/python/sqlalchemy/sqlalchemy').then(m => m.PythonSqlalchemy) },
     { path: 'celery',                   loadComponent: () => import('./components/backend/python/celery/celery').then(m => m.PythonCelery) },
     { path: 'numpy-pandas',             loadComponent: () => import('./components/backend/python/numpy-pandas/numpy-pandas').then(m => m.PythonNumpyPandas) },
