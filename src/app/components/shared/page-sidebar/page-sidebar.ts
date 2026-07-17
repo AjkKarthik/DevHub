@@ -29525,6 +29525,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing dependencies for stateless utility functions adds unnecessary indirection — reserve them for genuinely request-scoped concerns.',
     ],
   },
+  'python/fastapi/dependency-cache-keys-on-the-callable-object': {
+    apis: ['fastapi.Depends', 'fastapi.dependencies.models.Dependant.cache_key'],
+    related: [
+      { label: 'FastAPI (overview)', route: '/python/fastapi' },
+      { label: 'BackgroundTasks Merge Into One Sequential List', route: '/python/fastapi/background-tasks-merge-into-one-sequential-list' },
+      { label: 'response_model Needs from_attributes for ORM Objects', route: '/python/fastapi/response-model-needs-from-attributes-for-orm-objects' },
+    ],
+    tip: 'FastAPI\'s per-request dependency cache is keyed by (call, scopes, computed_scope) — the literal callable object, not by name or behavior. Only the SAME reused reference (like the main page\'s DB alias) shares a cache slot.',
+    docs: [
+      { label: 'FastAPI Docs — Sub-dependencies (caching)', url: 'https://fastapi.tiangolo.com/tutorial/dependencies/sub-dependencies/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Two separately-constructed functools.partial() objects wrapping the identical function with identical arguments do NOT share a cache slot — only the same object reference does.',
+      'Two functions with byte-for-byte identical bodies are still two different objects to Python, and therefore two different cache keys.',
+    ],
+  },
+  'python/fastapi/background-tasks-merge-into-one-sequential-list': {
+    apis: ['fastapi.BackgroundTasks', 'starlette.background.BackgroundTasks'],
+    related: [
+      { label: 'FastAPI (overview)', route: '/python/fastapi' },
+      { label: 'Dependency Cache Keys on the Callable Object', route: '/python/fastapi/dependency-cache-keys-on-the-callable-object' },
+      { label: 'response_model Needs from_attributes for ORM Objects', route: '/python/fastapi/response-model-needs-from-attributes-for-orm-objects' },
+    ],
+    tip: 'FastAPI reuses ONE BackgroundTasks object across every dependency and the handler for a request. Starlette runs its tasks with a plain sequential for loop — no concurrency, and one failure halts every task queued after it.',
+    docs: [
+      { label: 'FastAPI Docs — Background Tasks', url: 'https://fastapi.tiangolo.com/tutorial/background-tasks/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A background task exception does not affect the already-sent response, but it does silently (from the client\'s view) skip every task queued after it.',
+      'Wrap each task function\'s own body in try/except if unrelated tasks must not affect each other\'s execution.',
+    ],
+  },
+  'python/fastapi/response-model-needs-from-attributes-for-orm-objects': {
+    apis: ['pydantic.ConfigDict(from_attributes=True)', 'Pydantic v1 orm_mode'],
+    related: [
+      { label: 'FastAPI (overview)', route: '/python/fastapi' },
+      { label: 'Dependency Cache Keys on the Callable Object', route: '/python/fastapi/dependency-cache-keys-on-the-callable-object' },
+      { label: 'BackgroundTasks Merge Into One Sequential List', route: '/python/fastapi/background-tasks-merge-into-one-sequential-list' },
+    ],
+    tip: 'Pydantic validates dict-like input by default — a response schema needs model_config = ConfigDict(from_attributes=True) before it can read attributes off a raw ORM instance, per Pydantic\'s own docs (the v2 rename of v1\'s orm_mode).',
+    docs: [
+      { label: 'Pydantic Docs — from_attributes', url: 'https://docs.pydantic.dev/latest/concepts/models/#arbitrary-class-instances' },
+    ],
+    resources: [],
+    gotchas: [
+      'The need for from_attributes depends on what object type is passed at runtime across EVERY route using that schema, not on the schema\'s own field definitions.',
+      'FastAPI\'s newer SQLModel-based SQL tutorial sidesteps this issue entirely, making the requirement easy to forget when hand-rolling plain SQLAlchemy + Pydantic.',
+    ],
+  },
   'python/sqlalchemy': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

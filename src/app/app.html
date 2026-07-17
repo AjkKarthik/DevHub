@@ -5925,7 +5925,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Web &amp; APIs</p>
-      <a routerLink="/python/fastapi" routerLinkActive="active"><span class="nl-text">FastAPI</span>@if(progress.isDone('py-fastapi')){<span class="nl-done">✓</span>}@if(diff('py-fastapi');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/fastapi" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">FastAPI</span>
+        @if (progress.isDone('py-fastapi')) {<span class="nl-done">✓</span>}
+        @if (diff('py-fastapi'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('fastapi')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('fastapi')"
+                  (click)="toggleSubtopics('fastapi', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('fastapi'); as pyFastapiSubs) {
+        @if (isSubtopicsExpanded('fastapi')) {
+          <div class="nav-subtopics">
+            @for (s of pyFastapiSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/django" routerLinkActive="active"><span class="nl-text">Django &amp; DRF</span>@if(progress.isDone('py-django')){<span class="nl-done">✓</span>}@if(diff('py-django');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/python/sqlalchemy" routerLinkActive="active"><span class="nl-text">SQLAlchemy</span>@if(progress.isDone('py-sqlalchemy')){<span class="nl-done">✓</span>}@if(diff('py-sqlalchemy');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/python/celery" routerLinkActive="active"><span class="nl-text">Celery &amp; Task Queues</span>@if(progress.isDone('py-celery')){<span class="nl-done">✓</span>}@if(diff('py-celery');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

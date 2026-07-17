@@ -2404,7 +2404,12 @@ export const routes: Routes = [
       { path: 'processpool-requires-picklable-closures', loadComponent: () => import('./components/backend/python/concurrency-patterns/subtopics/processpool-requires-picklable-closures/processpool-requires-picklable-closures').then(m => m.ProcesspoolRequiresPicklableClosuresSubtopic) },
       { path: 'default-executor-thread-pool-sizing', loadComponent: () => import('./components/backend/python/concurrency-patterns/subtopics/default-executor-thread-pool-sizing/default-executor-thread-pool-sizing').then(m => m.DefaultExecutorThreadPoolSizingSubtopic) },
     ] },
-    { path: 'fastapi',                  loadComponent: () => import('./components/backend/python/fastapi/fastapi').then(m => m.PythonFastapi) },
+    { path: 'fastapi', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/fastapi/fastapi').then(m => m.PythonFastapi) },
+      { path: 'dependency-cache-keys-on-the-callable-object', loadComponent: () => import('./components/backend/python/fastapi/subtopics/dependency-cache-keys-on-the-callable-object/dependency-cache-keys-on-the-callable-object').then(m => m.DependencyCacheKeysOnTheCallableObjectSubtopic) },
+      { path: 'background-tasks-merge-into-one-sequential-list', loadComponent: () => import('./components/backend/python/fastapi/subtopics/background-tasks-merge-into-one-sequential-list/background-tasks-merge-into-one-sequential-list').then(m => m.BackgroundTasksMergeIntoOneSequentialListSubtopic) },
+      { path: 'response-model-needs-from-attributes-for-orm-objects', loadComponent: () => import('./components/backend/python/fastapi/subtopics/response-model-needs-from-attributes-for-orm-objects/response-model-needs-from-attributes-for-orm-objects').then(m => m.ResponseModelNeedsFromAttributesForOrmObjectsSubtopic) },
+    ] },
     { path: 'django',                   loadComponent: () => import('./components/backend/python/django/django').then(m => m.PythonDjango) },
     { path: 'sqlalchemy',               loadComponent: () => import('./components/backend/python/sqlalchemy/sqlalchemy').then(m => m.PythonSqlalchemy) },
     { path: 'celery',                   loadComponent: () => import('./components/backend/python/celery/celery').then(m => m.PythonCelery) },

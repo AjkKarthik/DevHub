@@ -2087,6 +2087,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ProcessPoolExecutor Can’t Pickle Closures or Lambdas', route: '/python/concurrency-patterns/processpool-requires-picklable-closures' },
     { label: 'The Default Executor’s Thread Pool Size Isn’t Unlimited', route: '/python/concurrency-patterns/default-executor-thread-pool-sizing' },
   ],
+  'fastapi': [
+    { label: 'Dependency Cache Keys on the Callable Object', route: '/python/fastapi/dependency-cache-keys-on-the-callable-object' },
+    { label: 'BackgroundTasks Merge Into One Sequential List', route: '/python/fastapi/background-tasks-merge-into-one-sequential-list' },
+    { label: 'response_model Needs from_attributes for ORM Objects', route: '/python/fastapi/response-model-needs-from-attributes-for-orm-objects' },
+  ],
 };
 
 @Component({
