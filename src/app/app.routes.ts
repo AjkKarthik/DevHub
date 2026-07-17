@@ -2416,7 +2416,12 @@ export const routes: Routes = [
       { path: 'transaction-on-commit-defers-signal-side-effects', loadComponent: () => import('./components/backend/python/django/subtopics/transaction-on-commit-defers-signal-side-effects/transaction-on-commit-defers-signal-side-effects').then(m => m.TransactionOnCommitDefersSignalSideEffectsSubtopic) },
       { path: 'has-object-permission-skips-list-and-create', loadComponent: () => import('./components/backend/python/django/subtopics/has-object-permission-skips-list-and-create/has-object-permission-skips-list-and-create').then(m => m.HasObjectPermissionSkipsListAndCreateSubtopic) },
     ] },
-    { path: 'sqlalchemy',               loadComponent: () => import('./components/backend/python/sqlalchemy/sqlalchemy').then(m => m.PythonSqlalchemy) },
+    { path: 'sqlalchemy', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/sqlalchemy/sqlalchemy').then(m => m.PythonSqlalchemy) },
+      { path: 'session-get-hits-the-identity-map-select-does-not', loadComponent: () => import('./components/backend/python/sqlalchemy/subtopics/session-get-hits-the-identity-map-select-does-not/session-get-hits-the-identity-map-select-does-not').then(m => m.SessionGetHitsTheIdentityMapSelectDoesNotSubtopic) },
+      { path: 'autobegin-starts-a-new-transaction-after-commit', loadComponent: () => import('./components/backend/python/sqlalchemy/subtopics/autobegin-starts-a-new-transaction-after-commit/autobegin-starts-a-new-transaction-after-commit').then(m => m.AutobeginStartsANewTransactionAfterCommitSubtopic) },
+      { path: 'delete-orphan-needs-orm-tracked-disassociation', loadComponent: () => import('./components/backend/python/sqlalchemy/subtopics/delete-orphan-needs-orm-tracked-disassociation/delete-orphan-needs-orm-tracked-disassociation').then(m => m.DeleteOrphanNeedsOrmTrackedDisassociationSubtopic) },
+    ] },
     { path: 'celery',                   loadComponent: () => import('./components/backend/python/celery/celery').then(m => m.PythonCelery) },
     { path: 'numpy-pandas',             loadComponent: () => import('./components/backend/python/numpy-pandas/numpy-pandas').then(m => m.PythonNumpyPandas) },
     { path: 'scikit-learn',             loadComponent: () => import('./components/backend/python/scikit-learn/scikit-learn').then(m => m.PythonScikitLearn) },

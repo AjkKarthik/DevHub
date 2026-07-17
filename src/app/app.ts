@@ -2097,6 +2097,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'transaction.on_commit() Defers Signal Side Effects', route: '/python/django/transaction-on-commit-defers-signal-side-effects' },
     { label: 'has_object_permission() Skips List and Create', route: '/python/django/has-object-permission-skips-list-and-create' },
   ],
+  'sqlalchemy': [
+    { label: 'session.get() Hits the Identity Map — select() Does Not', route: '/python/sqlalchemy/session-get-hits-the-identity-map-select-does-not' },
+    { label: 'Autobegin Starts a New Transaction After Commit', route: '/python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit' },
+    { label: 'delete-orphan Needs ORM-Tracked Disassociation', route: '/python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation' },
+  ],
 };
 
 @Component({

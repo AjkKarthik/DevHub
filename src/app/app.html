@@ -5965,7 +5965,26 @@
           </div>
         }
       }
-      <a routerLink="/python/sqlalchemy" routerLinkActive="active"><span class="nl-text">SQLAlchemy</span>@if(progress.isDone('py-sqlalchemy')){<span class="nl-done">✓</span>}@if(diff('py-sqlalchemy');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/sqlalchemy" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">SQLAlchemy</span>
+        @if (progress.isDone('py-sqlalchemy')) {<span class="nl-done">✓</span>}
+        @if (diff('py-sqlalchemy'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sqlalchemy')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sqlalchemy')"
+                  (click)="toggleSubtopics('sqlalchemy', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sqlalchemy'); as pySqlalchemySubs) {
+        @if (isSubtopicsExpanded('sqlalchemy')) {
+          <div class="nav-subtopics">
+            @for (s of pySqlalchemySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/celery" routerLinkActive="active"><span class="nl-text">Celery &amp; Task Queues</span>@if(progress.isDone('py-celery')){<span class="nl-done">✓</span>}@if(diff('py-celery');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

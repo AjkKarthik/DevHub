@@ -29638,6 +29638,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Detached instance errors (accessing a relationship after the session closes) are a common pitfall.',
     ],
   },
+  'python/sqlalchemy/session-get-hits-the-identity-map-select-does-not': {
+    apis: ['Session.get()', 'Session.execute(select(...))', 'populate_existing'],
+    related: [
+      { label: 'SQLAlchemy (overview)', route: '/python/sqlalchemy' },
+      { label: 'Autobegin Starts a New Transaction After Commit', route: '/python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit' },
+      { label: 'delete-orphan Needs ORM-Tracked Disassociation', route: '/python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation' },
+    ],
+    tip: 'Session.get() checks the identity map first and skips SQL entirely if the object is cached and unexpired. select()-based queries never get this shortcut — they always hit the database.',
+    docs: [
+      { label: 'SQLAlchemy Docs — Session.get()', url: 'https://docs.sqlalchemy.org/en/20/orm/session_api.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A commit() with the default expire_on_commit=True expires cached objects, forcing even get() to re-query on the next call.',
+      'get(Model, pk, populate_existing=True) deliberately bypasses the identity-map shortcut to force a fresh reload.',
+    ],
+  },
+  'python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit': {
+    apis: ['Session.autobegin', 'Session.in_transaction()'],
+    related: [
+      { label: 'SQLAlchemy (overview)', route: '/python/sqlalchemy' },
+      { label: 'session.get() Hits the Identity Map — select() Does Not', route: '/python/sqlalchemy/session-get-hits-the-identity-map-select-does-not' },
+      { label: 'delete-orphan Needs ORM-Tracked Disassociation', route: '/python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation' },
+    ],
+    tip: 'The next operation needing the database after commit()/rollback()/close() silently opens a new transaction — this "autobegin" behavior dates to SQLAlchemy 1.4, not 2.0.',
+    docs: [
+      { label: 'SQLAlchemy Docs — Session Basics (Autobegin)', url: 'https://docs.sqlalchemy.org/en/20/orm/session_basics.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Reading an expired attribute after a commit triggers autobegin identically to running a brand-new query.',
+      'session.close() resets the session the same way commit()/rollback() does — it does not disable or pre-empt the next autobegin.',
+    ],
+  },
+  'python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation': {
+    apis: ['relationship(cascade="all, delete-orphan")', 'Session.delete()'],
+    related: [
+      { label: 'SQLAlchemy (overview)', route: '/python/sqlalchemy' },
+      { label: 'session.get() Hits the Identity Map — select() Does Not', route: '/python/sqlalchemy/session-get-hits-the-identity-map-select-does-not' },
+      { label: 'Autobegin Starts a New Transaction After Commit', route: '/python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit' },
+    ],
+    tip: 'delete-orphan only fires on an ORM-tracked disassociation event through the relationship collection — session.delete() and bulk delete() statements both bypass cascade logic entirely, per SQLAlchemy\'s own documented warning.',
+    docs: [
+      { label: 'SQLAlchemy Docs — Cascades (delete-orphan)', url: 'https://docs.sqlalchemy.org/en/20/orm/cascades.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'session.delete(child) still deletes the row, but through a completely different code path than delete-orphan cascade.',
+      'A bulk session.execute(delete(Model).where(...)) never loads ORM objects at all, so cascade has no way to evaluate or intervene.',
+    ],
+  },
   'python/numpy-pandas': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SQLAlchemy" topicRoute="/python/sqlalchemy" subtopicLabel="Autobegin" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Autobegin Starts a New Transaction After Commit</h1>
+  <p class="page-subtitle">
+    A Session never stays transaction-free for long — the next operation that touches the database, even an
+    implicit expired-attribute reload, silently opens a new transaction with no explicit begin() call.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="SQLAlchemy 1.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory calls the Session "one transaction per session" — this subtopic shows what
+      actually happens the instant that one transaction ends. The final subtopic moves to relationships instead:
+      a cascade rule that only fires through one specific, narrower code path than it sounds like it should.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQLAlchemy"
+    topicRoute="/python/sqlalchemy"
+    [prev]="{ label: 'session.get() Hits the Identity Map — select() Does Not', route: '/python/sqlalchemy/session-get-hits-the-identity-map-select-does-not' }"
+    [next]="{ label: 'delete-orphan Needs ORM-Tracked Disassociation', route: '/python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation' }"
+  />
+</div>
