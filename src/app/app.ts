@@ -2072,6 +2072,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'groupby Sub-Iterators Share One Source and Vanish', route: '/python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish' },
     { label: 'heapq Tuples Need a Tie-Breaker for Equal Priorities', route: '/python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities' },
   ],
+  'asyncio': [
+    { label: 'create_task() Needs a Saved Reference or It Vanishes', route: '/python/asyncio/create-task-needs-a-saved-reference-or-it-vanishes' },
+    { label: 'gather() Does Not Cancel Siblings on Failure', route: '/python/asyncio/gather-does-not-cancel-siblings-on-failure' },
+    { label: 'shield() Protects Inner Work, Not the Outer Awaiter', route: '/python/asyncio/shield-protects-inner-work-not-the-outer-awaiter' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Async Python (asyncio)" topicRoute="/python/asyncio" subtopicLabel="Task Reference Trap" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">create_task() Needs a Saved Reference or It Vanishes</h1>
+  <p class="page-subtitle">
+    The event loop only holds a weak reference to a Task — Python's own docs warn an unreferenced fire-and-forget
+    task can be garbage collected mid-execution, silently.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 3.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This covers a real gap the main page's own examples never expose, since every one of them awaits its created
+      tasks. The next subtopic moves to gather() — a documented behavioral difference from TaskGroup the main
+      page's own theory slightly overstates.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Async Python (asyncio)"
+    topicRoute="/python/asyncio"
+    [next]="{ label: 'gather() Does Not Cancel Siblings on Failure', route: '/python/asyncio/gather-does-not-cancel-siblings-on-failure' }"
+  />
+</div>

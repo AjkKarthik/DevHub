@@ -5861,7 +5861,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Async</p>
-      <a routerLink="/python/asyncio" routerLinkActive="active"><span class="nl-text">Async Python (asyncio)</span>@if(progress.isDone('py-asyncio')){<span class="nl-done">✓</span>}@if(diff('py-asyncio');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/asyncio" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Async Python (asyncio)</span>
+        @if (progress.isDone('py-asyncio')) {<span class="nl-done">✓</span>}
+        @if (diff('py-asyncio'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('asyncio')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('asyncio')"
+                  (click)="toggleSubtopics('asyncio', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('asyncio'); as pyAsyncioSubs) {
+        @if (isSubtopicsExpanded('asyncio')) {
+          <div class="nav-subtopics">
+            @for (s of pyAsyncioSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/threading-multiprocessing" routerLinkActive="active"><span class="nl-text">Threading &amp; Multiprocessing</span>@if(progress.isDone('py-threading-multiprocessing')){<span class="nl-done">✓</span>}@if(diff('py-threading-multiprocessing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/python/concurrency-patterns" routerLinkActive="active"><span class="nl-text">Concurrency Patterns</span>@if(progress.isDone('py-concurrency-patterns')){<span class="nl-done">✓</span>}@if(diff('py-concurrency-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

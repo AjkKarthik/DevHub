@@ -29321,6 +29321,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A fire-and-forget async void-style event handler can silently crash a whole async application if its exception is never awaited.',
     ],
   },
+  'python/asyncio/create-task-needs-a-saved-reference-or-it-vanishes': {
+    apis: ['asyncio.create_task()', 'Task'],
+    related: [
+      { label: 'Async Python (asyncio) (overview)', route: '/python/asyncio' },
+      { label: 'gather() Does Not Cancel Siblings on Failure', route: '/python/asyncio/gather-does-not-cancel-siblings-on-failure' },
+      { label: 'shield() Protects Inner Work, Not the Outer Awaiter', route: '/python/asyncio/shield-protects-inner-work-not-the-outer-awaiter' },
+    ],
+    tip: 'Python\'s own docs warn "the event loop only keeps weak references to tasks" — an unreferenced fire-and-forget task can be garbage collected mid-execution, silently, with no error raised anywhere.',
+    docs: [
+      { label: 'Python Docs — asyncio.create_task()', url: 'https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task' },
+    ],
+    resources: [],
+    gotchas: [
+      'The documented fix: add the task to a module-level set, and use task.add_done_callback(the_set.discard) for automatic cleanup.',
+      'This bug is non-deterministic and tied to actual GC timing — more likely to surface under real production load than light local testing.',
+    ],
+  },
+  'python/asyncio/gather-does-not-cancel-siblings-on-failure': {
+    apis: ['asyncio.gather()', 'asyncio.TaskGroup'],
+    related: [
+      { label: 'Async Python (asyncio) (overview)', route: '/python/asyncio' },
+      { label: 'create_task() Needs a Saved Reference or It Vanishes', route: '/python/asyncio/create-task-needs-a-saved-reference-or-it-vanishes' },
+      { label: 'shield() Protects Inner Work, Not the Outer Awaiter', route: '/python/asyncio/shield-protects-inner-work-not-the-outer-awaiter' },
+    ],
+    tip: 'Python\'s own docs confirm gather()\'s default behavior only stops WAITING when one coroutine fails — "other awaitables... won\'t be cancelled and will continue to run," unlike TaskGroup which actively cancels siblings.',
+    docs: [
+      { label: 'Python Docs — asyncio.gather()', url: 'https://docs.python.org/3/library/asyncio-task.html#asyncio.gather' },
+    ],
+    resources: [],
+    gotchas: [
+      'Code after a caught gather() exception cannot assume every other coroutine has stopped — they may still be running and produce effects later.',
+      'TaskGroup (3.11+) is the fix when sibling cancellation on failure is genuinely needed.',
+    ],
+  },
+  'python/asyncio/shield-protects-inner-work-not-the-outer-awaiter': {
+    apis: ['asyncio.shield()', 'CancelledError'],
+    related: [
+      { label: 'Async Python (asyncio) (overview)', route: '/python/asyncio' },
+      { label: 'create_task() Needs a Saved Reference or It Vanishes', route: '/python/asyncio/create-task-needs-a-saved-reference-or-it-vanishes' },
+      { label: 'gather() Does Not Cancel Siblings on Failure', route: '/python/asyncio/gather-does-not-cancel-siblings-on-failure' },
+    ],
+    tip: 'Python\'s own docs confirm shield() keeps the inner task running despite outer cancellation, but "its caller is still cancelled, so the \'await\' expression still raises a CancelledError" — the outer code still needs its own handling.',
+    docs: [
+      { label: 'Python Docs — asyncio.shield()', url: 'https://docs.python.org/3/library/asyncio-task.html#asyncio.shield' },
+    ],
+    resources: [],
+    gotchas: [
+      'shield() is not on the main page at all — it\'s a distinct tool from the ordinary "always re-raise CancelledError" cancellation discipline.',
+      'To genuinely wait for the shielded work\'s result after catching CancelledError, await the same shielded awaitable a second time, now outside the cancelled scope.',
+    ],
+  },
   'python/threading-multiprocessing': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

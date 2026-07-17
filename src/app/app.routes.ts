@@ -2386,7 +2386,12 @@ export const routes: Routes = [
       { path: 'groupby-sub-iterators-share-one-source-and-vanish', loadComponent: () => import('./components/backend/python/collections-itertools/subtopics/groupby-sub-iterators-share-one-source-and-vanish/groupby-sub-iterators-share-one-source-and-vanish').then(m => m.GroupbySubIteratorsShareOneSourceAndVanishSubtopic) },
       { path: 'heapq-tuples-need-a-tie-breaker-for-equal-priorities', loadComponent: () => import('./components/backend/python/collections-itertools/subtopics/heapq-tuples-need-a-tie-breaker-for-equal-priorities/heapq-tuples-need-a-tie-breaker-for-equal-priorities').then(m => m.HeapqTuplesNeedATieBreakerForEqualPrioritiesSubtopic) },
     ] },
-    { path: 'asyncio',                  loadComponent: () => import('./components/backend/python/asyncio/asyncio').then(m => m.PythonAsyncio) },
+    { path: 'asyncio', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/asyncio/asyncio').then(m => m.PythonAsyncio) },
+      { path: 'create-task-needs-a-saved-reference-or-it-vanishes', loadComponent: () => import('./components/backend/python/asyncio/subtopics/create-task-needs-a-saved-reference-or-it-vanishes/create-task-needs-a-saved-reference-or-it-vanishes').then(m => m.CreateTaskNeedsASavedReferenceOrItVanishesSubtopic) },
+      { path: 'gather-does-not-cancel-siblings-on-failure', loadComponent: () => import('./components/backend/python/asyncio/subtopics/gather-does-not-cancel-siblings-on-failure/gather-does-not-cancel-siblings-on-failure').then(m => m.GatherDoesNotCancelSiblingsOnFailureSubtopic) },
+      { path: 'shield-protects-inner-work-not-the-outer-awaiter', loadComponent: () => import('./components/backend/python/asyncio/subtopics/shield-protects-inner-work-not-the-outer-awaiter/shield-protects-inner-work-not-the-outer-awaiter').then(m => m.ShieldProtectsInnerWorkNotTheOuterAwaiterSubtopic) },
+    ] },
     { path: 'threading-multiprocessing',loadComponent: () => import('./components/backend/python/threading-multiprocessing/threading-multiprocessing').then(m => m.PythonThreadingMultiprocessing) },
     { path: 'concurrency-patterns',     loadComponent: () => import('./components/backend/python/concurrency-patterns/concurrency-patterns').then(m => m.PythonConcurrencyPatterns) },
     { path: 'fastapi',                  loadComponent: () => import('./components/backend/python/fastapi/fastapi').then(m => m.PythonFastapi) },
