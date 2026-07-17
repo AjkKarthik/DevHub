@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Python Concurrency Patterns" topicRoute="/python/concurrency-patterns" subtopicLabel="TaskGroup &amp; ExceptionGroup" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">TaskGroup Raises an ExceptionGroup, Not the First Exception</h1>
+  <p class="page-subtitle">
+    A failing asyncio.TaskGroup() does not raise the exception a task threw — it raises a wrapper object containing
+    it, and a plain except clause interacts with that wrapper differently than you might expect.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Python 3.11+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own patterns rely on TaskGroup for structured concurrency — this fills in exactly what
+      "cancels all other tasks and raises an ExceptionGroup" means for the code that has to catch it. The next
+      subtopic moves to a completely different pattern: what happens when a callable submitted to
+      ProcessPoolExecutor can't cross the process boundary at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Python Concurrency Patterns"
+    topicRoute="/python/concurrency-patterns"
+    [next]="{ label: 'ProcessPoolExecutor Can’t Pickle Closures or Lambdas', route: '/python/concurrency-patterns/processpool-requires-picklable-closures' }"
+  />
+</div>

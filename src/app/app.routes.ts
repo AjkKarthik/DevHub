@@ -2398,7 +2398,12 @@ export const routes: Routes = [
       { path: 'fork-vs-spawn-changes-what-a-child-process-inherits', loadComponent: () => import('./components/backend/python/threading-multiprocessing/subtopics/fork-vs-spawn-changes-what-a-child-process-inherits/fork-vs-spawn-changes-what-a-child-process-inherits').then(m => m.ForkVsSpawnChangesWhatAChildProcessInheritsSubtopic) },
       { path: 'a-crashed-worker-breaks-the-whole-process-pool', loadComponent: () => import('./components/backend/python/threading-multiprocessing/subtopics/a-crashed-worker-breaks-the-whole-process-pool/a-crashed-worker-breaks-the-whole-process-pool').then(m => m.ACrashedWorkerBreaksTheWholeProcessPoolSubtopic) },
     ] },
-    { path: 'concurrency-patterns',     loadComponent: () => import('./components/backend/python/concurrency-patterns/concurrency-patterns').then(m => m.PythonConcurrencyPatterns) },
+    { path: 'concurrency-patterns', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/concurrency-patterns/concurrency-patterns').then(m => m.PythonConcurrencyPatterns) },
+      { path: 'taskgroup-raises-exceptiongroup', loadComponent: () => import('./components/backend/python/concurrency-patterns/subtopics/taskgroup-raises-exceptiongroup/taskgroup-raises-exceptiongroup').then(m => m.TaskgroupRaisesExceptiongroupSubtopic) },
+      { path: 'processpool-requires-picklable-closures', loadComponent: () => import('./components/backend/python/concurrency-patterns/subtopics/processpool-requires-picklable-closures/processpool-requires-picklable-closures').then(m => m.ProcesspoolRequiresPicklableClosuresSubtopic) },
+      { path: 'default-executor-thread-pool-sizing', loadComponent: () => import('./components/backend/python/concurrency-patterns/subtopics/default-executor-thread-pool-sizing/default-executor-thread-pool-sizing').then(m => m.DefaultExecutorThreadPoolSizingSubtopic) },
+    ] },
     { path: 'fastapi',                  loadComponent: () => import('./components/backend/python/fastapi/fastapi').then(m => m.PythonFastapi) },
     { path: 'django',                   loadComponent: () => import('./components/backend/python/django/django').then(m => m.PythonDjango) },
     { path: 'sqlalchemy',               loadComponent: () => import('./components/backend/python/sqlalchemy/sqlalchemy').then(m => m.PythonSqlalchemy) },

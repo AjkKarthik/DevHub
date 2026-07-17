@@ -2082,6 +2082,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'fork vs. spawn Changes What a Child Process Inherits', route: '/python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits' },
     { label: 'A Crashed Worker Breaks the Whole Process Pool', route: '/python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool' },
   ],
+  'concurrency-patterns': [
+    { label: 'TaskGroup Raises an ExceptionGroup, Not the First Exception', route: '/python/concurrency-patterns/taskgroup-raises-exceptiongroup' },
+    { label: 'ProcessPoolExecutor Can’t Pickle Closures or Lambdas', route: '/python/concurrency-patterns/processpool-requires-picklable-closures' },
+    { label: 'The Default Executor’s Thread Pool Size Isn’t Unlimited', route: '/python/concurrency-patterns/default-executor-thread-pool-sizing' },
+  ],
 };
 
 @Component({

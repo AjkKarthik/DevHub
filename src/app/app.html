@@ -5901,7 +5901,26 @@
           </div>
         }
       }
-      <a routerLink="/python/concurrency-patterns" routerLinkActive="active"><span class="nl-text">Concurrency Patterns</span>@if(progress.isDone('py-concurrency-patterns')){<span class="nl-done">✓</span>}@if(diff('py-concurrency-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/concurrency-patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Concurrency Patterns</span>
+        @if (progress.isDone('py-concurrency-patterns')) {<span class="nl-done">✓</span>}
+        @if (diff('py-concurrency-patterns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('concurrency-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('concurrency-patterns')"
+                  (click)="toggleSubtopics('concurrency-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('concurrency-patterns'); as pyConcurrencySubs) {
+        @if (isSubtopicsExpanded('concurrency-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of pyConcurrencySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

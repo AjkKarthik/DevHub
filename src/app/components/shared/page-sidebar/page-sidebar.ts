@@ -29447,6 +29447,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mixing these models incorrectly is a frequent source of "why isn\'t this faster" surprises.',
     ],
   },
+  'python/concurrency-patterns/taskgroup-raises-exceptiongroup': {
+    apis: ['asyncio.TaskGroup', 'ExceptionGroup', 'except*'],
+    related: [
+      { label: 'Concurrency Patterns (overview)', route: '/python/concurrency-patterns' },
+      { label: 'ProcessPoolExecutor Can’t Pickle Closures or Lambdas', route: '/python/concurrency-patterns/processpool-requires-picklable-closures' },
+      { label: 'The Default Executor’s Thread Pool Size Isn’t Unlimited', route: '/python/concurrency-patterns/default-executor-thread-pool-sizing' },
+    ],
+    tip: 'A plain except Exception catches an ExceptionGroup as one object — e.exceptions holds the originals. except* (PEP 654, 3.11+) is the tool for matching by the type of exception inside the group.',
+    docs: [
+      { label: 'Python Docs — asyncio.TaskGroup', url: 'https://docs.python.org/3/library/asyncio-task.html#asyncio.TaskGroup' },
+      { label: 'Python Docs — ExceptionGroup', url: 'https://docs.python.org/3/library/exceptions.html#ExceptionGroup' },
+    ],
+    resources: [],
+    gotchas: [
+      'A BaseExceptionGroup (present when any wrapped exception is a bare BaseException, not an Exception) is NOT caught by a plain except Exception at all.',
+      'KeyboardInterrupt/SystemExit bypass the wrapping entirely — TaskGroup still cancels siblings but re-raises the original signal exception directly.',
+    ],
+  },
+  'python/concurrency-patterns/processpool-requires-picklable-closures': {
+    apis: ['concurrent.futures.ProcessPoolExecutor', 'pickle'],
+    related: [
+      { label: 'Concurrency Patterns (overview)', route: '/python/concurrency-patterns' },
+      { label: 'TaskGroup Raises an ExceptionGroup, Not the First Exception', route: '/python/concurrency-patterns/taskgroup-raises-exceptiongroup' },
+      { label: 'The Default Executor’s Thread Pool Size Isn’t Unlimited', route: '/python/concurrency-patterns/default-executor-thread-pool-sizing' },
+    ],
+    tip: 'ProcessPoolExecutor sends work across a real process boundary via pickle — a lambda or closure has no top-level, fully-qualified name pickle can serialize by, so it fails even though the identical code works fine with ThreadPoolExecutor.',
+    docs: [
+      { label: 'Python Docs — concurrent.futures (ProcessPoolExecutor)', url: 'https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor' },
+      { label: 'Python Docs — pickle (what can be pickled)', url: 'https://docs.python.org/3/library/pickle.html#what-can-be-pickled-and-unpickled' },
+    ],
+    resources: [],
+    gotchas: [
+      'The fix is always a module-level def with explicit, picklable arguments — never a lambda or a nested closure.',
+      'Code that works with ThreadPoolExecutor can silently fail the moment it is switched to ProcessPoolExecutor, since threads share memory and never need pickling at all.',
+    ],
+  },
+  'python/concurrency-patterns/default-executor-thread-pool-sizing': {
+    apis: ['loop.run_in_executor()', 'asyncio.to_thread()', 'concurrent.futures.ThreadPoolExecutor'],
+    related: [
+      { label: 'Concurrency Patterns (overview)', route: '/python/concurrency-patterns' },
+      { label: 'TaskGroup Raises an ExceptionGroup, Not the First Exception', route: '/python/concurrency-patterns/taskgroup-raises-exceptiongroup' },
+      { label: 'ProcessPoolExecutor Can’t Pickle Closures or Lambdas', route: '/python/concurrency-patterns/processpool-requires-picklable-closures' },
+    ],
+    tip: 'run_in_executor(None, fn) and asyncio.to_thread() share one lazily-created, cached ThreadPoolExecutor per event loop, capped at min(32, os.cpu_count() + 4) workers — not a fresh thread per call.',
+    docs: [
+      { label: 'Python Docs — loop.run_in_executor()', url: 'https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor' },
+      { label: 'Python Docs — ThreadPoolExecutor (default max_workers)', url: 'https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor' },
+    ],
+    resources: [],
+    gotchas: [
+      'asyncio.to_thread() has no way to accept a custom executor — the escape hatch for a workload needing more concurrency is loop.run_in_executor(custom_pool, fn, *args) instead.',
+      'On machines with few cores, the cap can be much smaller than 32 (e.g. 8 workers on a 4-core machine) — the 32 in the formula is only a ceiling.',
+    ],
+  },
   'python/django': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
