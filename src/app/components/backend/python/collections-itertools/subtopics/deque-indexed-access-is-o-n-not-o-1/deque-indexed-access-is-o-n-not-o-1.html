@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Collections & Itertools" topicRoute="/python/collections-itertools" subtopicLabel="deque Indexing Cost" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">deque Indexed Access Is O(n), Not O(1)</h1>
+  <p class="page-subtitle">
+    deque wins at both ends — but Python's own docs confirm indexed access "slows to O(n) in the middle," making it
+    a poor fit for algorithms needing genuine random access.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sharpens the main page's own "deque beats list for queues" case with the one tradeoff that makes it not
+      a universal replacement. The next subtopic moves to itertools.groupby — a second, distinct gotcha beyond the
+      well-known pre-sorting requirement.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Collections & Itertools"
+    topicRoute="/python/collections-itertools"
+    [next]="{ label: 'groupby Sub-Iterators Share One Source and Vanish', route: '/python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish' }"
+  />
+</div>

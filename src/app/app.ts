@@ -2067,6 +2067,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Protocol Classes Cannot Be Instantiated Directly', route: '/python/type-hints/protocol-classes-cannot-be-instantiated-directly' },
     { label: 'TYPE_CHECKING-Only Names Need Quoting Before Python 3.14', route: '/python/type-hints/type-checking-only-names-need-quoting-before-python-314' },
   ],
+  'collections-itertools': [
+    { label: 'deque Indexed Access Is O(n), Not O(1)', route: '/python/collections-itertools/deque-indexed-access-is-o-n-not-o-1' },
+    { label: 'groupby Sub-Iterators Share One Source and Vanish', route: '/python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish' },
+    { label: 'heapq Tuples Need a Tie-Breaker for Equal Priorities', route: '/python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities' },
+  ],
 };
 
 @Component({

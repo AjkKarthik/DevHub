@@ -29196,6 +29196,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'itertools functions operate lazily, avoiding materializing large intermediate lists for large or infinite iterables.',
     ],
   },
+  'python/collections-itertools/deque-indexed-access-is-o-n-not-o-1': {
+    apis: ['collections.deque', 'deque[i]'],
+    related: [
+      { label: 'Collections & Itertools (overview)', route: '/python/collections-itertools' },
+      { label: 'groupby Sub-Iterators Share One Source and Vanish', route: '/python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish' },
+      { label: 'heapq Tuples Need a Tie-Breaker for Equal Priorities', route: '/python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities' },
+    ],
+    tip: 'Python\'s own docs confirm deque indexed access "is O(1) at both ends but slows to O(n) in the middle" — deque is not a universal list replacement, only the right tool for algorithms that only ever touch the two ends.',
+    docs: [
+      { label: 'Python Docs — collections.deque', url: 'https://docs.python.org/3/library/collections.html#collections.deque' },
+    ],
+    resources: [],
+    gotchas: [
+      'An algorithm needing genuine random access (like binary search) degrades from O(log n) to O(n log n) if its list is swapped for a deque.',
+      'The main page\'s own sliding-window solution only ever touches dq[0]/dq[-1] — exactly why deque is the right choice there specifically.',
+    ],
+  },
+  'python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish': {
+    apis: ['itertools.groupby'],
+    related: [
+      { label: 'Collections & Itertools (overview)', route: '/python/collections-itertools' },
+      { label: 'deque Indexed Access Is O(n), Not O(1)', route: '/python/collections-itertools/deque-indexed-access-is-o-n-not-o-1' },
+      { label: 'heapq Tuples Need a Tie-Breaker for Equal Priorities', route: '/python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities' },
+    ],
+    tip: 'Python\'s own docs confirm each groupby group "shares the underlying iterable with groupby()" — advancing the outer loop silently invalidates the previous group unless it was already consumed into a list.',
+    docs: [
+      { label: 'Python Docs — itertools.groupby', url: 'https://docs.python.org/3/library/itertools.html#itertools.groupby' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a SECOND, distinct groupby gotcha beyond the well-known pre-sorting requirement — correctly sorted input does not protect against it.',
+      'The fix is list(group) inside the same loop iteration that produced it, before the outer loop advances to the next key.',
+    ],
+  },
+  'python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities': {
+    apis: ['heapq.heappush()', 'heapq.heappop()', 'itertools.count()'],
+    related: [
+      { label: 'Collections & Itertools (overview)', route: '/python/collections-itertools' },
+      { label: 'deque Indexed Access Is O(n), Not O(1)', route: '/python/collections-itertools/deque-indexed-access-is-o-n-not-o-1' },
+      { label: 'groupby Sub-Iterators Share One Source and Vanish', route: '/python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish' },
+    ],
+    tip: 'Python\'s own "Priority Queue Implementation Notes" confirm tuple comparison "breaks for (priority, task) pairs if the priorities are equal and the tasks do not have a default comparison order" — add a unique entry count as the middle element to prevent this.',
+    docs: [
+      { label: 'Python Docs — heapq (Priority Queue Implementation Notes)', url: 'https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes' },
+    ],
+    resources: [],
+    gotchas: [
+      'This bug is condition-dependent — it can pass extensive testing where priorities happen to stay unique, then crash the first time a real tie occurs.',
+      'itertools.count() as the tie-breaker guarantees tuple comparison never reaches the (potentially non-orderable) payload object at all.',
+    ],
+  },
   'python/file-io': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

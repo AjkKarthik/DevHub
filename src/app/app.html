@@ -5837,7 +5837,26 @@
           </div>
         }
       }
-      <a routerLink="/python/collections-itertools" routerLinkActive="active"><span class="nl-text">Collections &amp; Itertools</span>@if(progress.isDone('py-collections-itertools')){<span class="nl-done">✓</span>}@if(diff('py-collections-itertools');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/collections-itertools" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Collections &amp; Itertools</span>
+        @if (progress.isDone('py-collections-itertools')) {<span class="nl-done">✓</span>}
+        @if (diff('py-collections-itertools'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('collections-itertools')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('collections-itertools')"
+                  (click)="toggleSubtopics('collections-itertools', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('collections-itertools'); as pyCollectionsSubs) {
+        @if (isSubtopicsExpanded('collections-itertools')) {
+          <div class="nav-subtopics">
+            @for (s of pyCollectionsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

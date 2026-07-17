@@ -2380,7 +2380,12 @@ export const routes: Routes = [
       { path: 'protocol-classes-cannot-be-instantiated-directly', loadComponent: () => import('./components/backend/python/type-hints/subtopics/protocol-classes-cannot-be-instantiated-directly/protocol-classes-cannot-be-instantiated-directly').then(m => m.ProtocolClassesCannotBeInstantiatedDirectlySubtopic) },
       { path: 'type-checking-only-names-need-quoting-before-python-314', loadComponent: () => import('./components/backend/python/type-hints/subtopics/type-checking-only-names-need-quoting-before-python-314/type-checking-only-names-need-quoting-before-python-314').then(m => m.TypeCheckingOnlyNamesNeedQuotingBeforePython314Subtopic) },
     ] },
-    { path: 'collections-itertools',    loadComponent: () => import('./components/backend/python/collections-itertools/collections-itertools').then(m => m.PythonCollectionsItertools) },
+    { path: 'collections-itertools', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/collections-itertools/collections-itertools').then(m => m.PythonCollectionsItertools) },
+      { path: 'deque-indexed-access-is-o-n-not-o-1', loadComponent: () => import('./components/backend/python/collections-itertools/subtopics/deque-indexed-access-is-o-n-not-o-1/deque-indexed-access-is-o-n-not-o-1').then(m => m.DequeIndexedAccessIsONNotO1Subtopic) },
+      { path: 'groupby-sub-iterators-share-one-source-and-vanish', loadComponent: () => import('./components/backend/python/collections-itertools/subtopics/groupby-sub-iterators-share-one-source-and-vanish/groupby-sub-iterators-share-one-source-and-vanish').then(m => m.GroupbySubIteratorsShareOneSourceAndVanishSubtopic) },
+      { path: 'heapq-tuples-need-a-tie-breaker-for-equal-priorities', loadComponent: () => import('./components/backend/python/collections-itertools/subtopics/heapq-tuples-need-a-tie-breaker-for-equal-priorities/heapq-tuples-need-a-tie-breaker-for-equal-priorities').then(m => m.HeapqTuplesNeedATieBreakerForEqualPrioritiesSubtopic) },
+    ] },
     { path: 'asyncio',                  loadComponent: () => import('./components/backend/python/asyncio/asyncio').then(m => m.PythonAsyncio) },
     { path: 'threading-multiprocessing',loadComponent: () => import('./components/backend/python/threading-multiprocessing/threading-multiprocessing').then(m => m.PythonThreadingMultiprocessing) },
     { path: 'concurrency-patterns',     loadComponent: () => import('./components/backend/python/concurrency-patterns/concurrency-patterns').then(m => m.PythonConcurrencyPatterns) },

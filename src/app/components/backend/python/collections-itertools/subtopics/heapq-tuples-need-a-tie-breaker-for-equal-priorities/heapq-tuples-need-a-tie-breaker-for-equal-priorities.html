@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Collections & Itertools" topicRoute="/python/collections-itertools" subtopicLabel="heapq Tie-Breaking" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">heapq Tuples Need a Tie-Breaker for Equal Priorities</h1>
+  <p class="page-subtitle">
+    Equal priorities force heapq to compare your payload objects — Python's own docs recommend a unique entry
+    count specifically to prevent that comparison from ever happening.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of collections/itertools internals that
+      look simpler than they are — deque's indexing tradeoff, groupby's shared-source gotcha, and now heapq's
+      tie-breaking requirement — each correcting a plausible but incomplete mental model with the actual
+      documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Collections & Itertools"
+    topicRoute="/python/collections-itertools"
+    [prev]="{ label: 'groupby Sub-Iterators Share One Source and Vanish', route: '/python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish' }"
+  />
+</div>
