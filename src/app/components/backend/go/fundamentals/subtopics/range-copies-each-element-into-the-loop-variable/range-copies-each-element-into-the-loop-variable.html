@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Fundamentals" topicRoute="/go/fundamentals" subtopicLabel="range Value Semantics" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">range Copies Each Element Into the Loop Variable</h1>
+  <p class="page-subtitle">
+    for i, v := range slice assigns v by value — mutating v never reaches the original slice. Mutation requires
+    writing back through the index.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory covers for range as the standard way to iterate collections without stating what
+      the range variable actually is on each pass — this subtopic fills that gap. The final subtopic moves to a
+      different mechanic entirely: which composite types Go actually lets you compare with ==.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Fundamentals"
+    topicRoute="/go/fundamentals"
+    [prev]="{ label: 'Go 1.22 Gives Each Loop Iteration Its Own Variable', route: '/go/fundamentals/go-122-gives-each-loop-iteration-its-own-variable' }"
+    [next]="{ label: 'Arrays Are Comparable, Slices Are Not', route: '/go/fundamentals/arrays-are-comparable-slices-are-not' }"
+  />
+</div>

@@ -33230,6 +33230,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Go has no generics-style function overloading — a function name can only have one signature per package scope.',
     ],
   },
+  'go/fundamentals/go-122-gives-each-loop-iteration-its-own-variable': {
+    apis: ['go.mod go directive', 'go1.22 release notes'],
+    related: [
+      { label: 'Fundamentals (overview)', route: '/go/fundamentals' },
+      { label: 'range Copies Each Element Into the Loop Variable', route: '/go/fundamentals/range-copies-each-element-into-the-loop-variable' },
+      { label: 'Arrays Are Comparable, Slices Are Not', route: '/go/fundamentals/arrays-are-comparable-slices-are-not' },
+    ],
+    tip: 'Go\'s own 1.22 release notes state each loop iteration now creates new variables — but only for modules whose go.mod itself declares go 1.22 or later, not just a newer installed toolchain.',
+    docs: [
+      { label: 'Go Docs — Go 1.22 Release Notes', url: 'https://go.dev/doc/go1.22' },
+    ],
+    resources: [],
+    gotchas: [
+      'The v := v shadowing workaround still compiles and still works correctly under either semantics — it just becomes unnecessary once a module adopts go 1.22+.',
+      'A newer compiler alone does not activate the fix — check the module\'s own go.mod go directive, not just the installed toolchain version.',
+    ],
+  },
+  'go/fundamentals/range-copies-each-element-into-the-loop-variable': {
+    apis: ['for range value semantics'],
+    related: [
+      { label: 'Fundamentals (overview)', route: '/go/fundamentals' },
+      { label: 'Go 1.22 Gives Each Loop Iteration Its Own Variable', route: '/go/fundamentals/go-122-gives-each-loop-iteration-its-own-variable' },
+      { label: 'Arrays Are Comparable, Slices Are Not', route: '/go/fundamentals/arrays-are-comparable-slices-are-not' },
+    ],
+    tip: 'for i, v := range slice assigns v BY VALUE — mutating v never reaches the original slice. Write through slice[i] instead, unless the slice holds pointers.',
+    docs: [
+      { label: 'Go Wiki — Range', url: 'https://go.dev/wiki/Range' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a different problem from the closure-capture-in-goroutines issue — shadowing (v := v) does nothing to fix a mutation problem, since v was never connected to the slice\'s memory at all.',
+      'A slice of POINTERS ([]*T) behaves differently — the copied pointer still refers to the same underlying struct, so mutating through it does reach the original.',
+    ],
+  },
+  'go/fundamentals/arrays-are-comparable-slices-are-not': {
+    apis: ['comparison operators', 'map key types'],
+    related: [
+      { label: 'Fundamentals (overview)', route: '/go/fundamentals' },
+      { label: 'Go 1.22 Gives Each Loop Iteration Its Own Variable', route: '/go/fundamentals/go-122-gives-each-loop-iteration-its-own-variable' },
+      { label: 'range Copies Each Element Into the Loop Variable', route: '/go/fundamentals/range-copies-each-element-into-the-loop-variable' },
+    ],
+    tip: 'Go\'s own spec: arrays are comparable if their element type is comparable; slices are never comparable except to nil. A struct is comparable only if ALL its fields are.',
+    docs: [
+      { label: 'Go Spec — Comparison Operators', url: 'https://go.dev/ref/spec#Comparison_operators' },
+    ],
+    resources: [],
+    gotchas: [
+      'If a field\'s size is genuinely fixed at compile time, switching it from a slice to an array (or a plain scalar) restores == comparability with no helper function needed.',
+      'A single non-comparable field anywhere in a struct (one slice) makes the WHOLE struct non-comparable — there is no partial state.',
+    ],
+  },
   'go/structs-interfaces': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

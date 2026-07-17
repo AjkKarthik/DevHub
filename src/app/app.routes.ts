@@ -2463,7 +2463,12 @@ export const routes: Routes = [
   ] },
   { path: 'go', children: [
     { path: '',               loadComponent: () => import('./components/backend/go/home/home').then(m => m.GoHome) },
-    { path: 'fundamentals',   loadComponent: () => import('./components/backend/go/fundamentals/fundamentals').then(m => m.GoFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/fundamentals/fundamentals').then(m => m.GoFundamentals) },
+      { path: 'go-122-gives-each-loop-iteration-its-own-variable', loadComponent: () => import('./components/backend/go/fundamentals/subtopics/go-122-gives-each-loop-iteration-its-own-variable/go-122-gives-each-loop-iteration-its-own-variable').then(m => m.Go122GivesEachLoopIterationItsOwnVariableSubtopic) },
+      { path: 'range-copies-each-element-into-the-loop-variable', loadComponent: () => import('./components/backend/go/fundamentals/subtopics/range-copies-each-element-into-the-loop-variable/range-copies-each-element-into-the-loop-variable').then(m => m.RangeCopiesEachElementIntoTheLoopVariableSubtopic) },
+      { path: 'arrays-are-comparable-slices-are-not', loadComponent: () => import('./components/backend/go/fundamentals/subtopics/arrays-are-comparable-slices-are-not/arrays-are-comparable-slices-are-not').then(m => m.ArraysAreComparableSlicesAreNotSubtopic) },
+    ] },
     { path: 'structs-interfaces', loadComponent: () => import('./components/backend/go/structs-interfaces/structs-interfaces').then(m => m.GoStructsInterfaces) },
     { path: 'error-handling', loadComponent: () => import('./components/backend/go/error-handling/error-handling').then(m => m.GoErrorHandling) },
     { path: 'slices-maps',    loadComponent: () => import('./components/backend/go/slices-maps/slices-maps').then(m => m.GoSlicesMaps) },

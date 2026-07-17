@@ -1566,6 +1566,9 @@ const PYTHON_LABELS: Record<string, string> = {
 
 const GO_LABELS: Record<string, string> = {
   'fundamentals':       'Go Fundamentals',
+  'fundamentals/go-122-gives-each-loop-iteration-its-own-variable': 'Go 1.22 Gives Each Loop Iteration Its Own Variable',
+  'fundamentals/range-copies-each-element-into-the-loop-variable': 'range Copies Each Element Into the Loop Variable',
+  'fundamentals/arrays-are-comparable-slices-are-not': 'Arrays Are Comparable, Slices Are Not',
   'structs-interfaces': 'Structs & Interfaces',
   'error-handling':     'Error Handling',
   'slices-maps':        'Slices & Maps',
