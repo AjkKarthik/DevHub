@@ -2062,6 +2062,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A @contextmanager Generator Is Single-Use Only', route: '/python/decorators-context-managers/a-contextmanager-generator-is-single-use-only' },
     { label: 'ContextDecorator Discards the __enter__() Return Value', route: '/python/decorators-context-managers/contextdecorator-discards-the-enter-return-value' },
   ],
+  'type-hints': [
+    { label: '@overload Stubs Raise NotImplementedError If Called Directly', route: '/python/type-hints/overload-stubs-raise-notimplementederror-if-called-directly' },
+    { label: 'Protocol Classes Cannot Be Instantiated Directly', route: '/python/type-hints/protocol-classes-cannot-be-instantiated-directly' },
+    { label: 'TYPE_CHECKING-Only Names Need Quoting Before Python 3.14', route: '/python/type-hints/type-checking-only-names-need-quoting-before-python-314' },
+  ],
 };
 
 @Component({

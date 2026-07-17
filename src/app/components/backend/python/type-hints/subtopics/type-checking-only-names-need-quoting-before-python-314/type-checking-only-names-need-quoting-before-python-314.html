@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Type Hints & mypy" topicRoute="/python/type-hints" subtopicLabel="TYPE_CHECKING Version Gap" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">TYPE_CHECKING-Only Names Need Quoting Before Python 3.14</h1>
+  <p class="page-subtitle">
+    An unquoted TYPE_CHECKING-only name in an annotation raises NameError at definition time on Python ≤3.13 —
+    PEP 649 made this safe by default only starting in 3.14.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.5.3+ (behavior changed in 3.14)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of typing internals that look simpler than
+      they are — &#64;overload's runtime guard, Protocol's instantiation restriction, and now TYPE_CHECKING's
+      version-dependent safety — each correcting a plausible but incomplete mental model with the actual
+      documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Type Hints & mypy"
+    topicRoute="/python/type-hints"
+    [prev]="{ label: 'Protocol Classes Cannot Be Instantiated Directly', route: '/python/type-hints/protocol-classes-cannot-be-instantiated-directly' }"
+  />
+</div>

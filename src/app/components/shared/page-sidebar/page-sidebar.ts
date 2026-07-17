@@ -28947,6 +28947,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Gradual typing (mixing typed/untyped code) is what has driven type hints\' widespread incremental adoption across the ecosystem.',
     ],
   },
+  'python/type-hints/overload-stubs-raise-notimplementederror-if-called-directly': {
+    apis: ['@typing.overload', 'NotImplementedError'],
+    related: [
+      { label: 'Type Hints & mypy (overview)', route: '/python/type-hints' },
+      { label: 'Protocol Classes Cannot Be Instantiated Directly', route: '/python/type-hints/protocol-classes-cannot-be-instantiated-directly' },
+      { label: 'TYPE_CHECKING-Only Names Need Quoting Before Python 3.14', route: '/python/type-hints/type-checking-only-names-need-quoting-before-python-314' },
+    ],
+    tip: 'Python\'s own typing docs confirm calling an @overload-decorated function directly raises NotImplementedError — every stub is replaced with a dummy at decoration time, not left as ordinary, silently-returning-None code.',
+    docs: [
+      { label: 'Python Docs — typing.overload', url: 'https://docs.python.org/3/library/typing.html#typing.overload' },
+    ],
+    resources: [],
+    gotchas: [
+      'A missing real implementation produces no import-time error — only the first actual call reveals the mistake, loudly.',
+      'The identical NotImplementedError is raised whether the omission was deliberate or accidental — there\'s no way to distinguish the two from the error alone.',
+    ],
+  },
+  'python/type-hints/protocol-classes-cannot-be-instantiated-directly': {
+    apis: ['typing.Protocol', 'TypeError'],
+    related: [
+      { label: 'Type Hints & mypy (overview)', route: '/python/type-hints' },
+      { label: '@overload Stubs Raise NotImplementedError If Called Directly', route: '/python/type-hints/overload-stubs-raise-notimplementederror-if-called-directly' },
+      { label: 'TYPE_CHECKING-Only Names Need Quoting Before Python 3.14', route: '/python/type-hints/type-checking-only-names-need-quoting-before-python-314' },
+    ],
+    tip: 'PEP 544 confirms "protocols cannot be instantiated" — a class directly inheriting from Protocol raises TypeError regardless of whether its methods have real bodies, unlike an ABC which only blocks instantiation for unimplemented @abstractmethods.',
+    docs: [
+      { label: 'PEP 544 — Protocols', url: 'https://peps.python.org/pep-0544/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Giving Protocol methods real implementations instead of ... changes nothing about this restriction.',
+      'A quick, throwaway concrete implementation needs a genuinely separate class that satisfies the Protocol structurally, without inheriting from it.',
+    ],
+  },
+  'python/type-hints/type-checking-only-names-need-quoting-before-python-314': {
+    apis: ['typing.TYPE_CHECKING', 'from __future__ import annotations'],
+    related: [
+      { label: 'Type Hints & mypy (overview)', route: '/python/type-hints' },
+      { label: '@overload Stubs Raise NotImplementedError If Called Directly', route: '/python/type-hints/overload-stubs-raise-notimplementederror-if-called-directly' },
+      { label: 'Protocol Classes Cannot Be Instantiated Directly', route: '/python/type-hints/protocol-classes-cannot-be-instantiated-directly' },
+    ],
+    tip: 'On Python ≤3.13, an unquoted TYPE_CHECKING-only name in an annotation raises NameError at definition time — PEP 649 made lazy evaluation the default only starting in Python 3.14.',
+    docs: [
+      { label: 'Python Docs — typing.TYPE_CHECKING', url: 'https://docs.python.org/3/library/typing.html#typing.TYPE_CHECKING' },
+    ],
+    resources: [],
+    gotchas: [
+      'Code tested locally on a newer interpreter can pass while failing in CI/production pinned to an older Python version — verify against the actual target version.',
+      'Quoting the name, or adding from __future__ import annotations, remains the safe default for any codebase not yet requiring Python 3.14+ exclusively.',
+    ],
+  },
   'python/oop': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

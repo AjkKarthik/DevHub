@@ -2374,7 +2374,12 @@ export const routes: Routes = [
       { path: 'a-contextmanager-generator-is-single-use-only', loadComponent: () => import('./components/backend/python/decorators-context-managers/subtopics/a-contextmanager-generator-is-single-use-only/a-contextmanager-generator-is-single-use-only').then(m => m.AContextmanagerGeneratorIsSingleUseOnlySubtopic) },
       { path: 'contextdecorator-discards-the-enter-return-value', loadComponent: () => import('./components/backend/python/decorators-context-managers/subtopics/contextdecorator-discards-the-enter-return-value/contextdecorator-discards-the-enter-return-value').then(m => m.ContextdecoratorDiscardsTheEnterReturnValueSubtopic) },
     ] },
-    { path: 'type-hints',               loadComponent: () => import('./components/backend/python/type-hints/type-hints').then(m => m.PythonTypeHints) },
+    { path: 'type-hints', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/type-hints/type-hints').then(m => m.PythonTypeHints) },
+      { path: 'overload-stubs-raise-notimplementederror-if-called-directly', loadComponent: () => import('./components/backend/python/type-hints/subtopics/overload-stubs-raise-notimplementederror-if-called-directly/overload-stubs-raise-notimplementederror-if-called-directly').then(m => m.OverloadStubsRaiseNotimplementederrorIfCalledDirectlySubtopic) },
+      { path: 'protocol-classes-cannot-be-instantiated-directly', loadComponent: () => import('./components/backend/python/type-hints/subtopics/protocol-classes-cannot-be-instantiated-directly/protocol-classes-cannot-be-instantiated-directly').then(m => m.ProtocolClassesCannotBeInstantiatedDirectlySubtopic) },
+      { path: 'type-checking-only-names-need-quoting-before-python-314', loadComponent: () => import('./components/backend/python/type-hints/subtopics/type-checking-only-names-need-quoting-before-python-314/type-checking-only-names-need-quoting-before-python-314').then(m => m.TypeCheckingOnlyNamesNeedQuotingBeforePython314Subtopic) },
+    ] },
     { path: 'collections-itertools',    loadComponent: () => import('./components/backend/python/collections-itertools/collections-itertools').then(m => m.PythonCollectionsItertools) },
     { path: 'asyncio',                  loadComponent: () => import('./components/backend/python/asyncio/asyncio').then(m => m.PythonAsyncio) },
     { path: 'threading-multiprocessing',loadComponent: () => import('./components/backend/python/threading-multiprocessing/threading-multiprocessing').then(m => m.PythonThreadingMultiprocessing) },
