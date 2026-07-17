@@ -29824,6 +29824,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Parametrized tests reduce boilerplate for testing the same logic against many input/output pairs.',
     ],
   },
+  'python/pytest/autouse-fixtures-run-without-being-requested': {
+    apis: ['@pytest.fixture(autouse=True)'],
+    related: [
+      { label: 'Testing with pytest (overview)', route: '/python/pytest' },
+      { label: 'pytest.raises() Matches Subclasses Too', route: '/python/pytest/pytest-raises-matches-subclasses-too' },
+      { label: 'A Test File’s Fixture Overrides conftest.py by Name', route: '/python/pytest/a-test-file-fixture-overrides-conftest-by-name' },
+    ],
+    tip: 'pytest\'s own docs state autouse fixtures "make all tests automatically request them" — a test can be affected by a fixture it never names, with no signal in its own signature.',
+    docs: [
+      { label: 'pytest Docs — Autouse Fixtures', url: 'https://docs.pytest.org/en/stable/how-to/fixtures.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Documented ordering: higher scope first, then autouse before non-autouse at the same scope, then dependencies before dependents.',
+      'A conftest.py autouse fixture silently applies to every test in that directory tree — check --fixtures output, not just a test\'s own parameter list.',
+    ],
+  },
+  'python/pytest/pytest-raises-matches-subclasses-too': {
+    apis: ['pytest.raises()', 'excinfo.type'],
+    related: [
+      { label: 'Testing with pytest (overview)', route: '/python/pytest' },
+      { label: 'autouse Fixtures Run Without Being Requested', route: '/python/pytest/autouse-fixtures-run-without-being-requested' },
+      { label: 'A Test File’s Fixture Overrides conftest.py by Name', route: '/python/pytest/a-test-file-fixture-overrides-conftest-by-name' },
+    ],
+    tip: 'pytest\'s own docs state pytest.raises() "will match the exception type or any subclasses (like the standard except statement)" — a broad class can mask the wrong specific exception.',
+    docs: [
+      { label: 'pytest Docs — Assertions about expected exceptions', url: 'https://docs.pytest.org/en/stable/how-to/assert.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'assert excinfo.type is ExactException after the with block is pytest\'s own documented pattern for exact-type verification.',
+      'Preferring the narrowest exception class directly in pytest.raises() is often simpler than a broad class plus a separate type assertion.',
+    ],
+  },
+  'python/pytest/a-test-file-fixture-overrides-conftest-by-name': {
+    apis: ['fixture override', 'pytest --fixtures'],
+    related: [
+      { label: 'Testing with pytest (overview)', route: '/python/pytest' },
+      { label: 'autouse Fixtures Run Without Being Requested', route: '/python/pytest/autouse-fixtures-run-without-being-requested' },
+      { label: 'pytest.raises() Matches Subclasses Too', route: '/python/pytest/pytest-raises-matches-subclasses-too' },
+    ],
+    tip: 'pytest\'s own docs confirm a same-named fixture "can be overridden for a certain test module" — the closest definition wins, with no error or warning.',
+    docs: [
+      { label: 'pytest Docs — Override a fixture', url: 'https://docs.pytest.org/en/stable/how-to/fixtures.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'An overriding fixture can request a parameter with its own name to reach the fixture it is shadowing — pytest resolves that to the next one up the hierarchy.',
+      'pytest --fixtures <path> is the reliable way to confirm which fixture definition actually applies to a given test, rather than trusting conftest.py alone.',
+    ],
+  },
   'python/debugging-profiling': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

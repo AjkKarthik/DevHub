@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing with pytest" topicRoute="/python/pytest" subtopicLabel="Fixture Overriding" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">A Test File’s Fixture Overrides conftest.py by Name</h1>
+  <p class="page-subtitle">
+    A fixture defined in a test file with the same name as one in conftest.py silently shadows it for that file's
+    own tests — no error, no flag, and the override can still reach the original.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="pytest 7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory describes conftest.py fixtures as simply "available" without covering what
+      happens when a test file redefines the same name. Together with the previous two subtopics, this completes
+      the pattern: which fixtures run without being asked, what pytest.raises() actually matches, and which
+      fixture definition actually wins when two share a name.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing with pytest"
+    topicRoute="/python/pytest"
+    [prev]="{ label: 'pytest.raises() Matches Subclasses Too', route: '/python/pytest/pytest-raises-matches-subclasses-too' }"
+  />
+</div>

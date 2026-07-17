@@ -2117,6 +2117,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Feature Selection Before cross_val_score Still Leaks', route: '/python/scikit-learn/feature-selection-before-cv-still-leaks' },
     { label: 'Permutation Importance: Train vs. Test Data', route: '/python/scikit-learn/permutation-importance-train-vs-test-data' },
   ],
+  'pytest': [
+    { label: 'autouse Fixtures Run Without Being Requested', route: '/python/pytest/autouse-fixtures-run-without-being-requested' },
+    { label: 'pytest.raises() Matches Subclasses Too', route: '/python/pytest/pytest-raises-matches-subclasses-too' },
+    { label: 'A Test File’s Fixture Overrides conftest.py by Name', route: '/python/pytest/a-test-file-fixture-overrides-conftest-by-name' },
+  ],
 };
 
 @Component({

@@ -2440,7 +2440,12 @@ export const routes: Routes = [
       { path: 'feature-selection-before-cv-still-leaks', loadComponent: () => import('./components/backend/python/scikit-learn/subtopics/feature-selection-before-cv-still-leaks/feature-selection-before-cv-still-leaks').then(m => m.FeatureSelectionBeforeCvStillLeaksSubtopic) },
       { path: 'permutation-importance-train-vs-test-data', loadComponent: () => import('./components/backend/python/scikit-learn/subtopics/permutation-importance-train-vs-test-data/permutation-importance-train-vs-test-data').then(m => m.PermutationImportanceTrainVsTestDataSubtopic) },
     ] },
-    { path: 'pytest',                   loadComponent: () => import('./components/backend/python/pytest/pytest').then(m => m.PythonPytest) },
+    { path: 'pytest', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/pytest/pytest').then(m => m.PythonPytest) },
+      { path: 'autouse-fixtures-run-without-being-requested', loadComponent: () => import('./components/backend/python/pytest/subtopics/autouse-fixtures-run-without-being-requested/autouse-fixtures-run-without-being-requested').then(m => m.AutouseFixturesRunWithoutBeingRequestedSubtopic) },
+      { path: 'pytest-raises-matches-subclasses-too', loadComponent: () => import('./components/backend/python/pytest/subtopics/pytest-raises-matches-subclasses-too/pytest-raises-matches-subclasses-too').then(m => m.PytestRaisesMatchesSubclassesTooSubtopic) },
+      { path: 'a-test-file-fixture-overrides-conftest-by-name', loadComponent: () => import('./components/backend/python/pytest/subtopics/a-test-file-fixture-overrides-conftest-by-name/a-test-file-fixture-overrides-conftest-by-name').then(m => m.ATestFileFixtureOverridesConftestByNameSubtopic) },
+    ] },
     { path: 'packaging',                loadComponent: () => import('./components/backend/python/packaging/packaging').then(m => m.PythonPackaging) },
     { path: 'debugging-profiling',      loadComponent: () => import('./components/backend/python/debugging-profiling/debugging-profiling').then(m => m.PythonDebuggingProfiling) },
     { path: 'cheatsheet',               loadComponent: () => import('./components/backend/python/cheatsheet/cheatsheet').then(m => m.PythonCheatsheet) },
