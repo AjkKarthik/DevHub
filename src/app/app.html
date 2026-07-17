@@ -6029,7 +6029,26 @@
           </div>
         }
       }
-      <a routerLink="/python/scikit-learn" routerLinkActive="active"><span class="nl-text">Machine Learning (scikit-learn)</span>@if(progress.isDone('py-scikit-learn')){<span class="nl-done">✓</span>}@if(diff('py-scikit-learn');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/scikit-learn" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Machine Learning (scikit-learn)</span>
+        @if (progress.isDone('py-scikit-learn')) {<span class="nl-done">✓</span>}
+        @if (diff('py-scikit-learn'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('scikit-learn')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('scikit-learn')"
+                  (click)="toggleSubtopics('scikit-learn', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('scikit-learn'); as pySklearnSubs) {
+        @if (isSubtopicsExpanded('scikit-learn')) {
+          <div class="nav-subtopics">
+            @for (s of pySklearnSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

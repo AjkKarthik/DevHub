@@ -29762,6 +29762,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A model performing far better on training than test data has memorized noise rather than learned generalizable patterns.',
     ],
   },
+  'python/scikit-learn/cv-integer-auto-selects-stratifiedkfold': {
+    apis: ['cross_val_score(cv=)', 'StratifiedKFold', 'KFold'],
+    related: [
+      { label: 'Machine Learning (overview)', route: '/python/scikit-learn' },
+      { label: 'Feature Selection Before cross_val_score Still Leaks', route: '/python/scikit-learn/feature-selection-before-cv-still-leaks' },
+      { label: 'Permutation Importance: Train vs. Test Data', route: '/python/scikit-learn/permutation-importance-train-vs-test-data' },
+    ],
+    tip: 'scikit-learn\'s own docs state cv=integer uses StratifiedKFold "if the estimator derives from ClassifierMixin," and plain KFold otherwise — automatic, not something you opt into.',
+    docs: [
+      { label: 'scikit-learn Docs — Cross-validation', url: 'https://scikit-learn.org/stable/modules/cross_validation.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'train_test_split has no estimator to inspect, so stratify=y must still be passed explicitly there — only cv=integer benefits from the automatic detection.',
+      'GridSearchCV inherits the identical automatic splitter selection, with no separate stratify parameter to remember.',
+    ],
+  },
+  'python/scikit-learn/feature-selection-before-cv-still-leaks': {
+    apis: ['SelectKBest', 'Pipeline', 'cross_val_score'],
+    related: [
+      { label: 'Machine Learning (overview)', route: '/python/scikit-learn' },
+      { label: 'cv=Integer Auto-Selects StratifiedKFold for Classifiers', route: '/python/scikit-learn/cv-integer-auto-selects-stratifiedkfold' },
+      { label: 'Permutation Importance: Train vs. Test Data', route: '/python/scikit-learn/permutation-importance-train-vs-test-data' },
+    ],
+    tip: 'scikit-learn\'s own "Common pitfalls" guide warns feature selection run on the full dataset before cross_val_score leaks test-fold information, even if the model itself is wrapped in a Pipeline.',
+    docs: [
+      { label: 'scikit-learn Docs — Common Pitfalls (data leakage)', url: 'https://scikit-learn.org/stable/common_pitfalls.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'The fix is moving the feature selector INSIDE the same Pipeline object passed to cross_val_score, not just fitting it on "the training set" once beforehand.',
+      'PCA and other dimensionality-reduction steps are susceptible to the identical leak, not just SelectKBest specifically.',
+    ],
+  },
+  'python/scikit-learn/permutation-importance-train-vs-test-data': {
+    apis: ['permutation_importance()'],
+    related: [
+      { label: 'Machine Learning (overview)', route: '/python/scikit-learn' },
+      { label: 'cv=Integer Auto-Selects StratifiedKFold for Classifiers', route: '/python/scikit-learn/cv-integer-auto-selects-stratifiedkfold' },
+      { label: 'Feature Selection Before cross_val_score Still Leaks', route: '/python/scikit-learn/feature-selection-before-cv-still-leaks' },
+    ],
+    tip: 'scikit-learn\'s own docs warn a feature important on the training set but not the held-out set "might cause the model to overfit" — compute permutation importance on test data to measure genuine generalization.',
+    docs: [
+      { label: 'scikit-learn Docs — Permutation Feature Importance', url: 'https://scikit-learn.org/stable/modules/permutation_importance.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A large train-vs-test importance gap for one feature is itself a diagnostic signal for overfitting specifically attributable to that feature.',
+      'Both calls run without error or warning — scikit-learn does not stop you from computing (and misinterpreting) training-set-only importance.',
+    ],
+  },
   'python/pytest': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

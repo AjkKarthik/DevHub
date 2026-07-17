@@ -2112,6 +2112,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Broadcasting (3,) and (3,1) Silently Produces a (3,3)', route: '/python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3' },
     { label: 'groupby() Silently Drops NaN Keys by Default', route: '/python/numpy-pandas/groupby-silently-drops-nan-keys-by-default' },
   ],
+  'scikit-learn': [
+    { label: 'cv=Integer Auto-Selects StratifiedKFold for Classifiers', route: '/python/scikit-learn/cv-integer-auto-selects-stratifiedkfold' },
+    { label: 'Feature Selection Before cross_val_score Still Leaks', route: '/python/scikit-learn/feature-selection-before-cv-still-leaks' },
+    { label: 'Permutation Importance: Train vs. Test Data', route: '/python/scikit-learn/permutation-importance-train-vs-test-data' },
+  ],
 };
 
 @Component({

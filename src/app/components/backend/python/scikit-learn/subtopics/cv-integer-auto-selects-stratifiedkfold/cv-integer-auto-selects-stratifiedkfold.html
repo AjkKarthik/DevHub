@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Machine Learning with scikit-learn" topicRoute="/python/scikit-learn" subtopicLabel="Automatic Fold Selection" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">cv=Integer Auto-Selects StratifiedKFold for Classifiers</h1>
+  <p class="page-subtitle">
+    A plain integer passed to cv= is not "plain K-fold" — scikit-learn silently picks StratifiedKFold for
+    classifiers and KFold for regressors, based on the estimator type alone.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="scikit-learn 1.3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own examples pass stratify=y to train_test_split as an explicit step, without covering that
+      cross_val_score and GridSearchCV already handle the equivalent protection automatically. The next subtopic
+      moves to a genuinely separate leakage source the main page's own scaler example doesn't cover.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Machine Learning with scikit-learn"
+    topicRoute="/python/scikit-learn"
+    [next]="{ label: 'Feature Selection Before cross_val_score Still Leaks', route: '/python/scikit-learn/feature-selection-before-cv-still-leaks' }"
+  />
+</div>

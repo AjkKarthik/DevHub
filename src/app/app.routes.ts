@@ -2434,7 +2434,12 @@ export const routes: Routes = [
       { path: 'broadcasting-3-and-3-1-silently-produces-a-3x3', loadComponent: () => import('./components/backend/python/numpy-pandas/subtopics/broadcasting-3-and-3-1-silently-produces-a-3x3/broadcasting-3-and-3-1-silently-produces-a-3x3').then(m => m.Broadcasting3And31SilentlyProducesA3X3Subtopic) },
       { path: 'groupby-silently-drops-nan-keys-by-default', loadComponent: () => import('./components/backend/python/numpy-pandas/subtopics/groupby-silently-drops-nan-keys-by-default/groupby-silently-drops-nan-keys-by-default').then(m => m.GroupbySilentlyDropsNanKeysByDefaultSubtopic) },
     ] },
-    { path: 'scikit-learn',             loadComponent: () => import('./components/backend/python/scikit-learn/scikit-learn').then(m => m.PythonScikitLearn) },
+    { path: 'scikit-learn', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/scikit-learn/scikit-learn').then(m => m.PythonScikitLearn) },
+      { path: 'cv-integer-auto-selects-stratifiedkfold', loadComponent: () => import('./components/backend/python/scikit-learn/subtopics/cv-integer-auto-selects-stratifiedkfold/cv-integer-auto-selects-stratifiedkfold').then(m => m.CvIntegerAutoSelectsStratifiedkfoldSubtopic) },
+      { path: 'feature-selection-before-cv-still-leaks', loadComponent: () => import('./components/backend/python/scikit-learn/subtopics/feature-selection-before-cv-still-leaks/feature-selection-before-cv-still-leaks').then(m => m.FeatureSelectionBeforeCvStillLeaksSubtopic) },
+      { path: 'permutation-importance-train-vs-test-data', loadComponent: () => import('./components/backend/python/scikit-learn/subtopics/permutation-importance-train-vs-test-data/permutation-importance-train-vs-test-data').then(m => m.PermutationImportanceTrainVsTestDataSubtopic) },
+    ] },
     { path: 'pytest',                   loadComponent: () => import('./components/backend/python/pytest/pytest').then(m => m.PythonPytest) },
     { path: 'packaging',                loadComponent: () => import('./components/backend/python/packaging/packaging').then(m => m.PythonPackaging) },
     { path: 'debugging-profiling',      loadComponent: () => import('./components/backend/python/debugging-profiling/debugging-profiling').then(m => m.PythonDebuggingProfiling) },
