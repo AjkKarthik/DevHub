@@ -2107,6 +2107,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'chain() Prepends One Argument, Not an Unpacked Tuple', route: '/python/celery/chain-prepends-one-argument-not-unpacked-tuple' },
     { label: 'Redis visibility_timeout Can Redeliver Long Tasks', route: '/python/celery/redis-visibility-timeout-can-redeliver-long-tasks' },
   ],
+  'numpy-pandas': [
+    { label: 'Basic Slicing Is a View, Fancy Indexing Is a Copy', route: '/python/numpy-pandas/basic-slicing-is-a-view-fancy-indexing-is-a-copy' },
+    { label: 'Broadcasting (3,) and (3,1) Silently Produces a (3,3)', route: '/python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3' },
+    { label: 'groupby() Silently Drops NaN Keys by Default', route: '/python/numpy-pandas/groupby-silently-drops-nan-keys-by-default' },
+  ],
 };
 
 @Component({

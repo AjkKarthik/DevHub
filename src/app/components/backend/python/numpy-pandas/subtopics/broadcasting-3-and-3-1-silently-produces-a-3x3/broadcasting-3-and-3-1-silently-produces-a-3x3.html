@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="NumPy &amp; Pandas" topicRoute="/python/numpy-pandas" subtopicLabel="Broadcasting Shape Collision" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Broadcasting (3,) and (3,1) Silently Produces a (3,3)</h1>
+  <p class="page-subtitle">
+    A flat array and a column vector of the "same length" don't add element-wise — NumPy's documented alignment
+    rule broadcasts them into a full outer-product-shaped matrix instead, with no error.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="NumPy 1.24+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory states broadcasting's rule in one sentence — this subtopic traces a specific,
+      deceptively simple shape pair through it to show exactly where intuition breaks down. The final subtopic
+      leaves NumPy behind for a Pandas-specific gotcha: what groupby() actually does with a missing key value.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NumPy &amp; Pandas"
+    topicRoute="/python/numpy-pandas"
+    [prev]="{ label: 'Basic Slicing Is a View, Fancy Indexing Is a Copy', route: '/python/numpy-pandas/basic-slicing-is-a-view-fancy-indexing-is-a-copy' }"
+    [next]="{ label: 'groupby() Silently Drops NaN Keys by Default', route: '/python/numpy-pandas/groupby-silently-drops-nan-keys-by-default' }"
+  />
+</div>

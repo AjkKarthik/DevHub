@@ -6009,7 +6009,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Data Science</p>
-      <a routerLink="/python/numpy-pandas" routerLinkActive="active"><span class="nl-text">NumPy &amp; Pandas</span>@if(progress.isDone('py-numpy-pandas')){<span class="nl-done">✓</span>}@if(diff('py-numpy-pandas');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/numpy-pandas" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">NumPy &amp; Pandas</span>
+        @if (progress.isDone('py-numpy-pandas')) {<span class="nl-done">✓</span>}
+        @if (diff('py-numpy-pandas'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('numpy-pandas')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('numpy-pandas')"
+                  (click)="toggleSubtopics('numpy-pandas', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('numpy-pandas'); as pyNumpySubs) {
+        @if (isSubtopicsExpanded('numpy-pandas')) {
+          <div class="nav-subtopics">
+            @for (s of pyNumpySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/python/scikit-learn" routerLinkActive="active"><span class="nl-text">Machine Learning (scikit-learn)</span>@if(progress.isDone('py-scikit-learn')){<span class="nl-done">✓</span>}@if(diff('py-scikit-learn');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

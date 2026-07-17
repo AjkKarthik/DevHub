@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="NumPy &amp; Pandas" topicRoute="/python/numpy-pandas" subtopicLabel="groupby() and NaN Keys" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">groupby() Silently Drops NaN Keys by Default</h1>
+  <p class="page-subtitle">
+    Rows with a missing groupby key don't get their own group — Pandas' documented default excludes them from
+    every group and the aggregation entirely, with no warning printed.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Pandas 2.x" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory describes groupby().agg() as Pandas' SQL GROUP BY without covering this specific
+      divergence from SQL's own NULL-key handling. Together with the previous two subtopics, this completes the
+      pattern: how NumPy's memory model differs by indexing style, how its broadcasting rule can silently reshape a
+      result, and how Pandas' own aggregation can silently under-count real data.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NumPy &amp; Pandas"
+    topicRoute="/python/numpy-pandas"
+    [prev]="{ label: 'Broadcasting (3,) and (3,1) Silently Produces a (3,3)', route: '/python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3' }"
+  />
+</div>

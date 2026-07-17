@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="NumPy &amp; Pandas" topicRoute="/python/numpy-pandas" subtopicLabel="Views vs. Copies" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Basic Slicing Is a View, Fancy Indexing Is a Copy</h1>
+  <p class="page-subtitle">
+    Slicing shares memory with the original array — mutate it and the original changes too. Fancy and boolean
+    indexing always return an independent copy, even though reading them looks identical.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="NumPy 1.24+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory covers fancy indexing and boolean indexing as selection tools without mentioning
+      their memory semantics — this subtopic fills that gap before it causes a silent bug. The next subtopic stays
+      in NumPy but moves to a different mechanic entirely: what broadcasting actually does with two shapes that
+      look compatible but aren't what they seem.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NumPy &amp; Pandas"
+    topicRoute="/python/numpy-pandas"
+    [next]="{ label: 'Broadcasting (3,) and (3,1) Silently Produces a (3,3)', route: '/python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3' }"
+  />
+</div>

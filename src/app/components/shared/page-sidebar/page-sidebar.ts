@@ -29700,6 +29700,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pandas is built on NumPy arrays, so using vectorized operations over .iterrows() is essential for acceptable performance on non-trivial datasets.',
     ],
   },
+  'python/numpy-pandas/basic-slicing-is-a-view-fancy-indexing-is-a-copy': {
+    apis: ['ndarray.base', 'basics.copies-and-views'],
+    related: [
+      { label: 'NumPy & Pandas (overview)', route: '/python/numpy-pandas' },
+      { label: 'Broadcasting (3,) and (3,1) Silently Produces a (3,3)', route: '/python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3' },
+      { label: 'groupby() Silently Drops NaN Keys by Default', route: '/python/numpy-pandas/groupby-silently-drops-nan-keys-by-default' },
+    ],
+    tip: 'NumPy\'s own docs state basic slicing "always" returns a view sharing memory with the original; advanced (fancy/boolean) indexing "always" returns a copy — opposite, documented guarantees.',
+    docs: [
+      { label: 'NumPy Docs — Copies and Views', url: 'https://numpy.org/doc/stable/user/basics.copies.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Direct assignment through fancy indexing (arr[[1,3]] = 0) still writes through — the copy only matters once the result is read and stored in its own variable.',
+      'A view\'s .base attribute points back to the original array; a copy\'s .base is None — a concrete way to check which relationship a given array has.',
+    ],
+  },
+  'python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3': {
+    apis: ['ndarray.shape', 'keepdims'],
+    related: [
+      { label: 'NumPy & Pandas (overview)', route: '/python/numpy-pandas' },
+      { label: 'Basic Slicing Is a View, Fancy Indexing Is a Copy', route: '/python/numpy-pandas/basic-slicing-is-a-view-fancy-indexing-is-a-copy' },
+      { label: 'groupby() Silently Drops NaN Keys by Default', route: '/python/numpy-pandas/groupby-silently-drops-nan-keys-by-default' },
+    ],
+    tip: 'A (3,) array is left-padded to (1,3) before comparison against a (3,1) array — both dimension pairs pass the "equal or one of them is 1" rule, producing a (3,3) result instead of an error or simple element-wise addition.',
+    docs: [
+      { label: 'NumPy Docs — Broadcasting', url: 'https://numpy.org/doc/stable/user/basics.broadcasting.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A common trigger: a prior .reshape(-1, 1) or .mean(axis=1, keepdims=True) column vector later combined with an unrelated flat array assumed to be "the same length."',
+      'This exact shape collision is not named as a dedicated warning in NumPy\'s own docs — it follows from the documented alignment mechanism, not a called-out pitfall.',
+    ],
+  },
+  'python/numpy-pandas/groupby-silently-drops-nan-keys-by-default': {
+    apis: ['DataFrame.groupby(dropna=)', 'Series.isna()'],
+    related: [
+      { label: 'NumPy & Pandas (overview)', route: '/python/numpy-pandas' },
+      { label: 'Basic Slicing Is a View, Fancy Indexing Is a Copy', route: '/python/numpy-pandas/basic-slicing-is-a-view-fancy-indexing-is-a-copy' },
+      { label: 'Broadcasting (3,) and (3,1) Silently Produces a (3,3)', route: '/python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3' },
+    ],
+    tip: 'Pandas\' own docs state groupby()\'s dropna defaults to True — NaN-keyed rows are dropped from every group and the aggregation entirely, not placed into their own NaN group as SQL\'s GROUP BY would.',
+    docs: [
+      { label: 'Pandas Docs — DataFrame.groupby', url: 'https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A grouped summary with excluded NaN keys looks completely normal — check df[key].isna().sum() before trusting a groupby total matches the ungrouped total.',
+      'dropna=False recovers the missing rows as an explicit NaN group, distinct from how .mean() already ignores NaN among the VALUES being aggregated.',
+    ],
+  },
   'python/scikit-learn': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [

@@ -2428,7 +2428,12 @@ export const routes: Routes = [
       { path: 'chain-prepends-one-argument-not-unpacked-tuple', loadComponent: () => import('./components/backend/python/celery/subtopics/chain-prepends-one-argument-not-unpacked-tuple/chain-prepends-one-argument-not-unpacked-tuple').then(m => m.ChainPrependsOneArgumentNotUnpackedTupleSubtopic) },
       { path: 'redis-visibility-timeout-can-redeliver-long-tasks', loadComponent: () => import('./components/backend/python/celery/subtopics/redis-visibility-timeout-can-redeliver-long-tasks/redis-visibility-timeout-can-redeliver-long-tasks').then(m => m.RedisVisibilityTimeoutCanRedeliverLongTasksSubtopic) },
     ] },
-    { path: 'numpy-pandas',             loadComponent: () => import('./components/backend/python/numpy-pandas/numpy-pandas').then(m => m.PythonNumpyPandas) },
+    { path: 'numpy-pandas', children: [
+      { path: '', loadComponent: () => import('./components/backend/python/numpy-pandas/numpy-pandas').then(m => m.PythonNumpyPandas) },
+      { path: 'basic-slicing-is-a-view-fancy-indexing-is-a-copy', loadComponent: () => import('./components/backend/python/numpy-pandas/subtopics/basic-slicing-is-a-view-fancy-indexing-is-a-copy/basic-slicing-is-a-view-fancy-indexing-is-a-copy').then(m => m.BasicSlicingIsAViewFancyIndexingIsACopySubtopic) },
+      { path: 'broadcasting-3-and-3-1-silently-produces-a-3x3', loadComponent: () => import('./components/backend/python/numpy-pandas/subtopics/broadcasting-3-and-3-1-silently-produces-a-3x3/broadcasting-3-and-3-1-silently-produces-a-3x3').then(m => m.Broadcasting3And31SilentlyProducesA3X3Subtopic) },
+      { path: 'groupby-silently-drops-nan-keys-by-default', loadComponent: () => import('./components/backend/python/numpy-pandas/subtopics/groupby-silently-drops-nan-keys-by-default/groupby-silently-drops-nan-keys-by-default').then(m => m.GroupbySilentlyDropsNanKeysByDefaultSubtopic) },
+    ] },
     { path: 'scikit-learn',             loadComponent: () => import('./components/backend/python/scikit-learn/scikit-learn').then(m => m.PythonScikitLearn) },
     { path: 'pytest',                   loadComponent: () => import('./components/backend/python/pytest/pytest').then(m => m.PythonPytest) },
     { path: 'packaging',                loadComponent: () => import('./components/backend/python/packaging/packaging').then(m => m.PythonPackaging) },
