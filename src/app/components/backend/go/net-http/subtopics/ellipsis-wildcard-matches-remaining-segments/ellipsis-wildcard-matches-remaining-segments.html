@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="net/http &amp; REST APIs" topicRoute="/go/net-http" subtopicLabel="The ... Wildcard" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">The ... Wildcard Matches Remaining Segments</h1>
+  <p class="page-subtitle">
+    A single-segment wildcard like &#123;id&#125; matches exactly one path segment — a trailing "..." turns it
+    into a multi-segment wildcard, capturing every remaining segment as one named, inspectable value.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.22+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic completes the wildcard syntax the main page's own single-segment example only partially
+      shows, and gives a direct, inspectable alternative to the StripPrefix pattern for nested file serving.
+      Back to the net/http &amp; REST APIs overview, or continue to the Gin Framework, where a third-party
+      router's own richer routing conventions build on these same underlying ideas.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="net/http &amp; REST APIs"
+    topicRoute="/go/net-http"
+    [prev]="{ label: 'The {$} Wildcard Matches an Exact Subtree Root', route: '/go/net-http/dollar-wildcard-matches-exact-subtree-root' }"
+  />
+</div>

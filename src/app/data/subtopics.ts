@@ -2146,4 +2146,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Each WithValue Call Wraps a New Node', route: '/go/context/each-withvalue-call-wraps-a-new-node' },
     { label: 'A Child’s Deadline Is Clamped to Its Parent’s', route: '/go/context/child-deadline-clamped-to-parents' },
   ],
+  'net-http': [
+    { label: 'ServeMux Pattern Conflicts Panic at Registration', route: '/go/net-http/pattern-conflicts-panic-at-registration' },
+    { label: 'The {$} Wildcard Matches an Exact Subtree Root', route: '/go/net-http/dollar-wildcard-matches-exact-subtree-root' },
+    { label: 'The ... Wildcard Matches Remaining Segments', route: '/go/net-http/ellipsis-wildcard-matches-remaining-segments' },
+  ],
 };

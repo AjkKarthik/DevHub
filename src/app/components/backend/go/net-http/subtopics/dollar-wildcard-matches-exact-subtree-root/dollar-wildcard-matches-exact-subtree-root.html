@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="net/http &amp; REST APIs" topicRoute="/go/net-http" subtopicLabel="The &#123;$&#125; Wildcard" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">The &#123;$&#125; Wildcard Matches an Exact Subtree Root</h1>
+  <p class="page-subtitle">
+    A plain trailing-slash pattern like "/posts/" matches the ENTIRE subtree, root included — the &#123;$&#125;
+    suffix carves the bare root out into its own separate, more specific pattern.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.22+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills in the exact syntax behind the main page's own "subtree match" description. The next
+      subtopic covers the other Go 1.22 wildcard extension the main page's own single-segment &#123;id&#125;
+      example doesn't show: matching multiple remaining path segments at once.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="net/http &amp; REST APIs"
+    topicRoute="/go/net-http"
+    [prev]="{ label: 'ServeMux Pattern Conflicts Panic at Registration', route: '/go/net-http/pattern-conflicts-panic-at-registration' }"
+    [next]="{ label: 'The ... Wildcard Matches Remaining Segments', route: '/go/net-http/ellipsis-wildcard-matches-remaining-segments' }"
+  />
+</div>

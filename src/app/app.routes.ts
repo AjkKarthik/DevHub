@@ -2511,7 +2511,12 @@ export const routes: Routes = [
       { path: 'each-withvalue-call-wraps-a-new-node', loadComponent: () => import('./components/backend/go/context/subtopics/each-withvalue-call-wraps-a-new-node/each-withvalue-call-wraps-a-new-node').then(m => m.EachWithvalueCallWrapsANewNodeSubtopic) },
       { path: 'child-deadline-clamped-to-parents', loadComponent: () => import('./components/backend/go/context/subtopics/child-deadline-clamped-to-parents/child-deadline-clamped-to-parents').then(m => m.ChildDeadlineClampedToParentsSubtopic) },
     ] },
-    { path: 'net-http',       loadComponent: () => import('./components/backend/go/net-http/net-http').then(m => m.GoNetHttp) },
+    { path: 'net-http', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/net-http/net-http').then(m => m.GoNetHttp) },
+      { path: 'pattern-conflicts-panic-at-registration', loadComponent: () => import('./components/backend/go/net-http/subtopics/pattern-conflicts-panic-at-registration/pattern-conflicts-panic-at-registration').then(m => m.PatternConflictsPanicAtRegistrationSubtopic) },
+      { path: 'dollar-wildcard-matches-exact-subtree-root', loadComponent: () => import('./components/backend/go/net-http/subtopics/dollar-wildcard-matches-exact-subtree-root/dollar-wildcard-matches-exact-subtree-root').then(m => m.DollarWildcardMatchesExactSubtreeRootSubtopic) },
+      { path: 'ellipsis-wildcard-matches-remaining-segments', loadComponent: () => import('./components/backend/go/net-http/subtopics/ellipsis-wildcard-matches-remaining-segments/ellipsis-wildcard-matches-remaining-segments').then(m => m.EllipsisWildcardMatchesRemainingSegmentsSubtopic) },
+    ] },
     { path: 'gin',            loadComponent: () => import('./components/backend/go/gin/gin').then(m => m.GoGin) },
     { path: 'json-encoding',  loadComponent: () => import('./components/backend/go/json-encoding/json-encoding').then(m => m.GoJsonEncoding) },
     { path: 'grpc',           loadComponent: () => import('./components/backend/go/grpc/grpc').then(m => m.GoGrpc) },

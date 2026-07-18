@@ -33744,6 +33744,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The default http.Client reuses connections via a shared Transport — creating a new client per request defeats connection pooling and hurts performance under load.',
     ],
   },
+  'go/net-http/pattern-conflicts-panic-at-registration': {
+    apis: ['http.ServeMux'],
+    related: [
+      { label: 'net/http & REST APIs (overview)', route: '/go/net-http' },
+      { label: 'The {$} Wildcard Matches an Exact Subtree Root', route: '/go/net-http/dollar-wildcard-matches-exact-subtree-root' },
+      { label: 'The ... Wildcard Matches Remaining Segments', route: '/go/net-http/ellipsis-wildcard-matches-remaining-segments' },
+    ],
+    tip: '"More specific wins" only resolves overlapping patterns where one IS more specific — per Go\'s own routing blog, two patterns that overlap with neither being more specific (like /posts/{id} and /{resource}/latest) "conflict," and registering both panics at startup.',
+    docs: [
+      { label: 'Go Blog — Routing Enhancements', url: 'https://go.dev/blog/routing-enhancements' },
+    ],
+    resources: [],
+    gotchas: [
+      'This risk grows as routes are split across multiple files/packages — two independently-written features can define genuinely conflicting wildcard patterns without either author noticing.',
+      'The panic happens at mux.HandleFunc/Handle call time, not per-request — constructing and registering the full production mux in a test catches a conflict deterministically.',
+    ],
+  },
+  'go/net-http/dollar-wildcard-matches-exact-subtree-root': {
+    apis: ['http.ServeMux'],
+    related: [
+      { label: 'net/http & REST APIs (overview)', route: '/go/net-http' },
+      { label: 'ServeMux Pattern Conflicts Panic at Registration', route: '/go/net-http/pattern-conflicts-panic-at-registration' },
+      { label: 'The ... Wildcard Matches Remaining Segments', route: '/go/net-http/ellipsis-wildcard-matches-remaining-segments' },
+    ],
+    tip: 'A plain trailing-slash pattern like "/posts/" matches the ENTIRE subtree, root included — per Go\'s own blog, "/posts/{$}" matches only "/posts/" and nothing else, letting the subtree root get its own dedicated, more specific handler.',
+    docs: [
+      { label: 'Go Blog — Routing Enhancements', url: 'https://go.dev/blog/routing-enhancements' },
+    ],
+    resources: [],
+    gotchas: [
+      'This does not trigger a pattern-conflict panic against the broader subtree pattern — one pattern\'s matches are a strict subset of the other\'s, so the precedence rule resolves it cleanly.',
+      'A common practical use: separating a collection-listing endpoint from a file-serving subtree without manual r.URL.Path branching inside one shared handler.',
+    ],
+  },
+  'go/net-http/ellipsis-wildcard-matches-remaining-segments': {
+    apis: ['http.ServeMux', 'Request.PathValue'],
+    related: [
+      { label: 'net/http & REST APIs (overview)', route: '/go/net-http' },
+      { label: 'ServeMux Pattern Conflicts Panic at Registration', route: '/go/net-http/pattern-conflicts-panic-at-registration' },
+      { label: 'The {$} Wildcard Matches an Exact Subtree Root', route: '/go/net-http/dollar-wildcard-matches-exact-subtree-root' },
+    ],
+    tip: 'A single-segment wildcard like {id} matches exactly one path segment — per Go\'s own blog, a wildcard "ending in ... can match all the remaining segments," as in "/files/{pathname...}", captured as one named, inspectable value.',
+    docs: [
+      { label: 'Go Blog — Routing Enhancements', url: 'https://go.dev/blog/routing-enhancements' },
+    ],
+    resources: [],
+    gotchas: [
+      'Unlike StripPrefix handing the remainder opaquely to http.FileServer, the captured value is directly available to the handler — but it is still attacker-controlled and needs sanitizing (filepath.Clean) before file-system use.',
+      'The same registration-time conflict-detection rules apply uniformly to this wildcard shape too, not just single-segment wildcards.',
+    ],
+  },
   'go/gin': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
