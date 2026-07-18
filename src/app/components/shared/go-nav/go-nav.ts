@@ -145,7 +145,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/go/sync" routerLinkActive="active"><span class="nl-text">sync &amp; sync/atomic</span>@if(p.isDone('go-sync')){<span class="nl-done">✓</span>}@if(d('go-sync');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/sync" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">sync &amp; sync/atomic</span>
+        @if (p.isDone('go-sync')) {<span class="nl-done">✓</span>}
+        @if (d('go-sync'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('sync')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sync')"
+                  (click)="toggleSubtopics('sync', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sync'); as syncSubs) {
+        @if (isSubtopicsExpanded('sync')) {
+          <div class="nav-subtopics">
+            @for (s of syncSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/go/context" routerLinkActive="active"><span class="nl-text">context Package</span>@if(p.isDone('go-context')){<span class="nl-done">✓</span>}@if(d('go-context');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

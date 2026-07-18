@@ -2134,4 +2134,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Close Doesn’t Discard Buffered Values', route: '/go/channels/close-doesnt-discard-buffered-values' },
     { label: 'time.After’s Timer Leak — Fixed in Go 1.23', route: '/go/channels/time-after-timer-leak-fixed-in-go123' },
   ],
+  'sync': [
+    { label: 'sync.Pool’s Victim Cache (Go 1.13+)', route: '/go/sync/sync-pool-victim-cache-since-go113' },
+    { label: 'sync.Cond: Wait Must Loop, Not If', route: '/go/sync/sync-cond-wait-must-loop-not-if' },
+    { label: 'sync.Map.Range Has No Consistent Snapshot', route: '/go/sync/sync-map-range-no-consistent-snapshot' },
+  ],
 };

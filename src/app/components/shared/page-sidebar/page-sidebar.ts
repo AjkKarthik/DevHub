@@ -33555,6 +33555,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'sync.RWMutex allows multiple concurrent readers OR one writer — using it for write-heavy workloads provides no benefit over a plain Mutex and adds overhead.',
     ],
   },
+  'go/sync/sync-pool-victim-cache-since-go113': {
+    apis: ['sync.Pool', 'Go 1.13 release notes'],
+    related: [
+      { label: 'sync & sync/atomic (overview)', route: '/go/sync' },
+      { label: 'sync.Cond: Wait Must Loop, Not If', route: '/go/sync/sync-cond-wait-must-loop-not-if' },
+      { label: 'sync.Map.Range Has No Consistent Snapshot', route: '/go/sync/sync-map-range-no-consistent-snapshot' },
+    ],
+    tip: 'Pool\'s "may be removed at any time" contract hasn\'t changed, but since Go 1.13 the runtime no longer clears the whole pool on every GC — per the release notes, it "retains some objects across GCs" via an informal victim-cache mechanism.',
+    docs: [
+      { label: 'Go 1.13 Release Notes', url: 'https://go.dev/doc/go1.13' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a real, documented PERFORMANCE improvement, not a new correctness guarantee — code must still never assume any object survives a GC boundary.',
+      'The victim-cache mechanism has no exposed public API — its effect is only observable indirectly, through overall allocation behavior.',
+    ],
+  },
+  'go/sync/sync-cond-wait-must-loop-not-if': {
+    apis: ['sync.Cond', 'Cond.Wait'],
+    related: [
+      { label: 'sync & sync/atomic (overview)', route: '/go/sync' },
+      { label: 'sync.Pool’s Victim Cache (Go 1.13+)', route: '/go/sync/sync-pool-victim-cache-since-go113' },
+      { label: 'sync.Map.Range Has No Consistent Snapshot', route: '/go/sync/sync-map-range-no-consistent-snapshot' },
+    ],
+    tip: 'Wait() atomically unlocks, sleeps, and re-locks c.L — but per Cond\'s own docs, "the caller typically cannot assume that the condition is true when Wait returns," which is exactly why Wait must always sit inside a for loop, never a single if.',
+    docs: [
+      { label: 'pkg.go.dev/sync — Cond', url: 'https://pkg.go.dev/sync#Cond' },
+    ],
+    resources: [],
+    gotchas: [
+      'This bug is invisible with exactly one waiting goroutine and surfaces reliably the moment a second concurrent waiter is added — easy to miss in single-goroutine testing.',
+      'Calling Wait() without already holding c.L violates its documented atomic-unlock contract entirely — the lock must be held first.',
+    ],
+  },
+  'go/sync/sync-map-range-no-consistent-snapshot': {
+    apis: ['sync.Map', 'Map.Range'],
+    related: [
+      { label: 'sync & sync/atomic (overview)', route: '/go/sync' },
+      { label: 'sync.Pool’s Victim Cache (Go 1.13+)', route: '/go/sync/sync-pool-victim-cache-since-go113' },
+      { label: 'sync.Cond: Wait Must Loop, Not If', route: '/go/sync/sync-cond-wait-must-loop-not-if' },
+    ],
+    tip: 'Range() is safe from panics/corruption during concurrent writes, but per sync.Map\'s own docs, it "does not necessarily correspond to any consistent snapshot" — different keys can reflect completely different points in time within one call.',
+    docs: [
+      { label: 'pkg.go.dev/sync — Map.Range', url: 'https://pkg.go.dev/sync#Map.Range' },
+    ],
+    resources: [],
+    gotchas: [
+      'An aggregate (sum, count) computed via Range under concurrent writes is not even bounded to fall between the before-call and after-call totals — it can land outside that range entirely.',
+      'When a true consistent snapshot is required, sync.Map is structurally the wrong tool — map + sync.RWMutex with RLock() held for the whole traversal is the fix.',
+    ],
+  },
   'go/context': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

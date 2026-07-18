@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="sync &amp; sync/atomic" topicRoute="/go/sync" subtopicLabel="sync.Cond's Wait Loop" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">sync.Cond: Wait Must Loop, Not If</h1>
+  <p class="page-subtitle">
+    Wait() atomically unlocks, sleeps, and re-locks — but the condition it was waiting for can be false again by
+    the time it returns, which is exactly why Cond's own docs require checking it in a for loop, never an if.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills in the exact usage contract the main page's own brief sync.Cond mention leaves out.
+      The next subtopic moves to sync.Map — a documented gap in what Range() actually guarantees during
+      concurrent modification.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="sync &amp; sync/atomic"
+    topicRoute="/go/sync"
+    [prev]="{ label: 'sync.Pool’s Victim Cache (Go 1.13+)', route: '/go/sync/sync-pool-victim-cache-since-go113' }"
+    [next]="{ label: 'sync.Map.Range Has No Consistent Snapshot', route: '/go/sync/sync-map-range-no-consistent-snapshot' }"
+  />
+</div>

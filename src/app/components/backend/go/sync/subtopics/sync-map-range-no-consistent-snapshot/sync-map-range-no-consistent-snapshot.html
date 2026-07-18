@@ -1,0 +1,38 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="sync &amp; sync/atomic" topicRoute="/go/sync" subtopicLabel="sync.Map.Range" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">sync.Map.Range Has No Consistent Snapshot</h1>
+  <p class="page-subtitle">
+    Range() is safe from panics and corruption during concurrent writes — but its own documentation says it
+    "does not necessarily correspond to any consistent snapshot," meaning different keys can reflect
+    completely different points in time within one call.
+  </p>
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="Go 1.9+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own "map + RWMutex for general access" advice into a specific,
+      concrete reason: whole-traversal consistency, which sync.Map cannot offer no matter how it's used. Back
+      to the sync &amp; sync/atomic overview, or continue to the context Package, where cancellation
+      propagation raises its own concurrency-safety questions.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="sync &amp; sync/atomic"
+    topicRoute="/go/sync"
+    [prev]="{ label: 'sync.Cond: Wait Must Loop, Not If', route: '/go/sync/sync-cond-wait-must-loop-not-if' }"
+  />
+</div>

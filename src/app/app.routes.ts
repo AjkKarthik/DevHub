@@ -2499,7 +2499,12 @@ export const routes: Routes = [
       { path: 'close-doesnt-discard-buffered-values', loadComponent: () => import('./components/backend/go/channels/subtopics/close-doesnt-discard-buffered-values/close-doesnt-discard-buffered-values').then(m => m.CloseDoesntDiscardBufferedValuesSubtopic) },
       { path: 'time-after-timer-leak-fixed-in-go123', loadComponent: () => import('./components/backend/go/channels/subtopics/time-after-timer-leak-fixed-in-go123/time-after-timer-leak-fixed-in-go123').then(m => m.TimeAfterTimerLeakFixedInGo123Subtopic) },
     ] },
-    { path: 'sync',           loadComponent: () => import('./components/backend/go/sync/sync').then(m => m.GoSync) },
+    { path: 'sync', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/sync/sync').then(m => m.GoSync) },
+      { path: 'sync-pool-victim-cache-since-go113', loadComponent: () => import('./components/backend/go/sync/subtopics/sync-pool-victim-cache-since-go113/sync-pool-victim-cache-since-go113').then(m => m.SyncPoolVictimCacheSinceGo113Subtopic) },
+      { path: 'sync-cond-wait-must-loop-not-if', loadComponent: () => import('./components/backend/go/sync/subtopics/sync-cond-wait-must-loop-not-if/sync-cond-wait-must-loop-not-if').then(m => m.SyncCondWaitMustLoopNotIfSubtopic) },
+      { path: 'sync-map-range-no-consistent-snapshot', loadComponent: () => import('./components/backend/go/sync/subtopics/sync-map-range-no-consistent-snapshot/sync-map-range-no-consistent-snapshot').then(m => m.SyncMapRangeNoConsistentSnapshotSubtopic) },
+    ] },
     { path: 'context',        loadComponent: () => import('./components/backend/go/context/context').then(m => m.GoContext) },
     { path: 'net-http',       loadComponent: () => import('./components/backend/go/net-http/net-http').then(m => m.GoNetHttp) },
     { path: 'gin',            loadComponent: () => import('./components/backend/go/gin/gin').then(m => m.GoGin) },

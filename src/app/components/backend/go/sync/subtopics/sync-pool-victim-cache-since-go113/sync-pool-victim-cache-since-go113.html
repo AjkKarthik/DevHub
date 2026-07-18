@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="sync &amp; sync/atomic" topicRoute="/go/sync" subtopicLabel="sync.Pool's Victim Cache" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">sync.Pool's Victim Cache (Go 1.13+)</h1>
+  <p class="page-subtitle">
+    Pool's documented "may be removed at any time" contract hasn't changed — but since Go 1.13, the runtime no
+    longer clears the whole pool on every GC, retaining some objects across cycles for real performance gains.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.13+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic deepens the main page's own sync.Pool coverage with the exact Go 1.13 mechanism behind its
+      "not a cache" warning. The next subtopic moves to sync.Cond — a documented rule the main page's own brief
+      mention doesn't cover: why Wait() must always be called inside a loop, never a single if.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="sync &amp; sync/atomic"
+    topicRoute="/go/sync"
+    [next]="{ label: 'sync.Cond: Wait Must Loop, Not If', route: '/go/sync/sync-cond-wait-must-loop-not-if' }"
+  />
+</div>
