@@ -33293,6 +33293,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Embedding a struct promotes its fields/methods to the outer struct, but this is composition, not inheritance — there is no polymorphic dispatch to the embedded type.',
     ],
   },
+  'go/structs-interfaces/method-sets-t-vs-pointer-t': {
+    apis: ['Go Spec — Method Sets'],
+    related: [
+      { label: 'Structs & Interfaces (overview)', route: '/go/structs-interfaces' },
+      { label: 'Embedded Methods Satisfy Interfaces Too', route: '/go/structs-interfaces/embedded-methods-satisfy-interfaces-too' },
+      { label: 'Comparing Interfaces Can Panic at Runtime', route: '/go/structs-interfaces/comparing-interfaces-can-panic-at-runtime' },
+    ],
+    tip: 'Go\'s own spec: T\'s method set has only value-receiver methods; *T\'s method set has both value- and pointer-receiver methods — exactly why a value type can fail interface satisfaction a pointer passes fine.',
+    docs: [
+      { label: 'Go Spec — Method Sets', url: 'https://go.dev/ref/spec#Method_sets' },
+    ],
+    resources: [],
+    gotchas: [
+      'Calling a pointer-receiver method directly on an addressable value still works (Go implicitly takes the address) — that convenience does not extend to interface satisfaction.',
+      'Mixing receiver kinds on one type creates a real, load-bearing asymmetry between its value and pointer forms, not just a style inconsistency.',
+    ],
+  },
+  'go/structs-interfaces/embedded-methods-satisfy-interfaces-too': {
+    apis: ['Go Spec — Struct Types (Promoted Fields and Methods)'],
+    related: [
+      { label: 'Structs & Interfaces (overview)', route: '/go/structs-interfaces' },
+      { label: 'Method Sets: T vs. *T', route: '/go/structs-interfaces/method-sets-t-vs-pointer-t' },
+      { label: 'Comparing Interfaces Can Panic at Runtime', route: '/go/structs-interfaces/comparing-interfaces-can-panic-at-runtime' },
+    ],
+    tip: 'Go\'s own spec states promoted methods are genuinely included in the embedding struct\'s own method set — a struct can satisfy an interface entirely through what it embeds, with no methods of its own.',
+    docs: [
+      { label: 'Go Spec — Struct Types', url: 'https://go.dev/ref/spec#Struct_types' },
+    ],
+    resources: [],
+    gotchas: [
+      'Embedding an interface field left nil still satisfies the interface at compile time — calling a promoted method through it panics at runtime with a nil pointer dereference.',
+      'Embedding a POINTER to a type promotes its FULL combined method set (value- and pointer-receiver methods both) into the outer struct.',
+    ],
+  },
+  'go/structs-interfaces/comparing-interfaces-can-panic-at-runtime': {
+    apis: ['Go Spec — Comparison Operators'],
+    related: [
+      { label: 'Structs & Interfaces (overview)', route: '/go/structs-interfaces' },
+      { label: 'Method Sets: T vs. *T', route: '/go/structs-interfaces/method-sets-t-vs-pointer-t' },
+      { label: 'Embedded Methods Satisfy Interfaces Too', route: '/go/structs-interfaces/embedded-methods-satisfy-interfaces-too' },
+    ],
+    tip: 'Go\'s own spec: comparing two interface values with == always compiles, but panics at runtime if they share an identical, non-comparable dynamic type — a slice, map, or function.',
+    docs: [
+      { label: 'Go Spec — Comparison Operators', url: 'https://go.dev/ref/spec#Comparison_operators' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a separate issue from the nil-interface pitfall — it applies to two definitely-non-nil interface values that happen to share a non-comparable dynamic type.',
+      'The identical risk applies to map keys typed any/interface{} — inserting a non-comparable dynamic type as a key panics on insertion, not just on ==.',
+    ],
+  },
   'go/slices-maps': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

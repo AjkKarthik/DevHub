@@ -2469,7 +2469,12 @@ export const routes: Routes = [
       { path: 'range-copies-each-element-into-the-loop-variable', loadComponent: () => import('./components/backend/go/fundamentals/subtopics/range-copies-each-element-into-the-loop-variable/range-copies-each-element-into-the-loop-variable').then(m => m.RangeCopiesEachElementIntoTheLoopVariableSubtopic) },
       { path: 'arrays-are-comparable-slices-are-not', loadComponent: () => import('./components/backend/go/fundamentals/subtopics/arrays-are-comparable-slices-are-not/arrays-are-comparable-slices-are-not').then(m => m.ArraysAreComparableSlicesAreNotSubtopic) },
     ] },
-    { path: 'structs-interfaces', loadComponent: () => import('./components/backend/go/structs-interfaces/structs-interfaces').then(m => m.GoStructsInterfaces) },
+    { path: 'structs-interfaces', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/structs-interfaces/structs-interfaces').then(m => m.GoStructsInterfaces) },
+      { path: 'method-sets-t-vs-pointer-t', loadComponent: () => import('./components/backend/go/structs-interfaces/subtopics/method-sets-t-vs-pointer-t/method-sets-t-vs-pointer-t').then(m => m.MethodSetsTVsPointerTSubtopic) },
+      { path: 'embedded-methods-satisfy-interfaces-too', loadComponent: () => import('./components/backend/go/structs-interfaces/subtopics/embedded-methods-satisfy-interfaces-too/embedded-methods-satisfy-interfaces-too').then(m => m.EmbeddedMethodsSatisfyInterfacesTooSubtopic) },
+      { path: 'comparing-interfaces-can-panic-at-runtime', loadComponent: () => import('./components/backend/go/structs-interfaces/subtopics/comparing-interfaces-can-panic-at-runtime/comparing-interfaces-can-panic-at-runtime').then(m => m.ComparingInterfacesCanPanicAtRuntimeSubtopic) },
+    ] },
     { path: 'error-handling', loadComponent: () => import('./components/backend/go/error-handling/error-handling').then(m => m.GoErrorHandling) },
     { path: 'slices-maps',    loadComponent: () => import('./components/backend/go/slices-maps/slices-maps').then(m => m.GoSlicesMaps) },
     { path: 'goroutines',     loadComponent: () => import('./components/backend/go/goroutines/goroutines').then(m => m.GoGoroutines) },

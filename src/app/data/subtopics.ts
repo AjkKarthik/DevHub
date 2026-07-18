@@ -2105,4 +2105,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'range Copies Each Element Into the Loop Variable', route: '/go/fundamentals/range-copies-each-element-into-the-loop-variable' },
     { label: 'Arrays Are Comparable, Slices Are Not', route: '/go/fundamentals/arrays-are-comparable-slices-are-not' },
   ],
+  'structs-interfaces': [
+    { label: 'Method Sets: T vs. *T', route: '/go/structs-interfaces/method-sets-t-vs-pointer-t' },
+    { label: 'Embedded Methods Satisfy Interfaces Too', route: '/go/structs-interfaces/embedded-methods-satisfy-interfaces-too' },
+    { label: 'Comparing Interfaces Can Panic at Runtime', route: '/go/structs-interfaces/comparing-interfaces-can-panic-at-runtime' },
+  ],
 };
