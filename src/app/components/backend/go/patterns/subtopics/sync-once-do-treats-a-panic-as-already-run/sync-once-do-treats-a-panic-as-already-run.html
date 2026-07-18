@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Patterns" topicRoute="/go/patterns" subtopicLabel="sync.Once and Panics" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">sync.Once.Do Treats a Panic as Already Run</h1>
+  <p class="page-subtitle">
+    The main page's sync.Once singleton covers only the happy path — if the function passed to Do panics,
+    the Once is still marked done, and every future call returns immediately without retrying it.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own sync.Once singleton pattern with the one edge case its
+      theory never mentions. Back to the Go Patterns overview, or continue to how errgroup.WithContext
+      handles a different kind of failure — one goroutine's error affecting its siblings.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Patterns"
+    topicRoute="/go/patterns"
+    [next]="{ label: 'errgroup.WithContext Cancels Siblings on the First Error', route: '/go/patterns/errgroup-withcontext-cancels-siblings-on-error' }"
+  />
+</div>

@@ -2553,7 +2553,12 @@ export const routes: Routes = [
       { path: 'constraint-can-combine-union-and-method', loadComponent: () => import('./components/backend/go/generics/subtopics/constraint-can-combine-union-and-method/constraint-can-combine-union-and-method').then(m => m.ConstraintCanCombineUnionAndMethodSubtopic) },
       { path: 'comparable-can-panic-since-go120', loadComponent: () => import('./components/backend/go/generics/subtopics/comparable-can-panic-since-go120/comparable-can-panic-since-go120').then(m => m.ComparableCanPanicSinceGo120Subtopic) },
     ] },
-    { path: 'patterns',       loadComponent: () => import('./components/backend/go/patterns/patterns').then(m => m.GoPatterns) },
+    { path: 'patterns', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/patterns/patterns').then(m => m.GoPatterns) },
+      { path: 'sync-once-do-treats-a-panic-as-already-run', loadComponent: () => import('./components/backend/go/patterns/subtopics/sync-once-do-treats-a-panic-as-already-run/sync-once-do-treats-a-panic-as-already-run').then(m => m.SyncOnceDoTreatsAPanicAsAlreadyRunSubtopic) },
+      { path: 'errgroup-withcontext-cancels-siblings-on-error', loadComponent: () => import('./components/backend/go/patterns/subtopics/errgroup-withcontext-cancels-siblings-on-error/errgroup-withcontext-cancels-siblings-on-error').then(m => m.ErrgroupWithcontextCancelsSiblingsOnErrorSubtopic) },
+      { path: 'middleware-composition-first-wrap-runs-outermost', loadComponent: () => import('./components/backend/go/patterns/subtopics/middleware-composition-first-wrap-runs-outermost/middleware-composition-first-wrap-runs-outermost').then(m => m.MiddlewareCompositionFirstWrapRunsOutermostSubtopic) },
+    ] },
     { path: 'modules',        loadComponent: () => import('./components/backend/go/modules/modules').then(m => m.GoModules) },
     { path: 'testing',        loadComponent: () => import('./components/backend/go/testing/testing').then(m => m.GoTesting) },
     { path: 'cli',            loadComponent: () => import('./components/backend/go/cli/cli').then(m => m.GoCli) },

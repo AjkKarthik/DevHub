@@ -34201,6 +34201,50 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing interfaces for "future flexibility" that never materializes adds indirection Go\'s culture generally discourages — define interfaces at the CONSUMER, not preemptively at the producer.',
     ],
   },
+  'go/patterns/sync-once-do-treats-a-panic-as-already-run': {
+    apis: ['sync.Once.Do'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Go Patterns overview', route: '/go/patterns' },
+      { label: 'errgroup.WithContext Cancels Siblings on the First Error', route: '/go/patterns/errgroup-withcontext-cancels-siblings-on-error' },
+    ],
+    tip: 'If a Once-guarded init can fail, store the error alongside the result and have every caller check it — do not rely on sync.Once itself to represent success.',
+    gotchas: [
+      'A panic inside Do(f) permanently marks the Once done — recover() elsewhere in the call stack cannot reset it.',
+      'This reproduces with a single goroutine calling twice in a row — no concurrency is needed to hit it.',
+    ],
+  },
+  'go/patterns/errgroup-withcontext-cancels-siblings-on-error': {
+    apis: ['errgroup.WithContext', 'errgroup.Group.Go', 'errgroup.Group.Wait'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'sync.Once.Do Treats a Panic as Already Run', route: '/go/patterns/sync-once-do-treats-a-panic-as-already-run' },
+      { label: 'Middleware Composition: First Wrap Runs Outermost', route: '/go/patterns/middleware-composition-first-wrap-runs-outermost' },
+      { label: 'Go Context', route: '/go/context' },
+    ],
+    tip: 'Passing the derived ctx into an actual outbound call (http.NewRequestWithContext, a DB query) is what makes cancellation real — capturing it in a closure without reading it does nothing.',
+    gotchas: [
+      'g.Wait() always waits for every goroutine to return, even after the group has already failed — a slow unrelated goroutine still runs its full duration.',
+      'g.Go() only tracks completion and captures errors — it does not inject any cancellation-checking into the goroutine body.',
+    ],
+  },
+  'go/patterns/middleware-composition-first-wrap-runs-outermost': {
+    apis: ['http.Handler', 'http.HandlerFunc', 'ServeHTTP'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'errgroup.WithContext Cancels Siblings on the First Error', route: '/go/patterns/errgroup-withcontext-cancels-siblings-on-error' },
+      { label: 'Go Patterns overview', route: '/go/patterns' },
+      { label: 'gRPC in Go', route: '/go/grpc' },
+    ],
+    tip: 'The outermost wrap in logging(auth(rateLimiter(base))) is the first handler actually invoked at request time, even though it is the last function applied while building the chain.',
+    gotchas: [
+      'Reordering middleware changes real behavior, not just readability — an outer rate limiter can reject a request before an inner auth check ever runs.',
+      'Each middleware\'s own code splits around its call to next.ServeHTTP — logic before that call runs on the way in, logic after it runs on the way out, in reverse order.',
+    ],
+  },
   'go/cli': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

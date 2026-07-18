@@ -1220,8 +1220,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
   ],
   // React keeps the bare 'patterns' key (claimed it first). The JavaScript
   // hub's own /javascript/patterns topic is hub-prefixed to 'js-patterns'
-  // below. Go hub still routes to 'patterns' too — hub-prefix it as
-  // 'go-patterns' if it ever claims subtopics.
+  // below. Go's own /go/patterns claims subtopics too — hub-prefixed to
+  // 'go-patterns' below, per this comment's own earlier note.
+  'go-patterns': [
+    { label: 'sync.Once.Do Treats a Panic as Already Run', route: '/go/patterns/sync-once-do-treats-a-panic-as-already-run' },
+    { label: 'errgroup.WithContext Cancels Siblings on the First Error', route: '/go/patterns/errgroup-withcontext-cancels-siblings-on-error' },
+    { label: 'Middleware Composition: First Wrap Runs Outermost', route: '/go/patterns/middleware-composition-first-wrap-runs-outermost' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

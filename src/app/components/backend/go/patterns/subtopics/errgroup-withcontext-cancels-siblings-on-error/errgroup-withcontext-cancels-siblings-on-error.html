@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Patterns" topicRoute="/go/patterns" subtopicLabel="errgroup's Derived Context" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">errgroup.WithContext Cancels Siblings on the First Error</h1>
+  <p class="page-subtitle">
+    The main page's fetchAll shadows ctx with errgroup's own derived context but never checks it inside a
+    goroutine — the cancellation signal fires correctly, but nothing is listening for it.
+  </p>
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="Go 1.21+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own errgroup.WithContext usage with the exact mechanism its
+      theory only summarizes. Back to the Go Patterns overview, or continue to how the middleware pattern —
+      mentioned but never actually coded on the main page — composes in a precise, predictable order.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Patterns"
+    topicRoute="/go/patterns"
+    [prev]="{ label: 'sync.Once.Do Treats a Panic as Already Run', route: '/go/patterns/sync-once-do-treats-a-panic-as-already-run' }"
+    [next]="{ label: 'Middleware Composition: First Wrap Runs Outermost', route: '/go/patterns/middleware-composition-first-wrap-runs-outermost' }"
+  />
+</div>

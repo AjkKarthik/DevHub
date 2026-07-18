@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Patterns" topicRoute="/go/patterns" subtopicLabel="Middleware Composition Order" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Middleware Composition: First Wrap Runs Outermost</h1>
+  <p class="page-subtitle">
+    The main page names the middleware pattern and shows its call-site shape but never actually writes or
+    runs one — the wrap order determines both execution order and real runtime behavior, not just style.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.21+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic writes out the one pattern the main page only names, and connects it to this hub's own
+      gRPC subtopic on interceptor chaining — the same construction-vs-execution-order lesson, applied to
+      plain http.Handler composition instead. Back to the Go Patterns overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Patterns"
+    topicRoute="/go/patterns"
+    [prev]="{ label: 'errgroup.WithContext Cancels Siblings on the First Error', route: '/go/patterns/errgroup-withcontext-cancels-siblings-on-error' }"
+  />
+</div>
