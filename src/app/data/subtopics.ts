@@ -2127,4 +2127,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Unsynchronized Reads Have No Guarantee', route: '/go/goroutines/unsynchronized-reads-have-no-guarantee' },
     { label: 'WaitGroup Reuse: Add After Wait Returns', route: '/go/goroutines/waitgroup-reuse-add-after-wait-returns' },
   ],
+  // NOTE: keyed 'go-channels', NOT bare 'channels' — the C# hub's own
+  // /csharp/channels topic already claims the bare key.
+  'go-channels': [
+    { label: 'Closing a Closed Channel Panics Too', route: '/go/channels/closing-a-closed-channel-panics-too' },
+    { label: 'Close Doesn’t Discard Buffered Values', route: '/go/channels/close-doesnt-discard-buffered-values' },
+    { label: 'time.After’s Timer Leak — Fixed in Go 1.23', route: '/go/channels/time-after-timer-leak-fixed-in-go123' },
+  ],
 };

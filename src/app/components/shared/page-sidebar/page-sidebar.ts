@@ -33492,6 +33492,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'An unbuffered channel send blocks until a receiver is ready — this can deadlock if no other goroutine is set up to receive.',
     ],
   },
+  'go/channels/closing-a-closed-channel-panics-too': {
+    apis: ['close', 'sync.Once'],
+    related: [
+      { label: 'Channels (overview)', route: '/go/channels' },
+      { label: 'Close Doesn’t Discard Buffered Values', route: '/go/channels/close-doesnt-discard-buffered-values' },
+      { label: 'time.After’s Timer Leak — Fixed in Go 1.23', route: '/go/channels/time-after-timer-leak-fixed-in-go123' },
+    ],
+    tip: 'close(ch) on an already-closed channel panics with "close of closed channel" — a distinct panic from send-on-closed. sync.Once (independent goroutines) or a coordinator goroutine (one owner) are the two real fixes.',
+    docs: [
+      { label: 'pkg.go.dev/builtin — close', url: 'https://pkg.go.dev/builtin#close' },
+    ],
+    resources: [],
+    gotchas: [
+      'This risk shows up most in fan-in/multi-producer designs where more than one code path (an error path AND a success path, for instance) could plausibly reach its own "close now" call.',
+      'sync.Once fits genuinely independent close-triggering paths; a coordinator goroutine fits when one goroutine can naturally own the entire wait-then-close responsibility.',
+    ],
+  },
+  'go/channels/close-doesnt-discard-buffered-values': {
+    apis: ['close', 'range'],
+    related: [
+      { label: 'Channels (overview)', route: '/go/channels' },
+      { label: 'Closing a Closed Channel Panics Too', route: '/go/channels/closing-a-closed-channel-panics-too' },
+      { label: 'time.After’s Timer Leak — Fixed in Go 1.23', route: '/go/channels/time-after-timer-leak-fixed-in-go123' },
+    ],
+    tip: 'close() "has the effect of shutting down the channel after the last sent value is received" — every already-buffered value stays fully receivable with ok=true; only after the buffer drains does a receive return the zero value with ok=false.',
+    docs: [
+      { label: 'pkg.go.dev/builtin — close', url: 'https://pkg.go.dev/builtin#close' },
+    ],
+    resources: [],
+    gotchas: [
+      'It is always safe to close as soon as the sender is logically done, regardless of how many values are still sitting unreceived in the buffer — nothing is discarded.',
+      'This protection never extends to sending — a send after close always panics, unconditionally, even with free buffer capacity remaining.',
+    ],
+  },
+  'go/channels/time-after-timer-leak-fixed-in-go123': {
+    apis: ['time.After', 'time.NewTimer'],
+    related: [
+      { label: 'Channels (overview)', route: '/go/channels' },
+      { label: 'Closing a Closed Channel Panics Too', route: '/go/channels/closing-a-closed-channel-panics-too' },
+      { label: 'Close Doesn’t Discard Buffered Values', route: '/go/channels/close-doesnt-discard-buffered-values' },
+    ],
+    tip: 'Before Go 1.23, a fresh time.After(d) called every loop iteration left each iteration\'s unreferenced Timer alive until it fired. Go 1.23\'s GC can now recover unreferenced, unstopped timers — "no reason to prefer NewTimer when After will do."',
+    docs: [
+      { label: 'pkg.go.dev/time — After', url: 'https://pkg.go.dev/time#After' },
+    ],
+    resources: [],
+    gotchas: [
+      'A single, one-shot time.After call (like the main page\'s own Timeout pattern) was never at risk on any Go version — the leak specifically requires repeated calls inside a loop.',
+      'On pre-1.23 Go, the fix is time.NewTimer plus an explicit Stop() call when the other select case wins — unnecessary verbosity once targeting Go 1.23+.',
+    ],
+  },
   'go/sync': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

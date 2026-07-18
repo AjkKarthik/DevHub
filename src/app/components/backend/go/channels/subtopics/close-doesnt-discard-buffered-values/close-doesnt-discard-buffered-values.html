@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Channels" topicRoute="/go/channels" subtopicLabel="Close &amp; Buffered Values" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Close Doesn't Discard Buffered Values</h1>
+  <p class="page-subtitle">
+    close(ch) shuts the channel down "after the last sent value is received" — every value already buffered
+    stays fully receivable, in order, and range keeps draining them exactly as if the channel were still open.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own close/range theory with the exact drain-then-exhaust
+      sequencing. The next subtopic moves from close semantics to the main page's own Timeout pattern —
+      a real, version-gated memory gotcha in time.After() that directly affects that exact code example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Channels"
+    topicRoute="/go/channels"
+    [prev]="{ label: 'Closing a Closed Channel Panics Too', route: '/go/channels/closing-a-closed-channel-panics-too' }"
+    [next]="{ label: 'time.After’s Timer Leak — Fixed in Go 1.23', route: '/go/channels/time-after-timer-leak-fixed-in-go123' }"
+  />
+</div>

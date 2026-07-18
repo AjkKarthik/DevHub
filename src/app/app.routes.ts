@@ -2493,7 +2493,12 @@ export const routes: Routes = [
       { path: 'unsynchronized-reads-have-no-guarantee', loadComponent: () => import('./components/backend/go/goroutines/subtopics/unsynchronized-reads-have-no-guarantee/unsynchronized-reads-have-no-guarantee').then(m => m.UnsynchronizedReadsHaveNoGuaranteeSubtopic) },
       { path: 'waitgroup-reuse-add-after-wait-returns', loadComponent: () => import('./components/backend/go/goroutines/subtopics/waitgroup-reuse-add-after-wait-returns/waitgroup-reuse-add-after-wait-returns').then(m => m.WaitgroupReuseAddAfterWaitReturnsSubtopic) },
     ] },
-    { path: 'channels',       loadComponent: () => import('./components/backend/go/channels/channels').then(m => m.GoChannels) },
+    { path: 'channels', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/channels/channels').then(m => m.GoChannels) },
+      { path: 'closing-a-closed-channel-panics-too', loadComponent: () => import('./components/backend/go/channels/subtopics/closing-a-closed-channel-panics-too/closing-a-closed-channel-panics-too').then(m => m.ClosingAClosedChannelPanicsTooSubtopic) },
+      { path: 'close-doesnt-discard-buffered-values', loadComponent: () => import('./components/backend/go/channels/subtopics/close-doesnt-discard-buffered-values/close-doesnt-discard-buffered-values').then(m => m.CloseDoesntDiscardBufferedValuesSubtopic) },
+      { path: 'time-after-timer-leak-fixed-in-go123', loadComponent: () => import('./components/backend/go/channels/subtopics/time-after-timer-leak-fixed-in-go123/time-after-timer-leak-fixed-in-go123').then(m => m.TimeAfterTimerLeakFixedInGo123Subtopic) },
+    ] },
     { path: 'sync',           loadComponent: () => import('./components/backend/go/sync/sync').then(m => m.GoSync) },
     { path: 'context',        loadComponent: () => import('./components/backend/go/context/context').then(m => m.GoContext) },
     { path: 'net-http',       loadComponent: () => import('./components/backend/go/net-http/net-http').then(m => m.GoNetHttp) },

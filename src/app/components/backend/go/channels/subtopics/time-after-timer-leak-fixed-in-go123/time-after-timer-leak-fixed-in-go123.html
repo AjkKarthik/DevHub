@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Channels" topicRoute="/go/channels" subtopicLabel="time.After &amp; Timers" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">time.After's Timer Leak — Fixed in Go 1.23</h1>
+  <p class="page-subtitle">
+    Calling time.After inside a loop used to leak each iteration's Timer until it fired — Go 1.23's garbage
+    collector can now recover unreferenced, unstopped timers, closing the gap for good.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Fixed in Go 1.23+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic extends the main page's own Timeout pattern with a version-gated caveat for the ONE way
+      that exact pattern becomes risky: calling it repeatedly in a loop. Back to the Channels overview, or
+      continue to sync &amp; sync/atomic, where the WaitGroup reuse rules from this hub's own Goroutines topic
+      come up again.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Channels"
+    topicRoute="/go/channels"
+    [prev]="{ label: 'Close Doesn’t Discard Buffered Values', route: '/go/channels/close-doesnt-discard-buffered-values' }"
+  />
+</div>
