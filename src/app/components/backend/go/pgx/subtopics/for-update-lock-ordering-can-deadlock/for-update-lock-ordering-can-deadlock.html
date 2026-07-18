@@ -1,0 +1,38 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database with pgx" topicRoute="/go/pgx" subtopicLabel="FOR UPDATE Deadlocks" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">FOR UPDATE Lock Ordering Can Deadlock</h1>
+  <p class="page-subtitle">
+    The main page's own transferFunds example uses FOR UPDATE without explaining it — and always locking
+    "fromID" first creates a real deadlock risk the moment two concurrent transfers run in opposite directions
+    between the same two accounts.
+  </p>
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="pgx v5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a mechanic already sitting unexplained in the main page's own code, and shows a
+      real latent bug in that same example. The next subtopic sharpens the main page's own vague "the pool
+      cleans up the connection automatically" phrase into exactly what that cleanup means.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Database with pgx"
+    topicRoute="/go/pgx"
+    [prev]="{ label: 'pgx.Batch Sends Queries in One Round-Trip', route: '/go/pgx/pgx-batch-sends-queries-in-one-round-trip' }"
+    [next]="{ label: 'Context Cancel Closes the Connection', route: '/go/pgx/context-cancel-closes-the-connection' }"
+  />
+</div>

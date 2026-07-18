@@ -273,7 +273,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Data &amp; Storage</p>
-      <a routerLink="/go/pgx" routerLinkActive="active"><span class="nl-text">Database with pgx</span>@if(p.isDone('go-pgx')){<span class="nl-done">✓</span>}@if(d('go-pgx');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/pgx" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Database with pgx</span>
+        @if (p.isDone('go-pgx')) {<span class="nl-done">✓</span>}
+        @if (d('go-pgx'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('pgx')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('pgx')"
+                  (click)="toggleSubtopics('pgx', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('pgx'); as pgxSubs) {
+        @if (isSubtopicsExpanded('pgx')) {
+          <div class="nav-subtopics">
+            @for (s of pgxSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/go/gorm" routerLinkActive="active"><span class="nl-text">GORM</span>@if(p.isDone('go-gorm')){<span class="nl-done">✓</span>}@if(d('go-gorm');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database with pgx" topicRoute="/go/pgx" subtopicLabel="pgx.Batch" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">pgx.Batch Sends Queries in One Round-Trip</h1>
+  <p class="page-subtitle">
+    The main page's own quiz names pgx.Batch for N+1 elimination but never codes it — Queue accumulates
+    queries, SendBatch sends them all together, and BatchResults.Close() must run before the connection
+    can be reused.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="pgx v5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic gives pgx.Batch the working code the main page's own quiz question never shows. The next
+      subtopic explains a mechanic already sitting unexplained in the main page's own Transactions code tab:
+      what FOR UPDATE actually locks, and how it can deadlock.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Database with pgx"
+    topicRoute="/go/pgx"
+    [next]="{ label: 'FOR UPDATE Lock Ordering Can Deadlock', route: '/go/pgx/for-update-lock-ordering-can-deadlock' }"
+  />
+</div>

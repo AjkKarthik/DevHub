@@ -2535,7 +2535,12 @@ export const routes: Routes = [
       { path: 'newclient-lazy-connects-on-first-rpc', loadComponent: () => import('./components/backend/go/grpc/subtopics/newclient-lazy-connects-on-first-rpc/newclient-lazy-connects-on-first-rpc').then(m => m.NewclientLazyConnectsOnFirstRpcSubtopic) },
       { path: 'chain-interceptor-first-is-outermost', loadComponent: () => import('./components/backend/go/grpc/subtopics/chain-interceptor-first-is-outermost/chain-interceptor-first-is-outermost').then(m => m.ChainInterceptorFirstIsOutermostSubtopic) },
     ] },
-    { path: 'pgx',            loadComponent: () => import('./components/backend/go/pgx/pgx').then(m => m.GoPgx) },
+    { path: 'pgx', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/pgx/pgx').then(m => m.GoPgx) },
+      { path: 'pgx-batch-sends-queries-in-one-round-trip', loadComponent: () => import('./components/backend/go/pgx/subtopics/pgx-batch-sends-queries-in-one-round-trip/pgx-batch-sends-queries-in-one-round-trip').then(m => m.PgxBatchSendsQueriesInOneRoundTripSubtopic) },
+      { path: 'for-update-lock-ordering-can-deadlock', loadComponent: () => import('./components/backend/go/pgx/subtopics/for-update-lock-ordering-can-deadlock/for-update-lock-ordering-can-deadlock').then(m => m.ForUpdateLockOrderingCanDeadlockSubtopic) },
+      { path: 'context-cancel-closes-the-connection', loadComponent: () => import('./components/backend/go/pgx/subtopics/context-cancel-closes-the-connection/context-cancel-closes-the-connection').then(m => m.ContextCancelClosesTheConnectionSubtopic) },
+    ] },
     { path: 'gorm',           loadComponent: () => import('./components/backend/go/gorm/gorm').then(m => m.GoGorm) },
     { path: 'generics',       loadComponent: () => import('./components/backend/go/generics/generics').then(m => m.GoGenerics) },
     { path: 'patterns',       loadComponent: () => import('./components/backend/go/patterns/patterns').then(m => m.GoPatterns) },

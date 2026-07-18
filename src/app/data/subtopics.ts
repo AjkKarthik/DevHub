@@ -2166,4 +2166,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'NewClient Lazily Connects on First RPC', route: '/go/grpc/newclient-lazy-connects-on-first-rpc' },
     { label: 'ChainUnaryInterceptor: First Is Outermost', route: '/go/grpc/chain-interceptor-first-is-outermost' },
   ],
+  'pgx': [
+    { label: 'pgx.Batch Sends Queries in One Round-Trip', route: '/go/pgx/pgx-batch-sends-queries-in-one-round-trip' },
+    { label: 'FOR UPDATE Lock Ordering Can Deadlock', route: '/go/pgx/for-update-lock-ordering-can-deadlock' },
+    { label: 'Context Cancel Closes the Connection', route: '/go/pgx/context-cancel-closes-the-connection' },
+  ],
 };

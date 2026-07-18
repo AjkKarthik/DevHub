@@ -34036,6 +34036,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Using pgx-specific types (like pgtype.Text) instead of standard library types requires understanding pgx\'s specific null-handling conventions.',
     ],
   },
+  'go/pgx/pgx-batch-sends-queries-in-one-round-trip': {
+    apis: ['pgx.Batch', 'BatchResults'],
+    related: [
+      { label: 'Database with pgx (overview)', route: '/go/pgx' },
+      { label: 'FOR UPDATE Lock Ordering Can Deadlock', route: '/go/pgx/for-update-lock-ordering-can-deadlock' },
+      { label: 'Context Cancel Closes the Connection', route: '/go/pgx/context-cancel-closes-the-connection' },
+    ],
+    tip: 'Queue accumulates queries without touching the network — SendBatch sends them all in ONE round-trip. Per pgx\'s own docs, "the returned BatchResults must be closed before the connection is used again."',
+    docs: [
+      { label: 'pkg.go.dev — pgx.Batch', url: 'https://pkg.go.dev/github.com/jackc/pgx/v5#Batch' },
+    ],
+    resources: [],
+    gotchas: [
+      'Results must be read back in the SAME order queries were queued — there is no other way to correlate a result to its originating query.',
+      'An error partway through a batch can leave the connection unusable — pgx may close it entirely rather than return it to the pool.',
+    ],
+  },
+  'go/pgx/for-update-lock-ordering-can-deadlock': {
+    apis: ['FOR UPDATE', 'PostgreSQL row locks'],
+    related: [
+      { label: 'Database with pgx (overview)', route: '/go/pgx' },
+      { label: 'pgx.Batch Sends Queries in One Round-Trip', route: '/go/pgx/pgx-batch-sends-queries-in-one-round-trip' },
+      { label: 'Context Cancel Closes the Connection', route: '/go/pgx/context-cancel-closes-the-connection' },
+    ],
+    tip: 'FOR UPDATE locks the selected row for the rest of the transaction — always locking rows in caller-determined order (like "fromID" first) risks a real PostgreSQL-documented deadlock when two concurrent transactions lock the same rows in opposite orders.',
+    docs: [
+      { label: 'PostgreSQL — Explicit Locking', url: 'https://www.postgresql.org/docs/current/explicit-locking.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'PostgreSQL resolves a deadlock by aborting one of the two transactions automatically — which one is aborted is documented as unpredictable and should not be relied upon.',
+      'The durable fix is consistent lock ordering (e.g. always the lower ID first), not just retrying after a deadlock error.',
+    ],
+  },
+  'go/pgx/context-cancel-closes-the-connection': {
+    apis: ['pgconn.CancelRequest', 'ctxwatch.Handler'],
+    related: [
+      { label: 'Database with pgx (overview)', route: '/go/pgx' },
+      { label: 'pgx.Batch Sends Queries in One Round-Trip', route: '/go/pgx/pgx-batch-sends-queries-in-one-round-trip' },
+      { label: 'FOR UPDATE Lock Ordering Can Deadlock', route: '/go/pgx/for-update-lock-ordering-can-deadlock' },
+    ],
+    tip: '"The pool cleans up the connection automatically" means closing it by default, per pgconn\'s own docs — a workload with frequent, expected cancellations can mean constant connection churn unless CancelRequestContextWatcherHandler is configured.',
+    docs: [
+      { label: 'pkg.go.dev — pgconn', url: 'https://pkg.go.dev/github.com/jackc/pgx/v5/pgconn' },
+    ],
+    resources: [],
+    gotchas: [
+      'By default, cancelling a Go context does NOT tell PostgreSQL to stop running the query on the server — it only stops the Go side from waiting.',
+      'CancelRequestContextWatcherHandler trades connection reuse for cancellation certainty — pgx\'s own docs note "there is no way to be sure a query was canceled" with it.',
+    ],
+  },
   'go/patterns': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
