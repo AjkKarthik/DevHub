@@ -1234,6 +1234,14 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'errgroup.WithContext Cancels Siblings on the First Error', route: '/go/patterns/errgroup-withcontext-cancels-siblings-on-error' },
     { label: 'Middleware Composition: First Wrap Runs Outermost', route: '/go/patterns/middleware-composition-first-wrap-runs-outermost' },
   ],
+  // Angular keeps the bare 'testing' key (claimed it first, see the
+  // unquoted "testing:" entry above). Go's own /go/testing claims
+  // subtopics too — hub-prefixed to 'go-testing' below.
+  'go-testing': [
+    { label: 'Duplicate Subtest Names Get an Auto-Numbered Suffix', route: '/go/testing/duplicate-subtest-names-get-an-auto-numbered-suffix' },
+    { label: 'go test Can Print (cached) Instead of Actually Running', route: '/go/testing/go-test-can-print-cached-instead-of-actually-running' },
+    { label: 't.Cleanup Runs in LIFO Order, Not Registration Order', route: '/go/testing/t-cleanup-runs-in-lifo-order-not-registration-order' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

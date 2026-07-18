@@ -2565,7 +2565,12 @@ export const routes: Routes = [
       { path: 'go-line-alone-can-trigger-a-toolchain-switch', loadComponent: () => import('./components/backend/go/modules/subtopics/go-line-alone-can-trigger-a-toolchain-switch/go-line-alone-can-trigger-a-toolchain-switch').then(m => m.GoLineAloneCanTriggerAToolchainSwitchSubtopic) },
       { path: 'replace-directives-are-ignored-outside-the-main-module', loadComponent: () => import('./components/backend/go/modules/subtopics/replace-directives-are-ignored-outside-the-main-module/replace-directives-are-ignored-outside-the-main-module').then(m => m.ReplaceDirectivesAreIgnoredOutsideTheMainModuleSubtopic) },
     ] },
-    { path: 'testing',        loadComponent: () => import('./components/backend/go/testing/testing').then(m => m.GoTesting) },
+    { path: 'testing', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/testing/testing').then(m => m.GoTesting) },
+      { path: 'duplicate-subtest-names-get-an-auto-numbered-suffix', loadComponent: () => import('./components/backend/go/testing/subtopics/duplicate-subtest-names-get-an-auto-numbered-suffix/duplicate-subtest-names-get-an-auto-numbered-suffix').then(m => m.DuplicateSubtestNamesGetAnAutoNumberedSuffixSubtopic) },
+      { path: 'go-test-can-print-cached-instead-of-actually-running', loadComponent: () => import('./components/backend/go/testing/subtopics/go-test-can-print-cached-instead-of-actually-running/go-test-can-print-cached-instead-of-actually-running').then(m => m.GoTestCanPrintCachedInsteadOfActuallyRunningSubtopic) },
+      { path: 't-cleanup-runs-in-lifo-order-not-registration-order', loadComponent: () => import('./components/backend/go/testing/subtopics/t-cleanup-runs-in-lifo-order-not-registration-order/t-cleanup-runs-in-lifo-order-not-registration-order').then(m => m.TCleanupRunsInLifoOrderNotRegistrationOrderSubtopic) },
+    ] },
     { path: 'cli',            loadComponent: () => import('./components/backend/go/cli/cli').then(m => m.GoCli) },
     { path: 'profiling',      loadComponent: () => import('./components/backend/go/profiling/profiling').then(m => m.GoProfiling) },
     { path: 'build',          loadComponent: () => import('./components/backend/go/build/build').then(m => m.GoBuild) },

@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing in Go" topicRoute="/go/testing" subtopicLabel="go test's Result Cache" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">go test Can Print (cached) Instead of Actually Running</h1>
+  <p class="page-subtitle">
+    The main page's one-clause mention of caching never explains what a cache hit looks like or that it only
+    tracks module file reads and environment variables — anything else can silently go stale.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic expands the main page's single caching clause into the exact mechanism and its blind
+      spot. Back to the Testing in Go overview, or continue to why t.Cleanup functions run in the opposite
+      order from how they were registered.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing in Go"
+    topicRoute="/go/testing"
+    [prev]="{ label: 'Duplicate Subtest Names Get an Auto-Numbered Suffix', route: '/go/testing/duplicate-subtest-names-get-an-auto-numbered-suffix' }"
+    [next]="{ label: 't.Cleanup Runs in LIFO Order, Not Registration Order', route: '/go/testing/t-cleanup-runs-in-lifo-order-not-registration-order' }"
+  />
+</div>

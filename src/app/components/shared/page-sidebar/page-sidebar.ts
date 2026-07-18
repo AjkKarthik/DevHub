@@ -34096,6 +34096,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'go test -race enables the race detector — running the full suite with it periodically catches data races that would otherwise only manifest intermittently in production.',
     ],
   },
+  'go/testing/duplicate-subtest-names-get-an-auto-numbered-suffix': {
+    apis: ['testing.T.Run', 'testing.T.Name'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Testing in Go overview', route: '/go/testing' },
+      { label: 'go test Can Print (cached) Instead of Actually Running', route: '/go/testing/go-test-can-print-cached-instead-of-actually-running' },
+    ],
+    tip: 'A #01 suffix in a subtest name is never something you typed — it means two table entries share a name, and only the first keeps the plain, un-suffixed name.',
+    gotchas: [
+      'go test -run only matches the exact disambiguated name — a filter targeting the base name silently stops matching the duplicate once a #01 appears.',
+      'Give every table-driven case a genuinely distinct name rather than relying on the auto-suffix to keep them runnable individually.',
+    ],
+  },
+  'go/testing/go-test-can-print-cached-instead-of-actually-running': {
+    apis: ['go test -count', 'go test cache'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Duplicate Subtest Names Get an Auto-Numbered Suffix', route: '/go/testing/duplicate-subtest-names-get-an-auto-numbered-suffix' },
+      { label: 't.Cleanup Runs in LIFO Order, Not Registration Order', route: '/go/testing/t-cleanup-runs-in-lifo-order-not-registration-order' },
+    ],
+    tip: 'The cache only tracks module file reads and environment variables — a test depending on a live network call or database state can report a stale (cached) pass after the real behavior changed.',
+    gotchas: [
+      '"(cached)" appears in place of the elapsed time in go test output — that is the only visible sign the test binary did not actually run.',
+      'Use go test -count=1 to force a genuine re-run when debugging something the cache would not have noticed changed.',
+    ],
+  },
+  'go/testing/t-cleanup-runs-in-lifo-order-not-registration-order': {
+    apis: ['testing.T.Cleanup'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'go test Can Print (cached) Instead of Actually Running', route: '/go/testing/go-test-can-print-cached-instead-of-actually-running' },
+      { label: 'Testing in Go overview', route: '/go/testing' },
+    ],
+    tip: 'Multiple t.Cleanup calls unwind in the exact reverse of registration order — the same LIFO discipline defer already uses within a single function.',
+    gotchas: [
+      'Register cleanup immediately after creating each resource, in setup order — LIFO teardown then tears down dependents before their dependencies automatically.',
+      'Getting the dependency direction wrong only breaks teardown for resources that actually depend on each other — independent resources hide the bug either way.',
+    ],
+  },
   'go/profiling': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
