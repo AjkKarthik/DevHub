@@ -1247,6 +1247,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ldflags -X Only Sets Uninitialized or Constant Vars', route: '/go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars' },
     { label: 'NotifyContext Swallows a Second Ctrl+C', route: '/go/cli/notifycontext-swallows-a-second-ctrl-c' },
   ],
+  'profiling': [
+    { label: 'runtime.GC() Before WriteHeapProfile Avoids Stale Data', route: '/go/profiling/runtime-gc-before-writeheapprofile-avoids-stale-data' },
+    { label: 'The Heap Profile Samples One Allocation per 512KB', route: '/go/profiling/heap-profile-samples-one-allocation-per-512kb' },
+    { label: 'Escape Analysis (-gcflags=-m) Shows Why a Var Heap-Allocates', route: '/go/profiling/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

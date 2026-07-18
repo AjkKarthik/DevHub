@@ -34149,6 +34149,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Benchmark functions (BenchmarkXxx) should avoid unintentionally including setup cost in the timed portion — use b.ResetTimer() after expensive setup.',
     ],
   },
+  'go/profiling/runtime-gc-before-writeheapprofile-avoids-stale-data': {
+    apis: ['runtime.GC', 'pprof.WriteHeapProfile'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Performance & Profiling overview', route: '/go/profiling' },
+      { label: 'The Heap Profile Samples One Allocation per 512KB', route: '/go/profiling/heap-profile-samples-one-allocation-per-512kb' },
+    ],
+    tip: 'A heap profile reports data as of the last completed GC, not a live snapshot — call runtime.GC() immediately before WriteHeapProfile, every time, to force a fresh one.',
+    gotchas: [
+      'The same staleness applies to the /debug/pprof/heap HTTP endpoint on a live server — it also reflects the process\'s last completed GC, not one triggered fresh by the request.',
+      'Placing runtime.GC() anywhere other than immediately before the write reintroduces the exact staleness the call exists to prevent.',
+    ],
+  },
+  'go/profiling/heap-profile-samples-one-allocation-per-512kb': {
+    apis: ['runtime.MemProfileRate'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'runtime.GC() Before WriteHeapProfile Avoids Stale Data', route: '/go/profiling/runtime-gc-before-writeheapprofile-avoids-stale-data' },
+      { label: 'Escape Analysis (-gcflags=-m) Shows Why a Var Heap-Allocates', route: '/go/profiling/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates' },
+    ],
+    tip: 'The default heap profile samples roughly one allocation per 512KB — a function making many small allocations can be a real memory contributor while ranking low or absent in top10 output.',
+    gotchas: [
+      'runtime.MemProfileRate = 1 captures every allocation for a targeted investigation, but must be set once, as early as possible — changing it mid-run breaks the standard tooling\'s assumptions.',
+      'Not appearing near the top of a default heap profile is not proof a function is not a meaningful allocator — only that its individual allocations rarely land on a sampled boundary.',
+    ],
+  },
+  'go/profiling/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates': {
+    apis: ['go build -gcflags=-m'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'The Heap Profile Samples One Allocation per 512KB', route: '/go/profiling/heap-profile-samples-one-allocation-per-512kb' },
+      { label: 'Performance & Profiling overview', route: '/go/profiling' },
+    ],
+    tip: 'Taking a variable\'s address only makes it a CANDIDATE for heap allocation — the compiler\'s own proof about whether the pointer outlives the function is what actually decides.',
+    gotchas: [
+      'A single interface-typed call site (fmt.Sprintf, a logging call) buried at the end of a function can force an otherwise-stack-safe variable to escape for its entire lifetime.',
+      '-gcflags=-m output is per VARIABLE with an exact file/line, not a per-function summary — one function can show a mix of escaping and non-escaping lines.',
+    ],
+  },
   'go/gorm': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

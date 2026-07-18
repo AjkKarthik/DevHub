@@ -2577,7 +2577,12 @@ export const routes: Routes = [
       { path: 'ldflags-x-only-sets-uninitialized-or-constant-vars', loadComponent: () => import('./components/backend/go/cli/subtopics/ldflags-x-only-sets-uninitialized-or-constant-vars/ldflags-x-only-sets-uninitialized-or-constant-vars').then(m => m.LdflagsXOnlySetsUninitializedOrConstantVarsSubtopic) },
       { path: 'notifycontext-swallows-a-second-ctrl-c', loadComponent: () => import('./components/backend/go/cli/subtopics/notifycontext-swallows-a-second-ctrl-c/notifycontext-swallows-a-second-ctrl-c').then(m => m.NotifycontextSwallowsASecondCtrlCSubtopic) },
     ] },
-    { path: 'profiling',      loadComponent: () => import('./components/backend/go/profiling/profiling').then(m => m.GoProfiling) },
+    { path: 'profiling', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/profiling/profiling').then(m => m.GoProfiling) },
+      { path: 'runtime-gc-before-writeheapprofile-avoids-stale-data', loadComponent: () => import('./components/backend/go/profiling/subtopics/runtime-gc-before-writeheapprofile-avoids-stale-data/runtime-gc-before-writeheapprofile-avoids-stale-data').then(m => m.RuntimeGcBeforeWriteheapprofileAvoidsStaleDataSubtopic) },
+      { path: 'heap-profile-samples-one-allocation-per-512kb', loadComponent: () => import('./components/backend/go/profiling/subtopics/heap-profile-samples-one-allocation-per-512kb/heap-profile-samples-one-allocation-per-512kb').then(m => m.HeapProfileSamplesOneAllocationPer512kbSubtopic) },
+      { path: 'escape-analysis-gcflags-m-shows-why-a-var-heap-allocates', loadComponent: () => import('./components/backend/go/profiling/subtopics/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates').then(m => m.EscapeAnalysisGcflagsMShowsWhyAVarHeapAllocatesSubtopic) },
+    ] },
     { path: 'build',          loadComponent: () => import('./components/backend/go/build/build').then(m => m.GoBuild) },
     { path: 'cheatsheet',     loadComponent: () => import('./components/backend/go/cheatsheet/cheatsheet').then(m => m.GoCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/backend/go/interview-prep/interview-prep').then(m => m.GoInterviewPrep) },
