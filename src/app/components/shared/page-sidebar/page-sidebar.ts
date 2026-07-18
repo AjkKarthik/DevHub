@@ -33355,6 +33355,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A nil map can be READ from safely (returns zero value) but WRITING to a nil map panics — a common source of confusion for newcomers.',
     ],
   },
+  'go/slices-maps/append-growth-factor-shrinks-past-256': {
+    apis: ['runtime/slice.go — nextslicecap'],
+    related: [
+      { label: 'Slices & Maps (overview)', route: '/go/slices-maps' },
+      { label: 'Map Deletes Don’t Shrink Memory', route: '/go/slices-maps/map-deletes-dont-shrink-memory' },
+      { label: 'Struct Map Values Aren’t Addressable', route: '/go/slices-maps/struct-map-values-arent-addressable' },
+    ],
+    tip: 'append doubles capacity below a 256-element threshold, then slows to roughly 1.25x growth above it — and neither number is a guaranteed language contract, only an internal runtime detail that has changed across Go versions.',
+    docs: [
+      { label: 'Go Source — runtime/slice.go', url: 'https://go.dev/src/runtime/slice.go' },
+    ],
+    resources: [],
+    gotchas: [
+      'Never assert on the exact cap(s) after an append-triggered reallocation in tests — the growth strategy is explicitly unspecified and can change between Go releases.',
+      'When the final size is known ahead of time, make([]T, 0, n) sidesteps the growth-regime question entirely with one exact allocation.',
+    ],
+  },
+  'go/slices-maps/map-deletes-dont-shrink-memory': {
+    apis: ['delete', 'runtime.MemStats'],
+    related: [
+      { label: 'Slices & Maps (overview)', route: '/go/slices-maps' },
+      { label: 'append’s Real Growth Algorithm', route: '/go/slices-maps/append-growth-factor-shrinks-past-256' },
+      { label: 'Struct Map Values Aren’t Addressable', route: '/go/slices-maps/struct-map-values-arent-addressable' },
+    ],
+    tip: 'delete(m, key) shrinks len(m) immediately, but Go\'s runtime never automatically shrinks a map\'s own underlying bucket array back down — reclaiming that memory requires rebuilding into a fresh map.',
+    docs: [
+      { label: 'golang/go issue — map memory after delete', url: 'https://github.com/golang/go/issues/20135' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is not a traditional memory leak — nothing is unreachable, and len(m) is completely accurate. The gap is between the map\'s peak historical size and its current logical size.',
+      'A map whose peak size vastly exceeds its steady-state size (periodic caches, batch-job state) should be periodically rebuilt into a fresh, right-sized map, not just have its excess keys deleted.',
+    ],
+  },
+  'go/slices-maps/struct-map-values-arent-addressable': {
+    apis: ['Go Spec — Index expressions'],
+    related: [
+      { label: 'Slices & Maps (overview)', route: '/go/slices-maps' },
+      { label: 'append’s Real Growth Algorithm', route: '/go/slices-maps/append-growth-factor-shrinks-past-256' },
+      { label: 'Map Deletes Don’t Shrink Memory', route: '/go/slices-maps/map-deletes-dont-shrink-memory' },
+    ],
+    tip: 'm[key].Field = x fails to compile — map index expressions are not addressable in Go, unlike array/slice elements, because a map\'s internal storage can move entries during growth and rehashing.',
+    docs: [
+      { label: 'Go Spec — Index Expressions', url: 'https://go.dev/ref/spec#Index_expressions' },
+    ],
+    resources: [],
+    gotchas: [
+      'Two real fixes with a real tradeoff: map[K]*T gives shared, aliased mutation; read-modify-write (temp := m[key]; ...; m[key] = temp) preserves independent value semantics.',
+      'Compound assignments like m[key]++ work fine on primitive values — Go rewrites them as a full value reassignment under the hood, sidestepping the same addressability restriction without looking like a workaround.',
+    ],
+  },
   'go/generics': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

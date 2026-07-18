@@ -80,7 +80,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/go/slices-maps" routerLinkActive="active"><span class="nl-text">Slices &amp; Maps</span>@if(p.isDone('go-slices-maps')){<span class="nl-done">✓</span>}@if(d('go-slices-maps');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/slices-maps" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Slices &amp; Maps</span>
+        @if (p.isDone('go-slices-maps')) {<span class="nl-done">✓</span>}
+        @if (d('go-slices-maps'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('slices-maps')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('slices-maps')"
+                  (click)="toggleSubtopics('slices-maps', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('slices-maps'); as goSlicesMapsSubs) {
+        @if (isSubtopicsExpanded('slices-maps')) {
+          <div class="nav-subtopics">
+            @for (s of goSlicesMapsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/go/generics" routerLinkActive="active"><span class="nl-text">Go Generics</span>@if(p.isDone('go-generics')){<span class="nl-done">✓</span>}@if(d('go-generics');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

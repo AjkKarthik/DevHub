@@ -2117,4 +2117,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Custom Is() and As() Methods', route: '/go/error-handling/custom-is-as-methods' },
     { label: 'panic/recover Is Goroutine-Scoped', route: '/go/error-handling/panic-recover-goroutine-scoped' },
   ],
+  'slices-maps': [
+    { label: 'append’s Real Growth Algorithm', route: '/go/slices-maps/append-growth-factor-shrinks-past-256' },
+    { label: 'Map Deletes Don’t Shrink Memory', route: '/go/slices-maps/map-deletes-dont-shrink-memory' },
+    { label: 'Struct Map Values Aren’t Addressable', route: '/go/slices-maps/struct-map-values-arent-addressable' },
+  ],
 };

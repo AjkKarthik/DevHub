@@ -2481,7 +2481,12 @@ export const routes: Routes = [
       { path: 'custom-is-as-methods', loadComponent: () => import('./components/backend/go/error-handling/subtopics/custom-is-as-methods/custom-is-as-methods').then(m => m.CustomIsAsMethodsSubtopic) },
       { path: 'panic-recover-goroutine-scoped', loadComponent: () => import('./components/backend/go/error-handling/subtopics/panic-recover-goroutine-scoped/panic-recover-goroutine-scoped').then(m => m.PanicRecoverGoroutineScopedSubtopic) },
     ] },
-    { path: 'slices-maps',    loadComponent: () => import('./components/backend/go/slices-maps/slices-maps').then(m => m.GoSlicesMaps) },
+    { path: 'slices-maps', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/slices-maps/slices-maps').then(m => m.GoSlicesMaps) },
+      { path: 'append-growth-factor-shrinks-past-256', loadComponent: () => import('./components/backend/go/slices-maps/subtopics/append-growth-factor-shrinks-past-256/append-growth-factor-shrinks-past-256').then(m => m.AppendGrowthFactorShrinksPast256Subtopic) },
+      { path: 'map-deletes-dont-shrink-memory', loadComponent: () => import('./components/backend/go/slices-maps/subtopics/map-deletes-dont-shrink-memory/map-deletes-dont-shrink-memory').then(m => m.MapDeletesDontShrinkMemorySubtopic) },
+      { path: 'struct-map-values-arent-addressable', loadComponent: () => import('./components/backend/go/slices-maps/subtopics/struct-map-values-arent-addressable/struct-map-values-arent-addressable').then(m => m.StructMapValuesArentAddressableSubtopic) },
+    ] },
     { path: 'goroutines',     loadComponent: () => import('./components/backend/go/goroutines/goroutines').then(m => m.GoGoroutines) },
     { path: 'channels',       loadComponent: () => import('./components/backend/go/channels/channels').then(m => m.GoChannels) },
     { path: 'sync',           loadComponent: () => import('./components/backend/go/sync/sync').then(m => m.GoSync) },
