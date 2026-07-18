@@ -34025,6 +34025,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Silent failures (GORM\'s default error handling in some chained calls) can mask a failed operation — always check the returned error explicitly.',
     ],
   },
+  'go/gorm/firstorcreate-doesnt-update-on-find': {
+    apis: ['gorm.DB.FirstOrCreate', 'Attrs', 'Assign'],
+    related: [
+      { label: 'GORM (overview)', route: '/go/gorm' },
+      { label: 'gorm.Expr Pushes Arithmetic to the Database', route: '/go/gorm/gormexpr-pushes-arithmetic-to-the-database' },
+      { label: 'Association Mode Is Not Preload', route: '/go/gorm/association-mode-is-not-preload' },
+    ],
+    tip: 'Per GORM\'s own docs, "if the user is found, no new record is created" — nothing about an existing match is updated. Attrs() fields only apply on creation; Assign() fields apply either way, updating a found record too.',
+    docs: [
+      { label: 'gorm.io — Advanced Query', url: 'https://gorm.io/docs/advanced_query.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A single struct passed directly to FirstOrCreate plays both roles at once — search condition AND insert values — which only stays safe when every field should legitimately be part of the match.',
+      'Passing fields you want to always keep up to date (found or not) requires Assign(), not the plain struct argument or Attrs().',
+    ],
+  },
+  'go/gorm/gormexpr-pushes-arithmetic-to-the-database': {
+    apis: ['gorm.Expr'],
+    related: [
+      { label: 'GORM (overview)', route: '/go/gorm' },
+      { label: 'FirstOrCreate Doesn’t Update on a Find', route: '/go/gorm/firstorcreate-doesnt-update-on-find' },
+      { label: 'Association Mode Is Not Preload', route: '/go/gorm/association-mode-is-not-preload' },
+    ],
+    tip: 'gorm.Expr("balance - ?", amount) computes the subtraction inside the database as part of one atomic UPDATE — avoiding the lost-update race a Go-side read-modify-write has under concurrent writes to the same row.',
+    docs: [
+      { label: 'gorm.io — Update', url: 'https://gorm.io/docs/update.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'The naive "read into Go, compute, write back" pattern looks correct in isolation and only breaks under genuine concurrent writes to the same row.',
+      'This is complementary to FOR UPDATE row locking (see the pgx hub), not a replacement — it protects one UPDATE\'s own read-then-write, not a multi-statement decision that needs a lock.',
+    ],
+  },
+  'go/gorm/association-mode-is-not-preload': {
+    apis: ['gorm.DB.Association'],
+    related: [
+      { label: 'GORM (overview)', route: '/go/gorm' },
+      { label: 'FirstOrCreate Doesn’t Update on a Find', route: '/go/gorm/firstorcreate-doesnt-update-on-find' },
+      { label: 'gorm.Expr Pushes Arithmetic to the Database', route: '/go/gorm/gormexpr-pushes-arithmetic-to-the-database' },
+    ],
+    tip: 'Preload is a read-time concern attached to a query, avoiding N+1 by eager-loading related rows. Association Mode (Append/Replace/Delete/Clear/Count) operates on an already-loaded instance to directly manipulate its own relationships — a genuinely different tool.',
+    docs: [
+      { label: 'gorm.io — Associations', url: 'https://gorm.io/docs/associations.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Association Mode requires an already-identified, typically already-loaded parent instance — it has no meaning attached to a fresh, not-yet-executed query the way Preload does.',
+      'Count() issues a targeted SQL COUNT with no rows loaded — meaningfully cheaper than Preload followed by len() when only the number is needed.',
+    ],
+  },
   'go/pgx': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

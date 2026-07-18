@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GORM" topicRoute="/go/gorm" subtopicLabel="gorm.Expr" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">gorm.Expr Pushes Arithmetic to the Database</h1>
+  <p class="page-subtitle">
+    The main page's own transfer function uses gorm.Expr twice without explaining it — computing "balance -
+    amount" as a SQL expression avoids a genuine lost-update race the natural-looking Go-side alternative has.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="GORM v2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a mechanic sitting unexplained in the main page's own transfer function, and
+      connects it to this hub's own pgx coverage of row locking. The next subtopic names a distinct API surface
+      the main page's own Associations example uses but never introduces as its own concept: Association Mode.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GORM"
+    topicRoute="/go/gorm"
+    [prev]="{ label: 'FirstOrCreate Doesn’t Update on a Find', route: '/go/gorm/firstorcreate-doesnt-update-on-find' }"
+    [next]="{ label: 'Association Mode Is Not Preload', route: '/go/gorm/association-mode-is-not-preload' }"
+  />
+</div>

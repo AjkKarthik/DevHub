@@ -2541,7 +2541,12 @@ export const routes: Routes = [
       { path: 'for-update-lock-ordering-can-deadlock', loadComponent: () => import('./components/backend/go/pgx/subtopics/for-update-lock-ordering-can-deadlock/for-update-lock-ordering-can-deadlock').then(m => m.ForUpdateLockOrderingCanDeadlockSubtopic) },
       { path: 'context-cancel-closes-the-connection', loadComponent: () => import('./components/backend/go/pgx/subtopics/context-cancel-closes-the-connection/context-cancel-closes-the-connection').then(m => m.ContextCancelClosesTheConnectionSubtopic) },
     ] },
-    { path: 'gorm',           loadComponent: () => import('./components/backend/go/gorm/gorm').then(m => m.GoGorm) },
+    { path: 'gorm', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/gorm/gorm').then(m => m.GoGorm) },
+      { path: 'firstorcreate-doesnt-update-on-find', loadComponent: () => import('./components/backend/go/gorm/subtopics/firstorcreate-doesnt-update-on-find/firstorcreate-doesnt-update-on-find').then(m => m.FirstorcreateDoesntUpdateOnFindSubtopic) },
+      { path: 'gormexpr-pushes-arithmetic-to-the-database', loadComponent: () => import('./components/backend/go/gorm/subtopics/gormexpr-pushes-arithmetic-to-the-database/gormexpr-pushes-arithmetic-to-the-database').then(m => m.GormexprPushesArithmeticToTheDatabaseSubtopic) },
+      { path: 'association-mode-is-not-preload', loadComponent: () => import('./components/backend/go/gorm/subtopics/association-mode-is-not-preload/association-mode-is-not-preload').then(m => m.AssociationModeIsNotPreloadSubtopic) },
+    ] },
     { path: 'generics',       loadComponent: () => import('./components/backend/go/generics/generics').then(m => m.GoGenerics) },
     { path: 'patterns',       loadComponent: () => import('./components/backend/go/patterns/patterns').then(m => m.GoPatterns) },
     { path: 'modules',        loadComponent: () => import('./components/backend/go/modules/modules').then(m => m.GoModules) },

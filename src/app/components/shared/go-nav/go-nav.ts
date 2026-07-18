@@ -293,7 +293,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/go/gorm" routerLinkActive="active"><span class="nl-text">GORM</span>@if(p.isDone('go-gorm')){<span class="nl-done">✓</span>}@if(d('go-gorm');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/gorm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">GORM</span>
+        @if (p.isDone('go-gorm')) {<span class="nl-done">✓</span>}
+        @if (d('go-gorm'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('gorm')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gorm')"
+                  (click)="toggleSubtopics('gorm', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gorm'); as gormSubs) {
+        @if (isSubtopicsExpanded('gorm')) {
+          <div class="nav-subtopics">
+            @for (s of gormSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

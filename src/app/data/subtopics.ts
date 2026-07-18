@@ -2171,4 +2171,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'FOR UPDATE Lock Ordering Can Deadlock', route: '/go/pgx/for-update-lock-ordering-can-deadlock' },
     { label: 'Context Cancel Closes the Connection', route: '/go/pgx/context-cancel-closes-the-connection' },
   ],
+  'gorm': [
+    { label: 'FirstOrCreate Doesn’t Update on a Find', route: '/go/gorm/firstorcreate-doesnt-update-on-find' },
+    { label: 'gorm.Expr Pushes Arithmetic to the Database', route: '/go/gorm/gormexpr-pushes-arithmetic-to-the-database' },
+    { label: 'Association Mode Is Not Preload', route: '/go/gorm/association-mode-is-not-preload' },
+  ],
 };
