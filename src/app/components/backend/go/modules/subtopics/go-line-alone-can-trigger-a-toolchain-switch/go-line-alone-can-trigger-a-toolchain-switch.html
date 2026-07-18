@@ -1,0 +1,38 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Modules" topicRoute="/go/modules" subtopicLabel="Implicit Toolchain Pinning" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">A go Line Alone Can Trigger a Toolchain Switch</h1>
+  <p class="page-subtitle">
+    The main page frames toolchain pinning as something only an explicit toolchain line provides — the go
+    line alone already implies one, and the default GOTOOLCHAIN=auto silently downloads a newer version
+    to satisfy it.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.21+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own toolchain-pinning mistake entry with the exact mechanism
+      that makes even its "wrong" example version-pinned. Back to the Go Modules overview, or continue to
+      why a replace directive behaves differently depending on which module's go.mod it lives in.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Modules"
+    topicRoute="/go/modules"
+    [prev]="{ label: 'go:embed Excludes Dot and Underscore Files', route: '/go/modules/go-embed-excludes-dot-and-underscore-files' }"
+    [next]="{ label: 'Replace Directives Are Ignored Outside the Main Module', route: '/go/modules/replace-directives-are-ignored-outside-the-main-module' }"
+  />
+</div>

@@ -34043,6 +34043,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'go mod tidy removes unused dependencies from go.mod — running it periodically keeps the dependency graph accurate as code changes.',
     ],
   },
+  'go/modules/go-embed-excludes-dot-and-underscore-files': {
+    apis: ['//go:embed', 'embed.FS', 'all: prefix'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Go Modules overview', route: '/go/modules' },
+      { label: 'A go Line Alone Can Trigger a Toolchain Switch', route: '/go/modules/go-line-alone-can-trigger-a-toolchain-switch' },
+    ],
+    tip: 'A stray .gitkeep or _drafts/ directory inside an embedded path vanishes from the build with zero warning — the all: prefix is the only way to include dot/underscore-prefixed content.',
+    gotchas: [
+      'The exclusion applies to whole directories too — an underscore-prefixed subdirectory and everything inside it is skipped, not just files directly named with a leading dot or underscore.',
+      'A build succeeding is not proof every intended file was embedded — check the embedded fs.FS contents directly when debugging a "file not found" at runtime.',
+    ],
+  },
+  'go/modules/go-line-alone-can-trigger-a-toolchain-switch': {
+    apis: ['go.mod go line', 'toolchain line', 'GOTOOLCHAIN'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'go:embed Excludes Dot and Underscore Files', route: '/go/modules/go-embed-excludes-dot-and-underscore-files' },
+      { label: 'Replace Directives Are Ignored Outside the Main Module', route: '/go/modules/replace-directives-are-ignored-outside-the-main-module' },
+    ],
+    tip: 'GOTOOLCHAIN defaults to auto, which silently downloads a newer Go toolchain when go.mod requires one — set GOTOOLCHAIN=local to force a hard error instead of an automatic download.',
+    gotchas: [
+      'An omitted toolchain line is not "no pin" — it is an implicit pin to the exact version on the go line.',
+      'A CI runner with GOTOOLCHAIN=local and an older Go binary will fail a build that works fine on a developer machine with the default auto setting.',
+    ],
+  },
+  'go/modules/replace-directives-are-ignored-outside-the-main-module': {
+    apis: ['replace directive', 'go.work use directive'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'A go Line Alone Can Trigger a Toolchain Switch', route: '/go/modules/go-line-alone-can-trigger-a-toolchain-switch' },
+      { label: 'Go Modules overview', route: '/go/modules' },
+    ],
+    tip: 'A replace directive only ever affects the module you are directly building — it is read and discarded the instant that module is consumed as someone else\'s dependency, not "inherited" by consumers.',
+    gotchas: [
+      'A library shipped with a local-path replace directive does not force that path on consumers — it fails to resolve, or silently falls back to whatever the real upstream module actually is.',
+      'go.work workspaces avoid this scoping problem entirely, which is why they are preferred over replace for local multi-module development.',
+    ],
+  },
   'go/testing': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

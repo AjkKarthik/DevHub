@@ -2559,7 +2559,12 @@ export const routes: Routes = [
       { path: 'errgroup-withcontext-cancels-siblings-on-error', loadComponent: () => import('./components/backend/go/patterns/subtopics/errgroup-withcontext-cancels-siblings-on-error/errgroup-withcontext-cancels-siblings-on-error').then(m => m.ErrgroupWithcontextCancelsSiblingsOnErrorSubtopic) },
       { path: 'middleware-composition-first-wrap-runs-outermost', loadComponent: () => import('./components/backend/go/patterns/subtopics/middleware-composition-first-wrap-runs-outermost/middleware-composition-first-wrap-runs-outermost').then(m => m.MiddlewareCompositionFirstWrapRunsOutermostSubtopic) },
     ] },
-    { path: 'modules',        loadComponent: () => import('./components/backend/go/modules/modules').then(m => m.GoModules) },
+    { path: 'modules', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/modules/modules').then(m => m.GoModules) },
+      { path: 'go-embed-excludes-dot-and-underscore-files', loadComponent: () => import('./components/backend/go/modules/subtopics/go-embed-excludes-dot-and-underscore-files/go-embed-excludes-dot-and-underscore-files').then(m => m.GoEmbedExcludesDotAndUnderscoreFilesSubtopic) },
+      { path: 'go-line-alone-can-trigger-a-toolchain-switch', loadComponent: () => import('./components/backend/go/modules/subtopics/go-line-alone-can-trigger-a-toolchain-switch/go-line-alone-can-trigger-a-toolchain-switch').then(m => m.GoLineAloneCanTriggerAToolchainSwitchSubtopic) },
+      { path: 'replace-directives-are-ignored-outside-the-main-module', loadComponent: () => import('./components/backend/go/modules/subtopics/replace-directives-are-ignored-outside-the-main-module/replace-directives-are-ignored-outside-the-main-module').then(m => m.ReplaceDirectivesAreIgnoredOutsideTheMainModuleSubtopic) },
+    ] },
     { path: 'testing',        loadComponent: () => import('./components/backend/go/testing/testing').then(m => m.GoTesting) },
     { path: 'cli',            loadComponent: () => import('./components/backend/go/cli/cli').then(m => m.GoCli) },
     { path: 'profiling',      loadComponent: () => import('./components/backend/go/profiling/profiling').then(m => m.GoProfiling) },

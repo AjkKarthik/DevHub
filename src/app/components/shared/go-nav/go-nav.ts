@@ -360,7 +360,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Tooling</p>
-      <a routerLink="/go/modules" routerLinkActive="active"><span class="nl-text">Go Modules</span>@if(p.isDone('go-modules')){<span class="nl-done">✓</span>}@if(d('go-modules');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/modules" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Go Modules</span>
+        @if (p.isDone('go-modules')) {<span class="nl-done">✓</span>}
+        @if (d('go-modules'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-modules')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-modules')"
+                  (click)="toggleSubtopics('go-modules', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-modules'); as modulesSubs) {
+        @if (isSubtopicsExpanded('go-modules')) {
+          <div class="nav-subtopics">
+            @for (s of modulesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/go/testing" routerLinkActive="active"><span class="nl-text">Testing in Go</span>@if(p.isDone('go-testing')){<span class="nl-done">✓</span>}@if(d('go-testing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/go/cli" routerLinkActive="active"><span class="nl-text">Go CLI Tools</span>@if(p.isDone('go-cli')){<span class="nl-done">✓</span>}@if(d('go-cli');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/go/profiling" routerLinkActive="active"><span class="nl-text">Performance &amp; Profiling</span>@if(p.isDone('go-profiling')){<span class="nl-done">✓</span>}@if(d('go-profiling');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

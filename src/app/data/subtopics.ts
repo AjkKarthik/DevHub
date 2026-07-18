@@ -1145,10 +1145,17 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' },
     { label: 'strictFunctionTypes Doesn’t Apply to Methods', route: '/typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax' },
   ],
+  // TypeScript keeps the bare 'modules' key (claimed it first). Go's own
+  // /go/modules claims subtopics too — hub-prefixed to 'go-modules' below.
   'modules': [
     { label: 'Circular Imports Work Fine for Functions', route: '/typescript/modules/testing-that-circular-imports-work-fine-for-functions-not-consts' },
     { label: 'A Barrel Import Runs Every File’s Side Effects', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' },
     { label: 'export type Strips the Value, Even for a Class', route: '/typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class' },
+  ],
+  'go-modules': [
+    { label: 'go:embed Excludes Dot and Underscore Files', route: '/go/modules/go-embed-excludes-dot-and-underscore-files' },
+    { label: 'A go Line Alone Can Trigger a Toolchain Switch', route: '/go/modules/go-line-alone-can-trigger-a-toolchain-switch' },
+    { label: 'Replace Directives Are Ignored Outside the Main Module', route: '/go/modules/replace-directives-are-ignored-outside-the-main-module' },
   ],
   'declarations': [
     { label: 'interface and type alias Conflict, Not Merge', route: '/typescript/declarations/testing-that-interface-and-type-alias-with-the-same-name-conflict' },
