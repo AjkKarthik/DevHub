@@ -33429,6 +33429,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Spawning goroutines without any bound (one per incoming request with no limit) can exhaust memory under high load — a worker pool or semaphore pattern caps concurrency deliberately.',
     ],
   },
+  'go/goroutines/gomaxprocs-doesnt-cap-blocked-threads': {
+    apis: ['runtime.GOMAXPROCS', 'GOMAXPROCS env var'],
+    related: [
+      { label: 'Goroutines (overview)', route: '/go/goroutines' },
+      { label: 'Unsynchronized Reads Have No Guarantee', route: '/go/goroutines/unsynchronized-reads-have-no-guarantee' },
+      { label: 'WaitGroup Reuse: Add After Wait Returns', route: '/go/goroutines/waitgroup-reuse-add-after-wait-returns' },
+    ],
+    tip: 'GOMAXPROCS limits threads executing Go code simultaneously — per Go\'s own runtime docs, "there is no limit to the number of threads that can be blocked in system calls," so total OS thread count can genuinely exceed GOMAXPROCS.',
+    docs: [
+      { label: 'pkg.go.dev/runtime — GOMAXPROCS', url: 'https://pkg.go.dev/runtime#GOMAXPROCS' },
+    ],
+    resources: [],
+    gotchas: [
+      'Idiomatic net/http calls route through the runtime\'s own netpoller and park the GOROUTINE, not an OS thread — this thread-pinning risk mainly applies to cgo calls and traditional blocking file I/O.',
+      'A correctly-tuned GOMAXPROCS (matching a container\'s CPU quota) does not cap OS thread count for programs doing heavy blocking syscalls — a high thread count alongside it is not automatically evidence the fix failed.',
+    ],
+  },
+  'go/goroutines/unsynchronized-reads-have-no-guarantee': {
+    apis: ['Go Memory Model', 'sync/atomic'],
+    related: [
+      { label: 'Goroutines (overview)', route: '/go/goroutines' },
+      { label: 'GOMAXPROCS Doesn’t Cap Blocked Threads', route: '/go/goroutines/gomaxprocs-doesnt-cap-blocked-threads' },
+      { label: 'WaitGroup Reuse: Add After Wait Returns', route: '/go/goroutines/waitgroup-reuse-add-after-wait-returns' },
+    ],
+    tip: 'Go\'s own Memory Model states plainly of its busy-wait example: "there is no guarantee that the write... will ever be observed" and "the loop... is not guaranteed to finish" — a data race is not bounded to "stale value," it is genuinely undefined.',
+    docs: [
+      { label: 'Go Memory Model', url: 'https://go.dev/ref/mem' },
+    ],
+    resources: [],
+    gotchas: [
+      '"It worked in testing" and "go run -race didn\'t flag it" are both weak evidence — the race detector only flags races it actually observes during one specific run.',
+      'A pointer or bool being a single CPU instruction does not exempt it — the Memory Model\'s guarantees operate at the Go language level (channels, Mutex, WaitGroup, atomic), not the hardware instruction level.',
+    ],
+  },
+  'go/goroutines/waitgroup-reuse-add-after-wait-returns': {
+    apis: ['sync.WaitGroup'],
+    related: [
+      { label: 'Goroutines (overview)', route: '/go/goroutines' },
+      { label: 'GOMAXPROCS Doesn’t Cap Blocked Threads', route: '/go/goroutines/gomaxprocs-doesnt-cap-blocked-threads' },
+      { label: 'Unsynchronized Reads Have No Guarantee', route: '/go/goroutines/unsynchronized-reads-have-no-guarantee' },
+    ],
+    tip: 'Reusing one WaitGroup across multiple waves is safe only if strictly ordered — per sync.WaitGroup\'s own docs, "new Add calls must happen after all previous Wait calls have returned," not merely after the counter reaches zero.',
+    docs: [
+      { label: 'pkg.go.dev/sync — WaitGroup', url: 'https://pkg.go.dev/sync#WaitGroup' },
+    ],
+    resources: [],
+    gotchas: [
+      'Violating the reuse ordering can panic at runtime with "sync: WaitGroup misuse: Add called concurrently with Wait" — or produce other undefined behavior, even when the Add/Done counts mathematically balance.',
+      'Declaring a brand-new sync.WaitGroup per wave sidesteps the reuse rule entirely and is the simpler default whenever the same variable isn\'t needed for anything else afterward.',
+    ],
+  },
   'go/channels': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

@@ -2122,4 +2122,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Map Deletes Don’t Shrink Memory', route: '/go/slices-maps/map-deletes-dont-shrink-memory' },
     { label: 'Struct Map Values Aren’t Addressable', route: '/go/slices-maps/struct-map-values-arent-addressable' },
   ],
+  'goroutines': [
+    { label: 'GOMAXPROCS Doesn’t Cap Blocked Threads', route: '/go/goroutines/gomaxprocs-doesnt-cap-blocked-threads' },
+    { label: 'Unsynchronized Reads Have No Guarantee', route: '/go/goroutines/unsynchronized-reads-have-no-guarantee' },
+    { label: 'WaitGroup Reuse: Add After Wait Returns', route: '/go/goroutines/waitgroup-reuse-add-after-wait-returns' },
+  ],
 };

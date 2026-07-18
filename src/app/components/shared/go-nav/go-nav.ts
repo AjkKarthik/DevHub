@@ -105,7 +105,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Concurrency</p>
-      <a routerLink="/go/goroutines" routerLinkActive="active"><span class="nl-text">Goroutines</span>@if(p.isDone('go-goroutines')){<span class="nl-done">✓</span>}@if(d('go-goroutines');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/goroutines" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Goroutines</span>
+        @if (p.isDone('go-goroutines')) {<span class="nl-done">✓</span>}
+        @if (d('go-goroutines'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('goroutines')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('goroutines')"
+                  (click)="toggleSubtopics('goroutines', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('goroutines'); as goroutinesSubs) {
+        @if (isSubtopicsExpanded('goroutines')) {
+          <div class="nav-subtopics">
+            @for (s of goroutinesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/go/channels" routerLinkActive="active"><span class="nl-text">Channels</span>@if(p.isDone('go-channels')){<span class="nl-done">✓</span>}@if(d('go-channels');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/go/sync" routerLinkActive="active"><span class="nl-text">sync &amp; sync/atomic</span>@if(p.isDone('go-sync')){<span class="nl-done">✓</span>}@if(d('go-sync');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/go/context" routerLinkActive="active"><span class="nl-text">context Package</span>@if(p.isDone('go-context')){<span class="nl-done">✓</span>}@if(d('go-context');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

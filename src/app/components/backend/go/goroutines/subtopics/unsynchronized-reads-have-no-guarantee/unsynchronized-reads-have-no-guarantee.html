@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Goroutines" topicRoute="/go/goroutines" subtopicLabel="Go Memory Model" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Unsynchronized Reads Have No Guarantee</h1>
+  <p class="page-subtitle">
+    The Go Memory Model's own busy-wait example proves an unsynchronized read isn't just risky — the write may
+    never be observed at all, and the loop waiting on it is not guaranteed to ever terminate.
+  </p>
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic deepens the main page's own data-race definition with Go's official Memory Model. The next
+      subtopic returns to sync.WaitGroup specifically — a documented reuse rule the main page's own mismatched
+      Add/Done mistake entry does not cover.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Goroutines"
+    topicRoute="/go/goroutines"
+    [prev]="{ label: 'GOMAXPROCS Doesn’t Cap Blocked Threads', route: '/go/goroutines/gomaxprocs-doesnt-cap-blocked-threads' }"
+    [next]="{ label: 'WaitGroup Reuse: Add After Wait Returns', route: '/go/goroutines/waitgroup-reuse-add-after-wait-returns' }"
+  />
+</div>

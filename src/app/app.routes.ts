@@ -2487,7 +2487,12 @@ export const routes: Routes = [
       { path: 'map-deletes-dont-shrink-memory', loadComponent: () => import('./components/backend/go/slices-maps/subtopics/map-deletes-dont-shrink-memory/map-deletes-dont-shrink-memory').then(m => m.MapDeletesDontShrinkMemorySubtopic) },
       { path: 'struct-map-values-arent-addressable', loadComponent: () => import('./components/backend/go/slices-maps/subtopics/struct-map-values-arent-addressable/struct-map-values-arent-addressable').then(m => m.StructMapValuesArentAddressableSubtopic) },
     ] },
-    { path: 'goroutines',     loadComponent: () => import('./components/backend/go/goroutines/goroutines').then(m => m.GoGoroutines) },
+    { path: 'goroutines', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/goroutines/goroutines').then(m => m.GoGoroutines) },
+      { path: 'gomaxprocs-doesnt-cap-blocked-threads', loadComponent: () => import('./components/backend/go/goroutines/subtopics/gomaxprocs-doesnt-cap-blocked-threads/gomaxprocs-doesnt-cap-blocked-threads').then(m => m.GomaxprocsDoesntCapBlockedThreadsSubtopic) },
+      { path: 'unsynchronized-reads-have-no-guarantee', loadComponent: () => import('./components/backend/go/goroutines/subtopics/unsynchronized-reads-have-no-guarantee/unsynchronized-reads-have-no-guarantee').then(m => m.UnsynchronizedReadsHaveNoGuaranteeSubtopic) },
+      { path: 'waitgroup-reuse-add-after-wait-returns', loadComponent: () => import('./components/backend/go/goroutines/subtopics/waitgroup-reuse-add-after-wait-returns/waitgroup-reuse-add-after-wait-returns').then(m => m.WaitgroupReuseAddAfterWaitReturnsSubtopic) },
+    ] },
     { path: 'channels',       loadComponent: () => import('./components/backend/go/channels/channels').then(m => m.GoChannels) },
     { path: 'sync',           loadComponent: () => import('./components/backend/go/sync/sync').then(m => m.GoSync) },
     { path: 'context',        loadComponent: () => import('./components/backend/go/context/context').then(m => m.GoContext) },
