@@ -34436,6 +34436,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Stripping debug symbols (-ldflags="-s -w") reduces binary size for distribution but also removes information useful for later debugging a shipped binary.',
     ],
   },
+  'go/build/ldflags-s-already-implies-w': {
+    apis: ['cmd/link -s', 'cmd/link -w'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Go Build & Deployment overview', route: '/go/build' },
+      { label: 'go build Caches Compiled Packages in GOCACHE, Not GOMODCACHE', route: '/go/build/go-build-caches-compiled-packages-in-gocache-not-gomodcache' },
+    ],
+    tip: '-s already implies -w — -ldflags="-s -w=0" strips the symbol table while explicitly keeping DWARF, a debuggable-yet-smaller middle ground the plain "-s -w" pairing can\'t express.',
+    gotchas: [
+      '-ldflags="-s -w" and -ldflags="-s" alone produce byte-for-byte identical stripping — the -w is redundant, not wrong.',
+      'A fully stripped binary (-s -w) cannot be attached to with Delve for post-mortem debugging — plan ahead if production crash analysis matters.',
+    ],
+  },
+  'go/build/go-build-caches-compiled-packages-in-gocache-not-gomodcache': {
+    apis: ['go env GOCACHE', 'go env GOMODCACHE', 'go clean -cache', 'go clean -modcache'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'ldflags -s Already Implies -w', route: '/go/build/ldflags-s-already-implies-w' },
+      { label: 'go vet’s Default Checks Don’t Include Shadow Detection', route: '/go/build/go-vets-default-checks-dont-include-shadow-detection' },
+    ],
+    tip: 'GOMODCACHE ($GOPATH/pkg/mod) stores downloaded dependency source; GOCACHE stores compiled build artifacts — two separate directories with separate clean commands.',
+    gotchas: [
+      'go clean -modcache does not touch stale compiled objects at all — go clean -cache is the command that actually forces a full recompile.',
+      'CI caching should preserve both directories separately, exactly as actions/setup-go\'s own cache: true option does.',
+    ],
+  },
+  'go/build/go-vets-default-checks-dont-include-shadow-detection': {
+    apis: ['go vet', 'go vet -vettool', 'golang.org/x/tools shadow analyzer'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'go build Caches Compiled Packages in GOCACHE, Not GOMODCACHE', route: '/go/build/go-build-caches-compiled-packages-in-gocache-not-gomodcache' },
+      { label: 'Go Build & Deployment overview', route: '/go/build' },
+    ],
+    tip: 'Variable shadowing (an inner := silently discarding an outer err) is a real "compiles fine, silently wrong" bug class — plain go vet ./... provides zero coverage for it by default.',
+    gotchas: [
+      'Shadow detection requires installing a genuinely separate tool and running go vet -vettool=$(which shadow) ./... as its own CI step, not a flag on the existing vet command.',
+      'A green go vet + go test -race CI pipeline is not evidence a codebase is shadow-bug-free — neither step checks for it at all.',
+    ],
+  },
 
   // ── Blazor: per-page entries ─────────────────────────────────────────────────
   'blazor/fundamentals': {

@@ -1252,6 +1252,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Heap Profile Samples One Allocation per 512KB', route: '/go/profiling/heap-profile-samples-one-allocation-per-512kb' },
     { label: 'Escape Analysis (-gcflags=-m) Shows Why a Var Heap-Allocates', route: '/go/profiling/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates' },
   ],
+  'build': [
+    { label: 'ldflags -s Already Implies -w', route: '/go/build/ldflags-s-already-implies-w' },
+    { label: 'go build Caches Compiled Packages in GOCACHE, Not GOMODCACHE', route: '/go/build/go-build-caches-compiled-packages-in-gocache-not-gomodcache' },
+    { label: 'go vet’s Default Checks Don’t Include Shadow Detection', route: '/go/build/go-vets-default-checks-dont-include-shadow-detection' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

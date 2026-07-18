@@ -2583,7 +2583,12 @@ export const routes: Routes = [
       { path: 'heap-profile-samples-one-allocation-per-512kb', loadComponent: () => import('./components/backend/go/profiling/subtopics/heap-profile-samples-one-allocation-per-512kb/heap-profile-samples-one-allocation-per-512kb').then(m => m.HeapProfileSamplesOneAllocationPer512kbSubtopic) },
       { path: 'escape-analysis-gcflags-m-shows-why-a-var-heap-allocates', loadComponent: () => import('./components/backend/go/profiling/subtopics/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates').then(m => m.EscapeAnalysisGcflagsMShowsWhyAVarHeapAllocatesSubtopic) },
     ] },
-    { path: 'build',          loadComponent: () => import('./components/backend/go/build/build').then(m => m.GoBuild) },
+    { path: 'build', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/build/build').then(m => m.GoBuild) },
+      { path: 'ldflags-s-already-implies-w', loadComponent: () => import('./components/backend/go/build/subtopics/ldflags-s-already-implies-w/ldflags-s-already-implies-w').then(m => m.LdflagsSAlreadyImpliesWSubtopic) },
+      { path: 'go-build-caches-compiled-packages-in-gocache-not-gomodcache', loadComponent: () => import('./components/backend/go/build/subtopics/go-build-caches-compiled-packages-in-gocache-not-gomodcache/go-build-caches-compiled-packages-in-gocache-not-gomodcache').then(m => m.GoBuildCachesCompiledPackagesInGocacheNotGomodcacheSubtopic) },
+      { path: 'go-vets-default-checks-dont-include-shadow-detection', loadComponent: () => import('./components/backend/go/build/subtopics/go-vets-default-checks-dont-include-shadow-detection/go-vets-default-checks-dont-include-shadow-detection').then(m => m.GoVetsDefaultChecksDontIncludeShadowDetectionSubtopic) },
+    ] },
     { path: 'cheatsheet',     loadComponent: () => import('./components/backend/go/cheatsheet/cheatsheet').then(m => m.GoCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/backend/go/interview-prep/interview-prep').then(m => m.GoInterviewPrep) },
   ] },

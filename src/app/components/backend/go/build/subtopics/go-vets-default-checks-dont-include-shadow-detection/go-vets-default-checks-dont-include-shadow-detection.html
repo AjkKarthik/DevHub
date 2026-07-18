@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Build &amp; Deployment" topicRoute="/go/build" subtopicLabel="vet's Missing Shadow Check" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">go vet's Default Checks Don't Include Shadow Detection</h1>
+  <p class="page-subtitle">
+    The main page's own CI step runs go vet ./... as a broad bug-catcher — variable shadowing, a genuinely
+    common silent-bug class, is absent from vet's documented default analyzer set entirely.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic identifies a real gap in the main page's own CI recommendations, using the same
+      separate-tool pattern the main page already applies to govulncheck. Back to the Go Build & Deployment
+      overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Build &amp; Deployment"
+    topicRoute="/go/build"
+    [prev]="{ label: 'go build Caches Compiled Packages in GOCACHE, Not GOMODCACHE', route: '/go/build/go-build-caches-compiled-packages-in-gocache-not-gomodcache' }"
+  />
+</div>

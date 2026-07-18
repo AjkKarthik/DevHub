@@ -1646,6 +1646,9 @@ const GO_LABELS: Record<string, string> = {
   'profiling/heap-profile-samples-one-allocation-per-512kb': 'The Heap Profile Samples One Allocation per 512KB',
   'profiling/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates': 'Escape Analysis (-gcflags=-m) Shows Why a Var Heap-Allocates',
   'build':              'Go Build & Deployment',
+  'build/ldflags-s-already-implies-w': 'ldflags -s Already Implies -w',
+  'build/go-build-caches-compiled-packages-in-gocache-not-gomodcache': 'go build Caches Compiled Packages in GOCACHE, Not GOMODCACHE',
+  'build/go-vets-default-checks-dont-include-shadow-detection': 'go vet’s Default Checks Don’t Include Shadow Detection',
   'cheatsheet':         'Go Cheat Sheet',
   'interview-prep':     'Go Interview Prep',
 };
