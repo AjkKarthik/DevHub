@@ -2571,7 +2571,12 @@ export const routes: Routes = [
       { path: 'go-test-can-print-cached-instead-of-actually-running', loadComponent: () => import('./components/backend/go/testing/subtopics/go-test-can-print-cached-instead-of-actually-running/go-test-can-print-cached-instead-of-actually-running').then(m => m.GoTestCanPrintCachedInsteadOfActuallyRunningSubtopic) },
       { path: 't-cleanup-runs-in-lifo-order-not-registration-order', loadComponent: () => import('./components/backend/go/testing/subtopics/t-cleanup-runs-in-lifo-order-not-registration-order/t-cleanup-runs-in-lifo-order-not-registration-order').then(m => m.TCleanupRunsInLifoOrderNotRegistrationOrderSubtopic) },
     ] },
-    { path: 'cli',            loadComponent: () => import('./components/backend/go/cli/cli').then(m => m.GoCli) },
+    { path: 'cli', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/cli/cli').then(m => m.GoCli) },
+      { path: 'bufio-scanner-has-a-64kb-default-token-limit', loadComponent: () => import('./components/backend/go/cli/subtopics/bufio-scanner-has-a-64kb-default-token-limit/bufio-scanner-has-a-64kb-default-token-limit').then(m => m.BufioScannerHasA64kbDefaultTokenLimitSubtopic) },
+      { path: 'ldflags-x-only-sets-uninitialized-or-constant-vars', loadComponent: () => import('./components/backend/go/cli/subtopics/ldflags-x-only-sets-uninitialized-or-constant-vars/ldflags-x-only-sets-uninitialized-or-constant-vars').then(m => m.LdflagsXOnlySetsUninitializedOrConstantVarsSubtopic) },
+      { path: 'notifycontext-swallows-a-second-ctrl-c', loadComponent: () => import('./components/backend/go/cli/subtopics/notifycontext-swallows-a-second-ctrl-c/notifycontext-swallows-a-second-ctrl-c').then(m => m.NotifycontextSwallowsASecondCtrlCSubtopic) },
+    ] },
     { path: 'profiling',      loadComponent: () => import('./components/backend/go/profiling/profiling').then(m => m.GoProfiling) },
     { path: 'build',          loadComponent: () => import('./components/backend/go/build/build').then(m => m.GoBuild) },
     { path: 'cheatsheet',     loadComponent: () => import('./components/backend/go/cheatsheet/cheatsheet').then(m => m.GoCheatsheet) },

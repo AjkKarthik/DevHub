@@ -1242,6 +1242,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'go test Can Print (cached) Instead of Actually Running', route: '/go/testing/go-test-can-print-cached-instead-of-actually-running' },
     { label: 't.Cleanup Runs in LIFO Order, Not Registration Order', route: '/go/testing/t-cleanup-runs-in-lifo-order-not-registration-order' },
   ],
+  'cli': [
+    { label: 'bufio.Scanner Has a 64KB Default Token Limit', route: '/go/cli/bufio-scanner-has-a-64kb-default-token-limit' },
+    { label: 'ldflags -X Only Sets Uninitialized or Constant Vars', route: '/go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars' },
+    { label: 'NotifyContext Swallows a Second Ctrl+C', route: '/go/cli/notifycontext-swallows-a-second-ctrl-c' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

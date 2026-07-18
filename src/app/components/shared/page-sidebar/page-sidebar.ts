@@ -34340,6 +34340,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CGO-dependent code breaks the "single static binary, cross-compile trivially" advantage, since it links against a C library — pure-Go dependencies preserve this benefit.',
     ],
   },
+  'go/cli/bufio-scanner-has-a-64kb-default-token-limit': {
+    apis: ['bufio.Scanner', 'Scanner.Buffer', 'bufio.MaxScanTokenSize'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Go CLI Tools overview', route: '/go/cli' },
+      { label: 'ldflags -X Only Sets Uninitialized or Constant Vars', route: '/go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars' },
+    ],
+    tip: 'A "bufio.Scanner: token too long" error from scanner.Err() means a single line exceeded 64KB — call Scanner.Buffer(buf, max) right after NewScanner, before the first Scan(), to raise it.',
+    gotchas: [
+      'A tool that never checks scanner.Err() stops reading partway through oversized input with zero indication anything was truncated.',
+      'Scanner.Buffer panics if called after scanning has already started — it must be set up front, not reactively mid-loop.',
+    ],
+  },
+  'go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars': {
+    apis: ['-ldflags -X', 'go build'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'bufio.Scanner Has a 64KB Default Token Limit', route: '/go/cli/bufio-scanner-has-a-64kb-default-token-limit' },
+      { label: 'NotifyContext Swallows a Second Ctrl+C', route: '/go/cli/notifycontext-swallows-a-second-ctrl-c' },
+    ],
+    tip: '-X only works on a variable declared uninitialized or set to a constant string literal — refactoring it to call a function silently disqualifies it, with zero build or link errors.',
+    gotchas: [
+      'The importpath in -X main.version=... must match exactly — a version var moved to an internal/build package needs the full import path, not just the short package name.',
+      'A silently-ignored -X flag looks identical to a successful build — the only symptom is the variable keeping its own Go-computed default.',
+    ],
+  },
+  'go/cli/notifycontext-swallows-a-second-ctrl-c': {
+    apis: ['signal.NotifyContext', 'signal.Notify'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'ldflags -X Only Sets Uninitialized or Constant Vars', route: '/go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars' },
+      { label: 'Go CLI Tools overview', route: '/go/cli' },
+    ],
+    tip: 'NotifyContext disables the OS default Ctrl+C behavior entirely — a second Ctrl+C during a hung operation does nothing until the returned stop function eventually runs.',
+    gotchas: [
+      'If the operation being canceled never actually checks ctx.Done(), Ctrl+C becomes completely ineffective, not just slow — repeated presses have zero additional effect.',
+      'A raw signal.Notify channel (not NotifyContext) is the way to detect a repeated signal and force os.Exit as an explicit escape hatch.',
+    ],
+  },
   'go/build': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

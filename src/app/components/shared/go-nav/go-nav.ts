@@ -400,7 +400,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/go/cli" routerLinkActive="active"><span class="nl-text">Go CLI Tools</span>@if(p.isDone('go-cli')){<span class="nl-done">✓</span>}@if(d('go-cli');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/cli" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Go CLI Tools</span>
+        @if (p.isDone('go-cli')) {<span class="nl-done">✓</span>}
+        @if (d('go-cli'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('cli')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cli')"
+                  (click)="toggleSubtopics('cli', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cli'); as cliSubs) {
+        @if (isSubtopicsExpanded('cli')) {
+          <div class="nav-subtopics">
+            @for (s of cliSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/go/profiling" routerLinkActive="active"><span class="nl-text">Performance &amp; Profiling</span>@if(p.isDone('go-profiling')){<span class="nl-done">✓</span>}@if(d('go-profiling');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/go/build" routerLinkActive="active"><span class="nl-text">Build &amp; Deployment</span>@if(p.isDone('go-build')){<span class="nl-done">✓</span>}@if(d('go-build');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
