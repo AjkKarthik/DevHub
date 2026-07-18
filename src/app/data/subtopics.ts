@@ -2176,4 +2176,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'gorm.Expr Pushes Arithmetic to the Database', route: '/go/gorm/gormexpr-pushes-arithmetic-to-the-database' },
     { label: 'Association Mode Is Not Preload', route: '/go/gorm/association-mode-is-not-preload' },
   ],
+  // NOTE: keyed 'go-generics', NOT bare 'generics' — the C# hub's own
+  // /csharp/generics topic already claims the bare key.
+  'go-generics': [
+    { label: 'The Zero Value of a Type Parameter', route: '/go/generics/zero-value-of-a-type-parameter' },
+    { label: 'A Constraint Can Combine a Union and a Method', route: '/go/generics/constraint-can-combine-union-and-method' },
+    { label: 'comparable Can Panic Since Go 1.20', route: '/go/generics/comparable-can-panic-since-go120' },
+  ],
 };

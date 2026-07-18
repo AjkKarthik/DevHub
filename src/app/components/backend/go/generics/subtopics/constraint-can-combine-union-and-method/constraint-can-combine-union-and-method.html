@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Generics" topicRoute="/go/generics" subtopicLabel="Union + Method Constraints" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">A Constraint Can Combine a Union and a Method</h1>
+  <p class="page-subtitle">
+    Every constraint on the main page is a pure type union or a pure method requirement, never both — but Go's
+    own spec shows a valid, documented way to require both at once, with one real restriction on how far it goes.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.18+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic shows a genuinely more expressive constraint shape than anything the main page demonstrates.
+      The next subtopic covers a real, documented safety tradeoff in the main page's own comparable constraint
+      that connects directly to this hub's own earlier structs-interfaces coverage.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Generics"
+    topicRoute="/go/generics"
+    [prev]="{ label: 'The Zero Value of a Type Parameter', route: '/go/generics/zero-value-of-a-type-parameter' }"
+    [next]="{ label: 'comparable Can Panic Since Go 1.20', route: '/go/generics/comparable-can-panic-since-go120' }"
+  />
+</div>

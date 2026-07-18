@@ -33417,6 +33417,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing generics where a plain interface or duplication would be clearer can hurt readability — Go\'s culture leans toward simplicity over generic-everything.',
     ],
   },
+  'go/generics/zero-value-of-a-type-parameter': {
+    apis: ['var zero T', 'new(T)'],
+    related: [
+      { label: 'Go Generics (overview)', route: '/go/generics' },
+      { label: 'A Constraint Can Combine a Union and a Method', route: '/go/generics/constraint-can-combine-union-and-method' },
+      { label: 'comparable Can Panic Since Go 1.20', route: '/go/generics/comparable-can-panic-since-go120' },
+    ],
+    tip: 'nil doesn\'t compile for a plain type parameter T — it\'s only valid for pointers, interfaces, maps, slices, channels, and functions. "var zero T" (or the *new(T) shorthand) asks the compiler for T\'s own zero value instead.',
+    docs: [
+      { label: 'Go Spec — Type Parameter Declarations', url: 'https://go.dev/ref/spec#Type_parameter_declarations' },
+    ],
+    resources: [],
+    gotchas: [
+      'This fails to compile at the function\'s OWN definition, independent of what any specific caller\'s type argument happens to be — the body must work for every possible T satisfying the constraint.',
+      'var zero T and *new(T) are functionally identical — the choice between them is a readability preference, not a performance one.',
+    ],
+  },
+  'go/generics/constraint-can-combine-union-and-method': {
+    apis: ['type constraints', 'interface { ~T; Method() }'],
+    related: [
+      { label: 'Go Generics (overview)', route: '/go/generics' },
+      { label: 'The Zero Value of a Type Parameter', route: '/go/generics/zero-value-of-a-type-parameter' },
+      { label: 'comparable Can Panic Since Go 1.20', route: '/go/generics/comparable-can-panic-since-go120' },
+    ],
+    tip: 'A constraint can require BOTH a specific underlying type AND a method, per Go\'s own spec example: interface { ~int; String() string }. The one restriction: a multi-term union cannot contain a method directly inside its own | list.',
+    docs: [
+      { label: 'Go Spec — Interface Types', url: 'https://go.dev/ref/spec#Interface_types' },
+    ],
+    resources: [],
+    gotchas: [
+      'Methods must be a structurally separate interface element alongside the union — never folded into the union\'s own | terms.',
+      'A single-term "union" (no |) can sit alongside a method without this restriction applying at all.',
+    ],
+  },
+  'go/generics/comparable-can-panic-since-go120': {
+    apis: ['comparable'],
+    related: [
+      { label: 'Go Generics (overview)', route: '/go/generics' },
+      { label: 'The Zero Value of a Type Parameter', route: '/go/generics/zero-value-of-a-type-parameter' },
+      { label: 'A Constraint Can Combine a Union and a Method', route: '/go/generics/constraint-can-combine-union-and-method' },
+    ],
+    tip: 'Since Go 1.20, any also satisfies comparable — per the Go blog, "generic functions that rely on comparable are not statically type-safe anymore." The same interface-comparison panic risk this hub\'s own Structs & Interfaces subtopic covers can now reach through a generic instantiated with any.',
+    docs: [
+      { label: 'Go Blog — When to use generics', url: 'https://go.dev/blog/comparable' },
+    ],
+    resources: [],
+    gotchas: [
+      'This only becomes a real risk once a comparable-constrained generic is instantiated with any or another interface type — the main page\'s own string/int examples were never at risk.',
+      'A non-comparable value can "sneak through" several layers of generic code before the panic actually fires, per the Go team\'s own description of the tradeoff.',
+    ],
+  },
   'go/goroutines': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

@@ -2547,7 +2547,12 @@ export const routes: Routes = [
       { path: 'gormexpr-pushes-arithmetic-to-the-database', loadComponent: () => import('./components/backend/go/gorm/subtopics/gormexpr-pushes-arithmetic-to-the-database/gormexpr-pushes-arithmetic-to-the-database').then(m => m.GormexprPushesArithmeticToTheDatabaseSubtopic) },
       { path: 'association-mode-is-not-preload', loadComponent: () => import('./components/backend/go/gorm/subtopics/association-mode-is-not-preload/association-mode-is-not-preload').then(m => m.AssociationModeIsNotPreloadSubtopic) },
     ] },
-    { path: 'generics',       loadComponent: () => import('./components/backend/go/generics/generics').then(m => m.GoGenerics) },
+    { path: 'generics', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/generics/generics').then(m => m.GoGenerics) },
+      { path: 'zero-value-of-a-type-parameter', loadComponent: () => import('./components/backend/go/generics/subtopics/zero-value-of-a-type-parameter/zero-value-of-a-type-parameter').then(m => m.ZeroValueOfATypeParameterSubtopic) },
+      { path: 'constraint-can-combine-union-and-method', loadComponent: () => import('./components/backend/go/generics/subtopics/constraint-can-combine-union-and-method/constraint-can-combine-union-and-method').then(m => m.ConstraintCanCombineUnionAndMethodSubtopic) },
+      { path: 'comparable-can-panic-since-go120', loadComponent: () => import('./components/backend/go/generics/subtopics/comparable-can-panic-since-go120/comparable-can-panic-since-go120').then(m => m.ComparableCanPanicSinceGo120Subtopic) },
+    ] },
     { path: 'patterns',       loadComponent: () => import('./components/backend/go/patterns/patterns').then(m => m.GoPatterns) },
     { path: 'modules',        loadComponent: () => import('./components/backend/go/modules/modules').then(m => m.GoModules) },
     { path: 'testing',        loadComponent: () => import('./components/backend/go/testing/testing').then(m => m.GoTesting) },
