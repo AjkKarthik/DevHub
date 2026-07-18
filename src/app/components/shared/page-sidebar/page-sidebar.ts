@@ -33879,6 +33879,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'json.Unmarshal silently ignores unknown fields in the input by default unless a DisallowUnknownFields decoder option is explicitly set.',
     ],
   },
+  'go/json-encoding/marshal-sorts-map-keys': {
+    apis: ['json.Marshal'],
+    related: [
+      { label: 'JSON Encoding (overview)', route: '/go/json-encoding' },
+      { label: 'An Embedded Field’s json Tag Disables Promotion', route: '/go/json-encoding/embedded-json-tag-disables-promotion' },
+      { label: 'Unmarshal Leaves Absent Fields Unchanged', route: '/go/json-encoding/unmarshal-leaves-absent-fields-unchanged' },
+    ],
+    tip: 'Map iteration is randomized in Go, but json.Marshal is not — per encoding/json\'s own docs, "the map keys are sorted and used as JSON object keys," making Marshal output on a map deterministic and safe to compare or hash.',
+    docs: [
+      { label: 'pkg.go.dev — encoding/json', url: 'https://pkg.go.dev/encoding/json' },
+    ],
+    resources: [],
+    gotchas: [
+      'This sorting guarantee is specific to MAP keys — struct field order in JSON output follows declaration order, not sorting.',
+      'Two maps built via different insertion sequences still marshal to byte-for-byte identical JSON, since sorting happens at marshal time based on key values, not insertion or iteration order.',
+    ],
+  },
+  'go/json-encoding/embedded-json-tag-disables-promotion': {
+    apis: ['json.Marshal', 'struct tags'],
+    related: [
+      { label: 'JSON Encoding (overview)', route: '/go/json-encoding' },
+      { label: 'json.Marshal Sorts Map Keys Deterministically', route: '/go/json-encoding/marshal-sorts-map-keys' },
+      { label: 'Unmarshal Leaves Absent Fields Unchanged', route: '/go/json-encoding/unmarshal-leaves-absent-fields-unchanged' },
+    ],
+    tip: 'An embedded struct\'s exported fields are promoted (flattened) into the outer JSON object by default — per encoding/json\'s own docs, giving the embedded field its own json tag switches it to a nested object, with zero change to Go-side field access.',
+    docs: [
+      { label: 'pkg.go.dev — encoding/json', url: 'https://pkg.go.dev/encoding/json' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is the opposite of what many developers expect coming from languages where "nested struct" always means "nested JSON object."',
+      'Adding or removing the json tag on the embedded field only changes JSON shape — the underlying Go embedding relationship (and promoted field access like p.ID) is completely unaffected.',
+    ],
+  },
+  'go/json-encoding/unmarshal-leaves-absent-fields-unchanged': {
+    apis: ['json.Unmarshal'],
+    related: [
+      { label: 'JSON Encoding (overview)', route: '/go/json-encoding' },
+      { label: 'json.Marshal Sorts Map Keys Deterministically', route: '/go/json-encoding/marshal-sorts-map-keys' },
+      { label: 'An Embedded Field’s json Tag Disables Promotion', route: '/go/json-encoding/embedded-json-tag-disables-promotion' },
+    ],
+    tip: 'Unmarshal merges into its target rather than resetting it first — a field absent from the JSON keeps whatever value the target already had, making it a natural fit for PATCH-style partial updates.',
+    docs: [
+      { label: 'pkg.go.dev — encoding/json', url: 'https://pkg.go.dev/encoding/json' },
+    ],
+    resources: [],
+    gotchas: [
+      'Reusing a struct variable across multiple Unmarshal calls (e.g. in a loop, "to avoid redeclaring it") without resetting it lets stale data from a PREVIOUS decode silently leak into fields the CURRENT payload omits.',
+      'The risk is easy to miss in testing since it only manifests for payloads that genuinely omit a field, not every call.',
+    ],
+  },
   'go/modules': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

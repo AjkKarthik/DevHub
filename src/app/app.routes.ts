@@ -2523,7 +2523,12 @@ export const routes: Routes = [
       { path: 'shouldbindbodywith-caches-body-for-reuse', loadComponent: () => import('./components/backend/go/gin/subtopics/shouldbindbodywith-caches-body-for-reuse/shouldbindbodywith-caches-body-for-reuse').then(m => m.ShouldbindbodywithCachesBodyForReuseSubtopic) },
       { path: 'ginerror-type-classification-public-private', loadComponent: () => import('./components/backend/go/gin/subtopics/ginerror-type-classification-public-private/ginerror-type-classification-public-private').then(m => m.GinerrorTypeClassificationPublicPrivateSubtopic) },
     ] },
-    { path: 'json-encoding',  loadComponent: () => import('./components/backend/go/json-encoding/json-encoding').then(m => m.GoJsonEncoding) },
+    { path: 'json-encoding', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/json-encoding/json-encoding').then(m => m.GoJsonEncoding) },
+      { path: 'marshal-sorts-map-keys', loadComponent: () => import('./components/backend/go/json-encoding/subtopics/marshal-sorts-map-keys/marshal-sorts-map-keys').then(m => m.MarshalSortsMapKeysSubtopic) },
+      { path: 'embedded-json-tag-disables-promotion', loadComponent: () => import('./components/backend/go/json-encoding/subtopics/embedded-json-tag-disables-promotion/embedded-json-tag-disables-promotion').then(m => m.EmbeddedJsonTagDisablesPromotionSubtopic) },
+      { path: 'unmarshal-leaves-absent-fields-unchanged', loadComponent: () => import('./components/backend/go/json-encoding/subtopics/unmarshal-leaves-absent-fields-unchanged/unmarshal-leaves-absent-fields-unchanged').then(m => m.UnmarshalLeavesAbsentFieldsUnchangedSubtopic) },
+    ] },
     { path: 'grpc',           loadComponent: () => import('./components/backend/go/grpc/grpc').then(m => m.GoGrpc) },
     { path: 'pgx',            loadComponent: () => import('./components/backend/go/pgx/pgx').then(m => m.GoPgx) },
     { path: 'gorm',           loadComponent: () => import('./components/backend/go/gorm/gorm').then(m => m.GoGorm) },

@@ -2156,4 +2156,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ShouldBindBodyWith Caches the Body for Reuse', route: '/go/gin/shouldbindbodywith-caches-body-for-reuse' },
     { label: 'gin.Error’s Type: Public, Private, and Meta', route: '/go/gin/ginerror-type-classification-public-private' },
   ],
+  'json-encoding': [
+    { label: 'json.Marshal Sorts Map Keys Deterministically', route: '/go/json-encoding/marshal-sorts-map-keys' },
+    { label: 'An Embedded Field’s json Tag Disables Promotion', route: '/go/json-encoding/embedded-json-tag-disables-promotion' },
+    { label: 'Unmarshal Leaves Absent Fields Unchanged', route: '/go/json-encoding/unmarshal-leaves-absent-fields-unchanged' },
+  ],
 };
