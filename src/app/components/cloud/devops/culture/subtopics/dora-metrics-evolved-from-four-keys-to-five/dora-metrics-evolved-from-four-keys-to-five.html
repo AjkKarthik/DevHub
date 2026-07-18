@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DevOps Culture" topicRoute="/devops/culture" subtopicLabel="DORA's Fifth Metric" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">DORA Metrics Evolved From Four Keys to Five</h1>
+  <p class="page-subtitle">
+    The main page presents "the Four Key Metrics" as DORA's current, complete framework — DORA's own site
+    has since renamed MTTR and added a fifth metric, Deployment Rework Rate.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="DORA 2024+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic updates the main page's own DORA coverage with the framework's current, evolved shape.
+      Back to the DevOps Culture overview, or continue to the four other dynamics Project Aristotle ranked
+      alongside psychological safety.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DevOps Culture"
+    topicRoute="/devops/culture"
+    [next]="{ label: 'Project Aristotle Ranked Five Dynamics, Not Just Safety', route: '/devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety' }"
+  />
+</div>

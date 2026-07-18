@@ -1732,6 +1732,9 @@ const CONTAINERS_LABELS: Record<string, string> = {
 
 const DEVOPS_LABELS: Record<string, string> = {
   'culture':               'DevOps Culture & Principles',
+  'culture/dora-metrics-evolved-from-four-keys-to-five': 'DORA Metrics Evolved From Four Keys to Five',
+  'culture/project-aristotle-ranked-five-dynamics-not-just-safety': 'Project Aristotle Ranked Five Dynamics, Not Just Safety',
+  'culture/sre-books-own-definition-sharpens-blameless': 'The SRE Book’s Own Definition Sharpens “Blameless”',
   'sdlc-agile':            'SDLC & Agile',
   'environment-strategy':  'Environment Strategy',
   'platform-engineering':  'Platform Engineering',

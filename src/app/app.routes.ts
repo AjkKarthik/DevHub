@@ -2881,7 +2881,12 @@ export const routes: Routes = [
   // ── Cloud Hubs ────────────────────────────────────────────────────────────
   { path: 'devops', children: [
     { path: '', loadComponent: () => import('./components/cloud/devops/home/home').then(m => m.DevopsHome) },
-    { path: 'culture',                loadComponent: () => import('./components/cloud/devops/culture/culture').then(m => m.DevopsCulture) },
+    { path: 'culture', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/culture/culture').then(m => m.DevopsCulture) },
+      { path: 'dora-metrics-evolved-from-four-keys-to-five', loadComponent: () => import('./components/cloud/devops/culture/subtopics/dora-metrics-evolved-from-four-keys-to-five/dora-metrics-evolved-from-four-keys-to-five').then(m => m.DoraMetricsEvolvedFromFourKeysToFiveSubtopic) },
+      { path: 'project-aristotle-ranked-five-dynamics-not-just-safety', loadComponent: () => import('./components/cloud/devops/culture/subtopics/project-aristotle-ranked-five-dynamics-not-just-safety/project-aristotle-ranked-five-dynamics-not-just-safety').then(m => m.ProjectAristotleRankedFiveDynamicsNotJustSafetySubtopic) },
+      { path: 'sre-books-own-definition-sharpens-blameless', loadComponent: () => import('./components/cloud/devops/culture/subtopics/sre-books-own-definition-sharpens-blameless/sre-books-own-definition-sharpens-blameless').then(m => m.SreBooksOwnDefinitionSharpensBlamelessSubtopic) },
+    ] },
     { path: 'sdlc-agile',             loadComponent: () => import('./components/cloud/devops/sdlc-agile/sdlc-agile').then(m => m.DevopsSdlcAgile) },
     { path: 'environment-strategy',   loadComponent: () => import('./components/cloud/devops/environment-strategy/environment-strategy').then(m => m.DevopsEnvironmentStrategy) },
     { path: 'platform-engineering',   loadComponent: () => import('./components/cloud/devops/platform-engineering/platform-engineering').then(m => m.DevopsPlatformEngineering) },

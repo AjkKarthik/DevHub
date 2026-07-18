@@ -35837,6 +35837,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '"You build it, you run it" only works with genuine on-call support and tooling investment — without them, it just shifts operational burden onto developers without the means to handle it well.',
     ],
   },
+  'devops/culture/dora-metrics-evolved-from-four-keys-to-five': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'DevOps Culture overview', route: '/devops/culture' },
+      { label: 'Project Aristotle Ranked Five Dynamics, Not Just Safety', route: '/devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety' },
+    ],
+    tip: 'DORA\'s own current guide has moved past the original four keys — Deployment Rework Rate is the fifth metric worth tracking alongside the classic four.',
+    gotchas: [
+      'A team can score "Elite" on all four original metrics while still having a real, DORA-measurable rework problem the original four cannot see.',
+      'MTTR is not DORA\'s own current name for the recovery metric anymore — it is now "Failed deployment recovery time," more precisely scoped to deployment-triggered failures specifically.',
+    ],
+  },
+  'devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'DORA Metrics Evolved From Four Keys to Five', route: '/devops/culture/dora-metrics-evolved-from-four-keys-to-five' },
+      { label: 'The SRE Book’s Own Definition Sharpens “Blameless”', route: '/devops/culture/sre-books-own-definition-sharpens-blameless' },
+    ],
+    tip: 'Google\'s own research ranks five dynamics "in order of importance" — psychological safety is first, but Dependability, Structure and Clarity, Meaning, and Impact are part of the same finding, not separate ideas.',
+    gotchas: [
+      'A team can score very well on psychological safety while still being clearly weak on a different, independently-measured dynamic like Structure and Clarity.',
+      'The ranked ORDER is itself part of the finding — foundational dynamics like safety are worth prioritizing before dynamics like Meaning and Impact, per Google\'s own ranking.',
+    ],
+  },
+  'devops/culture/sre-books-own-definition-sharpens-blameless': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Project Aristotle Ranked Five Dynamics, Not Just Safety', route: '/devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety' },
+      { label: 'DevOps Culture overview', route: '/devops/culture' },
+    ],
+    tip: 'The real test for a blameless action item, per Google\'s own SRE book, is not "does it avoid naming a person" — it\'s "does it fix why someone had incomplete or incorrect information."',
+    gotchas: [
+      'An action item like "engineers should be more careful" can pass a surface no-blame check while still failing to close any real information gap.',
+      'Identifying specific actions and decisions in the incident timeline is necessary for a good post-mortem — blameless means not indicting the person for those actions, not omitting them.',
+    ],
+  },
   'devops/git-workflows': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

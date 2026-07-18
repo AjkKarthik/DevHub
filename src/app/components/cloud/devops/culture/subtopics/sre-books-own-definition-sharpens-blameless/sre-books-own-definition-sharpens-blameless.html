@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DevOps Culture" topicRoute="/devops/culture" subtopicLabel="What Makes a Fix Genuinely Blameless" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">The SRE Book's Own Definition Sharpens "Blameless"</h1>
+  <p class="page-subtitle">
+    The main page's "what allowed this to happen" framing is correct but stops short of the mechanism —
+    Google's own SRE book defines blameless as fixing WHY someone had incomplete or incorrect information.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2016+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic gives the main page's own blameless post-mortem template a concrete test for evaluating
+      any action item, straight from Google's own SRE book. Back to the DevOps Culture overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DevOps Culture"
+    topicRoute="/devops/culture"
+    [prev]="{ label: 'Project Aristotle Ranked Five Dynamics, Not Just Safety', route: '/devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety' }"
+  />
+</div>
