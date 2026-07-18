@@ -33425,6 +33425,58 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'panic/recover should be reserved for genuinely unrecoverable programmer errors, not as a general error-handling mechanism — idiomatic Go prefers explicit error returns.',
     ],
   },
+  'go/error-handling/errors-join-multi-error-trees': {
+    apis: ['errors.Join', 'errors — Unwrap() []error'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/go/error-handling' },
+      { label: 'Custom Is() and As() Methods', route: '/go/error-handling/custom-is-as-methods' },
+      { label: 'panic/recover Is Goroutine-Scoped', route: '/go/error-handling/panic-recover-goroutine-scoped' },
+    ],
+    tip: 'errors.Join wraps several independent errors via a PLURAL Unwrap() []error — errors.Is/As traverse the whole tree depth-first, but the plain errors.Unwrap() function only recognizes the singular Unwrap() error shape and returns nil on a joined error.',
+    docs: [
+      { label: 'pkg.go.dev/errors — Join', url: 'https://pkg.go.dev/errors#Join' },
+    ],
+    resources: [],
+    gotchas: [
+      'errors.Join discards nil arguments and returns nil itself if every argument was nil — no special-casing needed before calling if err != nil on the result.',
+      'A manual for e := err; e != nil; e = errors.Unwrap(e) loop silently stops after one iteration the moment any link was produced by errors.Join instead of fmt.Errorf.',
+    ],
+  },
+  'go/error-handling/custom-is-as-methods': {
+    apis: ['errors.Is', 'errors.As'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/go/error-handling' },
+      { label: 'errors.Join & Multi-Error Trees', route: '/go/error-handling/errors-join-multi-error-trees' },
+      { label: 'panic/recover Is Goroutine-Scoped', route: '/go/error-handling/panic-recover-goroutine-scoped' },
+    ],
+    tip: 'errors.Is checks == OR a custom Is(error) bool method; errors.As checks type-assignability OR a custom As(any) bool method — and a custom As method is responsible for SETTING target itself, unlike the default path\'s automatic type assertion.',
+    docs: [
+      { label: 'pkg.go.dev/errors — Is/As', url: 'https://pkg.go.dev/errors#Is' },
+    ],
+    resources: [],
+    gotchas: [
+      'A custom Is method should only shallowly compare err and target — the chain-walking itself stays errors.Is\'s own responsibility, not the method\'s.',
+      'A custom As method can synthesize and return an entirely different, richer error type than the original ever held — not just confirm a type match.',
+    ],
+  },
+  'go/error-handling/panic-recover-goroutine-scoped': {
+    apis: ['recover', 'panic'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/go/error-handling' },
+      { label: 'errors.Join & Multi-Error Trees', route: '/go/error-handling/errors-join-multi-error-trees' },
+      { label: 'Custom Is() and As() Methods', route: '/go/error-handling/custom-is-as-methods' },
+      { label: 'Goroutines', route: '/go/goroutines' },
+    ],
+    tip: 'Each goroutine has its own independent panic/recover chain — a deferred recover() in the caller cannot catch a panic inside a goroutine launched with go, and an unrecovered panic anywhere crashes the ENTIRE program, not just that one goroutine.',
+    docs: [
+      { label: 'Go Blog — Defer, Panic, and Recover', url: 'https://go.dev/blog/defer-panic-and-recover' },
+    ],
+    resources: [],
+    gotchas: [
+      'A single top-level recover() in main() protects nothing inside goroutines launched with go — each such goroutine needs its own deferred recover if a failure must not crash the whole process.',
+      'This is exactly why worker-pool and per-request-handler code wraps each unit of work with its own recover, isolating one bad job from taking down every other in-flight job.',
+    ],
+  },
   'go/net-http': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

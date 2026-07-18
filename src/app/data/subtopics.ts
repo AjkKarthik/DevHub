@@ -2110,4 +2110,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Embedded Methods Satisfy Interfaces Too', route: '/go/structs-interfaces/embedded-methods-satisfy-interfaces-too' },
     { label: 'Comparing Interfaces Can Panic at Runtime', route: '/go/structs-interfaces/comparing-interfaces-can-panic-at-runtime' },
   ],
+  // NOTE: keyed 'go-error-handling', NOT bare 'error-handling' — the JavaScript hub's
+  // own /javascript/error-handling topic already claims the bare key.
+  'go-error-handling': [
+    { label: 'errors.Join & Multi-Error Trees', route: '/go/error-handling/errors-join-multi-error-trees' },
+    { label: 'Custom Is() and As() Methods', route: '/go/error-handling/custom-is-as-methods' },
+    { label: 'panic/recover Is Goroutine-Scoped', route: '/go/error-handling/panic-recover-goroutine-scoped' },
+  ],
 };

@@ -2475,7 +2475,12 @@ export const routes: Routes = [
       { path: 'embedded-methods-satisfy-interfaces-too', loadComponent: () => import('./components/backend/go/structs-interfaces/subtopics/embedded-methods-satisfy-interfaces-too/embedded-methods-satisfy-interfaces-too').then(m => m.EmbeddedMethodsSatisfyInterfacesTooSubtopic) },
       { path: 'comparing-interfaces-can-panic-at-runtime', loadComponent: () => import('./components/backend/go/structs-interfaces/subtopics/comparing-interfaces-can-panic-at-runtime/comparing-interfaces-can-panic-at-runtime').then(m => m.ComparingInterfacesCanPanicAtRuntimeSubtopic) },
     ] },
-    { path: 'error-handling', loadComponent: () => import('./components/backend/go/error-handling/error-handling').then(m => m.GoErrorHandling) },
+    { path: 'error-handling', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/error-handling/error-handling').then(m => m.GoErrorHandling) },
+      { path: 'errors-join-multi-error-trees', loadComponent: () => import('./components/backend/go/error-handling/subtopics/errors-join-multi-error-trees/errors-join-multi-error-trees').then(m => m.ErrorsJoinMultiErrorTreesSubtopic) },
+      { path: 'custom-is-as-methods', loadComponent: () => import('./components/backend/go/error-handling/subtopics/custom-is-as-methods/custom-is-as-methods').then(m => m.CustomIsAsMethodsSubtopic) },
+      { path: 'panic-recover-goroutine-scoped', loadComponent: () => import('./components/backend/go/error-handling/subtopics/panic-recover-goroutine-scoped/panic-recover-goroutine-scoped').then(m => m.PanicRecoverGoroutineScopedSubtopic) },
+    ] },
     { path: 'slices-maps',    loadComponent: () => import('./components/backend/go/slices-maps/slices-maps').then(m => m.GoSlicesMaps) },
     { path: 'goroutines',     loadComponent: () => import('./components/backend/go/goroutines/goroutines').then(m => m.GoGoroutines) },
     { path: 'channels',       loadComponent: () => import('./components/backend/go/channels/channels').then(m => m.GoChannels) },

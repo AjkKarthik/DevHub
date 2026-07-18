@@ -60,7 +60,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/go/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(p.isDone('go-error-handling')){<span class="nl-done">✓</span>}@if(d('go-error-handling');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/error-handling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Error Handling</span>
+        @if (p.isDone('go-error-handling')) {<span class="nl-done">✓</span>}
+        @if (d('go-error-handling'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-error-handling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-error-handling')"
+                  (click)="toggleSubtopics('go-error-handling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-error-handling'); as goErrorHandlingSubs) {
+        @if (isSubtopicsExpanded('go-error-handling')) {
+          <div class="nav-subtopics">
+            @for (s of goErrorHandlingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/go/slices-maps" routerLinkActive="active"><span class="nl-text">Slices &amp; Maps</span>@if(p.isDone('go-slices-maps')){<span class="nl-done">✓</span>}@if(d('go-slices-maps');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/go/generics" routerLinkActive="active"><span class="nl-text">Go Generics</span>@if(p.isDone('go-generics')){<span class="nl-done">✓</span>}@if(d('go-generics');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
