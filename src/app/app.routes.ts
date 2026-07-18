@@ -2517,7 +2517,12 @@ export const routes: Routes = [
       { path: 'dollar-wildcard-matches-exact-subtree-root', loadComponent: () => import('./components/backend/go/net-http/subtopics/dollar-wildcard-matches-exact-subtree-root/dollar-wildcard-matches-exact-subtree-root').then(m => m.DollarWildcardMatchesExactSubtreeRootSubtopic) },
       { path: 'ellipsis-wildcard-matches-remaining-segments', loadComponent: () => import('./components/backend/go/net-http/subtopics/ellipsis-wildcard-matches-remaining-segments/ellipsis-wildcard-matches-remaining-segments').then(m => m.EllipsisWildcardMatchesRemainingSegmentsSubtopic) },
     ] },
-    { path: 'gin',            loadComponent: () => import('./components/backend/go/gin/gin').then(m => m.GoGin) },
+    { path: 'gin', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/gin/gin').then(m => m.GoGin) },
+      { path: 'context-copy-required-for-goroutines', loadComponent: () => import('./components/backend/go/gin/subtopics/context-copy-required-for-goroutines/context-copy-required-for-goroutines').then(m => m.ContextCopyRequiredForGoroutinesSubtopic) },
+      { path: 'shouldbindbodywith-caches-body-for-reuse', loadComponent: () => import('./components/backend/go/gin/subtopics/shouldbindbodywith-caches-body-for-reuse/shouldbindbodywith-caches-body-for-reuse').then(m => m.ShouldbindbodywithCachesBodyForReuseSubtopic) },
+      { path: 'ginerror-type-classification-public-private', loadComponent: () => import('./components/backend/go/gin/subtopics/ginerror-type-classification-public-private/ginerror-type-classification-public-private').then(m => m.GinerrorTypeClassificationPublicPrivateSubtopic) },
+    ] },
     { path: 'json-encoding',  loadComponent: () => import('./components/backend/go/json-encoding/json-encoding').then(m => m.GoJsonEncoding) },
     { path: 'grpc',           loadComponent: () => import('./components/backend/go/grpc/grpc').then(m => m.GoGrpc) },
     { path: 'pgx',            loadComponent: () => import('./components/backend/go/pgx/pgx').then(m => m.GoPgx) },

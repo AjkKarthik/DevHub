@@ -209,7 +209,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/go/gin" routerLinkActive="active"><span class="nl-text">Gin Framework</span>@if(p.isDone('go-gin')){<span class="nl-done">✓</span>}@if(d('go-gin');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/gin" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Gin Framework</span>
+        @if (p.isDone('go-gin')) {<span class="nl-done">✓</span>}
+        @if (d('go-gin'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('gin')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gin')"
+                  (click)="toggleSubtopics('gin', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gin'); as ginSubs) {
+        @if (isSubtopicsExpanded('gin')) {
+          <div class="nav-subtopics">
+            @for (s of ginSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/go/json-encoding" routerLinkActive="active"><span class="nl-text">JSON &amp; Encoding</span>@if(p.isDone('go-json-encoding')){<span class="nl-done">✓</span>}@if(d('go-json-encoding');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/go/grpc" routerLinkActive="active"><span class="nl-text">gRPC in Go</span>@if(p.isDone('go-grpc')){<span class="nl-done">✓</span>}@if(d('go-grpc');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

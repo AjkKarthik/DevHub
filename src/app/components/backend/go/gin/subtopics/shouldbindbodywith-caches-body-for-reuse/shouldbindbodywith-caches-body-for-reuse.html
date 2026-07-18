@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Gin Framework" topicRoute="/go/gin" subtopicLabel="ShouldBindBodyWith" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">ShouldBindBodyWith Caches the Body for Reuse</h1>
+  <p class="page-subtitle">
+    A request body can normally be bound exactly once — the second call reads an already-exhausted stream.
+    ShouldBindBodyWith caches the body on first read specifically so a second bind can succeed.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Gin v1.9+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills a gap the main page's own ShouldBindJSON coverage leaves open: what happens when more
+      than one piece of code needs the same body. The next subtopic covers a different Gin mechanic the main
+      page's own brief c.Error() mention doesn't show: the structured Type/Meta system behind it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Gin Framework"
+    topicRoute="/go/gin"
+    [prev]="{ label: 'Context.Copy() Is Required for Goroutines', route: '/go/gin/context-copy-required-for-goroutines' }"
+    [next]="{ label: 'gin.Error’s Type: Public, Private, and Meta', route: '/go/gin/ginerror-type-classification-public-private' }"
+  />
+</div>

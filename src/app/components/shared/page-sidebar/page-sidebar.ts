@@ -33806,6 +33806,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Binding request bodies (c.ShouldBindJSON) validates structure but not business rules — additional validation is still needed for domain-specific constraints.',
     ],
   },
+  'go/gin/context-copy-required-for-goroutines': {
+    apis: ['gin.Context.Copy'],
+    related: [
+      { label: 'Gin Framework (overview)', route: '/go/gin' },
+      { label: 'ShouldBindBodyWith Caches the Body for Reuse', route: '/go/gin/shouldbindbodywith-caches-body-for-reuse' },
+      { label: 'gin.Error’s Type: Public, Private, and Meta', route: '/go/gin/ginerror-type-classification-public-private' },
+    ],
+    tip: 'gin.Context is pooled and reused for performance — per Gin\'s own docs, Copy() "has to be used when the context has to be passed to a goroutine," since a goroutine holding the original can read data already belonging to a different, later request.',
+    docs: [
+      { label: 'pkg.go.dev — gin.Context.Copy', url: 'https://pkg.go.dev/github.com/gin-gonic/gin#Context.Copy' },
+    ],
+    resources: [],
+    gotchas: [
+      'Values already extracted into plain local variables before launching a goroutine need no Copy() — the risk is specifically the Context object itself crossing into the goroutine, not data already read from it.',
+      'A common real need: async logging, event publishing, or background jobs triggered by a handler that must not block the response.',
+    ],
+  },
+  'go/gin/shouldbindbodywith-caches-body-for-reuse': {
+    apis: ['gin.Context.ShouldBindBodyWith'],
+    related: [
+      { label: 'Gin Framework (overview)', route: '/go/gin' },
+      { label: 'Context.Copy() Is Required for Goroutines', route: '/go/gin/context-copy-required-for-goroutines' },
+      { label: 'gin.Error’s Type: Public, Private, and Meta', route: '/go/gin/ginerror-type-classification-public-private' },
+    ],
+    tip: 'A request body can normally be bound only once — it\'s a stream, not a buffer. ShouldBindBodyWith "stores the request body into the context, and reuse[s] when it is called again," at an explicit performance cost over a single-use ShouldBindWith.',
+    docs: [
+      { label: 'Gin Source — context.go', url: 'https://raw.githubusercontent.com/gin-gonic/gin/master/context.go' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only needed when something genuinely reads the body twice (e.g. an audit-logging middleware plus the route handler) — using it everywhere "just in case" adds unneeded buffering cost.',
+      'The FIRST call in execution order establishes the cache — if anything between two reads uses plain ShouldBindJSON instead, the caching chain breaks.',
+    ],
+  },
+  'go/gin/ginerror-type-classification-public-private': {
+    apis: ['gin.Error', 'Context.Errors'],
+    related: [
+      { label: 'Gin Framework (overview)', route: '/go/gin' },
+      { label: 'Context.Copy() Is Required for Goroutines', route: '/go/gin/context-copy-required-for-goroutines' },
+      { label: 'ShouldBindBodyWith Caches the Body for Reuse', route: '/go/gin/shouldbindbodywith-caches-body-for-reuse' },
+    ],
+    tip: 'c.Error(err) returns a structured *gin.Error, not a bare log entry — its Type (Public/Private/Bind/Render/Any) and Meta fields let c.Errors.ByType(gin.ErrorTypePublic) build a client response from only errors explicitly marked safe to show.',
+    docs: [
+      { label: 'Gin Source — errors.go', url: 'https://raw.githubusercontent.com/gin-gonic/gin/master/errors.go' },
+    ],
+    resources: [],
+    gotchas: [
+      'An error left at the default type is not automatically safe — always positively classify sensitive errors as ErrorTypePrivate right where they occur, rather than relying on them failing to qualify as Public by omission.',
+      'SetType and SetMeta serve different purposes: Type is a small fixed set of values used for filtering; Meta is open-ended per-instance context.',
+    ],
+  },
   'go/grpc': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
