@@ -2529,7 +2529,12 @@ export const routes: Routes = [
       { path: 'embedded-json-tag-disables-promotion', loadComponent: () => import('./components/backend/go/json-encoding/subtopics/embedded-json-tag-disables-promotion/embedded-json-tag-disables-promotion').then(m => m.EmbeddedJsonTagDisablesPromotionSubtopic) },
       { path: 'unmarshal-leaves-absent-fields-unchanged', loadComponent: () => import('./components/backend/go/json-encoding/subtopics/unmarshal-leaves-absent-fields-unchanged/unmarshal-leaves-absent-fields-unchanged').then(m => m.UnmarshalLeavesAbsentFieldsUnchangedSubtopic) },
     ] },
-    { path: 'grpc',           loadComponent: () => import('./components/backend/go/grpc/grpc').then(m => m.GoGrpc) },
+    { path: 'grpc', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/grpc/grpc').then(m => m.GoGrpc) },
+      { path: 'bidi-streaming-directions-are-independent', loadComponent: () => import('./components/backend/go/grpc/subtopics/bidi-streaming-directions-are-independent/bidi-streaming-directions-are-independent').then(m => m.BidiStreamingDirectionsAreIndependentSubtopic) },
+      { path: 'newclient-lazy-connects-on-first-rpc', loadComponent: () => import('./components/backend/go/grpc/subtopics/newclient-lazy-connects-on-first-rpc/newclient-lazy-connects-on-first-rpc').then(m => m.NewclientLazyConnectsOnFirstRpcSubtopic) },
+      { path: 'chain-interceptor-first-is-outermost', loadComponent: () => import('./components/backend/go/grpc/subtopics/chain-interceptor-first-is-outermost/chain-interceptor-first-is-outermost').then(m => m.ChainInterceptorFirstIsOutermostSubtopic) },
+    ] },
     { path: 'pgx',            loadComponent: () => import('./components/backend/go/pgx/pgx').then(m => m.GoPgx) },
     { path: 'gorm',           loadComponent: () => import('./components/backend/go/gorm/gorm').then(m => m.GoGorm) },
     { path: 'generics',       loadComponent: () => import('./components/backend/go/generics/generics').then(m => m.GoGenerics) },

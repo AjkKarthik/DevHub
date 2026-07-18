@@ -2161,4 +2161,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'An Embedded Field’s json Tag Disables Promotion', route: '/go/json-encoding/embedded-json-tag-disables-promotion' },
     { label: 'Unmarshal Leaves Absent Fields Unchanged', route: '/go/json-encoding/unmarshal-leaves-absent-fields-unchanged' },
   ],
+  'grpc': [
+    { label: 'Bidi Streaming: The Two Directions Are Independent', route: '/go/grpc/bidi-streaming-directions-are-independent' },
+    { label: 'NewClient Lazily Connects on First RPC', route: '/go/grpc/newclient-lazy-connects-on-first-rpc' },
+    { label: 'ChainUnaryInterceptor: First Is Outermost', route: '/go/grpc/chain-interceptor-first-is-outermost' },
+  ],
 };

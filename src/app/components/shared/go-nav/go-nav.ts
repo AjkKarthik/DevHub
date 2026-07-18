@@ -249,7 +249,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/go/grpc" routerLinkActive="active"><span class="nl-text">gRPC in Go</span>@if(p.isDone('go-grpc')){<span class="nl-done">✓</span>}@if(d('go-grpc');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/grpc" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">gRPC in Go</span>
+        @if (p.isDone('go-grpc')) {<span class="nl-done">✓</span>}
+        @if (d('go-grpc'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('grpc')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('grpc')"
+                  (click)="toggleSubtopics('grpc', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('grpc'); as grpcSubs) {
+        @if (isSubtopicsExpanded('grpc')) {
+          <div class="nav-subtopics">
+            @for (s of grpcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

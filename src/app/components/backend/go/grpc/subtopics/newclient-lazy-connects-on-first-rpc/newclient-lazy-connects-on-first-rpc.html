@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC in Go" topicRoute="/go/grpc" subtopicLabel="NewClient's Lazy Connect" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">NewClient Lazily Connects on First RPC</h1>
+  <p class="page-subtitle">
+    grpc.NewClient performs no I/O at all — per its own docs, "use of the ClientConn for RPCs will
+    automatically cause it to connect." A nil error from NewClient confirms local config only, never reachability.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.21+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic deepens the main page's own brief Dial-vs-NewClient mention into the exact behavioral
+      consequence. The next subtopic moves from client creation to interceptors — a genuinely confusing
+      mechanic the main page's own ChainUnaryInterceptor mention never explains: execution order.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="gRPC in Go"
+    topicRoute="/go/grpc"
+    [prev]="{ label: 'Bidi Streaming: The Two Directions Are Independent', route: '/go/grpc/bidi-streaming-directions-are-independent' }"
+    [next]="{ label: 'ChainUnaryInterceptor: First Is Outermost', route: '/go/grpc/chain-interceptor-first-is-outermost' }"
+  />
+</div>

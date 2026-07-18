@@ -33868,6 +33868,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Generated gRPC code from .proto files should be regenerated and committed whenever the schema changes — a stale generated file silently drifts from the actual contract.',
     ],
   },
+  'go/grpc/bidi-streaming-directions-are-independent': {
+    apis: ['grpc.ServerStream', 'stream.Send / stream.Recv'],
+    related: [
+      { label: 'gRPC in Go (overview)', route: '/go/grpc' },
+      { label: 'NewClient Lazily Connects on First RPC', route: '/go/grpc/newclient-lazy-connects-on-first-rpc' },
+      { label: 'ChainUnaryInterceptor: First Is Outermost', route: '/go/grpc/chain-interceptor-first-is-outermost' },
+    ],
+    tip: 'Per gRPC\'s own docs, "the two streams operate independently, so clients and servers can read and write in whatever order they like" — a correct bidi client needs a separate goroutine for one direction, not a single send-then-receive loop.',
+    docs: [
+      { label: 'grpc.io — Go Basics', url: 'https://grpc.io/docs/languages/go/basics/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only the ORDER WITHIN each direction is preserved — the two directions have no fixed relationship to each other at all.',
+      'A sequential "send everything, then receive" implementation can silently delay processing responses the server already sent, not just run slower.',
+    ],
+  },
+  'go/grpc/newclient-lazy-connects-on-first-rpc': {
+    apis: ['grpc.NewClient', 'ClientConn.Connect'],
+    related: [
+      { label: 'gRPC in Go (overview)', route: '/go/grpc' },
+      { label: 'Bidi Streaming: The Two Directions Are Independent', route: '/go/grpc/bidi-streaming-directions-are-independent' },
+      { label: 'ChainUnaryInterceptor: First Is Outermost', route: '/go/grpc/chain-interceptor-first-is-outermost' },
+    ],
+    tip: 'grpc.NewClient performs no I/O at all — per its own docs, "use of the ClientConn for RPCs will automatically cause it to connect." A nil error only confirms local config was valid, never that the server is reachable.',
+    docs: [
+      { label: 'pkg.go.dev — grpc.NewClient', url: 'https://pkg.go.dev/google.golang.org/grpc#NewClient' },
+    ],
+    resources: [],
+    gotchas: [
+      'Unreachability errors never surface through NewClient\'s own return value under any timing — only through the first actual RPC call.',
+      'For genuine startup reachability checks, use the documented cc.Connect() + cc.WaitForStateChange()/cc.GetState() pattern instead of trusting NewClient\'s own success.',
+    ],
+  },
+  'go/grpc/chain-interceptor-first-is-outermost': {
+    apis: ['grpc.ChainUnaryInterceptor'],
+    related: [
+      { label: 'gRPC in Go (overview)', route: '/go/grpc' },
+      { label: 'Bidi Streaming: The Two Directions Are Independent', route: '/go/grpc/bidi-streaming-directions-are-independent' },
+      { label: 'NewClient Lazily Connects on First RPC', route: '/go/grpc/newclient-lazy-connects-on-first-rpc' },
+    ],
+    tip: 'Per grpc-go\'s own docs, "the first interceptor will be the outer most, while the last interceptor will be the inner most wrapper around the real call" — swapping order changes whether a request-rejecting interceptor lets a later one run at all.',
+    docs: [
+      { label: 'pkg.go.dev — ChainUnaryInterceptor', url: 'https://pkg.go.dev/google.golang.org/grpc#ChainUnaryInterceptor' },
+    ],
+    resources: [],
+    gotchas: [
+      'Auth registered before logging means rejected/unauthenticated requests never reach the logging interceptor at all — a silent audit-trail gap, not an error.',
+      'A missing-data bug in chained interceptors is not always an ordering mistake — check what each interceptor\'s own before/after code actually records too.',
+    ],
+  },
   'go/json-encoding': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
