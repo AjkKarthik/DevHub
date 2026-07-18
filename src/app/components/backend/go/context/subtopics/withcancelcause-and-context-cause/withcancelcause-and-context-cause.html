@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="context Package" topicRoute="/go/context" subtopicLabel="WithCancelCause &amp; Cause" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">WithCancelCause and context.Cause()</h1>
+  <p class="page-subtitle">
+    ctx.Err() only ever returns one of two generic sentinels — context.WithCancelCause (Go 1.21+) lets every
+    layer attach its own specific reason, retrievable via context.Cause() anywhere downstream, even from a
+    parent's own cancellation.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.21+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic extends the main page's own ctx.Err() coverage with a Go 1.21+ addition for richer
+      diagnostics. The next subtopic moves to context.WithValue — a genuine performance mechanic the main
+      page's own key-collision advice doesn't cover: what a long chain of WithValue calls actually costs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="context Package"
+    topicRoute="/go/context"
+    [next]="{ label: 'Each WithValue Call Wraps a New Node', route: '/go/context/each-withvalue-call-wraps-a-new-node' }"
+  />
+</div>

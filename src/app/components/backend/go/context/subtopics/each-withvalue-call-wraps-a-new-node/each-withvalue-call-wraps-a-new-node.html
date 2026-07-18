@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="context Package" topicRoute="/go/context" subtopicLabel="WithValue Chain Cost" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Each WithValue Call Wraps a New Node</h1>
+  <p class="page-subtitle">
+    context.WithValue doesn't add a key to a shared map — each call creates a new, single-key node wrapping
+    its parent, and Value() walks that chain linearly, checking one key per node.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic gives a concrete mechanism behind the main page's own "store only request-scoped data"
+      restraint. The next subtopic covers a different context mechanic entirely: how a child's own deadline is
+      silently clamped when it tries to outlive its parent's.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="context Package"
+    topicRoute="/go/context"
+    [prev]="{ label: 'WithCancelCause and context.Cause()', route: '/go/context/withcancelcause-and-context-cause' }"
+    [next]="{ label: 'A Child’s Deadline Is Clamped to Its Parent’s', route: '/go/context/child-deadline-clamped-to-parents' }"
+  />
+</div>

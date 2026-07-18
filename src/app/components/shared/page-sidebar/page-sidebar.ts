@@ -33618,6 +33618,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Forgetting to call the cancel function returned by context.WithCancel/WithTimeout leaks resources, even if the context itself is never explicitly cancelled.',
     ],
   },
+  'go/context/withcancelcause-and-context-cause': {
+    apis: ['context.WithCancelCause', 'context.Cause'],
+    related: [
+      { label: 'context Package (overview)', route: '/go/context' },
+      { label: 'Each WithValue Call Wraps a New Node', route: '/go/context/each-withvalue-call-wraps-a-new-node' },
+      { label: 'A Child’s Deadline Is Clamped to Its Parent’s', route: '/go/context/child-deadline-clamped-to-parents' },
+    ],
+    tip: 'ctx.Err() only ever returns context.Canceled or context.DeadlineExceeded — WithCancelCause (Go 1.21+) lets each layer attach its own specific error, retrievable via context.Cause() anywhere downstream, even from a parent\'s own cancellation.',
+    docs: [
+      { label: 'pkg.go.dev/context — Cause', url: 'https://pkg.go.dev/context#Cause' },
+    ],
+    resources: [],
+    gotchas: [
+      'Cause() is a strict superset of Err() — for contexts that never use CancelCauseFunc, Cause() degrades gracefully to exactly what Err() already returns.',
+      'A cause set on a PARENT via CancelCauseFunc propagates and is retrievable via Cause() on any CHILD, even one created with plain WithCancel.',
+    ],
+  },
+  'go/context/each-withvalue-call-wraps-a-new-node': {
+    apis: ['context.WithValue', 'context.Value'],
+    related: [
+      { label: 'context Package (overview)', route: '/go/context' },
+      { label: 'WithCancelCause and context.Cause()', route: '/go/context/withcancelcause-and-context-cause' },
+      { label: 'A Child’s Deadline Is Clamped to Its Parent’s', route: '/go/context/child-deadline-clamped-to-parents' },
+    ],
+    tip: 'WithValue doesn\'t add a key to a shared map — each call wraps the parent in a new, single-key valueCtx node. Value() walks that chain linearly, checking one key per node, confirmed directly in the standard library source.',
+    docs: [
+      { label: 'go.dev/src/context — valueCtx', url: 'https://go.dev/src/context/context.go' },
+    ],
+    resources: [],
+    gotchas: [
+      'A handful of WithValue calls (the main page\'s own use case) makes this cost negligible — the risk is specific to many small values attached via many separate calls, e.g. a long middleware chain.',
+      'Fix: consolidate frequently-read values into one struct attached via a single WithValue call, instead of one call per value.',
+    ],
+  },
+  'go/context/child-deadline-clamped-to-parents': {
+    apis: ['context.WithDeadline', 'context.WithTimeout'],
+    related: [
+      { label: 'context Package (overview)', route: '/go/context' },
+      { label: 'WithCancelCause and context.Cause()', route: '/go/context/withcancelcause-and-context-cause' },
+      { label: 'Each WithValue Call Wraps a New Node', route: '/go/context/each-withvalue-call-wraps-a-new-node' },
+    ],
+    tip: 'A child requesting a LATER deadline than its parent already has gets no effect — per Go\'s own docs, "WithDeadline(parent, d) is semantically equivalent to parent" whenever the parent\'s deadline is already earlier.',
+    docs: [
+      { label: 'pkg.go.dev/context — WithDeadline', url: 'https://pkg.go.dev/context#WithDeadline' },
+    ],
+    resources: [],
+    gotchas: [
+      'The main page\'s own HTTP handler example — "add a timeout on top of" an incoming context — can only ever shorten the effective deadline, never lengthen it, despite how "on top of" reads.',
+      'The effective budget for any operation in a context chain is always the SHORTEST deadline anywhere in that chain, not the most recently or most specifically requested one.',
+    ],
+  },
   'go/error-handling': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [

@@ -165,7 +165,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/go/context" routerLinkActive="active"><span class="nl-text">context Package</span>@if(p.isDone('go-context')){<span class="nl-done">✓</span>}@if(d('go-context');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/context" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">context Package</span>
+        @if (p.isDone('go-context')) {<span class="nl-done">✓</span>}
+        @if (d('go-context'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-context')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-context')"
+                  (click)="toggleSubtopics('go-context', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-context'); as goContextSubs) {
+        @if (isSubtopicsExpanded('go-context')) {
+          <div class="nav-subtopics">
+            @for (s of goContextSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -2139,4 +2139,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'sync.Cond: Wait Must Loop, Not If', route: '/go/sync/sync-cond-wait-must-loop-not-if' },
     { label: 'sync.Map.Range Has No Consistent Snapshot', route: '/go/sync/sync-map-range-no-consistent-snapshot' },
   ],
+  // NOTE: keyed 'go-context', NOT bare 'context' — the React hub's
+  // own /react/context topic already claims the bare key.
+  'go-context': [
+    { label: 'WithCancelCause and context.Cause()', route: '/go/context/withcancelcause-and-context-cause' },
+    { label: 'Each WithValue Call Wraps a New Node', route: '/go/context/each-withvalue-call-wraps-a-new-node' },
+    { label: 'A Child’s Deadline Is Clamped to Its Parent’s', route: '/go/context/child-deadline-clamped-to-parents' },
+  ],
 };

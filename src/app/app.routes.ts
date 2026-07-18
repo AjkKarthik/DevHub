@@ -2505,7 +2505,12 @@ export const routes: Routes = [
       { path: 'sync-cond-wait-must-loop-not-if', loadComponent: () => import('./components/backend/go/sync/subtopics/sync-cond-wait-must-loop-not-if/sync-cond-wait-must-loop-not-if').then(m => m.SyncCondWaitMustLoopNotIfSubtopic) },
       { path: 'sync-map-range-no-consistent-snapshot', loadComponent: () => import('./components/backend/go/sync/subtopics/sync-map-range-no-consistent-snapshot/sync-map-range-no-consistent-snapshot').then(m => m.SyncMapRangeNoConsistentSnapshotSubtopic) },
     ] },
-    { path: 'context',        loadComponent: () => import('./components/backend/go/context/context').then(m => m.GoContext) },
+    { path: 'context', children: [
+      { path: '', loadComponent: () => import('./components/backend/go/context/context').then(m => m.GoContext) },
+      { path: 'withcancelcause-and-context-cause', loadComponent: () => import('./components/backend/go/context/subtopics/withcancelcause-and-context-cause/withcancelcause-and-context-cause').then(m => m.WithcancelcauseAndContextCauseSubtopic) },
+      { path: 'each-withvalue-call-wraps-a-new-node', loadComponent: () => import('./components/backend/go/context/subtopics/each-withvalue-call-wraps-a-new-node/each-withvalue-call-wraps-a-new-node').then(m => m.EachWithvalueCallWrapsANewNodeSubtopic) },
+      { path: 'child-deadline-clamped-to-parents', loadComponent: () => import('./components/backend/go/context/subtopics/child-deadline-clamped-to-parents/child-deadline-clamped-to-parents').then(m => m.ChildDeadlineClampedToParentsSubtopic) },
+    ] },
     { path: 'net-http',       loadComponent: () => import('./components/backend/go/net-http/net-http').then(m => m.GoNetHttp) },
     { path: 'gin',            loadComponent: () => import('./components/backend/go/gin/gin').then(m => m.GoGin) },
     { path: 'json-encoding',  loadComponent: () => import('./components/backend/go/json-encoding/json-encoding').then(m => m.GoJsonEncoding) },

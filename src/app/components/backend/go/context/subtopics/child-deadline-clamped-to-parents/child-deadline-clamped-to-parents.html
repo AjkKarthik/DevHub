@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="context Package" topicRoute="/go/context" subtopicLabel="Deadline Clamping" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">A Child's Deadline Is Clamped to Its Parent's</h1>
+  <p class="page-subtitle">
+    Requesting a later deadline than a parent already has does nothing — Go's own docs state WithDeadline is
+    "semantically equivalent to parent" whenever the parent's own deadline is already earlier.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own "add a timeout on top of the incoming context" HTTP handler
+      example with the exact clamping rule behind it. Back to the context Package overview, or continue to
+      net/http &amp; REST APIs, where request contexts and their inherited deadlines come up constantly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="context Package"
+    topicRoute="/go/context"
+    [prev]="{ label: 'Each WithValue Call Wraps a New Node', route: '/go/context/each-withvalue-call-wraps-a-new-node' }"
+  />
+</div>
