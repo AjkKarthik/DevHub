@@ -1424,6 +1424,82 @@ rather than inline in `app.html`):
    icon content the literal text `Go`, `tech="javascript"` in `app-page-meta` (Go pages
    share the JS/TS playground and run-it links, same as CSS/HTML/Node.js/Python).
 
+### DevOps hub subtopic wiring — first pilot; the first CONCEPTUAL (non-API-driven) hub, plus
+another `*NavComponent` missing the subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/devops/culture`, 2026-07-18) — do this
+same check before any other new hub's first subtopic set:
+
+1. **`DevopsNavComponent` (`shared/devops-nav/devops-nav.ts`) had ZERO subtopics-accordion
+   support** — no `expandedTopics` signal, no `subtopicsOf`/`isSubtopicsExpanded`/
+   `toggleSubtopics` methods, no router-subscription auto-expand — the exact same structural gap
+   `GoNavComponent` had before its own pilot (see the Go hub section above). Fixed identically:
+   added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from
+   `data/subtopics.ts`) to the imports, then the same three methods and constructor-level router
+   subscription, byte-for-byte the same pattern as `GoNavComponent`'s own. **Any future
+   `*NavComponent`-based hub's first pilot must check for this same gap before assuming the
+   component already supports subtopics** — it is not safe to assume a `*NavComponent` hub has
+   this wiring just because `GoNavComponent` does; each one needs its own confirmed check.
+2. **Progress/search keys are `devops-` PREFIXED** (`devops-culture`), confirmed via existing
+   nav markup. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'devops/culture'`, confirmed the
+   base entry already existed, with its own `DEVOPS_DEFAULT` constant) — subtopic composite keys
+   follow suit: `'devops/culture/<slug>'`.
+3. **No `SUBTOPICS` map bare-key collision for `culture`** (checked both quoted and unquoted
+   forms, confirmed collision-free) — added as a bare key. **A real process mistake caught and
+   corrected before the build**: the nav wiring was initially written using a hub-prefixed
+   `'devops-culture'` key by habit (carried over from several recent Go-hub collisions in a row),
+   BEFORE the actual collision check was run — then corrected to the bare `'culture'` key once
+   the check came back clean. **The collision check must happen BEFORE choosing bare vs.
+   prefixed, not be treated as a formality after already assuming a prefix is needed** — recent
+   back-to-back collisions on other hubs made prefixing feel like the default, but it is not;
+   confirm first.
+4. `DEVOPS_LABELS` breadcrumb map uses bare keys (`'culture'`), matching the generic pattern
+   every hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'culture/<slug>'`).
+5. **Theme**: `.devops-page`/`.devops-icon`/`.devops-section` CSS classes, confirmed NOT global
+   (absent from `src/styles.scss`) — every subtopic `.scss` needs the full `.devops-page {
+   max-width: 860px; margin: 0 auto; }` wrapper rule. `$accent: #ee5d25`, `$tint: #fff7ed`, icon
+   content `⚙️`, `tech="javascript"` in `app-page-meta` (DevOps pages share the JS/TS playground
+   and run-it links, same as CSS/HTML/Node.js/Python/Go).
+6. **No live playground** — DevOps culture content has no runtime to demonstrate at all (it is a
+   methodology/culture topic, not code), following the same `<app-code-block>`-only pattern as
+   the non-Angular hubs (C#/SQL/Blazor/Go), using illustrative bash/YAML checklists and templates
+   as `codeTabs` content instead of running code — matching the main page's own code tab style
+   exactly (the main topic page itself already uses bash/YAML/TypeScript code tabs for templates
+   and conceptual models, not runnable demos).
+7. **THE FIRST CONCEPTUAL, NON-API-DRIVEN HUB — the research-verification approach itself had to
+   change.** Every hub before this one (even the "no runtime available" ones like C#/Blazor/
+   Node.js) verified claims against API docs, language specs, or framework documentation — a
+   fundamentally different research task from DevOps culture's actual subject matter (CALMS,
+   DORA metrics, Project Aristotle, blameless postmortems), which has no API surface at all.
+   Sources shifted accordingly: DORA's own current methodology guide (dora.dev), Google's own
+   re:Work research page for Project Aristotle, and Google's own SRE book chapter for blameless
+   postmortem culture — authoritative PRIMARY research/methodology sources instead of API docs,
+   but the same "verify before publishing, drop the angle if it won't verify cleanly" discipline
+   applied identically. **`WebFetch` repeatedly 404'd or was blocked (403) on plausible-looking
+   URLs for this batch** (an outdated `rework.withgoogle.com` path, `codeascraft.com` blocking
+   the fetch entirely) — `WebSearch` was needed first to find the actual correct, current URLs
+   before `WebFetch` could pull exact quotes. **For any future conceptual/methodology hub topic
+   (SRE practices, incident response, platform engineering, etc.), expect to need `WebSearch` to
+   locate the right primary source BEFORE `WebFetch` can quote it** — guessing at a plausible
+   direct URL (as worked reliably for `pkg.go.dev` throughout the entire Go hub) is much less
+   reliable for general web research sources than it is for structured API documentation sites.
+8. **A genuine, worth-knowing finding from this batch**: DORA's own current metrics guide has
+   evolved past the "Four Key Metrics" framing still extremely common in DevOps educational
+   content (including this hub's own main page) — it is now a five-metric model, with MTTR
+   renamed to "Failed deployment recovery time" and a new "Deployment Rework Rate" metric added.
+   Worth checking whether other DevOps-hub topics (or any other hub's own DORA mentions) still
+   reference the old four-metric framing as if it were current and unchanged.
+9. **Escalated the typographic-quote rule from single apostrophes to scare-quote double-quotes**:
+   a `[prev]`/`[next]` label needing literal double-quote punctuation around a word (e.g. "The
+   SRE Book's Own Definition Sharpens "Blameless"") used curly `"`/`"` marks (U+201C/U+201D)
+   rather than straight ASCII `"` — the same underlying reasoning as the established `'`
+   (U+2019) apostrophe rule (a delimiter character must not appear literally inside a
+   same-delimiter-quoted string), just applied to double quotes instead of single ones. Since
+   the outer Angular attribute is itself double-quoted (`[next]="..."`), a literal straight `"`
+   inside the label text would have closed the outer attribute prematurely — the curly-quote
+   substitution avoids this the same way `’` avoids the single-quote collision.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
