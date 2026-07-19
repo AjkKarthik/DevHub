@@ -2887,7 +2887,12 @@ export const routes: Routes = [
       { path: 'project-aristotle-ranked-five-dynamics-not-just-safety', loadComponent: () => import('./components/cloud/devops/culture/subtopics/project-aristotle-ranked-five-dynamics-not-just-safety/project-aristotle-ranked-five-dynamics-not-just-safety').then(m => m.ProjectAristotleRankedFiveDynamicsNotJustSafetySubtopic) },
       { path: 'sre-books-own-definition-sharpens-blameless', loadComponent: () => import('./components/cloud/devops/culture/subtopics/sre-books-own-definition-sharpens-blameless/sre-books-own-definition-sharpens-blameless').then(m => m.SreBooksOwnDefinitionSharpensBlamelessSubtopic) },
     ] },
-    { path: 'sdlc-agile',             loadComponent: () => import('./components/cloud/devops/sdlc-agile/sdlc-agile').then(m => m.DevopsSdlcAgile) },
+    { path: 'sdlc-agile', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/sdlc-agile/sdlc-agile').then(m => m.DevopsSdlcAgile) },
+      { path: 'agile-manifesto-values-the-right-side-too-just-less', loadComponent: () => import('./components/cloud/devops/sdlc-agile/subtopics/agile-manifesto-values-the-right-side-too-just-less/agile-manifesto-values-the-right-side-too-just-less').then(m => m.AgileManifestoValuesTheRightSideTooJustLessSubtopic) },
+      { path: 'littles-law-assumes-a-steady-state', loadComponent: () => import('./components/cloud/devops/sdlc-agile/subtopics/littles-law-assumes-a-steady-state/littles-law-assumes-a-steady-state').then(m => m.LittlesLawAssumesASteadyStateSubtopic) },
+      { path: 'cumulative-flow-diagrams-reveal-the-bottleneck', loadComponent: () => import('./components/cloud/devops/sdlc-agile/subtopics/cumulative-flow-diagrams-reveal-the-bottleneck/cumulative-flow-diagrams-reveal-the-bottleneck').then(m => m.CumulativeFlowDiagramsRevealTheBottleneckSubtopic) },
+    ] },
     { path: 'environment-strategy',   loadComponent: () => import('./components/cloud/devops/environment-strategy/environment-strategy').then(m => m.DevopsEnvironmentStrategy) },
     { path: 'platform-engineering',   loadComponent: () => import('./components/cloud/devops/platform-engineering/platform-engineering').then(m => m.DevopsPlatformEngineering) },
     { path: 'git-workflows',          loadComponent: () => import('./components/cloud/devops/git-workflows/git-workflows').then(m => m.DevopsGitWorkflows) },

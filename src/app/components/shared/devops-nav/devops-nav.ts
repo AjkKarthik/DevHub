@@ -40,7 +40,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/devops/sdlc-agile" routerLinkActive="active"><span class="nl-text">SDLC &amp; Agile</span>@if(p.isDone('devops-sdlc-agile')){<span class="nl-done">✓</span>}@if(d('devops-sdlc-agile');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/sdlc-agile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">SDLC &amp; Agile</span>
+        @if (p.isDone('devops-sdlc-agile')) {<span class="nl-done">✓</span>}
+        @if (d('devops-sdlc-agile'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('sdlc-agile')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sdlc-agile')"
+                  (click)="toggleSubtopics('sdlc-agile', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sdlc-agile'); as sdlcSubs) {
+        @if (isSubtopicsExpanded('sdlc-agile')) {
+          <div class="nav-subtopics">
+            @for (s of sdlcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/devops/environment-strategy" routerLinkActive="active"><span class="nl-text">Environment Strategy</span>@if(p.isDone('devops-environment-strategy')){<span class="nl-done">✓</span>}@if(d('devops-environment-strategy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/devops/platform-engineering" routerLinkActive="active"><span class="nl-text">Platform Engineering</span>@if(p.isDone('devops-platform-engineering')){<span class="nl-done">✓</span>}@if(d('devops-platform-engineering');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

@@ -1262,6 +1262,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Project Aristotle Ranked Five Dynamics, Not Just Safety', route: '/devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety' },
     { label: 'The SRE Book’s Own Definition Sharpens “Blameless”', route: '/devops/culture/sre-books-own-definition-sharpens-blameless' },
   ],
+  'sdlc-agile': [
+    { label: 'The Agile Manifesto Values the Right Side Too, Just Less', route: '/devops/sdlc-agile/agile-manifesto-values-the-right-side-too-just-less' },
+    { label: 'Little’s Law Assumes a Steady State', route: '/devops/sdlc-agile/littles-law-assumes-a-steady-state' },
+    { label: 'Cumulative Flow Diagrams Reveal the Bottleneck', route: '/devops/sdlc-agile/cumulative-flow-diagrams-reveal-the-bottleneck' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

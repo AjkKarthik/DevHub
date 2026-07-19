@@ -35825,6 +35825,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DevOps is as much an organizational/cultural shift as a toolchain — adopting the tools without the collaboration model behind them rarely delivers the expected benefit.',
     ],
   },
+  'devops/sdlc-agile/agile-manifesto-values-the-right-side-too-just-less': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'SDLC & Agile overview', route: '/devops/sdlc-agile' },
+      { label: 'Little’s Law Assumes a Steady State', route: '/devops/sdlc-agile/littles-law-assumes-a-steady-state' },
+    ],
+    tip: 'The Manifesto\'s own text says "while there is value in the items on the right, we value the items on the left more" — a weighting for trade-offs, not a license to eliminate documentation, contracts, or plans entirely.',
+    gotchas: [
+      'Zero documentation and zero API contracts is not "doing Agile well" — it is a misreading of a comparison the Manifesto\'s own authors never intended as absolute.',
+      'The correct application is a tie-breaker for genuine conflicts, not a standing policy to discard the right-hand items by default.',
+    ],
+  },
+  'devops/sdlc-agile/littles-law-assumes-a-steady-state': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'The Agile Manifesto Values the Right Side Too, Just Less', route: '/devops/sdlc-agile/agile-manifesto-values-the-right-side-too-just-less' },
+      { label: 'Cumulative Flow Diagrams Reveal the Bottleneck', route: '/devops/sdlc-agile/cumulative-flow-diagrams-reveal-the-bottleneck' },
+    ],
+    tip: 'Lead Time = WIP / Throughput only holds when arrivals and departures are roughly balanced — a growing backlog means the formula understates true future lead time.',
+    gotchas: [
+      'A Little\'s Law calculation that looks stable week over week can still be hiding a worsening trend if WIP is climbing while throughput sits flat.',
+      'WIP limits aren\'t just a productivity technique — they\'re what keeps a system close enough to steady state for the formula to remain trustworthy at all.',
+    ],
+  },
+  'devops/sdlc-agile/cumulative-flow-diagrams-reveal-the-bottleneck': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Little’s Law Assumes a Steady State', route: '/devops/sdlc-agile/littles-law-assumes-a-steady-state' },
+      { label: 'SDLC & Agile overview', route: '/devops/sdlc-agile' },
+    ],
+    tip: 'The vertical gap between two adjacent bands on a CFD is that stage\'s current WIP — a widening gap means items are entering that stage faster than they\'re leaving it.',
+    gotchas: [
+      'A CFD localizes a bottleneck to one specific workflow stage, something a single aggregate cycle-time or throughput number can\'t do on its own.',
+      'A widening band is the visual signature of exactly the arrivals-exceed-departures condition that breaks Little\'s Law\'s own steady-state assumption.',
+    ],
+  },
   'devops/culture': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
