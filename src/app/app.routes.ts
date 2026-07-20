@@ -2983,7 +2983,12 @@ export const routes: Routes = [
       { path: 'label-keys-traceid-is-a-loki-cardinality-explosion', loadComponent: () => import('./components/cloud/devops/logging/subtopics/label-keys-traceid-is-a-loki-cardinality-explosion/label-keys-traceid-is-a-loki-cardinality-explosion').then(m => m.LabelKeysTraceidIsALokiCardinalityExplosionSubtopic) },
       { path: 'ilm-min-age-counts-from-rollover-not-creation', loadComponent: () => import('./components/cloud/devops/logging/subtopics/ilm-min-age-counts-from-rollover-not-creation/ilm-min-age-counts-from-rollover-not-creation').then(m => m.IlmMinAgeCountsFromRolloverNotCreationSubtopic) },
     ]},
-    { path: 'incident-response',      loadComponent: () => import('./components/cloud/devops/incident-response/incident-response').then(m => m.DevopsIncidentResponse) },
+    { path: 'incident-response', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/incident-response/incident-response').then(m => m.DevopsIncidentResponse) },
+      { path: 'continue-true-is-what-lets-a-second-route-also-fire', loadComponent: () => import('./components/cloud/devops/incident-response/subtopics/continue-true-is-what-lets-a-second-route-also-fire/continue-true-is-what-lets-a-second-route-also-fire').then(m => m.ContinueTrueIsWhatLetsASecondRouteAlsoFireSubtopic) },
+      { path: 'pagerdutys-severity-field-is-not-the-alert-label', loadComponent: () => import('./components/cloud/devops/incident-response/subtopics/pagerdutys-severity-field-is-not-the-alert-label/pagerdutys-severity-field-is-not-the-alert-label').then(m => m.PagerdutysSeverityFieldIsNotTheAlertLabelSubtopic) },
+      { path: 'duration-and-mttr-measure-from-different-endpoints', loadComponent: () => import('./components/cloud/devops/incident-response/subtopics/duration-and-mttr-measure-from-different-endpoints/duration-and-mttr-measure-from-different-endpoints').then(m => m.DurationAndMttrMeasureFromDifferentEndpointsSubtopic) },
+    ]},
     { path: 'devsecops',              loadComponent: () => import('./components/cloud/devops/devsecops/devsecops').then(m => m.DevopsDevsecops) },
     { path: 'release-management',     loadComponent: () => import('./components/cloud/devops/release-management/release-management').then(m => m.DevopsReleaseManagement) },
     { path: 'sre',                    loadComponent: () => import('./components/cloud/devops/sre/sre').then(m => m.DevopsSre) },

@@ -36532,6 +36532,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Declaring an incident resolved once symptoms disappear, without confirming root cause, risks the same issue recurring shortly after.',
     ],
   },
+  'devops/incident-response/continue-true-is-what-lets-a-second-route-also-fire': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'On-call & Incident Response overview', route: '/devops/incident-response' },
+      { label: 'PagerDuty’s severity Field Is Not the Alert’s Label', route: '/devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label' },
+    ],
+    tip: 'AlertManager stops at the first matching route by default — continue: true is specifically what lets evaluation proceed to check a sibling route too, and each route in a chain needs its own continue: true to pass evaluation further along.',
+    gotchas: [
+      'A route missing continue: true silently makes every route after it unreachable for that alert, with no error anywhere.',
+      'Adding a third route to an existing continue: true chain requires adding continue: true to the second route too, not just the first.',
+    ],
+  },
+  'devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'continue: true Is What Lets a Second Route Also Fire', route: '/devops/incident-response/continue-true-is-what-lets-a-second-route-also-fire' },
+      { label: 'Duration and MTTR Measure From Different Endpoints', route: '/devops/incident-response/duration-and-mttr-measure-from-different-endpoints' },
+    ],
+    tip: 'AlertManager\'s own severity label is an arbitrary routing string the team chooses; PagerDuty\'s own severity field is a separate, fixed vocabulary (critical/warning/error/info) that PagerDuty itself validates — templating one directly into the other only works if the values already align.',
+    gotchas: [
+      'Hardcoding PagerDuty\'s severity field is often the correct choice, not an oversight, when the team\'s own AlertManager label vocabulary doesn\'t match PagerDuty\'s accepted values.',
+      'PagerDuty incidents reaching the same receiver all show the identical hardcoded severity unless the original alert-level severity is explicitly templated into description or details instead.',
+    ],
+  },
+  'devops/incident-response/duration-and-mttr-measure-from-different-endpoints': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'PagerDuty’s severity Field Is Not the Alert’s Label', route: '/devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label' },
+      { label: 'On-call & Incident Response overview', route: '/devops/incident-response' },
+    ],
+    tip: 'MTTR ends at actual service restoration; a broader "duration" figure can end much later, at full incident closure including communication steps like a status page update — both numbers are correct, they just measure from different endpoints.',
+    gotchas: [
+      'Reporting only MTTR can hide a real process gap, like a delayed status page update, that a later-endpoint duration figure would surface.',
+      'A postmortem\'s own "what went wrong" section naming a communication delay should usually get its own action item, not just a mention.',
+    ],
+  },
   'devops/monitoring': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

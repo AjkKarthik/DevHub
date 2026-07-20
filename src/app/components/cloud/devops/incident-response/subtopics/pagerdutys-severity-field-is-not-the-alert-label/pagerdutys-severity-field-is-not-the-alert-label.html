@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="On-call & Incident Response" topicRoute="/devops/incident-response" subtopicLabel="PagerDuty’s severity Field Is Not the Alert’s Label" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">PagerDuty's severity Field Is Not the Alert's Label</h1>
+  <p class="page-subtitle">
+    The main page's own config uses "severity" for two different things in the same code tab — AlertManager's
+    routing label is an arbitrary string; PagerDuty's own field is a fixed, validated vocabulary.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic separates two similarly-named fields the main page's own config uses together without
+      distinction. Back to why continue: true is what lets a second route also fire, or continue to why a
+      postmortem's own Duration and MTTR numbers measure from different endpoints.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="On-call & Incident Response"
+    topicRoute="/devops/incident-response"
+    [prev]="{ label: 'continue: true Is What Lets a Second Route Also Fire', route: '/devops/incident-response/continue-true-is-what-lets-a-second-route-also-fire' }"
+    [next]="{ label: 'Duration and MTTR Measure From Different Endpoints', route: '/devops/incident-response/duration-and-mttr-measure-from-different-endpoints' }"
+  />
+</div>

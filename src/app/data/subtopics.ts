@@ -1343,6 +1343,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Label_Keys traceId Is a Loki Cardinality Explosion', route: '/devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion' },
     { label: 'ILM min_age Counts From Rollover, Not Creation', route: '/devops/logging/ilm-min-age-counts-from-rollover-not-creation' },
   ],
+  'incident-response': [
+    { label: 'continue: true Is What Lets a Second Route Also Fire', route: '/devops/incident-response/continue-true-is-what-lets-a-second-route-also-fire' },
+    { label: 'PagerDuty’s severity Field Is Not the Alert’s Label', route: '/devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label' },
+    { label: 'Duration and MTTR Measure From Different Endpoints', route: '/devops/incident-response/duration-and-mttr-measure-from-different-endpoints' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
