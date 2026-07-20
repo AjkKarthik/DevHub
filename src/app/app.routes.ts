@@ -2923,7 +2923,12 @@ export const routes: Routes = [
       { path: 'custom-condition-overwrites-not-adds-to-the-default', loadComponent: () => import('./components/cloud/devops/azure-pipelines/subtopics/custom-condition-overwrites-not-adds-to-the-default/custom-condition-overwrites-not-adds-to-the-default').then(m => m.CustomConditionOverwritesNotAddsToTheDefaultSubtopic) },
       { path: 'stages-depend-on-whatever-stage-came-right-before-them', loadComponent: () => import('./components/cloud/devops/azure-pipelines/subtopics/stages-depend-on-whatever-stage-came-right-before-them/stages-depend-on-whatever-stage-came-right-before-them').then(m => m.StagesDependOnWhateverStageCameRightBeforeThemSubtopic) },
     ]},
-    { path: 'jenkins',                loadComponent: () => import('./components/cloud/devops/jenkins/jenkins').then(m => m.DevopsJenkins) },
+    { path: 'jenkins', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/jenkins/jenkins').then(m => m.DevopsJenkins) },
+      { path: 'stash-is-scoped-to-the-current-build-only', loadComponent: () => import('./components/cloud/devops/jenkins/subtopics/stash-is-scoped-to-the-current-build-only/stash-is-scoped-to-the-current-build-only').then(m => m.StashIsScopedToTheCurrentBuildOnlySubtopic) },
+      { path: 'disableconcurrentbuilds-queues-not-aborts-by-default', loadComponent: () => import('./components/cloud/devops/jenkins/subtopics/disableconcurrentbuilds-queues-not-aborts-by-default/disableconcurrentbuilds-queues-not-aborts-by-default').then(m => m.DisableconcurrentbuildsQueuesNotAbortsByDefaultSubtopic) },
+      { path: 'changed-fires-broader-than-break-or-recovery-alone', loadComponent: () => import('./components/cloud/devops/jenkins/subtopics/changed-fires-broader-than-break-or-recovery-alone/changed-fires-broader-than-break-or-recovery-alone').then(m => m.ChangedFiresBroaderThanBreakOrRecoveryAloneSubtopic) },
+    ]},
     { path: 'continuous-integration', loadComponent: () => import('./components/cloud/devops/continuous-integration/continuous-integration').then(m => m.DevopsContinuousIntegration) },
     { path: 'continuous-delivery',    loadComponent: () => import('./components/cloud/devops/continuous-delivery/continuous-delivery').then(m => m.DevopsContinuousDelivery) },
     { path: 'gitops',                 loadComponent: () => import('./components/cloud/devops/gitops/gitops').then(m => m.DevopsGitops) },

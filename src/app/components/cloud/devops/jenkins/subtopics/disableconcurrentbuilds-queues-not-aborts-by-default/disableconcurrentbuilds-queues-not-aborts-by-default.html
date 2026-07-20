@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Jenkins" topicRoute="/devops/jenkins" subtopicLabel="disableConcurrentBuilds Queues, Doesn’t Abort" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">disableConcurrentBuilds Queues, Doesn’t Abort, by Default</h1>
+  <p class="page-subtitle">
+    The main page's own first code tab uses disableConcurrentBuilds() without ever explaining it — the default
+    behavior only serializes overlapping builds, it doesn't cancel a stale one for you.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2016+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills in an option the main page's own code tab uses but never explains. Back to the Jenkins
+      overview, continue back to stash's build-scoped lifetime, or forward to what post's changed condition
+      actually compares.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Jenkins"
+    topicRoute="/devops/jenkins"
+    [prev]="{ label: 'stash Is Scoped to the Current Build Only', route: '/devops/jenkins/stash-is-scoped-to-the-current-build-only' }"
+    [next]="{ label: 'changed Fires Broader Than Break-or-Recovery Alone', route: '/devops/jenkins/changed-fires-broader-than-break-or-recovery-alone' }"
+  />
+</div>

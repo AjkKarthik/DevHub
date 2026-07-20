@@ -36185,6 +36185,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A Jenkins master that also runs build agents directly can be starved of resources by heavy builds — dedicated agent nodes isolate this.',
     ],
   },
+  'devops/jenkins/stash-is-scoped-to-the-current-build-only': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Jenkins overview', route: '/devops/jenkins' },
+      { label: 'disableConcurrentBuilds Queues, Doesn’t Abort', route: '/devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default' },
+    ],
+    tip: 'archiveArtifacts is the tool for keeping a file around past the end of a run — stash/unstash is only ever for moving a file between stages of the SAME run, and is auto-deleted the moment that run finishes.',
+    gotchas: [
+      'A stash created in one build cannot be unstashed in a later, separate build — its lifetime is tied to the single pipeline run that created it.',
+      'The Copy Artifact plugin, paired with archiveArtifacts, is the actual mechanism for pulling a file from a previous build into a new one.',
+    ],
+  },
+  'devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'stash Is Scoped to the Current Build Only', route: '/devops/jenkins/stash-is-scoped-to-the-current-build-only' },
+      { label: 'changed Fires Broader Than Break-or-Recovery', route: '/devops/jenkins/changed-fires-broader-than-break-or-recovery-alone' },
+    ],
+    tip: 'disableConcurrentBuilds(abortPrevious: true) is the explicit opt-in for "always deploy the latest commit" — the bare option alone only prevents overlap, it queues stale builds rather than canceling them.',
+    gotchas: [
+      'Without abortPrevious: true, a burst of pushes all eventually run to completion, one after another, including commits already superseded by the time their turn comes.',
+      'This option is scoped to preventing simultaneous accesses to shared resources by default — cancellation behavior is a separate, opt-in concern.',
+    ],
+  },
+  'devops/jenkins/changed-fires-broader-than-break-or-recovery-alone': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'disableConcurrentBuilds Queues, Doesn’t Abort', route: '/devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default' },
+      { label: 'Jenkins overview', route: '/devops/jenkins' },
+    ],
+    tip: 'regression and fixed are the precise post-condition tools for break/recovery alerting — changed fires on any completion-status difference at all, including transitions like a manually aborted build that most teams wouldn’t call a regression.',
+    gotchas: [
+      'A Slack notification wired to changed can fire on a manually canceled build, producing noisy, low-signal alerts.',
+      'regression explicitly counts an aborted current run as a qualifying "broke" status when the previous run succeeded, per Jenkins’s own documented definition.',
+    ],
+  },
   'devops/azure-pipelines': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

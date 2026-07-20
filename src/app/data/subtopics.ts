@@ -1292,6 +1292,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Custom condition: Overwrites the Default', route: '/devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default' },
     { label: 'Stages Depend on Whatever Came Right Before Them', route: '/devops/azure-pipelines/stages-depend-on-whatever-stage-came-right-before-them' },
   ],
+  'jenkins': [
+    { label: 'stash Is Scoped to the Current Build Only', route: '/devops/jenkins/stash-is-scoped-to-the-current-build-only' },
+    { label: 'disableConcurrentBuilds Queues, Doesn’t Abort', route: '/devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default' },
+    { label: 'changed Fires Broader Than Break-or-Recovery', route: '/devops/jenkins/changed-fires-broader-than-break-or-recovery-alone' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

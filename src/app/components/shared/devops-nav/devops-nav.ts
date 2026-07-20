@@ -168,7 +168,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/devops/jenkins" routerLinkActive="active"><span class="nl-text">Jenkins</span>@if(p.isDone('devops-jenkins')){<span class="nl-done">✓</span>}@if(d('devops-jenkins');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/jenkins" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Jenkins</span>
+        @if (p.isDone('devops-jenkins')) {<span class="nl-done">✓</span>}
+        @if (d('devops-jenkins'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('jenkins')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('jenkins')"
+                  (click)="toggleSubtopics('jenkins', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('jenkins'); as jenkinsSubs) {
+        @if (isSubtopicsExpanded('jenkins')) {
+          <div class="nav-subtopics">
+            @for (s of jenkinsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/devops/continuous-integration" routerLinkActive="active"><span class="nl-text">Continuous Integration</span>@if(p.isDone('devops-continuous-integration')){<span class="nl-done">✓</span>}@if(d('devops-continuous-integration');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/devops/continuous-delivery" routerLinkActive="active"><span class="nl-text">Continuous Delivery</span>@if(p.isDone('devops-continuous-delivery')){<span class="nl-done">✓</span>}@if(d('devops-continuous-delivery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/devops/gitops" routerLinkActive="active"><span class="nl-text">GitOps (ArgoCD &amp; Flux)</span>@if(p.isDone('devops-gitops')){<span class="nl-done">✓</span>}@if(d('devops-gitops');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
