@@ -36134,6 +36134,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Feature flags decouple deployment from release, letting a "released" feature be toggled off instantly without a full redeploy if something goes wrong.',
     ],
   },
+  'devops/release-management/release-please-never-publishes': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Release Management overview', route: '/devops/release-management' },
+      { label: '@semantic-release/npm Updates package.json Only Locally', route: '/devops/release-management/semantic-release-npm-never-commits-back' },
+    ],
+    tip: 'release-please-action only ever bumps the version, updates the changelog, tags, and creates a GitHub Release — actually publishing to npm needs a separate job gated on the action\'s own release_created output, which the main page\'s own one-step workflow never adds.',
+    gotchas: [
+      'A release-please workflow can succeed on every run for months while the npm registry never receives a single new version, because nothing ever failed — the workflow just never included a publish step.',
+      'An unconditional publish step added without the release_created gate runs on every push to main, not just the ones where a release was actually cut.',
+    ],
+  },
+  'devops/release-management/semantic-release-npm-never-commits-back': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'release-please Automates Everything Except the Actual Publish', route: '/devops/release-management/release-please-never-publishes' },
+      { label: '“Deploy to Production” Already Happened by the Time the Tag Was Pushed', route: '/devops/release-management/hotfix-step-4-already-happened-at-step-3' },
+    ],
+    tip: '@semantic-release/npm updates package.json only in the CI runner\'s local working directory as part of building and publishing the tarball — it never commits that change back to the repository. Only @semantic-release/git does that, and the main page\'s own .releaserc.json omits it.',
+    gotchas: [
+      'semantic-release computes the next version from git tag history and commit messages, never from reading the current package.json — a stale package.json in the repo does not affect what version publishes next.',
+      'Without @semantic-release/git, the repo\'s own package.json can sit many releases behind what npm has actually published, indefinitely, with every release still succeeding.',
+    ],
+  },
+  'devops/release-management/hotfix-step-4-already-happened-at-step-3': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: '@semantic-release/npm Updates package.json Only Locally', route: '/devops/release-management/semantic-release-npm-never-commits-back' },
+      { label: 'Release Management overview', route: '/devops/release-management' },
+    ],
+    tip: 'The main page\'s own hotfix step 3 (pushing the v2.4.1 tag) matches the same code tab\'s own tag-triggered release workflow glob — the npm publish that IS step 4\'s "deploy to production" starts automatically the instant step 3\'s tag push completes.',
+    gotchas: [
+      'Manually running a deploy for step 4 on a project already wired with a tag-triggered release workflow risks a duplicate, failing npm publish attempt for a version already published automatically.',
+      'A numbered step with no command underneath it, like step 4, is worth checking against the rest of the SAME page for an already-shown mechanism before assuming it needs external tooling.',
+    ],
+  },
   'devops/iac': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

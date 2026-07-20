@@ -2995,7 +2995,12 @@ export const routes: Routes = [
       { path: 'codeql-merge-blocking', loadComponent: () => import('./components/cloud/devops/devsecops/subtopics/codeql-merge-blocking/codeql-merge-blocking').then(m => m.CodeqlMergeBlockingSubtopic) },
       { path: 'gitleaks-scan-scope', loadComponent: () => import('./components/cloud/devops/devsecops/subtopics/gitleaks-scan-scope/gitleaks-scan-scope').then(m => m.GitleaksScanScopeSubtopic) },
     ]},
-    { path: 'release-management',     loadComponent: () => import('./components/cloud/devops/release-management/release-management').then(m => m.DevopsReleaseManagement) },
+    { path: 'release-management', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/release-management/release-management').then(m => m.DevopsReleaseManagement) },
+      { path: 'release-please-never-publishes', loadComponent: () => import('./components/cloud/devops/release-management/subtopics/release-please-never-publishes/release-please-never-publishes').then(m => m.ReleasePleaseNeverPublishesSubtopic) },
+      { path: 'semantic-release-npm-never-commits-back', loadComponent: () => import('./components/cloud/devops/release-management/subtopics/semantic-release-npm-never-commits-back/semantic-release-npm-never-commits-back').then(m => m.SemanticReleaseNpmNeverCommitsBackSubtopic) },
+      { path: 'hotfix-step-4-already-happened-at-step-3', loadComponent: () => import('./components/cloud/devops/release-management/subtopics/hotfix-step-4-already-happened-at-step-3/hotfix-step-4-already-happened-at-step-3').then(m => m.HotfixStep4AlreadyHappenedAtStep3Subtopic) },
+    ]},
     { path: 'sre',                    loadComponent: () => import('./components/cloud/devops/sre/sre').then(m => m.DevopsSre) },
     { path: 'cheatsheet',             loadComponent: () => import('./components/cloud/devops/cheatsheet/cheatsheet').then(m => m.DevopsCheatsheet) },
   ] },

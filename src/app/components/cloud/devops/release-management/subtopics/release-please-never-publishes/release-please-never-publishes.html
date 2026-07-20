@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Release Management" topicRoute="/devops/release-management" subtopicLabel="release-please Automates Everything Except the Actual Publish" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">release-please Automates Everything Except the Actual Publish</h1>
+  <p class="page-subtitle">
+    The main page's own release-please workflow has exactly one step, and none of it ever runs npm publish —
+    merging the Release PR only bumps the version, updates the changelog, tags, and creates a GitHub Release.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2021+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes a gap between what the main page's own release-please example shows and what "trigger
+      a release" actually means. Back to the Release Management overview, or continue to why semantic-release's
+      own npm plugin never commits its version bump back to the repository either.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Release Management"
+    topicRoute="/devops/release-management"
+    [next]="{ label: '@semantic-release/npm Updates package.json Only Locally', route: '/devops/release-management/semantic-release-npm-never-commits-back' }"
+  />
+</div>
