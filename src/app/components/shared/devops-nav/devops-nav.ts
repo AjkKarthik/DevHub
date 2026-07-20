@@ -80,7 +80,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/devops/platform-engineering" routerLinkActive="active"><span class="nl-text">Platform Engineering</span>@if(p.isDone('devops-platform-engineering')){<span class="nl-done">✓</span>}@if(d('devops-platform-engineering');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/platform-engineering" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Platform Engineering</span>
+        @if (p.isDone('devops-platform-engineering')) {<span class="nl-done">✓</span>}
+        @if (d('devops-platform-engineering'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('platform-engineering')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('platform-engineering')"
+                  (click)="toggleSubtopics('platform-engineering', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('platform-engineering'); as platformSubs) {
+        @if (isSubtopicsExpanded('platform-engineering')) {
+          <div class="nav-subtopics">
+            @for (s of platformSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

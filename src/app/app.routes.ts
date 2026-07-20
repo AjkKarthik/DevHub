@@ -2899,7 +2899,12 @@ export const routes: Routes = [
       { path: 'kubernetes-secrets-are-base64-not-encrypted-by-default', loadComponent: () => import('./components/cloud/devops/environment-strategy/subtopics/kubernetes-secrets-are-base64-not-encrypted-by-default/kubernetes-secrets-are-base64-not-encrypted-by-default').then(m => m.KubernetesSecretsAreBase64NotEncryptedByDefaultSubtopic) },
       { path: 'kubernetes-has-no-built-in-namespace-ttl', loadComponent: () => import('./components/cloud/devops/environment-strategy/subtopics/kubernetes-has-no-built-in-namespace-ttl/kubernetes-has-no-built-in-namespace-ttl').then(m => m.KubernetesHasNoBuiltInNamespaceTtlSubtopic) },
     ] },
-    { path: 'platform-engineering',   loadComponent: () => import('./components/cloud/devops/platform-engineering/platform-engineering').then(m => m.DevopsPlatformEngineering) },
+    { path: 'platform-engineering', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/platform-engineering/platform-engineering').then(m => m.DevopsPlatformEngineering) },
+      { path: 'platform-team-is-its-own-team-topologies-type', loadComponent: () => import('./components/cloud/devops/platform-engineering/subtopics/platform-team-is-its-own-team-topologies-type/platform-team-is-its-own-team-topologies-type').then(m => m.PlatformTeamIsItsOwnTeamTopologiesTypeSubtopic) },
+      { path: 'the-space-framework-has-five-dimensions-not-one', loadComponent: () => import('./components/cloud/devops/platform-engineering/subtopics/the-space-framework-has-five-dimensions-not-one/the-space-framework-has-five-dimensions-not-one').then(m => m.TheSpaceFrameworkHasFiveDimensionsNotOneSubtopic) },
+      { path: 'cognitive-load-has-three-types-platforms-target-one', loadComponent: () => import('./components/cloud/devops/platform-engineering/subtopics/cognitive-load-has-three-types-platforms-target-one/cognitive-load-has-three-types-platforms-target-one').then(m => m.CognitiveLoadHasThreeTypesPlatformsTargetOneSubtopic) },
+    ] },
     { path: 'git-workflows',          loadComponent: () => import('./components/cloud/devops/git-workflows/git-workflows').then(m => m.DevopsGitWorkflows) },
     { path: 'github-actions',         loadComponent: () => import('./components/cloud/devops/github-actions/github-actions').then(m => m.DevopsGithubActions) },
     { path: 'azure-pipelines',        loadComponent: () => import('./components/cloud/devops/azure-pipelines/azure-pipelines').then(m => m.DevopsAzurePipelines) },

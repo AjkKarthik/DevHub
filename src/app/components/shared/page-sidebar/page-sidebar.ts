@@ -36170,6 +36170,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Too rigid a "golden path" without escape hatches for genuinely unusual needs frustrates teams with legitimate edge cases.',
     ],
   },
+  'devops/platform-engineering/platform-team-is-its-own-team-topologies-type': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Platform Engineering overview', route: '/devops/platform-engineering' },
+      { label: 'The SPACE Framework Has Five Dimensions, Not One', route: '/devops/platform-engineering/the-space-framework-has-five-dimensions-not-one' },
+    ],
+    tip: 'Team Topologies defines four separate team types with no hybrids intended — Platform team is its own category, not a "stream-aligned enabler" blend of two other types.',
+    gotchas: [
+      'Enabling teams work temporarily in Collaboration mode; Platform teams provide a standing product via X-as-a-Service mode — blending the two creates real scheduling conflicts between coaching and on-call duty.',
+      'The main page\'s own theory gets the X-as-a-Service interaction mode right elsewhere — only its Quick Reference naming conflates the team types.',
+    ],
+  },
+  'devops/platform-engineering/the-space-framework-has-five-dimensions-not-one': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Platform Team Is Its Own Team Topologies Type', route: '/devops/platform-engineering/platform-team-is-its-own-team-topologies-type' },
+      { label: 'Cognitive Load Has Three Types — Platforms Target One', route: '/devops/platform-engineering/cognitive-load-has-three-types-platforms-target-one' },
+    ],
+    tip: 'SPACE stands for Satisfaction, Performance, Activity, Communication, and Efficiency — the framework\'s own principle is to measure across at least three dimensions, not just satisfaction.',
+    gotchas: [
+      'A platform tracking only a satisfaction survey can miss real problems (like flat golden-path adoption) visible only in the Activity dimension.',
+      'The main page\'s own other metrics (adoption rate, time to first deploy, support tickets) already map onto SPACE\'s other dimensions without naming them.',
+    ],
+  },
+  'devops/platform-engineering/cognitive-load-has-three-types-platforms-target-one': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'The SPACE Framework Has Five Dimensions, Not One', route: '/devops/platform-engineering/the-space-framework-has-five-dimensions-not-one' },
+      { label: 'Platform Engineering overview', route: '/devops/platform-engineering' },
+    ],
+    tip: 'Only extraneous cognitive load (tooling friction) should be eliminated — intrinsic load (real domain complexity) and germane load (productive learning) should be preserved, not stripped away alongside it.',
+    gotchas: [
+      'A platform that reduces decision count by auto-selecting infrastructure choices can silently remove germane load too, leaving new hires without the judgment to debug incidents later.',
+      'Replacing raw Kubernetes complexity with custom CRDs and a bespoke CLI is a same-category swap — extraneous load relocated, not eliminated.',
+    ],
+  },
   'devops/sre': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

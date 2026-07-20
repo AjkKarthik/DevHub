@@ -1272,6 +1272,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Kubernetes Secrets Are Base64, Not Encrypted, By Default', route: '/devops/environment-strategy/kubernetes-secrets-are-base64-not-encrypted-by-default' },
     { label: 'Kubernetes Has No Built-In Namespace TTL', route: '/devops/environment-strategy/kubernetes-has-no-built-in-namespace-ttl' },
   ],
+  'platform-engineering': [
+    { label: 'Platform Team Is Its Own Team Topologies Type', route: '/devops/platform-engineering/platform-team-is-its-own-team-topologies-type' },
+    { label: 'The SPACE Framework Has Five Dimensions, Not One', route: '/devops/platform-engineering/the-space-framework-has-five-dimensions-not-one' },
+    { label: 'Cognitive Load Has Three Types — Platforms Target One', route: '/devops/platform-engineering/cognitive-load-has-three-types-platforms-target-one' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
