@@ -35932,6 +35932,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A branching strategy should match team size and release cadence — GitFlow\'s heavier ceremony fits some release schedules better than others, not universally.',
     ],
   },
+  'devops/git-workflows/force-with-lease-isnt-foolproof-without-a-fresh-fetch': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Git Workflows overview', route: '/devops/git-workflows' },
+      { label: 'BREAKING CHANGE and ! Are Independent Signals', route: '/devops/git-workflows/breaking-change-and-bang-are-independent-signals' },
+    ],
+    tip: 'A bare --force-with-lease checks against your OWN local remote-tracking ref — a background auto-fetch (an IDE, a cron job) can silently update that ref and defeat the safety check entirely.',
+    gotchas: [
+      'The explicit form (--force-with-lease=<branch>:<sha>) compares against a SHA you name yourself, closing the gap the bare form leaves open.',
+      '--force-with-lease is still a real improvement over plain --force in the common case — this is one specific scenario where the bare form alone isn\'t enough.',
+    ],
+  },
+  'devops/git-workflows/breaking-change-and-bang-are-independent-signals': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: '--force-with-lease Isn’t Foolproof Without a Fresh Fetch', route: '/devops/git-workflows/force-with-lease-isnt-foolproof-without-a-fresh-fetch' },
+      { label: 'The 400-Line PR Limit Has a Speed Limit Attached', route: '/devops/git-workflows/the-400-line-pr-limit-has-a-speed-limit-attached' },
+    ],
+    tip: 'The Conventional Commits spec treats "!" and a "BREAKING CHANGE:" footer as independent signals — either one alone is fully valid and triggers the same major version bump.',
+    gotchas: [
+      'A footer-only breaking change is invisible in a "git log --oneline" scan — using "!" even alongside a full footer keeps breaking changes human-scannable.',
+      'semantic-release\'s commit-analyzer parses both forms identically — there\'s no automation reason to require both together.',
+    ],
+  },
+  'devops/git-workflows/the-400-line-pr-limit-has-a-speed-limit-attached': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'BREAKING CHANGE and ! Are Independent Signals', route: '/devops/git-workflows/breaking-change-and-bang-are-independent-signals' },
+      { label: 'Git Workflows overview', route: '/devops/git-workflows' },
+    ],
+    tip: 'The famous "400 lines" PR-size number comes from a real SmartBear/Cisco study that measured it TOGETHER with a review pace (under 500 LOC/hour) — a correctly-sized PR reviewed in 5 minutes doesn\'t get the study\'s own 70-90% defect-detection yield.',
+    gotchas: [
+      'A PR-size CI check alone enforces only half the finding — nothing stops reviewers from rubber-stamping a compliant PR in a few minutes.',
+      'A team serious about the review-effectiveness benefit needs some pace discipline alongside the size limit, not just the size limit.',
+    ],
+  },
   'devops/continuous-integration': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

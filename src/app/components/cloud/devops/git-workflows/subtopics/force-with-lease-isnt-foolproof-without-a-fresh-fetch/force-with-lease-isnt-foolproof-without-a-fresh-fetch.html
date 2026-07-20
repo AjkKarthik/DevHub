@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Git Workflows" topicRoute="/devops/git-workflows" subtopicLabel="The Lease's Blind Spot" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">--force-with-lease Isn't Foolproof Without a Fresh Fetch</h1>
+  <p class="page-subtitle">
+    The main page presents --force-with-lease as an absolute safety net — Git's own docs describe a specific
+    condition (a background auto-fetch) that silently defeats its protection.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Git 2.30+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic adds the one caveat Git's own docs attach to the main page's own "use --force-with-lease"
+      guidance. Back to the Git Workflows overview, or continue to whether ! and BREAKING CHANGE: need to
+      appear together.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Git Workflows"
+    topicRoute="/devops/git-workflows"
+    [next]="{ label: 'BREAKING CHANGE and ! Are Independent Signals', route: '/devops/git-workflows/breaking-change-and-bang-are-independent-signals' }"
+  />
+</div>

@@ -1277,6 +1277,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The SPACE Framework Has Five Dimensions, Not One', route: '/devops/platform-engineering/the-space-framework-has-five-dimensions-not-one' },
     { label: 'Cognitive Load Has Three Types — Platforms Target One', route: '/devops/platform-engineering/cognitive-load-has-three-types-platforms-target-one' },
   ],
+  'git-workflows': [
+    { label: '--force-with-lease Isn’t Foolproof Without a Fresh Fetch', route: '/devops/git-workflows/force-with-lease-isnt-foolproof-without-a-fresh-fetch' },
+    { label: 'BREAKING CHANGE and ! Are Independent Signals', route: '/devops/git-workflows/breaking-change-and-bang-are-independent-signals' },
+    { label: 'The 400-Line PR Limit Has a Speed Limit Attached', route: '/devops/git-workflows/the-400-line-pr-limit-has-a-speed-limit-attached' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

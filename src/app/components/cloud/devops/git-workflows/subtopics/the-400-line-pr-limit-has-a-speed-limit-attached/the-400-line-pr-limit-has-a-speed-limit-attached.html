@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Git Workflows" topicRoute="/devops/git-workflows" subtopicLabel="Size Isn't the Whole Study" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">The 400-Line PR Limit Has a Speed Limit Attached</h1>
+  <p class="page-subtitle">
+    The main page states "PRs over 400 lines have lower review effectiveness" as an isolated fact — the
+    actual Cisco/SmartBear study measured that size ceiling together with a 500 LOC/hour pace ceiling.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2006+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic traces the main page's own "400 lines" claim to its actual source and adds the half of
+      the finding the main page omits. Back to the Git Workflows overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Git Workflows"
+    topicRoute="/devops/git-workflows"
+    [prev]="{ label: 'BREAKING CHANGE and ! Are Independent Signals', route: '/devops/git-workflows/breaking-change-and-bang-are-independent-signals' }"
+  />
+</div>

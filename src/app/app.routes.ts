@@ -2905,7 +2905,12 @@ export const routes: Routes = [
       { path: 'the-space-framework-has-five-dimensions-not-one', loadComponent: () => import('./components/cloud/devops/platform-engineering/subtopics/the-space-framework-has-five-dimensions-not-one/the-space-framework-has-five-dimensions-not-one').then(m => m.TheSpaceFrameworkHasFiveDimensionsNotOneSubtopic) },
       { path: 'cognitive-load-has-three-types-platforms-target-one', loadComponent: () => import('./components/cloud/devops/platform-engineering/subtopics/cognitive-load-has-three-types-platforms-target-one/cognitive-load-has-three-types-platforms-target-one').then(m => m.CognitiveLoadHasThreeTypesPlatformsTargetOneSubtopic) },
     ] },
-    { path: 'git-workflows',          loadComponent: () => import('./components/cloud/devops/git-workflows/git-workflows').then(m => m.DevopsGitWorkflows) },
+    { path: 'git-workflows', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/git-workflows/git-workflows').then(m => m.DevopsGitWorkflows) },
+      { path: 'force-with-lease-isnt-foolproof-without-a-fresh-fetch', loadComponent: () => import('./components/cloud/devops/git-workflows/subtopics/force-with-lease-isnt-foolproof-without-a-fresh-fetch/force-with-lease-isnt-foolproof-without-a-fresh-fetch').then(m => m.ForceWithLeaseIsntFoolproofWithoutAFreshFetchSubtopic) },
+      { path: 'breaking-change-and-bang-are-independent-signals', loadComponent: () => import('./components/cloud/devops/git-workflows/subtopics/breaking-change-and-bang-are-independent-signals/breaking-change-and-bang-are-independent-signals').then(m => m.BreakingChangeAndBangAreIndependentSignalsSubtopic) },
+      { path: 'the-400-line-pr-limit-has-a-speed-limit-attached', loadComponent: () => import('./components/cloud/devops/git-workflows/subtopics/the-400-line-pr-limit-has-a-speed-limit-attached/the-400-line-pr-limit-has-a-speed-limit-attached').then(m => m.The400LinePrLimitHasASpeedLimitAttachedSubtopic) },
+    ] },
     { path: 'github-actions',         loadComponent: () => import('./components/cloud/devops/github-actions/github-actions').then(m => m.DevopsGithubActions) },
     { path: 'azure-pipelines',        loadComponent: () => import('./components/cloud/devops/azure-pipelines/azure-pipelines').then(m => m.DevopsAzurePipelines) },
     { path: 'jenkins',                loadComponent: () => import('./components/cloud/devops/jenkins/jenkins').then(m => m.DevopsJenkins) },

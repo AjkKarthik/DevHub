@@ -104,7 +104,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Source Control</p>
-      <a routerLink="/devops/git-workflows" routerLinkActive="active"><span class="nl-text">Git Workflows</span>@if(p.isDone('devops-git-workflows')){<span class="nl-done">✓</span>}@if(d('devops-git-workflows');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/git-workflows" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Git Workflows</span>
+        @if (p.isDone('devops-git-workflows')) {<span class="nl-done">✓</span>}
+        @if (d('devops-git-workflows'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('git-workflows')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('git-workflows')"
+                  (click)="toggleSubtopics('git-workflows', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('git-workflows'); as gitSubs) {
+        @if (isSubtopicsExpanded('git-workflows')) {
+          <div class="nav-subtopics">
+            @for (s of gitSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
