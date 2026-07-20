@@ -36157,6 +36157,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Secrets in a GitOps repo need special handling (sealed secrets, external secret operators) since the repo itself shouldn\'t contain plaintext credentials.',
     ],
   },
+  'devops/gitops/retry-backoff-is-exponential-not-linear': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'GitOps overview', route: '/devops/gitops' },
+      { label: 'Flux’s Interval Is a Drift Fallback', route: '/devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger' },
+    ],
+    tip: 'ArgoCD\'s retry.backoff.factor compounds the wait time between attempts (5s, 10s, 20s...) rather than repeating a fixed delay — backoff.maxDuration caps how large any single wait can grow, independent of the retry limit itself.',
+    gotchas: [
+      'A higher retry limit without maxDuration set can produce individual waits that grow surprisingly large purely from repeated doubling.',
+      'limit controls how many retries happen; backoff controls how long each wait between them is — they\'re independent settings.',
+    ],
+  },
+  'devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Retry Backoff Is Exponential, Not Linear', route: '/devops/gitops/retry-backoff-is-exponential-not-linear' },
+      { label: 'Sync Waves Wait for Healthy, Not Just Applied', route: '/devops/gitops/sync-waves-wait-for-healthy-not-just-applied' },
+    ],
+    tip: 'A Git push is handled instantly via a Kubernetes event, not gated by the Kustomization\'s own periodic interval — that interval is really the fallback check that catches drift Flux was never notified about, like a manual kubectl edit.',
+    gotchas: [
+      'Shortening a Kustomization\'s interval mostly speeds up drift detection, not Git-triggered deploy latency, which is already event-driven.',
+      'GitRepository.interval and Kustomization.interval govern two separate controllers with separate jobs, not one combined "Flux interval."',
+    ],
+  },
+  'devops/gitops/sync-waves-wait-for-healthy-not-just-applied': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Flux’s Interval Is a Drift Fallback', route: '/devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger' },
+      { label: 'GitOps overview', route: '/devops/gitops' },
+    ],
+    tip: 'ArgoCD advances to the next sync wave only once the current wave is in-sync AND healthy — for a ConfigMap that\'s instant, but for a Job or Deployment, health can lag well behind the moment the resource was merely created.',
+    gotchas: [
+      'A migration Job placed in an earlier wave is correctly waited on until it COMPLETES, not just starts — this is what makes migration-before-app ordering actually safe.',
+      'Resources within the same wave are ordered by kind then name, not by their order in the source manifest.',
+    ],
+  },
   'devops/kubernetes-deployments': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

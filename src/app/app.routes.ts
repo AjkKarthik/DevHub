@@ -2941,7 +2941,12 @@ export const routes: Routes = [
       { path: 'awk-begin-exit-is-how-bash-compares-floats', loadComponent: () => import('./components/cloud/devops/continuous-delivery/subtopics/awk-begin-exit-is-how-bash-compares-floats/awk-begin-exit-is-how-bash-compares-floats').then(m => m.AwkBeginExitIsHowBashComparesFloatsSubtopic) },
       { path: 'phase-3-timing-is-about-references-not-elapsed-time', loadComponent: () => import('./components/cloud/devops/continuous-delivery/subtopics/phase-3-timing-is-about-references-not-elapsed-time/phase-3-timing-is-about-references-not-elapsed-time').then(m => m.Phase3TimingIsAboutReferencesNotElapsedTimeSubtopic) },
     ]},
-    { path: 'gitops',                 loadComponent: () => import('./components/cloud/devops/gitops/gitops').then(m => m.DevopsGitops) },
+    { path: 'gitops', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/gitops/gitops').then(m => m.DevopsGitops) },
+      { path: 'retry-backoff-is-exponential-not-linear', loadComponent: () => import('./components/cloud/devops/gitops/subtopics/retry-backoff-is-exponential-not-linear/retry-backoff-is-exponential-not-linear').then(m => m.RetryBackoffIsExponentialNotLinearSubtopic) },
+      { path: 'flux-interval-is-a-drift-fallback-not-a-git-trigger', loadComponent: () => import('./components/cloud/devops/gitops/subtopics/flux-interval-is-a-drift-fallback-not-a-git-trigger/flux-interval-is-a-drift-fallback-not-a-git-trigger').then(m => m.FluxIntervalIsADriftFallbackNotAGitTriggerSubtopic) },
+      { path: 'sync-waves-wait-for-healthy-not-just-applied', loadComponent: () => import('./components/cloud/devops/gitops/subtopics/sync-waves-wait-for-healthy-not-just-applied/sync-waves-wait-for-healthy-not-just-applied').then(m => m.SyncWavesWaitForHealthyNotJustAppliedSubtopic) },
+    ]},
     { path: 'artifact-management',    loadComponent: () => import('./components/cloud/devops/artifact-management/artifact-management').then(m => m.DevopsArtifactManagement) },
     { path: 'docker-cicd',            loadComponent: () => import('./components/cloud/devops/docker-cicd/docker-cicd').then(m => m.DevopsDockerCicd) },
     { path: 'kubernetes-deployments', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/kubernetes-deployments').then(m => m.DevopsKubernetesDeployments) },

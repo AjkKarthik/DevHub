@@ -1307,6 +1307,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'awk’s BEGIN-exit Idiom for Comparing Floats', route: '/devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats' },
     { label: 'Phase 3’s Timing Is About References, Not Elapsed Time', route: '/devops/continuous-delivery/phase-3-timing-is-about-references-not-elapsed-time' },
   ],
+  'gitops': [
+    { label: 'Retry Backoff Is Exponential, Not Linear', route: '/devops/gitops/retry-backoff-is-exponential-not-linear' },
+    { label: 'Flux’s Interval Is a Drift Fallback', route: '/devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger' },
+    { label: 'Sync Waves Wait for Healthy, Not Just Applied', route: '/devops/gitops/sync-waves-wait-for-healthy-not-just-applied' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

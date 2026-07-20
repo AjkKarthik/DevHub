@@ -228,7 +228,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/devops/gitops" routerLinkActive="active"><span class="nl-text">GitOps (ArgoCD &amp; Flux)</span>@if(p.isDone('devops-gitops')){<span class="nl-done">✓</span>}@if(d('devops-gitops');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/gitops" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">GitOps (ArgoCD &amp; Flux)</span>
+        @if (p.isDone('devops-gitops')) {<span class="nl-done">✓</span>}
+        @if (d('devops-gitops'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('gitops')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gitops')"
+                  (click)="toggleSubtopics('gitops', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gitops'); as gitopsSubs) {
+        @if (isSubtopicsExpanded('gitops')) {
+          <div class="nav-subtopics">
+            @for (s of gitopsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/devops/artifact-management" routerLinkActive="active"><span class="nl-text">Artifact Management</span>@if(p.isDone('devops-artifact-management')){<span class="nl-done">✓</span>}@if(d('devops-artifact-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 
