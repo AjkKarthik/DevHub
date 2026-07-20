@@ -2935,7 +2935,12 @@ export const routes: Routes = [
       { path: 'new-code-quality-gates-vs-global-coverage-thresholds', loadComponent: () => import('./components/cloud/devops/continuous-integration/subtopics/new-code-quality-gates-vs-global-coverage-thresholds/new-code-quality-gates-vs-global-coverage-thresholds').then(m => m.NewCodeQualityGatesVsGlobalCoverageThresholdsSubtopic) },
       { path: 'merge-multiple-flattens-artifact-subdirectories', loadComponent: () => import('./components/cloud/devops/continuous-integration/subtopics/merge-multiple-flattens-artifact-subdirectories/merge-multiple-flattens-artifact-subdirectories').then(m => m.MergeMultipleFlattensArtifactSubdirectoriesSubtopic) },
     ]},
-    { path: 'continuous-delivery',    loadComponent: () => import('./components/cloud/devops/continuous-delivery/continuous-delivery').then(m => m.DevopsContinuousDelivery) },
+    { path: 'continuous-delivery', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/continuous-delivery/continuous-delivery').then(m => m.DevopsContinuousDelivery) },
+      { path: 'service-selector-switch-isnt-actually-instant', loadComponent: () => import('./components/cloud/devops/continuous-delivery/subtopics/service-selector-switch-isnt-actually-instant/service-selector-switch-isnt-actually-instant').then(m => m.ServiceSelectorSwitchIsntActuallyInstantSubtopic) },
+      { path: 'awk-begin-exit-is-how-bash-compares-floats', loadComponent: () => import('./components/cloud/devops/continuous-delivery/subtopics/awk-begin-exit-is-how-bash-compares-floats/awk-begin-exit-is-how-bash-compares-floats').then(m => m.AwkBeginExitIsHowBashComparesFloatsSubtopic) },
+      { path: 'phase-3-timing-is-about-references-not-elapsed-time', loadComponent: () => import('./components/cloud/devops/continuous-delivery/subtopics/phase-3-timing-is-about-references-not-elapsed-time/phase-3-timing-is-about-references-not-elapsed-time').then(m => m.Phase3TimingIsAboutReferencesNotElapsedTimeSubtopic) },
+    ]},
     { path: 'gitops',                 loadComponent: () => import('./components/cloud/devops/gitops/gitops').then(m => m.DevopsGitops) },
     { path: 'artifact-management',    loadComponent: () => import('./components/cloud/devops/artifact-management/artifact-management').then(m => m.DevopsArtifactManagement) },
     { path: 'docker-cicd',            loadComponent: () => import('./components/cloud/devops/docker-cicd/docker-cicd').then(m => m.DevopsDockerCicd) },

@@ -36034,6 +36034,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Feature flags let code be deployed without being immediately user-visible, decoupling deployment from release — a key enabler of safe continuous delivery.',
     ],
   },
+  'devops/continuous-delivery/service-selector-switch-isnt-actually-instant': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Continuous Delivery overview', route: '/devops/continuous-delivery' },
+      { label: 'awk’s BEGIN-exit Idiom for Comparing Floats', route: '/devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats' },
+    ],
+    tip: 'kube-proxy syncs each node\'s routing rules on its own schedule after a Service selector changes — the API update is atomic, but the actual traffic cutover briefly runs through a node-by-node sync window, not a single instant.',
+    gotchas: [
+      'A brief mixed-traffic window after a Blue/Green switch is expected Kubernetes behavior, not a sign the deployment tooling is broken.',
+      'A rollback patch goes through the exact same sync process as the forward switch — it isn\'t inherently faster or more instant.',
+    ],
+  },
+  'devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'The Service Selector Switch Isn’t Actually Instant', route: '/devops/continuous-delivery/service-selector-switch-isnt-actually-instant' },
+      { label: 'Phase 3’s Timing Is About References, Not Elapsed Time', route: '/devops/continuous-delivery/phase-3-timing-is-about-references-not-elapsed-time' },
+    ],
+    tip: 'bash\'s own [ ]/-gt comparison expects integer operands — a realistic decimal error rate needs awk\'s native floating-point comparison instead, wrapped in a BEGIN block purely as an arithmetic calculator.',
+    gotchas: [
+      'The ! in exit !(...) is load-bearing — it reconciles awk\'s "true is 1" convention with bash\'s "success is 0" convention, not decorative negation.',
+      'Removing that ! silently inverts which branch of the surrounding if statement runs, for every value, not just edge cases.',
+    ],
+  },
+  'devops/continuous-delivery/phase-3-timing-is-about-references-not-elapsed-time': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'awk’s BEGIN-exit Idiom for Comparing Floats', route: '/devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats' },
+      { label: 'Continuous Delivery overview', route: '/devops/continuous-delivery' },
+    ],
+    tip: 'Elapsed calendar time is a proxy for expand-contract\'s Phase 3 safety, not the actual criterion — the real requirement is zero remaining references to the old column, checkable directly via a codebase-wide search.',
+    gotchas: [
+      'An infrequently-run job (quarterly reports, month-end batch scripts) may not execute even once during a multi-week waiting period, hiding a real dependency.',
+      'The reference search needs to cover reporting/ETL tools and other services, not just the actively-migrating application\'s own repository.',
+    ],
+  },
   'devops/environment-strategy': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

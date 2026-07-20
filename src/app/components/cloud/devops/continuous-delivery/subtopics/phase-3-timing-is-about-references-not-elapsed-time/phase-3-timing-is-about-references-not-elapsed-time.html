@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Continuous Delivery" topicRoute="/devops/continuous-delivery" subtopicLabel="Phase 3’s Timing Is About References, Not Elapsed Time" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Phase 3's Timing Is About References, Not Elapsed Time</h1>
+  <p class="page-subtitle">
+    The main page says the old column is dropped "weeks later" — but elapsed time is only a proxy for the real
+    criterion: every possible reference to that column has actually stopped.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own expand-contract timing into a direct, checkable criterion. Back
+      to the awk float-comparison idiom, or to the Continuous Delivery overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Continuous Delivery"
+    topicRoute="/devops/continuous-delivery"
+    [prev]="{ label: 'awk’s BEGIN-exit Idiom for Comparing Floats', route: '/devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats' }"
+  />
+</div>

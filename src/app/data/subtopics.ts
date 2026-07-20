@@ -1302,6 +1302,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'New-Code Quality Gates vs. Global Coverage Thresholds', route: '/devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds' },
     { label: 'merge-multiple Flattens Artifact Subdirectories', route: '/devops/continuous-integration/merge-multiple-flattens-artifact-subdirectories' },
   ],
+  'continuous-delivery': [
+    { label: 'The Service Selector Switch Isn’t Actually Instant', route: '/devops/continuous-delivery/service-selector-switch-isnt-actually-instant' },
+    { label: 'awk’s BEGIN-exit Idiom for Comparing Floats', route: '/devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats' },
+    { label: 'Phase 3’s Timing Is About References, Not Elapsed Time', route: '/devops/continuous-delivery/phase-3-timing-is-about-references-not-elapsed-time' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
