@@ -1287,6 +1287,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'workflow_run Grants Secrets the Trigger Didn’t Have', route: '/devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have' },
     { label: 'paths-ignore Can Permanently Block a Required Check', route: '/devops/github-actions/paths-ignore-can-permanently-block-a-required-check' },
   ],
+  'azure-pipelines': [
+    { label: 'Compile-Time Expressions, Not Runtime', route: '/devops/azure-pipelines/curly-double-braces-are-compile-time-not-runtime' },
+    { label: 'A Custom condition: Overwrites the Default', route: '/devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default' },
+    { label: 'Stages Depend on Whatever Came Right Before Them', route: '/devops/azure-pipelines/stages-depend-on-whatever-stage-came-right-before-them' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

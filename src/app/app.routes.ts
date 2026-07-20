@@ -2917,7 +2917,12 @@ export const routes: Routes = [
       { path: 'workflow-run-grants-secrets-the-trigger-didnt-have', loadComponent: () => import('./components/cloud/devops/github-actions/subtopics/workflow-run-grants-secrets-the-trigger-didnt-have/workflow-run-grants-secrets-the-trigger-didnt-have').then(m => m.WorkflowRunGrantsSecretsTheTriggerDidntHaveSubtopic) },
       { path: 'paths-ignore-can-permanently-block-a-required-check', loadComponent: () => import('./components/cloud/devops/github-actions/subtopics/paths-ignore-can-permanently-block-a-required-check/paths-ignore-can-permanently-block-a-required-check').then(m => m.PathsIgnoreCanPermanentlyBlockARequiredCheckSubtopic) },
     ] },
-    { path: 'azure-pipelines',        loadComponent: () => import('./components/cloud/devops/azure-pipelines/azure-pipelines').then(m => m.DevopsAzurePipelines) },
+    { path: 'azure-pipelines', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/azure-pipelines/azure-pipelines').then(m => m.DevopsAzurePipelines) },
+      { path: 'curly-double-braces-are-compile-time-not-runtime', loadComponent: () => import('./components/cloud/devops/azure-pipelines/subtopics/curly-double-braces-are-compile-time-not-runtime/curly-double-braces-are-compile-time-not-runtime').then(m => m.CurlyDoubleBracesAreCompileTimeNotRuntimeSubtopic) },
+      { path: 'custom-condition-overwrites-not-adds-to-the-default', loadComponent: () => import('./components/cloud/devops/azure-pipelines/subtopics/custom-condition-overwrites-not-adds-to-the-default/custom-condition-overwrites-not-adds-to-the-default').then(m => m.CustomConditionOverwritesNotAddsToTheDefaultSubtopic) },
+      { path: 'stages-depend-on-whatever-stage-came-right-before-them', loadComponent: () => import('./components/cloud/devops/azure-pipelines/subtopics/stages-depend-on-whatever-stage-came-right-before-them/stages-depend-on-whatever-stage-came-right-before-them').then(m => m.StagesDependOnWhateverStageCameRightBeforeThemSubtopic) },
+    ]},
     { path: 'jenkins',                loadComponent: () => import('./components/cloud/devops/jenkins/jenkins').then(m => m.DevopsJenkins) },
     { path: 'continuous-integration', loadComponent: () => import('./components/cloud/devops/continuous-integration/continuous-integration').then(m => m.DevopsContinuousIntegration) },
     { path: 'continuous-delivery',    loadComponent: () => import('./components/cloud/devops/continuous-delivery/continuous-delivery').then(m => m.DevopsContinuousDelivery) },

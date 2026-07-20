@@ -36196,6 +36196,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'YAML pipelines have a steeper initial learning curve than the Classic editor\'s drag-and-drop interface, but pay off in long-term maintainability.',
     ],
   },
+  'devops/azure-pipelines/curly-double-braces-are-compile-time-not-runtime': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Azure Pipelines overview', route: '/devops/azure-pipelines' },
+      { label: 'A Custom condition: Overwrites the Default', route: '/devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default' },
+    ],
+    tip: 'Compile time, queue time, and runtime aren\'t interchangeable labels for "when a value gets substituted" — each has a genuinely different scope of what\'s visible, which is why a template\'s own parameters only ever work inside ${{ }}.',
+    gotchas: [
+      'A runtime expression ($[]) has no access to template parameters at all — parameter substitution is fundamentally a compile-time-only operation.',
+      'The queue-time macro ($()) doesn\'t care how a variable\'s value was produced — it happily reads a value that itself came from a compile-time or runtime expression.',
+    ],
+  },
+  'devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Compile-Time Expressions, Not Runtime', route: '/devops/azure-pipelines/curly-double-braces-are-compile-time-not-runtime' },
+      { label: 'Stages Depend on Whatever Came Right Before Them', route: '/devops/azure-pipelines/stages-depend-on-whatever-stage-came-right-before-them' },
+    ],
+    tip: 'Microsoft\'s own recommended pattern is and(succeeded(), custom_condition) for exactly this reason — writing a condition without succeeded() silently discards the implicit "previous stage must succeed" check, not adds a redundant one.',
+    gotchas: [
+      'A stage without a job status check function (succeeded/failed/always) in its condition can keep running even after the whole build is canceled.',
+      'This is a general Azure Pipelines rule, not specific to stages — the same overwrite happens on job and step conditions too.',
+    ],
+  },
+  'devops/azure-pipelines/stages-depend-on-whatever-stage-came-right-before-them': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'A Custom condition: Overwrites the Default', route: '/devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default' },
+      { label: 'Azure Pipelines overview', route: '/devops/azure-pipelines' },
+    ],
+    tip: 'dependsOn: [] is the explicit escape hatch for genuine parallelism — reordering stage blocks in the YAML never produces parallel execution, it only changes which single stage the implicit dependency points at.',
+    gotchas: [
+      'Moving a stage block to a different position in the file silently changes its implicit dependency, even if no dependsOn key is touched.',
+      'Fan-out/fan-in graphs (two stages depending on one, a later stage depending on both) are only reachable by writing every dependsOn out explicitly.',
+    ],
+  },
   'devops/incident-response': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

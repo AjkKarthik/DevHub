@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Pipelines" topicRoute="/devops/azure-pipelines" subtopicLabel="A Custom condition: Overwrites the Default" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">A Custom condition: Overwrites the Default, It Doesn't Add To It</h1>
+  <p class="page-subtitle">
+    The main page's own quiz condition writes <code>and(succeeded(), ...)</code> without explaining that the
+    <code>succeeded()</code> half isn't optional caution — it's replacing a check that a bare condition silently loses.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own quiz condition into a documented, load-bearing rule rather than
+      apparent redundancy. Back to the Azure Pipelines overview, or continue to how stages actually pick their
+      default dependency, since both topics shape whether a deploy stage runs when you don't expect it to.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Azure Pipelines"
+    topicRoute="/devops/azure-pipelines"
+    [prev]="{ label: 'Compile-Time Expressions, Not Runtime', route: '/devops/azure-pipelines/curly-double-braces-are-compile-time-not-runtime' }"
+    [next]="{ label: 'Stages Depend on Whatever Came Right Before Them', route: '/devops/azure-pipelines/stages-depend-on-whatever-stage-came-right-before-them' }"
+  />
+</div>
