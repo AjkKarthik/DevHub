@@ -1322,6 +1322,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'type=semver Never Fires Without a Git Tag Push', route: '/devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push' },
     { label: 'SBOM Lists Contents, Provenance Describes the Build', route: '/devops/docker-cicd/sbom-lists-contents-provenance-describes-the-build' },
   ],
+  'kubernetes-deployments': [
+    { label: 'atomic Already Implies wait in Helm Upgrade', route: '/devops/kubernetes-deployments/atomic-already-implies-wait-in-helm-upgrade' },
+    { label: 'namePrefix Actually Renames the Live Resource', route: '/devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource' },
+    { label: 'Pause With No Duration Waits Forever', route: '/devops/kubernetes-deployments/pause-with-no-duration-waits-forever-not-briefly' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

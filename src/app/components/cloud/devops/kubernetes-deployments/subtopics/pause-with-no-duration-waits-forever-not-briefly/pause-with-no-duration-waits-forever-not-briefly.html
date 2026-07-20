@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Deployments" topicRoute="/devops/kubernetes-deployments" subtopicLabel="Pause With No Duration Waits Forever" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Pause With No Duration Waits Forever, Not Briefly</h1>
+  <p class="page-subtitle">
+    The main page's own canary steps only ever show pause with a duration — omitting it entirely produces an
+    indefinite, manual-promotion-required pause, not a quick default wait.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills in a variant of the main page's own pause step it never demonstrates. Back to why
+      namePrefix genuinely renames the live resource, or to the Kubernetes Deployments overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Deployments"
+    topicRoute="/devops/kubernetes-deployments"
+    [prev]="{ label: 'namePrefix Actually Renames the Live Resource', route: '/devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource' }"
+  />
+</div>

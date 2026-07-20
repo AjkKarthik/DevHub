@@ -2959,7 +2959,12 @@ export const routes: Routes = [
       { path: 'type-semver-never-fires-without-a-git-tag-push', loadComponent: () => import('./components/cloud/devops/docker-cicd/subtopics/type-semver-never-fires-without-a-git-tag-push/type-semver-never-fires-without-a-git-tag-push').then(m => m.TypeSemverNeverFiresWithoutAGitTagPushSubtopic) },
       { path: 'sbom-lists-contents-provenance-describes-the-build', loadComponent: () => import('./components/cloud/devops/docker-cicd/subtopics/sbom-lists-contents-provenance-describes-the-build/sbom-lists-contents-provenance-describes-the-build').then(m => m.SbomListsContentsProvenanceDescribesTheBuildSubtopic) },
     ]},
-    { path: 'kubernetes-deployments', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/kubernetes-deployments').then(m => m.DevopsKubernetesDeployments) },
+    { path: 'kubernetes-deployments', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/kubernetes-deployments').then(m => m.DevopsKubernetesDeployments) },
+      { path: 'atomic-already-implies-wait-in-helm-upgrade', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/subtopics/atomic-already-implies-wait-in-helm-upgrade/atomic-already-implies-wait-in-helm-upgrade').then(m => m.AtomicAlreadyImpliesWaitInHelmUpgradeSubtopic) },
+      { path: 'nameprefix-actually-renames-the-live-resource', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/subtopics/nameprefix-actually-renames-the-live-resource/nameprefix-actually-renames-the-live-resource').then(m => m.NameprefixActuallyRenamesTheLiveResourceSubtopic) },
+      { path: 'pause-with-no-duration-waits-forever-not-briefly', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/subtopics/pause-with-no-duration-waits-forever-not-briefly/pause-with-no-duration-waits-forever-not-briefly').then(m => m.PauseWithNoDurationWaitsForeverNotBrieflySubtopic) },
+    ]},
     { path: 'iac',                    loadComponent: () => import('./components/cloud/devops/iac/iac').then(m => m.DevopsIac) },
     { path: 'monitoring',             loadComponent: () => import('./components/cloud/devops/monitoring/monitoring').then(m => m.DevopsMonitoring) },
     { path: 'logging',                loadComponent: () => import('./components/cloud/devops/logging/logging').then(m => m.DevopsLogging) },

@@ -36205,6 +36205,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A deployment with no resource limits set can starve other workloads on a shared node during a rollout that temporarily runs both old and new pod versions.',
     ],
   },
+  'devops/kubernetes-deployments/atomic-already-implies-wait-in-helm-upgrade': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Deployments overview', route: '/devops/kubernetes-deployments' },
+      { label: 'namePrefix Actually Renames the Live Resource', route: '/devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource' },
+    ],
+    tip: 'Helm\'s own docs state --wait is set automatically the moment --atomic is used — the rollback mechanism depends on the same readiness-waiting behavior, so passing both flags explicitly is harmless but redundant.',
+    gotchas: [
+      'Dropping --atomic while keeping --wait removes automatic rollback-on-failure entirely, even though the waiting itself still happens — the two flags aren\'t interchangeable.',
+      '--timeout bounds how long the wait-then-rollback process is allowed to take, independent of whether --wait was passed explicitly.',
+    ],
+  },
+  'devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'atomic Already Implies wait in Helm Upgrade', route: '/devops/kubernetes-deployments/atomic-already-implies-wait-in-helm-upgrade' },
+      { label: 'Pause With No Duration Waits Forever', route: '/devops/kubernetes-deployments/pause-with-no-duration-waits-forever-not-briefly' },
+    ],
+    tip: 'Kustomize\'s namePrefix rewrites metadata.name on the live resource — the base manifest\'s own declared name never actually exists as a live object once an overlay with namePrefix is applied.',
+    gotchas: [
+      'Any command referencing the resource by name after applying through the overlay must use the prefixed name, or it fails with NotFound.',
+      'namePrefix does not automatically affect Pod template labels — that\'s a separate, independently-controlled transformation.',
+    ],
+  },
+  'devops/kubernetes-deployments/pause-with-no-duration-waits-forever-not-briefly': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'namePrefix Actually Renames the Live Resource', route: '/devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource' },
+      { label: 'Kubernetes Deployments overview', route: '/devops/kubernetes-deployments' },
+    ],
+    tip: 'An Argo Rollouts pause step with no duration field waits indefinitely, per Argo Rollouts\' own docs — there\'s no implicit timeout, only an explicit promote command can move it forward.',
+    gotchas: [
+      'A rollout stuck at a pause: {} step for days is expected behavior, not a bug, if nobody has run the promote command yet.',
+      'Mixing timed pauses (automatic) with one final untimed pause (a genuine human gate) is a standard, documented canary pattern.',
+    ],
+  },
   'devops/docker-cicd': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
