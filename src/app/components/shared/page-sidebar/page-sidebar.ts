@@ -36591,6 +36591,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Sensitive data (passwords, tokens) must never be logged — a common compliance and security failure mode across CI/CD pipelines too, not just application code.',
     ],
   },
+  'devops/logging/merge-log-vs-k8s-logging-parser-are-different-mechanisms': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Logging Pipelines overview', route: '/devops/logging' },
+      { label: 'Label_Keys traceId Is a Loki Cardinality Explosion', route: '/devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion' },
+    ],
+    tip: 'Merge_Log is a filter-wide default applied to every pod automatically; K8S-Logging.Parser is a per-pod, annotation-based opt-in to a different named parser — they operate at genuinely different scopes, not two versions of the same idea.',
+    gotchas: [
+      'One pod behaving differently from the rest of the cluster points at that pod\'s own annotations, not the shared filter config.',
+      'K8S-Logging.Parser requires two separate gates: the filter option enabled AND the pod\'s own annotation naming an already-registered parser.',
+    ],
+  },
+  'devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Merge_Log vs. K8S-Logging.Parser', route: '/devops/logging/merge-log-vs-k8s-logging-parser-are-different-mechanisms' },
+      { label: 'ILM min_age Counts From Rollover, Not Creation', route: '/devops/logging/ilm-min-age-counts-from-rollover-not-creation' },
+    ],
+    tip: 'Loki\'s own docs name trace IDs directly as a value that should never be a label — each unique value creates a new stream, the same cardinality-explosion failure mode Prometheus suffers from a user_id label.',
+    gotchas: [
+      'A Loki cardinality problem shows up as disproportionate index/storage overhead, not necessarily a rise in actual log volume.',
+      'Structured metadata (or plain | json filtering on log content) is the documented alternative for high-cardinality fields that still need to be searchable.',
+    ],
+  },
+  'devops/logging/ilm-min-age-counts-from-rollover-not-creation': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Label_Keys traceId Is a Loki Cardinality Explosion', route: '/devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion' },
+      { label: 'Logging Pipelines overview', route: '/devops/logging' },
+    ],
+    tip: 'Elastic\'s own docs are explicit: once an index rolls over, every later phase\'s min_age counts from the rollover date, not the index\'s original creation date — so two indices under the same policy can reach the same phase at genuinely different total ages.',
+    gotchas: [
+      'Calculating "when will this log be deleted" by adding min_age to the original write date silently assumes rollover and creation happened at the same instant.',
+      'The _ilm/explain API reports an index\'s current phase and rollover-relative age directly, more reliable than manual calculation.',
+    ],
+  },
   'devops/devsecops': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

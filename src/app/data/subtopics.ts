@@ -1337,6 +1337,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'group_wait, group_interval, repeat_interval Are Different Timers', route: '/devops/monitoring/group-wait-interval-repeat-interval-are-different-timers' },
     { label: 'histogram_quantile Accuracy Depends on Bucket Boundaries', route: '/devops/monitoring/histogram-quantile-accuracy-depends-on-bucket-boundaries' },
   ],
+  // NOTE: 'logging' bare key already used by the Node.js hub (/node/logging) — hub-prefixed.
+  'devops-logging': [
+    { label: 'Merge_Log vs. K8S-Logging.Parser', route: '/devops/logging/merge-log-vs-k8s-logging-parser-are-different-mechanisms' },
+    { label: 'Label_Keys traceId Is a Loki Cardinality Explosion', route: '/devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion' },
+    { label: 'ILM min_age Counts From Rollover, Not Creation', route: '/devops/logging/ilm-min-age-counts-from-rollover-not-creation' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

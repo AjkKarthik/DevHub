@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Logging Pipelines" topicRoute="/devops/logging" subtopicLabel="Merge_Log vs. K8S-Logging.Parser" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Merge_Log vs. K8S-Logging.Parser Are Different Mechanisms</h1>
+  <p class="page-subtitle">
+    The main page's own Fluent Bit filter sets both options together with no distinction — one is a filter-wide
+    default for every pod, the other is a per-pod, annotation-based opt-in to a different named parser.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic distinguishes two Fluent Bit options the main page's own code tab sets together without
+      contrast. Back to the Logging Pipelines overview, or continue to why promoting traceId into a Loki label is
+      a real cardinality risk.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging Pipelines"
+    topicRoute="/devops/logging"
+    [next]="{ label: 'Label_Keys traceId Is a Loki Cardinality Explosion', route: '/devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion' }"
+  />
+</div>

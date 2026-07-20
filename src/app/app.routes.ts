@@ -2977,7 +2977,12 @@ export const routes: Routes = [
       { path: 'group-wait-interval-repeat-interval-are-different-timers', loadComponent: () => import('./components/cloud/devops/monitoring/subtopics/group-wait-interval-repeat-interval-are-different-timers/group-wait-interval-repeat-interval-are-different-timers').then(m => m.GroupWaitIntervalRepeatIntervalAreDifferentTimersSubtopic) },
       { path: 'histogram-quantile-accuracy-depends-on-bucket-boundaries', loadComponent: () => import('./components/cloud/devops/monitoring/subtopics/histogram-quantile-accuracy-depends-on-bucket-boundaries/histogram-quantile-accuracy-depends-on-bucket-boundaries').then(m => m.HistogramQuantileAccuracyDependsOnBucketBoundariesSubtopic) },
     ]},
-    { path: 'logging',                loadComponent: () => import('./components/cloud/devops/logging/logging').then(m => m.DevopsLogging) },
+    { path: 'logging', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/logging/logging').then(m => m.DevopsLogging) },
+      { path: 'merge-log-vs-k8s-logging-parser-are-different-mechanisms', loadComponent: () => import('./components/cloud/devops/logging/subtopics/merge-log-vs-k8s-logging-parser-are-different-mechanisms/merge-log-vs-k8s-logging-parser-are-different-mechanisms').then(m => m.MergeLogVsK8sLoggingParserAreDifferentMechanismsSubtopic) },
+      { path: 'label-keys-traceid-is-a-loki-cardinality-explosion', loadComponent: () => import('./components/cloud/devops/logging/subtopics/label-keys-traceid-is-a-loki-cardinality-explosion/label-keys-traceid-is-a-loki-cardinality-explosion').then(m => m.LabelKeysTraceidIsALokiCardinalityExplosionSubtopic) },
+      { path: 'ilm-min-age-counts-from-rollover-not-creation', loadComponent: () => import('./components/cloud/devops/logging/subtopics/ilm-min-age-counts-from-rollover-not-creation/ilm-min-age-counts-from-rollover-not-creation').then(m => m.IlmMinAgeCountsFromRolloverNotCreationSubtopic) },
+    ]},
     { path: 'incident-response',      loadComponent: () => import('./components/cloud/devops/incident-response/incident-response').then(m => m.DevopsIncidentResponse) },
     { path: 'devsecops',              loadComponent: () => import('./components/cloud/devops/devsecops/devsecops').then(m => m.DevopsDevsecops) },
     { path: 'release-management',     loadComponent: () => import('./components/cloud/devops/release-management/release-management').then(m => m.DevopsReleaseManagement) },

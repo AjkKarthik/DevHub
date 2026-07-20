@@ -360,7 +360,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/devops/logging" routerLinkActive="active"><span class="nl-text">Logging Pipelines</span>@if(p.isDone('devops-logging')){<span class="nl-done">✓</span>}@if(d('devops-logging');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/logging" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Logging Pipelines</span>
+        @if (p.isDone('devops-logging')) {<span class="nl-done">✓</span>}
+        @if (d('devops-logging'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('devops-logging')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('devops-logging')"
+                  (click)="toggleSubtopics('devops-logging', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('devops-logging'); as logSubs) {
+        @if (isSubtopicsExpanded('devops-logging')) {
+          <div class="nav-subtopics">
+            @for (s of logSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/devops/incident-response" routerLinkActive="active"><span class="nl-text">On-call &amp; Incident Response</span>@if(p.isDone('devops-incident-response')){<span class="nl-done">✓</span>}@if(d('devops-incident-response');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 
