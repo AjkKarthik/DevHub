@@ -2893,7 +2893,12 @@ export const routes: Routes = [
       { path: 'littles-law-assumes-a-steady-state', loadComponent: () => import('./components/cloud/devops/sdlc-agile/subtopics/littles-law-assumes-a-steady-state/littles-law-assumes-a-steady-state').then(m => m.LittlesLawAssumesASteadyStateSubtopic) },
       { path: 'cumulative-flow-diagrams-reveal-the-bottleneck', loadComponent: () => import('./components/cloud/devops/sdlc-agile/subtopics/cumulative-flow-diagrams-reveal-the-bottleneck/cumulative-flow-diagrams-reveal-the-bottleneck').then(m => m.CumulativeFlowDiagramsRevealTheBottleneckSubtopic) },
     ] },
-    { path: 'environment-strategy',   loadComponent: () => import('./components/cloud/devops/environment-strategy/environment-strategy').then(m => m.DevopsEnvironmentStrategy) },
+    { path: 'environment-strategy', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/environment-strategy/environment-strategy').then(m => m.DevopsEnvironmentStrategy) },
+      { path: 'terraform-workspaces-arent-meant-for-environment-isolation', loadComponent: () => import('./components/cloud/devops/environment-strategy/subtopics/terraform-workspaces-arent-meant-for-environment-isolation/terraform-workspaces-arent-meant-for-environment-isolation').then(m => m.TerraformWorkspacesArentMeantForEnvironmentIsolationSubtopic) },
+      { path: 'kubernetes-secrets-are-base64-not-encrypted-by-default', loadComponent: () => import('./components/cloud/devops/environment-strategy/subtopics/kubernetes-secrets-are-base64-not-encrypted-by-default/kubernetes-secrets-are-base64-not-encrypted-by-default').then(m => m.KubernetesSecretsAreBase64NotEncryptedByDefaultSubtopic) },
+      { path: 'kubernetes-has-no-built-in-namespace-ttl', loadComponent: () => import('./components/cloud/devops/environment-strategy/subtopics/kubernetes-has-no-built-in-namespace-ttl/kubernetes-has-no-built-in-namespace-ttl').then(m => m.KubernetesHasNoBuiltInNamespaceTtlSubtopic) },
+    ] },
     { path: 'platform-engineering',   loadComponent: () => import('./components/cloud/devops/platform-engineering/platform-engineering').then(m => m.DevopsPlatformEngineering) },
     { path: 'git-workflows',          loadComponent: () => import('./components/cloud/devops/git-workflows/git-workflows').then(m => m.DevopsGitWorkflows) },
     { path: 'github-actions',         loadComponent: () => import('./components/cloud/devops/github-actions/github-actions').then(m => m.DevopsGithubActions) },

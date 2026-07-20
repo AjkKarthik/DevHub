@@ -60,7 +60,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/devops/environment-strategy" routerLinkActive="active"><span class="nl-text">Environment Strategy</span>@if(p.isDone('devops-environment-strategy')){<span class="nl-done">✓</span>}@if(d('devops-environment-strategy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/environment-strategy" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Environment Strategy</span>
+        @if (p.isDone('devops-environment-strategy')) {<span class="nl-done">✓</span>}
+        @if (d('devops-environment-strategy'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('environment-strategy')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('environment-strategy')"
+                  (click)="toggleSubtopics('environment-strategy', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('environment-strategy'); as envSubs) {
+        @if (isSubtopicsExpanded('environment-strategy')) {
+          <div class="nav-subtopics">
+            @for (s of envSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/devops/platform-engineering" routerLinkActive="active"><span class="nl-text">Platform Engineering</span>@if(p.isDone('devops-platform-engineering')){<span class="nl-done">✓</span>}@if(d('devops-platform-engineering');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

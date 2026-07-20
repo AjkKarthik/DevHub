@@ -35967,6 +35967,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Ephemeral environments (spun up per PR, torn down after) avoid drift entirely by always starting from a known-clean baseline, at the cost of provisioning overhead per environment.',
     ],
   },
+  'devops/environment-strategy/terraform-workspaces-arent-meant-for-environment-isolation': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Environment Strategy overview', route: '/devops/environment-strategy' },
+      { label: 'Kubernetes Secrets Are Base64, Not Encrypted, By Default', route: '/devops/environment-strategy/kubernetes-secrets-are-base64-not-encrypted-by-default' },
+    ],
+    tip: 'Terraform\'s own docs say workspaces "are not appropriate for... deployments requiring separate credentials and access controls" — exactly what dev/staging/prod usually need.',
+    gotchas: [
+      'All workspaces of one configuration share the same backend and credentials — a forgotten workspace switch applies against whatever workspace was already selected, with no credential boundary to catch it.',
+      'Separate root configurations per environment, each with its own backend block, can still share code via a common module — isolation doesn\'t require full duplication.',
+    ],
+  },
+  'devops/environment-strategy/kubernetes-secrets-are-base64-not-encrypted-by-default': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Terraform Workspaces Aren’t Meant for Environment Isolation', route: '/devops/environment-strategy/terraform-workspaces-arent-meant-for-environment-isolation' },
+      { label: 'Kubernetes Has No Built-In Namespace TTL', route: '/devops/environment-strategy/kubernetes-has-no-built-in-namespace-ttl' },
+    ],
+    tip: 'Kubernetes\' own docs state Secrets are unencrypted in etcd by default — base64 is an encoding, not a cipher; encryption at rest is a separate, cluster-admin-level opt-in step.',
+    gotchas: [
+      'Enabling encryption at rest only protects NEW writes — Secrets already stored before it was enabled stay unencrypted until individually rewritten.',
+      'Managed Kubernetes providers vary on whether encryption at rest is on by default — never assume it without checking the specific cluster.',
+    ],
+  },
+  'devops/environment-strategy/kubernetes-has-no-built-in-namespace-ttl': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Kubernetes Secrets Are Base64, Not Encrypted, By Default', route: '/devops/environment-strategy/kubernetes-secrets-are-base64-not-encrypted-by-default' },
+      { label: 'Environment Strategy overview', route: '/devops/environment-strategy' },
+    ],
+    tip: 'Kubernetes\' built-in ttlSecondsAfterFinished only applies to Jobs reaching a finished state — there is no equivalent for a Namespace, and no built-in concept of "inactivity" at all.',
+    gotchas: [
+      '"Add a TTL" for ephemeral environments requires genuinely new automation (a scheduled job or a tool like kube-janitor) — it is not a Kubernetes configuration flag.',
+      'Any "last activity" signal has to be actively tracked by the team\'s own tooling (e.g. a custom annotation the pipeline updates) — Kubernetes has nothing to read this off of.',
+    ],
+  },
   'devops/release-management': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
