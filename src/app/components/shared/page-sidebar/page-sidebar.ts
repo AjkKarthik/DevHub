@@ -36228,6 +36228,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Artifact signing and provenance attestation address supply-chain tampering risks that storage alone does not cover.',
     ],
   },
+  'devops/artifact-management/imagetools-create-never-pulls-image-data': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Artifact Management overview', route: '/devops/artifact-management' },
+      { label: 'RepoDigests Is Empty Until a Registry Round Trip', route: '/devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip' },
+    ],
+    tip: 'docker buildx imagetools create and skopeo copy both operate registry-side — neither pulls image data to the machine running the command, which is why they avoid the cost of a full pull-then-push round trip just to add a tag.',
+    gotchas: [
+      'imagetools create can only reference a manifest that already exists in the target registry — it cannot tag an image that was never pushed.',
+      'A plain docker pull + tag + push achieves the same end result but transfers the full image twice for no functional benefit.',
+    ],
+  },
+  'devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'imagetools create Never Pulls Image Data', route: '/devops/artifact-management/imagetools-create-never-pulls-image-data' },
+      { label: 'Scoped Packages Are Private Unless access Is public', route: '/devops/artifact-management/scoped-packages-are-private-unless-access-is-public' },
+    ],
+    tip: 'A Docker image\'s digest is computed by the registry, not the local daemon — RepoDigests stays empty until a push or pull actually completes, which is why the digest lookup must run strictly after the push, not in parallel with it.',
+    gotchas: [
+      'Indexing into an empty RepoDigests array produces a hard template error, not a stale-but-plausible digest value.',
+      'This is a genuine data dependency, not just narrative step ordering — refactoring the steps to run in parallel introduces a real race condition.',
+    ],
+  },
+  'devops/artifact-management/scoped-packages-are-private-unless-access-is-public': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'RepoDigests Is Empty Until a Registry Round Trip', route: '/devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip' },
+      { label: 'Artifact Management overview', route: '/devops/artifact-management' },
+    ],
+    tip: 'A scoped npm package (@org/name) is private by default — on an org without the paid private-packages feature, the very first publish fails with a 402 error unless publishConfig.access: "public" is set or --access public is passed.',
+    gotchas: [
+      'The access setting is established per package at its first publish, not inherited from the org or from other packages that already publish successfully.',
+      'publishConfig.access in package.json applies automatically to every future publish, including automated ones (semantic-release) that never pass the flag themselves.',
+    ],
+  },
   'devops/github-actions': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

@@ -2947,7 +2947,12 @@ export const routes: Routes = [
       { path: 'flux-interval-is-a-drift-fallback-not-a-git-trigger', loadComponent: () => import('./components/cloud/devops/gitops/subtopics/flux-interval-is-a-drift-fallback-not-a-git-trigger/flux-interval-is-a-drift-fallback-not-a-git-trigger').then(m => m.FluxIntervalIsADriftFallbackNotAGitTriggerSubtopic) },
       { path: 'sync-waves-wait-for-healthy-not-just-applied', loadComponent: () => import('./components/cloud/devops/gitops/subtopics/sync-waves-wait-for-healthy-not-just-applied/sync-waves-wait-for-healthy-not-just-applied').then(m => m.SyncWavesWaitForHealthyNotJustAppliedSubtopic) },
     ]},
-    { path: 'artifact-management',    loadComponent: () => import('./components/cloud/devops/artifact-management/artifact-management').then(m => m.DevopsArtifactManagement) },
+    { path: 'artifact-management', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/artifact-management/artifact-management').then(m => m.DevopsArtifactManagement) },
+      { path: 'imagetools-create-never-pulls-image-data', loadComponent: () => import('./components/cloud/devops/artifact-management/subtopics/imagetools-create-never-pulls-image-data/imagetools-create-never-pulls-image-data').then(m => m.ImagetoolsCreateNeverPullsImageDataSubtopic) },
+      { path: 'repodigests-is-empty-until-a-registry-round-trip', loadComponent: () => import('./components/cloud/devops/artifact-management/subtopics/repodigests-is-empty-until-a-registry-round-trip/repodigests-is-empty-until-a-registry-round-trip').then(m => m.RepodigestsIsEmptyUntilARegistryRoundTripSubtopic) },
+      { path: 'scoped-packages-are-private-unless-access-is-public', loadComponent: () => import('./components/cloud/devops/artifact-management/subtopics/scoped-packages-are-private-unless-access-is-public/scoped-packages-are-private-unless-access-is-public').then(m => m.ScopedPackagesArePrivateUnlessAccessIsPublicSubtopic) },
+    ]},
     { path: 'docker-cicd',            loadComponent: () => import('./components/cloud/devops/docker-cicd/docker-cicd').then(m => m.DevopsDockerCicd) },
     { path: 'kubernetes-deployments', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/kubernetes-deployments').then(m => m.DevopsKubernetesDeployments) },
     { path: 'iac',                    loadComponent: () => import('./components/cloud/devops/iac/iac').then(m => m.DevopsIac) },

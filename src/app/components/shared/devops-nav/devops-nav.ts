@@ -248,7 +248,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/devops/artifact-management" routerLinkActive="active"><span class="nl-text">Artifact Management</span>@if(p.isDone('devops-artifact-management')){<span class="nl-done">✓</span>}@if(d('devops-artifact-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/artifact-management" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Artifact Management</span>
+        @if (p.isDone('devops-artifact-management')) {<span class="nl-done">✓</span>}
+        @if (d('devops-artifact-management'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('artifact-management')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('artifact-management')"
+                  (click)="toggleSubtopics('artifact-management', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('artifact-management'); as amSubs) {
+        @if (isSubtopicsExpanded('artifact-management')) {
+          <div class="nav-subtopics">
+            @for (s of amSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

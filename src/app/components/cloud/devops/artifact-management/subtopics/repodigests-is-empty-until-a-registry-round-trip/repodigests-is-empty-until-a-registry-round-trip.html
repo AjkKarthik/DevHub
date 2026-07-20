@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Artifact Management" topicRoute="/devops/artifact-management" subtopicLabel="RepoDigests Is Empty Until a Registry Round Trip" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">RepoDigests Is Empty Until a Registry Round Trip</h1>
+  <p class="page-subtitle">
+    The main page's own code tab runs docker inspect after docker push, with no explanation of why the order
+    matters — the digest doesn't exist anywhere until the registry actually computes it.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a step-ordering dependency the main page's own code tab relies on but never states.
+      Back to why imagetools create never pulls image data, or continue to why a scoped npm package needs
+      access: public explicitly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Artifact Management"
+    topicRoute="/devops/artifact-management"
+    [prev]="{ label: 'imagetools create Never Pulls Image Data', route: '/devops/artifact-management/imagetools-create-never-pulls-image-data' }"
+    [next]="{ label: 'Scoped Packages Are Private Unless access Is public', route: '/devops/artifact-management/scoped-packages-are-private-unless-access-is-public' }"
+  />
+</div>
