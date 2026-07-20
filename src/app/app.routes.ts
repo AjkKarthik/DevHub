@@ -2953,7 +2953,12 @@ export const routes: Routes = [
       { path: 'repodigests-is-empty-until-a-registry-round-trip', loadComponent: () => import('./components/cloud/devops/artifact-management/subtopics/repodigests-is-empty-until-a-registry-round-trip/repodigests-is-empty-until-a-registry-round-trip').then(m => m.RepodigestsIsEmptyUntilARegistryRoundTripSubtopic) },
       { path: 'scoped-packages-are-private-unless-access-is-public', loadComponent: () => import('./components/cloud/devops/artifact-management/subtopics/scoped-packages-are-private-unless-access-is-public/scoped-packages-are-private-unless-access-is-public').then(m => m.ScopedPackagesArePrivateUnlessAccessIsPublicSubtopic) },
     ]},
-    { path: 'docker-cicd',            loadComponent: () => import('./components/cloud/devops/docker-cicd/docker-cicd').then(m => m.DevopsDockerCicd) },
+    { path: 'docker-cicd', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/docker-cicd/docker-cicd').then(m => m.DevopsDockerCicd) },
+      { path: 'ignore-unfixed-excludes-unpatched-not-minor-cves', loadComponent: () => import('./components/cloud/devops/docker-cicd/subtopics/ignore-unfixed-excludes-unpatched-not-minor-cves/ignore-unfixed-excludes-unpatched-not-minor-cves').then(m => m.IgnoreUnfixedExcludesUnpatchedNotMinorCvesSubtopic) },
+      { path: 'type-semver-never-fires-without-a-git-tag-push', loadComponent: () => import('./components/cloud/devops/docker-cicd/subtopics/type-semver-never-fires-without-a-git-tag-push/type-semver-never-fires-without-a-git-tag-push').then(m => m.TypeSemverNeverFiresWithoutAGitTagPushSubtopic) },
+      { path: 'sbom-lists-contents-provenance-describes-the-build', loadComponent: () => import('./components/cloud/devops/docker-cicd/subtopics/sbom-lists-contents-provenance-describes-the-build/sbom-lists-contents-provenance-describes-the-build').then(m => m.SbomListsContentsProvenanceDescribesTheBuildSubtopic) },
+    ]},
     { path: 'kubernetes-deployments', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/kubernetes-deployments').then(m => m.DevopsKubernetesDeployments) },
     { path: 'iac',                    loadComponent: () => import('./components/cloud/devops/iac/iac').then(m => m.DevopsIac) },
     { path: 'monitoring',             loadComponent: () => import('./components/cloud/devops/monitoring/monitoring').then(m => m.DevopsMonitoring) },

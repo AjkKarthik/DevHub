@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker in CI/CD" topicRoute="/devops/docker-cicd" subtopicLabel="SBOM Lists Contents, Provenance Describes the Build" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">SBOM Lists Contents, Provenance Describes the Build</h1>
+  <p class="page-subtitle">
+    The main page's own build command sets --sbom=true and --provenance=true side by side with no distinction —
+    they answer genuinely different questions, and provenance has a registry-push dependency SBOM doesn't share.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens two attestation flags the main page's own code tab sets together into two distinct
+      mechanisms. Back to why the workflow's own semver tag rule never fires, or to the Docker in CI/CD overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker in CI/CD"
+    topicRoute="/devops/docker-cicd"
+    [prev]="{ label: 'type=semver Never Fires Without a Git Tag Push', route: '/devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push' }"
+  />
+</div>

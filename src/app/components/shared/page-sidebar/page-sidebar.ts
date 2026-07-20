@@ -36217,6 +36217,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Tagging images by content digest (not just a mutable version tag) in the deployment manifest guarantees exactly which image bytes are actually running.',
     ],
   },
+  'devops/docker-cicd/ignore-unfixed-excludes-unpatched-not-minor-cves': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Docker in CI/CD overview', route: '/devops/docker-cicd' },
+      { label: 'type=semver Never Fires Without a Git Tag Push', route: '/devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push' },
+    ],
+    tip: 'Trivy\'s --ignore-unfixed excludes CVEs with no available patch yet, regardless of severity — a scan passing under this flag means "no fixable critical findings," not "no critical findings at all."',
+    gotchas: [
+      'An unfixed critical CVE can be silently present in an image the whole time a gated scan reports success, purely because no patch existed yet.',
+      'Pair --ignore-unfixed build gates with a separate, periodic ungated scan so newly-fixed CVEs get noticed once a patch actually ships.',
+    ],
+  },
+  'devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'ignore-unfixed Excludes Unpatched, Not Minor, CVEs', route: '/devops/docker-cicd/ignore-unfixed-excludes-unpatched-not-minor-cves' },
+      { label: 'SBOM Lists Contents, Provenance Describes the Build', route: '/devops/docker-cicd/sbom-lists-contents-provenance-describes-the-build' },
+    ],
+    tip: 'docker/metadata-action\'s type=semver rule only fires on a push TAG event — a workflow whose on: block only configures branch pushes and PRs can include this rule forever without it ever actually producing a tag.',
+    gotchas: [
+      'A workflow can run successfully many times, with two of three configured tag rules working correctly, while the third silently never activates.',
+      'Fixing it requires adding a tags: pattern to the push trigger AND actually pushing a matching git tag — merging to main alone never satisfies the precondition.',
+    ],
+  },
+  'devops/docker-cicd/sbom-lists-contents-provenance-describes-the-build': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'type=semver Never Fires Without a Git Tag Push', route: '/devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push' },
+      { label: 'Docker in CI/CD overview', route: '/devops/docker-cicd' },
+    ],
+    tip: 'SBOM lists what\'s inside an image; provenance describes how it was built — genuinely different questions, and provenance\'s default attestation only attaches to images actually pushed to a registry, unlike SBOM.',
+    gotchas: [
+      'Dropping --push for a quick local test build can silently leave provenance unattached even with --provenance=true set, while SBOM still works fine.',
+      'Cosign signing and admission-controller policies rely on provenance as their evidence, not SBOM, for verifying build origin.',
+    ],
+  },
   'devops/artifact-management': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

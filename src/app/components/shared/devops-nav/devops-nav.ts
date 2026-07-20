@@ -272,7 +272,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Containers</p>
-      <a routerLink="/devops/docker-cicd" routerLinkActive="active"><span class="nl-text">Docker in CI/CD</span>@if(p.isDone('devops-docker-cicd')){<span class="nl-done">✓</span>}@if(d('devops-docker-cicd');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/docker-cicd" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Docker in CI/CD</span>
+        @if (p.isDone('devops-docker-cicd')) {<span class="nl-done">✓</span>}
+        @if (d('devops-docker-cicd'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('docker-cicd')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('docker-cicd')"
+                  (click)="toggleSubtopics('docker-cicd', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('docker-cicd'); as dockerSubs) {
+        @if (isSubtopicsExpanded('docker-cicd')) {
+          <div class="nav-subtopics">
+            @for (s of dockerSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/devops/kubernetes-deployments" routerLinkActive="active"><span class="nl-text">Kubernetes Deployments</span>@if(p.isDone('devops-kubernetes-deployments')){<span class="nl-done">✓</span>}@if(d('devops-kubernetes-deployments');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

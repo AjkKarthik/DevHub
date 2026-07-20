@@ -1317,6 +1317,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'RepoDigests Is Empty Until a Registry Round Trip', route: '/devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip' },
     { label: 'Scoped Packages Are Private Unless access Is public', route: '/devops/artifact-management/scoped-packages-are-private-unless-access-is-public' },
   ],
+  'docker-cicd': [
+    { label: 'ignore-unfixed Excludes Unpatched, Not Minor, CVEs', route: '/devops/docker-cicd/ignore-unfixed-excludes-unpatched-not-minor-cves' },
+    { label: 'type=semver Never Fires Without a Git Tag Push', route: '/devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push' },
+    { label: 'SBOM Lists Contents, Provenance Describes the Build', route: '/devops/docker-cicd/sbom-lists-contents-provenance-describes-the-build' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

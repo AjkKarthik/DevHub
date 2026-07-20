@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker in CI/CD" topicRoute="/devops/docker-cicd" subtopicLabel="type=semver Never Fires Without a Git Tag Push" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">type=semver Never Fires Without a Git Tag Push</h1>
+  <p class="page-subtitle">
+    The main page's own workflow lists a type=semver tag rule its own on: block can never satisfy — the trigger
+    only configures branch pushes and PRs, and semver specifically requires a git tag push event.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic catches a silently-inert piece of the main page's own workflow configuration. Back to what
+      --ignore-unfixed actually excludes, or continue to the real distinction between SBOM and provenance
+      attestations.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker in CI/CD"
+    topicRoute="/devops/docker-cicd"
+    [prev]="{ label: 'ignore-unfixed Excludes Unpatched, Not Minor, CVEs', route: '/devops/docker-cicd/ignore-unfixed-excludes-unpatched-not-minor-cves' }"
+    [next]="{ label: 'SBOM Lists Contents, Provenance Describes the Build', route: '/devops/docker-cicd/sbom-lists-contents-provenance-describes-the-build' }"
+  />
+</div>
