@@ -316,7 +316,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">IaC</p>
-      <a routerLink="/devops/iac" routerLinkActive="active"><span class="nl-text">Infrastructure as Code</span>@if(p.isDone('devops-iac')){<span class="nl-done">✓</span>}@if(d('devops-iac');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/iac" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Infrastructure as Code</span>
+        @if (p.isDone('devops-iac')) {<span class="nl-done">✓</span>}
+        @if (d('devops-iac'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('iac')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('iac')"
+                  (click)="toggleSubtopics('iac', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('iac'); as iacSubs) {
+        @if (isSubtopicsExpanded('iac')) {
+          <div class="nav-subtopics">
+            @for (s of iacSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

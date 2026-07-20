@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Infrastructure as Code" topicRoute="/devops/iac" subtopicLabel="pipefail Is Not the GitHub Actions Shell Default" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">pipefail Is Not the GitHub Actions Shell Default</h1>
+  <p class="page-subtitle">
+    The main page's own drift-detection step pipes terraform plan through tee, then reads $? — but without an
+    explicit shell: bash line, GitHub's own default shell template omits pipefail entirely.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic catches a silent, real gap in the main page's own drift-detection code tab. Back to the
+      Infrastructure as Code overview, or continue to what Bicep's Incremental mode actually does versus Complete.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Infrastructure as Code"
+    topicRoute="/devops/iac"
+    [next]="{ label: 'Incremental Mode Never Deletes Unmanaged Resources', route: '/devops/iac/incremental-mode-never-deletes-unmanaged-resources' }"
+  />
+</div>

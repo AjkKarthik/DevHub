@@ -36145,6 +36145,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Always reviewing a plan/diff before applying is essential — an unexpected "destroy" in a plan output is the single most common way teams accidentally lose production infrastructure.',
     ],
   },
+  'devops/iac/pipefail-is-not-the-github-actions-shell-default': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Infrastructure as Code overview', route: '/devops/iac' },
+      { label: 'Incremental Mode Never Deletes Unmanaged Resources', route: '/devops/iac/incremental-mode-never-deletes-unmanaged-resources' },
+    ],
+    tip: 'GitHub\'s own default shell template for an unspecified run: step omits pipefail — a $? check right after piping through tee silently captures tee\'s exit code, not the command before it, unless shell: bash is set explicitly.',
+    gotchas: [
+      'A drift-detection step missing shell: bash can run "successfully" forever while its alert condition never actually fires — a silent, permanent false negative.',
+      'PIPESTATUS[0] reads the first command\'s exit code directly and works regardless of pipefail, as an alternative fix.',
+    ],
+  },
+  'devops/iac/incremental-mode-never-deletes-unmanaged-resources': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'pipefail Is Not the GitHub Actions Shell Default', route: '/devops/iac/pipefail-is-not-the-github-actions-shell-default' },
+      { label: 'check Filters What Runs, soft-fail-on Filters What Blocks', route: '/devops/iac/check-filters-what-runs-soft-fail-on-what-blocks' },
+    ],
+    tip: 'Bicep\'s Incremental deployment mode never deletes a resource just because it\'s absent from the template — the opposite of Terraform\'s default reconciliation. Complete mode is the (not recommended) alternative that does delete unmanaged resources.',
+    gotchas: [
+      'A resource created manually or by another tool survives every Incremental-mode redeploy indefinitely, by design.',
+      'Complete mode can delete resources the person running the deployment doesn\'t even know exist in that resource group — Microsoft\'s own docs recommend running what-if first.',
+    ],
+  },
+  'devops/iac/check-filters-what-runs-soft-fail-on-what-blocks': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Incremental Mode Never Deletes Unmanaged Resources', route: '/devops/iac/incremental-mode-never-deletes-unmanaged-resources' },
+      { label: 'Infrastructure as Code overview', route: '/devops/iac' },
+    ],
+    tip: 'Checkov\'s --check with explicit IDs is an allowlist — only those checks ever run. --soft-fail-on runs the full default rule set and only changes which severities can fail the build. They are not two variations on the same idea.',
+    gotchas: [
+      'A HIGH-severity finding can go completely undetected if the check that would catch it isn\'t on a narrow --check allowlist — not soft-failed, simply never run.',
+      'Copying the wrong one of the main page\'s own two Checkov commands can silently produce a far narrower security gate than intended.',
+    ],
+  },
   'devops/gitops': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

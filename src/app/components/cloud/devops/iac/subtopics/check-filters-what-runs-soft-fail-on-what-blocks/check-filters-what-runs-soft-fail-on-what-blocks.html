@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Infrastructure as Code" topicRoute="/devops/iac" subtopicLabel="check Filters What Runs, soft-fail-on Filters What Blocks" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">--check Filters What Runs, --soft-fail-on Filters What Blocks</h1>
+  <p class="page-subtitle">
+    The main page's own Checkov code tab shows two commands under one heading, as if they were interchangeable —
+    one is a narrow allowlist, the other runs everything and only changes what can fail the build.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic distinguishes two Checkov flags the main page's own code tab presents side by side without
+      contrast. Back to why Bicep's Incremental mode never deletes unmanaged resources, or to the Infrastructure
+      as Code overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Infrastructure as Code"
+    topicRoute="/devops/iac"
+    [prev]="{ label: 'Incremental Mode Never Deletes Unmanaged Resources', route: '/devops/iac/incremental-mode-never-deletes-unmanaged-resources' }"
+  />
+</div>

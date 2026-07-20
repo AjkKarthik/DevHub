@@ -2965,7 +2965,12 @@ export const routes: Routes = [
       { path: 'nameprefix-actually-renames-the-live-resource', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/subtopics/nameprefix-actually-renames-the-live-resource/nameprefix-actually-renames-the-live-resource').then(m => m.NameprefixActuallyRenamesTheLiveResourceSubtopic) },
       { path: 'pause-with-no-duration-waits-forever-not-briefly', loadComponent: () => import('./components/cloud/devops/kubernetes-deployments/subtopics/pause-with-no-duration-waits-forever-not-briefly/pause-with-no-duration-waits-forever-not-briefly').then(m => m.PauseWithNoDurationWaitsForeverNotBrieflySubtopic) },
     ]},
-    { path: 'iac',                    loadComponent: () => import('./components/cloud/devops/iac/iac').then(m => m.DevopsIac) },
+    { path: 'iac', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/iac/iac').then(m => m.DevopsIac) },
+      { path: 'pipefail-is-not-the-github-actions-shell-default', loadComponent: () => import('./components/cloud/devops/iac/subtopics/pipefail-is-not-the-github-actions-shell-default/pipefail-is-not-the-github-actions-shell-default').then(m => m.PipefailIsNotTheGithubActionsShellDefaultSubtopic) },
+      { path: 'incremental-mode-never-deletes-unmanaged-resources', loadComponent: () => import('./components/cloud/devops/iac/subtopics/incremental-mode-never-deletes-unmanaged-resources/incremental-mode-never-deletes-unmanaged-resources').then(m => m.IncrementalModeNeverDeletesUnmanagedResourcesSubtopic) },
+      { path: 'check-filters-what-runs-soft-fail-on-what-blocks', loadComponent: () => import('./components/cloud/devops/iac/subtopics/check-filters-what-runs-soft-fail-on-what-blocks/check-filters-what-runs-soft-fail-on-what-blocks').then(m => m.CheckFiltersWhatRunsSoftFailOnWhatBlocksSubtopic) },
+    ]},
     { path: 'monitoring',             loadComponent: () => import('./components/cloud/devops/monitoring/monitoring').then(m => m.DevopsMonitoring) },
     { path: 'logging',                loadComponent: () => import('./components/cloud/devops/logging/logging').then(m => m.DevopsLogging) },
     { path: 'incident-response',      loadComponent: () => import('./components/cloud/devops/incident-response/incident-response').then(m => m.DevopsIncidentResponse) },

@@ -1327,6 +1327,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'namePrefix Actually Renames the Live Resource', route: '/devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource' },
     { label: 'Pause With No Duration Waits Forever', route: '/devops/kubernetes-deployments/pause-with-no-duration-waits-forever-not-briefly' },
   ],
+  'iac': [
+    { label: 'pipefail Is Not the GitHub Actions Shell Default', route: '/devops/iac/pipefail-is-not-the-github-actions-shell-default' },
+    { label: 'Incremental Mode Never Deletes Unmanaged Resources', route: '/devops/iac/incremental-mode-never-deletes-unmanaged-resources' },
+    { label: 'check Filters What Runs, soft-fail-on Filters What Blocks', route: '/devops/iac/check-filters-what-runs-soft-fail-on-what-blocks' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
