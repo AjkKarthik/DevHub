@@ -1282,6 +1282,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'BREAKING CHANGE and ! Are Independent Signals', route: '/devops/git-workflows/breaking-change-and-bang-are-independent-signals' },
     { label: 'The 400-Line PR Limit Has a Speed Limit Attached', route: '/devops/git-workflows/the-400-line-pr-limit-has-a-speed-limit-attached' },
   ],
+  'github-actions': [
+    { label: 'The Fork-PR Token Restriction, Not All PR Workflows', route: '/devops/github-actions/the-fork-pr-token-restriction-not-all-pr-workflows' },
+    { label: 'workflow_run Grants Secrets the Trigger Didn’t Have', route: '/devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have' },
+    { label: 'paths-ignore Can Permanently Block a Required Check', route: '/devops/github-actions/paths-ignore-can-permanently-block-a-required-check' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

@@ -36132,6 +36132,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Secrets referenced in a workflow are masked in logs by default, but a poorly-written step can still accidentally echo a secret value into output.',
     ],
   },
+  'devops/github-actions/the-fork-pr-token-restriction-not-all-pr-workflows': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'GitHub Actions overview', route: '/devops/github-actions' },
+      { label: 'workflow_run Grants Secrets the Trigger Didn’t Have', route: '/devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have' },
+    ],
+    tip: 'GitHub\'s own docs scope the read-only token and no-secrets restriction specifically to pull requests from FORKS — a same-repo branch PR gets full permissions and secrets.',
+    gotchas: [
+      'A workflow using secrets can appear to work reliably for months if every PR tested happens to come from the same repository, then silently break on the first external fork PR.',
+      'Check github.event.pull_request.head.repo.full_name == github.repository to explicitly detect and skip fork PRs rather than relying on the default restriction alone.',
+    ],
+  },
+  'devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'The Fork-PR Token Restriction, Not All PR Workflows', route: '/devops/github-actions/the-fork-pr-token-restriction-not-all-pr-workflows' },
+      { label: 'paths-ignore Can Permanently Block a Required Check', route: '/devops/github-actions/paths-ignore-can-permanently-block-a-required-check' },
+    ],
+    tip: 'workflow_run grants secrets and write-token access "even if the previous workflow was not" allowed to have them — the standard safe pattern for privileged deploys after untrusted CI, but dangerous if it checks out and runs the untrusted branch\'s own code.',
+    gotchas: [
+      'Filtering workflow_run to branches: [main] and checking out main\'s own content (not the triggering PR\'s branch) is what keeps this pattern safe.',
+      'Checking out and building a fork PR\'s own code inside a workflow_run job exposes deploy secrets to a malicious build script.',
+    ],
+  },
+  'devops/github-actions/paths-ignore-can-permanently-block-a-required-check': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'workflow_run Grants Secrets the Trigger Didn’t Have', route: '/devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have' },
+      { label: 'GitHub Actions overview', route: '/devops/github-actions' },
+    ],
+    tip: 'A workflow skipped by paths-ignore never reports ANY status — if that same workflow is a required status check, the PR is blocked from merging forever, not just delayed.',
+    gotchas: [
+      '"Re-run the check" and "wait longer" don\'t help — there\'s no workflow run in progress to complete for a check that was never queued at all.',
+      'The documented fix is running the job unconditionally and making only the expensive WORK conditional via if:, so a real status is always reported.',
+    ],
+  },
   'devops/jenkins': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

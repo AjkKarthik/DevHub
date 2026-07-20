@@ -2911,7 +2911,12 @@ export const routes: Routes = [
       { path: 'breaking-change-and-bang-are-independent-signals', loadComponent: () => import('./components/cloud/devops/git-workflows/subtopics/breaking-change-and-bang-are-independent-signals/breaking-change-and-bang-are-independent-signals').then(m => m.BreakingChangeAndBangAreIndependentSignalsSubtopic) },
       { path: 'the-400-line-pr-limit-has-a-speed-limit-attached', loadComponent: () => import('./components/cloud/devops/git-workflows/subtopics/the-400-line-pr-limit-has-a-speed-limit-attached/the-400-line-pr-limit-has-a-speed-limit-attached').then(m => m.The400LinePrLimitHasASpeedLimitAttachedSubtopic) },
     ] },
-    { path: 'github-actions',         loadComponent: () => import('./components/cloud/devops/github-actions/github-actions').then(m => m.DevopsGithubActions) },
+    { path: 'github-actions', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/github-actions/github-actions').then(m => m.DevopsGithubActions) },
+      { path: 'the-fork-pr-token-restriction-not-all-pr-workflows', loadComponent: () => import('./components/cloud/devops/github-actions/subtopics/the-fork-pr-token-restriction-not-all-pr-workflows/the-fork-pr-token-restriction-not-all-pr-workflows').then(m => m.TheForkPrTokenRestrictionNotAllPrWorkflowsSubtopic) },
+      { path: 'workflow-run-grants-secrets-the-trigger-didnt-have', loadComponent: () => import('./components/cloud/devops/github-actions/subtopics/workflow-run-grants-secrets-the-trigger-didnt-have/workflow-run-grants-secrets-the-trigger-didnt-have').then(m => m.WorkflowRunGrantsSecretsTheTriggerDidntHaveSubtopic) },
+      { path: 'paths-ignore-can-permanently-block-a-required-check', loadComponent: () => import('./components/cloud/devops/github-actions/subtopics/paths-ignore-can-permanently-block-a-required-check/paths-ignore-can-permanently-block-a-required-check').then(m => m.PathsIgnoreCanPermanentlyBlockARequiredCheckSubtopic) },
+    ] },
     { path: 'azure-pipelines',        loadComponent: () => import('./components/cloud/devops/azure-pipelines/azure-pipelines').then(m => m.DevopsAzurePipelines) },
     { path: 'jenkins',                loadComponent: () => import('./components/cloud/devops/jenkins/jenkins').then(m => m.DevopsJenkins) },
     { path: 'continuous-integration', loadComponent: () => import('./components/cloud/devops/continuous-integration/continuous-integration').then(m => m.DevopsContinuousIntegration) },
