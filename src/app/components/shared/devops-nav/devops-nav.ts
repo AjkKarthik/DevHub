@@ -188,7 +188,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/devops/continuous-integration" routerLinkActive="active"><span class="nl-text">Continuous Integration</span>@if(p.isDone('devops-continuous-integration')){<span class="nl-done">✓</span>}@if(d('devops-continuous-integration');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/continuous-integration" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Continuous Integration</span>
+        @if (p.isDone('devops-continuous-integration')) {<span class="nl-done">✓</span>}
+        @if (d('devops-continuous-integration'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('continuous-integration')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('continuous-integration')"
+                  (click)="toggleSubtopics('continuous-integration', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('continuous-integration'); as ciSubs) {
+        @if (isSubtopicsExpanded('continuous-integration')) {
+          <div class="nav-subtopics">
+            @for (s of ciSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/devops/continuous-delivery" routerLinkActive="active"><span class="nl-text">Continuous Delivery</span>@if(p.isDone('devops-continuous-delivery')){<span class="nl-done">✓</span>}@if(d('devops-continuous-delivery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/devops/gitops" routerLinkActive="active"><span class="nl-text">GitOps (ArgoCD &amp; Flux)</span>@if(p.isDone('devops-gitops')){<span class="nl-done">✓</span>}@if(d('devops-gitops');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/devops/artifact-management" routerLinkActive="active"><span class="nl-text">Artifact Management</span>@if(p.isDone('devops-artifact-management')){<span class="nl-done">✓</span>}@if(d('devops-artifact-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

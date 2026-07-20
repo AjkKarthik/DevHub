@@ -35986,6 +35986,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CI pipeline speed matters — a 45-minute pipeline gets run less often locally and delays feedback, undermining the fast-feedback goal CI exists to serve.',
     ],
   },
+  'devops/continuous-integration/fail-fast-false-lets-every-matrix-job-finish': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Continuous Integration overview', route: '/devops/continuous-integration' },
+      { label: 'New-Code Quality Gates vs. Global Coverage Thresholds', route: '/devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds' },
+    ],
+    tip: 'fail-fast: false is load-bearing for a genuine compatibility matrix — without it, the first failing combination cancels every other combination before it can report its own result, defeating the point of testing multiple versions at once.',
+    gotchas: [
+      'The default (fail-fast: true) cancels all in-progress and queued matrix jobs the instant one fails — this is invisible in the UI unless you know to look for canceled, not failed, job statuses.',
+      'fail-fast: false trades more compute on a failing run for a complete compatibility picture — worth it for genuine version matrices, wasteful for pure work-sharding matrices.',
+    ],
+  },
+  'devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'fail-fast: false Lets Every Matrix Job Finish', route: '/devops/continuous-integration/fail-fast-false-lets-every-matrix-job-finish' },
+      { label: 'merge-multiple Flattens Artifact Subdirectories', route: '/devops/continuous-integration/merge-multiple-flattens-artifact-subdirectories' },
+    ],
+    tip: 'SonarQube\'s own "Clean as You Code" philosophy scopes its default Quality Gate to new code specifically — a global Jest coverageThreshold enforces the same-looking percentage against the WHOLE codebase, which can block a legacy project from merging anything at all.',
+    gotchas: [
+      'A team adopting coverage gates on a legacy codebase should reach for a new-code-scoped gate, not a global one, to avoid an all-or-nothing wall.',
+      'SonarQube\'s own docs actively discourage adding overall-code conditions on top of an already-adopted new-code gate.',
+    ],
+  },
+  'devops/continuous-integration/merge-multiple-flattens-artifact-subdirectories': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'New-Code Quality Gates vs. Global Coverage Thresholds', route: '/devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds' },
+      { label: 'Continuous Integration overview', route: '/devops/continuous-integration' },
+    ],
+    tip: 'merge-multiple: true on download-artifact flattens every matched artifact into one shared directory — without it, each artifact lands in its own named subdirectory, invisible to a downstream command that only scans the current directory.',
+    gotchas: [
+      'A merge step that finds zero matching files often doesn\'t error — it can silently produce an empty, technically-successful result instead.',
+      'The correct merge-multiple setting depends on what the downstream step expects: a flat merge wants true, a step that needs to know which artifact a file came from wants the default (false).',
+    ],
+  },
   'devops/continuous-delivery': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

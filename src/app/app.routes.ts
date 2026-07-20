@@ -2929,7 +2929,12 @@ export const routes: Routes = [
       { path: 'disableconcurrentbuilds-queues-not-aborts-by-default', loadComponent: () => import('./components/cloud/devops/jenkins/subtopics/disableconcurrentbuilds-queues-not-aborts-by-default/disableconcurrentbuilds-queues-not-aborts-by-default').then(m => m.DisableconcurrentbuildsQueuesNotAbortsByDefaultSubtopic) },
       { path: 'changed-fires-broader-than-break-or-recovery-alone', loadComponent: () => import('./components/cloud/devops/jenkins/subtopics/changed-fires-broader-than-break-or-recovery-alone/changed-fires-broader-than-break-or-recovery-alone').then(m => m.ChangedFiresBroaderThanBreakOrRecoveryAloneSubtopic) },
     ]},
-    { path: 'continuous-integration', loadComponent: () => import('./components/cloud/devops/continuous-integration/continuous-integration').then(m => m.DevopsContinuousIntegration) },
+    { path: 'continuous-integration', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/continuous-integration/continuous-integration').then(m => m.DevopsContinuousIntegration) },
+      { path: 'fail-fast-false-lets-every-matrix-job-finish', loadComponent: () => import('./components/cloud/devops/continuous-integration/subtopics/fail-fast-false-lets-every-matrix-job-finish/fail-fast-false-lets-every-matrix-job-finish').then(m => m.FailFastFalseLetsEveryMatrixJobFinishSubtopic) },
+      { path: 'new-code-quality-gates-vs-global-coverage-thresholds', loadComponent: () => import('./components/cloud/devops/continuous-integration/subtopics/new-code-quality-gates-vs-global-coverage-thresholds/new-code-quality-gates-vs-global-coverage-thresholds').then(m => m.NewCodeQualityGatesVsGlobalCoverageThresholdsSubtopic) },
+      { path: 'merge-multiple-flattens-artifact-subdirectories', loadComponent: () => import('./components/cloud/devops/continuous-integration/subtopics/merge-multiple-flattens-artifact-subdirectories/merge-multiple-flattens-artifact-subdirectories').then(m => m.MergeMultipleFlattensArtifactSubdirectoriesSubtopic) },
+    ]},
     { path: 'continuous-delivery',    loadComponent: () => import('./components/cloud/devops/continuous-delivery/continuous-delivery').then(m => m.DevopsContinuousDelivery) },
     { path: 'gitops',                 loadComponent: () => import('./components/cloud/devops/gitops/gitops').then(m => m.DevopsGitops) },
     { path: 'artifact-management',    loadComponent: () => import('./components/cloud/devops/artifact-management/artifact-management').then(m => m.DevopsArtifactManagement) },

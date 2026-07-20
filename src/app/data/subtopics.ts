@@ -1297,6 +1297,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'disableConcurrentBuilds Queues, Doesn’t Abort', route: '/devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default' },
     { label: 'changed Fires Broader Than Break-or-Recovery', route: '/devops/jenkins/changed-fires-broader-than-break-or-recovery-alone' },
   ],
+  'continuous-integration': [
+    { label: 'fail-fast: false Lets Every Matrix Job Finish', route: '/devops/continuous-integration/fail-fast-false-lets-every-matrix-job-finish' },
+    { label: 'New-Code Quality Gates vs. Global Coverage Thresholds', route: '/devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds' },
+    { label: 'merge-multiple Flattens Artifact Subdirectories', route: '/devops/continuous-integration/merge-multiple-flattens-artifact-subdirectories' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
