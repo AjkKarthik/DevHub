@@ -36675,6 +36675,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Shifting security "left" (earlier in the pipeline) doesn\'t eliminate the need for runtime/production security monitoring — both are needed, not one instead of the other.',
     ],
   },
+  'devops/devsecops/dependabot-auto-merge': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'DevSecOps overview', route: '/devops/devsecops' },
+      { label: 'Security Tab Findings Aren’t Automatically a Blocked Merge', route: '/devops/devsecops/codeql-merge-blocking' },
+    ],
+    tip: 'dependabot.yml has no auto-merge field at all — merging patch-level PRs automatically needs a separate workflow reading the dependabot/fetch-metadata action\'s update-type output, plus the repo\'s own "Allow auto-merge" setting enabled.',
+    gotchas: [
+      'gh pr merge --auto QUEUES a merge, it doesn\'t force one — a patch bump with a failing required check still sits open, unmerged, even after the workflow itself reports success.',
+      'Without any required status checks configured on the repo, --auto can merge immediately with no CI gate at all — the safety net comes from branch protection, not from the auto-merge workflow.',
+    ],
+  },
+  'devops/devsecops/codeql-merge-blocking': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Auto-Merge for Patch Updates Is a Workflow, Not a Setting', route: '/devops/devsecops/dependabot-auto-merge' },
+      { label: 'What fetch-depth: 0 Actually Buys Gitleaks on a Push', route: '/devops/devsecops/gitleaks-scan-scope' },
+    ],
+    tip: 'The Security tab and PR comments populate from the workflow\'s own upload-sarif step alone — actually blocking a merge needs a SEPARATE branch protection rule requiring the "Code scanning results" check, and even then only High-or-above severity fails it by default.',
+    gotchas: [
+      'A repo can run CodeQL correctly, show alerts in the Security tab every time, and still let every PR merge freely if branch protection was never told to require that check.',
+      'Medium and Low severity CodeQL findings still appear as alerts and PR comments, but do not fail the required status check by default — only High/Critical do.',
+    ],
+  },
+  'devops/devsecops/gitleaks-scan-scope': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Security Tab Findings Aren’t Automatically a Blocked Merge', route: '/devops/devsecops/codeql-merge-blocking' },
+      { label: 'DevSecOps overview', route: '/devops/devsecops' },
+    ],
+    tip: 'fetch-depth: 0 only makes full history available locally so a pull_request-triggered diff scan has a base commit to compare against — gitleaks-action itself still only scans this push\'s new commits or this PR\'s diff, never the whole log, on either trigger.',
+    gotchas: [
+      'A secret committed years before gitleaks was ever added will never be caught by the routine push/PR-triggered CI workflow — only a deliberate, separate `gitleaks detect` run against the full git log finds it.',
+      'The "scan full history" comment on fetch-depth: 0 describes what the checkout step fetches, not what the gitleaks-action step then scans.',
+    ],
+  },
   'devops/platform-engineering': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

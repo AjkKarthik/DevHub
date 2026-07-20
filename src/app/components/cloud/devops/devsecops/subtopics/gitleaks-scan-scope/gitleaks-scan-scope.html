@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DevSecOps" topicRoute="/devops/devsecops" subtopicLabel="What fetch-depth: 0 Actually Buys Gitleaks on a Push" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">What fetch-depth: 0 Actually Buys Gitleaks on a Push</h1>
+  <p class="page-subtitle">
+    The main page's own workflow comments "scan full history" next to fetch-depth: 0 — but gitleaks-action still
+    only scans this push's new commits or this PR's diff, never the whole log, on either trigger.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2021+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic corrects a comment in the main page's own working example, closing out this batch's look at
+      three places where the main page states an outcome without the underlying mechanism. Back to the DevSecOps
+      overview to review Auto-Merge or Code Scanning's own merge-blocking mechanics.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DevSecOps"
+    topicRoute="/devops/devsecops"
+    [prev]="{ label: 'Security Tab Findings Aren’t Automatically a Blocked Merge', route: '/devops/devsecops/codeql-merge-blocking' }"
+  />
+</div>

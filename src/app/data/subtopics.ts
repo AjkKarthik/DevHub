@@ -1348,6 +1348,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'PagerDuty’s severity Field Is Not the Alert’s Label', route: '/devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label' },
     { label: 'Duration and MTTR Measure From Different Endpoints', route: '/devops/incident-response/duration-and-mttr-measure-from-different-endpoints' },
   ],
+  'devsecops': [
+    { label: 'Auto-Merge for Patch Updates Is a Workflow, Not a Setting', route: '/devops/devsecops/dependabot-auto-merge' },
+    { label: 'Security Tab Findings Aren’t Automatically a Blocked Merge', route: '/devops/devsecops/codeql-merge-blocking' },
+    { label: 'What fetch-depth: 0 Actually Buys Gitleaks on a Push', route: '/devops/devsecops/gitleaks-scan-scope' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

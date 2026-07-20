@@ -2989,7 +2989,12 @@ export const routes: Routes = [
       { path: 'pagerdutys-severity-field-is-not-the-alert-label', loadComponent: () => import('./components/cloud/devops/incident-response/subtopics/pagerdutys-severity-field-is-not-the-alert-label/pagerdutys-severity-field-is-not-the-alert-label').then(m => m.PagerdutysSeverityFieldIsNotTheAlertLabelSubtopic) },
       { path: 'duration-and-mttr-measure-from-different-endpoints', loadComponent: () => import('./components/cloud/devops/incident-response/subtopics/duration-and-mttr-measure-from-different-endpoints/duration-and-mttr-measure-from-different-endpoints').then(m => m.DurationAndMttrMeasureFromDifferentEndpointsSubtopic) },
     ]},
-    { path: 'devsecops',              loadComponent: () => import('./components/cloud/devops/devsecops/devsecops').then(m => m.DevopsDevsecops) },
+    { path: 'devsecops', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/devsecops/devsecops').then(m => m.DevopsDevsecops) },
+      { path: 'dependabot-auto-merge', loadComponent: () => import('./components/cloud/devops/devsecops/subtopics/dependabot-auto-merge/dependabot-auto-merge').then(m => m.DependabotAutoMergeSubtopic) },
+      { path: 'codeql-merge-blocking', loadComponent: () => import('./components/cloud/devops/devsecops/subtopics/codeql-merge-blocking/codeql-merge-blocking').then(m => m.CodeqlMergeBlockingSubtopic) },
+      { path: 'gitleaks-scan-scope', loadComponent: () => import('./components/cloud/devops/devsecops/subtopics/gitleaks-scan-scope/gitleaks-scan-scope').then(m => m.GitleaksScanScopeSubtopic) },
+    ]},
     { path: 'release-management',     loadComponent: () => import('./components/cloud/devops/release-management/release-management').then(m => m.DevopsReleaseManagement) },
     { path: 'sre',                    loadComponent: () => import('./components/cloud/devops/sre/sre').then(m => m.DevopsSre) },
     { path: 'cheatsheet',             loadComponent: () => import('./components/cloud/devops/cheatsheet/cheatsheet').then(m => m.DevopsCheatsheet) },

@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DevSecOps" topicRoute="/devops/devsecops" subtopicLabel="Auto-Merge for Patch Updates Is a Workflow, Not a Setting" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Auto-Merge for Patch Updates Is a Workflow, Not a Setting</h1>
+  <p class="page-subtitle">
+    The main page's own theory says "configure auto-merge for patch updates" as if it were one setting in
+    dependabot.yml. It isn't — it's a separate GitHub Actions workflow plus two repository settings.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2023+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic expands the main page's own Dependency Scanning theory into the exact mechanism behind one of
+      its own claims. Back to the DevSecOps overview, or continue to how a Code Scanning alert does — and doesn't —
+      actually block a merge.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DevSecOps"
+    topicRoute="/devops/devsecops"
+    [next]="{ label: 'Security Tab Findings Aren’t Automatically a Blocked Merge', route: '/devops/devsecops/codeql-merge-blocking' }"
+  />
+</div>
