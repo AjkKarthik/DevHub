@@ -36544,6 +36544,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Dashboards are not a substitute for alerting — nobody watches a dashboard 24/7, which is why alerting design matters as its own discipline.',
     ],
   },
+  'devops/monitoring/the-short-window-is-for-fast-reset-not-confirmation': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Monitoring & Alerting overview', route: '/devops/monitoring' },
+      { label: 'group_wait, group_interval, repeat_interval Are Different Timers', route: '/devops/monitoring/group-wait-interval-repeat-interval-are-different-timers' },
+    ],
+    tip: 'Google\'s own SRE Workbook is explicit: the short window in a multi-window burn-rate alert exists for fast reset time — a long-window-only alert can stay firing for up to an hour after the real problem is already fixed.',
+    gotchas: [
+      'Requiring both windows to breach with "and" means the alert clears the moment the short window recovers, not when the long window eventually does.',
+      'Removing the short window "to simplify" trades a small detection-speed benefit for a much worse reset-time cost.',
+    ],
+  },
+  'devops/monitoring/group-wait-interval-repeat-interval-are-different-timers': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'The Short Window Is for Fast Reset, Not Confirmation', route: '/devops/monitoring/the-short-window-is-for-fast-reset-not-confirmation' },
+      { label: 'histogram_quantile Accuracy Depends on Bucket Boundaries', route: '/devops/monitoring/histogram-quantile-accuracy-depends-on-bucket-boundaries' },
+    ],
+    tip: 'AlertManager\'s own docs define three separate moments: group_wait (first notification for a new group), group_interval (a new alert joining an already-notified group), and repeat_interval (a reminder when nothing has changed at all) — they don\'t substitute for each other.',
+    gotchas: [
+      'A new alert joining an already-notified group is surfaced via group_interval, not repeat_interval — tuning the wrong one leaves the actual complaint unaddressed.',
+      'repeat_interval explicitly does not fire once anything in the group has changed since the last notification.',
+    ],
+  },
+  'devops/monitoring/histogram-quantile-accuracy-depends-on-bucket-boundaries': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'group_wait, group_interval, repeat_interval Are Different Timers', route: '/devops/monitoring/group-wait-interval-repeat-interval-are-different-timers' },
+      { label: 'Monitoring & Alerting overview', route: '/devops/monitoring' },
+    ],
+    tip: 'histogram_quantile()\'s result is an interpolated estimate, not an exact value — Prometheus\'s own docs state its error is limited by the width of the bucket the true quantile falls in, so coarse buckets near the real value can produce a p99 that looks precise but is significantly wrong.',
+    gotchas: [
+      'Switching from a Summary to a Histogram fixes cross-instance aggregation, but does nothing for bucket-boundary precision — they are separate concerns.',
+      'A suspiciously stable, unchanging quantile value can be a symptom of the true value sitting inside one wide bucket, not evidence the metric is accurate.',
+    ],
+  },
   'devops/logging': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [

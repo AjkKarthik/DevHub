@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Monitoring & Alerting" topicRoute="/devops/monitoring" subtopicLabel="histogram_quantile Accuracy Depends on Bucket Boundaries" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">histogram_quantile Accuracy Depends on Bucket Boundaries</h1>
+  <p class="page-subtitle">
+    The main page recommends histograms over summaries for percentile alerting — but never mentions that
+    histogram_quantile's own result is an interpolated estimate that can be significantly wrong with coarse buckets.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic adds the precision caveat the main page's own "prefer histograms" advice leaves out. Back to
+      AlertManager's three distinct timing fields, or to the Monitoring & Alerting overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Monitoring & Alerting"
+    topicRoute="/devops/monitoring"
+    [prev]="{ label: 'group_wait, group_interval, repeat_interval Are Different Timers', route: '/devops/monitoring/group-wait-interval-repeat-interval-are-different-timers' }"
+  />
+</div>

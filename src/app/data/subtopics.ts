@@ -1332,6 +1332,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Incremental Mode Never Deletes Unmanaged Resources', route: '/devops/iac/incremental-mode-never-deletes-unmanaged-resources' },
     { label: 'check Filters What Runs, soft-fail-on Filters What Blocks', route: '/devops/iac/check-filters-what-runs-soft-fail-on-what-blocks' },
   ],
+  'monitoring': [
+    { label: 'The Short Window Is for Fast Reset, Not Confirmation', route: '/devops/monitoring/the-short-window-is-for-fast-reset-not-confirmation' },
+    { label: 'group_wait, group_interval, repeat_interval Are Different Timers', route: '/devops/monitoring/group-wait-interval-repeat-interval-are-different-timers' },
+    { label: 'histogram_quantile Accuracy Depends on Bucket Boundaries', route: '/devops/monitoring/histogram-quantile-accuracy-depends-on-bucket-boundaries' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

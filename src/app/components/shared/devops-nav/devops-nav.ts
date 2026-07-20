@@ -340,7 +340,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Monitoring</p>
-      <a routerLink="/devops/monitoring" routerLinkActive="active"><span class="nl-text">Monitoring &amp; Alerting</span>@if(p.isDone('devops-monitoring')){<span class="nl-done">✓</span>}@if(d('devops-monitoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/monitoring" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Monitoring &amp; Alerting</span>
+        @if (p.isDone('devops-monitoring')) {<span class="nl-done">✓</span>}
+        @if (d('devops-monitoring'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('monitoring')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('monitoring')"
+                  (click)="toggleSubtopics('monitoring', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('monitoring'); as monSubs) {
+        @if (isSubtopicsExpanded('monitoring')) {
+          <div class="nav-subtopics">
+            @for (s of monSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/devops/logging" routerLinkActive="active"><span class="nl-text">Logging Pipelines</span>@if(p.isDone('devops-logging')){<span class="nl-done">✓</span>}@if(d('devops-logging');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/devops/incident-response" routerLinkActive="active"><span class="nl-text">On-call &amp; Incident Response</span>@if(p.isDone('devops-incident-response')){<span class="nl-done">✓</span>}@if(d('devops-incident-response');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

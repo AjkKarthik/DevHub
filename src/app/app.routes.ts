@@ -2971,7 +2971,12 @@ export const routes: Routes = [
       { path: 'incremental-mode-never-deletes-unmanaged-resources', loadComponent: () => import('./components/cloud/devops/iac/subtopics/incremental-mode-never-deletes-unmanaged-resources/incremental-mode-never-deletes-unmanaged-resources').then(m => m.IncrementalModeNeverDeletesUnmanagedResourcesSubtopic) },
       { path: 'check-filters-what-runs-soft-fail-on-what-blocks', loadComponent: () => import('./components/cloud/devops/iac/subtopics/check-filters-what-runs-soft-fail-on-what-blocks/check-filters-what-runs-soft-fail-on-what-blocks').then(m => m.CheckFiltersWhatRunsSoftFailOnWhatBlocksSubtopic) },
     ]},
-    { path: 'monitoring',             loadComponent: () => import('./components/cloud/devops/monitoring/monitoring').then(m => m.DevopsMonitoring) },
+    { path: 'monitoring', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/monitoring/monitoring').then(m => m.DevopsMonitoring) },
+      { path: 'the-short-window-is-for-fast-reset-not-confirmation', loadComponent: () => import('./components/cloud/devops/monitoring/subtopics/the-short-window-is-for-fast-reset-not-confirmation/the-short-window-is-for-fast-reset-not-confirmation').then(m => m.TheShortWindowIsForFastResetNotConfirmationSubtopic) },
+      { path: 'group-wait-interval-repeat-interval-are-different-timers', loadComponent: () => import('./components/cloud/devops/monitoring/subtopics/group-wait-interval-repeat-interval-are-different-timers/group-wait-interval-repeat-interval-are-different-timers').then(m => m.GroupWaitIntervalRepeatIntervalAreDifferentTimersSubtopic) },
+      { path: 'histogram-quantile-accuracy-depends-on-bucket-boundaries', loadComponent: () => import('./components/cloud/devops/monitoring/subtopics/histogram-quantile-accuracy-depends-on-bucket-boundaries/histogram-quantile-accuracy-depends-on-bucket-boundaries').then(m => m.HistogramQuantileAccuracyDependsOnBucketBoundariesSubtopic) },
+    ]},
     { path: 'logging',                loadComponent: () => import('./components/cloud/devops/logging/logging').then(m => m.DevopsLogging) },
     { path: 'incident-response',      loadComponent: () => import('./components/cloud/devops/incident-response/incident-response').then(m => m.DevopsIncidentResponse) },
     { path: 'devsecops',              loadComponent: () => import('./components/cloud/devops/devsecops/devsecops').then(m => m.DevopsDevsecops) },

@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Monitoring & Alerting" topicRoute="/devops/monitoring" subtopicLabel="The Short Window Is for Fast Reset, Not Confirmation" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">The Short Window Is for Fast Reset, Not Confirmation</h1>
+  <p class="page-subtitle">
+    The main page's own SLO alert combines a 1h and 5m window with "and," but never explains why — the short
+    window's real job is clearing the alert quickly once the problem is fixed, not double-checking it's real.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the real purpose behind the main page's own multi-window SLO alert. Back to the
+      Monitoring & Alerting overview, or continue to what AlertManager's three separate timing fields each control.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Monitoring & Alerting"
+    topicRoute="/devops/monitoring"
+    [next]="{ label: 'group_wait, group_interval, and repeat_interval Are Different Timers', route: '/devops/monitoring/group-wait-interval-repeat-interval-are-different-timers' }"
+  />
+</div>
