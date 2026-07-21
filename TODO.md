@@ -2550,7 +2550,55 @@ off here with a date.
   dark mode (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes)
   all working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 16 of
   22 topics complete.**)
-- [ ] `/containers/rbac` — Kubernetes RBAC
+- [x] `/containers/rbac` — Kubernetes RBAC (2026-07-21 — 3 subtopics:
+  bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough,
+  aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings,
+  bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did; all three verified
+  against official Kubernetes documentation via WebSearch and a follow-up WebFetch of the
+  official RBAC doc page before writing. **A genuine, confirmed inaccuracy was found and
+  fixed on the main page itself during this batch**: the closing QnA entry originally implied
+  that `rolebindings/create` (or `clusterrolebindings/create`) permission ALONE was enough
+  for a ServiceAccount to bind itself to any powerful ClusterRole it could reference — verified
+  false against Kubernetes' own "Privilege escalation prevention and bootstrapping" RBAC
+  behavior, which blocks binding to a Role/ClusterRole containing more permissions than the
+  requester already has UNLESS the requester also separately holds the `bind` verb (or
+  `escalate`, for directly editing a Role) — corrected the QnA answer to accurately describe
+  the real two-part requirement (create AND bind/escalate together), matching the established
+  "fix genuine inaccuracies found during subtopic authoring" precedent from this project's
+  history; (1) the first subtopic explains and demonstrates this corrected mechanism directly;
+  (2) confirmed via WebSearch that aggregated ClusterRoles (the built-in `view`/`edit`/`admin`
+  roles, extendable via `aggregate-to-*` labels) retroactively grant new permissions to EVERY
+  existing binding the instant a matching labeled ClusterRole is created — closing a real gap
+  where the main page's own QnA frames aggregation purely as a maintenance convenience without
+  covering this side of the same mechanism; (3) confirmed via Kubernetes' own TokenRequest API
+  documentation that the default mounted ServiceAccount token (since 1.24) is a bound token
+  expiring in 1 hour or on Pod deletion, a fundamentally different security property from the
+  pre-1.24-default legacy Secret-backed token, which never expired at all — a gap in the main
+  page's own theory, which covers only the token's mount path, never its lifetime. Gotcha sweep
+  (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis present; bare
+  single/double brace sweep of `.html` files — clean; backtick parity across all three `.ts`
+  files — even counts (18/22/4); apostrophe-after-letter check across all `.html` bound
+  `[prev]`/`[next]` attributes — clean, typographic `’` used correctly; a targeted re-check
+  for the exact escaped-quote-then-unescaped-quote bug pattern (`\''`) caught in two prior
+  batches — clean, zero instances, including in the directly-edited main page `rbac.ts`;
+  `\${` interpolation-risk scan — clean; `git add -A` file-existence check — all 9 files
+  confirmed present, no MAX_PATH issues) came back clean; build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (now ~133kB over)
+  plus one confirmed pre-existing, unrelated `NG8113: RouterLink is not used` warning on
+  `rbac.ts` itself (present both before and after the QnA fix, confirmed via before/after
+  build comparison) with zero actual TypeScript/template compile errors — the successful
+  compilation of the edited main page's own lazy chunk was itself direct confirmation the
+  QnA fix introduced no syntax error; browser-verified successfully via direct page-text and
+  DOM query on all three subtopic pages plus the corrected main page — content (all h1/
+  breadcrumb pairs correct), breadcrumb (all 4 levels), the `ContainersNavComponent`
+  accordion (toggle button present on the Kubernetes RBAC nav link), sidebar (tailored
+  `tip`/`gotchas`/`related` per subtopic), dark mode (`--bg: #0f172a`), and prev/next
+  subtopic-nav pager (correct labels and routes) all working correctly; the corrected main-
+  page QnA text was directly confirmed present and syntactically intact via file re-read
+  (the QnA accordion's own answer text was not reachable via page-text extraction without
+  clicking to expand it, so file-level verification was used instead, backed by the
+  successful, error-free build of that exact file). **This continues the Containers/K8s
+  hub's Phase 10 rollout — 17 of 22 topics complete.**)
 - [ ] `/containers/statefulsets` — StatefulSets & DaemonSets
 - [ ] `/containers/resource-limits` — Resource Requests & Limits
 - [ ] `/containers/hpa` — Horizontal Pod Autoscaler
