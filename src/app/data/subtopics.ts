@@ -2479,4 +2479,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Access Point IAM Scoping', route: '/aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition' },
     { label: 'AFTER_1_ACCESS Explained', route: '/aws/ebs-efs/efs-after-1-access-promotes-files-back-to-standard-immediately' },
   ],
+  iam: [
+    { label: 'Permission Boundary Exception', route: '/aws/iam/permission-boundary-doesnt-limit-role-session-resource-grants' },
+    { label: 'AssumeRole Duration Behavior', route: '/aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session' },
+    { label: 'ABAC Tag Protection', route: '/aws/iam/abac-tags-need-their-own-deny-untagresource-protection' },
+  ],
 };

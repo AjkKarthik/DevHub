@@ -177,7 +177,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">IAM</p>
-      <a routerLink="/aws/iam" routerLinkActive="active"><span class="nl-text">IAM</span>@if(p.isDone('aws-iam')){<span class="nl-done">✓</span>}@if(d('aws-iam');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/iam" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">IAM</span>
+        @if (p.isDone('aws-iam')) {<span class="nl-done">✓</span>}
+        @if (d('aws-iam'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('iam')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('iam')"
+                  (click)="toggleSubtopics('iam', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('iam'); as iamSubs) {
+        @if (isSubtopicsExpanded('iam')) {
+          <div class="nav-subtopics">
+            @for (s of iamSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/iam-roles" routerLinkActive="active"><span class="nl-text">IAM Roles &amp; Federation</span>@if(p.isDone('aws-iam-roles')){<span class="nl-done">✓</span>}@if(d('aws-iam-roles');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

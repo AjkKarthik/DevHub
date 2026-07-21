@@ -37704,6 +37704,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'S3 bucket policies and IAM policies are evaluated together for S3 access — both must allow the action, not just one.',
     ],
   },
+  'aws/iam/permission-boundary-doesnt-limit-role-session-resource-grants': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IAM overview', route: '/aws/iam' },
+      { label: 'AssumeRole Duration Behavior', route: '/aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session' },
+    ],
+    tip: 'A permission boundary caps a role\'s own identity-based policy — but a resource-based policy granting to the ASSUMED-ROLE SESSION ARN (not the role ARN) bypasses it entirely.',
+    gotchas: [
+      'A grant to arn:...:role/Name is capped by the boundary; the same grant to arn:...:assumed-role/Name/session is NOT — the ARN form is the whole distinction.',
+      'A boundary review that only tests the role-ARN form of a grant doesn\'t confirm behavior for the session-ARN form.',
+    ],
+  },
+  'aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Permission Boundary Exception', route: '/aws/iam/permission-boundary-doesnt-limit-role-session-resource-grants' },
+      { label: 'ABAC Tag Protection', route: '/aws/iam/abac-tags-need-their-own-deny-untagresource-protection' },
+    ],
+    tip: 'Requesting a DurationSeconds beyond a role\'s own MaxSessionDuration fails the entire AssumeRole call outright — it does not silently clamp to the role\'s actual maximum.',
+    gotchas: [
+      'MaxSessionDuration is configured per role (1-12 hours) — the same duration request can succeed on one role and fail outright on another.',
+      'The same fail-not-truncate behavior applies to role chaining\'s separate 1-hour cap, not just a role\'s own configured maximum.',
+    ],
+  },
+  'aws/iam/abac-tags-need-their-own-deny-untagresource-protection': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'AssumeRole Duration Behavior', route: '/aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session' },
+      { label: 'IAM overview', route: '/aws/iam' },
+    ],
+    tip: 'An ABAC condition is only as trustworthy as the tags it reads — AWS\'s own official ABAC reference implementation explicitly denies changing the tags the policy depends on.',
+    gotchas: [
+      'A principal with an ordinary, unrelated tagging permission can retag a resource to match their own principal tags and self-grant access an ABAC rule never intended.',
+      'The Deny only needs to target the specific ABAC-relevant tag key — other tags used for cost allocation or metadata stay freely editable.',
+    ],
+  },
   'aws/iam-roles': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

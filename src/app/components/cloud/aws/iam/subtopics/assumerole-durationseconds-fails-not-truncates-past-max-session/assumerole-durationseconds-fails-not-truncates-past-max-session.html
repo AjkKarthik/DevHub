@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="IAM" topicRoute="/aws/iam" subtopicLabel="AssumeRole Duration Behavior" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">AssumeRole Duration Fails, Doesn't Truncate, Past Max Session</h1>
+  <p class="page-subtitle">The main page's "up to 12h" phrasing reads like a clamp — requesting more than a role's own maximum fails the entire call instead.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="STS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic disambiguates the main page's own compressed session-duration wording and cross-references this hub's own AWS Fundamentals subtopic on role chaining, confirming the same fail-not-truncate behavior applies there too. Next, the ABAC tag protection subtopic covers a real security gap the main page's own ABAC section never mentions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="IAM" topicRoute="/aws/iam"
+    [prev]="{ label: 'Permission Boundary Exception', route: '/aws/iam/permission-boundary-doesnt-limit-role-session-resource-grants' }"
+    [next]="{ label: 'ABAC Tags Need Their Own Deny Protection', route: '/aws/iam/abac-tags-need-their-own-deny-untagresource-protection' }" />
+</div>

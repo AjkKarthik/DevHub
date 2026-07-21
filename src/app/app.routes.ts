@@ -3265,7 +3265,12 @@ export const routes: Routes = [
       { path: 'efs-access-point-iam-scoping-requires-accesspointarn-condition', loadComponent: () => import('./components/cloud/aws/ebs-efs/subtopics/efs-access-point-iam-scoping-requires-accesspointarn-condition/efs-access-point-iam-scoping-requires-accesspointarn-condition').then(m => m.EfsAccessPointIamScopingRequiresAccesspointarnConditionSubtopic) },
       { path: 'efs-after-1-access-promotes-files-back-to-standard-immediately', loadComponent: () => import('./components/cloud/aws/ebs-efs/subtopics/efs-after-1-access-promotes-files-back-to-standard-immediately/efs-after-1-access-promotes-files-back-to-standard-immediately').then(m => m.EfsAfter1AccessPromotesFilesBackToStandardImmediatelySubtopic) },
     ] },
-    { path: 'iam',                 loadComponent: () => import('./components/cloud/aws/iam/iam').then(m => m.AwsIam) },
+    { path: 'iam', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/iam/iam').then(m => m.AwsIam) },
+      { path: 'permission-boundary-doesnt-limit-role-session-resource-grants', loadComponent: () => import('./components/cloud/aws/iam/subtopics/permission-boundary-doesnt-limit-role-session-resource-grants/permission-boundary-doesnt-limit-role-session-resource-grants').then(m => m.PermissionBoundaryDoesntLimitRoleSessionResourceGrantsSubtopic) },
+      { path: 'assumerole-durationseconds-fails-not-truncates-past-max-session', loadComponent: () => import('./components/cloud/aws/iam/subtopics/assumerole-durationseconds-fails-not-truncates-past-max-session/assumerole-durationseconds-fails-not-truncates-past-max-session').then(m => m.AssumeroleDurationsecondsFailsNotTruncatesPastMaxSessionSubtopic) },
+      { path: 'abac-tags-need-their-own-deny-untagresource-protection', loadComponent: () => import('./components/cloud/aws/iam/subtopics/abac-tags-need-their-own-deny-untagresource-protection/abac-tags-need-their-own-deny-untagresource-protection').then(m => m.AbacTagsNeedTheirOwnDenyUntagresourceProtectionSubtopic) },
+    ] },
     { path: 'iam-roles',           loadComponent: () => import('./components/cloud/aws/iam-roles/iam-roles').then(m => m.AwsIamRoles) },
     { path: 'rds-aurora',          loadComponent: () => import('./components/cloud/aws/rds-aurora/rds-aurora').then(m => m.AwsRdsAurora) },
     { path: 'dynamodb',            loadComponent: () => import('./components/cloud/aws/dynamodb/dynamodb').then(m => m.AwsDynamodb) },

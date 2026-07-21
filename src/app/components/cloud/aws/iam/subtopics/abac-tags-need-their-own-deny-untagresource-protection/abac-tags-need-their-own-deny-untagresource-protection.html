@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="IAM" topicRoute="/aws/iam" subtopicLabel="ABAC Tag Protection" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">ABAC Tags Need Their Own Deny/UntagResource Protection</h1>
+  <p class="page-subtitle">An ABAC condition is only as trustworthy as the tags it reads — AWS's own reference implementation explicitly locks them down, and the main page's example doesn't.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="IAM" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes a real security gap in the main page's own ABAC example — the condition logic is correct, but nothing protects the tags it depends on, unlike AWS's own official ABAC reference implementation. Together with the permission boundary and AssumeRole duration subtopics, this batch covers three genuinely distinct IAM gaps the main page's own dense theory bullets only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="IAM" topicRoute="/aws/iam"
+    [prev]="{ label: 'AssumeRole Duration Fails, Doesn’t Truncate', route: '/aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session' }" />
+</div>

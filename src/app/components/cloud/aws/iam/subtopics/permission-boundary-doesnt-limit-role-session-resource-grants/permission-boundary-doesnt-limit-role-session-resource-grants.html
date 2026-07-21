@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="IAM" topicRoute="/aws/iam" subtopicLabel="Permission Boundary Exception" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">A Permission Boundary Doesn't Limit Role Session Resource Grants</h1>
+  <p class="page-subtitle">The boundary caps a role's OWN identity-based policy — but a resource-based policy targeting the assumed-role session ARN bypasses it entirely.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="IAM" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own "boundary sets the maximum allowed permissions" framing into its precise, documented scope — a real gap for anyone treating a permission boundary as an unconditional cap. Next, the AssumeRole session duration subtopic covers a second AssumeRole nuance the main page's own "1h default, up to 12h" summary compresses away.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="IAM" topicRoute="/aws/iam"
+    [next]="{ label: 'AssumeRole Duration Fails, Doesn’t Truncate', route: '/aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session' }" />
+</div>
