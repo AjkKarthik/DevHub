@@ -27544,6 +27544,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'docker exec fails against a stopped container — it requires an existing running container to attach to.',
     ],
   },
+  'containers/docker-cli/kill-sighup-is-reload-not-termination': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Docker CLI overview', route: '/containers/docker-cli' },
+      { label: 'docker kill Doesn’t Suppress a Restart Policy Like docker stop Does', route: '/containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop' },
+    ],
+    tip: 'docker kill defaults to SIGKILL, but -s lets it send any signal — SIGHUP is commonly used for zero-downtime config reload (nginx being the canonical example), not termination.',
+    gotchas: [
+      'Whether -s SIGHUP reloads or kills depends entirely on whether the target app installed a SIGHUP handler — with none, the kernel default is to terminate the process.',
+      'The main page\'s own "reserve kill for unresponsive containers" advice is about the SIGKILL default specifically, not about docker kill sending a non-terminating signal.',
+    ],
+  },
+  'containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'docker kill -s SIGHUP Reloads — It Doesn’t Terminate', route: '/containers/docker-cli/kill-sighup-is-reload-not-termination' },
+      { label: 'docker stop $(docker ps -q) Errors When Nothing Is Running', route: '/containers/docker-cli/stop-with-empty-ps-q-errors-not-noop' },
+    ],
+    tip: 'docker stop reliably marks a container as explicitly stopped, which unless-stopped respects across a daemon restart — docker kill (and the SIGKILL docker rm -f sends) does not reliably record that same state.',
+    gotchas: [
+      'A container under --restart unless-stopped that was killed rather than stopped can unexpectedly come back after the next daemon restart, the opposite of what most operators expect.',
+      'docker rm -f carries the same restart-policy risk as docker kill, since it sends SIGKILL before removing.',
+    ],
+  },
+  'containers/docker-cli/stop-with-empty-ps-q-errors-not-noop': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'docker kill Doesn’t Suppress a Restart Policy Like docker stop Does', route: '/containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop' },
+      { label: 'Docker CLI overview', route: '/containers/docker-cli' },
+    ],
+    tip: 'docker stop $(docker ps -q) with zero running containers expands to bare docker stop with no arguments — a real usage error and non-zero exit, not a silent no-op like the neighboring prune commands.',
+    gotchas: [
+      'A script running this line unconditionally with set -e will abort the rest of the script on any host with nothing currently running.',
+      'docker ps -q | xargs -r docker stop (the -r/--no-run-if-empty flag) turns the empty case into a genuine, safe no-op.',
+    ],
+  },
   'containers/compose': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

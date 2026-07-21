@@ -3041,7 +3041,12 @@ export const routes: Routes = [
       { path: 'user-namespace-remapping-not-default', loadComponent: () => import('./components/cloud/containers/fundamentals/subtopics/user-namespace-remapping-not-default/user-namespace-remapping-not-default').then(m => m.UserNamespaceRemappingNotDefaultSubtopic) },
       { path: 'oom-killer-targets-a-process-not-the-container', loadComponent: () => import('./components/cloud/containers/fundamentals/subtopics/oom-killer-targets-a-process-not-the-container/oom-killer-targets-a-process-not-the-container').then(m => m.OomKillerTargetsAProcessNotTheContainerSubtopic) },
     ]},
-    { path: 'docker-cli',         loadComponent: () => import('./components/cloud/containers/docker-cli/docker-cli').then(m => m.K8sDockerCli) },
+    { path: 'docker-cli', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/docker-cli/docker-cli').then(m => m.K8sDockerCli) },
+      { path: 'kill-sighup-is-reload-not-termination', loadComponent: () => import('./components/cloud/containers/docker-cli/subtopics/kill-sighup-is-reload-not-termination/kill-sighup-is-reload-not-termination').then(m => m.KillSighupIsReloadNotTerminationSubtopic) },
+      { path: 'kill-does-not-suppress-restart-policy-like-stop', loadComponent: () => import('./components/cloud/containers/docker-cli/subtopics/kill-does-not-suppress-restart-policy-like-stop/kill-does-not-suppress-restart-policy-like-stop').then(m => m.KillDoesNotSuppressRestartPolicyLikeStopSubtopic) },
+      { path: 'stop-with-empty-ps-q-errors-not-noop', loadComponent: () => import('./components/cloud/containers/docker-cli/subtopics/stop-with-empty-ps-q-errors-not-noop/stop-with-empty-ps-q-errors-not-noop').then(m => m.StopWithEmptyPsQErrorsNotNoopSubtopic) },
+    ]},
     { path: 'docker-images',      loadComponent: () => import('./components/cloud/containers/docker-images/docker-images').then(m => m.K8sDockerImages) },
     { path: 'dockerfile',         loadComponent: () => import('./components/cloud/containers/dockerfile/dockerfile').then(m => m.K8sDockerfile) },
     { path: 'multi-stage',        loadComponent: () => import('./components/cloud/containers/multi-stage/multi-stage').then(m => m.K8sMultiStage) },

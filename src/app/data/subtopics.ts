@@ -1374,6 +1374,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The “Rootless” UID Mapping Is Opt-In, Not the Default', route: '/containers/fundamentals/user-namespace-remapping-not-default' },
     { label: 'The OOM Killer Targets One Process, Not the Whole Container', route: '/containers/fundamentals/oom-killer-targets-a-process-not-the-container' },
   ],
+  'docker-cli': [
+    { label: 'docker kill -s SIGHUP Reloads — It Doesn’t Terminate', route: '/containers/docker-cli/kill-sighup-is-reload-not-termination' },
+    { label: 'docker kill Doesn’t Suppress a Restart Policy Like docker stop Does', route: '/containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop' },
+    { label: 'docker stop $(docker ps -q) Errors When Nothing Is Running', route: '/containers/docker-cli/stop-with-empty-ps-q-errors-not-noop' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
