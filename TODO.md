@@ -2466,7 +2466,48 @@ off here with a date.
   flex`, link correctly marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic,
   confirmed via body-text substring check), dark mode (`--bg: #0f172a`) all working correctly. **This
   continues the Containers/K8s hub's Phase 10 rollout — 10 of 22 topics complete.**)
-- [ ] `/containers/helm` — Helm
+- [x] `/containers/helm` — Helm (2026-07-21 — 3 subtopics:
+  rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run,
+  history-max-defaults-to-10-old-revisions-are-pruned-not-hidden,
+  set-always-beats-f-regardless-of-command-line-order; all three verified against official
+  Helm documentation via WebSearch (and a follow-up WebSearch confirming the exact
+  hook-to-command mapping after an initial search returned a conflicting/imprecise snippet
+  about rollback re-running migration hooks) before writing — (1) confirmed via Helm's own
+  documented hook types that `helm rollback` triggers ONLY pre-rollback/post-rollback hooks,
+  never pre-upgrade/post-upgrade — meaning the main page's own example (a pre-upgrade hook
+  Job running DB migrations) is never invoked by rollback at all, mechanically explaining the
+  main page's own separate, unexplained claim that rollback "does not undo external side
+  effects"; (2) confirmed via WebSearch that `--history-max` defaults to 10, with Helm
+  silently pruning the oldest revision Secrets on every successful upgrade beyond that count
+  — directly qualifying the main page's own "helm history shows all revisions" theory
+  language, which never mentions any limit; (3) confirmed via Helm's own documented
+  precedence rules and a GitHub issue thread that `--set` has a fixed, type-based precedence
+  over any `-f` file, independent of command-line position — closing a real ambiguity in the
+  main page's own "right-side wins" mustKnow phrasing, which reads as positional but is only
+  actually positional for comparing multiple flags of the SAME type. **Self-caught and fixed
+  a genuine TypeScript string-termination bug during authoring** (the same category of bug as
+  the prior `/containers/storage` batch): a stray extra `'` in the first subtopic's own
+  `points` array — caught via a direct grep for the exact `\''` bug pattern immediately after
+  writing, before the build, and confirmed absent across all three files. Gotcha sweep (bare
+  `@` — none found; heading fields — no HTML tags or backtick-emphasis present; bare
+  single/double brace sweep of `.html` files — clean, only bound `[prev]`/`[next]`
+  attribute expressions contain braces, notable given this topic's own subject matter is
+  literally `{{ }}` Go templating syntax; backtick parity across all three `.ts` files —
+  even counts (24/16/14), including correctly-escaped `\`` backticks inside backtick-delimited
+  `code:` fields referencing inline `helm upgrade`/`helm rollback` commands; apostrophe-after-letter
+  check across all `.html` bound `[prev]`/`[next]` attributes — clean; `\${` interpolation-risk
+  scan — clean; `git add -A` file-existence check — all 9 files confirmed present, no MAX_PATH
+  issues) came back clean; build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (now ~120kB over) plus one confirmed pre-existing, unrelated
+  `NG8113: RouterLink is not used` warning on `helm.ts` itself with zero actual
+  TypeScript/template compile errors; browser-verified successfully via direct page-text and
+  DOM query on all three pages — content (all three h1/breadcrumb pairs correct, including
+  the first subtopic's backtick-wrapped inline `helm upgrade`/`helm rollback` command
+  mentions rendering cleanly), breadcrumb (all 4 levels), the `ContainersNavComponent`
+  accordion (toggle button present on the Helm nav link), sidebar (tailored
+  `tip`/`gotchas`/`related` per subtopic), dark mode (`--bg: #0f172a`), and prev/next
+  subtopic-nav pager (correct labels and routes) all working correctly. **This continues the
+  Containers/K8s hub's Phase 10 rollout — 15 of 22 topics complete.**)
 - [ ] `/containers/container-security` — Container Security
 - [ ] `/containers/rbac` — Kubernetes RBAC
 - [ ] `/containers/statefulsets` — StatefulSets & DaemonSets
