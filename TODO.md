@@ -3424,7 +3424,38 @@ off here with a date.
   three pages — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now
   the SIXTEENTH topic in this hub with subtopics — confirmed only AWS Security's own toggle open,
   all fifteen others closed), dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/sqs-sns` — SQS & SNS
+- [x] `/aws/sqs-sns` — SQS & SNS (2026-07-22 — 3 subtopics:
+  fifo-deduplication-silently-drops-not-just-blocks,
+  malformed-batchitemfailures-fails-the-whole-batch,
+  sns-filterpolicyscope-messagebody-skips-duplicate-attrs; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own SQS deduplication docs
+  that a duplicate FIFO SendMessage call "will be acknowledged but not delivered to consumers"
+  (a valid MessageId returned, no error) and that "Amazon SQS continues tracking the
+  deduplication ID even after the message has been received and deleted" — closing a gap where
+  the main page's own FIFO codeTabs show ContentBasedDeduplication and an explicit
+  MessageDeduplicationId side by side with no explanation of the actual silent-drop mechanism or
+  how long tracking persists; (2) confirmed via AWS's own Lambda+SQS error-handling docs the exact
+  documented "Success and failure conditions" for ReportBatchItemFailures — a bad itemIdentifier
+  key name, a nonexistent message ID, or "If your function throws an exception, the entire batch
+  is considered a complete failure" — plus the CloudWatch metrics (NumberOfMessagesDeleted,
+  ApproximateAgeOfOldestMessage) AWS itself recommends for detecting this — closing a gap where
+  the main page's own correct example handler never shows what happens when the pattern is
+  implemented slightly wrong; (3) confirmed via AWS's own SNS filtering docs that
+  FilterPolicyScope=MessageBody lets a filter policy "act on... the message body" directly
+  ("Filter policies for the message body assume that the message payload is a well-formed JSON
+  object") and that filter policy changes "require up to 15 minutes to fully take effect" — closing
+  a gap where the main page's own filter example always duplicates data into a separate message
+  attribute with no mention of the body-filtering alternative or the propagation delay. A real
+  SUBTOPICS-map collision was checked for (both quoted and unquoted forms) and confirmed
+  collision-free — bare 'sqs-sns' used directly. Gotcha sweep covered `.html` bound attributes,
+  `.ts` single-quoted fields (apostrophe-after-letter grep clean across all three files), bare
+  `@word`/`{` in `.html` prose (none present), and backtick parity (even counts, 4/4/4). Build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with
+  zero actual TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename
+  too long" errors (longest new path 163 relative chars). Browser-verified successfully on all
+  three pages — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now
+  the SEVENTEENTH topic in this hub with subtopics — confirmed only SQS & SNS's own toggle open,
+  all sixteen others closed), dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/eventbridge` — EventBridge
 - [ ] `/aws/step-functions` — AWS Step Functions
 - [ ] `/aws/load-balancing` — Elastic Load Balancing
