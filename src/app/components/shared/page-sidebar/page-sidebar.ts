@@ -28170,6 +28170,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The reclaim policy (Retain vs Delete) determines whether underlying storage survives after its PVC is deleted — get this wrong and data disappears permanently.',
     ],
   },
+  'containers/storage/released-pv-never-auto-rebinds-claimref-must-be-cleared-manually': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Persistent Volumes & Storage overview', route: '/containers/storage' },
+      { label: 'A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending', route: '/containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending' },
+    ],
+    tip: 'A Released PV still carries a claimRef pointing at the deleted PVC\'s UID — Kubernetes checks this before comparing size/access-mode/storageClass, so a new matching PVC will not auto-bind until an admin clears claimRef.',
+    gotchas: [
+      'kubectl patch pv <name> -p \'{"spec":{"claimRef":null}}\' flips a Released PV back to Available, unblocking normal binding.',
+      'Targeting a Released PV by volumeName from a new PVC still requires claimRef to be cleared first — it changes HOW matching happens, not the underlying precondition.',
+    ],
+  },
+  'containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A Released PV Never Auto-Rebinds — claimRef Must Be Cleared Manually', route: '/containers/storage/released-pv-never-auto-rebinds-claimref-must-be-cleared-manually' },
+      { label: 'RWOP Closes the Gap RWO Leaves — Same-Node Pods Can Still Double-Write', route: '/containers/storage/rwop-closes-the-gap-rwo-leaves-same-node-pods-can-still-double-write' },
+    ],
+    tip: 'WaitForFirstConsumer only solves zone-matching at the FIRST provisioning moment — once bound, a zonal PV is permanently fixed, and a Pod rescheduled to a different zone after a node/zone failure gets stuck Pending, unable to attach its own volume.',
+    gotchas: [
+      'Deleting only the stuck Pod recreates it with the same PVC reference, hitting the identical zone conflict again — the PVC must be deleted too, in that order.',
+      'Recovering the Pod this way means starting with a fresh, empty PV in the new zone — restoring the actual data requires a backup, not a reattachment.',
+    ],
+  },
+  'containers/storage/rwop-closes-the-gap-rwo-leaves-same-node-pods-can-still-double-write': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending', route: '/containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending' },
+      { label: 'Persistent Volumes & Storage overview', route: '/containers/storage' },
+    ],
+    tip: 'ReadWriteOnce is node-level, not pod-level — multiple Pods co-located on the same node can mount an RWO volume read-write simultaneously; ReadWriteOncePod (GA in 1.29) enforces true single-Pod exclusivity at the API server.',
+    gotchas: [
+      'An old and new Pod for the same StatefulSet replica briefly coexisting on one node during a rollout is normal — RWO provides zero protection against both mounting the volume at once.',
+      'Switching to RWOP is a real behavioral change, not purely additive — a second Pod\'s mount attempt is rejected outright (FailedMount) until the first fully releases the volume.',
+    ],
+  },
   'containers/troubleshooting': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

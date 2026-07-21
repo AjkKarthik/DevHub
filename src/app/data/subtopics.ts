@@ -1434,6 +1434,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'RBAC resourceNames Cannot Restrict list/watch — the Verb Itself Must Go', route: '/containers/configmaps-secrets/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go' },
     { label: 'Deleting an Immutable ConfigMap Breaks New Pods, Not Running Ones', route: '/containers/configmaps-secrets/deleting-an-immutable-configmap-breaks-new-pods-not-running-ones' },
   ],
+  'storage': [
+    { label: 'A Released PV Never Auto-Rebinds — claimRef Must Be Cleared Manually', route: '/containers/storage/released-pv-never-auto-rebinds-claimref-must-be-cleared-manually' },
+    { label: 'A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending', route: '/containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending' },
+    { label: 'RWOP Closes the Gap RWO Leaves — Same-Node Pods Can Still Double-Write', route: '/containers/storage/rwop-closes-the-gap-rwo-leaves-same-node-pods-can-still-double-write' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
