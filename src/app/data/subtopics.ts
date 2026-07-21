@@ -1363,6 +1363,17 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time', route: '/devops/sre/burn-rate-formula-elapsed-window-disagreement' },
     { label: 'The Burn-Rate Alerts Reference Recording Rules That Are Never Defined', route: '/devops/sre/alert-rules-reference-undefined-recording-rules' },
   ],
+  // NOTE: keyed 'k8s-fundamentals', NOT bare 'fundamentals' — the JavaScript
+  // hub already owns the bare 'fundamentals' key above (its own
+  // /javascript/fundamentals topic). Hub-prefixed per the established
+  // collision-resolution pattern — see DevopsNavComponent-style hubs' own
+  // subtopicsOf('k8s-fundamentals') / isSubtopicsExpanded / toggleSubtopics
+  // calls in containers-nav.ts, which must all use this same prefixed key.
+  'k8s-fundamentals': [
+    { label: 'PID 1 Silently Ignores SIGTERM Unless the App Handles It', route: '/containers/fundamentals/pid-1-ignores-sigterm-by-default' },
+    { label: 'The “Rootless” UID Mapping Is Opt-In, Not the Default', route: '/containers/fundamentals/user-namespace-remapping-not-default' },
+    { label: 'The OOM Killer Targets One Process, Not the Whole Container', route: '/containers/fundamentals/oom-killer-targets-a-process-not-the-container' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

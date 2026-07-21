@@ -1706,6 +1706,9 @@ const AZURE_LABELS: Record<string, string> = {
 
 const CONTAINERS_LABELS: Record<string, string> = {
   'fundamentals':       'Container Fundamentals',
+  'fundamentals/pid-1-ignores-sigterm-by-default': 'PID 1 Silently Ignores SIGTERM Unless the App Handles It',
+  'fundamentals/user-namespace-remapping-not-default': 'The “Rootless” UID Mapping Is Opt-In, Not the Default',
+  'fundamentals/oom-killer-targets-a-process-not-the-container': 'The OOM Killer Targets One Process, Not the Whole Container',
   'docker-cli':         'Docker CLI',
   'docker-images':      'Docker Images & Registry',
   'dockerfile':         'Writing Dockerfiles',

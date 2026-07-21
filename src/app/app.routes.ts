@@ -3035,7 +3035,12 @@ export const routes: Routes = [
   ] },
   { path: 'containers',    children: [
     { path: '', loadComponent: () => import('./components/cloud/containers/home/home').then(m => m.ContainersHome) },
-    { path: 'fundamentals',       loadComponent: () => import('./components/cloud/containers/fundamentals/fundamentals').then(m => m.K8sFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/fundamentals/fundamentals').then(m => m.K8sFundamentals) },
+      { path: 'pid-1-ignores-sigterm-by-default', loadComponent: () => import('./components/cloud/containers/fundamentals/subtopics/pid-1-ignores-sigterm-by-default/pid-1-ignores-sigterm-by-default').then(m => m.Pid1IgnoresSigtermByDefaultSubtopic) },
+      { path: 'user-namespace-remapping-not-default', loadComponent: () => import('./components/cloud/containers/fundamentals/subtopics/user-namespace-remapping-not-default/user-namespace-remapping-not-default').then(m => m.UserNamespaceRemappingNotDefaultSubtopic) },
+      { path: 'oom-killer-targets-a-process-not-the-container', loadComponent: () => import('./components/cloud/containers/fundamentals/subtopics/oom-killer-targets-a-process-not-the-container/oom-killer-targets-a-process-not-the-container').then(m => m.OomKillerTargetsAProcessNotTheContainerSubtopic) },
+    ]},
     { path: 'docker-cli',         loadComponent: () => import('./components/cloud/containers/docker-cli/docker-cli').then(m => m.K8sDockerCli) },
     { path: 'docker-images',      loadComponent: () => import('./components/cloud/containers/docker-images/docker-images').then(m => m.K8sDockerImages) },
     { path: 'dockerfile',         loadComponent: () => import('./components/cloud/containers/dockerfile/dockerfile').then(m => m.K8sDockerfile) },

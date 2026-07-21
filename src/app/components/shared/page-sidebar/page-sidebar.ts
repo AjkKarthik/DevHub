@@ -27460,6 +27460,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Deleting files in a later layer does not reclaim space from an earlier layer — bloat persists in the image regardless.',
     ],
   },
+  'containers/fundamentals/pid-1-ignores-sigterm-by-default': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Container Fundamentals overview', route: '/containers/fundamentals' },
+      { label: 'The “Rootless” UID Mapping Is Opt-In, Not the Default', route: '/containers/fundamentals/user-namespace-remapping-not-default' },
+    ],
+    tip: 'The kernel silently ignores SIGTERM at PID 1 unless that process explicitly handles it — a shell-form Dockerfile CMD makes /bin/sh the real PID 1, so the app never even receives the signal docker stop sends.',
+    gotchas: [
+      'A container consistently taking the full docker stop grace period, every time, is a stronger signal of an ignored SIGTERM than of genuine slow cleanup work.',
+      '--init (or a real init like tini) fixes this even for a shell-form CMD, without touching the Dockerfile — it forwards signals correctly to the real child process.',
+    ],
+  },
+  'containers/fundamentals/user-namespace-remapping-not-default': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'PID 1 Silently Ignores SIGTERM Unless the App Handles It', route: '/containers/fundamentals/pid-1-ignores-sigterm-by-default' },
+      { label: 'The OOM Killer Targets One Process, Not the Whole Container', route: '/containers/fundamentals/oom-killer-targets-a-process-not-the-container' },
+    ],
+    tip: 'Of the six namespaces the main page lists, five are active for every container automatically — the user namespace is the exception, requiring userns-remap to be explicitly configured before container root stops being literal host root.',
+    gotchas: [
+      'A root container process on a default, unconfigured Docker install is host UID 0 the moment it starts — nothing about the user namespace is protecting it by default.',
+      'Rootless Docker (daemon runs unprivileged) and userns-remap (containers get UID-shifted) are two separate mechanisms, not the same feature under two names.',
+    ],
+  },
+  'containers/fundamentals/oom-killer-targets-a-process-not-the-container': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The “Rootless” UID Mapping Is Opt-In, Not the Default', route: '/containers/fundamentals/user-namespace-remapping-not-default' },
+      { label: 'Container Fundamentals overview', route: '/containers/fundamentals' },
+    ],
+    tip: 'The cgroup OOM killer scores and kills ONE process, not the whole container — in a multi-process container, a heavy child worker can be killed while PID 1 survives, and Docker keeps reporting the container as healthy.',
+    gotchas: [
+      'Docker only tracks whether PID 1 has exited to decide container health — a dead non-PID-1 worker inside a multi-process container is invisible to that check.',
+      'memory.oom.group forces all-or-nothing OOM behavior per cgroup, but Docker does not set it automatically — it takes manual configuration, or simply one process per container.',
+    ],
+  },
   'containers/dockerfile': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

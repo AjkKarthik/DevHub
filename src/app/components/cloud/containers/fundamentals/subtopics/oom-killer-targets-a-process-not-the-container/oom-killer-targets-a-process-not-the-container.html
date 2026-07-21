@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Fundamentals" topicRoute="/containers/fundamentals" subtopicLabel="The OOM Killer Targets One Process, Not the Whole Container" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The OOM Killer Targets One Process, Not the Whole Container</h1>
+  <p class="page-subtitle">
+    The main page's own bullet says the OOM killer "terminates its processes" — but the kernel scores and kills
+    ONE process at a time, which can leave a multi-process container looking perfectly healthy with a dead worker.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="cgroups v2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic connects the main page's own OOM bullet to its separate "one process per container" advice,
+      closing out this batch's look at three places where the main page's own wording glosses over a real
+      mechanism. Back to the Container Fundamentals overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Container Fundamentals"
+    topicRoute="/containers/fundamentals"
+    [prev]="{ label: 'The “Rootless” UID Mapping Is Opt-In, Not the Default', route: '/containers/fundamentals/user-namespace-remapping-not-default' }"
+  />
+</div>
