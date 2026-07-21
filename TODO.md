@@ -3563,7 +3563,55 @@ off here with a date.
   `AwsNavComponent` accordion (now the TWENTIETH topic in this hub with subtopics — confirmed only
   Load Balancing's own toggle open, all nineteen others closed), tailored (non-DEFAULT) sidebar
   content, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/cost-optimization` — AWS Cost Optimization
+- [x] `/aws/cost-optimization` — AWS Cost Optimization (2026-07-22 — 3 subtopics:
+  spot-rebalance-recommendations-arrive-before-the-2-minute-notice,
+  regional-ri-size-flexibility-uses-a-normalization-factor,
+  savings-plans-have-no-cancellation-or-resale-exit; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own EC2 Spot
+  prepare-for-interruptions and rebalance-recommendations docs a genuinely separate, earlier
+  signal: "Amazon EC2 emits a rebalance recommendation signal to the Spot Instance when the
+  instance is at an elevated risk of interruption. You can rely on the rebalance recommendation
+  to proactively manage Spot Instance interruptions without having to wait for the two-minute
+  Spot Instance interruption notice" — with its own documented no-guarantee caveat: "It is not
+  always possible for Amazon EC2 to send the rebalance recommendation signal before the
+  two-minute Spot Instance interruption notice. Therefore, the rebalance recommendation signal
+  can arrive along with the two-minute interruption notice" — closing a gap where the main
+  page's own quickRef and quiz treat "2-minute interruption warning" as the sole Spot signal;
+  (2) confirmed via AWS's own RI discount-application docs (apply_ri.html) that "instance size
+  flexibility is only supported for Regional Reserved Instances," using a documented
+  normalization-factor table (small=1, medium=2, large=4, xlarge=8, 2xlarge=16...) that AWS's
+  own worked examples show can apply FULL benefit when units divide evenly (four m4.large RIs
+  covering two running m4.xlarge instances) or PARTIAL benefit when they don't (a c4.large RI
+  covering exactly 50% of a running c4.xlarge's usage) — closing a gap where the main page's own
+  quickRef states RIs apply "to specific instance type" with no mention that this is only true
+  for Zonal RIs; (3) confirmed via AWS's own Savings-Plans-vs-RI comparison docs (sp-ris.html)
+  that "Savings Plans offer lower prices compared to On-Demand pricing in exchange for a
+  commitment, and can't be cancelled during the term," and via AWS's own RI Marketplace
+  eligibility docs (ri-market-general.html) that "Only Amazon EC2 Standard regional and zonal
+  Reserved Instances can be sold in the Reserved Instance Marketplace" (Savings Plans not
+  eligible at all, Convertible RIs also excluded) — closing a gap where the main page's own
+  mistake #4 shows a real $45,000 stranded-commitment scenario without ever explaining that,
+  unlike the Standard RI resale path its own theory mentions two sections earlier, Savings Plans
+  genuinely have no exit mechanism of any kind. Verified the `delete-queued-savings-plan` AWS
+  CLI command referenced in a code sample is real and correctly scoped (only removes a
+  not-yet-started future-dated purchase, not an active commitment) before publishing it. Gotcha
+  sweep covered `.html` bound attributes, `.ts` single-quoted fields (apostrophe-after-letter
+  grep clean across all three files), bare `@word`/`{` in `.html` prose (none present), and
+  backtick parity (even counts, 4/6/4 — the 6-count file's extra pair is from its two codeTabs
+  template literals, confirmed harmless by a zero-error build). Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR with zero actual
+  TypeScript/template compile errors. First subtopic folder used a SHORT physical name
+  (`spot-rebalance-vs-2-minute-notice`, 34 chars) instead of the full descriptive slug (68
+  chars) to stay well clear of Windows MAX_PATH, per the established recipe — the full
+  descriptive slug is kept in the route `path:` and every other wiring touchpoint (SUBTOPICS
+  map, breadcrumb, sidebar, search index, nav labels). `git add -A` staged all 9 files cleanly
+  with no "Filename too long" errors. Confirmed bare `cost-optimization` key collision-free in
+  `SUBTOPICS` map (checked both quoted and unquoted forms) — added as a bare key, no
+  hub-prefixing needed. Browser-verified successfully on all three pages — h1/breadcrumb pairs
+  correct (all 4 levels), the `AwsNavComponent` accordion (now the TWENTY-FIRST and FINAL topic
+  in this hub with subtopics — confirmed only Cost Optimization's own toggle open, all twenty
+  others closed), tailored (non-DEFAULT) sidebar content, dark mode (`--bg: #0f172a`) applying
+  correctly. **THE AWS HUB IS NOW COMPLETE AT 21/21 TOPICS WITH PHASE 10 SUBTOPIC COVERAGE.**)
 
 #### Azure — 22 topic pages
 
