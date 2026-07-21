@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ConfigMaps &amp; Secrets" topicRoute="/containers/configmaps-secrets" subtopicLabel="RBAC resourceNames Cannot Restrict list/watch — the Verb Itself Must Go" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">RBAC resourceNames Cannot Restrict list/watch — the Verb Itself Must Go</h1>
+  <p class="page-subtitle">
+    The main page's own mistake fix drops <code>list</code>/<code>watch</code> in favor of <code>get</code> with
+    <code>resourceNames</code> — here's the mechanical reason why <code>resourceNames</code> alone can't do the job.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered update propagation; this one covers RBAC scoping. Last: what happens to running
+      Pods when an immutable ConfigMap they reference gets deleted.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="ConfigMaps &amp; Secrets"
+    topicRoute="/containers/configmaps-secrets"
+    [prev]="{ label: 'subPath Volume Mounts Never Receive ConfigMap/Secret Updates At All', route: '/containers/configmaps-secrets/subpath-volume-mounts-never-receive-configmap-secret-updates' }"
+    [next]="{ label: 'Deleting an Immutable ConfigMap Breaks New Pods, Not Running Ones', route: '/containers/configmaps-secrets/deleting-an-immutable-configmap-breaks-new-pods-not-running-ones' }"
+  />
+</div>

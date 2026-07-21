@@ -3101,7 +3101,12 @@ export const routes: Routes = [
       { path: 'externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping', loadComponent: () => import('./components/cloud/containers/services-ingress/subtopics/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping').then(m => m.ExternalnameBypassesKubeProxyNoHealthChecksNoPortMappingSubtopic) },
       { path: 'pathtype-prefix-matches-path-elements-not-raw-string-prefixes', loadComponent: () => import('./components/cloud/containers/services-ingress/subtopics/pathtype-prefix-matches-path-elements-not-raw-string-prefixes/pathtype-prefix-matches-path-elements-not-raw-string-prefixes').then(m => m.PathtypePrefixMatchesPathElementsNotRawStringPrefixesSubtopic) },
     ]},
-    { path: 'configmaps-secrets', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/configmaps-secrets').then(m => m.K8sConfigmapsSecrets) },
+    { path: 'configmaps-secrets', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/configmaps-secrets').then(m => m.K8sConfigmapsSecrets) },
+      { path: 'subpath-volume-mounts-never-receive-configmap-secret-updates', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/subtopics/subpath-volume-mounts-never-receive-configmap-secret-updates/subpath-volume-mounts-never-receive-configmap-secret-updates').then(m => m.SubpathVolumeMountsNeverReceiveConfigmapSecretUpdatesSubtopic) },
+      { path: 'rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/subtopics/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go').then(m => m.RbacResourcenamesCannotRestrictListWatchTheVerbItselfMustGoSubtopic) },
+      { path: 'deleting-an-immutable-configmap-breaks-new-pods-not-running-ones', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/subtopics/deleting-an-immutable-configmap-breaks-new-pods-not-running-ones/deleting-an-immutable-configmap-breaks-new-pods-not-running-ones').then(m => m.DeletingAnImmutableConfigmapBreaksNewPodsNotRunningOnesSubtopic) },
+    ]},
     { path: 'storage',            loadComponent: () => import('./components/cloud/containers/storage/storage').then(m => m.K8sStorage) },
     { path: 'operators-crds', children: [
       { path: '', loadComponent: () => import('./components/cloud/containers/operators-crds/operators-crds').then(m => m.K8sOperatorsCrds) },

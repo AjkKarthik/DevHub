@@ -27795,6 +27795,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'immutable: true prevents accidental updates and improves kubelet performance, at the cost of requiring a new object name for any config change.',
     ],
   },
+  'containers/configmaps-secrets/subpath-volume-mounts-never-receive-configmap-secret-updates': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'ConfigMaps & Secrets overview', route: '/containers/configmaps-secrets' },
+      { label: 'RBAC resourceNames Cannot Restrict list/watch — the Verb Itself Must Go', route: '/containers/configmaps-secrets/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go' },
+    ],
+    tip: 'The "~1 minute" volume-update propagation figure only applies to whole-directory mounts — a subPath-mounted ConfigMap/Secret key bind-mounts once at container start and never receives live updates at all, for the container\'s entire lifetime.',
+    gotchas: [
+      'subPath bypasses kubelet\'s atomic symlink-swap update mechanism entirely — no amount of waiting resolves a stale subPath-mounted file.',
+      'The only fix for a subPath-mounted change is a Pod restart, the same requirement as environment-variable injection.',
+    ],
+  },
+  'containers/configmaps-secrets/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'subPath Volume Mounts Never Receive ConfigMap/Secret Updates At All', route: '/containers/configmaps-secrets/subpath-volume-mounts-never-receive-configmap-secret-updates' },
+      { label: 'Deleting an Immutable ConfigMap Breaks New Pods, Not Running Ones', route: '/containers/configmaps-secrets/deleting-an-immutable-configmap-breaks-new-pods-not-running-ones' },
+    ],
+    tip: 'resourceNames has no effect on list, watch, deletecollection, or top-level create requests — a Role combining list/watch with resourceNames grants full enumeration regardless, silently ignoring the restriction for those verbs.',
+    gotchas: [
+      'A Role that "looks" restricted via resourceNames + list/watch is functionally identical to one with no resourceNames field at all for those two verbs.',
+      'get, update, and delete DO respect resourceNames, since those requests include a specific object name in the URL for the authorizer to check.',
+    ],
+  },
+  'containers/configmaps-secrets/deleting-an-immutable-configmap-breaks-new-pods-not-running-ones': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'RBAC resourceNames Cannot Restrict list/watch — the Verb Itself Must Go', route: '/containers/configmaps-secrets/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go' },
+      { label: 'ConfigMaps & Secrets overview', route: '/containers/configmaps-secrets' },
+    ],
+    tip: 'An already-running Pod survives deletion of its own mounted ConfigMap/Secret, since kubelet already synced the content locally — the real risk lands on any Pod recreated afterward, which fails with CreateContainerConfigError.',
+    gotchas: [
+      'Never delete a superseded, content-hash-suffixed ConfigMap until kubectl rollout status confirms the referencing Deployment has fully completed.',
+      'A crash, node drain, or reschedule long after a rollout can still trigger the failure if cleanup happened too early relative to every possible future Pod recreation.',
+    ],
+  },
   'containers/container-security': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
