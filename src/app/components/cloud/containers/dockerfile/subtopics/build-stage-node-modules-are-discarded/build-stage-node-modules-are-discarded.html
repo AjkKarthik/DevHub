@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Writing Dockerfiles" topicRoute="/containers/dockerfile" subtopicLabel="The Build Stage’s Own node_modules Is Discarded Entirely" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The Build Stage's Own node_modules Is Discarded Entirely</h1>
+  <p class="page-subtitle">
+    The main page's own Dockerfile runs npm ci twice with different flags and never explains why — the runtime
+    image's node_modules comes from the deps stage; the build stage's own node_modules is never copied anywhere.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Docker 17.05+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic traces exactly what each COPY --from instruction in the main page's own multi-stage Dockerfile
+      actually pulls from which stage. Back to the Writing Dockerfiles overview, or continue to why the deps and
+      build stages can build at the same time rather than one after the other.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Writing Dockerfiles"
+    topicRoute="/containers/dockerfile"
+    [next]="{ label: 'Sibling Stages Build in Parallel, Not Top to Bottom', route: '/containers/dockerfile/sibling-stages-build-in-parallel' }"
+  />
+</div>

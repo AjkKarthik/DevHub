@@ -1384,6 +1384,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'docker push --all-tags Uploads the Shared Layers Once', route: '/containers/docker-images/all-tags-push-uploads-shared-layers-once' },
     { label: 'A Registry Mirror Only Ever Intercepts Docker Hub Pulls', route: '/containers/docker-images/registry-mirror-only-intercepts-docker-hub' },
   ],
+  'dockerfile': [
+    { label: 'The Build Stage’s Own node_modules Is Discarded Entirely', route: '/containers/dockerfile/build-stage-node-modules-are-discarded' },
+    { label: 'Sibling Stages Build in Parallel, Not Top to Bottom', route: '/containers/dockerfile/sibling-stages-build-in-parallel' },
+    { label: 'The apt-get Cleanup Fix Is About Layer Size, Not Just Staleness', route: '/containers/dockerfile/same-layer-cleanup-is-required-for-size-not-just-staleness' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

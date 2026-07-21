@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Writing Dockerfiles" topicRoute="/containers/dockerfile" subtopicLabel="The apt-get Cleanup Fix Is About Layer Size, Not Just Staleness" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The apt-get Cleanup Fix Is About Layer Size, Not Just Staleness</h1>
+  <p class="page-subtitle">
+    The main page's own mistake entry explains its combined RUN fix purely in terms of stale package caches — but
+    the same-layer rm -rf is independently required for the cleanup to actually shrink the image at all.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at three places where the main page's own Dockerfile does more
+      than its accompanying explanation states. Back to the Writing Dockerfiles overview, or review the parallel
+      sibling-stage build behavior or why the build stage's node_modules is discarded.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Writing Dockerfiles"
+    topicRoute="/containers/dockerfile"
+    [prev]="{ label: 'Sibling Stages Build in Parallel, Not Top to Bottom', route: '/containers/dockerfile/sibling-stages-build-in-parallel' }"
+  />
+</div>

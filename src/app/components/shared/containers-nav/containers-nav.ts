@@ -84,7 +84,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Dockerfile</p>
-      <a routerLink="/containers/dockerfile" routerLinkActive="active"><span class="nl-text">Writing Dockerfiles</span>@if(p.isDone('k8s-dockerfile')){<span class="nl-done">✓</span>}@if(d('k8s-dockerfile');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/dockerfile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Writing Dockerfiles</span>
+        @if (p.isDone('k8s-dockerfile')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-dockerfile'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('dockerfile')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dockerfile')"
+                  (click)="toggleSubtopics('dockerfile', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dockerfile'); as dfSubs) {
+        @if (isSubtopicsExpanded('dockerfile')) {
+          <div class="nav-subtopics">
+            @for (s of dfSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/multi-stage" routerLinkActive="active"><span class="nl-text">Multi-Stage Builds</span>@if(p.isDone('k8s-multi-stage')){<span class="nl-done">✓</span>}@if(d('k8s-multi-stage');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

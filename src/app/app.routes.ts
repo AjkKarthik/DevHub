@@ -3053,7 +3053,12 @@ export const routes: Routes = [
       { path: 'all-tags-push-uploads-shared-layers-once', loadComponent: () => import('./components/cloud/containers/docker-images/subtopics/all-tags-push-uploads-shared-layers-once/all-tags-push-uploads-shared-layers-once').then(m => m.AllTagsPushUploadsSharedLayersOnceSubtopic) },
       { path: 'registry-mirror-only-intercepts-docker-hub', loadComponent: () => import('./components/cloud/containers/docker-images/subtopics/registry-mirror-only-intercepts-docker-hub/registry-mirror-only-intercepts-docker-hub').then(m => m.RegistryMirrorOnlyInterceptsDockerHubSubtopic) },
     ]},
-    { path: 'dockerfile',         loadComponent: () => import('./components/cloud/containers/dockerfile/dockerfile').then(m => m.K8sDockerfile) },
+    { path: 'dockerfile', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/dockerfile/dockerfile').then(m => m.K8sDockerfile) },
+      { path: 'build-stage-node-modules-are-discarded', loadComponent: () => import('./components/cloud/containers/dockerfile/subtopics/build-stage-node-modules-are-discarded/build-stage-node-modules-are-discarded').then(m => m.BuildStageNodeModulesAreDiscardedSubtopic) },
+      { path: 'sibling-stages-build-in-parallel', loadComponent: () => import('./components/cloud/containers/dockerfile/subtopics/sibling-stages-build-in-parallel/sibling-stages-build-in-parallel').then(m => m.SiblingStagesBuildInParallelSubtopic) },
+      { path: 'same-layer-cleanup-is-required-for-size-not-just-staleness', loadComponent: () => import('./components/cloud/containers/dockerfile/subtopics/same-layer-cleanup-is-required-for-size-not-just-staleness/same-layer-cleanup-is-required-for-size-not-just-staleness').then(m => m.SameLayerCleanupIsRequiredForSizeNotJustStalenessSubtopic) },
+    ]},
     { path: 'multi-stage',        loadComponent: () => import('./components/cloud/containers/multi-stage/multi-stage').then(m => m.K8sMultiStage) },
     { path: 'compose',            loadComponent: () => import('./components/cloud/containers/compose/compose').then(m => m.K8sCompose) },
     { path: 'compose-profiles',   loadComponent: () => import('./components/cloud/containers/compose-profiles/compose-profiles').then(m => m.K8sComposeProfiles) },

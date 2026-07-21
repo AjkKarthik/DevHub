@@ -27508,6 +27508,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Combining related RUN commands into a single layer (using && chains) avoids leaving unreachable bloat in earlier layers.',
     ],
   },
+  'containers/dockerfile/build-stage-node-modules-are-discarded': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Writing Dockerfiles overview', route: '/containers/dockerfile' },
+      { label: 'Sibling Stages Build in Parallel, Not Top to Bottom', route: '/containers/dockerfile/sibling-stages-build-in-parallel' },
+    ],
+    tip: 'The runtime image\'s node_modules comes from the deps stage\'s production-only install — the build stage\'s own full npm ci (with devDependencies) is used only to run the build script, then discarded entirely.',
+    gotchas: [
+      'Copying node_modules from build instead of deps ships every devDependency into production with no build or runtime error to flag the regression.',
+      'Removing the "redundant-looking" deps stage in favor of reusing build\'s node_modules silently bloats the final image.',
+    ],
+  },
+  'containers/dockerfile/sibling-stages-build-in-parallel': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The Build Stage’s Own node_modules Is Discarded Entirely', route: '/containers/dockerfile/build-stage-node-modules-are-discarded' },
+      { label: 'The apt-get Cleanup Fix Is About Layer Size, Not Just Staleness', route: '/containers/dockerfile/same-layer-cleanup-is-required-for-size-not-just-staleness' },
+    ],
+    tip: 'BuildKit builds a dependency graph from each stage\'s own FROM/COPY --from references, not file order — deps and build, as independent siblings under base, can build concurrently rather than sequentially.',
+    gotchas: [
+      'Changing FROM base AS build to FROM deps AS build creates a real dependency that forces BuildKit to serialize the two stages, losing the parallelism.',
+      'Only runtime, which references both deps and build via COPY --from, genuinely has to wait for both to finish.',
+    ],
+  },
+  'containers/dockerfile/same-layer-cleanup-is-required-for-size-not-just-staleness': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Sibling Stages Build in Parallel, Not Top to Bottom', route: '/containers/dockerfile/sibling-stages-build-in-parallel' },
+      { label: 'Writing Dockerfiles overview', route: '/containers/dockerfile' },
+    ],
+    tip: 'rm -rf /var/lib/apt/lists/* only actually shrinks the image if it runs in the SAME layer as the install that created those files — in a separate later RUN, the earlier layer still counts their full size.',
+    gotchas: [
+      'A running container\'s filesystem looks identical either way (files appear gone) — only docker image ls or docker history reveals whether the cleanup actually reclaimed space.',
+      'The main page\'s own mistake-entry explanation only credits the staleness fix, not the equally important same-layer size benefit.',
+    ],
+  },
   'containers/multi-stage': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
