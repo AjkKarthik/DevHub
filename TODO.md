@@ -2872,7 +2872,44 @@ off here with a date.
   subtopic, dark mode (`--bg: #0f172a`) applying correctly. **This is the AWS hub's first Phase
   10 batch — establishes the pilot conventions (AwsNavComponent fix, `aws-fundamentals` collision
   resolution) the remaining 20 AWS topics will reuse.**)
-- [ ] `/aws/ec2` — EC2 & Auto Scaling
+- [x] `/aws/ec2` — EC2 & Auto Scaling (2026-07-21 — 3 subtopics:
+  t3-launches-unlimited-by-default-surplus-credits-can-surcharge,
+  imds-hop-limit-of-1-breaks-container-metadata-access,
+  io1-multi-attach-lacks-io-fencing-io2-supports-it; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed T3/T3a/T4g instances launch in
+  Unlimited mode BY DEFAULT (unlike T2, which defaults to Standard), and that Unlimited mode's
+  surplus-credit surcharge billing applies whenever average CPU utilization exceeds baseline over
+  a rolling 24-hour window — closing a gap where the main page's own CPU-credit bullet mentions
+  earning/spending credits but never mentions the two distinct modes or which one is actually the
+  default; (2) confirmed HttpPutResponseHopLimit defaults to 1 and that AWS's own docs explicitly
+  call out containerized workloads as a scenario where this "can cause issues" — closing a gap
+  where the main page's own dedicated IMDSv2 mistake entry covers token enforcement but never
+  mentions this separate, independently-configured setting that silently breaks metadata access
+  the moment a container runtime is added; (3) confirmed via AWS's own EBS Multi-Attach
+  considerations page that only io2 (not io1) Multi-Attach volumes support I/O fencing via NVMe
+  reservations — closing a gap where the main page's own bullet treats "io1/io2 only" as
+  interchangeable, when only io2 actually protects against a stale-writer/split-brain scenario a
+  cluster-aware filesystem alone cannot prevent. **A real build failure and fix during this
+  batch**: the io1 subtopic's own `exercise.prompt` field had one unescaped bare apostrophe in
+  "the main page's own" (a second, later apostrophe in the same field, "subtopic's theory," WAS
+  correctly escaped) — this is the same delimiter-collision root cause as every previously
+  documented apostrophe gotcha, but caught here specifically because the earlier
+  apostrophe-after-letter sweep this batch ran was scoped only to the three `.html` files'
+  `[prev]`/`[next]` bound attributes, not the `.ts` files' own single-quoted `prompt`/`hint`/
+  `solution`/`thought`/`reality` fields — confirmed the theory/misconceptions/other exercise
+  fields across all three files were otherwise correctly escaped throughout, this was an isolated
+  single miss, not a systemic gap. **Standing process fix**: the pre-build sweep must run the
+  apostrophe-after-letter grep against `.ts` files too (targeting the single-quoted
+  `prompt:`/`hint:`/`solution:`/`thought:`/`reality:`/`points:` field bodies specifically, since
+  backtick-delimited `code:` fields are unaffected and apostrophes there are always safe) — not
+  just `.html` bound attributes — added to this file's own standing gotcha checklist. Build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR after
+  the fix, with zero actual TypeScript/template compile errors. `git add -A` staged cleanly with
+  no "Filename too long" errors. Browser-verified successfully on all three pages — h1/breadcrumb
+  pairs correct (all 4 levels), the `AwsNavComponent` accordion (now the SECOND topic in this hub
+  with subtopics — confirmed both toggles coexist correctly, with only the current page's own
+  topic auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per subtopic, dark
+  mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/ecs-eks` — ECS & EKS
 - [ ] `/aws/vpc` — VPC & Networking
 - [ ] `/aws/route53-cloudfront` — Route 53 & CloudFront

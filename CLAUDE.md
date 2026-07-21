@@ -1603,6 +1603,17 @@ same check before any other new hub's first subtopic set:
    credentials (ECS task role) BEFORE the EC2 instance profile, not after. Corrected via the same
    "verify against official docs, fix the main page directly" precedent already established
    across the Containers/K8s hub (3 similar fixes) and other hubs before it.
+8. **The apostrophe-after-letter pre-build sweep must cover `.ts` files' own single-quoted
+   fields too, not just `.html` bound attributes.** A real build failure on the `/aws/ec2` batch
+   (io1 Multi-Attach subtopic): one bare, unescaped apostrophe in "the main page's own" inside an
+   `exercise.prompt` field — a LATER apostrophe in the same field ("subtopic's theory") was
+   correctly escaped, so this was an isolated single miss, not a systemic one. The sweep run
+   before that build only checked the three `.html` files' `[prev]`/`[next]` bound attributes,
+   never the `.ts` files' own single-quoted `prompt:`/`hint:`/`solution:`/`thought:`/`reality:`/
+   `points:` field bodies. **Fix, now standing practice**: run the apostrophe-after-letter grep
+   against `.ts` files too, targeting those specific single-quoted field bodies — backtick-
+   delimited `code:` fields are unaffected (backticks tolerate bare apostrophes fine) and don't
+   need this check.
 
 ## Current state (update when it changes!)
 
@@ -1706,7 +1717,7 @@ same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `cloud/aws/home/home.ts`. Progress: `awsTotal=21` in progress.service.ts.
   AWS pages use `app-common-mistakes` AND `app-revision-card`. Reference page (cheatsheet) has no PageComplete.
   Challenge.language: `'typescript'`. AwsNavComponent at `shared/aws-nav/aws-nav.ts`.
-  Phase 10: 1 of 21 topics have subtopics (`/aws/fundamentals`, pilot batch, 2026-07-21) — see
+  Phase 10: 2 of 21 topics have subtopics (`/aws/fundamentals`, `/aws/ec2`, 2026-07-21) — see
   "AWS hub subtopic wiring" section above for the `AwsNavComponent` accordion structural fix and
   the `aws-fundamentals` SUBTOPICS-map collision resolution.
 - **Azure hub**: 22 trackable topic pages + 1 cheatsheet reference (23 cards total). Feature-complete.
