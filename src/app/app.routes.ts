@@ -3089,7 +3089,12 @@ export const routes: Routes = [
       { path: 'force-delete-only-removes-the-etcd-object-not-the-process', loadComponent: () => import('./components/cloud/containers/kubectl/subtopics/force-delete-only-removes-the-etcd-object-not-the-process/force-delete-only-removes-the-etcd-object-not-the-process').then(m => m.ForceDeleteOnlyRemovesTheEtcdObjectNotTheProcessSubtopic) },
       { path: 'scale-against-an-hpa-gets-silently-reverted', loadComponent: () => import('./components/cloud/containers/kubectl/subtopics/scale-against-an-hpa-gets-silently-reverted/scale-against-an-hpa-gets-silently-reverted').then(m => m.ScaleAgainstAnHpaGetsSilentlyRevertedSubtopic) },
     ]},
-    { path: 'pods-deployments',   loadComponent: () => import('./components/cloud/containers/pods-deployments/pods-deployments').then(m => m.K8sPodsDeployments) },
+    { path: 'pods-deployments', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/pods-deployments/pods-deployments').then(m => m.K8sPodsDeployments) },
+      { path: 'terminating-pods-still-receive-traffic-without-a-prestop-delay', loadComponent: () => import('./components/cloud/containers/pods-deployments/subtopics/terminating-pods-still-receive-traffic-without-a-prestop-delay/terminating-pods-still-receive-traffic-without-a-prestop-delay').then(m => m.TerminatingPodsStillReceiveTrafficWithoutAPrestopDelaySubtopic) },
+      { path: 'minreadyseconds-throttles-rollout-pace-not-just-pod-status', loadComponent: () => import('./components/cloud/containers/pods-deployments/subtopics/minreadyseconds-throttles-rollout-pace-not-just-pod-status/minreadyseconds-throttles-rollout-pace-not-just-pod-status').then(m => m.MinreadysecondsThrottlesRolloutPaceNotJustPodStatusSubtopic) },
+      { path: 'generation-vs-observedgeneration-tracks-controller-catch-up', loadComponent: () => import('./components/cloud/containers/pods-deployments/subtopics/generation-vs-observedgeneration-tracks-controller-catch-up/generation-vs-observedgeneration-tracks-controller-catch-up').then(m => m.GenerationVsObservedgenerationTracksControllerCatchUpSubtopic) },
+    ]},
     { path: 'services-ingress',   loadComponent: () => import('./components/cloud/containers/services-ingress/services-ingress').then(m => m.K8sServicesIngress) },
     { path: 'configmaps-secrets', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/configmaps-secrets').then(m => m.K8sConfigmapsSecrets) },
     { path: 'storage',            loadComponent: () => import('./components/cloud/containers/storage/storage').then(m => m.K8sStorage) },

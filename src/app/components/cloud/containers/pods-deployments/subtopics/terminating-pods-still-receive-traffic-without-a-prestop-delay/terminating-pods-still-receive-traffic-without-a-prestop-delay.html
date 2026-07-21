@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pods, Deployments &amp; ReplicaSets" topicRoute="/containers/pods-deployments" subtopicLabel="Terminating Pods Still Receive Traffic Without a preStop Delay" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Terminating Pods Still Receive Traffic Without a preStop Delay</h1>
+  <p class="page-subtitle">
+    The main page's own <code>terminationGracePeriodSeconds</code> entry describes one clean countdown — but SIGTERM
+    delivery and Service Endpoints removal are two unsynchronized processes, and the gap between them can drop connections.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics digging into what the main page's own manifest fields and Challenge
+      vocabulary leave unexplained. Next: how <code>minReadySeconds</code> actually throttles rollout speed, not
+      just Pod status reporting.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pods, Deployments &amp; ReplicaSets"
+    topicRoute="/containers/pods-deployments"
+    [next]="{ label: 'minReadySeconds Throttles Rollout Pace, Not Just Pod Status', route: '/containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status' }"
+  />
+</div>

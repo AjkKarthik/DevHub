@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pods, Deployments &amp; ReplicaSets" topicRoute="/containers/pods-deployments" subtopicLabel="minReadySeconds Throttles Rollout Pace, Not Just Pod Status" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">minReadySeconds Throttles Rollout Pace, Not Just Pod Status</h1>
+  <p class="page-subtitle">
+    The main page's own theory bullet frames <code>minReadySeconds</code> as a status-reporting delay — but the
+    rollout controller's own maxSurge pacing gates on "Available," not "Ready," making it a real speed control.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered the traffic-removal side of a rollout; this one covers the pacing of the
+      replacement side. Last: what the main page's own Challenge means by <code>generation</code> and
+      <code>observedGeneration</code>, two fields it uses without ever explaining.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pods, Deployments &amp; ReplicaSets"
+    topicRoute="/containers/pods-deployments"
+    [prev]="{ label: 'Terminating Pods Still Receive Traffic Without a preStop Delay', route: '/containers/pods-deployments/terminating-pods-still-receive-traffic-without-a-prestop-delay' }"
+    [next]="{ label: 'Generation vs. observedGeneration Tracks Controller Catch-Up', route: '/containers/pods-deployments/generation-vs-observedgeneration-tracks-controller-catch-up' }"
+  />
+</div>

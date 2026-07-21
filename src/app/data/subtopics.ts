@@ -1419,6 +1419,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A CRD and Its Own CR Applied Together Can Race the Established Condition', route: '/containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition' },
     { label: 'The Requeue “Storm” Is Actually Rate-Limited Exponential Backoff', route: '/containers/operators-crds/requeue-storm-is-actually-rate-limited-exponential-backoff' },
   ],
+  'pods-deployments': [
+    { label: 'Terminating Pods Still Receive Traffic Without a preStop Delay', route: '/containers/pods-deployments/terminating-pods-still-receive-traffic-without-a-prestop-delay' },
+    { label: 'minReadySeconds Throttles Rollout Pace, Not Just Pod Status', route: '/containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status' },
+    { label: 'Generation vs. observedGeneration Tracks Controller Catch-Up', route: '/containers/pods-deployments/generation-vs-observedgeneration-tracks-controller-catch-up' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

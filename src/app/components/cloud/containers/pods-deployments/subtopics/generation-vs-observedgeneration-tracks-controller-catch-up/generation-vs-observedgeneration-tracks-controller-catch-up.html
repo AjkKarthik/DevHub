@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pods, Deployments &amp; ReplicaSets" topicRoute="/containers/pods-deployments" subtopicLabel="Generation vs. observedGeneration Tracks Controller Catch-Up" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Generation vs. observedGeneration Tracks Controller Catch-Up</h1>
+  <p class="page-subtitle">
+    The main page's own Challenge hint tells you to compare <code>generation</code> to <code>observedGeneration</code> —
+    but never explains what either field is. Here's the mechanism, and why it must be checked before replica counts.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from traffic removal, to rollout pacing, to the controller-catch-up signal the
+      main page's own Challenge depends on. Back to the Pods, Deployments &amp; ReplicaSets overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pods, Deployments &amp; ReplicaSets"
+    topicRoute="/containers/pods-deployments"
+    [prev]="{ label: 'minReadySeconds Throttles Rollout Pace, Not Just Pod Status', route: '/containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status' }"
+  />
+</div>

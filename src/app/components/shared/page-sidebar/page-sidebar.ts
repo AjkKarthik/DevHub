@@ -28000,6 +28000,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pods are inherently ephemeral — applications must tolerate restarts rather than assuming long-lived process identity.',
     ],
   },
+  'containers/pods-deployments/terminating-pods-still-receive-traffic-without-a-prestop-delay': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Pods, Deployments & ReplicaSets overview', route: '/containers/pods-deployments' },
+      { label: 'minReadySeconds Throttles Rollout Pace, Not Just Pod Status', route: '/containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status' },
+      { label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' },
+    ],
+    tip: 'SIGTERM delivery (kubelet, local node) and Endpoints removal propagation (kube-proxy, every other node) are unsynchronized — a preStop sleep buys time for the second process to catch up before the app actually stops accepting connections.',
+    gotchas: [
+      'The readinessProbe only gates whether a NEW Pod is ADDED to Endpoints — it plays no role in safely removing an old, already-healthy Pod from rotation.',
+      'A preStop delay reduces the race window, it does not eliminate the underlying asynchrony between the two termination-side processes.',
+    ],
+  },
+  'containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Terminating Pods Still Receive Traffic Without a preStop Delay', route: '/containers/pods-deployments/terminating-pods-still-receive-traffic-without-a-prestop-delay' },
+      { label: 'Generation vs. observedGeneration Tracks Controller Catch-Up', route: '/containers/pods-deployments/generation-vs-observedgeneration-tracks-controller-catch-up' },
+    ],
+    tip: 'The rollout controller\'s own maxSurge/maxUnavailable pacing math uses AVAILABLE replicas (Ready continuously for minReadySeconds), not just Ready ones — raising minReadySeconds adds real, cumulative time to every sequential replacement in a rollout.',
+    gotchas: [
+      'A Pod showing 1/1 READY in kubectl can still be well short of counting toward the rollout controller\'s own available-replica pacing gate.',
+      'With a small maxSurge, minReadySeconds compounds across every single Pod replacement — small per-Pod delays add up to a substantial total rollout-time increase.',
+    ],
+  },
+  'containers/pods-deployments/generation-vs-observedgeneration-tracks-controller-catch-up': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'minReadySeconds Throttles Rollout Pace, Not Just Pod Status', route: '/containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status' },
+      { label: 'Pods, Deployments & ReplicaSets overview', route: '/containers/pods-deployments' },
+    ],
+    tip: 'metadata.generation bumps immediately on any spec change; status.observedGeneration is written later, by the Deployment controller, once it has actually processed that generation — checking these must come BEFORE trusting any replica-count-based health signal.',
+    gotchas: [
+      'A status-only update (like a Pod becoming Ready) never bumps generation — only an actual spec edit does, unlike the much noisier resourceVersion.',
+      'readyReplicas can look perfectly healthy while still describing the PREVIOUS generation\'s already-settled state, in the brief window before the controller has caught up to the newest spec change.',
+    ],
+  },
   'containers/rbac': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

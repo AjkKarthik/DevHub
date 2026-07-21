@@ -236,7 +236,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Workloads</p>
-      <a routerLink="/containers/pods-deployments" routerLinkActive="active"><span class="nl-text">Pods &amp; Deployments</span>@if(p.isDone('k8s-pods-deployments')){<span class="nl-done">✓</span>}@if(d('k8s-pods-deployments');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/pods-deployments" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Pods &amp; Deployments</span>
+        @if (p.isDone('k8s-pods-deployments')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-pods-deployments'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('pods-deployments')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('pods-deployments')"
+                  (click)="toggleSubtopics('pods-deployments', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('pods-deployments'); as podsSubs) {
+        @if (isSubtopicsExpanded('pods-deployments')) {
+          <div class="nav-subtopics">
+            @for (s of podsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/configmaps-secrets" routerLinkActive="active"><span class="nl-text">ConfigMaps &amp; Secrets</span>@if(p.isDone('k8s-configmaps-secrets')){<span class="nl-done">✓</span>}@if(d('k8s-configmaps-secrets');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/statefulsets" routerLinkActive="active"><span class="nl-text">StatefulSets &amp; DaemonSets</span>@if(p.isDone('k8s-statefulsets')){<span class="nl-done">✓</span>}@if(d('k8s-statefulsets');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/resource-limits" routerLinkActive="active"><span class="nl-text">Resource Requests &amp; Limits</span>@if(p.isDone('k8s-resource-limits')){<span class="nl-done">✓</span>}@if(d('k8s-resource-limits');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
