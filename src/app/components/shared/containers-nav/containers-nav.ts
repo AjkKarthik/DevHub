@@ -332,7 +332,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Reference</p>
-      <a routerLink="/containers/helm" routerLinkActive="active"><span class="nl-text">Helm</span>@if(p.isDone('k8s-helm')){<span class="nl-done">✓</span>}@if(d('k8s-helm');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/helm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Helm</span>
+        @if (p.isDone('k8s-helm')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-helm'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('helm')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('helm')"
+                  (click)="toggleSubtopics('helm', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('helm'); as helmSubs) {
+        @if (isSubtopicsExpanded('helm')) {
+          <div class="nav-subtopics">
+            @for (s of helmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/container-security" routerLinkActive="active"><span class="nl-text">Container Security</span>@if(p.isDone('k8s-container-security')){<span class="nl-done">✓</span>}@if(d('k8s-container-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/rbac" routerLinkActive="active"><span class="nl-text">Kubernetes RBAC</span>@if(p.isDone('k8s-rbac')){<span class="nl-done">✓</span>}@if(d('k8s-rbac');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/troubleshooting" routerLinkActive="active"><span class="nl-text">K8s Troubleshooting</span>@if(p.isDone('k8s-troubleshooting')){<span class="nl-done">✓</span>}@if(d('k8s-troubleshooting');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

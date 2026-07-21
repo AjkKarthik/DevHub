@@ -1439,6 +1439,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending', route: '/containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending' },
     { label: 'RWOP Closes the Gap RWO Leaves — Same-Node Pods Can Still Double-Write', route: '/containers/storage/rwop-closes-the-gap-rwo-leaves-same-node-pods-can-still-double-write' },
   ],
+  'helm': [
+    { label: 'helm rollback Never Undoes a pre-upgrade Hook — Only pre-rollback Hooks Run', route: '/containers/helm/rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run' },
+    { label: 'history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden', route: '/containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden' },
+    { label: '--set Always Beats -f, Regardless of Command-Line Order', route: '/containers/helm/set-always-beats-f-regardless-of-command-line-order' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

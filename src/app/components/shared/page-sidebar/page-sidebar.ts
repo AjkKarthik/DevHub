@@ -27856,6 +27856,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'helm template renders manifests locally without touching the cluster, useful for reviewing exact output before install.',
     ],
   },
+  'containers/helm/rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Helm overview', route: '/containers/helm' },
+      { label: 'history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden', route: '/containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden' },
+    ],
+    tip: 'helm rollback triggers only pre-rollback/post-rollback hooks — a pre-upgrade migration Job is never invoked by rollback, so a schema change persists untouched unless a matching pre-rollback hook is explicitly authored.',
+    gotchas: [
+      'Each Helm command maps to its own fixed hook set: install→pre/post-install, upgrade→pre/post-upgrade, rollback→pre/post-rollback, uninstall→pre/post-delete.',
+      'Helm never generates or infers a pre-rollback hook from a pre-upgrade one — the "down" logic must be written and tested separately.',
+    ],
+  },
+  'containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'helm rollback Never Undoes a pre-upgrade Hook — Only pre-rollback Hooks Run', route: '/containers/helm/rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run' },
+      { label: '--set Always Beats -f, Regardless of Command-Line Order', route: '/containers/helm/set-always-beats-f-regardless-of-command-line-order' },
+    ],
+    tip: 'Every helm upgrade silently prunes revision Secrets beyond --history-max (default 10) — "helm history shows all revisions" is only true within that retention window, and a pruned revision can never be rolled back to again.',
+    gotchas: [
+      'helm rollback <release> <revision> fails with "release: not found" once that specific revision\'s Secret has been pruned, even though the release itself is running fine.',
+      'Raising --history-max only affects retention going forward — it cannot restore a revision already deleted by the previous, smaller limit.',
+    ],
+  },
+  'containers/helm/set-always-beats-f-regardless-of-command-line-order': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden', route: '/containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden' },
+      { label: 'Helm overview', route: '/containers/helm' },
+    ],
+    tip: '--set has a fixed, type-based precedence over any -f values file, independent of command-line position — placing -f after --set never makes the file win, unlike ordering among multiple -f files or multiple --set flags, which IS left-to-right.',
+    gotchas: [
+      'A CI pipeline placing a per-service -f override "last" to out-rank a shared --set flag will silently fail — the --set value always wins regardless of position.',
+      'The fix is changing which FLAG TYPE carries the value that should win, not reordering flags on the command line.',
+    ],
+  },
   'containers/hpa': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

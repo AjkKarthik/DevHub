@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Helm" topicRoute="/containers/helm" subtopicLabel="--set Always Beats -f, Regardless of Command-Line Order" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">--set Always Beats -f, Regardless of Command-Line Order</h1>
+  <p class="page-subtitle">
+    The main page's own mustKnow bullet says "right-side wins" — but <code>--set</code> outranks any
+    <code>-f</code> values file by fixed type, not by position, no matter which one is written last.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from rollback's hook limits, to its history window, to how values precedence
+      actually works. Back to the Helm overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Helm"
+    topicRoute="/containers/helm"
+    [prev]="{ label: 'history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden', route: '/containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden' }"
+  />
+</div>

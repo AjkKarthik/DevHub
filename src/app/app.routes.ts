@@ -3119,7 +3119,12 @@ export const routes: Routes = [
       { path: 'crd-and-cr-in-the-same-apply-race-the-established-condition', loadComponent: () => import('./components/cloud/containers/operators-crds/subtopics/crd-and-cr-in-the-same-apply-race-the-established-condition/crd-and-cr-in-the-same-apply-race-the-established-condition').then(m => m.CrdAndCrInTheSameApplyRaceTheEstablishedConditionSubtopic) },
       { path: 'requeue-storm-is-actually-rate-limited-exponential-backoff', loadComponent: () => import('./components/cloud/containers/operators-crds/subtopics/requeue-storm-is-actually-rate-limited-exponential-backoff/requeue-storm-is-actually-rate-limited-exponential-backoff').then(m => m.RequeueStormIsActuallyRateLimitedExponentialBackoffSubtopic) },
     ]},
-    { path: 'helm',               loadComponent: () => import('./components/cloud/containers/helm/helm').then(m => m.K8sHelm) },
+    { path: 'helm', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/helm/helm').then(m => m.K8sHelm) },
+      { path: 'rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run', loadComponent: () => import('./components/cloud/containers/helm/subtopics/rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run/rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run').then(m => m.RollbackNeverUndoesAPreUpgradeHookOnlyPreRollbackHooksRunSubtopic) },
+      { path: 'history-max-defaults-to-10-old-revisions-are-pruned-not-hidden', loadComponent: () => import('./components/cloud/containers/helm/subtopics/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden').then(m => m.HistoryMaxDefaultsTo10OldRevisionsArePrunedNotHiddenSubtopic) },
+      { path: 'set-always-beats-f-regardless-of-command-line-order', loadComponent: () => import('./components/cloud/containers/helm/subtopics/set-always-beats-f-regardless-of-command-line-order/set-always-beats-f-regardless-of-command-line-order').then(m => m.SetAlwaysBeatsFRegardlessOfCommandLineOrderSubtopic) },
+    ]},
     { path: 'container-security', loadComponent: () => import('./components/cloud/containers/container-security/container-security').then(m => m.K8sContainerSecurity) },
     { path: 'rbac',               loadComponent: () => import('./components/cloud/containers/rbac/rbac').then(m => m.K8sRbac) },
     { path: 'statefulsets',       loadComponent: () => import('./components/cloud/containers/statefulsets/statefulsets').then(m => m.K8sStatefulsets) },
