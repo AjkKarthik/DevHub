@@ -3489,7 +3489,40 @@ off here with a date.
   `AwsNavComponent` accordion (now the EIGHTEENTH topic in this hub with subtopics — confirmed
   only EventBridge's own toggle open, all seventeen others closed), dark mode (`--bg: #0f172a`)
   applying correctly.)
-- [ ] `/aws/step-functions` — AWS Step Functions
+- [x] `/aws/step-functions` — AWS Step Functions (2026-07-22 — 3 subtopics:
+  distributed-map-lifts-classic-maps-40-concurrency-cap,
+  heartbeatseconds-is-a-separate-repeating-deadline,
+  resultselector-filters-results-before-resultpath-applies; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own Map-state docs that
+  Inline (classic) Map "supports up to 40 concurrent iterations" AND separately "Enforces a limit
+  of 256 KiB on the input payload size and 25,000 entries in the execution event history," while
+  Distributed Map "enables high concurrency of up to 10,000 parallel child workflow executions"
+  reading directly from an S3 data source with each child execution keeping its own separate
+  history — closing a gap where the main page's own quickRef states only "up to 40 concurrency"
+  (and its own theory bullet self-contradicts with "0 = unlimited") with no mention of the
+  separate, often-more-restrictive 25,000-history-entry ceiling that its own named ETL-over-S3
+  pattern would realistically hit; (2) confirmed via AWS's own Task-state field reference the
+  precise distinction between TimeoutSeconds (overall duration cap, defaults to 99,999,999
+  seconds/~3.17 years if unset) and HeartbeatSeconds (a separate, recurring "still alive" interval
+  that "must be less than TimeoutSeconds" and independently raises the identical States.Timeout
+  error if missed) — closing a gap where the main page's own waitForTaskToken example sets
+  HeartbeatSeconds with zero explanation of what it does or how it differs from an overall
+  timeout; (3) confirmed via AWS's own input/output manipulation docs, using their own EMR
+  createCluster.sync worked example, that ResultSelector is a real, documented field sitting
+  between a state's raw result and ResultPath ("InputPath field first, and then the Parameters
+  field... ResultSelector field to manipulate the state's output before ResultPath is applied")
+  — closing a gap where the main page's own QnA explicitly counts and names "four JSON Path
+  operators," omitting this real fifth one, while its own SDK-integration codeTabs never address
+  the noisy-metadata problem ResultSelector exists to solve. Gotcha sweep covered `.html` bound
+  attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean across all three
+  files), bare `@word`/`{` in `.html` prose (none present), and backtick parity (even counts,
+  4/4/4). Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR with zero actual TypeScript/template compile errors. `git add -A` staged cleanly
+  with no "Filename too long" errors (longest new path 172 relative chars). Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), the
+  `AwsNavComponent` accordion (now the NINETEENTH topic in this hub with subtopics — confirmed
+  only Step Functions' own toggle open, all eighteen others closed), dark mode (`--bg: #0f172a`)
+  applying correctly.)
 - [ ] `/aws/load-balancing` — Elastic Load Balancing
 - [ ] `/aws/cost-optimization` — AWS Cost Optimization
 
