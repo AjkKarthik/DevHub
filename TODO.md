@@ -2910,7 +2910,37 @@ off here with a date.
   with subtopics — confirmed both toggles coexist correctly, with only the current page's own
   topic auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per subtopic, dark
   mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/ecs-eks` — ECS & EKS
+- [x] `/aws/ecs-eks` — ECS & EKS (2026-07-21 — 3 subtopics:
+  irsa-oidc-token-exchange-exact-service-account-match-required,
+  vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory,
+  circuit-breaker-disabled-by-default-needs-explicit-rollback-flag; all three verified against
+  AWS's own documentation via WebFetch before writing — (1) confirmed the full IRSA mechanism
+  (EKS-hosted OIDC discovery endpoint, projected service account token, AssumeRoleWithWebIdentity
+  exchange, trust-policy sub-condition requiring an EXACT "system:serviceaccount:<ns>:<name>"
+  match) — closing a gap where the main page's own Quick Ref and interview-focus list both name
+  IRSA as something to understand but never actually explain the mechanism anywhere in the theory
+  sections; (2) confirmed via AWS's own EKS CNI docs that pods can get stuck Pending with plenty
+  of free node CPU/memory purely because the node ran out of IP addresses (ENI/IP limits tied to
+  instance type, not a Kubernetes setting), and that IP Prefix Delegation is the standard fix —
+  closing a gap where the main page's own VPC CNI QnA praises real-IP pod addressing as a pure
+  benefit without ever mentioning the capacity ceiling it creates; (3) confirmed via AWS's own
+  ECS deployment docs that the deployment circuit breaker (automatic failure detection + rollback
+  on the STANDARD rolling-update deployment type, no CodeDeploy needed) is opt-in — must be
+  explicitly enabled via deploymentCircuitBreaker={enable=true,rollback=true} — closing a gap
+  where the main page's own rolling-update bullets cover pace (minimumHealthyPercent/
+  maximumPercent) but never failure detection, and its own create-service code example never sets
+  this flag. Gotcha sweep this batch explicitly extended to cover the `.ts` files' own
+  single-quoted `prompt`/`hint`/`solution`/`thought`/`reality` fields (not just `.html` bound
+  attributes), per the process fix recorded in the previous `/aws/ec2` batch entry — ran clean,
+  zero misses this time; bare `@word`/brace sweep of `.html` files — clean; backtick parity across
+  all three `.ts` files — even counts (4/4/10). Build reported only the pre-documented harmless
+  "bundle initial exceeded maximum budget" ERROR with zero actual TypeScript/template compile
+  errors. `git add -A` staged cleanly with no "Filename too long" errors (longest new path ~181
+  relative chars). Browser-verified successfully on all three pages — h1/breadcrumb pairs correct
+  (all 4 levels), the `AwsNavComponent` accordion (now the THIRD topic in this hub with subtopics
+  — confirmed all three toggles coexist correctly, with only the current page's own topic
+  auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per subtopic, dark mode
+  (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/vpc` — VPC & Networking
 - [ ] `/aws/route53-cloudfront` — Route 53 & CloudFront
 - [ ] `/aws/s3` — S3
