@@ -2535,4 +2535,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'InputTransformer Quoting Rules', route: '/aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects' },
     { label: 'Duplicate Pattern Keys', route: '/aws/eventbridge/duplicate-event-pattern-keys-silently-use-the-last-one' },
   ],
+  'step-functions': [
+    { label: 'Distributed Map Lifts the Cap', route: '/aws/step-functions/distributed-map-lifts-classic-maps-40-concurrency-cap' },
+    { label: 'HeartbeatSeconds Is a Separate Deadline', route: '/aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline' },
+    { label: 'ResultSelector: the Missing Fifth Field', route: '/aws/step-functions/resultselector-filters-results-before-resultpath-applies' },
+  ],
 };

@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Step Functions" topicRoute="/aws/step-functions" subtopicLabel="HeartbeatSeconds Is a Separate Deadline" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">HeartbeatSeconds Is a Separate, Repeating Deadline</h1>
+  <p class="page-subtitle">The main page's own waitForTaskToken example sets this field with no explanation — here's exactly what it does, and what happens when TimeoutSeconds is left unset alongside it.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Step Functions" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic explains the field behind the main page's own human-approval example. Next, the ResultSelector subtopic adds a real fifth data-flow field to the main page's own count of exactly four.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Step Functions" topicRoute="/aws/step-functions"
+    [prev]="{ label: 'Distributed Map Lifts the 40-Concurrency Cap', route: '/aws/step-functions/distributed-map-lifts-classic-maps-40-concurrency-cap' }"
+    [next]="{ label: 'ResultSelector Filters Before ResultPath Applies', route: '/aws/step-functions/resultselector-filters-results-before-resultpath-applies' }" />
+</div>

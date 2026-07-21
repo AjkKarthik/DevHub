@@ -38275,6 +38275,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Step Functions state machines are defined in Amazon States Language (JSON) — a real learning curve distinct from writing plain application code.',
     ],
   },
+  'aws/step-functions/distributed-map-lifts-classic-maps-40-concurrency-cap': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Step Functions overview', route: '/aws/step-functions' },
+      { label: 'HeartbeatSeconds Is a Separate Deadline', route: '/aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline' },
+    ],
+    tip: 'Classic (Inline) Map states cap at 40 concurrency AND a 25,000-entry execution history limit — the history limit is often hit first. Distributed Map lifts both, running each iteration as its own child workflow execution.',
+    gotchas: [
+      'Distributed Map can also read its item list directly from an S3 data source (JSON, CSV, object list) instead of requiring the full array inline in the state input.',
+      'A Standard workflow processing thousands of items via classic Map can fail on history limits well before concurrency is ever the bottleneck.',
+    ],
+  },
+  'aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Map Lifts the Cap', route: '/aws/step-functions/distributed-map-lifts-classic-maps-40-concurrency-cap' },
+      { label: 'ResultSelector: the Missing Fifth Field', route: '/aws/step-functions/resultselector-filters-results-before-resultpath-applies' },
+    ],
+    tip: 'HeartbeatSeconds is a recurring "still alive" interval, not an overall duration cap — TimeoutSeconds (defaulting to ~3.17 years if unset) governs the true overall deadline.',
+    gotchas: [
+      'A waitForTaskToken task with only HeartbeatSeconds set and no explicit TimeoutSeconds effectively has no real overall cap — the heartbeat interval becomes the only deadline in practice.',
+      'Both a missed heartbeat and an expired overall timeout raise the identical States.Timeout error name — check the Cause detail to distinguish them.',
+    ],
+  },
+  'aws/step-functions/resultselector-filters-results-before-resultpath-applies': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'HeartbeatSeconds Is a Separate Deadline', route: '/aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline' },
+      { label: 'Step Functions overview', route: '/aws/step-functions' },
+    ],
+    tip: 'ResultSelector filters/reshapes a state\'s raw result BEFORE ResultPath merges it in — a real fifth data-flow field beyond InputPath/Parameters/ResultPath/OutputPath, built for trimming noisy SDK-integration metadata.',
+    gotchas: [
+      'Available on Task, Map, and Parallel states — also useful for flattening a Parallel/Map array-of-arrays result via the [*][*] wildcard syntax.',
+      'Using ResultPath alone merges the ENTIRE raw result (including SDK metadata like HTTP headers and request IDs) into the execution data.',
+    ],
+  },
   'aws/load-balancing': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

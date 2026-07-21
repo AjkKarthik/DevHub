@@ -3331,7 +3331,12 @@ export const routes: Routes = [
       { path: 'inputtransformer-quoting-differs-for-scalars-vs-objects', loadComponent: () => import('./components/cloud/aws/eventbridge/subtopics/inputtransformer-quoting-differs-for-scalars-vs-objects/inputtransformer-quoting-differs-for-scalars-vs-objects').then(m => m.InputtransformerQuotingDiffersForScalarsVsObjectsSubtopic) },
       { path: 'duplicate-event-pattern-keys-silently-use-the-last-one', loadComponent: () => import('./components/cloud/aws/eventbridge/subtopics/duplicate-event-pattern-keys-silently-use-the-last-one/duplicate-event-pattern-keys-silently-use-the-last-one').then(m => m.DuplicateEventPatternKeysSilentlyUseTheLastOneSubtopic) },
     ] },
-    { path: 'step-functions',      loadComponent: () => import('./components/cloud/aws/step-functions/step-functions').then(m => m.AwsStepFunctions) },
+    { path: 'step-functions', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/step-functions/step-functions').then(m => m.AwsStepFunctions) },
+      { path: 'distributed-map-lifts-classic-maps-40-concurrency-cap', loadComponent: () => import('./components/cloud/aws/step-functions/subtopics/distributed-map-lifts-classic-maps-40-concurrency-cap/distributed-map-lifts-classic-maps-40-concurrency-cap').then(m => m.DistributedMapLiftsClassicMaps40ConcurrencyCapSubtopic) },
+      { path: 'heartbeatseconds-is-a-separate-repeating-deadline', loadComponent: () => import('./components/cloud/aws/step-functions/subtopics/heartbeatseconds-is-a-separate-repeating-deadline/heartbeatseconds-is-a-separate-repeating-deadline').then(m => m.HeartbeatsecondsIsASeparateRepeatingDeadlineSubtopic) },
+      { path: 'resultselector-filters-results-before-resultpath-applies', loadComponent: () => import('./components/cloud/aws/step-functions/subtopics/resultselector-filters-results-before-resultpath-applies/resultselector-filters-results-before-resultpath-applies').then(m => m.ResultselectorFiltersResultsBeforeResultpathAppliesSubtopic) },
+    ] },
     { path: 'load-balancing',      loadComponent: () => import('./components/cloud/aws/load-balancing/load-balancing').then(m => m.AwsLoadBalancing) },
     { path: 'cost-optimization',   loadComponent: () => import('./components/cloud/aws/cost-optimization/cost-optimization').then(m => m.AwsCostOptimization) },
     { path: 'cheatsheet',          loadComponent: () => import('./components/cloud/aws/cheatsheet/cheatsheet').then(m => m.AwsCheatsheet) },
