@@ -27532,6 +27532,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Digest-pinned deployment references guarantee you are always pulling the exact same image bytes, eliminating silent tag-reassignment risk.',
     ],
   },
+  'containers/docker-images/prune-order-stopped-containers-protect-images': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Docker Images & Registry overview', route: '/containers/docker-images' },
+      { label: 'docker push --all-tags Uploads the Shared Layers Once', route: '/containers/docker-images/all-tags-push-uploads-shared-layers-once' },
+    ],
+    tip: 'docker image prune -a only removes images with zero container references of any state — a stopped, unremoved container protects its image exactly as effectively as a running one.',
+    gotchas: [
+      'Running docker container prune before docker image prune -a makes the image prune meaningfully more aggressive, since it frees images that stopped containers were protecting.',
+      'A scheduled image-prune job that never also clears stopped containers will consistently under-clean disk usage over time.',
+    ],
+  },
+  'containers/docker-images/all-tags-push-uploads-shared-layers-once': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Stopped Containers Protect Their Images From docker image prune -a', route: '/containers/docker-images/prune-order-stopped-containers-protect-images' },
+      { label: 'A Registry Mirror Only Ever Intercepts Docker Hub Pulls', route: '/containers/docker-images/registry-mirror-only-intercepts-docker-hub' },
+    ],
+    tip: 'Multiple tags pointing at the same image ID share identical layers — the registry only receives the actual layer content once, regardless of how many tags reference it.',
+    gotchas: [
+      'Pushing both a version tag and :latest costs roughly one small manifest upload extra, not a second full image transfer.',
+      'The layer-deduplication behavior is registry-side and applies the same whether tags are pushed together with --all-tags or as separate sequential push commands.',
+    ],
+  },
+  'containers/docker-images/registry-mirror-only-intercepts-docker-hub': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'docker push --all-tags Uploads the Shared Layers Once', route: '/containers/docker-images/all-tags-push-uploads-shared-layers-once' },
+      { label: 'Docker Images & Registry overview', route: '/containers/docker-images' },
+    ],
+    tip: 'registry-mirrors in daemon.json only ever intercepts pulls resolving to Docker Hub (docker.io) — pulls explicitly addressed to GHCR, ECR, ACR, or any other registry never consult the configured mirror at all.',
+    gotchas: [
+      'A pull with no registry prefix defaults to docker.io and IS mirrored; the exact same daemon config does nothing for docker pull ghcr.io/... or any other explicitly-addressed registry.',
+      'Caching a non-Hub registry requires a genuinely separate mechanism (a proxy-caching registry with an explicit upstream), not a daemon.json setting.',
+    ],
+  },
   'containers/docker-cli': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

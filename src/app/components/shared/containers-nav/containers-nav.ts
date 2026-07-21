@@ -60,7 +60,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/docker-images" routerLinkActive="active"><span class="nl-text">Docker Images &amp; Registry</span>@if(p.isDone('k8s-docker-images')){<span class="nl-done">✓</span>}@if(d('k8s-docker-images');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/docker-images" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Docker Images &amp; Registry</span>
+        @if (p.isDone('k8s-docker-images')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-docker-images'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('docker-images')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('docker-images')"
+                  (click)="toggleSubtopics('docker-images', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('docker-images'); as imgSubs) {
+        @if (isSubtopicsExpanded('docker-images')) {
+          <div class="nav-subtopics">
+            @for (s of imgSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

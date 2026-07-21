@@ -1379,6 +1379,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'docker kill Doesn’t Suppress a Restart Policy Like docker stop Does', route: '/containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop' },
     { label: 'docker stop $(docker ps -q) Errors When Nothing Is Running', route: '/containers/docker-cli/stop-with-empty-ps-q-errors-not-noop' },
   ],
+  'docker-images': [
+    { label: 'Stopped Containers Protect Their Images From docker image prune -a', route: '/containers/docker-images/prune-order-stopped-containers-protect-images' },
+    { label: 'docker push --all-tags Uploads the Shared Layers Once', route: '/containers/docker-images/all-tags-push-uploads-shared-layers-once' },
+    { label: 'A Registry Mirror Only Ever Intercepts Docker Hub Pulls', route: '/containers/docker-images/registry-mirror-only-intercepts-docker-hub' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

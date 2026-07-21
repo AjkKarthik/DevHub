@@ -3047,7 +3047,12 @@ export const routes: Routes = [
       { path: 'kill-does-not-suppress-restart-policy-like-stop', loadComponent: () => import('./components/cloud/containers/docker-cli/subtopics/kill-does-not-suppress-restart-policy-like-stop/kill-does-not-suppress-restart-policy-like-stop').then(m => m.KillDoesNotSuppressRestartPolicyLikeStopSubtopic) },
       { path: 'stop-with-empty-ps-q-errors-not-noop', loadComponent: () => import('./components/cloud/containers/docker-cli/subtopics/stop-with-empty-ps-q-errors-not-noop/stop-with-empty-ps-q-errors-not-noop').then(m => m.StopWithEmptyPsQErrorsNotNoopSubtopic) },
     ]},
-    { path: 'docker-images',      loadComponent: () => import('./components/cloud/containers/docker-images/docker-images').then(m => m.K8sDockerImages) },
+    { path: 'docker-images', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/docker-images/docker-images').then(m => m.K8sDockerImages) },
+      { path: 'prune-order-stopped-containers-protect-images', loadComponent: () => import('./components/cloud/containers/docker-images/subtopics/prune-order-stopped-containers-protect-images/prune-order-stopped-containers-protect-images').then(m => m.PruneOrderStoppedContainersProtectImagesSubtopic) },
+      { path: 'all-tags-push-uploads-shared-layers-once', loadComponent: () => import('./components/cloud/containers/docker-images/subtopics/all-tags-push-uploads-shared-layers-once/all-tags-push-uploads-shared-layers-once').then(m => m.AllTagsPushUploadsSharedLayersOnceSubtopic) },
+      { path: 'registry-mirror-only-intercepts-docker-hub', loadComponent: () => import('./components/cloud/containers/docker-images/subtopics/registry-mirror-only-intercepts-docker-hub/registry-mirror-only-intercepts-docker-hub').then(m => m.RegistryMirrorOnlyInterceptsDockerHubSubtopic) },
+    ]},
     { path: 'dockerfile',         loadComponent: () => import('./components/cloud/containers/dockerfile/dockerfile').then(m => m.K8sDockerfile) },
     { path: 'multi-stage',        loadComponent: () => import('./components/cloud/containers/multi-stage/multi-stage').then(m => m.K8sMultiStage) },
     { path: 'compose',            loadComponent: () => import('./components/cloud/containers/compose/compose').then(m => m.K8sCompose) },
