@@ -27556,6 +27556,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A minimal final-stage base image (distroless, Alpine) combined with multi-stage builds compounds the security benefit.',
     ],
   },
+  'containers/multi-stage/test-stage-is-sequential-with-builder-parallel-with-runtime': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Stage Builds overview', route: '/containers/multi-stage' },
+      { label: 'npm prune --production Is a Deprecated Flag on Current npm', route: '/containers/multi-stage/npm-prune-production-flag-is-deprecated' },
+    ],
+    tip: 'FROM builder AS test creates a real dependency on builder, forcing sequential execution — the genuine parallelism in the main page\'s own Go example is between test and runtime, both independent siblings under builder.',
+    gotchas: [
+      'A stage can never run concurrently with the exact stage it explicitly derives FROM, regardless of BuildKit optimizations elsewhere in the same file.',
+      'Restructuring a test stage to derive from an earlier shared point instead of directly from builder is what actually unlocks parallelism with the compile step itself.',
+    ],
+  },
+  'containers/multi-stage/npm-prune-production-flag-is-deprecated': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'test Runs After builder, in Parallel With runtime — Not With builder', route: '/containers/multi-stage/test-stage-is-sequential-with-builder-parallel-with-runtime' },
+      { label: 'COPY --from=external-image Still Pulls the Whole Image', route: '/containers/multi-stage/external-image-copy-still-pulls-the-whole-image' },
+    ],
+    tip: 'npm prune --production (and npm ci --only=production) still work on current npm but print a deprecation warning on every build — npm now recommends --omit=dev for the same effect.',
+    gotchas: [
+      'The deprecation warning does not fail the build, so it can go unnoticed in CI logs indefinitely despite printing on every single run.',
+      'Both --production (prune) and --only=production (install/ci) trace back to the same underlying npm consolidation around --omit=dev.',
+    ],
+  },
+  'containers/multi-stage/external-image-copy-still-pulls-the-whole-image': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'npm prune --production Is a Deprecated Flag on Current npm', route: '/containers/multi-stage/npm-prune-production-flag-is-deprecated' },
+      { label: 'Multi-Stage Builds overview', route: '/containers/multi-stage' },
+    ],
+    tip: 'COPY --from=<external image> requires pulling the ENTIRE referenced image on a cache miss, not just the specific path named — a dedicated FROM stage costs exactly the same, just with an explicit name.',
+    gotchas: [
+      'On a warm-cache persistent build host this cost is invisible; on fresh, ephemeral CI runners with no cache, every build pays the full external-image pull.',
+      'There is no sparse/partial fetch mechanism for pulling just one path out of a remote image\'s layers.',
+    ],
+  },
   'containers/docker-images': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

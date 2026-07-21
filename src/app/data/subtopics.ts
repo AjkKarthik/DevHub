@@ -1389,6 +1389,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sibling Stages Build in Parallel, Not Top to Bottom', route: '/containers/dockerfile/sibling-stages-build-in-parallel' },
     { label: 'The apt-get Cleanup Fix Is About Layer Size, Not Just Staleness', route: '/containers/dockerfile/same-layer-cleanup-is-required-for-size-not-just-staleness' },
   ],
+  'multi-stage': [
+    { label: 'test Runs After builder, in Parallel With runtime — Not With builder', route: '/containers/multi-stage/test-stage-is-sequential-with-builder-parallel-with-runtime' },
+    { label: 'npm prune --production Is a Deprecated Flag on Current npm', route: '/containers/multi-stage/npm-prune-production-flag-is-deprecated' },
+    { label: 'COPY --from=external-image Still Pulls the Whole Image', route: '/containers/multi-stage/external-image-copy-still-pulls-the-whole-image' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

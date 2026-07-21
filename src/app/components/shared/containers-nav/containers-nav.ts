@@ -104,7 +104,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/multi-stage" routerLinkActive="active"><span class="nl-text">Multi-Stage Builds</span>@if(p.isDone('k8s-multi-stage')){<span class="nl-done">✓</span>}@if(d('k8s-multi-stage');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/multi-stage" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Multi-Stage Builds</span>
+        @if (p.isDone('k8s-multi-stage')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-multi-stage'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('multi-stage')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('multi-stage')"
+                  (click)="toggleSubtopics('multi-stage', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('multi-stage'); as msSubs) {
+        @if (isSubtopicsExpanded('multi-stage')) {
+          <div class="nav-subtopics">
+            @for (s of msSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

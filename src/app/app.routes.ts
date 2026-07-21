@@ -3059,7 +3059,12 @@ export const routes: Routes = [
       { path: 'sibling-stages-build-in-parallel', loadComponent: () => import('./components/cloud/containers/dockerfile/subtopics/sibling-stages-build-in-parallel/sibling-stages-build-in-parallel').then(m => m.SiblingStagesBuildInParallelSubtopic) },
       { path: 'same-layer-cleanup-is-required-for-size-not-just-staleness', loadComponent: () => import('./components/cloud/containers/dockerfile/subtopics/same-layer-cleanup-is-required-for-size-not-just-staleness/same-layer-cleanup-is-required-for-size-not-just-staleness').then(m => m.SameLayerCleanupIsRequiredForSizeNotJustStalenessSubtopic) },
     ]},
-    { path: 'multi-stage',        loadComponent: () => import('./components/cloud/containers/multi-stage/multi-stage').then(m => m.K8sMultiStage) },
+    { path: 'multi-stage', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/multi-stage/multi-stage').then(m => m.K8sMultiStage) },
+      { path: 'test-stage-is-sequential-with-builder-parallel-with-runtime', loadComponent: () => import('./components/cloud/containers/multi-stage/subtopics/test-stage-is-sequential-with-builder-parallel-with-runtime/test-stage-is-sequential-with-builder-parallel-with-runtime').then(m => m.TestStageIsSequentialWithBuilderParallelWithRuntimeSubtopic) },
+      { path: 'npm-prune-production-flag-is-deprecated', loadComponent: () => import('./components/cloud/containers/multi-stage/subtopics/npm-prune-production-flag-is-deprecated/npm-prune-production-flag-is-deprecated').then(m => m.NpmPruneProductionFlagIsDeprecatedSubtopic) },
+      { path: 'external-image-copy-still-pulls-the-whole-image', loadComponent: () => import('./components/cloud/containers/multi-stage/subtopics/external-image-copy-still-pulls-the-whole-image/external-image-copy-still-pulls-the-whole-image').then(m => m.ExternalImageCopyStillPullsTheWholeImageSubtopic) },
+    ]},
     { path: 'compose',            loadComponent: () => import('./components/cloud/containers/compose/compose').then(m => m.K8sCompose) },
     { path: 'compose-profiles',   loadComponent: () => import('./components/cloud/containers/compose-profiles/compose-profiles').then(m => m.K8sComposeProfiles) },
     { path: 'k8s-architecture',   loadComponent: () => import('./components/cloud/containers/k8s-architecture/k8s-architecture').then(m => m.K8sArchitecture) },
