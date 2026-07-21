@@ -2645,7 +2645,50 @@ off here with a date.
   (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all working
   correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 18 of 22 topics
   complete.**)
-- [ ] `/containers/resource-limits` — Resource Requests & Limits
+- [x] `/containers/resource-limits` — Resource Requests & Limits (2026-07-21 — 3 subtopics:
+  cpu-limit-throttling-triggers-on-a-100ms-burst-not-average-usage,
+  resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero,
+  hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive; all three verified
+  against official/community Kubernetes documentation via WebSearch before writing. **A third
+  genuine, confirmed inaccuracy was found and fixed on the main page itself in this same
+  session** (following the RBAC-batch and StatefulSets-batch fixes earlier): the QnA answer
+  on ResourceQuota previously stated that without a LimitRange, "ResourceQuota counts every
+  pod as having zero requests" — verified against Kubernetes' own documented admission
+  behavior to be inaccurate; the real behavior is that a pod omitting resources covered by an
+  active compute ResourceQuota is REJECTED OUTRIGHT (HTTP 403) at admission time, not silently
+  admitted and under-counted; corrected the QnA text, matching the established "fix genuine
+  inaccuracies found during subtopic authoring" precedent (now applied a third time this
+  session); (1) confirmed via multiple independent sources describing the Linux CFS bandwidth
+  controller's 100ms enforcement period that CPU throttling triggers on bursts WITHIN a single
+  period, not on any longer-window average — closing a gap where the main page's own p50/p99
+  sizing advice could be read as sufficient to prevent throttling, when a multi-threaded app's
+  burst concentration is a genuinely separate failure mode; (2) the second subtopic explains
+  and demonstrates the corrected ResourceQuota rejection mechanism directly, including why
+  LimitRange's real role is admission-time defaulting BEFORE the quota check, not after-the-
+  fact tracking correction; (3) confirmed via Kubernetes' own documented HPA behavior that
+  resource-metric utilization percentage is calculated against the CPU REQUEST exclusively,
+  never the limit — closing a gap where the main page's own QnA mentions HPA only in passing
+  (contrasted with VPA) without ever stating this mechanical fact, which directly interacts
+  with the page's own "size requests to p50" advice by making any attached HPA hypersensitive
+  to small absolute usage changes. Gotcha sweep (bare `@` — none found; heading fields — no
+  HTML tags or backtick-emphasis present; bare single/double brace sweep of `.html` files —
+  clean; backtick parity across all three `.ts` files — even counts (10/26/12);
+  apostrophe-after-letter check across all `.html` bound `[prev]`/`[next]` attributes —
+  clean; a targeted re-check for the exact escaped-quote-then-unescaped-quote bug pattern
+  (`\''`) caught in earlier batches — clean, zero instances, including in the directly-edited
+  main page `resource-limits.ts`; `\${` interpolation-risk scan — clean; `git add -A`
+  file-existence check — all 9 files confirmed present, no MAX_PATH issues) came back clean;
+  build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (now ~146kB over) plus one confirmed pre-existing, unrelated `NG8113: RouterLink is
+  not used` warning on `resource-limits.ts` itself with zero actual TypeScript/template
+  compile errors — the successful compilation of the edited main page's own lazy chunk was
+  itself direct confirmation the QnA fix introduced no syntax error; browser-verified
+  successfully via direct page-text and DOM query on all three subtopic pages — content (all
+  h1/breadcrumb pairs correct), breadcrumb (all 4 levels), the `ContainersNavComponent`
+  accordion (toggle button present on the Resource Requests & Limits nav link), sidebar
+  (tailored `tip`/`gotchas`/`related` per subtopic), dark mode (`--bg: #0f172a`), and
+  prev/next subtopic-nav pager (correct labels and routes) all working correctly. **This
+  continues the Containers/K8s hub's Phase 10 rollout — 19 of 22 topics complete.**)
 - [ ] `/containers/hpa` — Horizontal Pod Autoscaler
 - [ ] `/containers/network-policies` — Network Policies
 - [ ] `/containers/troubleshooting` — Kubernetes Troubleshooting
