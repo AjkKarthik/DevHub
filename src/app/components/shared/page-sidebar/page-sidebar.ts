@@ -37728,6 +37728,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'VPC peering is non-transitive — VPC A peered with B and B peered with C does NOT let A reach C through B.',
     ],
   },
+  'aws/vpc/tgw-route-tables-need-both-association-and-propagation-for-isolation': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'VPC & Networking overview', route: '/aws/vpc' },
+      { label: 'Cross-Region SG Reference Limit', route: '/aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr' },
+    ],
+    tip: 'Association picks which TGW route table an attachment\'s OWN traffic is evaluated against — propagation is the separate mechanism that decides whether other attachments\' routes actually appear in that table.',
+    gotchas: [
+      'A "DefaultRouteTablePropagation=enable" TGW auto-propagates every attachment\'s routes into every route table — an "isolated" route table isn\'t isolated at all unless propagation is explicitly and asymmetrically controlled.',
+      'One-way reachability (prod can reach dev, dev cannot reach prod) is achieved purely through asymmetric propagation, not a firewall or extra security layer on the TGW itself.',
+    ],
+  },
+  'aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'TGW Association vs Propagation', route: '/aws/vpc/tgw-route-tables-need-both-association-and-propagation-for-isolation' },
+      { label: "Flow Logs Aren't Real-Time", route: '/aws/vpc/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag' },
+    ],
+    tip: 'Security group references across a VPC peering connection only work when the peer VPC is in the SAME Region — cross-Region peering must fall back to CIDR-block rules instead.',
+    gotchas: [
+      'A CIDR-based fallback rule does not auto-adjust to specific instances the way an SG reference does — it grants access to the entire peer VPC CIDR.',
+      'Deleting a peering connection leaves referencing SG rules "stale" (not auto-removed) — use describe-stale-security-groups to find and manually clean them up.',
+    ],
+  },
+  'aws/vpc/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Cross-Region SG Reference Limit', route: '/aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr' },
+      { label: 'VPC & Networking overview', route: '/aws/vpc' },
+    ],
+    tip: 'A flow log record is an aggregated summary of a window (up to 10 minutes by default) plus best-effort delivery time (~5-10 more minutes) — not a live event stream.',
+    gotchas: [
+      'A Nitro-based instance\'s network interface always gets a 1-minute-or-less aggregation interval automatically, regardless of the flow log\'s own configured maximum.',
+      'A newly-created flow log has no historical data and still needs a full aggregation-plus-delivery cycle before its first record appears — not useful for an in-the-moment live incident.',
+    ],
+  },
   'aws/ec2': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

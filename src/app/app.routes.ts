@@ -3241,7 +3241,12 @@ export const routes: Routes = [
       { path: 'vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory', loadComponent: () => import('./components/cloud/aws/ecs-eks/subtopics/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory').then(m => m.VpcCniIpExhaustionPodsPendingDespiteFreeCpuMemorySubtopic) },
       { path: 'circuit-breaker-disabled-by-default-needs-explicit-rollback-flag', loadComponent: () => import('./components/cloud/aws/ecs-eks/subtopics/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag').then(m => m.CircuitBreakerDisabledByDefaultNeedsExplicitRollbackFlagSubtopic) },
     ] },
-    { path: 'vpc',                 loadComponent: () => import('./components/cloud/aws/vpc/vpc').then(m => m.AwsVpc) },
+    { path: 'vpc', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/vpc/vpc').then(m => m.AwsVpc) },
+      { path: 'tgw-route-tables-need-both-association-and-propagation-for-isolation', loadComponent: () => import('./components/cloud/aws/vpc/subtopics/tgw-route-tables-need-both-association-and-propagation-for-isolation/tgw-route-tables-need-both-association-and-propagation-for-isolation').then(m => m.TgwRouteTablesNeedBothAssociationAndPropagationForIsolationSubtopic) },
+      { path: 'cross-region-vpc-peering-cant-reference-security-groups-use-cidr', loadComponent: () => import('./components/cloud/aws/vpc/subtopics/cross-region-vpc-peering-cant-reference-security-groups-use-cidr/cross-region-vpc-peering-cant-reference-security-groups-use-cidr').then(m => m.CrossRegionVpcPeeringCantReferenceSecurityGroupsUseCidrSubtopic) },
+      { path: 'flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag', loadComponent: () => import('./components/cloud/aws/vpc/subtopics/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag').then(m => m.FlowLogsArentRealTimeAggregationIntervalPlusDeliveryLagSubtopic) },
+    ] },
     { path: 'route53-cloudfront',  loadComponent: () => import('./components/cloud/aws/route53-cloudfront/route53-cloudfront').then(m => m.AwsRoute53Cloudfront) },
     { path: 's3',                  loadComponent: () => import('./components/cloud/aws/s3/s3').then(m => m.AwsS3) },
     { path: 'ebs-efs',             loadComponent: () => import('./components/cloud/aws/ebs-efs/ebs-efs').then(m => m.AwsEbsEfs) },

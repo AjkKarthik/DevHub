@@ -2459,4 +2459,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'VPC CNI IP Exhaustion', route: '/aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory' },
     { label: 'ECS Circuit Breaker Is Opt-In', route: '/aws/ecs-eks/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag' },
   ],
+  vpc: [
+    { label: 'TGW Association vs Propagation', route: '/aws/vpc/tgw-route-tables-need-both-association-and-propagation-for-isolation' },
+    { label: 'Cross-Region SG Reference Limit', route: '/aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr' },
+    { label: "Flow Logs Aren't Real-Time", route: '/aws/vpc/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag' },
+  ],
 };

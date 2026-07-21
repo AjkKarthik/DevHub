@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="VPC & Networking" topicRoute="/aws/vpc" subtopicLabel="TGW Association vs Propagation" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">TGW Route Tables Need Both Association AND Propagation for Isolation</h1>
+  <p class="page-subtitle">The main page's own single "associate" call doesn't isolate anything on its own — propagation is the mechanism that actually controls reachability.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="VPC" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects a real, easy-to-miss gap in the main page's own Transit Gateway example — its "isolated route table" comment implies association alone provides isolation, when propagation is the actual controlling mechanism. Next, the security group peering subtopic covers a second connectivity limit the main page's own "chaining" description doesn't mention: cross-region peered VPCs can't use SG references at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="VPC & Networking" topicRoute="/aws/vpc"
+    [next]="{ label: 'Cross-Region VPC Peering Can’t Reference Security Groups', route: '/aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr' }" />
+</div>

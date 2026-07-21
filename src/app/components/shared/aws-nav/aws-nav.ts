@@ -88,7 +88,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Networking</p>
-      <a routerLink="/aws/vpc" routerLinkActive="active"><span class="nl-text">VPC &amp; Networking</span>@if(p.isDone('aws-vpc')){<span class="nl-done">✓</span>}@if(d('aws-vpc');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/vpc" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">VPC &amp; Networking</span>
+        @if (p.isDone('aws-vpc')) {<span class="nl-done">✓</span>}
+        @if (d('aws-vpc'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('vpc')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('vpc')"
+                  (click)="toggleSubtopics('vpc', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('vpc'); as vpcSubs) {
+        @if (isSubtopicsExpanded('vpc')) {
+          <div class="nav-subtopics">
+            @for (s of vpcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/route53-cloudfront" routerLinkActive="active"><span class="nl-text">Route 53 &amp; CloudFront</span>@if(p.isDone('aws-route53-cloudfront')){<span class="nl-done">✓</span>}@if(d('aws-route53-cloudfront');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/aws/load-balancing" routerLinkActive="active"><span class="nl-text">Elastic Load Balancing</span>@if(p.isDone('aws-load-balancing')){<span class="nl-done">✓</span>}@if(d('aws-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
