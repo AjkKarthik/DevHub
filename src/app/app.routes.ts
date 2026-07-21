@@ -3277,7 +3277,12 @@ export const routes: Routes = [
       { path: 'eks-pod-identity-uses-a-different-principal-and-needs-an-agent', loadComponent: () => import('./components/cloud/aws/iam-roles/subtopics/eks-pod-identity-uses-a-different-principal-and-needs-an-agent/eks-pod-identity-uses-a-different-principal-and-needs-an-agent').then(m => m.EksPodIdentityUsesADifferentPrincipalAndNeedsAnAgentSubtopic) },
       { path: 'github-oidc-environment-claims-restrict-beyond-branch-alone', loadComponent: () => import('./components/cloud/aws/iam-roles/subtopics/github-oidc-environment-claims-restrict-beyond-branch-alone/github-oidc-environment-claims-restrict-beyond-branch-alone').then(m => m.GithubOidcEnvironmentClaimsRestrictBeyondBranchAloneSubtopic) },
     ] },
-    { path: 'rds-aurora',          loadComponent: () => import('./components/cloud/aws/rds-aurora/rds-aurora').then(m => m.AwsRdsAurora) },
+    { path: 'rds-aurora', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/rds-aurora/rds-aurora').then(m => m.AwsRdsAurora) },
+      { path: 'rds-proxy-connection-pinning-defeats-pooling-silently', loadComponent: () => import('./components/cloud/aws/rds-aurora/subtopics/rds-proxy-connection-pinning-defeats-pooling-silently/rds-proxy-connection-pinning-defeats-pooling-silently').then(m => m.RdsProxyConnectionPinningDefeatsPoolingSilentlySubtopic) },
+      { path: 'switchover-guarantees-zero-data-loss-unplanned-failover-doesnt', loadComponent: () => import('./components/cloud/aws/rds-aurora/subtopics/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt').then(m => m.SwitchoverGuaranteesZeroDataLossUnplannedFailoverDoesntSubtopic) },
+      { path: 'forcing-backtrack-with-binlog-enabled-breaks-read-replicas', loadComponent: () => import('./components/cloud/aws/rds-aurora/subtopics/forcing-backtrack-with-binlog-enabled-breaks-read-replicas/forcing-backtrack-with-binlog-enabled-breaks-read-replicas').then(m => m.ForcingBacktrackWithBinlogEnabledBreaksReadReplicasSubtopic) },
+    ] },
     { path: 'dynamodb',            loadComponent: () => import('./components/cloud/aws/dynamodb/dynamodb').then(m => m.AwsDynamodb) },
     { path: 'lambda',              loadComponent: () => import('./components/cloud/aws/lambda/lambda').then(m => m.AwsLambda) },
     { path: 'api-gateway',         loadComponent: () => import('./components/cloud/aws/api-gateway/api-gateway').then(m => m.AwsApiGateway) },

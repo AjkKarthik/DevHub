@@ -38026,6 +38026,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Multi-AZ RDS provides failover for availability, not read scaling — a separate read replica is needed specifically to offload read traffic.',
     ],
   },
+  'aws/rds-aurora/rds-proxy-connection-pinning-defeats-pooling-silently': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'RDS & Aurora overview', route: '/aws/rds-aurora' },
+      { label: 'Switchover vs Unplanned Failover', route: '/aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt' },
+    ],
+    tip: 'Temp tables, prepared statements, LOCK TABLES, and even a single statement over 16 KB "pin" a client connection to one underlying DB connection for the rest of its session — defeating pooling for that connection.',
+    gotchas: [
+      'A correctly-sized, correctly-configured RDS Proxy can still see "too many connections" errors if enough client connections get pinned by a specific query pattern.',
+      'Watch DatabaseConnectionsCurrentlySessionPinned in CloudWatch — a rising trend is the signal, not an error message.',
+    ],
+  },
+  'aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'RDS Proxy Connection Pinning', route: '/aws/rds-aurora/rds-proxy-connection-pinning-defeats-pooling-silently' },
+      { label: 'Backtrack + Binlog Interaction', route: '/aws/rds-aurora/forcing-backtrack-with-binlog-enabled-breaks-read-replicas' },
+    ],
+    tip: 'Switchover waits for full sync first, guaranteeing RPO=0 — unplanned failover does NOT wait, and AWS explicitly documents it can lose recent writes and risks split-brain.',
+    gotchas: [
+      'The main page\'s own "<1s RPO" figure describes switchover (healthy-cluster only) — an actual regional outage uses unplanned failover instead, with a different, non-zero RPO.',
+      'AWS requires an explicit --allow-data-loss flag for unplanned failover specifically because the data-loss tradeoff is real and deliberate, not accidental.',
+    ],
+  },
+  'aws/rds-aurora/forcing-backtrack-with-binlog-enabled-breaks-read-replicas': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Switchover vs Unplanned Failover', route: '/aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt' },
+      { label: 'RDS & Aurora overview', route: '/aws/rds-aurora' },
+    ],
+    tip: 'AWS blocks backtracking a cluster with binary logging enabled by default — forcing past that block breaks downstream binlog-dependent replicas and blue/green deployments, per AWS\'s own documentation.',
+    gotchas: [
+      'A broken downstream replica after a forced backtrack can\'t simply "catch up" — it needs to be recreated from scratch.',
+      'Backtrack causes a brief real disruption (dropped connections, uncommitted work) despite the "database remains online" framing — it is not a silent, zero-impact rewind.',
+    ],
+  },
   'aws/sqs-sns': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

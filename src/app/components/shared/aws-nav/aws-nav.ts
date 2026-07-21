@@ -221,7 +221,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Databases</p>
-      <a routerLink="/aws/rds-aurora" routerLinkActive="active"><span class="nl-text">RDS &amp; Aurora</span>@if(p.isDone('aws-rds-aurora')){<span class="nl-done">✓</span>}@if(d('aws-rds-aurora');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/rds-aurora" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">RDS &amp; Aurora</span>
+        @if (p.isDone('aws-rds-aurora')) {<span class="nl-done">✓</span>}
+        @if (d('aws-rds-aurora'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('rds-aurora')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rds-aurora')"
+                  (click)="toggleSubtopics('rds-aurora', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rds-aurora'); as rdsSubs) {
+        @if (isSubtopicsExpanded('rds-aurora')) {
+          <div class="nav-subtopics">
+            @for (s of rdsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/dynamodb" routerLinkActive="active"><span class="nl-text">DynamoDB</span>@if(p.isDone('aws-dynamodb')){<span class="nl-done">✓</span>}@if(d('aws-dynamodb');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

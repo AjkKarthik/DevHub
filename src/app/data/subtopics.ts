@@ -2489,4 +2489,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: "Pod Identity's Real Mechanism", route: '/aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent' },
     { label: 'GitHub OIDC Environment Claims', route: '/aws/iam-roles/github-oidc-environment-claims-restrict-beyond-branch-alone' },
   ],
+  'rds-aurora': [
+    { label: 'RDS Proxy Connection Pinning', route: '/aws/rds-aurora/rds-proxy-connection-pinning-defeats-pooling-silently' },
+    { label: 'Switchover vs Unplanned Failover', route: '/aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt' },
+    { label: 'Backtrack + Binlog Interaction', route: '/aws/rds-aurora/forcing-backtrack-with-binlog-enabled-breaks-read-replicas' },
+  ],
 };

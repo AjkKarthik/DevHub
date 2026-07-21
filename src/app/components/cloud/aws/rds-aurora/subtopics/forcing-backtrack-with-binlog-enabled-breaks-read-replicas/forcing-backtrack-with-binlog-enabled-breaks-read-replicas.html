@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RDS & Aurora" topicRoute="/aws/rds-aurora" subtopicLabel="Backtrack + Binlog Interaction" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Forcing Backtrack with Binlog Enabled Breaks Read Replicas</h1>
+  <p class="page-subtitle">AWS blocks backtracking a binlog-enabled cluster by default — the --force option that bypasses it has a real, documented cost the main page never mentions.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Aurora" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic adds the real safety limitation the main page's own "rewinds without restoring a snapshot" framing never mentions — a genuine tradeoff between a fast fix and downstream replication integrity. Together with the RDS Proxy pinning and Aurora switchover subtopics, this batch covers three genuinely distinct RDS/Aurora gaps the main page's own dense theory bullets only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RDS & Aurora" topicRoute="/aws/rds-aurora"
+    [prev]="{ label: 'Switchover Guarantees Zero Data Loss, Failover Doesn’t', route: '/aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt' }" />
+</div>
