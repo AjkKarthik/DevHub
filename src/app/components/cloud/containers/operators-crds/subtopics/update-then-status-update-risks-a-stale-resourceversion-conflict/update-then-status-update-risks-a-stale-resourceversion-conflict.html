@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Operators & CRDs" topicRoute="/containers/operators-crds" subtopicLabel="Two Update Calls in One Reconcile Risk a Stale resourceVersion Conflict" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Two Update Calls in One Reconcile Risk a Stale resourceVersion Conflict</h1>
+  <p class="page-subtitle">
+    The main page's own Reconcile pseudocode calls r.Update() for the finalizer, then r.Status().Update() later
+    using the same object — without re-fetching in between, risking a 409 Conflict if anything else touches it.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic traces a subtle risk in the main page's own worked Reconcile example that goes beyond its
+      own separate spec/status mistake entry. Back to the Kubernetes Operators & CRDs overview, or continue to
+      why applying a CRD and a custom resource of that type together can race.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Operators & CRDs"
+    topicRoute="/containers/operators-crds"
+    [next]="{ label: 'A CRD and Its Own CR Applied Together Can Race the Established Condition', route: '/containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition' }"
+  />
+</div>

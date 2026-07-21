@@ -3093,7 +3093,12 @@ export const routes: Routes = [
     { path: 'services-ingress',   loadComponent: () => import('./components/cloud/containers/services-ingress/services-ingress').then(m => m.K8sServicesIngress) },
     { path: 'configmaps-secrets', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/configmaps-secrets').then(m => m.K8sConfigmapsSecrets) },
     { path: 'storage',            loadComponent: () => import('./components/cloud/containers/storage/storage').then(m => m.K8sStorage) },
-    { path: 'operators-crds',     loadComponent: () => import('./components/cloud/containers/operators-crds/operators-crds').then(m => m.K8sOperatorsCrds) },
+    { path: 'operators-crds', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/operators-crds/operators-crds').then(m => m.K8sOperatorsCrds) },
+      { path: 'update-then-status-update-risks-a-stale-resourceversion-conflict', loadComponent: () => import('./components/cloud/containers/operators-crds/subtopics/update-then-status-update-risks-a-stale-resourceversion-conflict/update-then-status-update-risks-a-stale-resourceversion-conflict').then(m => m.UpdateThenStatusUpdateRisksAStaleResourceversionConflictSubtopic) },
+      { path: 'crd-and-cr-in-the-same-apply-race-the-established-condition', loadComponent: () => import('./components/cloud/containers/operators-crds/subtopics/crd-and-cr-in-the-same-apply-race-the-established-condition/crd-and-cr-in-the-same-apply-race-the-established-condition').then(m => m.CrdAndCrInTheSameApplyRaceTheEstablishedConditionSubtopic) },
+      { path: 'requeue-storm-is-actually-rate-limited-exponential-backoff', loadComponent: () => import('./components/cloud/containers/operators-crds/subtopics/requeue-storm-is-actually-rate-limited-exponential-backoff/requeue-storm-is-actually-rate-limited-exponential-backoff').then(m => m.RequeueStormIsActuallyRateLimitedExponentialBackoffSubtopic) },
+    ]},
     { path: 'helm',               loadComponent: () => import('./components/cloud/containers/helm/helm').then(m => m.K8sHelm) },
     { path: 'container-security', loadComponent: () => import('./components/cloud/containers/container-security/container-security').then(m => m.K8sContainerSecurity) },
     { path: 'rbac',               loadComponent: () => import('./components/cloud/containers/rbac/rbac').then(m => m.K8sRbac) },

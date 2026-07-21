@@ -212,7 +212,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/operators-crds" routerLinkActive="active"><span class="nl-text">Operators &amp; CRDs</span>@if(p.isDone('k8s-operators-crds')){<span class="nl-done">✓</span>}@if(d('k8s-operators-crds');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/operators-crds" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Operators &amp; CRDs</span>
+        @if (p.isDone('k8s-operators-crds')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-operators-crds'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('operators-crds')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('operators-crds')"
+                  (click)="toggleSubtopics('operators-crds', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('operators-crds'); as opSubs) {
+        @if (isSubtopicsExpanded('operators-crds')) {
+          <div class="nav-subtopics">
+            @for (s of opSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -1414,6 +1414,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Force-Delete Only Removes the etcd Object, Not the Process', route: '/containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process' },
     { label: 'scale Against an HPA-Managed Deployment Gets Silently Reverted', route: '/containers/kubectl/scale-against-an-hpa-gets-silently-reverted' },
   ],
+  'operators-crds': [
+    { label: 'Two Update Calls in One Reconcile Risk a Stale resourceVersion Conflict', route: '/containers/operators-crds/update-then-status-update-risks-a-stale-resourceversion-conflict' },
+    { label: 'A CRD and Its Own CR Applied Together Can Race the Established Condition', route: '/containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition' },
+    { label: 'The Requeue “Storm” Is Actually Rate-Limited Exponential Backoff', route: '/containers/operators-crds/requeue-storm-is-actually-rate-limited-exponential-backoff' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

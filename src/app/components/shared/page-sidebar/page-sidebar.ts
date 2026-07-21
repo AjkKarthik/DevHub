@@ -27952,6 +27952,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The reconciliation loop (observe, compare, act, repeat) is the same core mechanism underlying both built-in controllers and custom Operators.',
     ],
   },
+  'containers/operators-crds/update-then-status-update-risks-a-stale-resourceversion-conflict': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Operators & CRDs overview', route: '/containers/operators-crds' },
+      { label: 'A CRD and Its Own CR Applied Together Can Race the Established Condition', route: '/containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition' },
+    ],
+    tip: 'Splitting spec and status into separate Update calls (as the main page\'s own mistake entry advises) is necessary but not sufficient — the second call still needs a current resourceVersion, which the main page\'s own pseudocode never guarantees by re-fetching.',
+    gotchas: [
+      'A 409 Conflict from a second Update call in the same reconcile is expected, well-understood behavior, not a bug requiring bespoke investigation.',
+      'retry.RetryOnConflict() or an explicit re-fetch immediately before the second Update call is the standard, documented fix.',
+    ],
+  },
+  'containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Two Update Calls in One Reconcile Risk a Stale resourceVersion Conflict', route: '/containers/operators-crds/update-then-status-update-risks-a-stale-resourceversion-conflict' },
+      { label: 'The Requeue “Storm” Is Actually Rate-Limited Exponential Backoff', route: '/containers/operators-crds/requeue-storm-is-actually-rate-limited-exponential-backoff' },
+    ],
+    tip: 'A CRD "created" successfully does not mean the API server is ready to serve custom resources of that type yet — the CRD\'s own Established condition needs to become true first, a real, documented, intermittent race when both are applied together.',
+    gotchas: [
+      'kubectl wait --for=condition=established between the two applies removes the race entirely.',
+      'GitOps tools have native equivalents — ArgoCD sync waves, Flux Kustomization dependsOn/healthChecks.',
+    ],
+  },
+  'containers/operators-crds/requeue-storm-is-actually-rate-limited-exponential-backoff': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A CRD and Its Own CR Applied Together Can Race the Established Condition', route: '/containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition' },
+      { label: 'Kubernetes Operators & CRDs overview', route: '/containers/operators-crds' },
+    ],
+    tip: 'controller-runtime\'s default per-item exponential backoff (base ~5ms, max ~1000s) self-limits repeated reconcile failures on a single object within seconds — the main page\'s own "requeue storm" is real but brief, and never affects other, healthy objects.',
+    gotchas: [
+      'The backoff mechanism limits the blast radius of a reconcile bug, it does not fix the bug — the NotFound-as-error mistake still needs the explicit errors.IsNotFound() check.',
+      'Rate limiting is per-object, not global — one misbehaving CR backing off does not slow down reconciliation of any other CR the same controller manages.',
+    ],
+  },
   'containers/pods-deployments': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

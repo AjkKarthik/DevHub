@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Operators & CRDs" topicRoute="/containers/operators-crds" subtopicLabel="A CRD and Its Own CR Applied Together Can Race the Established Condition" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">A CRD and Its Own CR Applied Together Can Race the Established Condition</h1>
+  <p class="page-subtitle">
+    The main page's own code tab puts a CRD and a custom resource of that type in one file, separated only by
+    ---, with no mention that applying both together can intermittently fail on the CRD's own establishment window.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes a real gap in what the main page's own combined CRD+CR example never warns about.
+      Back to the Kubernetes Operators & CRDs overview, or continue to why the mistake entry's "requeue storm"
+      is actually rate-limited by default.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Operators & CRDs"
+    topicRoute="/containers/operators-crds"
+    [prev]="{ label: 'Two Update Calls in One Reconcile Risk a Stale resourceVersion Conflict', route: '/containers/operators-crds/update-then-status-update-risks-a-stale-resourceversion-conflict' }"
+    [next]="{ label: 'The Requeue “Storm” Is Actually Rate-Limited Exponential Backoff', route: '/containers/operators-crds/requeue-storm-is-actually-rate-limited-exponential-backoff' }"
+  />
+</div>
