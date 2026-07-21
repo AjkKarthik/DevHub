@@ -2724,7 +2724,56 @@ off here with a date.
   `tip`/`gotchas`/`related` per subtopic), dark mode (`--bg: #0f172a`), and prev/next
   subtopic-nav pager (correct labels and routes) all working correctly. **This continues the
   Containers/K8s hub's Phase 10 rollout — 20 of 22 topics complete.**)
-- [ ] `/containers/network-policies` — Network Policies
+- [x] `/containers/network-policies` — Network Policies (2026-07-21 — 3 subtopics:
+  networkpolicies-union-additively-a-second-policy-can-only-allow-more,
+  ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak,
+  the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path; all three
+  verified against official Kubernetes documentation and independent security-analysis
+  sources via WebSearch before writing — (1) confirmed via Kubernetes' own documented
+  NetworkPolicy semantics that multiple policies selecting the same pod UNION their allowed
+  traffic — never an intersection, never by specificity or ordering — closing a gap where the
+  main page's own 3-policy worked example never states the actual combination mechanism,
+  which a reader could easily assume works like more-specific-wins precedence in other
+  systems; (2) confirmed via Kubernetes' own documentation and a Cilium eBPF implementation
+  detail that ipBlock is a plain CIDR matcher with no internal/external distinction in the
+  core API — a broad range overlapping the cluster's own Pod/Service CIDR also matches
+  in-cluster traffic unless explicitly excluded, closing a gap where the main page's own
+  quickRef calls ipBlock "used for external IP ranges" without ever qualifying that claim;
+  (3) confirmed via independent, widely-corroborated security analysis that a DNS-allow
+  egress rule with no destination restriction (exactly the pattern the main page's own code
+  tabs and TWO mistake entries repeat) permits DNS tunneling to any external resolver, since
+  NetworkPolicy has no L7 query-content visibility — closing a gap where the page's own
+  repeated, emphatic "always allow DNS" advice never distinguishes "allow DNS to work" from
+  "allow DNS to anywhere." **Hit and fixed the documented Windows MAX_PATH gotcha for real**:
+  the third subtopic's own descriptive slug (79 characters) combined with the
+  `network-policies/subtopics/` nesting exceeded 260 characters, causing `git add -A` to fail
+  with "Filename too long" (the `Write` tool itself had already succeeded, confirming the
+  known write-succeeds-but-git-add-fails pattern) — fixed per the established recipe: created
+  a new, short physical folder (`dns-egress-no-destination-exfil`, 31 chars), copied the
+  three files into it, updated the `.ts` file's own `templateUrl`/`styleUrl` to the new local
+  filenames, updated ONLY the `loadComponent` import path in `app.routes.ts` to point at the
+  short folder while leaving the route's own `path:` (and every other wiring touchpoint —
+  SUBTOPICS map, breadcrumb, sidebar, search index) on the original long, descriptive slug
+  unchanged, then deleted the old long-named folder. Verified working end-to-end at the full
+  descriptive URL after the fix, confirming the recipe transfers correctly to this hub.
+  Gotcha sweep (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis
+  present; bare single/double brace sweep of `.html` files — clean; backtick parity across
+  all three `.ts` files — even counts (4/14/18); apostrophe-after-letter check across all
+  `.html` bound `[prev]`/`[next]` attributes — clean, typographic `’`/curly `"..."` used
+  correctly for a scare-quoted label; a targeted re-check for the exact
+  escaped-quote-then-unescaped-quote bug pattern (`\''`) caught in earlier batches — clean,
+  zero instances; `\${` interpolation-risk scan — clean) came back clean; build reported only
+  the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (now ~159kB
+  over) plus one confirmed pre-existing, unrelated `NG8113: RouterLink is not used` warning
+  on `network-policies.ts` itself with zero actual TypeScript/template compile errors;
+  browser-verified successfully via direct page-text and DOM query on all three pages,
+  including confirming the MAX_PATH-fixed third subtopic resolves correctly at its full,
+  unchanged descriptive URL — content (all h1/breadcrumb pairs correct), breadcrumb (all 4
+  levels), the `ContainersNavComponent` accordion (toggle button present on the Network
+  Policies nav link), sidebar (tailored `tip`/`gotchas`/`related` per subtopic), dark mode
+  (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all working
+  correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 21 of 22 topics
+  complete — only `/containers/troubleshooting` remains.**)
 - [ ] `/containers/troubleshooting` — Kubernetes Troubleshooting
 
 #### AWS — 21 topic pages
