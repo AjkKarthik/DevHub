@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Compose Profiles & Overrides" topicRoute="/containers/compose-profiles" subtopicLabel="The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax</h1>
+  <p class="page-subtitle">
+    The main page's own theory bullet describes environment: [*common-env] in prose, but its own code tab uses
+    &lt;&lt;: *common-env — the correct syntax for the mapping-type anchor x-env actually is.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic reconciles a wording mismatch between the main page's own theory prose and its own working
+      code example. Back to the Compose Profiles & Overrides overview, or continue to why map-form environment
+      merges by key rather than by concatenation.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Compose Profiles & Overrides"
+    topicRoute="/containers/compose-profiles"
+    [prev]="{ label: '!override Replaces a Merged List Directly — No Workaround Needed', route: '/containers/compose-profiles/override-tag-replaces-lists-without-workarounds' }"
+    [next]="{ label: 'Map-Form environment: Merges by Key, Not by Concatenation', route: '/containers/compose-profiles/map-form-environment-merges-by-key-not-concatenation' }"
+  />
+</div>

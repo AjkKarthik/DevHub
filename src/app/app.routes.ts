@@ -3071,7 +3071,12 @@ export const routes: Routes = [
       { path: 'anonymous-volume-shadows-bind-mount-and-restores-image-content', loadComponent: () => import('./components/cloud/containers/compose/subtopics/anonymous-volume-shadows-bind-mount-and-restores-image-content/anonymous-volume-shadows-bind-mount-and-restores-image-content').then(m => m.AnonymousVolumeShadowsBindMountAndRestoresImageContentSubtopic) },
       { path: 'anonymous-volumes-orphan-on-every-recreation', loadComponent: () => import('./components/cloud/containers/compose/subtopics/anonymous-volumes-orphan-on-every-recreation/anonymous-volumes-orphan-on-every-recreation').then(m => m.AnonymousVolumesOrphanOnEveryRecreationSubtopic) },
     ]},
-    { path: 'compose-profiles',   loadComponent: () => import('./components/cloud/containers/compose-profiles/compose-profiles').then(m => m.K8sComposeProfiles) },
+    { path: 'compose-profiles', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/compose-profiles/compose-profiles').then(m => m.K8sComposeProfiles) },
+      { path: 'override-tag-replaces-lists-without-workarounds', loadComponent: () => import('./components/cloud/containers/compose-profiles/subtopics/override-tag-replaces-lists-without-workarounds/override-tag-replaces-lists-without-workarounds').then(m => m.OverrideTagReplacesListsWithoutWorkaroundsSubtopic) },
+      { path: 'merge-key-needs-mapping-not-list-alias-syntax', loadComponent: () => import('./components/cloud/containers/compose-profiles/subtopics/merge-key-needs-mapping-not-list-alias-syntax/merge-key-needs-mapping-not-list-alias-syntax').then(m => m.MergeKeyNeedsMappingNotListAliasSyntaxSubtopic) },
+      { path: 'map-form-environment-merges-by-key-not-concatenation', loadComponent: () => import('./components/cloud/containers/compose-profiles/subtopics/map-form-environment-merges-by-key-not-concatenation/map-form-environment-merges-by-key-not-concatenation').then(m => m.MapFormEnvironmentMergesByKeyNotConcatenationSubtopic) },
+    ]},
     { path: 'k8s-architecture',   loadComponent: () => import('./components/cloud/containers/k8s-architecture/k8s-architecture').then(m => m.K8sArchitecture) },
     { path: 'kubectl',            loadComponent: () => import('./components/cloud/containers/kubectl/kubectl').then(m => m.K8sKubectl) },
     { path: 'pods-deployments',   loadComponent: () => import('./components/cloud/containers/pods-deployments/pods-deployments').then(m => m.K8sPodsDeployments) },

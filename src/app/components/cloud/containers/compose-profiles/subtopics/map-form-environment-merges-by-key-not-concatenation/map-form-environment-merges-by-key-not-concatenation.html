@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Compose Profiles & Overrides" topicRoute="/containers/compose-profiles" subtopicLabel="Map-Form environment: Merges by Key, Not by Concatenation" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Map-Form environment: Merges by Key, Not by Concatenation</h1>
+  <p class="page-subtitle">
+    The main page's own theory groups ports, volumes, and environment as all "concatenated" on merge — but its
+    own code tab writes environment as a mapping, which merges key-by-key, with the override winning on repeats.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at three places where the main page's own YAML examples merge,
+      resolve, or replace differently than a quick read of the theory suggests. Back to the Compose Profiles &
+      Overrides overview, or review the merge-key syntax mismatch or the !override tag.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Compose Profiles & Overrides"
+    topicRoute="/containers/compose-profiles"
+    [prev]="{ label: 'The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax', route: '/containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax' }"
+  />
+</div>

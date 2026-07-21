@@ -1399,6 +1399,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why the Anonymous node_modules Volume Preserves the Image’s Content', route: '/containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content' },
     { label: 'Anonymous Volumes Orphan on Every Container Recreation', route: '/containers/compose/anonymous-volumes-orphan-on-every-recreation' },
   ],
+  'compose-profiles': [
+    { label: '!override Replaces a Merged List Directly — No Workaround Needed', route: '/containers/compose-profiles/override-tag-replaces-lists-without-workarounds' },
+    { label: 'The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax', route: '/containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax' },
+    { label: 'Map-Form environment: Merges by Key, Not by Concatenation', route: '/containers/compose-profiles/map-form-environment-merges-by-key-not-concatenation' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

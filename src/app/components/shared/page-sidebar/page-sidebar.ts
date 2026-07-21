@@ -27747,6 +27747,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cramming every environment variation into one compose file via profiles can become harder to read than a small number of purpose-specific files.',
     ],
   },
+  'containers/compose-profiles/override-tag-replaces-lists-without-workarounds': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Compose Profiles & Overrides overview', route: '/containers/compose-profiles' },
+      { label: 'The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax', route: '/containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax' },
+    ],
+    tip: '!override replaces a single field\'s value during merge instead of following its normal merge rule — no base-file editing or fresh service names needed, unlike the main page\'s own suggested workaround.',
+    gotchas: [
+      '!reset clears a field back to empty/default rather than replacing it — useful when an override needs to REMOVE something the base set, not add to it.',
+      '!override and !reset are scoped to the single field they\'re applied to; every other field on the same service still merges normally.',
+    ],
+  },
+  'containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: '!override Replaces a Merged List Directly — No Workaround Needed', route: '/containers/compose-profiles/override-tag-replaces-lists-without-workarounds' },
+      { label: 'Map-Form environment: Merges by Key, Not by Concatenation', route: '/containers/compose-profiles/map-form-environment-merges-by-key-not-concatenation' },
+    ],
+    tip: 'Which alias syntax is valid depends on whether the anchor was defined as a YAML mapping or a sequence — x-env is a mapping, so the merge key (<<:) is required; bracket-list syntax would nest it as one list element instead.',
+    gotchas: [
+      'The main page\'s own theory bullet describes environment: [*common-env] in prose, but its own working code tab uses <<: *common-env — only the merge-key form is valid for x-env\'s mapping type.',
+      'Bracket-list alias syntax IS valid, but only for an anchor that was itself defined as a list, not a mapping.',
+    ],
+  },
+  'containers/compose-profiles/map-form-environment-merges-by-key-not-concatenation': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax', route: '/containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax' },
+      { label: 'Compose Profiles & Overrides overview', route: '/containers/compose-profiles' },
+    ],
+    tip: 'The main page\'s own theory groups ports, volumes, and environment as all "concatenated" on merge — but environment written as a mapping (as the page\'s own code tab does) merges key-by-key instead, with the override winning on repeated keys.',
+    gotchas: [
+      'A repeated key in map-form environment (like NODE_ENV) resolves to a single, overridden value — not two coexisting entries the way a genuinely duplicated ports binding does.',
+      'Environment can also be written in list form, which merges by append like ports does — Compose applies its own key-based de-duplication on top either way, but the underlying merge rule genuinely differs by form.',
+    ],
+  },
   'containers/configmaps-secrets': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
