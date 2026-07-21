@@ -64,7 +64,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/aws/ecs-eks" routerLinkActive="active"><span class="nl-text">ECS &amp; EKS</span>@if(p.isDone('aws-ecs-eks')){<span class="nl-done">✓</span>}@if(d('aws-ecs-eks');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/ecs-eks" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">ECS &amp; EKS</span>
+        @if (p.isDone('aws-ecs-eks')) {<span class="nl-done">✓</span>}
+        @if (d('aws-ecs-eks'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('ecs-eks')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ecs-eks')"
+                  (click)="toggleSubtopics('ecs-eks', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ecs-eks'); as ecsEksSubs) {
+        @if (isSubtopicsExpanded('ecs-eks')) {
+          <div class="nav-subtopics">
+            @for (s of ecsEksSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

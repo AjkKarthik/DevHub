@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ECS & EKS" topicRoute="/aws/ecs-eks" subtopicLabel="VPC CNI IP Exhaustion" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">VPC CNI IP Exhaustion — Pods Pending Despite Free CPU/Memory</h1>
+  <p class="page-subtitle">Every pod needs its own real VPC IP — and each node has a hard IP ceiling set by its instance type, unrelated to compute capacity.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="EKS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic turns the main page's own praise of the VPC CNI's real-IP model into the operational tradeoff it implies but never states — a real ceiling that standard CPU/memory-based scheduling and autoscaling intuition can miss entirely. Next, the ECS deployment circuit breaker subtopic covers a parallel gap on the ECS side of this same page — a safety net the main page's own rolling-update bullets never mention.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="ECS & EKS" topicRoute="/aws/ecs-eks"
+    [prev]="{ label: 'How IRSA Actually Works', route: '/aws/ecs-eks/irsa-oidc-token-exchange-exact-service-account-match-required' }"
+    [next]="{ label: 'ECS Circuit Breaker Is Disabled by Default', route: '/aws/ecs-eks/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag' }" />
+</div>

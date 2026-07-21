@@ -37788,6 +37788,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choosing ECS over EKS is a real lock-in tradeoff — migrating away from ECS later requires re-platforming to Kubernetes manifests, unlike EKS which is already standard Kubernetes.',
     ],
   },
+  'aws/ecs-eks/irsa-oidc-token-exchange-exact-service-account-match-required': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'ECS & EKS overview', route: '/aws/ecs-eks' },
+      { label: 'VPC CNI IP Exhaustion', route: '/aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory' },
+    ],
+    tip: 'IRSA works by exchanging a signed OIDC projected service account token for temporary credentials via AssumeRoleWithWebIdentity — no access keys are ever created or distributed to the pod.',
+    gotchas: [
+      'The IAM role\'s trust policy requires an EXACT match on "system:serviceaccount:<namespace>:<name>" — a namespace or name mismatch fails silently with a generic "unable to locate credentials" error.',
+      'A correct role-arn annotation on the service account is necessary but not sufficient — the trust policy\'s own condition is a separate, independent check.',
+    ],
+  },
+  'aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'How IRSA Actually Works', route: '/aws/ecs-eks/irsa-oidc-token-exchange-exact-service-account-match-required' },
+      { label: 'ECS Circuit Breaker Is Opt-In', route: '/aws/ecs-eks/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag' },
+    ],
+    tip: 'Every pod needs its own real VPC IP — each node has a hard pod-count ceiling set by its instance type\'s ENI/IP limits, completely independent of CPU/memory capacity.',
+    gotchas: [
+      'A "FailedScheduling: Insufficient pods" event (not "Insufficient cpu/memory") is the signal that IP exhaustion, not compute pressure, is the actual blocker.',
+      'IP Prefix Delegation raises the per-node pod ceiling without needing a larger instance type — but existing nodes need replacing, not just updating, to adopt it cleanly.',
+    ],
+  },
+  'aws/ecs-eks/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'VPC CNI IP Exhaustion', route: '/aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory' },
+      { label: 'ECS & EKS overview', route: '/aws/ecs-eks' },
+    ],
+    tip: 'minimumHealthyPercent/maximumPercent only control deployment PACE — automatic failure detection and rollback need the separate, opt-in deploymentCircuitBreaker={enable=true,rollback=true} setting.',
+    gotchas: [
+      'Without the circuit breaker enabled, a deployment where every new task crashes on startup just sits stuck indefinitely — nothing detects or reverses it automatically.',
+      'The circuit breaker works on the standard ECS rolling-update deployment type — no CodeDeploy or Blue/Green setup required.',
+    ],
+  },
   'aws/lambda': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

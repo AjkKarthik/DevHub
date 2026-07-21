@@ -3235,7 +3235,12 @@ export const routes: Routes = [
       { path: 'imds-hop-limit-of-1-breaks-container-metadata-access', loadComponent: () => import('./components/cloud/aws/ec2/subtopics/imds-hop-limit-of-1-breaks-container-metadata-access/imds-hop-limit-of-1-breaks-container-metadata-access').then(m => m.ImdsHopLimitOf1BreaksContainerMetadataAccessSubtopic) },
       { path: 'io1-multi-attach-lacks-io-fencing-io2-supports-it', loadComponent: () => import('./components/cloud/aws/ec2/subtopics/io1-multi-attach-lacks-io-fencing-io2-supports-it/io1-multi-attach-lacks-io-fencing-io2-supports-it').then(m => m.Io1MultiAttachLacksIoFencingIo2SupportsItSubtopic) },
     ] },
-    { path: 'ecs-eks',             loadComponent: () => import('./components/cloud/aws/ecs-eks/ecs-eks').then(m => m.AwsEcsEks) },
+    { path: 'ecs-eks', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/ecs-eks/ecs-eks').then(m => m.AwsEcsEks) },
+      { path: 'irsa-oidc-token-exchange-exact-service-account-match-required', loadComponent: () => import('./components/cloud/aws/ecs-eks/subtopics/irsa-oidc-token-exchange-exact-service-account-match-required/irsa-oidc-token-exchange-exact-service-account-match-required').then(m => m.IrsaOidcTokenExchangeExactServiceAccountMatchRequiredSubtopic) },
+      { path: 'vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory', loadComponent: () => import('./components/cloud/aws/ecs-eks/subtopics/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory').then(m => m.VpcCniIpExhaustionPodsPendingDespiteFreeCpuMemorySubtopic) },
+      { path: 'circuit-breaker-disabled-by-default-needs-explicit-rollback-flag', loadComponent: () => import('./components/cloud/aws/ecs-eks/subtopics/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag').then(m => m.CircuitBreakerDisabledByDefaultNeedsExplicitRollbackFlagSubtopic) },
+    ] },
     { path: 'vpc',                 loadComponent: () => import('./components/cloud/aws/vpc/vpc').then(m => m.AwsVpc) },
     { path: 'route53-cloudfront',  loadComponent: () => import('./components/cloud/aws/route53-cloudfront/route53-cloudfront').then(m => m.AwsRoute53Cloudfront) },
     { path: 's3',                  loadComponent: () => import('./components/cloud/aws/s3/s3').then(m => m.AwsS3) },

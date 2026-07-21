@@ -2454,4 +2454,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'IMDS Hop Limit of 1 Breaks Containers', route: '/aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access' },
     { label: 'io1 Multi-Attach Lacks I/O Fencing', route: '/aws/ec2/io1-multi-attach-lacks-io-fencing-io2-supports-it' },
   ],
+  'ecs-eks': [
+    { label: 'How IRSA Actually Works', route: '/aws/ecs-eks/irsa-oidc-token-exchange-exact-service-account-match-required' },
+    { label: 'VPC CNI IP Exhaustion', route: '/aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory' },
+    { label: 'ECS Circuit Breaker Is Opt-In', route: '/aws/ecs-eks/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag' },
+  ],
 };
