@@ -2689,7 +2689,41 @@ off here with a date.
   (tailored `tip`/`gotchas`/`related` per subtopic), dark mode (`--bg: #0f172a`), and
   prev/next subtopic-nav pager (correct labels and routes) all working correctly. **This
   continues the Containers/K8s hub's Phase 10 rollout — 19 of 22 topics complete.**)
-- [ ] `/containers/hpa` — Horizontal Pod Autoscaler
+- [x] `/containers/hpa` — Horizontal Pod Autoscaler (2026-07-21 — 3 subtopics:
+  scale-up-and-scale-down-stabilization-windows-aggregate-oppositely,
+  selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest,
+  unready-pods-count-as-0-percent-utilization-diluting-the-average; all three verified
+  against official Kubernetes HPA documentation via WebSearch before writing — (1) confirmed
+  that scale-down stabilization uses the MAXIMUM recommendation across the window (matching
+  the main page's own quiz explanation) while scale-up stabilization, if a window is
+  configured, uses the MINIMUM instead — an opposite aggregation the main page never states,
+  closing a gap where a reader could reasonably assume symmetric "use the maximum" behavior
+  for both directions; (2) confirmed via Kubernetes' own documented HPA behavior spec that
+  `selectPolicy` defaults to `Max` — when multiple policies are defined for one direction,
+  the LEAST restrictive one always wins by default, closing a gap where the main page's own
+  code tabs only ever show one policy per direction, never demonstrating what happens when a
+  second, stricter policy is added (it silently has no effect unless `selectPolicy: Min` is
+  set); (3) confirmed via Kubernetes' own documented metric-collection behavior that an
+  unready Pod is counted at exactly 0% utilization (not excluded) in the HPA's own average,
+  diluting the reported metric during a rollout or partial incident — closing a gap where the
+  main page's own core formula treats `currentMetricValue` as a clean number with no
+  discussion of which pods contribute to it or at what value. Gotcha sweep (bare `@` — none
+  found; heading fields — no HTML tags or backtick-emphasis present; bare single/double brace
+  sweep of `.html` files — clean; backtick parity across all three `.ts` files — even counts
+  (8/20/10); apostrophe-after-letter check across all `.html` bound `[prev]`/`[next]`
+  attributes — clean; a targeted re-check for the exact escaped-quote-then-unescaped-quote
+  bug pattern (`\''`) caught in earlier batches — clean, zero instances; `\${`
+  interpolation-risk scan — clean; `git add -A` file-existence check — all 9 files confirmed
+  present, no MAX_PATH issues) came back clean; build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (now ~152kB over) plus one
+  confirmed pre-existing, unrelated `NG8113: RouterLink is not used` warning on `hpa.ts`
+  itself with zero actual TypeScript/template compile errors; browser-verified successfully
+  via direct page-text and DOM query on all three subtopic pages — content (all h1/breadcrumb
+  pairs correct), breadcrumb (all 4 levels), the `ContainersNavComponent` accordion (toggle
+  button present on the Horizontal Pod Autoscaler nav link), sidebar (tailored
+  `tip`/`gotchas`/`related` per subtopic), dark mode (`--bg: #0f172a`), and prev/next
+  subtopic-nav pager (correct labels and routes) all working correctly. **This continues the
+  Containers/K8s hub's Phase 10 rollout — 20 of 22 topics complete.**)
 - [ ] `/containers/network-policies` — Network Policies
 - [ ] `/containers/troubleshooting` — Kubernetes Troubleshooting
 
