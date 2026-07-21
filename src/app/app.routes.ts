@@ -3259,7 +3259,12 @@ export const routes: Routes = [
       { path: 'sse-kms-encrypted-objects-not-replicated-by-default', loadComponent: () => import('./components/cloud/aws/s3/subtopics/sse-kms-encrypted-objects-not-replicated-by-default/sse-kms-encrypted-objects-not-replicated-by-default').then(m => m.SseKmsEncryptedObjectsNotReplicatedByDefaultSubtopic) },
       { path: 'access-point-and-bucket-policy-must-both-allow-the-request', loadComponent: () => import('./components/cloud/aws/s3/subtopics/access-point-and-bucket-policy-must-both-allow-the-request/access-point-and-bucket-policy-must-both-allow-the-request').then(m => m.AccessPointAndBucketPolicyMustBothAllowTheRequestSubtopic) },
     ] },
-    { path: 'ebs-efs',             loadComponent: () => import('./components/cloud/aws/ebs-efs/ebs-efs').then(m => m.AwsEbsEfs) },
+    { path: 'ebs-efs', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/ebs-efs/ebs-efs').then(m => m.AwsEbsEfs) },
+      { path: 'modifyvolume-rate-limit-must-wait-for-completed-state', loadComponent: () => import('./components/cloud/aws/ebs-efs/subtopics/modifyvolume-rate-limit-must-wait-for-completed-state/modifyvolume-rate-limit-must-wait-for-completed-state').then(m => m.ModifyvolumeRateLimitMustWaitForCompletedStateSubtopic) },
+      { path: 'efs-access-point-iam-scoping-requires-accesspointarn-condition', loadComponent: () => import('./components/cloud/aws/ebs-efs/subtopics/efs-access-point-iam-scoping-requires-accesspointarn-condition/efs-access-point-iam-scoping-requires-accesspointarn-condition').then(m => m.EfsAccessPointIamScopingRequiresAccesspointarnConditionSubtopic) },
+      { path: 'efs-after-1-access-promotes-files-back-to-standard-immediately', loadComponent: () => import('./components/cloud/aws/ebs-efs/subtopics/efs-after-1-access-promotes-files-back-to-standard-immediately/efs-after-1-access-promotes-files-back-to-standard-immediately').then(m => m.EfsAfter1AccessPromotesFilesBackToStandardImmediatelySubtopic) },
+    ] },
     { path: 'iam',                 loadComponent: () => import('./components/cloud/aws/iam/iam').then(m => m.AwsIam) },
     { path: 'iam-roles',           loadComponent: () => import('./components/cloud/aws/iam-roles/iam-roles').then(m => m.AwsIamRoles) },
     { path: 'rds-aurora',          loadComponent: () => import('./components/cloud/aws/rds-aurora/rds-aurora').then(m => m.AwsRdsAurora) },

@@ -38104,6 +38104,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'EFS is generally more expensive per GB than EBS — appropriate specifically when genuine multi-instance concurrent file access is needed, not as a default storage choice.',
     ],
   },
+  'aws/ebs-efs/modifyvolume-rate-limit-must-wait-for-completed-state': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EBS, EFS & FSx overview', route: '/aws/ebs-efs' },
+      { label: 'Access Point IAM Scoping', route: '/aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition' },
+    ],
+    tip: 'A volume must reach the "completed" state before it can be modified again — up to 4 modifications per rolling 24 hours, and a 1 TiB volume can take up to 6 hours to complete.',
+    gotchas: [
+      'A size increase becomes usable within seconds, but that\'s a different milestone from "completed" — the gate for a second modification is the latter, which can take hours.',
+      'A submitted modification cannot be canceled — for a stuck or wrong change on a non-root volume, detach/modify/reattach is the documented workaround.',
+    ],
+  },
+  'aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'ModifyVolume Rate Limit', route: '/aws/ebs-efs/modifyvolume-rate-limit-must-wait-for-completed-state' },
+      { label: 'AFTER_1_ACCESS Explained', route: '/aws/ebs-efs/efs-after-1-access-promotes-files-back-to-standard-immediately' },
+    ],
+    tip: 'An access point\'s own POSIX/root-directory enforcement only kicks in for whichever access point a mount targets — real isolation needs an IAM policy scoped to each access point via elasticfilesystem:AccessPointArn.',
+    gotchas: [
+      'An unscoped elasticfilesystem:ClientMount grant lets a role mount ANY access point on the file system, not just the one its own task definition intended.',
+      'The access point\'s POSIX enforcement provides no fallback protection if IAM authorized the wrong access point in the first place — the two layers are independent.',
+    ],
+  },
+  'aws/ebs-efs/efs-after-1-access-promotes-files-back-to-standard-immediately': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Access Point IAM Scoping', route: '/aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition' },
+      { label: 'EBS, EFS & FSx overview', route: '/aws/ebs-efs' },
+    ],
+    tip: 'TransitionToPrimaryStorageClass: AFTER_1_ACCESS (the only valid value) promotes a file back to Standard on a SINGLE read — a real cost-thrashing trap for periodically-accessed files.',
+    gotchas: [
+      'A file read once a month, with both age-based IA transition and AFTER_1_ACCESS enabled, can spend almost no time actually billed at genuine IA rates.',
+      'Listing a directory does not count as a file access event — only reading the specific file\'s own contents triggers the promotion.',
+    ],
+  },
 
   // ── Linux: per-page entries ──────────────────────────────────────────────────
   'linux/fundamentals': {

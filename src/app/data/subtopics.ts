@@ -2474,4 +2474,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SSE-KMS Replication Gap', route: '/aws/s3/sse-kms-encrypted-objects-not-replicated-by-default' },
     { label: 'Access Point Authorization', route: '/aws/s3/access-point-and-bucket-policy-must-both-allow-the-request' },
   ],
+  'ebs-efs': [
+    { label: 'ModifyVolume Rate Limit', route: '/aws/ebs-efs/modifyvolume-rate-limit-must-wait-for-completed-state' },
+    { label: 'Access Point IAM Scoping', route: '/aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition' },
+    { label: 'AFTER_1_ACCESS Explained', route: '/aws/ebs-efs/efs-after-1-access-promotes-files-back-to-standard-immediately' },
+  ],
 };

@@ -153,7 +153,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/aws/ebs-efs" routerLinkActive="active"><span class="nl-text">EBS, EFS &amp; FSx</span>@if(p.isDone('aws-ebs-efs')){<span class="nl-done">✓</span>}@if(d('aws-ebs-efs');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/ebs-efs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">EBS, EFS &amp; FSx</span>
+        @if (p.isDone('aws-ebs-efs')) {<span class="nl-done">✓</span>}
+        @if (d('aws-ebs-efs'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('ebs-efs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ebs-efs')"
+                  (click)="toggleSubtopics('ebs-efs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ebs-efs'); as ebsEfsSubs) {
+        @if (isSubtopicsExpanded('ebs-efs')) {
+          <div class="nav-subtopics">
+            @for (s of ebsEfsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

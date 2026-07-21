@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EBS, EFS & FSx" topicRoute="/aws/ebs-efs" subtopicLabel="ModifyVolume Rate Limit" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">ModifyVolume's Rate Limit: Wait for Completed, Max 4 Per Day</h1>
+  <p class="page-subtitle">The main page's "no downtime" framing skips a real constraint — a second modification is blocked until the first reaches completed, which can take hours.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="EBS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a real operational gap in the main page's own ModifyVolume coverage — the "no downtime" framing is accurate but incomplete without the completed-state gating and the 4-per-24-hours quota. Next, the EFS Access Point IAM scoping subtopic covers a second mechanism the main page's own EFS/ECS example uses without fully explaining.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EBS, EFS & FSx" topicRoute="/aws/ebs-efs"
+    [next]="{ label: 'EFS Access Point IAM Scoping', route: '/aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition' }" />
+</div>
