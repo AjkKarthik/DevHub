@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="StatefulSets &amp; DaemonSets" topicRoute="/containers/statefulsets" subtopicLabel="Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently</h1>
+  <p class="page-subtitle">
+    The main page's own theory covers PVC retention only for full StatefulSet deletion — the same silent retention
+    applies to scale-down, and scaling back up reattaches the old, stale data automatically.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered disruption protection; this one covers a scale-down surprise. Last: a real
+      inaccuracy this batch corrected on the main page itself, about what init containers actually share.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="StatefulSets &amp; DaemonSets"
+    topicRoute="/containers/statefulsets"
+    [prev]="{ label: 'PDB Only Blocks Voluntary Disruptions — a Node Crash Ignores It Entirely', route: '/containers/statefulsets/pdb-only-blocks-voluntary-disruptions-a-node-crash-ignores-it-entirely' }"
+    [next]="{ label: 'Init Containers Share the Pod’s Network Namespace, Not Just Its Volumes', route: '/containers/statefulsets/init-containers-share-the-pods-network-namespace-not-just-its-volumes' }"
+  />
+</div>

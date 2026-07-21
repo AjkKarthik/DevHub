@@ -1454,6 +1454,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Aggregated ClusterRoles Retroactively Grant New Permissions to Old Bindings', route: '/containers/rbac/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings' },
     { label: 'Bound ServiceAccount Tokens Expire in 1 Hour — Legacy Tokens Never Did', route: '/containers/rbac/bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did' },
   ],
+  'statefulsets': [
+    { label: 'PDB Only Blocks Voluntary Disruptions — a Node Crash Ignores It Entirely', route: '/containers/statefulsets/pdb-only-blocks-voluntary-disruptions-a-node-crash-ignores-it-entirely' },
+    { label: 'Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently', route: '/containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently' },
+    { label: 'Init Containers Share the Pod’s Network Namespace, Not Just Its Volumes', route: '/containers/statefulsets/init-containers-share-the-pods-network-namespace-not-just-its-volumes' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

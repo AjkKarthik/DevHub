@@ -276,7 +276,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/statefulsets" routerLinkActive="active"><span class="nl-text">StatefulSets &amp; DaemonSets</span>@if(p.isDone('k8s-statefulsets')){<span class="nl-done">✓</span>}@if(d('k8s-statefulsets');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/statefulsets" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">StatefulSets &amp; DaemonSets</span>
+        @if (p.isDone('k8s-statefulsets')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-statefulsets'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('statefulsets')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('statefulsets')"
+                  (click)="toggleSubtopics('statefulsets', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('statefulsets'); as ssSubs) {
+        @if (isSubtopicsExpanded('statefulsets')) {
+          <div class="nav-subtopics">
+            @for (s of ssSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/resource-limits" routerLinkActive="active"><span class="nl-text">Resource Requests &amp; Limits</span>@if(p.isDone('k8s-resource-limits')){<span class="nl-done">✓</span>}@if(d('k8s-resource-limits');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/hpa" routerLinkActive="active"><span class="nl-text">Horizontal Pod Autoscaler</span>@if(p.isDone('k8s-hpa')){<span class="nl-done">✓</span>}@if(d('k8s-hpa');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

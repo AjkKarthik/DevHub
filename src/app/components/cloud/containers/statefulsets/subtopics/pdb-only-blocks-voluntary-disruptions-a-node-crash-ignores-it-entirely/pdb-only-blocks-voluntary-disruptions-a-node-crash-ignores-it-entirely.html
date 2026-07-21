@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="StatefulSets &amp; DaemonSets" topicRoute="/containers/statefulsets" subtopicLabel="PDB Only Blocks Voluntary Disruptions — a Node Crash Ignores It Entirely" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">PDB Only Blocks Voluntary Disruptions — a Node Crash Ignores It Entirely</h1>
+  <p class="page-subtitle">
+    The main page's own theory says "voluntary" repeatedly without ever contrasting it — a PodDisruptionBudget is
+    checked only by the Eviction API, so a real hardware failure never even asks its permission.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own StatefulSet/DaemonSet claims leave
+      underspecified. Next: what actually happens to data when you scale a StatefulSet back up.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="StatefulSets &amp; DaemonSets"
+    topicRoute="/containers/statefulsets"
+    [next]="{ label: 'Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently', route: '/containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently' }"
+  />
+</div>

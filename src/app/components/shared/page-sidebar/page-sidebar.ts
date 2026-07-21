@@ -28266,6 +28266,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Using a StatefulSet for a stateless application adds unnecessary operational complexity with no corresponding benefit.',
     ],
   },
+  'containers/statefulsets/pdb-only-blocks-voluntary-disruptions-a-node-crash-ignores-it-entirely': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'StatefulSets & DaemonSets overview', route: '/containers/statefulsets' },
+      { label: 'Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently', route: '/containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently' },
+    ],
+    tip: 'A PodDisruptionBudget is checked only by the Eviction API — it throttles voluntary disruptions (drain, upgrade) but has zero effect on an involuntary one (node crash, kernel panic, hardware failure), which never goes through the Eviction API at all.',
+    gotchas: [
+      'minAvailable being violated in practice (fewer replicas Running than the PDB requires) does not mean the PDB failed — it never had a voluntary eviction request to block in the first place.',
+      'Real resilience against involuntary disruptions needs anti-affinity/topology spread and application-level replication, not a PDB.',
+    ],
+  },
+  'containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'PDB Only Blocks Voluntary Disruptions — a Node Crash Ignores It Entirely', route: '/containers/statefulsets/pdb-only-blocks-voluntary-disruptions-a-node-crash-ignores-it-entirely' },
+      { label: 'Init Containers Share the Pod’s Network Namespace, Not Just Its Volumes', route: '/containers/statefulsets/init-containers-share-the-pods-network-namespace-not-just-its-volumes' },
+    ],
+    tip: 'Under the default persistentVolumeClaimRetentionPolicy, scaling a StatefulSet down retains the removed ordinals\' own PVCs — scaling back up silently reattaches each recreated Pod to its exact same PVC, old data included.',
+    gotchas: [
+      'whenScaled: Delete (K8s 1.27+, beta) is a separate opt-in field from whenDeleted — set it explicitly to make scale-up provision genuinely fresh, empty PVCs.',
+      'A Pod recreated after scale-up shows no distinction in kubectl output between "genuinely fresh" and "reattached to old data" — both look identical.',
+    ],
+  },
+  'containers/statefulsets/init-containers-share-the-pods-network-namespace-not-just-its-volumes': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently', route: '/containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently' },
+      { label: 'StatefulSets & DaemonSets overview', route: '/containers/statefulsets' },
+    ],
+    tip: 'Init containers share the Pod\'s network namespace with app containers — same IP, same localhost — which is exactly why a wait-for-dependency check (nc -z) in an init container reliably predicts app-container reachability.',
+    gotchas: [
+      'What init containers do NOT share by default is the PID namespace — each container gets its own unless shareProcessNamespace: true is set.',
+      'Init containers run strictly sequentially, never concurrently with each other or the app container — that lifecycle isolation is real, network isolation is not.',
+    ],
+  },
   'containers/storage': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

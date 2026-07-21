@@ -202,7 +202,7 @@ const quiz: QuizQuestion[] = [
 const qna: QnaItem[] = [
   {
     q: 'How do init containers differ from regular containers in a Pod?',
-    a: 'Init containers run sequentially before any app container starts, and each must complete successfully (exit 0) before the next begins. They share the Pod\'s volumes but not the network namespace. Common uses: run database migrations, wait for dependencies (nc -z service port), render config files, download secrets from a vault. If an init container fails, the Pod is restarted (CrashLoopBackOff) — app containers never start.',
+    a: 'Init containers run sequentially before any app container starts, and each must complete successfully (exit 0) before the next begins. They share BOTH the Pod\'s volumes AND its network namespace with the app containers — same IP address, same localhost, same port space — since network namespace is a Pod-level guarantee that applies to every container in the Pod, init or not. Common uses: run database migrations, wait for dependencies (nc -z service port), render config files, download secrets from a vault. If an init container fails, the Pod is restarted (CrashLoopBackOff) — app containers never start.',
   },
   {
     q: 'Can I use a StatefulSet for a stateless application to get stable pod names?',

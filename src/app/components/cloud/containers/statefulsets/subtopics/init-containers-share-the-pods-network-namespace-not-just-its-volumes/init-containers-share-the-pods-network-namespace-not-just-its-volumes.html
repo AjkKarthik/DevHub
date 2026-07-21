@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="StatefulSets &amp; DaemonSets" topicRoute="/containers/statefulsets" subtopicLabel="Init Containers Share the Pod’s Network Namespace, Not Just Its Volumes" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Init Containers Share the Pod's Network Namespace, Not Just Its Volumes</h1>
+  <p class="page-subtitle">
+    The main page's own QnA was corrected as part of this batch — init containers share the Pod's network
+    namespace too, which is exactly why the page's own wait-for-dependency pattern works at all.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from disruption protection, to scale-down data retention, to what init
+      containers actually share. Back to the StatefulSets &amp; DaemonSets overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="StatefulSets &amp; DaemonSets"
+    topicRoute="/containers/statefulsets"
+    [prev]="{ label: 'Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently', route: '/containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently' }"
+  />
+</div>
