@@ -2334,7 +2334,42 @@ off here with a date.
   (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all
   working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 12 of 22
   topics complete.**)
-- [ ] `/containers/configmaps-secrets` — ConfigMaps & Secrets
+- [x] `/containers/configmaps-secrets` — ConfigMaps & Secrets (2026-07-21 — 3 subtopics:
+  subpath-volume-mounts-never-receive-configmap-secret-updates,
+  rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go,
+  deleting-an-immutable-configmap-breaks-new-pods-not-running-ones; all three verified
+  against official Kubernetes documentation via WebSearch before writing — (1) confirmed via
+  WebSearch and the tracked kubernetes/kubernetes#50345 issue that a ConfigMap/Secret
+  mounted via `subPath` never receives live updates at all — a documented, by-design
+  limitation, not a longer delay — directly qualifying the main page's own blanket "~1
+  minute" volume-update propagation claim in both its theory and QnA sections, which never
+  mentions `subPath` as an exception; (2) confirmed via Kubernetes' own RBAC documentation,
+  verbatim, that `resourceNames` cannot restrict `list`, `watch`, `deletecollection`, or
+  top-level `create` requests — closing a real gap in the main page's own RBAC mistake fix,
+  which correctly drops `list`/`watch` in favor of `get` + `resourceNames` but never
+  explains that this is a mechanical necessity (resourceNames has literally no effect on
+  those two verbs) rather than a discretionary security best practice; (3) confirmed via
+  WebSearch that an already-running Pod survives deletion of its own mounted ConfigMap/
+  Secret (kubelet already synced the content locally), while a NEW Pod referencing the same
+  deleted name fails with `CreateContainerConfigError` — a genuine sequencing hazard for the
+  main page's own recommended content-hash-suffixed rotation pattern that it never
+  addresses. Gotcha sweep (bare `@` — none found; heading fields — no HTML tags or
+  backtick-emphasis present; bare single/double brace sweep — clean; apostrophe-after-letter
+  check across all `.html` bound `[prev]`/`[next]` attributes — clean; backtick parity
+  across all three `.ts` files — even counts (26/14/8); `\${` interpolation-risk scan —
+  clean, no unescaped instances; `git add -A` file-existence check — all 9 files confirmed
+  present, no MAX_PATH issues) came back clean; build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (now ~107kB over) plus one
+  confirmed pre-existing, unrelated `NG8113: RouterLink is not used` warning on
+  `configmaps-secrets.ts` itself with zero actual TypeScript/template compile errors,
+  confirmed via a targeted grep for ERROR lines; browser-verified successfully via direct
+  page-text and DOM query on all three pages — content (all three h1/breadcrumb pairs
+  correct), breadcrumb (all 4 levels), the `ContainersNavComponent` accordion (toggle button
+  present on the ConfigMaps & Secrets nav link), sidebar (tailored `tip` text confirmed
+  present via full page-text substring check, not DEFAULT fallback), dark mode
+  (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all
+  working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 13 of 22
+  topics complete.**)
 - [ ] `/containers/storage` — Persistent Volumes & Storage
 - [x] `/containers/operators-crds` — Kubernetes Operators & CRDs (2026-07-21 — 3 subtopics:
   update-then-status-update-risks-a-stale-resourceversion-conflict,
