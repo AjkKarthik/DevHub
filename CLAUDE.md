@@ -1698,10 +1698,10 @@ do this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/containers/home/home.ts`. Progress: `k8sTotal=22` in progress.service.ts.
   Containers pages use `app-common-mistakes` AND `app-revision-card`. Reference page has no PageComplete.
   Challenge.language: `'typescript'`. ContainersNavComponent at `shared/containers-nav/containers-nav.ts`.
-  Phase 10: 3 of 22 topics have subtopics (`/containers/fundamentals`, `/containers/docker-cli`,
-  `/containers/docker-images`, 2026-07-21) — see "Containers/K8s hub subtopic wiring" section
-  above for the `ContainersNavComponent` accordion structural fix and the `k8s-fundamentals`
-  SUBTOPICS-map collision resolution.
+  Phase 10: 4 of 22 topics have subtopics (`/containers/fundamentals`, `/containers/docker-cli`,
+  `/containers/docker-images`, `/containers/dockerfile`, 2026-07-21) — see "Containers/K8s hub
+  subtopic wiring" section above for the `ContainersNavComponent` accordion structural fix and
+  the `k8s-fundamentals` SUBTOPICS-map collision resolution.
 - **Terraform/IaC hub**: 21 trackable topic pages + 2 reference (23 cards total). Feature-complete.
   Purple theme `$accent: #7b42bc`, `$tint: #f5f3ff`. Search prefix `tf-`. Route: `/terraform`.
   CSS classes: `.tf-page`, `.tf-icon`, `.tf-section`. Icon content: `TF`. `tech="javascript"`.

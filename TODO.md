@@ -1985,7 +1985,49 @@ off here with a date.
   marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic, confirmed via
   body-text substring check), dark mode (`--bg: #0f172a`) all working correctly. **This continues
   the Containers/K8s hub's Phase 10 rollout — 3 of 22 topics complete.**)
-- [ ] `/containers/dockerfile` — Writing Dockerfiles
+- [x] `/containers/dockerfile` — Writing Dockerfiles (2026-07-21 — 3 subtopics:
+  build-stage-node-modules-are-discarded, sibling-stages-build-in-parallel,
+  same-layer-cleanup-is-required-for-size-not-just-staleness; the second verified against BuildKit's
+  own documented DAG-based parallel scheduling via WebSearch, the first and third reasoned entirely
+  from tracing the main page's own multi-stage Dockerfile and mistake-entry explanations against
+  each other — (1) traced the main page's own Node.js Dockerfile's two separate `npm ci` calls
+  (deps stage: `--only=production`; build stage: full install) forward to the runtime stage's own
+  `COPY --from=deps /app/node_modules` and `COPY --from=build /app/dist` lines, showing the build
+  stage's own node_modules (containing every devDependency) is never copied anywhere and exists
+  solely to make `npm run build` possible — a connection the main page's own code tab never states,
+  despite running npm ci twice with different flags and no explanation; (2) confirmed BuildKit's own
+  documented DAG-based scheduling verbatim via WebSearch: "BuildKit automatically parallelizes
+  independent build stages... When you have multiple stages in a multi-stage Dockerfile that don't
+  depend on each other... BuildKit is simultaneously compiling on a separate thread or CPU core" —
+  applied to the main page's own Dockerfile, where deps and build both independently derive from
+  base (neither references the other), showing they build concurrently despite reading sequentially
+  top-to-bottom in the file, and that changing build to derive FROM deps instead of FROM base would
+  force serialization and lose that parallelism; (3) connected the main page's own "apt-get update
+  in a separate RUN" mistake entry's fix (a single combined RUN ending in `rm -rf /var/lib/apt/lists/*`)
+  to the SAME union-filesystem layer-diff principle this hub's own Container Fundamentals main page
+  already states ("deletion in a later layer does not reclaim space from an earlier layer") — showing
+  the mistake entry's own explanation credits only the staleness fix, never mentioning that the
+  same-layer placement of the cleanup command is independently required for the image to actually
+  shrink at all, since a later, separate RUN doing the identical rm -rf would only add an invisible
+  whiteout marker without reclaiming the earlier layer's already-committed cache files. `dockerfile`
+  collision-checked in `src/app/data/subtopics.ts` (both quoted and unquoted forms) — confirmed
+  collision-free, added as a bare key. Reused the now-fixed `ContainersNavComponent` local-accordion
+  pattern with no further structural changes needed — generalizing cleanly to a fourth topic in the
+  same hub. Gotcha sweep (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis
+  present; bare single/double brace sweep — clean; apostrophe-after-letter check across all `.ts`
+  fields — clean; backtick parity across all three `.ts` files — even counts (36/70/26); `\${`
+  interpolation-risk scan — clean, no unescaped instances; file-existence check — all 9 files
+  confirmed present, no MAX_PATH issues) came back clean; build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" condition (exceeded by 51.23 kB at this site's
+  current scale, per CLAUDE.md's own known-issues note) plus one pre-existing, unrelated `NG8113`
+  unused-RouterLink warning on the main page file (confirmed unrelated to this batch's own changes)
+  with zero actual TypeScript/template compile errors, confirmed via a targeted grep for ERROR lines;
+  browser-verified successfully via direct DOM query — content (all three h1/breadcrumb pairs
+  correct), breadcrumb (all 4 levels), the `ContainersNavComponent` accordion (`.nav-subtopics`
+  container `display: flex`, link correctly marked `active`), sidebar (tailored `tip`/`gotchas`/
+  `related` per subtopic, confirmed via body-text substring check), dark mode (`--bg: #0f172a`) all
+  working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 4 of 22 topics
+  complete.**)
 - [ ] `/containers/multi-stage` — Multi-Stage Builds
 - [ ] `/containers/compose` — Docker Compose
 - [ ] `/containers/compose-profiles` — Compose Profiles & Overrides
