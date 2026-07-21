@@ -3347,7 +3347,45 @@ off here with a date.
   three pages — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now
   the FOURTEENTH topic in this hub with subtopics — confirmed only CloudWatch's own toggle open,
   all thirteen others closed), dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/cloudformation-cdk` — CloudFormation & CDK
+- [x] `/aws/cloudformation-cdk` — CloudFormation & CDK (2026-07-22 — 3 subtopics:
+  cdk-removal-policy-covers-updatereplacepolicy-too,
+  cdk-context-lookups-freeze-until-manually-reset,
+  nested-stack-rollback-failure-blocks-the-whole-hierarchy; all three verified against AWS's own
+  documentation and CDK source before writing — (1) confirmed via AWS's own CDK API docs
+  (applyRemovalPolicy) and CDK's own source code comment ("Apply the same deletion policy to the
+  resource's 'UpdateReplacePolicy' @default true") that removalPolicy sets BOTH DeletionPolicy
+  AND UpdateReplacePolicy by default — closing a gap where the main page's own QnA warns raw
+  CloudFormation authors that "if you only set DeletionPolicy, a replacement during an update
+  still deletes the old resource" without ever stating whether CDK's own single prop already
+  covers both cases (it does); a first WebFetch attempt against a guessed removal-policy.html URL
+  returned an admitted-ungrounded response and was not trusted — a second attempt against the CDK
+  API reference and a third against CDK's raw GitHub source succeeded with directly-quotable
+  confirmation, per this project's own verify-before-publishing discipline (the research also
+  self-corrected mid-investigation: an initial guess that CDK might silently NOT protect against
+  replacement was disproven by the source, flipping the angle to the actual, opposite, equally
+  surprising fact); (2) confirmed via AWS's own CDK context documentation that context lookups
+  (ec2.Vpc.fromLookup etc.) are deliberately "frozen" once cached in cdk.context.json — "The CDK
+  Toolkit's caching behavior 'freezes' these values for your CDK app until you decide to accept
+  the new values" — and only cdk context --reset/--clear picks up real-world changes, with AWS
+  explicitly warning "Do not add or change cached context values by manually editing files" —
+  closing a gap where the main page's own best-practices bullet recommends context lookups without
+  ever explaining the caching mechanism or its deliberate staleness; (3) confirmed via AWS's own
+  CloudFormation troubleshooting docs that a nested stack failing to roll back blocks cleanup for
+  the ENTIRE hierarchy — "CloudFormation cancels all operations, regardless of the state that the
+  other nested stacks are in" — and that AWS's own documented fix for this specific stuck state is
+  only "contact AWS Support," unlike the five self-service remedies documented for an ordinary
+  UPDATE_ROLLBACK_FAILED stack — closing a gap where the main page covers nested stacks and
+  automatic rollback separately but never their intersection. Gotcha sweep covered `.html` bound
+  attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean across all three
+  files), bare `@word`/`{` in `.html` prose (none present), and backtick parity (4/4/6 — the
+  nested-stack file's 6 includes a correctly-escaped nested backtick pair inside a bash JMESPath
+  query string, confirmed safe). Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR with zero actual TypeScript/template compile errors. `git add -A`
+  staged cleanly with no "Filename too long" errors (longest new path 176 relative chars).
+  Browser-verified successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels),
+  the `AwsNavComponent` accordion (now the FIFTEENTH topic in this hub with subtopics — confirmed
+  only CloudFormation & CDK's own toggle open, all fourteen others closed), dark mode
+  (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/security` — AWS Security Services
 - [ ] `/aws/sqs-sns` — SQS & SNS
 - [ ] `/aws/eventbridge` — EventBridge
