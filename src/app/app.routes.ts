@@ -3313,7 +3313,12 @@ export const routes: Routes = [
       { path: 'cdk-context-lookups-freeze-until-manually-reset', loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/subtopics/cdk-context-lookups-freeze-until-manually-reset/cdk-context-lookups-freeze-until-manually-reset').then(m => m.CdkContextLookupsFreezeUntilManuallyResetSubtopic) },
       { path: 'nested-stack-rollback-failure-blocks-the-whole-hierarchy', loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/subtopics/nested-stack-rollback-failure-blocks-the-whole-hierarchy/nested-stack-rollback-failure-blocks-the-whole-hierarchy').then(m => m.NestedStackRollbackFailureBlocksTheWholeHierarchySubtopic) },
     ] },
-    { path: 'security',            loadComponent: () => import('./components/cloud/aws/security/security').then(m => m.AwsSecurity) },
+    { path: 'security', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/security/security').then(m => m.AwsSecurity) },
+      { path: 'guardduty-eks-runtime-monitoring-needs-a-security-agent', loadComponent: () => import('./components/cloud/aws/security/subtopics/guardduty-eks-runtime-monitoring-needs-a-security-agent/guardduty-eks-runtime-monitoring-needs-a-security-agent').then(m => m.GuarddutyEksRuntimeMonitoringNeedsASecurityAgentSubtopic) },
+      { path: 'kms-rotation-never-touches-already-generated-data-keys', loadComponent: () => import('./components/cloud/aws/security/subtopics/kms-rotation-never-touches-already-generated-data-keys/kms-rotation-never-touches-already-generated-data-keys').then(m => m.KmsRotationNeverTouchesAlreadyGeneratedDataKeysSubtopic) },
+      { path: 'multi-region-key-policies-dont-sync-across-replicas', loadComponent: () => import('./components/cloud/aws/security/subtopics/multi-region-key-policies-dont-sync-across-replicas/multi-region-key-policies-dont-sync-across-replicas').then(m => m.MultiRegionKeyPoliciesDontSyncAcrossReplicasSubtopic) },
+    ] },
     { path: 'sqs-sns',             loadComponent: () => import('./components/cloud/aws/sqs-sns/sqs-sns').then(m => m.AwsSqsSns) },
     { path: 'eventbridge',         loadComponent: () => import('./components/cloud/aws/eventbridge/eventbridge').then(m => m.AwsEventbridge) },
     { path: 'step-functions',      loadComponent: () => import('./components/cloud/aws/step-functions/step-functions').then(m => m.AwsStepFunctions) },

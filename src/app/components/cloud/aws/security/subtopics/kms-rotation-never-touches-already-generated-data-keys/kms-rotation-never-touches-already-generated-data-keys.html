@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS Security" topicRoute="/aws/security" subtopicLabel="KMS Rotation Never Touches Data Keys" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">KMS Rotation Never Touches Already-Generated Data Keys</h1>
+  <p class="page-subtitle">The main page's own "annual, transparent" rotation framing never connects back to its own envelope-encryption teaching — this is exactly what rotation does and doesn't protect.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="KMS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic connects the main page's own rotation and envelope-encryption sections, which are taught separately. Next, the multi-region key subtopic sharpens the main page's own multi-region QnA into which key properties actually stay in sync across replicas.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS Security" topicRoute="/aws/security"
+    [prev]="{ label: 'EKS Runtime Monitoring Needs a Security Agent', route: '/aws/security/guardduty-eks-runtime-monitoring-needs-a-security-agent' }"
+    [next]="{ label: 'Multi-Region Key Policies Don’t Sync Across Replicas', route: '/aws/security/multi-region-key-policies-dont-sync-across-replicas' }" />
+</div>

@@ -2519,4 +2519,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Context Lookups Freeze', route: '/aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset' },
     { label: 'Nested Stack Rollback Failure', route: '/aws/cloudformation-cdk/nested-stack-rollback-failure-blocks-the-whole-hierarchy' },
   ],
+  // NOTE: hub-prefixed — bare 'security' is already claimed by the SQL hub's own /sql/security topic.
+  'aws-security': [
+    { label: 'EKS Runtime Monitoring Agent', route: '/aws/security/guardduty-eks-runtime-monitoring-needs-a-security-agent' },
+    { label: 'KMS Rotation vs Data Keys', route: '/aws/security/kms-rotation-never-touches-already-generated-data-keys' },
+    { label: 'Multi-Region Key Policies', route: '/aws/security/multi-region-key-policies-dont-sync-across-replicas' },
+  ],
 };

@@ -352,7 +352,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/aws/security" routerLinkActive="active"><span class="nl-text">AWS Security Services</span>@if(p.isDone('aws-security')){<span class="nl-done">✓</span>}@if(d('aws-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">AWS Security Services</span>
+        @if (p.isDone('aws-security')) {<span class="nl-done">✓</span>}
+        @if (d('aws-security'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('aws-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aws-security')"
+                  (click)="toggleSubtopics('aws-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aws-security'); as secSubs) {
+        @if (isSubtopicsExpanded('aws-security')) {
+          <div class="nav-subtopics">
+            @for (s of secSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/cost-optimization" routerLinkActive="active"><span class="nl-text">Cost Optimization</span>@if(p.isDone('aws-cost-optimization')){<span class="nl-done">✓</span>}@if(d('aws-cost-optimization');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

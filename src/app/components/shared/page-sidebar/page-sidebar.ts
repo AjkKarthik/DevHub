@@ -38381,6 +38381,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'AWS Config tracks resource configuration changes over time, essential for auditing "when did this security group rule actually change" after an incident.',
     ],
   },
+  'aws/security/guardduty-eks-runtime-monitoring-needs-a-security-agent': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'AWS Security overview', route: '/aws/security' },
+      { label: 'KMS Rotation vs Data Keys', route: '/aws/security/kms-rotation-never-touches-already-generated-data-keys' },
+    ],
+    tip: 'GuardDuty\'s "no agents to install" claim describes its base log analysis only — EKS Runtime Monitoring deploys a real EKS add-on (aws-guardduty-agent) and doesn\'t support Fargate-based clusters at all.',
+    gotchas: [
+      'Automated agent management auto-creates a VPC endpoint + security group; manual management makes that YOUR prerequisite responsibility.',
+      'Fargate-based and Hybrid Nodes EKS clusters get zero in-container runtime visibility from this feature, regardless of configuration.',
+    ],
+  },
+  'aws/security/kms-rotation-never-touches-already-generated-data-keys': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EKS Runtime Monitoring Agent', route: '/aws/security/guardduty-eks-runtime-monitoring-needs-a-security-agent' },
+      { label: 'Multi-Region Key Policies', route: '/aws/security/multi-region-key-policies-dont-sync-across-replicas' },
+    ],
+    tip: 'CMK rotation never touches data keys already generated via generate-data-key — AWS states directly it "will not mitigate the effect of a compromised data key." 365-day rotation is only the default; RotationPeriodInDays is configurable.',
+    gotchas: [
+      'A compromised data key requires re-encrypting the affected data under a NEW data key — rotating the parent CMK does nothing for data already wrapped.',
+      'Only AWS managed keys (aws/s3, aws/rds) have a truly fixed rotation period — customer managed keys can set a custom RotationPeriodInDays.',
+    ],
+  },
+  'aws/security/multi-region-key-policies-dont-sync-across-replicas': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'KMS Rotation vs Data Keys', route: '/aws/security/kms-rotation-never-touches-already-generated-data-keys' },
+      { label: 'AWS Security overview', route: '/aws/security' },
+    ],
+    tip: 'Multi-Region key replicas share Key ID, key material, and rotation settings automatically — but key policy, grants, aliases, and tags are "independent properties" AWS never synchronizes.',
+    gotchas: [
+      'A key policy change (like revoking cross-account access) on the primary key has zero effect on any replica — each region\'s policy must be updated independently.',
+      'A replica is a fully independent KMS key resource, not a pointer to the primary — audit for key-policy drift across regions periodically.',
+    ],
+  },
   'aws/ebs-efs': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
