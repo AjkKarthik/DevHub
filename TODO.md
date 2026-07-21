@@ -3386,7 +3386,44 @@ off here with a date.
   the `AwsNavComponent` accordion (now the FIFTEENTH topic in this hub with subtopics — confirmed
   only CloudFormation & CDK's own toggle open, all fourteen others closed), dark mode
   (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/security` — AWS Security Services
+- [x] `/aws/security` — AWS Security Services (2026-07-22 — 3 subtopics:
+  guardduty-eks-runtime-monitoring-needs-a-security-agent,
+  kms-rotation-never-touches-already-generated-data-keys,
+  multi-region-key-policies-dont-sync-across-replicas; all three verified against AWS's own
+  documentation via WebFetch/WebSearch before writing — (1) confirmed via AWS's own GuardDuty
+  EKS Runtime Monitoring docs ("Runtime Monitoring uses an EKS add-on aws-guardduty-agent...
+  Runtime Monitoring doesn't support... those running on AWS Fargate") that this specific
+  GuardDuty feature is a real, documented exception to the main page's own blanket "no agents to
+  install" framing — closing a gap where the main page's own theory bullet presents agentlessness
+  as a property of GuardDuty as a whole; a first WebFetch against a guessed URL returned an
+  admitted-ungrounded response, so WebSearch was used to find the correct canonical URL before a
+  second WebFetch succeeded with fully-grounded content; (2) confirmed via AWS's own KMS rotation
+  docs that CMK rotation "does not rotate the data keys that the KMS key generated or re-encrypt
+  any data protected by the KMS key. Key rotation will not mitigate the effect of a compromised
+  data key" and that the "annual" rotation the main page states is only the configurable default
+  (RotationPeriodInDays) for customer managed keys, not a fixed rule — closing a gap where the
+  main page teaches rotation and its own envelope-encryption pattern in separate sections that are
+  never connected; (3) confirmed via AWS's own multi-Region keys documentation that key policy is
+  explicitly listed among "independent properties" AWS "does not synchronize" across replicas,
+  distinct from the "shared properties" (Key ID, key material, rotation settings) that do sync
+  automatically — closing a gap where the main page's own multi-region QnA describes only the
+  encrypt/decrypt interoperability benefit, never which properties travel with a replica (this
+  research also self-corrected mid-investigation: an initial assumption that replicas might have
+  DIFFERENT Key IDs was disproven by the docs — they share the same Key ID; the real, verified
+  surprise is the key POLICY exclusion instead). A real SUBTOPICS-map collision was caught before
+  the build: bare 'security' was already claimed by the SQL hub's own /sql/security topic —
+  hub-prefixed to 'aws-security' per the established collision-resolution pattern, with all three
+  AwsNavComponent accordion helper calls updated to match; confirmed via browser that the SQL
+  hub's own /sql/security page (44 pre-existing subtopic toggles) was unaffected by the fix.
+  Gotcha sweep covered `.html` bound attributes (typographic ’ used correctly for the "Don't Sync"
+  label), `.ts` single-quoted fields (apostrophe-after-letter grep clean across all three files),
+  bare `@word`/`{` in `.html` prose (none present), and backtick parity (even counts, 4/4/4). Build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with
+  zero actual TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename
+  too long" errors (longest new path 164 relative chars). Browser-verified successfully on all
+  three pages — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now
+  the SIXTEENTH topic in this hub with subtopics — confirmed only AWS Security's own toggle open,
+  all fifteen others closed), dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/sqs-sns` — SQS & SNS
 - [ ] `/aws/eventbridge` — EventBridge
 - [ ] `/aws/step-functions` — AWS Step Functions
