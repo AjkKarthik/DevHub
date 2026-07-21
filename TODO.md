@@ -3152,7 +3152,43 @@ off here with a date.
   accordion (now the NINTH topic in this hub with subtopics — confirmed all nine toggles coexist
   correctly, with only the current page's own topic auto-expanding), sidebar showing tailored
   `tip`/`gotchas`/`related` per subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/rds-aurora` — RDS & Aurora
+- [x] `/aws/rds-aurora` — RDS & Aurora (2026-07-21 — 3 subtopics:
+  rds-proxy-connection-pinning-defeats-pooling-silently,
+  switchover-guarantees-zero-data-loss-unplanned-failover-doesnt,
+  forcing-backtrack-with-binlog-enabled-breaks-read-replicas; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own RDS Proxy pinning doc
+  the full, precise list of engine-specific pinning triggers (temp tables, LOCK TABLES/GET_LOCK,
+  prepared statements, most SET session variables for MySQL/MariaDB; SET, PREPARE/DEALLOCATE,
+  cursors, temp sequences/tables/views, DISCARD ALL for PostgreSQL) plus one universal trigger
+  across every engine (any statement over 16 KB) — closing a gap where the main page's own "why
+  use RDS Proxy" mistake entry describes pooling in absolute terms with no mention that specific
+  operations silently exempt a connection from it; (2) confirmed via AWS's own Aurora Global
+  Database docs that "switchover" (RPO=0, waits for full sync, healthy-cluster only) and unplanned
+  "failover" (non-zero RPO, doesn't wait, real split-brain risk with AWS's own write-fencing
+  explicitly called "best-effort") are two structurally different mechanisms — closing a gap where
+  the main page's own QnA states one blanket "<1 min RTO, <1s RPO" figure for "a DR scenario" in
+  general, when that figure only actually describes the healthy-cluster switchover case; (3)
+  confirmed via AWS's own Aurora Backtrack limitations doc that binary logging blocks backtracking
+  by default, and forcing past that block "will break downstream read replicas and interfere with
+  other operations such as blue/green deployments" — closing a gap where the main page's own
+  "rewinds without restoring a snapshot, database remains online" framing never mentions any
+  interaction with other Aurora features, nor the real (if brief) connection-dropping disruption
+  every backtrack causes. Two WebFetch attempts against a specific Aurora Global Database failover
+  doc URL returned synthesized-looking (not directly quoted) content on the first pass; a second,
+  more targeted fetch against the correct canonical URL succeeded with fully-grounded, richly
+  detailed content — the initial attempt was not trusted or used, per this project's own
+  verify-before-publishing discipline. Gotcha sweep covered `.html` bound attributes, `.ts`
+  single-quoted fields, theory `points` arrays, and a `${` interpolation-risk scan (one file's own
+  code sample legitimately discusses JS template-literal syntax in a bash comment, requiring
+  careful `\${` escaping, confirmed correct via a fixed-string grep) — all clean, zero misses;
+  backtick parity across all three `.ts` files — even counts (8/4/4). Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR with zero actual
+  TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename too long"
+  errors (longest new path ~180 relative chars). Browser-verified successfully on all three pages
+  — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now the TENTH
+  topic in this hub with subtopics — confirmed all ten toggles coexist correctly, with only the
+  current page's own topic auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per
+  subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/dynamodb` — DynamoDB
 - [ ] `/aws/lambda` — Lambda
 - [ ] `/aws/api-gateway` — API Gateway
