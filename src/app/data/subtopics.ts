@@ -2540,4 +2540,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'HeartbeatSeconds Is a Separate Deadline', route: '/aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline' },
     { label: 'ResultSelector: the Missing Fifth Field', route: '/aws/step-functions/resultselector-filters-results-before-resultpath-applies' },
   ],
+  'load-balancing': [
+    { label: 'NLB Fail-Open vs. Per-AZ DNS Removal', route: '/aws/load-balancing/nlb-global-fail-open-vs-per-az-dns-removal' },
+    { label: 'NLB UDP/QUIC Health Checks', route: '/aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks' },
+    { label: 'ALB Reserved Cookie Names', route: '/aws/load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding' },
+  ],
 };

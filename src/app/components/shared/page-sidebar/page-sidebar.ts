@@ -38323,6 +38323,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cross-zone load balancing (whether traffic is distributed evenly across ALL AZ targets or only within the receiving AZ) affects both cost and traffic distribution evenness.',
     ],
   },
+  'aws/load-balancing/nlb-global-fail-open-vs-per-az-dns-removal': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing overview', route: '/aws/load-balancing' },
+      { label: 'NLB UDP/QUIC Health Checks', route: '/aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks' },
+    ],
+    tip: 'NLB fail-open only triggers once EVERY target in EVERY enabled AZ is unhealthy simultaneously — a single AZ losing all healthy targets is handled separately, by removing that AZ\'s IP from DNS.',
+    gotchas: [
+      'The per-AZ DNS-removal rule has no deregistration-delay-style graceful drain — existing connections to the removed AZ\'s static IP are left to fail on their own.',
+      'Fail-open routes to unhealthy targets "regardless of health status" — it does not relax health-check thresholds or give targets more chances to pass.',
+    ],
+  },
+  'aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'NLB Fail-Open vs. Per-AZ DNS Removal', route: '/aws/load-balancing/nlb-global-fail-open-vs-per-az-dns-removal' },
+      { label: 'ALB Reserved Cookie Names', route: '/aws/load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding' },
+    ],
+    tip: 'UDP and QUIC target groups are health-checked with TCP, HTTP, or HTTPS — never UDP itself, since UDP is not a valid health-check protocol option at all.',
+    gotchas: [
+      'A UDP-only service with no other open port needs a separate lightweight TCP/HTTP endpoint added purely for health-check purposes.',
+      'The decoupling exists because UDP has no handshake or acknowledgment — a health check cannot reliably tell "target down" from "probe packet dropped in transit."',
+    ],
+  },
+  'aws/load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'NLB UDP/QUIC Health Checks', route: '/aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks' },
+      { label: 'Load Balancing overview', route: '/aws/load-balancing' },
+    ],
+    tip: 'AWS reserves three exact cookie names (AWSALB, AWSALBAPP, AWSALBTG) for the load balancer itself, and shards application cookies over 4K into numbered AWSALBAPP-N fragments (up to 16K / 4 shards total).',
+    gotchas: [
+      'If both AWSALBCORS and AWSALB arrive in the same request, AWSALBCORS takes precedence for routing — even if AWSALB was set or refreshed more recently.',
+      'AWSALBCORS is sent to every client unconditionally, including non-CORS requests — it is not withheld from same-origin clients.',
+    ],
+  },
   'aws/route53-cloudfront': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

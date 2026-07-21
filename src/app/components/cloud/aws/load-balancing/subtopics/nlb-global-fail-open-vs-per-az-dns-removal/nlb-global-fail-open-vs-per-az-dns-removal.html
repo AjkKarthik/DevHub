@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Load Balancing" topicRoute="/aws/load-balancing" subtopicLabel="NLB Fail-Open vs. Per-AZ DNS Removal" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">NLB's Global Fail-Open Is Not the Same as Its Per-AZ DNS Removal</h1>
+  <p class="page-subtitle">The main page's own health-check theory stops at "a target is deregistered" — here's what actually happens when a whole AZ, or every AZ, loses all healthy targets.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="NLB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own generic "deregistered from the LB" health-check theory into the two distinct, differently-scoped rules NLB actually applies. Next, the UDP/QUIC health-check subtopic covers a target-group configuration the main page never mentions at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Load Balancing" topicRoute="/aws/load-balancing"
+    [next]="{ label: 'NLB UDP/QUIC Targets Use Non-UDP Health Checks', route: '/aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks' }" />
+</div>

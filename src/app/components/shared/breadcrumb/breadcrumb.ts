@@ -1731,6 +1731,9 @@ const AWS_LABELS: Record<string, string> = {
   'step-functions/heartbeatseconds-is-a-separate-repeating-deadline': 'HeartbeatSeconds Is a Separate Deadline',
   'step-functions/resultselector-filters-results-before-resultpath-applies': 'ResultSelector: the Missing Fifth Field',
   'load-balancing':     'Elastic Load Balancing',
+  'load-balancing/nlb-global-fail-open-vs-per-az-dns-removal': 'NLB Fail-Open vs. Per-AZ DNS Removal',
+  'load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks': 'NLB UDP/QUIC Health Checks',
+  'load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding': 'ALB Reserved Cookie Names',
   'cost-optimization':  'AWS Cost Optimization',
   'cheatsheet':         'AWS Cheat Sheet',
 };

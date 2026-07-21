@@ -3337,7 +3337,12 @@ export const routes: Routes = [
       { path: 'heartbeatseconds-is-a-separate-repeating-deadline', loadComponent: () => import('./components/cloud/aws/step-functions/subtopics/heartbeatseconds-is-a-separate-repeating-deadline/heartbeatseconds-is-a-separate-repeating-deadline').then(m => m.HeartbeatsecondsIsASeparateRepeatingDeadlineSubtopic) },
       { path: 'resultselector-filters-results-before-resultpath-applies', loadComponent: () => import('./components/cloud/aws/step-functions/subtopics/resultselector-filters-results-before-resultpath-applies/resultselector-filters-results-before-resultpath-applies').then(m => m.ResultselectorFiltersResultsBeforeResultpathAppliesSubtopic) },
     ] },
-    { path: 'load-balancing',      loadComponent: () => import('./components/cloud/aws/load-balancing/load-balancing').then(m => m.AwsLoadBalancing) },
+    { path: 'load-balancing', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/load-balancing/load-balancing').then(m => m.AwsLoadBalancing) },
+      { path: 'nlb-global-fail-open-vs-per-az-dns-removal', loadComponent: () => import('./components/cloud/aws/load-balancing/subtopics/nlb-global-fail-open-vs-per-az-dns-removal/nlb-global-fail-open-vs-per-az-dns-removal').then(m => m.NlbGlobalFailOpenVsPerAzDnsRemovalSubtopic) },
+      { path: 'nlb-udp-quic-targets-use-non-udp-health-checks', loadComponent: () => import('./components/cloud/aws/load-balancing/subtopics/nlb-udp-quic-targets-use-non-udp-health-checks/nlb-udp-quic-targets-use-non-udp-health-checks').then(m => m.NlbUdpQuicTargetsUseNonUdpHealthChecksSubtopic) },
+      { path: 'alb-reserved-cookie-names-and-4k-cookie-sharding', loadComponent: () => import('./components/cloud/aws/load-balancing/subtopics/alb-reserved-cookie-names-and-4k-cookie-sharding/alb-reserved-cookie-names-and-4k-cookie-sharding').then(m => m.AlbReservedCookieNamesAnd4kCookieShardingSubtopic) },
+    ] },
     { path: 'cost-optimization',   loadComponent: () => import('./components/cloud/aws/cost-optimization/cost-optimization').then(m => m.AwsCostOptimization) },
     { path: 'cheatsheet',          loadComponent: () => import('./components/cloud/aws/cheatsheet/cheatsheet').then(m => m.AwsCheatsheet) },
   ] },

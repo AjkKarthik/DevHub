@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Load Balancing" topicRoute="/aws/load-balancing" subtopicLabel="NLB UDP/QUIC Health Checks" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">NLB UDP/QUIC Target Groups Use Non-UDP Health Checks</h1>
+  <p class="page-subtitle">The main page's own NLB theory names UDP as a supported protocol but never explains how a UDP target is actually health-checked — there is no UDP option at all.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="NLB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a real gap in the main page's own health-check protocol list, which never mentions UDP. Next, the sticky-sessions subtopic expands the main page's own brief mention of the AWSALB cookie into the full ALB reserved-cookie mechanism.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Load Balancing" topicRoute="/aws/load-balancing"
+    [prev]="{ label: 'NLB Global Fail-Open vs. Per-AZ DNS Removal', route: '/aws/load-balancing/nlb-global-fail-open-vs-per-az-dns-removal' }"
+    [next]="{ label: 'ALB Reserved Cookie Names & 4K Cookie Sharding', route: '/aws/load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding' }" />
+</div>
