@@ -3456,7 +3456,39 @@ off here with a date.
   three pages — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now
   the SEVENTEENTH topic in this hub with subtopics — confirmed only SQS & SNS's own toggle open,
   all sixteen others closed), dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/eventbridge` — EventBridge
+- [x] `/aws/eventbridge` — EventBridge (2026-07-22 — 3 subtopics:
+  archives-default-to-indefinite-retention-not-free,
+  inputtransformer-quoting-differs-for-scalars-vs-objects,
+  duplicate-event-pattern-keys-silently-use-the-last-one; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own archive/replay docs
+  that "By default, EventBridge stores events in an archive indefinitely" and "EventBridge
+  charges apply to archives," plus a documented 10-minute recommended replay delay and
+  one-minute-interval (non-strictly-chronological) replay batching — closing a gap where the
+  main page's only archive example always sets --retention-days explicitly with no mention of
+  the default or the separate billing; (2) confirmed via AWS's own input-transformation docs,
+  using their own worked table examples, that quotes are actually OPTIONAL for scalar
+  InputTemplate variables (EventBridge auto-adds them — "Quotes are not required for variables
+  that represent strings... EventBridge automatically adds quotes") while quoting a JSON
+  object/array-valued variable like aws.events.event.json causes EventBridge to strip that
+  variable's own internal quotes, corrupting it — closing a gap where the main page's own single
+  string-quoted/number-unquoted example implies a simpler "strings vs numbers" rule than the real
+  "scalar vs compound" one (this research also self-corrected mid-investigation: the initial
+  hypothesis was the conventional "numeric unquoted, string quoted" framing, which the docs'
+  own worked examples disproved outright — the verified, more surprising rule is documented and
+  used instead); (3) confirmed via AWS's own event-pattern comparison-operators doc, using their
+  own worked example, that "if you include a key more than once the last reference will be the
+  one used to evaluate events" — PutRule accepts the duplicate-key pattern with no error — closing
+  a gap where the main page shows six distinct pattern operators in isolation, never warning what
+  happens when two are naively combined on the same field. Gotcha sweep covered `.html` bound
+  attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean across all three
+  files), bare `@word`/`{` in `.html` prose (none present), and backtick parity (even counts,
+  4/4/4). Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR with zero actual TypeScript/template compile errors. `git add -A` staged cleanly
+  with no "Filename too long" errors (longest new path 167 relative chars). Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), the
+  `AwsNavComponent` accordion (now the EIGHTEENTH topic in this hub with subtopics — confirmed
+  only EventBridge's own toggle open, all seventeen others closed), dark mode (`--bg: #0f172a`)
+  applying correctly.)
 - [ ] `/aws/step-functions` — AWS Step Functions
 - [ ] `/aws/load-balancing` — Elastic Load Balancing
 - [ ] `/aws/cost-optimization` — AWS Cost Optimization

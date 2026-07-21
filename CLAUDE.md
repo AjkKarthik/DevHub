@@ -1717,13 +1717,14 @@ same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `cloud/aws/home/home.ts`. Progress: `awsTotal=21` in progress.service.ts.
   AWS pages use `app-common-mistakes` AND `app-revision-card`. Reference page (cheatsheet) has no PageComplete.
   Challenge.language: `'typescript'`. AwsNavComponent at `shared/aws-nav/aws-nav.ts`.
-  Phase 10: 17 of 21 topics have subtopics (`/aws/fundamentals`, `/aws/ec2`, `/aws/ecs-eks`,
+  Phase 10: 18 of 21 topics have subtopics (`/aws/fundamentals`, `/aws/ec2`, `/aws/ecs-eks`,
   `/aws/vpc`, `/aws/route53-cloudfront`, `/aws/s3`, `/aws/ebs-efs`, `/aws/iam`,
   `/aws/iam-roles`, `/aws/rds-aurora`, `/aws/dynamodb`, `/aws/lambda`, `/aws/api-gateway`,
-  `/aws/cloudwatch`, `/aws/cloudformation-cdk`, `/aws/security`, `/aws/sqs-sns`, 2026-07-22)
-  — see "AWS hub subtopic wiring" section above for the `AwsNavComponent` accordion
-  structural fix and the `aws-fundamentals`/`aws-security` SUBTOPICS-map collision
-  resolutions (`aws-security` collided with the SQL hub's own bare `security` topic key).
+  `/aws/cloudwatch`, `/aws/cloudformation-cdk`, `/aws/security`, `/aws/sqs-sns`,
+  `/aws/eventbridge`, 2026-07-22) — see "AWS hub subtopic wiring" section above for the
+  `AwsNavComponent` accordion structural fix and the `aws-fundamentals`/`aws-security`
+  SUBTOPICS-map collision resolutions (`aws-security` collided with the SQL hub's own bare
+  `security` topic key).
 - **Azure hub**: 22 trackable topic pages + 1 cheatsheet reference (23 cards total). Feature-complete.
   Blue theme `$accent: #0089d6`, tint `#e8f4fd`, dark `#60b9f8`. Search prefix `azure-`. Route: `/azure`.
   CSS classes: `.azure-page`, `.azure-icon`, `.azure-section`. Icon content: `Az`. `tech="javascript"`.
