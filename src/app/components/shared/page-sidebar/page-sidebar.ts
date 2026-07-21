@@ -28205,6 +28205,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A pod with no request but a limit gets unpredictable scheduling behavior depending on configuration defaults.',
     ],
   },
+  'containers/resource-limits/cpu-limit-throttling-triggers-on-a-100ms-burst-not-average-usage': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Resource Requests & Limits overview', route: '/containers/resource-limits' },
+      { label: 'A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero', route: '/containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero' },
+    ],
+    tip: 'CFS enforces CPU limits per 100ms period, not as a longer-window average — a multi-threaded app can burst its entire quota in a few ms and sit throttled for the rest of the period, invisible to any average/p99 metric.',
+    gotchas: [
+      'Low average/p99 usage on kubectl top or a dashboard does not rule out throttling — check cpu.stat\'s nr_throttled or container_cpu_cfs_throttled_seconds_total directly.',
+      'Capping an app\'s own thread/worker pool to match its CPU limit (not the host\'s core count) often fixes burst throttling better than raising the limit alone.',
+    ],
+  },
+  'containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'CPU Limit Throttling Triggers on a 100ms Burst, Not Average Usage', route: '/containers/resource-limits/cpu-limit-throttling-triggers-on-a-100ms-burst-not-average-usage' },
+      { label: 'HPA Scales Against Requests, Not Limits — a Low Request Is Hypersensitive', route: '/containers/resource-limits/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive' },
+    ],
+    tip: 'A ResourceQuota covering compute resources rejects a pod missing requests/limits outright (HTTP 403) — it never silently admits it and counts it as zero. LimitRange avoids this by injecting defaults BEFORE the quota check runs, not by fixing the count after.',
+    gotchas: [
+      'Without a LimitRange, a ResourceQuota on compute resources is stricter than no quota at all — deployments fail outright rather than slipping through unrestricted.',
+      'LimitRange must be applied before the pod is submitted — it defaults values at admission time, it cannot retroactively fix an already-rejected request.',
+    ],
+  },
+  'containers/resource-limits/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero', route: '/containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero' },
+      { label: 'Resource Requests & Limits overview', route: '/containers/resource-limits' },
+    ],
+    tip: 'HPA\'s resource-metric utilization percentage is computed against the CPU REQUEST, never the limit — a deliberately low, p50-sized request (this page\'s own sizing advice) makes any attached HPA trigger on small absolute usage increases.',
+    gotchas: [
+      'averageUtilization above 100% is valid and common — it expresses a target relative to the (larger) limit via the request/limit ratio, e.g. (limit/request) × desired-limit-percentage.',
+      'Fixing HPA hypersensitivity should change the HPA\'s own target percentage, not the request value — lowering request accuracy would undermine the scheduling-efficiency reason it was sized low in the first place.',
+    ],
+  },
   'containers/services-ingress': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

@@ -1459,6 +1459,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently', route: '/containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently' },
     { label: 'Init Containers Share the Pod’s Network Namespace, Not Just Its Volumes', route: '/containers/statefulsets/init-containers-share-the-pods-network-namespace-not-just-its-volumes' },
   ],
+  'resource-limits': [
+    { label: 'CPU Limit Throttling Triggers on a 100ms Burst, Not Average Usage', route: '/containers/resource-limits/cpu-limit-throttling-triggers-on-a-100ms-burst-not-average-usage' },
+    { label: 'A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero', route: '/containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero' },
+    { label: 'HPA Scales Against Requests, Not Limits — a Low Request Is Hypersensitive', route: '/containers/resource-limits/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

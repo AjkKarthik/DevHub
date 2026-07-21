@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource Requests &amp; Limits" topicRoute="/containers/resource-limits" subtopicLabel="HPA Scales Against Requests, Not Limits — a Low Request Is Hypersensitive" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">HPA Scales Against Requests, Not Limits — a Low Request Is Hypersensitive</h1>
+  <p class="page-subtitle">
+    The main page's own QnA never states what an HPA percentage is a percentage OF — it's the CPU request, so the
+    page's own "size requests to p50" advice makes any attached HPA trigger on small absolute usage swings.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from CPU throttling's real trigger, to ResourceQuota's real rejection behavior,
+      to HPA's own hidden dependency on requests. Back to the Resource Requests &amp; Limits overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Resource Requests &amp; Limits"
+    topicRoute="/containers/resource-limits"
+    [prev]="{ label: 'A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero', route: '/containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero' }"
+  />
+</div>

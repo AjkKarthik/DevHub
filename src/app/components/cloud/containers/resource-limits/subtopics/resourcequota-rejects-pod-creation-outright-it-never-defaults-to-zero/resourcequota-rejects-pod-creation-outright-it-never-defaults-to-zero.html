@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource Requests &amp; Limits" topicRoute="/containers/resource-limits" subtopicLabel="A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero</h1>
+  <p class="page-subtitle">
+    The main page's own QnA was corrected as part of this batch — a pod without a resources block isn't silently
+    counted as zero against a compute ResourceQuota, it's rejected outright at admission time.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered CPU throttling's real trigger; this one covers admission-time rejection. Last:
+      why the HPA settings mentioned in the main page's own QnA are more sensitive than they look.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Resource Requests &amp; Limits"
+    topicRoute="/containers/resource-limits"
+    [prev]="{ label: 'CPU Limit Throttling Triggers on a 100ms Burst, Not Average Usage', route: '/containers/resource-limits/cpu-limit-throttling-triggers-on-a-100ms-burst-not-average-usage' }"
+    [next]="{ label: 'HPA Scales Against Requests, Not Limits — a Low Request Is Hypersensitive', route: '/containers/resource-limits/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive' }"
+  />
+</div>
