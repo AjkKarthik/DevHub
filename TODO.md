@@ -3189,7 +3189,40 @@ off here with a date.
   topic in this hub with subtopics — confirmed all ten toggles coexist correctly, with only the
   current page's own topic auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per
   subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/dynamodb` — DynamoDB
+- [x] `/aws/dynamodb` — DynamoDB (2026-07-21 — 3 subtopics:
+  gsi-silently-excludes-items-missing-the-indexed-sort-key,
+  dax-item-cache-and-query-cache-are-fully-independent,
+  streams-poison-pill-blocks-a-shard-for-up-to-a-day; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own GSI doc ("Data
+  synchronization between tables and Global Secondary Indexes") that "a global secondary index
+  only tracks data items where its key attributes actually exist" and a write missing a GSI's
+  key attribute succeeds normally with the item simply never propagated to the index, no error
+  raised — closing a gap where the main page's own single-table Blog challenge solution silently
+  depends on exactly this (only postItem defines GSI1PK/GSI1SK) without ever stating the
+  mechanism; (2) confirmed via AWS's own DAX consistency doc that DAX runs two genuinely
+  independent caches — item cache (write-through, serves GetItem) and query cache (serves
+  Query/Scan, never invalidated by writes) — using AWS's own worked "Charlie" example (a Query
+  result stays stale after an UpdateItem through DAX, until the cached query's own TTL expires)
+  — closing a gap where the main page's own theory bullet and QnA answer both describe DAX with
+  one blanket "write-through cache" / "item-level invalidation" framing that only actually
+  describes the item cache; (3) confirmed via AWS's own Lambda docs (DynamoDB error-handling page
+  plus the CreateEventSourceMapping API reference) that MaximumRetryAttempts and
+  MaximumRecordAgeInSeconds both default to infinite (-1) and BisectBatchOnFunctionError defaults
+  to false, so "with the default settings... a bad record can block processing on the affected
+  shard for up to one day" (bounded by the Streams 24-hour retention the main page's own quiz
+  already states) — closing a gap where the main page's own Streams code tab already sets
+  --bisect-batch-on-function-error and a DLQ without ever explaining what default behavior those
+  flags are protecting against. All three angles verified cleanly on the first or second targeted
+  WebFetch — no candidate angles dropped this batch. Gotcha sweep covered `.html` bound
+  attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean across all three
+  files), bare `@word`/`{` in `.html` prose (none present), and backtick parity (even counts,
+  4/4/4 across all three `.ts` files). Build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR with zero actual TypeScript/template compile errors.
+  `git add -A` staged cleanly with no "Filename too long" errors (longest new path 166 relative
+  chars). Browser-verified successfully on all three pages — h1/breadcrumb pairs correct (all 4
+  levels), the `AwsNavComponent` accordion (now the ELEVENTH topic in this hub with subtopics —
+  confirmed only DynamoDB's own toggle open, all ten others closed), dark mode (`--bg: #0f172a`)
+  applying correctly.)
 - [ ] `/aws/lambda` — Lambda
 - [ ] `/aws/api-gateway` — API Gateway
 - [ ] `/aws/cloudwatch` — CloudWatch & X-Ray
