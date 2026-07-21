@@ -2599,7 +2599,52 @@ off here with a date.
   clicking to expand it, so file-level verification was used instead, backed by the
   successful, error-free build of that exact file). **This continues the Containers/K8s
   hub's Phase 10 rollout — 17 of 22 topics complete.**)
-- [ ] `/containers/statefulsets` — StatefulSets & DaemonSets
+- [x] `/containers/statefulsets` — StatefulSets & DaemonSets (2026-07-21 — 3 subtopics:
+  pdb-only-blocks-voluntary-disruptions-a-node-crash-ignores-it-entirely,
+  scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently,
+  init-containers-share-the-pods-network-namespace-not-just-its-volumes; all three verified
+  against official Kubernetes documentation via WebSearch before writing. **A second genuine,
+  confirmed inaccuracy was found and fixed on the main page itself in this same session**
+  (following the RBAC-batch fix earlier): the QnA answer on init containers previously stated
+  "They share the Pod's volumes but not the network namespace" — verified BACKWARDS against
+  Kubernetes' own documented Pod networking model, which guarantees every container in a Pod
+  (init or app, no exception) shares the identical network namespace, IP, and localhost;
+  corrected the QnA text, matching the established "fix genuine inaccuracies found during
+  subtopic authoring" precedent; (1) confirmed via Kubernetes' own Disruptions documentation
+  that a PodDisruptionBudget is checked exclusively by the Eviction API, meaning it throttles
+  only VOLUNTARY disruptions (drain, upgrade, autoscaler scale-down) and provides zero
+  protection against INVOLUNTARY ones (node hardware failure, kernel panic, network
+  partition) — closing a real gap where the main page's own repeated "voluntary disruptions"
+  phrasing never precisely draws that contrast; (2) confirmed via Kubernetes' own StatefulSet
+  documentation and its 1.27 PVC-auto-deletion beta announcement that the default
+  persistentVolumeClaimRetentionPolicy retains PVCs on scale-down (not just full deletion),
+  meaning scaling back up silently reattaches old, stale data — closing a gap where the main
+  page's own theory and mistake entry only discuss PVC retention in the context of deleting
+  the WHOLE StatefulSet, never the far more routine scale-down/scale-up cycle; (3) the third
+  subtopic explains and demonstrates the corrected init-container network-namespace mechanism
+  directly, using the main page's own `nc -z` wait-for-dependency pattern as the worked
+  example of why the correction matters practically. Gotcha sweep (bare `@` — none found;
+  heading fields — no HTML tags or backtick-emphasis present; bare single/double brace sweep
+  of `.html` files — clean; backtick parity across all three `.ts` files — even counts
+  (12/8/12); apostrophe-after-letter check across all `.html` bound `[prev]`/`[next]`
+  attributes — clean, typographic `’` used correctly; a targeted re-check for the exact
+  escaped-quote-then-unescaped-quote bug pattern (`\''`) caught in two prior batches — clean,
+  zero instances, including in the directly-edited main page `statefulsets.ts`; `\${`
+  interpolation-risk scan — clean; `git add -A` file-existence check — all 9 files confirmed
+  present, no MAX_PATH issues) came back clean; build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (now ~139kB over) plus one
+  confirmed pre-existing, unrelated `NG8113: RouterLink is not used` warning on
+  `statefulsets.ts` itself with zero actual TypeScript/template compile errors — the
+  successful compilation of the edited main page's own lazy chunk was itself direct
+  confirmation the QnA fix introduced no syntax error; browser-verified successfully via
+  direct page-text and DOM query on all three subtopic pages — content (all h1/breadcrumb
+  pairs correct, including the third subtopic's own page-subtitle explicitly referencing and
+  confirming the main-page correction), breadcrumb (all 4 levels), the
+  `ContainersNavComponent` accordion (toggle button present on the StatefulSets & DaemonSets
+  nav link), sidebar (tailored `tip`/`gotchas`/`related` per subtopic), dark mode
+  (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all working
+  correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 18 of 22 topics
+  complete.**)
 - [ ] `/containers/resource-limits` — Resource Requests & Limits
 - [ ] `/containers/hpa` — Horizontal Pod Autoscaler
 - [ ] `/containers/network-policies` — Network Policies
