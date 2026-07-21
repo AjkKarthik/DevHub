@@ -2941,7 +2941,42 @@ off here with a date.
   — confirmed all three toggles coexist correctly, with only the current page's own topic
   auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per subtopic, dark mode
   (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/vpc` — VPC & Networking
+- [x] `/aws/vpc` — VPC & Networking (2026-07-21 — 3 subtopics:
+  tgw-route-tables-need-both-association-and-propagation-for-isolation,
+  cross-region-vpc-peering-cant-reference-security-groups-use-cidr,
+  flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag; all three verified against
+  AWS's own documentation via WebFetch before writing — (1) confirmed Transit Gateway route table
+  association (which table an attachment's own traffic looks up) and propagation (which routes
+  appear IN a table for other attachments) are separate, independently-configured mechanisms —
+  closing a real gap where the main page's own Transit Gateway code creates an "isolated" route
+  table and associates a dev attachment with it, commenting "dev VPCs cannot reach prod VPCs,"
+  when association alone provides no such guarantee if DefaultRouteTablePropagation is left
+  enabled (as the main page's own create-transit-gateway example does); (2) confirmed via AWS's
+  own VPC peering security groups doc that referencing a security group across a peering
+  connection only works when the peer VPC is in the SAME Region — a different-Region peer VPC
+  must fall back to a CIDR-block rule instead — plus the related "stale security group rule"
+  behavior when a referenced peering connection is deleted (not auto-cleaned-up); closing a gap
+  where the main page's own SG-chaining bullet describes the auto-adjusting benefit as a general
+  technique with no mention of its Region-bound scope; (3) confirmed via AWS's own flow log
+  records doc that a flow log record represents an aggregated capture window (default max 10
+  minutes, optionally 1 minute) plus additional best-effort delivery time (~5 min to CloudWatch
+  Logs, ~10 min to S3) — AWS's own docs state flow logs "do not capture real-time log streams" —
+  and that Nitro-based instances always get a 1-minute-or-less aggregation interval regardless of
+  the flow log's own configured maximum; closing a gap where the main page's own "filter for
+  REJECT records" debugging advice reads as if the signal were live. Gotcha sweep this batch
+  covered both `.html` bound attributes AND `.ts` single-quoted `prompt`/`hint`/`solution`/
+  `thought`/`reality`/`label`/`heading` fields (per the process fix recorded in the `/aws/ec2`
+  batch entry) — ran clean, zero misses; bare `@word`/brace sweep of `.html` files — clean;
+  backtick parity across all three `.ts` files — even counts (6/4/4). One `.ts` label field
+  (`"Flow Logs Aren't Real-Time"`) used double quotes specifically to hold a straight apostrophe
+  without escaping — a clean alternative to backslash-escaping when a string needs one. Build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with
+  zero actual TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename
+  too long" errors (longest new path ~185 relative chars). Browser-verified successfully on all
+  three pages — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now
+  the FOURTH topic in this hub with subtopics — confirmed all four toggles coexist correctly,
+  with only the current page's own topic auto-expanding), sidebar showing tailored `tip`/
+  `gotchas`/`related` per subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/route53-cloudfront` — Route 53 & CloudFront
 - [ ] `/aws/s3` — S3
 - [ ] `/aws/ebs-efs` — EBS, EFS & FSx
