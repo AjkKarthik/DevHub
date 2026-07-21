@@ -3077,7 +3077,12 @@ export const routes: Routes = [
       { path: 'merge-key-needs-mapping-not-list-alias-syntax', loadComponent: () => import('./components/cloud/containers/compose-profiles/subtopics/merge-key-needs-mapping-not-list-alias-syntax/merge-key-needs-mapping-not-list-alias-syntax').then(m => m.MergeKeyNeedsMappingNotListAliasSyntaxSubtopic) },
       { path: 'map-form-environment-merges-by-key-not-concatenation', loadComponent: () => import('./components/cloud/containers/compose-profiles/subtopics/map-form-environment-merges-by-key-not-concatenation/map-form-environment-merges-by-key-not-concatenation').then(m => m.MapFormEnvironmentMergesByKeyNotConcatenationSubtopic) },
     ]},
-    { path: 'k8s-architecture',   loadComponent: () => import('./components/cloud/containers/k8s-architecture/k8s-architecture').then(m => m.K8sArchitecture) },
+    { path: 'k8s-architecture', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/k8s-architecture/k8s-architecture').then(m => m.K8sArchitecture) },
+      { path: 'not-ready-eviction-is-taint-based-not-a-fixed-flag', loadComponent: () => import('./components/cloud/containers/k8s-architecture/subtopics/not-ready-eviction-is-taint-based-not-a-fixed-flag/not-ready-eviction-is-taint-based-not-a-fixed-flag').then(m => m.NotReadyEvictionIsTaintBasedNotAFixedFlagSubtopic) },
+      { path: 'dockershim-removal-does-not-break-docker-built-images', loadComponent: () => import('./components/cloud/containers/k8s-architecture/subtopics/dockershim-removal-does-not-break-docker-built-images/dockershim-removal-does-not-break-docker-built-images').then(m => m.DockershimRemovalDoesNotBreakDockerBuiltImagesSubtopic) },
+      { path: 'kube-proxy-programs-rules-it-does-not-forward-packets', loadComponent: () => import('./components/cloud/containers/k8s-architecture/subtopics/kube-proxy-programs-rules-it-does-not-forward-packets/kube-proxy-programs-rules-it-does-not-forward-packets').then(m => m.KubeProxyProgramsRulesItDoesNotForwardPacketsSubtopic) },
+    ]},
     { path: 'kubectl',            loadComponent: () => import('./components/cloud/containers/kubectl/kubectl').then(m => m.K8sKubectl) },
     { path: 'pods-deployments',   loadComponent: () => import('./components/cloud/containers/pods-deployments/pods-deployments').then(m => m.K8sPodsDeployments) },
     { path: 'services-ingress',   loadComponent: () => import('./components/cloud/containers/services-ingress/services-ingress').then(m => m.K8sServicesIngress) },

@@ -172,7 +172,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Kubernetes</p>
-      <a routerLink="/containers/k8s-architecture" routerLinkActive="active"><span class="nl-text">K8s Architecture</span>@if(p.isDone('k8s-architecture')){<span class="nl-done">✓</span>}@if(d('k8s-architecture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/k8s-architecture" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">K8s Architecture</span>
+        @if (p.isDone('k8s-architecture')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-architecture'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('k8s-architecture')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('k8s-architecture')"
+                  (click)="toggleSubtopics('k8s-architecture', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('k8s-architecture'); as archSubs) {
+        @if (isSubtopicsExpanded('k8s-architecture')) {
+          <div class="nav-subtopics">
+            @for (s of archSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/kubectl" routerLinkActive="active"><span class="nl-text">kubectl Fundamentals</span>@if(p.isDone('k8s-kubectl')){<span class="nl-done">✓</span>}@if(d('k8s-kubectl');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/operators-crds" routerLinkActive="active"><span class="nl-text">Operators &amp; CRDs</span>@if(p.isDone('k8s-operators-crds')){<span class="nl-done">✓</span>}@if(d('k8s-operators-crds');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Architecture" topicRoute="/containers/k8s-architecture" subtopicLabel="kube-proxy Programs Rules — It Never Forwards Packets Itself" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">kube-proxy Programs Rules — It Never Forwards Packets Itself</h1>
+  <p class="page-subtitle">
+    The main page's own bullets are accurate but never say what the name "kube-proxy" implies is wrong — in
+    iptables/IPVS mode, the kernel forwards every packet; kube-proxy only writes the rules ahead of time.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at three places where the main page's own wording is technically
+      correct but leaves a natural, incorrect reading unaddressed. Back to the Kubernetes Architecture overview,
+      or review the taint-based eviction mechanism or the dockershim scope correction.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Architecture"
+    topicRoute="/containers/k8s-architecture"
+    [prev]="{ label: 'The dockershim Removal Never Broke Docker-Built Images', route: '/containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images' }"
+  />
+</div>

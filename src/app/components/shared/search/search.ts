@@ -120,6 +120,11 @@ export class SearchComponent {
     if (route.startsWith('py-'))     return '/python/'      + route.slice('py-'.length);
     if (route.startsWith('go-'))     return '/go/'          + route.slice('go-'.length);
     if (route.startsWith('devops-')) return '/devops/'      + route.slice('devops-'.length);
+    // NOTE: this topic's own slug ('k8s-architecture') happens to start with
+    // the hub's own 'k8s-' prefix, so the generic strip below would wrongly
+    // produce '/containers/architecture' instead of '/containers/k8s-architecture'.
+    // Special-cased here (and for any of its own subtopics) before the generic rule.
+    if (route === 'k8s-architecture' || route.startsWith('k8s-architecture/')) return '/containers/' + route;
     if (route.startsWith('k8s-'))    return '/containers/'  + route.slice('k8s-'.length);
     if (route.startsWith('aws-'))    return '/aws/'         + route.slice('aws-'.length);
     if (route.startsWith('azure-'))  return '/azure/'       + route.slice('azure-'.length);

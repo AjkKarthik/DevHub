@@ -27844,6 +27844,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A control plane outage does not immediately stop already-running pods, since kubelet continues managing existing pods independently for a period.',
     ],
   },
+  'containers/k8s-architecture/not-ready-eviction-is-taint-based-not-a-fixed-flag': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Architecture overview', route: '/containers/k8s-architecture' },
+      { label: 'The dockershim Removal Never Broke Docker-Built Images', route: '/containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images' },
+    ],
+    tip: 'Modern Kubernetes (1.13+) uses taint-based eviction, not the flag-based pod-eviction-timeout mechanism — a NoExecute taint plus each pod\'s own tolerationSeconds (default 300s, injected automatically), configurable per pod.',
+    gotchas: [
+      'Changing --pod-eviction-timeout on kube-controller-manager has no effect on a modern cluster — actual timing comes from each pod\'s own tolerationSeconds against the relevant taints.',
+      'A latency-sensitive Deployment can override tolerationSeconds to fail over much faster than the cluster-wide default, something the old flag-based model could never express.',
+    ],
+  },
+  'containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'NotReady Eviction Is Taint-Based, Not a Fixed Global Flag', route: '/containers/k8s-architecture/not-ready-eviction-is-taint-based-not-a-fixed-flag' },
+      { label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' },
+    ],
+    tip: 'dockershim was a kubelet-internal translation layer to the Docker Engine daemon as a node runtime — removing it in 1.24 changed nothing about the OCI image format docker build produces or how Dockerfiles work.',
+    gotchas: [
+      'The removal is entirely a cluster-operations concern (nodes need containerd or CRI-O configured) — not a development-workflow change.',
+      'Most managed Kubernetes services had already migrated their default node images to containerd well before their own 1.24 rollout.',
+    ],
+  },
+  'containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The dockershim Removal Never Broke Docker-Built Images', route: '/containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images' },
+      { label: 'Kubernetes Architecture overview', route: '/containers/k8s-architecture' },
+    ],
+    tip: 'In iptables/IPVS mode, kube-proxy only writes rules into the kernel ahead of time — actual packet forwarding happens entirely in kernel space with zero involvement from the kube-proxy process per packet.',
+    gotchas: [
+      'Restarting kube-proxy does not interrupt already-flowing connections in iptables/IPVS mode — only new Service/Endpoint changes stop being picked up until it resumes.',
+      'kube-proxy\'s resource usage scales with the number of Services/endpoints (rule count), not with request volume, unlike a literal in-path proxy.',
+    ],
+  },
   'containers/kubectl': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

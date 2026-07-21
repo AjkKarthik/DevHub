@@ -1404,6 +1404,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax', route: '/containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax' },
     { label: 'Map-Form environment: Merges by Key, Not by Concatenation', route: '/containers/compose-profiles/map-form-environment-merges-by-key-not-concatenation' },
   ],
+  'k8s-architecture': [
+    { label: 'NotReady Eviction Is Taint-Based, Not a Fixed Global Flag', route: '/containers/k8s-architecture/not-ready-eviction-is-taint-based-not-a-fixed-flag' },
+    { label: 'The dockershim Removal Never Broke Docker-Built Images', route: '/containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images' },
+    { label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },
