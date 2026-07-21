@@ -28470,6 +28470,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CrashLoopBackOff\'s exponential backoff is normal, expected behavior — the actual root cause is virtually always in the previous container\'s logs or exit code.',
     ],
   },
+  'containers/troubleshooting/crashloop-backoff-resets-after-10-min-stable-running': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Troubleshooting overview', route: '/containers/troubleshooting' },
+      { label: 'Exit Code 137 Is SIGKILL, Not Always OOMKilled', route: '/containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled' },
+    ],
+    tip: 'The backoff counter resets to 10s only after a container has run continuously for 10 minutes without crashing — a container crashing every 8 minutes never earns a reset and stays capped at 5 minutes forever.',
+    gotchas: [
+      'A capped 5-minute restart delay does not mean Kubernetes is treating the pod as unusually severe — it means the container never stayed up long enough in one stretch to reset.',
+      'There is no per-Pod override for the backoff schedule — the only real fix is getting the container to actually stay stable past 10 minutes.',
+    ],
+  },
+  'containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'CrashLoop Backoff Resets After 10 Minutes of Stable Running, Not Every Restart', route: '/containers/troubleshooting/crashloop-backoff-resets-after-10-min-stable-running' },
+      { label: 'kubectl logs --previous Only Reaches the Latest Crash', route: '/containers/troubleshooting/previous-logs-only-reach-the-latest-crash' },
+    ],
+    tip: 'Exit code 137 only confirms SIGKILL was sent — check lastState.terminated.reason to confirm it was specifically "OOMKilled" versus a grace-period-expired kubelet kill or another SIGKILL source.',
+    gotchas: [
+      'A failed liveness probe past terminationGracePeriodSeconds produces the identical exit code 137, with reason typically "Error" instead of "OOMKilled".',
+      'Raising limits.memory will not fix a recurring 137 whose reason isn\'t actually OOMKilled — check reason before adjusting the memory limit.',
+    ],
+  },
+  'containers/troubleshooting/previous-logs-only-reach-the-latest-crash': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Exit Code 137 Is SIGKILL, Not Always OOMKilled', route: '/containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled' },
+      { label: 'Kubernetes Troubleshooting overview', route: '/containers/troubleshooting' },
+    ],
+    tip: 'kubectl logs --previous only ever reaches the single most recently terminated instance — once a Pod has restarted more than once, earlier crashes\' logs are already inaccessible via kubectl.',
+    gotchas: [
+      'A later crash in an ongoing CrashLoopBackOff can be a downstream symptom of the restart cycle itself, not a repeat of the original root cause.',
+      'Centralized log shipping (Fluentd, Promtail, Vector) is the only reliable way to retain a crash\'s own logs beyond what kubectl itself can reach.',
+    ],
+  },
 
   // ── Azure: per-page entries ─────────────────────────────────────────────────
   'azure/fundamentals': {

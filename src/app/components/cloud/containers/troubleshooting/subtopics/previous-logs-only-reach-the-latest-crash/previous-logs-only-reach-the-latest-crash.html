@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Troubleshooting" topicRoute="/containers/troubleshooting" subtopicLabel="kubectl logs --previous Only Reaches the Latest Crash" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">kubectl logs --previous Only Reaches the Latest Crash</h1>
+  <p class="page-subtitle">
+    The main page's own advice repeats <code>--previous</code> as the fix for CrashLoopBackOff diagnosis without a
+    limit — it only ever reaches the single most recent instance, so a 14th restart's logs bury the original cause.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from backoff-reset timing, to exit-code precision, to log retention limits.
+      Back to the Kubernetes Troubleshooting overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Troubleshooting"
+    topicRoute="/containers/troubleshooting"
+    [prev]="{ label: 'Exit Code 137 Is SIGKILL, Not Always OOMKilled — Check the reason Field', route: '/containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled' }"
+  />
+</div>

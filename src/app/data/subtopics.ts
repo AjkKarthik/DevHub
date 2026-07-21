@@ -1474,6 +1474,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak', route: '/containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak' },
     { label: 'The “Always Allow DNS” Egress Rule Has No Destination — a Real Exfiltration Path', route: '/containers/network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path' },
   ],
+  'troubleshooting': [
+    { label: 'CrashLoop Backoff Resets After 10 Minutes of Stable Running, Not Every Restart', route: '/containers/troubleshooting/crashloop-backoff-resets-after-10-min-stable-running' },
+    { label: 'Exit Code 137 Is SIGKILL, Not Always OOMKilled — Check the reason Field', route: '/containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled' },
+    { label: 'kubectl logs --previous Only Reaches the Latest Crash', route: '/containers/troubleshooting/previous-logs-only-reach-the-latest-crash' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

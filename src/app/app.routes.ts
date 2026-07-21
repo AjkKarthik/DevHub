@@ -3161,7 +3161,12 @@ export const routes: Routes = [
       { path: 'ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak', loadComponent: () => import('./components/cloud/containers/network-policies/subtopics/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak').then(m => m.IpblockMatchesRawIpsACidrOverlappingTheClusterNetworkCanLeakSubtopic) },
       { path: 'the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path', loadComponent: () => import('./components/cloud/containers/network-policies/subtopics/dns-egress-no-destination-exfil/dns-egress-no-destination-exfil').then(m => m.TheAlwaysAllowDnsEgressRuleHasNoDestinationARealExfiltrationPathSubtopic) },
     ]},
-    { path: 'troubleshooting',    loadComponent: () => import('./components/cloud/containers/troubleshooting/troubleshooting').then(m => m.K8sTroubleshooting) },
+    { path: 'troubleshooting', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/troubleshooting/troubleshooting').then(m => m.K8sTroubleshooting) },
+      { path: 'crashloop-backoff-resets-after-10-min-stable-running', loadComponent: () => import('./components/cloud/containers/troubleshooting/subtopics/crashloop-backoff-resets-after-10-min-stable-running/crashloop-backoff-resets-after-10-min-stable-running').then(m => m.CrashloopBackoffResetsAfter10MinStableRunningSubtopic) },
+      { path: 'exit-code-137-is-sigkill-not-always-oomkilled', loadComponent: () => import('./components/cloud/containers/troubleshooting/subtopics/exit-code-137-is-sigkill-not-always-oomkilled/exit-code-137-is-sigkill-not-always-oomkilled').then(m => m.ExitCode137IsSigkillNotAlwaysOomkilledSubtopic) },
+      { path: 'previous-logs-only-reach-the-latest-crash', loadComponent: () => import('./components/cloud/containers/troubleshooting/subtopics/previous-logs-only-reach-the-latest-crash/previous-logs-only-reach-the-latest-crash').then(m => m.PreviousLogsOnlyReachTheLatestCrashSubtopic) },
+    ]},
     { path: 'cheatsheet',         loadComponent: () => import('./components/cloud/containers/cheatsheet/cheatsheet').then(m => m.K8sCheatsheet) },
   ] },
   { path: 'terraform', children: [

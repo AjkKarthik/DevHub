@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Troubleshooting" topicRoute="/containers/troubleshooting" subtopicLabel="Exit Code 137 Is SIGKILL, Not Always OOMKilled — Check the reason Field" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Exit Code 137 Is SIGKILL, Not Always OOMKilled</h1>
+  <p class="page-subtitle">
+    The main page's own quiz and Challenge treat 137 as sufficient proof of an OOM kill — it only confirms SIGKILL
+    was sent; the <code>lastState.terminated.reason</code> field is what actually confirms why.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered backoff-reset timing; this one covers exit-code precision. Last: why
+      <code>--previous</code> can't always show you the crash you're actually looking for.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Troubleshooting"
+    topicRoute="/containers/troubleshooting"
+    [prev]="{ label: 'CrashLoop Backoff Resets After 10 Minutes of Stable Running, Not Every Restart', route: '/containers/troubleshooting/crashloop-backoff-resets-after-10-min-stable-running' }"
+    [next]="{ label: 'kubectl logs --previous Only Reaches the Latest Crash', route: '/containers/troubleshooting/previous-logs-only-reach-the-latest-crash' }"
+  />
+</div>

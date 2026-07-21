@@ -1790,6 +1790,9 @@ const CONTAINERS_LABELS: Record<string, string> = {
   'network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak': 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak',
   'network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path': 'The "Always Allow DNS" Egress Rule Has No Destination',
   'troubleshooting':    'Kubernetes Troubleshooting',
+  'troubleshooting/crashloop-backoff-resets-after-10-min-stable-running': 'CrashLoop Backoff Resets After 10 Minutes of Stable Running, Not Every Restart',
+  'troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled': 'Exit Code 137 Is SIGKILL, Not Always OOMKilled',
+  'troubleshooting/previous-logs-only-reach-the-latest-crash': 'kubectl logs --previous Only Reaches the Latest Crash',
   'cheatsheet':         'Containers Cheat Sheet',
 };
 
