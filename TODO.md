@@ -2121,7 +2121,50 @@ off here with a date.
   flex`, link correctly marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic,
   confirmed via body-text substring check), dark mode (`--bg: #0f172a`) all working correctly.
   **This continues the Containers/K8s hub's Phase 10 rollout — 6 of 22 topics complete.**)
-- [ ] `/containers/compose-profiles` — Compose Profiles & Overrides
+- [x] `/containers/compose-profiles` — Compose Profiles & Overrides (2026-07-21 — 3 subtopics:
+  override-tag-replaces-lists-without-workarounds, merge-key-needs-mapping-not-list-alias-syntax,
+  map-form-environment-merges-by-key-not-concatenation; all three verified against Compose's own
+  documented merge specification via WebSearch before writing — (1) confirmed the `!override` and
+  `!reset` YAML tags verbatim: "the !override tag allows you to fully replace an attribute, bypassing
+  the standard merge rules" and "!reset can be used to remove a declaration from a Compose file using
+  an override file" — replacing the main page's own vague mistake-entry fix ("remove the base entry
+  or use a fresh service name") with Compose's actual, dedicated, field-scoped mechanism for exactly
+  this case, never mentioned anywhere on the page; (2) reasoned directly from the main page's own two
+  pieces of content read against each other — its theory bullet's prose ("environment: [*common-env]")
+  describes bracket-list alias syntax, while its own working code tab uses the merge key
+  (`<<: *common-env`) against x-env, an anchor unambiguously defined as a YAML mapping — confirming via
+  Docker's own merge-specification docs that mapping-type anchors require the merge key while
+  bracket-list splicing only applies to sequence-type anchors, meaning the theory bullet's own prose
+  describes a syntax that would not produce the intended flat environment variables for x-env as
+  actually defined; (3) confirmed Docker's own documented merge-type distinction verbatim: "a YAML
+  mapping gets merged by adding missing entries and merging the conflicting ones, while a YAML
+  sequence is merged by appending" — sharpening the main page's own theory bullet, which groups
+  "lists (ports, volumes, environment)" together as uniformly "concatenated," into the precise
+  distinction that environment written as a MAPPING (exactly how both of the page's own code tab
+  examples write it) merges key-by-key with the override winning on repeated keys, a genuinely
+  different outcome from the true list-concatenation behavior the page's own "ports" mistake entry
+  correctly demonstrates. A candidate fourth angle (whether `extends:` inherits the `profiles:` field,
+  alongside the main page's own already-documented depends_on/volumes_from exclusions) was researched
+  via WebSearch and DROPPED after search results came back inconclusive rather than a confidently
+  verifiable claim — used a different, cleanly-verified angle instead. `compose-profiles`
+  collision-checked in `src/app/data/subtopics.ts` (both quoted and unquoted forms) — confirmed
+  collision-free, added as a bare key. Reused the now-fixed `ContainersNavComponent` local-accordion
+  pattern with no further structural changes needed — generalizing cleanly to a seventh topic in the
+  same hub. Gotcha sweep (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis
+  present; bare single/double brace sweep — clean; apostrophe-after-letter check across all `.ts`
+  fields — clean; backtick parity across all three `.ts` files — even counts (28/52/46); `\${`
+  interpolation-risk scan — clean, confirmed the two `\${DATABASE_URL}` mentions inside backtick code
+  fields correctly single-backslash-escaped; file-existence check — all 9 files confirmed present, no
+  MAX_PATH issues) came back clean; build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" condition (exceeded by 69.14 kB at this site's current scale, per
+  CLAUDE.md's own known-issues note) plus one pre-existing, unrelated `NG8113` unused-RouterLink
+  warning (confirmed unrelated to this batch's own changes) with zero actual TypeScript/template
+  compile errors, confirmed via a targeted grep for ERROR lines; browser-verified successfully via
+  direct DOM query — content (all three h1/breadcrumb pairs correct), breadcrumb (all 4 levels), the
+  `ContainersNavComponent` accordion (`.nav-subtopics` container `display: flex`, link correctly
+  marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic, confirmed via body-text
+  substring check), dark mode (`--bg: #0f172a`) all working correctly. **This continues the
+  Containers/K8s hub's Phase 10 rollout — 7 of 22 topics complete.**)
 - [ ] `/containers/k8s-architecture` — Kubernetes Architecture
 - [ ] `/containers/kubectl` — kubectl Fundamentals
 - [ ] `/containers/pods-deployments` — Pods, Deployments & ReplicaSets
