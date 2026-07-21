@@ -2296,7 +2296,44 @@ off here with a date.
   (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes on all
   three) all working correctly. **This continues the Containers/K8s hub's Phase 10 rollout —
   11 of 22 topics complete.**)
-- [ ] `/containers/services-ingress` — Services & Ingress
+- [x] `/containers/services-ingress` — Services & Ingress (2026-07-21 — 3 subtopics:
+  sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client,
+  externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping,
+  pathtype-prefix-matches-path-elements-not-raw-string-prefixes; all three verified against
+  official Kubernetes documentation via WebSearch before writing — (1) confirmed via
+  Kubernetes' own "Using Source IP" tutorial that NodePort/LoadBalancer Services default to
+  `externalTrafficPolicy: Cluster`, under which kube-proxy SNATs external traffic —
+  replacing the real client's source IP with the receiving node's own IP — meaning the main
+  page's own QnA description of `sessionAffinity: ClientIP` ("pins a client... based on the
+  client's IP") is only literally true once `externalTrafficPolicy: Local` is explicitly
+  set, a field the main page never mentions at all; (2) confirmed via WebSearch and
+  Kubernetes' own ExternalName documentation that an ExternalName Service has no selector,
+  no Endpoints object, and no health checking whatsoever — closing what the main page's own
+  four-word quickRef entry ("CNAME alias... no proxying") leaves unpacked — plus the general
+  DNS-client-caching risk (aggressive runtime-level caching outliving a record's own TTL)
+  that repointing `externalName` inherits since it is pure DNS resolution with no kube-proxy
+  involvement to propagate the change; (3) confirmed via Kubernetes' own Ingress
+  documentation, verbatim, that Prefix path matching is "done on a path element by element
+  basis" after splitting on "/" — meaning `pathType: Prefix, path: /api` never matches
+  `/apiv2`, contrary to how the main page's own mistake-entry phrasing (built entirely from
+  clean `/api/...` sub-path examples) could be read as a raw string-prefix test. Gotcha
+  sweep (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis present;
+  bare single/double brace sweep — clean; apostrophe-after-letter check across all `.html`
+  bound `[prev]`/`[next]` attributes — clean, typographic `’` used correctly where needed
+  (SNAT’d); backtick parity across all three `.ts` files — even counts (10/8/64); `\${`
+  interpolation-risk scan — clean, no unescaped instances; `git add -A` file-existence check
+  — all 9 files confirmed present, no MAX_PATH issues) came back clean; build reported only
+  the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (now ~101kB
+  over) plus one confirmed pre-existing, unrelated `NG8113: RouterLink is not used` warning
+  on `services-ingress.ts` itself with zero actual TypeScript/template compile errors,
+  confirmed via a targeted grep for ERROR lines; browser-verified successfully via direct
+  page-text and DOM query on all three pages — content (all three h1/breadcrumb pairs
+  correct), breadcrumb (all 4 levels), the `ContainersNavComponent` accordion (toggle button
+  present on the Services & Ingress nav link), sidebar (tailored `tip`/`gotchas`/`related`
+  per subtopic, confirmed via full page-text render, not DEFAULT fallback), dark mode
+  (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all
+  working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 12 of 22
+  topics complete.**)
 - [ ] `/containers/configmaps-secrets` — ConfigMaps & Secrets
 - [ ] `/containers/storage` — Persistent Volumes & Storage
 - [x] `/containers/operators-crds` — Kubernetes Operators & CRDs (2026-07-21 — 3 subtopics:
