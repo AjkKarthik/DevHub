@@ -2440,4 +2440,13 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Constraint Can Combine a Union and a Method', route: '/go/generics/constraint-can-combine-union-and-method' },
     { label: 'comparable Can Panic Since Go 1.20', route: '/go/generics/comparable-can-panic-since-go120' },
   ],
+  // NOTE: keyed 'aws-fundamentals', NOT bare 'fundamentals' — the JavaScript
+  // hub's own /javascript/fundamentals topic already claims the bare key.
+  // AwsNavComponent's own subtopicsOf('aws-fundamentals') /
+  // isSubtopicsExpanded / toggleSubtopics calls use this same prefixed key.
+  'aws-fundamentals': [
+    { label: 'CLI Credential Chain Order', route: '/aws/fundamentals/cli-credential-chain-order-container-before-instance-profile' },
+    { label: 'STS Role Chaining Caps Sessions at 1 Hour', route: '/aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2' },
+    { label: 'Local Zones Run Only a Subset of Services', route: '/aws/fundamentals/local-zones-run-a-subset-of-services-not-a-full-region' },
+  ],
 };

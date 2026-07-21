@@ -3223,7 +3223,12 @@ export const routes: Routes = [
   ] },
   { path: 'aws',           children: [
     { path: '', loadComponent: () => import('./components/cloud/aws/home/home').then(m => m.AwsHome) },
-    { path: 'fundamentals',        loadComponent: () => import('./components/cloud/aws/fundamentals/fundamentals').then(m => m.AwsFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/fundamentals/fundamentals').then(m => m.AwsFundamentals) },
+      { path: 'cli-credential-chain-order-container-before-instance-profile', loadComponent: () => import('./components/cloud/aws/fundamentals/subtopics/cli-credential-chain-order-container-before-instance-profile/cli-credential-chain-order-container-before-instance-profile').then(m => m.CliCredentialChainOrderContainerBeforeInstanceProfileSubtopic) },
+      { path: 'role-chaining-caps-sessions-at-1-hour-except-from-ec2', loadComponent: () => import('./components/cloud/aws/fundamentals/subtopics/role-chaining-caps-sessions-at-1-hour-except-from-ec2/role-chaining-caps-sessions-at-1-hour-except-from-ec2').then(m => m.RoleChainingCapsSessionsAt1HourExceptFromEc2Subtopic) },
+      { path: 'local-zones-run-a-subset-of-services-not-a-full-region', loadComponent: () => import('./components/cloud/aws/fundamentals/subtopics/local-zones-run-a-subset-of-services-not-a-full-region/local-zones-run-a-subset-of-services-not-a-full-region').then(m => m.LocalZonesRunASubsetOfServicesNotAFullRegionSubtopic) },
+    ] },
     { path: 'ec2',                 loadComponent: () => import('./components/cloud/aws/ec2/ec2').then(m => m.AwsEc2) },
     { path: 'ecs-eks',             loadComponent: () => import('./components/cloud/aws/ecs-eks/ecs-eks').then(m => m.AwsEcsEks) },
     { path: 'vpc',                 loadComponent: () => import('./components/cloud/aws/vpc/vpc').then(m => m.AwsVpc) },

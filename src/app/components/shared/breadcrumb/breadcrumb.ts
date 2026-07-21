@@ -1655,6 +1655,9 @@ const GO_LABELS: Record<string, string> = {
 
 const AWS_LABELS: Record<string, string> = {
   'fundamentals':       'AWS Fundamentals',
+  'fundamentals/cli-credential-chain-order-container-before-instance-profile': 'CLI Credential Chain Order',
+  'fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2': 'STS Role Chaining Caps Sessions at 1 Hour',
+  'fundamentals/local-zones-run-a-subset-of-services-not-a-full-region': 'Local Zones Run Only a Subset of Services',
   'ec2':                'EC2 & Auto Scaling',
   'ecs-eks':            'ECS & EKS',
   'vpc':                'VPC & Networking',

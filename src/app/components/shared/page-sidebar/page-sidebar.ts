@@ -37656,6 +37656,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The Well-Architected Framework\'s five pillars (operational excellence, security, reliability, performance, cost) provide a structured way to review an architecture, not just a checklist to skim.',
     ],
   },
+  'aws/fundamentals/cli-credential-chain-order-container-before-instance-profile': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'AWS Fundamentals overview', route: '/aws/fundamentals' },
+      { label: 'STS Role Chaining Caps Sessions at 1 Hour', route: '/aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2' },
+    ],
+    tip: 'The full CLI/SDK credential provider chain, in order: command-line options → env vars → credentials file → config file → container credentials (ECS task role) → EC2 instance profile — the search stops at the first source that resolves.',
+    gotchas: [
+      'Container (ECS task role) credentials are checked BEFORE the EC2 instance profile — the reverse of a common assumption.',
+      'The credentials file (~/.aws/credentials) and config file (~/.aws/config) are two distinct, separately-ordered steps, not one combined step.',
+    ],
+  },
+  'aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'CLI Credential Chain Order', route: '/aws/fundamentals/cli-credential-chain-order-container-before-instance-profile' },
+      { label: 'Local Zones Run Only a Subset of Services', route: '/aws/fundamentals/local-zones-run-a-subset-of-services-not-a-full-region' },
+    ],
+    tip: 'Using an already-assumed role\'s temporary credentials to call assume-role again ("role chaining") caps the new session at exactly 1 hour, regardless of the target role\'s own MaxSessionDuration or the --duration-seconds requested.',
+    gotchas: [
+      'No flag or role configuration raises the 1-hour chained-session cap — the only fix is to assume the target role directly from long-lived credentials instead.',
+      'Assuming a role directly from an EC2 instance profile\'s own credentials is exempt from the chaining cap, per AWS\'s own documentation.',
+    ],
+  },
+  'aws/fundamentals/local-zones-run-a-subset-of-services-not-a-full-region': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'STS Role Chaining Caps Sessions at 1 Hour', route: '/aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2' },
+      { label: 'AWS Fundamentals overview', route: '/aws/fundamentals' },
+    ],
+    tip: 'A Local Zone runs only a curated subset of services locally (typically EC2, EBS, some ELB, VPC) — everything else an application needs reaches the parent Region transparently over AWS\'s own private backbone network.',
+    gotchas: [
+      'Local Zones are opt-in per account/region — describe-availability-zones shows them as "not-opted-in" until modify-availability-zone-group is called explicitly.',
+      'Lambda, DynamoDB, and standard S3 buckets are typically not available directly inside a Local Zone, despite being fully reachable from an instance running there.',
+    ],
+  },
   'aws/iam': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

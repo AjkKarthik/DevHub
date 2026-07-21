@@ -67,7 +67,7 @@ export class AwsFundamentals {
       points: [
         'aws configure stores credentials in ~/.aws/credentials and region in ~/.aws/config.',
         'Named profiles: aws configure --profile prod lets you switch with --profile flag or AWS_PROFILE env var.',
-        'The CLI reads credentials in order: env vars → ~/.aws/credentials → instance profile → ECS task role.',
+        'The CLI reads credentials in order: env vars → ~/.aws/credentials → ~/.aws/config → ECS task role (container credentials) → EC2 instance profile — container credentials are checked before the EC2 instance profile, not after.',
         'SDKs (Boto3, AWS SDK for JS/Java/.NET) follow the same credential chain — no hardcoding keys in code.',
         'aws sts get-caller-identity returns your current Account ID, UserId, and ARN — essential for debugging auth.',
       ]
