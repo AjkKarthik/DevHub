@@ -2828,7 +2828,50 @@ off here with a date.
 
 #### AWS — 21 topic pages
 
-- [ ] `/aws/fundamentals` — AWS Fundamentals
+- [x] `/aws/fundamentals` — AWS Fundamentals (2026-07-21 — **AWS hub Phase 10 pilot batch.** 3
+  subtopics: cli-credential-chain-order-container-before-instance-profile,
+  role-chaining-caps-sessions-at-1-hour-except-from-ec2,
+  local-zones-run-a-subset-of-services-not-a-full-region. Pre-batch investigation confirmed AWS
+  hub conventions: theme `$accent: #ff9900`/`$tint: #fff7ed`, `.aws-page`/`.aws-icon`/
+  `.aws-section` (wrapper NOT global — every subtopic `.scss` needs the full `.aws-page {
+  max-width: 860px; margin: 0 auto; }` rule), `aws-` progress/search prefix, `SIDEBAR_MAP` keys
+  full-path-prefixed (`aws/fundamentals/<slug>`), `AWS_LABELS` breadcrumb map bare keys, no live
+  playground (non-browser-runtime hub, `<app-code-block>` pattern). **Structural fix**:
+  `AwsNavComponent` had zero subtopics-accordion support at pilot time — the 4th
+  `*NavComponent`-based hub in a row (after Go, DevOps, Containers) needing the identical fix
+  from scratch (imports, `expandedTopics` signal, `subtopicsOf`/`isSubtopicsExpanded`/
+  `toggleSubtopics` methods, router-subscription auto-expand constructor). **Real SUBTOPICS map
+  collision**: bare `fundamentals` already claimed by the JavaScript hub's own
+  `/javascript/fundamentals` — hub-prefixed to `aws-fundamentals`, matching the hub's own
+  established `aws-` progress/search prefix; `AwsNavComponent`'s three accordion helper calls use
+  the same prefixed key. **Genuine main-page fix**: `fundamentals.ts`'s own "AWS CLI & SDK" theory
+  bullet had the credential-provider-chain order wrong — it listed the EC2 instance profile
+  before the ECS task role; corrected via AWS's own documented standardized credential provider
+  chain (env vars → credentials file → config file → container credentials → EC2 instance
+  profile) to state container credentials are checked BEFORE the instance profile, not after.
+  Content angles: (1) the corrected credential-chain order itself, expanded with the config-file
+  step the main page never mentioned and a worked example proving ECS task role wins over a
+  same-node EC2 instance profile; (2) STS role chaining caps a session at exactly 1 hour
+  regardless of the target role's own MaxSessionDuration, with the one documented exception
+  (assuming directly from an EC2 instance profile is exempt) — a real, common cross-account
+  pipeline gotcha the main page's brief `assume-role` mention never covers; (3) AWS Local Zones
+  and Wavelength Zones run only a curated subset of services locally (typically EC2/EBS/some
+  ELB/VPC — not Lambda/DynamoDB/standard S3), while still reaching every other AWS service in
+  the parent Region transparently over AWS's own private backbone — filling a real gap in the
+  main page's own "Global Infrastructure" section, which only ever describes the standard
+  Region/AZ pair. Gotcha sweep (bare `@word` in `.html` — none found; bare single/double brace
+  sweep — clean; apostrophe-after-letter check across `[prev]`/`[next]` bound attributes — clean,
+  none of the three subtopic titles needed one; backtick parity across all three `.ts` files —
+  even counts, 14/8/24; targeted `\''` stray-quote scan — clean) came back clean. Build reported
+  only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with zero
+  actual TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename too
+  long" errors (longest new path ~178 relative chars, ~219 absolute — safe margin). Browser-
+  verified successfully on all three pages via direct DOM/page-text checks — h1/breadcrumb pairs
+  correct (all 4 levels), the `AwsNavComponent` accordion auto-expanded with all 3 subtopic links
+  on direct navigation, sidebar showing tailored `tip`/`gotchas`/`related` (not DEFAULT) per
+  subtopic, dark mode (`--bg: #0f172a`) applying correctly. **This is the AWS hub's first Phase
+  10 batch — establishes the pilot conventions (AwsNavComponent fix, `aws-fundamentals` collision
+  resolution) the remaining 20 AWS topics will reuse.**)
 - [ ] `/aws/ec2` — EC2 & Auto Scaling
 - [ ] `/aws/ecs-eks` — ECS & EKS
 - [ ] `/aws/vpc` — VPC & Networking

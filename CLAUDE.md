@@ -1560,6 +1560,50 @@ do this same check before any other new hub's first subtopic set:
    `tech="javascript"` in `app-page-meta` (Containers pages share the JS/TS playground and
    run-it links, same as CSS/HTML/Node.js/Python/Go/DevOps).
 
+### AWS hub subtopic wiring — first pilot; the 4th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/aws/fundamentals`, 2026-07-21) — do this
+same check before any other new hub's first subtopic set:
+
+1. **`AwsNavComponent` (`shared/aws-nav/aws-nav.ts`) had ZERO subtopics-accordion support** —
+   same structural gap already hit and fixed on `GoNavComponent`, `DevopsNavComponent`, and
+   `ContainersNavComponent` before their own pilots. Fixed identically: added `signal`, `Router`,
+   `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from `../../../data/subtopics`) to the
+   imports, then the same three methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`)
+   and constructor-level router subscription, byte-for-byte the same pattern as the other three.
+   **This is now the FOURTH `*NavComponent`-based hub in a row missing this wiring at pilot
+   time — never assume any `*NavComponent` hub has it; confirm per hub, every time.**
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `aws-fundamentals` —
+   matching this hub's own established progress/search key prefix (`aws-`) — with the usual
+   `// NOTE:` comment. All three `AwsNavComponent` accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'aws-fundamentals'`
+   key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'aws/fundamentals'`, confirmed the base
+   entry — and its own `AWS_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'aws/fundamentals/<slug>'`.
+4. **`AWS_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+5. **No live playground** — AWS CLI/SDK/IAM content has no in-browser runtime, following the
+   same `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/Blazor/Go/
+   DevOps/Node.js/Containers) — every code tab across all three subtopics uses plain bash/AWS CLI
+   command transcripts, matching the main page's own `codeTabs` style exactly.
+6. Theme: `.aws-page`/`.aws-icon`/`.aws-section` CSS classes, confirmed NOT global (absent from
+   `src/styles.scss`) — every subtopic `.scss` needs the full `.aws-page { max-width: 860px;
+   margin: 0 auto; }` wrapper rule. `$accent: #ff9900`, `$tint: #fff7ed`, icon content `AWS`,
+   `tech="javascript"` in `app-page-meta` (AWS pages share the JS/TS playground and run-it links,
+   same as CSS/HTML/Node.js/Python/Go/DevOps/Containers).
+7. **A genuine main-page inaccuracy found and fixed during pilot authoring**: `fundamentals.ts`'s
+   own "AWS CLI & SDK" theory bullet listed the CLI/SDK credential provider chain as "env vars →
+   ~/.aws/credentials → instance profile → ECS task role" — the last two links reversed relative
+   to AWS's own documented standardized credential provider chain, which checks container
+   credentials (ECS task role) BEFORE the EC2 instance profile, not after. Corrected via the same
+   "verify against official docs, fix the main page directly" precedent already established
+   across the Containers/K8s hub (3 similar fixes) and other hubs before it.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -1655,6 +1699,16 @@ do this same check before any other new hub's first subtopic set:
   All 22 cards `available: true` in `cloud/devops/home/home.ts`. Progress: `devopsTotal=21` in progress.service.ts.
   DevOps pages use `app-common-mistakes` AND `app-revision-card`. Reference page (cheatsheet) has no PageComplete.
   Challenge.language: `'typescript'` or `'bash'`.
+- **AWS hub**: 21 trackable topic pages + 1 cheatsheet reference (22 cards total). Feature-complete.
+  Orange theme `$accent: #ff9900`, `$tint: #fff7ed`, dark `#fb923c`. Search prefix `aws-`. Route: `/aws`.
+  CSS classes: `.aws-page`, `.aws-icon`, `.aws-section`. Icon content: `AWS`. `tech="javascript"`.
+  Nav groups: Foundations, Compute, Networking, Storage, IAM, Databases, Serverless, Operations, Reference.
+  All 22 cards `available: true` in `cloud/aws/home/home.ts`. Progress: `awsTotal=21` in progress.service.ts.
+  AWS pages use `app-common-mistakes` AND `app-revision-card`. Reference page (cheatsheet) has no PageComplete.
+  Challenge.language: `'typescript'`. AwsNavComponent at `shared/aws-nav/aws-nav.ts`.
+  Phase 10: 1 of 21 topics have subtopics (`/aws/fundamentals`, pilot batch, 2026-07-21) — see
+  "AWS hub subtopic wiring" section above for the `AwsNavComponent` accordion structural fix and
+  the `aws-fundamentals` SUBTOPICS-map collision resolution.
 - **Azure hub**: 22 trackable topic pages + 1 cheatsheet reference (23 cards total). Feature-complete.
   Blue theme `$accent: #0089d6`, tint `#e8f4fd`, dark `#60b9f8`. Search prefix `azure-`. Route: `/azure`.
   CSS classes: `.azure-page`, `.azure-icon`, `.azure-section`. Icon content: `Az`. `tech="javascript"`.
