@@ -3266,7 +3266,49 @@ off here with a date.
   — confirmed only Lambda's own toggle open, all eleven others closed), dark mode
   (`--bg: #0f172a`) applying correctly, and the corrected SnapStart quickRef text confirmed
   live on the main page via `document.body.innerHTML` check.)
-- [ ] `/aws/api-gateway` — API Gateway
+- [x] `/aws/api-gateway` — API Gateway (2026-07-21 — 3 subtopics:
+  authorizer-cache-applies-to-every-resource-not-just-one,
+  resource-policy-has-two-evaluation-phases-not-one,
+  websocket-disconnect-is-best-effort-not-guaranteed; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own Lambda-authorizer docs
+  (apigateway-use-lambda-authorizer.html) that a cached authoriser policy is reused for ANY
+  request matching the cache key regardless of resource/method — "Ensure that your policy is
+  applicable to all resources and methods across your API" — and that AWS's own current
+  recommendation is a REQUEST authoriser (multi-source cache key, auto-401 on a missing identity
+  source) over the TOKEN type the main page's own examples exclusively use — closing a gap where
+  the main page's own caching mistake entry frames caching purely as "one token → one cached
+  policy for 5 minutes" with no mention of cross-route reuse risk; (2) confirmed via AWS's own
+  resource-policy authorization-flow doc (apigateway-authorization-flow.html) that resource
+  policy evaluation happens in TWO phases — a deny-only pre-auth gate, then a full combined
+  evaluation against the authoriser's own output per a documented outcome table (Table A: same
+  account, Table B: cross-account, stricter) — closing a gap where the main page's own single
+  "evaluated before authoriser" line reads as one pass and never states that an explicit Allow
+  does NOT bypass the authoriser, only an explicit Deny does; (3) confirmed via AWS's own
+  WebSocket $connect/$disconnect doc (apigateway-websocket-api-route-keys-connect-disconnect.html)
+  that "$disconnect is a best-effort event... [API Gateway] cannot guarantee delivery," contrasted
+  with $connect's blocking-gate behavior, and cross-referenced against AWS's own documented
+  WebSocket close status code 1006 ("unexpected closure... without a WebSocket close frame") —
+  closing a genuine content gap where the main page's own WebSocket coverage is a single quickRef
+  line that never mentions $connect/$disconnect at all. Two candidate angles were researched and
+  DROPPED per this project's own verify-before-publishing discipline: a claimed REST-vs-HTTP-API
+  integration-timeout discrepancy (29s vs 30s) could not be confirmed via two targeted WebFetch
+  attempts against the AWS quotas page, which never surfaced the specific row; and a claimed
+  edge-optimized-API WAF-attachment limitation could not be confirmed via the AWS WAF integration
+  doc, which only documented regional web ACL association without addressing edge-optimized
+  specifically — both dropped rather than published as unverified. Gotcha sweep covered `.html`
+  bound attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean across all
+  three files), bare `@word`/`{` in `.html` prose (none present), literal `$connect`/`$disconnect`
+  text in `.html` bare text nodes and attributes (confirmed safe — `$` has no special meaning to
+  Angular's template compiler, unlike `@word` or `{...}`), and backtick parity (6/4/4 — the
+  authorizer-cache file's 6 includes safe inline-code backtick mentions inside its own
+  single-quoted theory `points` field). Build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR with zero actual TypeScript/template compile errors.
+  `git add -A` staged cleanly with no "Filename too long" errors (longest new path 167 relative
+  chars). Browser-verified successfully on all three pages — h1/breadcrumb pairs correct (all 4
+  levels, including the literal `$disconnect` text rendering correctly in both the h1 and
+  breadcrumb), the `AwsNavComponent` accordion (now the THIRTEENTH topic in this hub with
+  subtopics — confirmed only API Gateway's own toggle open, all twelve others closed), dark mode
+  (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/cloudwatch` — CloudWatch & X-Ray
 - [ ] `/aws/cloudformation-cdk` — CloudFormation & CDK
 - [ ] `/aws/security` — AWS Security Services
