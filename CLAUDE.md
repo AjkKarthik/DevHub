@@ -478,6 +478,26 @@ to the topic page, not its subtopics.
   check which binding a shared component actually uses (grep its own `.ts` template) rather than
   assuming based on a sibling field in the same data shape.
 
+- **A backtick-wrapped inline-code span containing an escaped shell single-quote, inside a
+  single-quoted TS field, is a real string-termination trap distinct from the plain
+  apostrophe-in-prose gotcha.** Confirmed via a real, self-caught bug during authoring
+  (`/containers/storage`'s Released-PV subtopic, 2026-07-21): a `solution:` field (itself
+  single-quoted, `'...'`) contained an inline code span meant to render `` `kubectl patch pv
+  <name> -p '{"spec":{"claimRef":null}}'` `` — the trailing `\'` (the escaped closing shell
+  quote, correctly escaped per the standard apostrophe rule) was immediately followed by ONE
+  MORE stray, unescaped `'` left over from drafting — that extra unescaped quote closed the
+  outer TS string right there, turning the rest of the sentence (`, which flips the PV's
+  status...`) into loose, invalid syntax outside any string at all. This is mechanically the
+  SAME root cause as every other delimiter-collision gotcha in this file (a delimiter
+  character appearing literally where it isn't expected), but the fix here was not
+  re-escaping — the extra character was a genuine typo, not a missing escape — caught only
+  by a direct file re-read, not by the standard "grep for a bare `'` after a letter" sweep
+  (the character before it was itself a `'`, not a letter). **Any subtopic field mixing
+  inline code (backticks) with a quoted shell command inside it is worth a manual re-read of
+  that specific line before building**, since the standard automated sweeps are tuned for
+  apostrophes-after-letters and don't reliably catch a doubled/stray quote character next to
+  another quote.
+
 - **Literal `@word` text (anywhere — `<h1>`, `<p>`, `<code>`, etc.) in the `.html` template**
   must be escaped as `&#64;word` — writing a literal `@if`/`@defer`/`@placeholder`/etc. as TEXT
   CONTENT between tags is parsed by the Angular compiler as the start of a control-flow/defer
@@ -1698,12 +1718,12 @@ do this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/containers/home/home.ts`. Progress: `k8sTotal=22` in progress.service.ts.
   Containers pages use `app-common-mistakes` AND `app-revision-card`. Reference page has no PageComplete.
   Challenge.language: `'typescript'`. ContainersNavComponent at `shared/containers-nav/containers-nav.ts`.
-  Phase 10: 13 of 22 topics have subtopics (`/containers/fundamentals`, `/containers/docker-cli`,
+  Phase 10: 14 of 22 topics have subtopics (`/containers/fundamentals`, `/containers/docker-cli`,
   `/containers/docker-images`, `/containers/dockerfile`, `/containers/multi-stage`,
   `/containers/compose`, `/containers/compose-profiles`, `/containers/k8s-architecture`,
   `/containers/kubectl`, `/containers/operators-crds`, `/containers/pods-deployments`,
-  `/containers/services-ingress`, `/containers/configmaps-secrets`, 2026-07-21) — see
-  "Containers/K8s hub
+  `/containers/services-ingress`, `/containers/configmaps-secrets`, `/containers/storage`,
+  2026-07-21) — see "Containers/K8s hub
   subtopic wiring" section above for the `ContainersNavComponent` accordion structural fix and
   the `k8s-fundamentals` SUBTOPICS-map collision resolution. Note: `search.ts`'s `url()` needed
   a special case for `k8s-architecture` specifically — its own bare topic slug happens to start

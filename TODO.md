@@ -2370,7 +2370,54 @@ off here with a date.
   (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all
   working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 13 of 22
   topics complete.**)
-- [ ] `/containers/storage` — Persistent Volumes & Storage
+- [x] `/containers/storage` — Persistent Volumes & Storage (2026-07-21 — 3 subtopics:
+  released-pv-never-auto-rebinds-claimref-must-be-cleared-manually,
+  a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending,
+  rwop-closes-the-gap-rwo-leaves-same-node-pods-can-still-double-write; all three verified
+  against official Kubernetes documentation via WebSearch before writing — (1) confirmed via
+  WebSearch and Kubernetes' own PV documentation that a Released PV retains a claimRef
+  pointing at the deleted PVC's UID, and that Kubernetes checks this field BEFORE any
+  size/access-mode/storageClass matching, requiring an explicit `kubectl patch pv -p
+  '{"spec":{"claimRef":null}}'` before a new PVC can bind — closing what the main page's own
+  "Admin must manually reclaim/delete" theory language names but never mechanically explains;
+  (2) confirmed via a real, tracked Kubernetes issue (kubernetes/kubernetes#121436) and
+  multiple independent sources that WaitForFirstConsumer only solves zone-matching at the
+  FIRST provisioning moment — a StatefulSet Pod rescheduled to a different zone after a
+  node/zone failure gets permanently stuck Pending, since its zonal PV cannot follow it,
+  requiring the documented PVC-then-Pod deletion sequence to recover (with data loss unless
+  restored from backup) — a real gap in the main page's own mistake-entry framing of
+  WaitForFirstConsumer as a complete, one-time fix; (3) confirmed via the official Kubernetes
+  ReadWriteOncePod KEP that RWO is genuinely node-level (not pod-level, confirmed
+  independently by the main page's own closing QnA), and that RWOP (GA in 1.29) was
+  introduced specifically to close the same-node double-mount gap this leaves — connecting
+  two facts the main page states separately (the RWOP theory bullet and the RWO QnA note)
+  but never links together to explain WHY RWOP exists. **Self-caught and fixed a genuine
+  TypeScript string-termination bug during authoring**: a stray extra `'` immediately after
+  an escaped `\'` in the first subtopic's own `solution` field (a backtick-wrapped inline
+  kubectl command mixing escaped shell single-quotes with the field's own outer single-quote
+  delimiter) prematurely closed the TS string — caught by a direct re-read of the written
+  file before the build, not by the build itself; fixed by removing the risky inline-command
+  syntax and rephrasing in plain prose instead. Gotcha sweep (bare `@` — none found; heading
+  fields — no HTML tags or backtick-emphasis present; bare single/double brace sweep —
+  clean; apostrophe-after-letter check across all `.html` bound `[prev]`/`[next]`
+  attributes — clean; backtick parity across all three `.ts` files — even counts (10/4/4);
+  a targeted re-check for the exact escaped-quote-then-unescaped-quote bug pattern
+  (`\''`) — clean, zero remaining instances; `\${` interpolation-risk scan — clean, no
+  unescaped instances; `git add -A` file-existence check — all 9 files confirmed present, no
+  MAX_PATH issues) came back clean; build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR (now ~114kB over) plus one confirmed pre-existing,
+  unrelated `NG8113: RouterLink is not used` warning on `storage.ts` itself with zero actual
+  TypeScript/template compile errors, confirmed via a targeted grep for ERROR lines —
+  notably, the chunk-generation log for all three new subtopic files compiling successfully
+  after the fix was direct confirmation the earlier syntax bug had been fully resolved, not
+  just assumed fixed; browser-verified successfully via direct page-text and DOM query on
+  all three pages — content (all three h1/breadcrumb pairs correct, including the fixed
+  first subtopic rendering its kubectl patch command cleanly), breadcrumb (all 4 levels),
+  the `ContainersNavComponent` accordion (toggle button present on the Persistent Volumes &
+  Storage nav link), sidebar (tailored `tip`/`gotchas`/`related` per subtopic), dark mode
+  (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all
+  working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 14 of 22
+  topics complete.**)
 - [x] `/containers/operators-crds` — Kubernetes Operators & CRDs (2026-07-21 — 3 subtopics:
   update-then-status-update-risks-a-stale-resourceversion-conflict,
   crd-and-cr-in-the-same-apply-race-the-established-condition,
