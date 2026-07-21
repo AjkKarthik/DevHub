@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cost Optimization" topicRoute="/aws/cost-optimization" subtopicLabel="Regional RI Size Flexibility" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Regional RI Size Flexibility Uses a Normalization Factor</h1>
+  <p class="page-subtitle">The main page describes RIs as locked to "a specific instance type" — that's only true for Zonal RIs. Regional RIs flex across sizes automatically.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="EC2 RI" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own flat "specific instance type" RI description into the real Regional-vs-Zonal distinction. Next, the Savings Plans subtopic explains the flip side: why Savings Plans have no equivalent exit path at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cost Optimization" topicRoute="/aws/cost-optimization"
+    [prev]="{ label: 'Spot Rebalance vs. 2-Minute Notice', route: '/aws/cost-optimization/spot-rebalance-recommendations-arrive-before-the-2-minute-notice' }"
+    [next]="{ label: 'Savings Plans Have No Cancellation or Resale Exit', route: '/aws/cost-optimization/savings-plans-have-no-cancellation-or-resale-exit' }" />
+</div>

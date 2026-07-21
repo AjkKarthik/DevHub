@@ -1735,6 +1735,9 @@ const AWS_LABELS: Record<string, string> = {
   'load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks': 'NLB UDP/QUIC Health Checks',
   'load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding': 'ALB Reserved Cookie Names',
   'cost-optimization':  'AWS Cost Optimization',
+  'cost-optimization/spot-rebalance-recommendations-arrive-before-the-2-minute-notice': 'Spot Rebalance vs. 2-Minute Notice',
+  'cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor': 'Regional RI Size Flexibility',
+  'cost-optimization/savings-plans-have-no-cancellation-or-resale-exit': 'Savings Plans Have No Exit',
   'cheatsheet':         'AWS Cheat Sheet',
 };
 

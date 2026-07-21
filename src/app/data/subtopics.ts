@@ -2545,4 +2545,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'NLB UDP/QUIC Health Checks', route: '/aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks' },
     { label: 'ALB Reserved Cookie Names', route: '/aws/load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding' },
   ],
+  'cost-optimization': [
+    { label: 'Spot Rebalance vs. 2-Minute Notice', route: '/aws/cost-optimization/spot-rebalance-recommendations-arrive-before-the-2-minute-notice' },
+    { label: 'Regional RI Size Flexibility', route: '/aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor' },
+    { label: 'Savings Plans Have No Exit', route: '/aws/cost-optimization/savings-plans-have-no-cancellation-or-resale-exit' },
+  ],
 };

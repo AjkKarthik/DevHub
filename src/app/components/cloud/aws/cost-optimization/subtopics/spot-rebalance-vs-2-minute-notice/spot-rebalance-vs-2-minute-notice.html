@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cost Optimization" topicRoute="/aws/cost-optimization" subtopicLabel="Spot Rebalance vs. 2-Minute Notice" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Spot Rebalance Recommendations Arrive Before the 2-Minute Notice</h1>
+  <p class="page-subtitle">The main page treats "2-minute warning" as the only Spot interruption signal — AWS actually documents a separate, earlier one, with its own caveat.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="EC2 Spot" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own flat "2-minute warning" framing into the two distinct, differently-timed AWS signals. Next, the Reserved Instance subtopic expands the main page's own brief "specific instance type+size" description into how size flexibility actually works.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cost Optimization" topicRoute="/aws/cost-optimization"
+    [next]="{ label: 'Regional RI Size Flexibility & Normalization', route: '/aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor' }" />
+</div>

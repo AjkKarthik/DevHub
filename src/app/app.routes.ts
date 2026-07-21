@@ -3343,7 +3343,12 @@ export const routes: Routes = [
       { path: 'nlb-udp-quic-targets-use-non-udp-health-checks', loadComponent: () => import('./components/cloud/aws/load-balancing/subtopics/nlb-udp-quic-targets-use-non-udp-health-checks/nlb-udp-quic-targets-use-non-udp-health-checks').then(m => m.NlbUdpQuicTargetsUseNonUdpHealthChecksSubtopic) },
       { path: 'alb-reserved-cookie-names-and-4k-cookie-sharding', loadComponent: () => import('./components/cloud/aws/load-balancing/subtopics/alb-reserved-cookie-names-and-4k-cookie-sharding/alb-reserved-cookie-names-and-4k-cookie-sharding').then(m => m.AlbReservedCookieNamesAnd4kCookieShardingSubtopic) },
     ] },
-    { path: 'cost-optimization',   loadComponent: () => import('./components/cloud/aws/cost-optimization/cost-optimization').then(m => m.AwsCostOptimization) },
+    { path: 'cost-optimization', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/cost-optimization/cost-optimization').then(m => m.AwsCostOptimization) },
+      { path: 'spot-rebalance-recommendations-arrive-before-the-2-minute-notice', loadComponent: () => import('./components/cloud/aws/cost-optimization/subtopics/spot-rebalance-vs-2-minute-notice/spot-rebalance-vs-2-minute-notice').then(m => m.SpotRebalanceVs2MinuteNoticeSubtopic) },
+      { path: 'regional-ri-size-flexibility-uses-a-normalization-factor', loadComponent: () => import('./components/cloud/aws/cost-optimization/subtopics/regional-ri-size-flexibility-uses-a-normalization-factor/regional-ri-size-flexibility-uses-a-normalization-factor').then(m => m.RegionalRiSizeFlexibilityUsesANormalizationFactorSubtopic) },
+      { path: 'savings-plans-have-no-cancellation-or-resale-exit', loadComponent: () => import('./components/cloud/aws/cost-optimization/subtopics/savings-plans-have-no-cancellation-or-resale-exit/savings-plans-have-no-cancellation-or-resale-exit').then(m => m.SavingsPlansHaveNoCancellationOrResaleExitSubtopic) },
+    ] },
     { path: 'cheatsheet',          loadComponent: () => import('./components/cloud/aws/cheatsheet/cheatsheet').then(m => m.AwsCheatsheet) },
   ] },
   { path: 'service-mesh',  children: [

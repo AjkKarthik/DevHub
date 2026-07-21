@@ -448,7 +448,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/aws/cost-optimization" routerLinkActive="active"><span class="nl-text">Cost Optimization</span>@if(p.isDone('aws-cost-optimization')){<span class="nl-done">✓</span>}@if(d('aws-cost-optimization');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/cost-optimization" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Cost Optimization</span>
+        @if (p.isDone('aws-cost-optimization')) {<span class="nl-done">✓</span>}
+        @if (d('aws-cost-optimization'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('cost-optimization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cost-optimization')"
+                  (click)="toggleSubtopics('cost-optimization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cost-optimization'); as coSubs) {
+        @if (isSubtopicsExpanded('cost-optimization')) {
+          <div class="nav-subtopics">
+            @for (s of coSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

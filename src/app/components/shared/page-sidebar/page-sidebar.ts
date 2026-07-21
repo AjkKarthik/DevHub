@@ -38513,6 +38513,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Orphaned resources (unattached EBS volumes, idle load balancers) are a common, easy-to-overlook source of ongoing unnecessary cost that periodic review catches.',
     ],
   },
+  'aws/cost-optimization/spot-rebalance-recommendations-arrive-before-the-2-minute-notice': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Cost Optimization overview', route: '/aws/cost-optimization' },
+      { label: 'Regional RI Size Flexibility', route: '/aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor' },
+    ],
+    tip: 'The rebalance recommendation is a separate, earlier "elevated risk" signal from the 2-minute interruption notice — but AWS documents it can arrive together with the 2-minute notice, not always ahead of it.',
+    gotchas: [
+      'Rebalance recommendations are only supported for Spot Instances launched after November 5, 2020.',
+      'Both signals are emitted "on a best effort basis" — an application still needs to tolerate an interruption with zero warning at all.',
+    ],
+  },
+  'aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Spot Rebalance vs. 2-Minute Notice', route: '/aws/cost-optimization/spot-rebalance-recommendations-arrive-before-the-2-minute-notice' },
+      { label: 'Savings Plans Have No Exit', route: '/aws/cost-optimization/savings-plans-have-no-cancellation-or-resale-exit' },
+    ],
+    tip: 'Instance size flexibility only applies to Regional RIs, never Zonal — it uses a normalization factor table (small=1, medium=2, large=4, xlarge=8...) that can apply full OR partial benefit depending on whether the units divide evenly.',
+    gotchas: [
+      'Instance size flexibility is excluded for several GPU/HPC families, several Windows/RHEL/SUSE OS variants, and any RI with dedicated tenancy — even when purchased regionally.',
+      'A mismatched normalization factor (e.g. a large RI against a running xlarge instance) applies only partial benefit — the remainder bills at the On-Demand rate.',
+    ],
+  },
+  'aws/cost-optimization/savings-plans-have-no-cancellation-or-resale-exit': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Regional RI Size Flexibility', route: '/aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor' },
+      { label: 'Cost Optimization overview', route: '/aws/cost-optimization' },
+    ],
+    tip: 'Savings Plans can\'t be cancelled during the term, and — unlike Standard RIs — have no equivalent resale marketplace at all; the RI Marketplace is scoped only to Standard regional/zonal RIs.',
+    gotchas: [
+      '`delete-queued-savings-plan` only removes a plan that hasn\'t started yet (a future-dated purchase) — it cannot exit an already-active commitment.',
+      'The only real mitigation for over-commitment is growing other eligible usage to consume more of the existing commitment, not adjusting or exiting it.',
+    ],
+  },
   'aws/security': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
