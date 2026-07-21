@@ -2028,7 +2028,53 @@ off here with a date.
   `related` per subtopic, confirmed via body-text substring check), dark mode (`--bg: #0f172a`) all
   working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 4 of 22 topics
   complete.**)
-- [ ] `/containers/multi-stage` — Multi-Stage Builds
+- [x] `/containers/multi-stage` — Multi-Stage Builds (2026-07-21 — 3 subtopics:
+  test-stage-is-sequential-with-builder-parallel-with-runtime, npm-prune-production-flag-is-deprecated,
+  external-image-copy-still-pulls-the-whole-image; the first reasoned entirely from BuildKit's own DAG
+  scheduling principle (already verified for the sibling Dockerfile topic) applied to the main page's
+  own Go code tab, the second and third verified against current npm and Docker documentation via
+  WebSearch — **two real, confirmed inaccuracies were found and FIXED on the main page itself before
+  writing subtopics**, per the established precedent of correcting genuine errors caught during
+  subtopic authoring: (1) the Go code tab's own comment ("# --- Stage 2: test (runs in parallel with
+  builder) ---") and the "Not running tests in a stage" mistake entry's explanation ("BuildKit runs it
+  in parallel with other stages") both claimed the test stage runs concurrently with builder — but
+  `FROM builder AS test` creates a real, direct dependency per BuildKit's own DAG model (a stage
+  inherits its FROM ancestor's entire completed filesystem, so it cannot start until that ancestor
+  finishes) — corrected both to accurately describe test running AFTER builder but in parallel with
+  runtime (both independent siblings under builder, confirmed consistent with the main page's own
+  separate, already-correct QnA entry); (2) a BuildKit theory bullet read "RUN --mount=type=secret,
+  id=npm_token,target=/root/.npmrc pip install" — a copy-paste error mixing npm's .npmrc secret file
+  with an unrelated Python pip install command — corrected to "npm ci" to match the .npmrc/npm_token
+  context. With those two fixes in place, wrote three subtopics: (1) explaining the now-corrected
+  dependency graph (test depends on builder, test and runtime are the actual parallel pair) in detail;
+  (2) confirmed npm's own documented deprecation verbatim — "The --production flag is deprecated in
+  favor of --omit=dev... shows the following warning: npm WARN config production Use '--omit=dev'
+  instead" — flagging that the main page's own `npm prune --production` (code tab AND mistake-entry
+  fix) triggers this warning on every build, and that the sibling Dockerfile topic's own `npm ci
+  --only=production` carries the identical deprecation; (3) confirmed Docker's own documented external-
+  image COPY behavior verbatim — "the entire image is being pulled... even if you only need a specific
+  file or directory" — sharpening the main page's own QnA framing ("useful for copying tools... without
+  defining a dedicated FROM stage") into the precise reality that the network/storage cost is identical
+  to a named stage on a cache miss, with the only real difference being Dockerfile line count and
+  explicit naming. `multi-stage` collision-checked in `src/app/data/subtopics.ts` (both quoted and
+  unquoted forms) — confirmed collision-free, added as a bare key. Reused the now-fixed
+  `ContainersNavComponent` local-accordion pattern with no further structural changes needed —
+  generalizing cleanly to a fifth topic in the same hub. Gotcha sweep (bare `@` — none found; heading
+  fields — no HTML tags or backtick-emphasis present; bare single/double brace sweep — clean;
+  apostrophe-after-letter check across all `.ts` fields — clean; backtick parity across all three `.ts`
+  files — even counts (46/46/12); `\${` interpolation-risk scan — clean, no unescaped instances;
+  file-existence check — all 9 files confirmed present, no MAX_PATH issues) came back clean; build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" condition
+  (exceeded by 56.98 kB at this site's current scale, per CLAUDE.md's own known-issues note) plus one
+  pre-existing, unrelated `NG8113` unused-RouterLink warning on the main page file (confirmed unrelated
+  to this batch's own changes) with zero actual TypeScript/template compile errors, confirmed via a
+  targeted grep for ERROR lines; browser-verified successfully via direct DOM query — content (all
+  three h1/breadcrumb pairs correct), breadcrumb (all 4 levels), the `ContainersNavComponent` accordion
+  (`.nav-subtopics` container `display: flex`, link correctly marked `active`), sidebar (tailored
+  `tip`/`gotchas`/`related` per subtopic, confirmed via body-text substring check), dark mode
+  (`--bg: #0f172a`) all working correctly, AND confirmed the two main-page fixes rendered correctly
+  (no more "pip install" text anywhere on the page; the corrected "npm ci" text present in the theory
+  bullet). **This continues the Containers/K8s hub's Phase 10 rollout — 5 of 22 topics complete.**)
 - [ ] `/containers/compose` — Docker Compose
 - [ ] `/containers/compose-profiles` — Compose Profiles & Overrides
 - [ ] `/containers/k8s-architecture` — Kubernetes Architecture
