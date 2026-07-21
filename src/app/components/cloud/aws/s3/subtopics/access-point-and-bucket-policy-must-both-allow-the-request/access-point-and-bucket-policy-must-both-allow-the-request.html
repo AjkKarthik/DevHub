@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="S3" topicRoute="/aws/s3" subtopicLabel="Access Point Authorization" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Access Point AND Bucket Policy Must Both Allow the Request</h1>
+  <p class="page-subtitle">The main page's own one-line Access Points mention skips the actual mechanism — a grant in the access point policy alone is never enough.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="S3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic turns the main page's own single-sentence Access Points definition into an actual, working mechanism — including AWS's own recommended delegation pattern and the separate VPC-restriction capability. Together with the lifecycle-transition and replication-encryption subtopics, this batch covers three genuinely distinct S3 gaps the main page's own dense theory bullets only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="S3" topicRoute="/aws/s3"
+    [prev]="{ label: 'SSE-KMS Objects Aren’t Replicated by Default', route: '/aws/s3/sse-kms-encrypted-objects-not-replicated-by-default' }" />
+</div>

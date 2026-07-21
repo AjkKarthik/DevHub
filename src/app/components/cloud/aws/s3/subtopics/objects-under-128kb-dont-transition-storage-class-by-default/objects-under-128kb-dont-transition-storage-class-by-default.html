@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="S3" topicRoute="/aws/s3" subtopicLabel="128 KB Transition Floor" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Objects Under 128 KB Don't Transition Storage Class by Default</h1>
+  <p class="page-subtitle">The main page's own age-based lifecycle example never mentions size — but AWS silently excludes small objects from every storage class transition unless you opt them back in.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="S3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a real gap in the main page's own lifecycle rule example, which describes transitions purely in terms of object age — the size dimension is a completely separate, silent constraint. Next, the replication encryption subtopic covers a second silent exclusion the main page's own replication example doesn't account for.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="S3" topicRoute="/aws/s3"
+    [next]="{ label: 'SSE-KMS Objects Aren’t Replicated by Default', route: '/aws/s3/sse-kms-encrypted-objects-not-replicated-by-default' }" />
+</div>

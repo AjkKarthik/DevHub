@@ -2469,4 +2469,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'EvaluateTargetHealth Scope', route: '/aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets' },
     { label: 'Default Cache Key Scope', route: '/aws/route53-cloudfront/cloudfront-default-cache-key-excludes-query-strings-and-headers' },
   ],
+  s3: [
+    { label: '128 KB Transition Floor', route: '/aws/s3/objects-under-128kb-dont-transition-storage-class-by-default' },
+    { label: 'SSE-KMS Replication Gap', route: '/aws/s3/sse-kms-encrypted-objects-not-replicated-by-default' },
+    { label: 'Access Point Authorization', route: '/aws/s3/access-point-and-bucket-policy-must-both-allow-the-request' },
+  ],
 };

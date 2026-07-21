@@ -37896,6 +37896,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'S3 event notifications (triggering Lambda on object creation) are eventually consistent and can occasionally deliver duplicate events — consumers should be idempotent.',
     ],
   },
+  'aws/s3/objects-under-128kb-dont-transition-storage-class-by-default': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'S3 overview', route: '/aws/s3' },
+      { label: 'SSE-KMS Replication Gap', route: '/aws/s3/sse-kms-encrypted-objects-not-replicated-by-default' },
+    ],
+    tip: 'AWS applies a default 128 KB minimum for ANY lifecycle storage class transition — objects smaller than that are silently excluded unless an explicit ObjectSizeGreaterThan filter is added.',
+    gotchas: [
+      'A lifecycle rule can be perfectly configured and still leave small objects un-transitioned indefinitely, with no error anywhere — only checking each object\'s actual storage class reveals it.',
+      'This default changed in September 2024 — before then, small objects could still transition to Glacier specifically; now the 128 KB floor applies to every storage class uniformly.',
+    ],
+  },
+  'aws/s3/sse-kms-encrypted-objects-not-replicated-by-default': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: '128 KB Transition Floor', route: '/aws/s3/objects-under-128kb-dont-transition-storage-class-by-default' },
+      { label: 'Access Point Authorization', route: '/aws/s3/access-point-and-bucket-policy-must-both-allow-the-request' },
+    ],
+    tip: 'SSE-KMS and DSSE-KMS encrypted objects are NOT replicated by default — even with replication otherwise fully configured, they need an explicit SourceSelectionCriteria opt-in plus a ReplicaKmsKeyID.',
+    gotchas: [
+      'Excluded SSE-KMS objects show no ReplicationStatus at all — standard "alert on FAILED replication" monitoring never catches this, since the objects were never attempted.',
+      'The replication IAM role needs additional kms:Decrypt/kms:Encrypt permissions beyond a standard S3-only replication role.',
+    ],
+  },
+  'aws/s3/access-point-and-bucket-policy-must-both-allow-the-request': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'SSE-KMS Replication Gap', route: '/aws/s3/sse-kms-encrypted-objects-not-replicated-by-default' },
+      { label: 'S3 overview', route: '/aws/s3' },
+    ],
+    tip: 'A grant in an access point policy is never sufficient on its own — the underlying bucket must independently permit the same access, or the request is denied regardless.',
+    gotchas: [
+      'AWS\'s own recommended fix is delegating access control to access points via an s3:DataAccessPointAccount condition on the bucket policy, rather than duplicating permissions per grant.',
+      'A VPC-restricted access point rejects out-of-VPC requests at the network layer, before any IAM policy (access point or bucket) is even evaluated.',
+    ],
+  },
   'aws/dynamodb': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
