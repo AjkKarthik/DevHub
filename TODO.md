@@ -2977,7 +2977,42 @@ off here with a date.
   the FOURTH topic in this hub with subtopics — confirmed all four toggles coexist correctly,
   with only the current page's own topic auto-expanding), sidebar showing tailored `tip`/
   `gotchas`/`related` per subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/route53-cloudfront` — Route 53 & CloudFront
+- [x] `/aws/route53-cloudfront` — Route 53 & CloudFront (2026-07-21 — 3 subtopics:
+  weight-zero-is-a-silent-standby-not-truly-disabled,
+  evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets,
+  cloudfront-default-cache-key-excludes-query-strings-and-headers; all three verified against
+  AWS's own documentation via WebFetch before writing — (1) confirmed via AWS's own weighted
+  routing doc that a weight-0 record is not truly disabled — "if all the records that have a
+  weight greater than 0 are unhealthy, then Route 53 considers the zero-weighted records,"
+  including the documented edge case where the weight-0 record's OWN health check being
+  unhealthy at the same time leaves the query unanswered entirely — closing a gap where the main
+  page's own routing-policy bullet flatly states "Weight 0 disables without removing the record";
+  (2) confirmed via AWS's own alias record doc that EvaluateTargetHealth "provides no operational
+  benefit" for CloudFront, S3, VPC interface endpoints, API Gateway, Global Accelerator,
+  OpenSearch Service, and VPC Lattice — only ELB/Elastic Beanstalk targets get real benefit, with
+  AWS's own docs recommending a standalone Route 53 health check instead for the highly-available
+  service category — closing a gap where the main page's own code tabs set
+  "EvaluateTargetHealth": true uniformly across every alias example with no discussion of scope;
+  (3) confirmed via AWS's own cache-key doc that the DEFAULT CloudFront cache key is only the
+  distribution domain plus URL path — query strings, headers, and cookies are explicitly excluded
+  unless a cache policy adds them, with AWS's own worked example showing two requests differing
+  only by query string, User-Agent, and cookie still resulting in a cache HIT against each other
+  — closing a real ambiguity in the main page's own "Cache key: by default URL path + selected
+  headers/query strings" wording, which reads as though headers/query strings ARE included by
+  default. Gotcha sweep this batch covered `.html` bound attributes AND `.ts` single-quoted
+  `prompt`/`hint`/`solution`/`thought`/`reality`/`label`/`heading` fields plus theory `points`
+  arrays specifically — ran clean, zero misses; bare `@word`/brace sweep of `.html` files —
+  clean; backtick parity across all three `.ts` files — even counts (4/4/4). Two SUBTOPICS-map
+  and breadcrumb entries used double-quoted TS strings (`"Weight 0 Isn't Truly Disabled"`) to
+  hold a straight apostrophe without backslash-escaping, the same clean alternative used in the
+  prior `/aws/vpc` batch. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR with zero actual TypeScript/template compile errors. `git add
+  -A` staged cleanly with no "Filename too long" errors (longest new path ~190 relative chars).
+  Browser-verified successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels),
+  the `AwsNavComponent` accordion (now the FIFTH topic in this hub with subtopics — confirmed all
+  five toggles coexist correctly, with only the current page's own topic auto-expanding), sidebar
+  showing tailored `tip`/`gotchas`/`related` per subtopic, dark mode (`--bg: #0f172a`) applying
+  correctly.)
 - [ ] `/aws/s3` — S3
 - [ ] `/aws/ebs-efs` — EBS, EFS & FSx
 - [ ] `/aws/iam` — IAM
