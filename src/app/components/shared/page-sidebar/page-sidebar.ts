@@ -37740,6 +37740,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Spot instances offer significant cost savings but can be reclaimed with only a short warning — appropriate for fault-tolerant, interruptible workloads, not stateful primary capacity.',
     ],
   },
+  'aws/ec2/t3-launches-unlimited-by-default-surplus-credits-can-surcharge': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EC2 & Auto Scaling overview', route: '/aws/ec2' },
+      { label: 'IMDS Hop Limit of 1 Breaks Containers', route: '/aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access' },
+    ],
+    tip: 'T3/T3a/T4g instances launch in Unlimited mode by default (unlike T2, which defaults to Standard) — sustained above-baseline CPU usage over a rolling 24-hour window incurs a real, uncapped surplus-credit surcharge.',
+    gotchas: [
+      'A freshly-launched instance with no idle time to accrue credits still gets billed for surplus credits immediately if it runs above baseline in Unlimited mode.',
+      'Standard mode has no surcharge risk at all — it just throttles CPU back to baseline once the credit balance is exhausted.',
+    ],
+  },
+  'aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'T3 Launches Unlimited by Default', route: '/aws/ec2/t3-launches-unlimited-by-default-surplus-credits-can-surcharge' },
+      { label: 'io1 Multi-Attach Lacks I/O Fencing', route: '/aws/ec2/io1-multi-attach-lacks-io-fencing-io2-supports-it' },
+    ],
+    tip: 'HttpPutResponseHopLimit defaults to 1 — enough for a request made directly on the host, but not enough for a request from inside a container, which crosses an extra network hop each way.',
+    gotchas: [
+      'Enforcing IMDSv2 (HttpTokens: required) and raising the hop limit are independent settings — fixing one does not fix the other.',
+      'Raise HttpPutResponseHopLimit to at least 2 for any instance that will run containerized workloads needing metadata/credential access.',
+    ],
+  },
+  'aws/ec2/io1-multi-attach-lacks-io-fencing-io2-supports-it': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IMDS Hop Limit of 1 Breaks Containers', route: '/aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access' },
+      { label: 'EC2 & Auto Scaling overview', route: '/aws/ec2' },
+    ],
+    tip: 'Only Multi-Attach io2 volumes support I/O fencing via NVMe reservations — io1 Multi-Attach volumes do not, leaving a real gap against a stale writer even with a cluster-aware filesystem in place.',
+    gotchas: [
+      'A cluster-aware filesystem coordinates which node SHOULD write — only storage-layer fencing can physically stop a stale node from writing anyway.',
+      'AWS recommends io2 over io1 generally, for better performance, consistency, and durability — the fencing gap is one concrete reason why.',
+    ],
+  },
   'aws/ecs-eks': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

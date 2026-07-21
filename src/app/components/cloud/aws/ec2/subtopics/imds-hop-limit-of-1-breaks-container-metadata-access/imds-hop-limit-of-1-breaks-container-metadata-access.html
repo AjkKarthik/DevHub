@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EC2 & Auto Scaling" topicRoute="/aws/ec2" subtopicLabel="IMDS Hop Limit & Containers" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">IMDS Hop Limit of 1 Breaks Container Metadata Access</h1>
+  <p class="page-subtitle">Enforcing IMDSv2 correctly isn't enough — the separate hop-limit setting silently blocks token requests from inside a container.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="EC2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a real gap in the main page's own IMDSv2 mistake entry — the hop limit is a separate setting from token enforcement, and its default silently breaks metadata access the moment a container runtime is introduced on the same instance. Next, the EBS Multi-Attach subtopic covers a similarly precise distinction the main page's own bullet glosses over — this time between io1 and io2's actual write-consistency guarantees.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EC2 & Auto Scaling" topicRoute="/aws/ec2"
+    [prev]="{ label: 'T3 Launches Unlimited by Default', route: '/aws/ec2/t3-launches-unlimited-by-default-surplus-credits-can-surcharge' }"
+    [next]="{ label: 'io1 Multi-Attach Lacks I/O Fencing — io2 Supports It', route: '/aws/ec2/io1-multi-attach-lacks-io-fencing-io2-supports-it' }" />
+</div>

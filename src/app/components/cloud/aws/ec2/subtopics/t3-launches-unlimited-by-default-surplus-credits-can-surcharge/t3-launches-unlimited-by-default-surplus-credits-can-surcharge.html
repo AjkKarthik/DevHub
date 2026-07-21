@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EC2 & Auto Scaling" topicRoute="/aws/ec2" subtopicLabel="T3 Unlimited Mode Defaults" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">T3 Launches Unlimited by Default — Surplus Credits Can Surcharge</h1>
+  <p class="page-subtitle">Unlike T2, T3/T3a/T4g default to Unlimited mode — a real, uncapped cost exposure the main page's own CPU-credit bullet never mentions.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="EC2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic expands the main page's own brief CPU-credit mention into a real, billable operational gotcha — Unlimited mode's default-on status for T3/T3a/T4g is easy to miss since the main page's launch example never sets --credit-specification at all. Next, the IMDSv2 hop-limit subtopic covers a second gap in the main page's own IMDSv2 mistake entry — this time about container environments specifically.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EC2 & Auto Scaling" topicRoute="/aws/ec2"
+    [next]="{ label: 'IMDS Hop Limit of 1 Breaks Container Metadata Access', route: '/aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access' }" />
+</div>

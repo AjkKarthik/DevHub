@@ -2449,4 +2449,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'STS Role Chaining Caps Sessions at 1 Hour', route: '/aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2' },
     { label: 'Local Zones Run Only a Subset of Services', route: '/aws/fundamentals/local-zones-run-a-subset-of-services-not-a-full-region' },
   ],
+  ec2: [
+    { label: 'T3 Launches Unlimited by Default', route: '/aws/ec2/t3-launches-unlimited-by-default-surplus-credits-can-surcharge' },
+    { label: 'IMDS Hop Limit of 1 Breaks Containers', route: '/aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access' },
+    { label: 'io1 Multi-Attach Lacks I/O Fencing', route: '/aws/ec2/io1-multi-attach-lacks-io-fencing-io2-supports-it' },
+  ],
 };

@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EC2 & Auto Scaling" topicRoute="/aws/ec2" subtopicLabel="io1 vs io2 Multi-Attach Fencing" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">io1 Multi-Attach Lacks I/O Fencing — io2 Supports It</h1>
+  <p class="page-subtitle">The main page treats io1 and io2 Multi-Attach as interchangeable — only io2's NVMe reservations can actually stop a stale writer.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="EC2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own "requires a cluster-aware filesystem" bullet into a precise, verified distinction between io1 and io2's actual write-consistency guarantees — directly relevant to anyone designing a genuinely shared-storage cluster on EC2, not just checking the Multi-Attach box. Together with the earlier two subtopics, this batch covers a billing gotcha (T3 credits), a networking gotcha (IMDS hop limit), and now a data-consistency gotcha — three different failure categories the main page's own dense theory bullets only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EC2 & Auto Scaling" topicRoute="/aws/ec2"
+    [prev]="{ label: 'IMDS Hop Limit of 1 Breaks Container Metadata Access', route: '/aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access' }" />
+</div>

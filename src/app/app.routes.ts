@@ -3229,7 +3229,12 @@ export const routes: Routes = [
       { path: 'role-chaining-caps-sessions-at-1-hour-except-from-ec2', loadComponent: () => import('./components/cloud/aws/fundamentals/subtopics/role-chaining-caps-sessions-at-1-hour-except-from-ec2/role-chaining-caps-sessions-at-1-hour-except-from-ec2').then(m => m.RoleChainingCapsSessionsAt1HourExceptFromEc2Subtopic) },
       { path: 'local-zones-run-a-subset-of-services-not-a-full-region', loadComponent: () => import('./components/cloud/aws/fundamentals/subtopics/local-zones-run-a-subset-of-services-not-a-full-region/local-zones-run-a-subset-of-services-not-a-full-region').then(m => m.LocalZonesRunASubsetOfServicesNotAFullRegionSubtopic) },
     ] },
-    { path: 'ec2',                 loadComponent: () => import('./components/cloud/aws/ec2/ec2').then(m => m.AwsEc2) },
+    { path: 'ec2', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/ec2/ec2').then(m => m.AwsEc2) },
+      { path: 't3-launches-unlimited-by-default-surplus-credits-can-surcharge', loadComponent: () => import('./components/cloud/aws/ec2/subtopics/t3-launches-unlimited-by-default-surplus-credits-can-surcharge/t3-launches-unlimited-by-default-surplus-credits-can-surcharge').then(m => m.T3LaunchesUnlimitedByDefaultSurplusCreditsCanSurchargeSubtopic) },
+      { path: 'imds-hop-limit-of-1-breaks-container-metadata-access', loadComponent: () => import('./components/cloud/aws/ec2/subtopics/imds-hop-limit-of-1-breaks-container-metadata-access/imds-hop-limit-of-1-breaks-container-metadata-access').then(m => m.ImdsHopLimitOf1BreaksContainerMetadataAccessSubtopic) },
+      { path: 'io1-multi-attach-lacks-io-fencing-io2-supports-it', loadComponent: () => import('./components/cloud/aws/ec2/subtopics/io1-multi-attach-lacks-io-fencing-io2-supports-it/io1-multi-attach-lacks-io-fencing-io2-supports-it').then(m => m.Io1MultiAttachLacksIoFencingIo2SupportsItSubtopic) },
+    ] },
     { path: 'ecs-eks',             loadComponent: () => import('./components/cloud/aws/ecs-eks/ecs-eks').then(m => m.AwsEcsEks) },
     { path: 'vpc',                 loadComponent: () => import('./components/cloud/aws/vpc/vpc').then(m => m.AwsVpc) },
     { path: 'route53-cloudfront',  loadComponent: () => import('./components/cloud/aws/route53-cloudfront/route53-cloudfront').then(m => m.AwsRoute53Cloudfront) },
