@@ -2499,4 +2499,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DAX Item vs Query Cache', route: '/aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent' },
     { label: 'Streams Poison Pill Blocking', route: '/aws/dynamodb/streams-poison-pill-blocks-a-shard-for-up-to-a-day' },
   ],
+  'lambda': [
+    { label: 'DLQ vs Destinations', route: '/aws/lambda/dlq-only-captures-the-event-not-why-it-failed' },
+    { label: 'SnapStart Frozen Init State', route: '/aws/lambda/snapstart-freezes-init-state-crac-hooks-refresh-it' },
+    { label: 'Reserved Concurrency Zero', route: '/aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely' },
+  ],
 };

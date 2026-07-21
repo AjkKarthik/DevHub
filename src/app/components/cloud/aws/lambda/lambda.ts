@@ -30,7 +30,7 @@ export class AwsLambda {
     { name: 'Lambda Layer', type: 'keyword', desc: 'ZIP archive with shared libraries/binaries attached to multiple functions; counts toward 250 MB deployment limit.' },
     { name: 'Invocation Types', type: 'keyword', desc: 'RequestResponse (sync), Event (async/fire-and-forget), DryRun (permission check).' },
     { name: 'Dead Letter Queue', type: 'keyword', desc: 'SQS or SNS target for failed async invocations after 2 built-in retries.' },
-    { name: 'SnapStart', type: 'keyword', desc: 'Java 11/21 only — snapshot JVM after init phase, restore from snapshot on cold start (sub-second latency).' },
+    { name: 'SnapStart', type: 'keyword', desc: 'Snapshot the execution environment after init phase, restore on cold start (sub-second latency). Supports Java 11+, Python 3.12+, and .NET 8+.' },
     { name: 'Lambda Power Tuning', type: 'keyword', desc: 'Open-source Step Functions state machine that tests memory sizes (128-10240 MB) to find cost/perf sweet spot.' },
   ];
 
@@ -42,7 +42,7 @@ export class AwsLambda {
         'Cold start = init phase (download code, start runtime, run static initializer) + function invocation. Warm = no init.',
         'Cold starts typically add 100-1000 ms depending on runtime (Node.js/Python < Java/C#) and deployment package size.',
         'Provisioned concurrency pre-initializes environments — eliminates cold start but costs money even when idle.',
-        'SnapStart (Java) snapshots the initialized environment; restore takes ~10 ms regardless of package size.',
+        'SnapStart (Java 11+, Python 3.12+, .NET 8+) snapshots the initialized environment; restore takes ~10 ms regardless of package size.',
         'Keep deployment packages small: use layers for large dependencies, avoid unnecessary imports at module level.',
       ]
     },

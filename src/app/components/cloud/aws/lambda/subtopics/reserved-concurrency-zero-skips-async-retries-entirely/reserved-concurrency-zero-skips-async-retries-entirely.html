@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lambda" topicRoute="/aws/lambda" subtopicLabel="Reserved Concurrency Zero Skips Async Retries" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Reserved Concurrency Zero Skips Async Retries Entirely</h1>
+  <p class="page-subtitle">The main page's own "set to 0 to throttle completely" line hides a real, documented bypass of the normal async retry path.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Lambda" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the batch by connecting back to the DLQ/Destinations subtopic — reserved concurrency = 0 is exactly the scenario where knowing what actually lands in a DLQ or destination, and that it needs manual reprocessing, matters most.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lambda" topicRoute="/aws/lambda"
+    [prev]="{ label: 'SnapStart Freezes Init State', route: '/aws/lambda/snapstart-freezes-init-state-crac-hooks-refresh-it' }" />
+</div>

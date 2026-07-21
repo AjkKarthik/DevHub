@@ -3289,7 +3289,12 @@ export const routes: Routes = [
       { path: 'dax-item-cache-and-query-cache-are-fully-independent', loadComponent: () => import('./components/cloud/aws/dynamodb/subtopics/dax-item-cache-and-query-cache-are-fully-independent/dax-item-cache-and-query-cache-are-fully-independent').then(m => m.DaxItemCacheAndQueryCacheAreFullyIndependentSubtopic) },
       { path: 'streams-poison-pill-blocks-a-shard-for-up-to-a-day', loadComponent: () => import('./components/cloud/aws/dynamodb/subtopics/streams-poison-pill-blocks-a-shard-for-up-to-a-day/streams-poison-pill-blocks-a-shard-for-up-to-a-day').then(m => m.StreamsPoisonPillBlocksAShardForUpToADaySubtopic) },
     ] },
-    { path: 'lambda',              loadComponent: () => import('./components/cloud/aws/lambda/lambda').then(m => m.AwsLambda) },
+    { path: 'lambda', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/lambda/lambda').then(m => m.AwsLambda) },
+      { path: 'dlq-only-captures-the-event-not-why-it-failed', loadComponent: () => import('./components/cloud/aws/lambda/subtopics/dlq-only-captures-the-event-not-why-it-failed/dlq-only-captures-the-event-not-why-it-failed').then(m => m.DlqOnlyCapturesTheEventNotWhyItFailedSubtopic) },
+      { path: 'snapstart-freezes-init-state-crac-hooks-refresh-it', loadComponent: () => import('./components/cloud/aws/lambda/subtopics/snapstart-freezes-init-state-crac-hooks-refresh-it/snapstart-freezes-init-state-crac-hooks-refresh-it').then(m => m.SnapstartFreezesInitStateCracHooksRefreshItSubtopic) },
+      { path: 'reserved-concurrency-zero-skips-async-retries-entirely', loadComponent: () => import('./components/cloud/aws/lambda/subtopics/reserved-concurrency-zero-skips-async-retries-entirely/reserved-concurrency-zero-skips-async-retries-entirely').then(m => m.ReservedConcurrencyZeroSkipsAsyncRetriesEntirelySubtopic) },
+    ] },
     { path: 'api-gateway',         loadComponent: () => import('./components/cloud/aws/api-gateway/api-gateway').then(m => m.AwsApiGateway) },
     { path: 'cloudwatch',          loadComponent: () => import('./components/cloud/aws/cloudwatch/cloudwatch').then(m => m.AwsCloudwatch) },
     { path: 'cloudformation-cdk',  loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/cloudformation-cdk').then(m => m.AwsCloudformationCdk) },

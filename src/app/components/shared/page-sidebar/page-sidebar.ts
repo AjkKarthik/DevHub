@@ -37944,6 +37944,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Lambda\'s default execution timeout and memory settings often need explicit tuning for anything beyond a trivial function — memory allocation also proportionally affects CPU allocation.',
     ],
   },
+  'aws/lambda/dlq-only-captures-the-event-not-why-it-failed': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Lambda overview', route: '/aws/lambda' },
+      { label: 'Reserved Concurrency Zero', route: '/aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely' },
+    ],
+    tip: 'A DLQ only ever gets the raw event, capped at a 1 KB ErrorMessage attribute. An on-failure Destination gets the full invocation record — retry condition, error type, and complete response payload — in the same message.',
+    gotchas: [
+      'AWS\'s own docs frame the DLQ as "an alternative to an on-failure destination," not the primary feature — Destinations support both success and failure conditions across five target types.',
+      'Only a Destination invocation record includes requestContext.condition (e.g. "RetriesExhausted") — a DLQ message never states why Lambda stopped retrying.',
+    ],
+  },
+  'aws/lambda/snapstart-freezes-init-state-crac-hooks-refresh-it': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'DLQ vs Destinations', route: '/aws/lambda/dlq-only-captures-the-event-not-why-it-failed' },
+      { label: 'Reserved Concurrency Zero', route: '/aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely' },
+    ],
+    tip: 'SnapStart reuses ONE snapshot across every restored execution environment — a UUID, random seed, or credential generated at module scope before the snapshot is shared identically by all of them, not regenerated per environment.',
+    gotchas: [
+      'CRaC\'s afterRestore() hook is the fix, but registering an anonymous Resource (or one with no strong reference held) can be silently garbage-collected before it ever runs.',
+      'SnapStart now supports Java 11+, Python 3.12+, and .NET 8+ — not Java-only, despite older framings suggesting otherwise.',
+    ],
+  },
+  'aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'SnapStart Frozen Init State', route: '/aws/lambda/snapstart-freezes-init-state-crac-hooks-refresh-it' },
+      { label: 'DLQ vs Destinations', route: '/aws/lambda/dlq-only-captures-the-event-not-why-it-failed' },
+    ],
+    tip: 'Setting reserved concurrency to 0 on an async-triggered function skips the normal 2 built-in retries entirely — new events go straight to the DLQ/destination, immediately, with no backoff.',
+    gotchas: [
+      'Restoring concurrency afterward does NOT automatically replay events diverted while it was 0 — they must be manually consumed from the DLQ or destination.',
+      'This behavior is specific to asynchronous invocations — the main page\'s own blanket "set to 0 to throttle completely" line doesn\'t distinguish sync from async.',
+    ],
+  },
   'aws/api-gateway': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

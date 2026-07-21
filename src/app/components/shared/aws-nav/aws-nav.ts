@@ -265,7 +265,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Serverless</p>
-      <a routerLink="/aws/lambda" routerLinkActive="active"><span class="nl-text">Lambda</span>@if(p.isDone('aws-lambda')){<span class="nl-done">✓</span>}@if(d('aws-lambda');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/lambda" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Lambda</span>
+        @if (p.isDone('aws-lambda')) {<span class="nl-done">✓</span>}
+        @if (d('aws-lambda'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('lambda')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('lambda')"
+                  (click)="toggleSubtopics('lambda', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('lambda'); as lambdaSubs) {
+        @if (isSubtopicsExpanded('lambda')) {
+          <div class="nav-subtopics">
+            @for (s of lambdaSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/api-gateway" routerLinkActive="active"><span class="nl-text">API Gateway</span>@if(p.isDone('aws-api-gateway')){<span class="nl-done">✓</span>}@if(d('aws-api-gateway');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/aws/sqs-sns" routerLinkActive="active"><span class="nl-text">SQS &amp; SNS</span>@if(p.isDone('aws-sqs-sns')){<span class="nl-done">✓</span>}@if(d('aws-sqs-sns');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/aws/eventbridge" routerLinkActive="active"><span class="nl-text">EventBridge</span>@if(p.isDone('aws-eventbridge')){<span class="nl-done">✓</span>}@if(d('aws-eventbridge');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
