@@ -3114,7 +3114,44 @@ off here with a date.
   the EIGHTH topic in this hub with subtopics — confirmed all eight toggles coexist correctly,
   with only the current page's own topic auto-expanding), sidebar showing tailored `tip`/
   `gotchas`/`related` per subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/iam-roles` — IAM Roles & Federation
+- [x] `/aws/iam-roles` — IAM Roles & Federation (2026-07-21 — 3 subtopics:
+  external-id-is-not-actually-a-secret-per-aws-own-docs,
+  eks-pod-identity-uses-a-different-principal-and-needs-an-agent,
+  github-oidc-environment-claims-restrict-beyond-branch-alone; all three verified against AWS's/
+  GitHub's own documentation via WebFetch before writing — (1) confirmed AWS's own docs state
+  plainly "AWS does not treat the external ID as a secret... can be seen by anyone with permission
+  to view the role," and that it must be vendor-generated and unique per customer — **a genuine
+  main-page inaccuracy found and fixed**: the quick-ref entry, theory bullet, quiz answer option,
+  and quiz explanation all originally described External ID as a "shared secret," corrected across
+  all four locations to match AWS's own explicit guidance; (2) confirmed via AWS's own EKS Pod
+  Identity doc that it uses a fixed "pods.eks.amazonaws.com" service principal (not a per-cluster
+  OIDC provider ARN) and REQUIRES the separate Amazon EKS Pod Identity Agent DaemonSet to be
+  installed on the cluster before any credentials are issued, plus real version/workload
+  restrictions (unavailable on Fargate, Windows pods, Outposts, EKS Anywhere) — closing a gap where
+  the main page's own "simplifies IRSA by removing the OIDC URL" framing reads as a config
+  simplification rather than a structurally different mechanism; (3) confirmed via GitHub's own
+  OIDC hardening docs that the sub claim also supports an environment-scoped format
+  (repo:org/repo:environment:name) and that GitHub recommends adding environment protection rules
+  (required reviewers, deployment branch restrictions) for additional security — closing a gap
+  where the main page's own GitHub OIDC example and Challenge both only ever demonstrate the
+  branch-ref sub format, with no mention of the stronger, review-gated alternative for production
+  deploys. Two other candidate angles for this batch (AWS Identity Center Permission Set
+  reprovisioning behavior) could not be independently grounded — repeated WebFetch attempts against
+  several specific AWS Identity Center doc URLs returned only a page title with no body content,
+  producing plausible-sounding but ungrounded synthesized answers each time; per this project's own
+  verify-before-publishing discipline, this angle was dropped in favor of the External ID angle,
+  which WAS successfully and richly grounded on the first specific-URL attempt. Gotcha sweep
+  covered `.html` bound attributes, `.ts` single-quoted fields, theory `points` arrays, and a
+  `${` interpolation-risk scan — all clean, zero misses; backtick parity across all three `.ts`
+  files — even counts (4/4/4). Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR with zero actual TypeScript/template compile errors. `git add -A`
+  staged cleanly with no "Filename too long" errors (longest new path ~179 relative chars).
+  Browser-verified successfully on all three subtopic pages plus the corrected main page — h1/
+  breadcrumb pairs correct (all 4 levels), the corrected "not treated as a secret"/"vendor-
+  generated" text confirmed present in the main page's own rendered HTML, the `AwsNavComponent`
+  accordion (now the NINTH topic in this hub with subtopics — confirmed all nine toggles coexist
+  correctly, with only the current page's own topic auto-expanding), sidebar showing tailored
+  `tip`/`gotchas`/`related` per subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/rds-aurora` — RDS & Aurora
 - [ ] `/aws/dynamodb` — DynamoDB
 - [ ] `/aws/lambda` — Lambda
