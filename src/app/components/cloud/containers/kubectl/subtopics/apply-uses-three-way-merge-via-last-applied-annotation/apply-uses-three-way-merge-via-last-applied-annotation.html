@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="kubectl Fundamentals" topicRoute="/containers/kubectl" subtopicLabel="apply Uses a Three-Way Merge via the last-applied-configuration Annotation" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">apply Uses a Three-Way Merge via the last-applied-configuration Annotation</h1>
+  <p class="page-subtitle">
+    The main page's own theory says apply computes "the diff" without saying diff between what and what — the
+    real mechanism compares the last-applied annotation, the live object, and the new manifest together.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic names the exact mechanism behind the main page's own brief "computes and applies only the
+      diff" claim. Back to the kubectl Fundamentals overview, or continue to why force-deleting a pod doesn't
+      actually ask the kubelet to stop anything.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="kubectl Fundamentals"
+    topicRoute="/containers/kubectl"
+    [next]="{ label: 'Force-Delete Only Removes the etcd Object, Not the Process', route: '/containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process' }"
+  />
+</div>

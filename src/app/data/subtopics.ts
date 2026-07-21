@@ -1409,6 +1409,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The dockershim Removal Never Broke Docker-Built Images', route: '/containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images' },
     { label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' },
   ],
+  'kubectl': [
+    { label: 'apply Uses a Three-Way Merge via the last-applied-configuration Annotation', route: '/containers/kubectl/apply-uses-three-way-merge-via-last-applied-annotation' },
+    { label: 'Force-Delete Only Removes the etcd Object, Not the Process', route: '/containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process' },
+    { label: 'scale Against an HPA-Managed Deployment Gets Silently Reverted', route: '/containers/kubectl/scale-against-an-hpa-gets-silently-reverted' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

@@ -3083,7 +3083,12 @@ export const routes: Routes = [
       { path: 'dockershim-removal-does-not-break-docker-built-images', loadComponent: () => import('./components/cloud/containers/k8s-architecture/subtopics/dockershim-removal-does-not-break-docker-built-images/dockershim-removal-does-not-break-docker-built-images').then(m => m.DockershimRemovalDoesNotBreakDockerBuiltImagesSubtopic) },
       { path: 'kube-proxy-programs-rules-it-does-not-forward-packets', loadComponent: () => import('./components/cloud/containers/k8s-architecture/subtopics/kube-proxy-programs-rules-it-does-not-forward-packets/kube-proxy-programs-rules-it-does-not-forward-packets').then(m => m.KubeProxyProgramsRulesItDoesNotForwardPacketsSubtopic) },
     ]},
-    { path: 'kubectl',            loadComponent: () => import('./components/cloud/containers/kubectl/kubectl').then(m => m.K8sKubectl) },
+    { path: 'kubectl', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/kubectl/kubectl').then(m => m.K8sKubectl) },
+      { path: 'apply-uses-three-way-merge-via-last-applied-annotation', loadComponent: () => import('./components/cloud/containers/kubectl/subtopics/apply-uses-three-way-merge-via-last-applied-annotation/apply-uses-three-way-merge-via-last-applied-annotation').then(m => m.ApplyUsesThreeWayMergeViaLastAppliedAnnotationSubtopic) },
+      { path: 'force-delete-only-removes-the-etcd-object-not-the-process', loadComponent: () => import('./components/cloud/containers/kubectl/subtopics/force-delete-only-removes-the-etcd-object-not-the-process/force-delete-only-removes-the-etcd-object-not-the-process').then(m => m.ForceDeleteOnlyRemovesTheEtcdObjectNotTheProcessSubtopic) },
+      { path: 'scale-against-an-hpa-gets-silently-reverted', loadComponent: () => import('./components/cloud/containers/kubectl/subtopics/scale-against-an-hpa-gets-silently-reverted/scale-against-an-hpa-gets-silently-reverted').then(m => m.ScaleAgainstAnHpaGetsSilentlyRevertedSubtopic) },
+    ]},
     { path: 'pods-deployments',   loadComponent: () => import('./components/cloud/containers/pods-deployments/pods-deployments').then(m => m.K8sPodsDeployments) },
     { path: 'services-ingress',   loadComponent: () => import('./components/cloud/containers/services-ingress/services-ingress').then(m => m.K8sServicesIngress) },
     { path: 'configmaps-secrets', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/configmaps-secrets').then(m => m.K8sConfigmapsSecrets) },

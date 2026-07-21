@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="kubectl Fundamentals" topicRoute="/containers/kubectl" subtopicLabel="scale Against an HPA-Managed Deployment Gets Silently Reverted" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">scale Against an HPA-Managed Deployment Gets Silently Reverted</h1>
+  <p class="page-subtitle">
+    The main page's own theory presents kubectl scale as a durable action with no mention of HorizontalPodAutoscaler
+    — if one already targets the Deployment, it overwrites spec.replicas on its next reconciliation tick.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at three kubectl commands the main page presents as more durable
+      or more mechanically simple than they actually are. Back to the kubectl Fundamentals overview, or review the
+      three-way apply merge or the force-delete mechanism.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="kubectl Fundamentals"
+    topicRoute="/containers/kubectl"
+    [prev]="{ label: 'Force-Delete Only Removes the etcd Object, Not the Process', route: '/containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process' }"
+  />
+</div>

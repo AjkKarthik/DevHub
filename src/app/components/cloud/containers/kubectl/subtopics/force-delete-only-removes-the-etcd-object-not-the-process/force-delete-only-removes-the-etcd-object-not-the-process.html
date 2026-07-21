@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="kubectl Fundamentals" topicRoute="/containers/kubectl" subtopicLabel="Force-Delete Only Removes the etcd Object, Not the Process" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Force-Delete Only Removes the etcd Object, Not the Process</h1>
+  <p class="page-subtitle">
+    The main page's own mistake entry states the risk but not why it happens — --grace-period=0 --force skips the
+    kubelet handshake a normal delete waits for, reaching LESS far into the cluster, not more.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic traces exactly what --grace-period=0 --force skips, and why an unreachable node is
+      specifically the dangerous case. Back to the kubectl Fundamentals overview, or continue to why kubectl
+      scale gets silently reverted when an HPA is already managing the same Deployment.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="kubectl Fundamentals"
+    topicRoute="/containers/kubectl"
+    [prev]="{ label: 'apply Uses a Three-Way Merge via the last-applied-configuration Annotation', route: '/containers/kubectl/apply-uses-three-way-merge-via-last-applied-annotation' }"
+    [next]="{ label: 'scale Against an HPA-Managed Deployment Gets Silently Reverted', route: '/containers/kubectl/scale-against-an-hpa-gets-silently-reverted' }"
+  />
+</div>

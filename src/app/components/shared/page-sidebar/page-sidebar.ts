@@ -27892,6 +27892,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'kubectl diff (comparing a local manifest against live state before applying) is a useful safety check against unexpected drift.',
     ],
   },
+  'containers/kubectl/apply-uses-three-way-merge-via-last-applied-annotation': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'kubectl Fundamentals overview', route: '/containers/kubectl' },
+      { label: 'Force-Delete Only Removes the etcd Object, Not the Process', route: '/containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process' },
+    ],
+    tip: 'apply compares three things, not two: the last-applied-configuration annotation, the live object, and the new manifest — a field only gets removed if it was present in last-applied but is now absent from the new manifest.',
+    gotchas: [
+      'A field set outside any apply (kubectl edit, another controller) is never in last-applied-configuration, so apply leaves it alone regardless of what the new manifest does or doesn\'t mention.',
+      'Removing a field from your manifest and never having included it at all produce different outcomes on the live object, purely based on last-applied-configuration\'s own history.',
+    ],
+  },
+  'containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'apply Uses a Three-Way Merge via the last-applied-configuration Annotation', route: '/containers/kubectl/apply-uses-three-way-merge-via-last-applied-annotation' },
+      { label: 'scale Against an HPA-Managed Deployment Gets Silently Reverted', route: '/containers/kubectl/scale-against-an-hpa-gets-silently-reverted' },
+    ],
+    tip: '--grace-period=0 --force reaches LESS far than a normal delete, not more — it skips waiting for the kubelet to confirm termination; on an unreachable node, the kubelet never even receives the best-effort notification at all.',
+    gotchas: [
+      'A Pod disappearing from kubectl get pods after a force-delete only means the etcd object is gone, not that the container has stopped.',
+      'The zombie-process/duplicate-instance risk is specifically concentrated on unreachable or NotReady nodes, not healthy ones.',
+    ],
+  },
+  'containers/kubectl/scale-against-an-hpa-gets-silently-reverted': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Force-Delete Only Removes the etcd Object, Not the Process', route: '/containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process' },
+      { label: 'kubectl Fundamentals overview', route: '/containers/kubectl' },
+    ],
+    tip: 'kubectl scale against a Deployment already managed by an HPA succeeds momentarily, then gets overwritten on the HPA\'s next reconciliation tick (~15s) — the durable fix is changing the HPA\'s own minReplicas, not fighting it with a one-off scale command.',
+    gotchas: [
+      'The scale command\'s own success message gives no indication of whether an HPA will immediately revert it.',
+      'Removing or pausing the HPA is required to make a manual scale command genuinely durable.',
+    ],
+  },
   'containers/network-policies': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

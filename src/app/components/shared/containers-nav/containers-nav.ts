@@ -192,7 +192,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/kubectl" routerLinkActive="active"><span class="nl-text">kubectl Fundamentals</span>@if(p.isDone('k8s-kubectl')){<span class="nl-done">✓</span>}@if(d('k8s-kubectl');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/kubectl" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">kubectl Fundamentals</span>
+        @if (p.isDone('k8s-kubectl')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-kubectl'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('kubectl')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('kubectl')"
+                  (click)="toggleSubtopics('kubectl', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('kubectl'); as kubectlSubs) {
+        @if (isSubtopicsExpanded('kubectl')) {
+          <div class="nav-subtopics">
+            @for (s of kubectlSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/operators-crds" routerLinkActive="active"><span class="nl-text">Operators &amp; CRDs</span>@if(p.isDone('k8s-operators-crds')){<span class="nl-done">✓</span>}@if(d('k8s-operators-crds');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 
