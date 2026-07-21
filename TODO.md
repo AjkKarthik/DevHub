@@ -1855,7 +1855,54 @@ off here with a date.
 
 #### Containers/K8s — 22 topic pages
 
-- [ ] `/containers/fundamentals` — Container Fundamentals
+- [x] `/containers/fundamentals` — Container Fundamentals (2026-07-21 — first Phase 10 pilot for
+  the Containers/K8s hub; 3 subtopics: pid-1-ignores-sigterm-by-default,
+  user-namespace-remapping-not-default, oom-killer-targets-a-process-not-the-container; all three
+  verified against official Docker documentation and multiple independent operational write-ups
+  via WebSearch/WebFetch before writing — (1) confirmed the PID-1 signal-disposition kernel
+  behavior verbatim: "If you send SIGTERM to PID 1, and the process has no explicit handler for
+  it, the signal is ignored... the kernel ignores any signal sent to PID 1 unless the process has
+  explicitly registered a handler," plus the shell-form-CMD mechanism ("Docker doesn't execute the
+  app directly. It executes /bin/sh -c with the app... /bin/sh is PID 1, and the app is a child
+  process") — sharpening the main page's own PID-namespace theory bullet and its separate
+  docker-stop-vs-docker-kill mistake entry, neither of which mentions that SIGTERM can be silently
+  discarded before ever reaching application code; (2) confirmed Docker's own userns-remap docs
+  verbatim: "user namespace remapping is not enabled by default... requires explicit daemon
+  configuration," and that without it "a container's root user (UID 0) would... map directly to
+  the host's root UID 0" — correcting the main page's own theory bullet, which lists the user
+  namespace alongside five OTHER namespaces that ARE active for every container automatically,
+  making it read as if the same automatic protection applied; (3) confirmed via WebSearch that the
+  cgroup OOM killer scores and kills individual PROCESSES rather than whole cgroups by default
+  ("the OOM killer doesn't automatically target PID 1... only processes within the affected cgroup
+  and its descendants are candidates"), and that Docker does not set `memory.oom.group` (the
+  setting that WOULD kill every process in a cgroup together) automatically — sharpening the main
+  page's own "the kernel OOM killer terminates its processes" bullet (plural, implying the whole
+  container goes down together) into the precise, more consequential behavior for any container
+  running more than one process, directly connecting back to the main page's own separate "one
+  process per container" mistake entry. **First Phase 10 pilot for this hub — `ContainersNavComponent`
+  had zero subtopics-accordion support (no `expandedTopics` signal, no `subtopicsOf`/
+  `isSubtopicsExpanded`/`toggleSubtopics` methods, no router-subscription auto-expand), the third
+  `*NavComponent`-based hub in a row (after Go, DevOps) to need this fix added from scratch —
+  applied byte-for-byte the same pattern.** `fundamentals` collision-checked in
+  `src/app/data/subtopics.ts` (both quoted and unquoted forms) — confirmed a real collision with
+  the JavaScript hub's own `/javascript/fundamentals` topic, hub-prefixed to `k8s-fundamentals`
+  matching this hub's own established `k8s-` progress/search-key prefix, with a `// NOTE:` comment;
+  all three `ContainersNavComponent` accordion helper calls use the prefixed key consistently.
+  Gotcha sweep (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis present;
+  bare single/double brace sweep — clean, all `{` matches confirmed inside standard `[prev]`/
+  `[next]` object-literal bindings; apostrophe-after-letter check across all `.ts` fields — clean;
+  backtick parity across all three `.ts` files — even counts (26/16/10); `\${` interpolation-risk
+  scan — clean, no unescaped instances; file-existence check — all 9 files confirmed present, no
+  MAX_PATH issues) came back clean; build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" condition (exceeded by 34.35 kB at this site's current scale, per
+  CLAUDE.md's own known-issues note) with zero actual TypeScript/template compile errors, confirmed
+  via a targeted grep for ERROR lines; browser-verified successfully via direct DOM query — content
+  (all three h1/breadcrumb pairs correct), breadcrumb (all 4 levels), the newly-fixed
+  `ContainersNavComponent` accordion (`.nav-subtopics` container `display: flex`, link correctly
+  marked `active`, auto-expand confirmed working end-to-end on the first try), sidebar (tailored
+  `tip`/`gotchas`/`related` per subtopic, confirmed via body-text substring check), dark mode
+  (`--bg: #0f172a`) all working correctly. **This starts the Containers/K8s hub's Phase 10 rollout —
+  1 of 22 topics complete.**)
 - [ ] `/containers/docker-cli` — Docker CLI
 - [ ] `/containers/docker-images` — Docker Images & Registry
 - [ ] `/containers/dockerfile` — Writing Dockerfiles

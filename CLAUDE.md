@@ -1500,6 +1500,46 @@ same check before any other new hub's first subtopic set:
    inside the label text would have closed the outer attribute prematurely — the curly-quote
    substitution avoids this the same way `’` avoids the single-quote collision.
 
+### Containers/K8s hub subtopic wiring — first pilot; another `*NavComponent` missing the
+subtopics-accordion structural fix, plus a real SUBTOPICS collision
+
+Confirmed via direct file inspection before the pilot (`/containers/fundamentals`, 2026-07-21) —
+do this same check before any other new hub's first subtopic set:
+
+1. **`ContainersNavComponent` (`shared/containers-nav/containers-nav.ts`) had ZERO
+   subtopics-accordion support** — the same structural gap already hit and fixed on
+   `GoNavComponent` and `DevopsNavComponent` before their own pilots. Fixed identically: added
+   `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from
+   `data/subtopics.ts`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, byte-for-byte the same pattern as the other two. **This is now the THIRD
+   `*NavComponent`-based hub in a row missing this wiring at pilot time — do not assume any
+   `*NavComponent` hub has it; confirm per hub, every time.**
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted
+   forms, per the standing collision-detection discipline). Hub-prefixed to `k8s-fundamentals`
+   — matching this hub's own established progress/search key prefix (`k8s-`, confirmed via the
+   pre-existing `p.isDone('k8s-fundamentals')` nav markup) — with the usual `// NOTE:` comment.
+   All three `ContainersNavComponent` accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'k8s-fundamentals'`
+   key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'containers/fundamentals'`, confirmed the
+   base entry — and its own `K8S_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'containers/fundamentals/<slug>'`.
+4. **`CONTAINERS_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the
+   generic pattern every hub's own dedicated labels map shares — composite subtopic keys there
+   are bare too (`'fundamentals/<slug>'`), since each hub's own labels map has no cross-hub
+   collision risk regardless of what the shared `SUBTOPICS` map needed to do.
+5. **No live playground** — Docker/Kubernetes content has no in-browser runtime, following the
+   same `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/Blazor/Go/
+   DevOps/Node.js's server-only topics) — every code tab across all three subtopics uses plain
+   bash command transcripts, matching the main page's own `codeTabs` style exactly.
+6. Theme: `.k8s-page`/`.k8s-icon`/`.k8s-section` CSS classes, confirmed NOT global (absent from
+   `src/styles.scss`) — every subtopic `.scss` needs the full `.k8s-page { max-width: 860px;
+   margin: 0 auto; }` wrapper rule. `$accent: #326ce5`, `$tint: #eff6ff`, icon content `⎈`,
+   `tech="javascript"` in `app-page-meta` (Containers pages share the JS/TS playground and
+   run-it links, same as CSS/HTML/Node.js/Python/Go/DevOps).
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -1658,6 +1698,9 @@ same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/containers/home/home.ts`. Progress: `k8sTotal=22` in progress.service.ts.
   Containers pages use `app-common-mistakes` AND `app-revision-card`. Reference page has no PageComplete.
   Challenge.language: `'typescript'`. ContainersNavComponent at `shared/containers-nav/containers-nav.ts`.
+  Phase 10: 1 of 22 topics have subtopics (`/containers/fundamentals`, pilot batch, 2026-07-21) —
+  see "Containers/K8s hub subtopic wiring" section above for the `ContainersNavComponent`
+  accordion structural fix and the `k8s-fundamentals` SUBTOPICS-map collision resolution.
 - **Terraform/IaC hub**: 21 trackable topic pages + 2 reference (23 cards total). Feature-complete.
   Purple theme `$accent: #7b42bc`, `$tint: #f5f3ff`. Search prefix `tf-`. Route: `/terraform`.
   CSS classes: `.tf-page`, `.tf-icon`, `.tf-section`. Icon content: `TF`. `tech="javascript"`.
