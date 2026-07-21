@@ -3223,7 +3223,49 @@ off here with a date.
   levels), the `AwsNavComponent` accordion (now the ELEVENTH topic in this hub with subtopics —
   confirmed only DynamoDB's own toggle open, all ten others closed), dark mode (`--bg: #0f172a`)
   applying correctly.)
-- [ ] `/aws/lambda` — Lambda
+- [x] `/aws/lambda` — Lambda (2026-07-21 — 3 subtopics:
+  dlq-only-captures-the-event-not-why-it-failed,
+  snapstart-freezes-init-state-crac-hooks-refresh-it,
+  reserved-concurrency-zero-skips-async-retries-entirely; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own Lambda docs
+  (invocation-async-retain-records.html) that Destinations, not the DLQ the main page's own
+  code tab exclusively shows, are AWS's primary async-failure-handling feature — "As an
+  alternative to an on-failure destination, you can configure your function with a dead-letter
+  queue" — and that a DLQ message only ever contains the raw event plus a 1 KB-capped
+  ErrorMessage, while a Destination's invocation record includes the full request/response
+  context (requestContext.condition, responseContext.functionError, responsePayload) — closing
+  a gap where the words "Destination," "OnFailure," and "OnSuccess" appear nowhere on the main
+  page at all; (2) confirmed via AWS's own SnapStart docs (snapstart.html,
+  snapstart-runtime-hooks-java.md) both a genuine main-page INACCURACY (SnapStart is no longer
+  "Java 11/21 only" — AWS extended it to Python 3.12+ and .NET 8+) and the uniqueness/CRaC
+  runtime-hooks tradeoff a snapshot restore introduces — "the content might not be unique when
+  it is reused across execution environments," fixed via beforeCheckpoint()/afterRestore() hooks
+  registered through Core.getGlobalContext(), with AWS's own documented WeakReference /
+  garbage-collection gotcha for anonymous Resource registrations; (3) confirmed via AWS's own
+  invocation-async-retain-records.html doc that reserved concurrency = 0 on an async-triggered
+  function is a genuine bypass of the normal 2-retry path — "Lambda begins sending new events to
+  the configured dead-letter queue or the on-failure event destination, without any retries" —
+  and that restoring concurrency afterward does NOT auto-replay diverted events, closing a gap
+  where the main page's own "set to 0 to throttle completely" line never distinguishes this from
+  its own "retries 2x, then DLQ" framing. One SnapStart WebFetch attempt (against a guessed URL)
+  returned synthesized, ungrounded content admitting "I don't have access to the actual AWS
+  Lambda web page content" — not trusted or used; a second, correctly-targeted fetch against
+  snapstart.html succeeded with fully-grounded content confirming the language-support fix,
+  per this project's own verify-before-publishing discipline. The main page's own quickRef and
+  theory bullet were both corrected (SnapStart language-exclusivity fix) as a DIRECT edit,
+  browser-confirmed rendering correctly on the live main page. Gotcha sweep covered `.html`
+  bound attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean across all
+  three files), bare `@word`/`{` in `.html` prose (none present), and backtick parity (4/4/6 —
+  the SnapStart file's 6 includes 2 safe inline-code backtick mentions inside its own
+  single-quoted theory `points` field, confirmed safe per the established backtick-in-field
+  rule). Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR with zero actual TypeScript/template compile errors. `git add -A` staged
+  cleanly with no "Filename too long" errors (longest new path 160 relative chars).
+  Browser-verified successfully on all three pages — h1/breadcrumb pairs correct (all 4
+  levels), the `AwsNavComponent` accordion (now the TWELFTH topic in this hub with subtopics
+  — confirmed only Lambda's own toggle open, all eleven others closed), dark mode
+  (`--bg: #0f172a`) applying correctly, and the corrected SnapStart quickRef text confirmed
+  live on the main page via `document.body.innerHTML` check.)
 - [ ] `/aws/api-gateway` — API Gateway
 - [ ] `/aws/cloudwatch` — CloudWatch & X-Ray
 - [ ] `/aws/cloudformation-cdk` — CloudFormation & CDK
