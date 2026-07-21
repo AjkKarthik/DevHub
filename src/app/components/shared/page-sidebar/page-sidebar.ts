@@ -38228,6 +38228,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'EventBridge adds rule-evaluation routing overhead compared to SNS\'s simpler unconditional fan-out, usually negligible but worth knowing.',
     ],
   },
+  'aws/eventbridge/archives-default-to-indefinite-retention-not-free': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EventBridge overview', route: '/aws/eventbridge' },
+      { label: 'InputTransformer Quoting Rules', route: '/aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects' },
+    ],
+    tip: 'An archive with no --retention-days stores events indefinitely by default, and "EventBridge charges apply to archives" — a separate, unbounded cost from normal event ingestion.',
+    gotchas: [
+      'Replay has its own timing quirks: a 10-minute recommended delay before replaying, and events delivered in one-minute batched intervals, not strict chronological order.',
+      'Set an explicit RetentionDays (or use UpdateArchive on an existing archive) rather than relying on any assumed default.',
+    ],
+  },
+  'aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Archives Default to Indefinite Retention', route: '/aws/eventbridge/archives-default-to-indefinite-retention-not-free' },
+      { label: 'Duplicate Pattern Keys', route: '/aws/eventbridge/duplicate-event-pattern-keys-silently-use-the-last-one' },
+    ],
+    tip: 'Quotes are OPTIONAL for scalar InputTemplate variables (EventBridge auto-adds them) — the real rule is never quoting a variable representing a JSON object or array, or its own internal quotes get stripped.',
+    gotchas: [
+      'Quoting aws.events.event.json (or any object/array-valued variable) silently corrupts the nested structure instead of failing loudly.',
+      'The reserved aws.events.event.json variable embeds the full original event — no manual field-by-field reconstruction needed, as long as it stays unquoted.',
+    ],
+  },
+  'aws/eventbridge/duplicate-event-pattern-keys-silently-use-the-last-one': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'InputTransformer Quoting Rules', route: '/aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects' },
+      { label: 'EventBridge overview', route: '/aws/eventbridge' },
+    ],
+    tip: 'A repeated key in an event pattern JSON object silently keeps only the LAST occurrence — PutRule succeeds with no error, and the earlier condition is completely discarded.',
+    gotchas: [
+      'Use $or to genuinely combine two different match types on the same field — duplicating the key does NOT produce AND logic.',
+      'Always verify a multi-condition pattern with test-event-pattern against real sample events — a successful PutRule call alone proves nothing about the intended logic.',
+    ],
+  },
   'aws/step-functions': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

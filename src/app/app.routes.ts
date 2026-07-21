@@ -3325,7 +3325,12 @@ export const routes: Routes = [
       { path: 'malformed-batchitemfailures-fails-the-whole-batch', loadComponent: () => import('./components/cloud/aws/sqs-sns/subtopics/malformed-batchitemfailures-fails-the-whole-batch/malformed-batchitemfailures-fails-the-whole-batch').then(m => m.MalformedBatchitemfailuresFailsTheWholeBatchSubtopic) },
       { path: 'sns-filterpolicyscope-messagebody-skips-duplicate-attrs', loadComponent: () => import('./components/cloud/aws/sqs-sns/subtopics/sns-filterpolicyscope-messagebody-skips-duplicate-attrs/sns-filterpolicyscope-messagebody-skips-duplicate-attrs').then(m => m.SnsFilterpolicyscopeMessagebodySkipsDuplicateAttrsSubtopic) },
     ] },
-    { path: 'eventbridge',         loadComponent: () => import('./components/cloud/aws/eventbridge/eventbridge').then(m => m.AwsEventbridge) },
+    { path: 'eventbridge', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/eventbridge/eventbridge').then(m => m.AwsEventbridge) },
+      { path: 'archives-default-to-indefinite-retention-not-free', loadComponent: () => import('./components/cloud/aws/eventbridge/subtopics/archives-default-to-indefinite-retention-not-free/archives-default-to-indefinite-retention-not-free').then(m => m.ArchivesDefaultToIndefiniteRetentionNotFreeSubtopic) },
+      { path: 'inputtransformer-quoting-differs-for-scalars-vs-objects', loadComponent: () => import('./components/cloud/aws/eventbridge/subtopics/inputtransformer-quoting-differs-for-scalars-vs-objects/inputtransformer-quoting-differs-for-scalars-vs-objects').then(m => m.InputtransformerQuotingDiffersForScalarsVsObjectsSubtopic) },
+      { path: 'duplicate-event-pattern-keys-silently-use-the-last-one', loadComponent: () => import('./components/cloud/aws/eventbridge/subtopics/duplicate-event-pattern-keys-silently-use-the-last-one/duplicate-event-pattern-keys-silently-use-the-last-one').then(m => m.DuplicateEventPatternKeysSilentlyUseTheLastOneSubtopic) },
+    ] },
     { path: 'step-functions',      loadComponent: () => import('./components/cloud/aws/step-functions/step-functions').then(m => m.AwsStepFunctions) },
     { path: 'load-balancing',      loadComponent: () => import('./components/cloud/aws/load-balancing/load-balancing').then(m => m.AwsLoadBalancing) },
     { path: 'cost-optimization',   loadComponent: () => import('./components/cloud/aws/cost-optimization/cost-optimization').then(m => m.AwsCostOptimization) },

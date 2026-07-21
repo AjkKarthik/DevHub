@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EventBridge" topicRoute="/aws/eventbridge" subtopicLabel="Duplicate Pattern Keys Use the Last One" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Duplicate Event Pattern Keys Silently Use the Last One</h1>
+  <p class="page-subtitle">The main page's own six pattern operators, shown in isolation, invite combining two on one field — here's the silent trap in doing that naively.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="EventBridge" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the batch with a silent, PutRule-approved trap the main page's own isolated pattern-operator examples never warn against. Together with the archives and InputTransformer subtopics, this rounds out the main page's own Archives and Rules sections with the operational detail production use of each one surfaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EventBridge" topicRoute="/aws/eventbridge"
+    [prev]="{ label: 'InputTransformer Quoting: Scalars vs Objects', route: '/aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects' }" />
+</div>

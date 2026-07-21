@@ -325,7 +325,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/aws/eventbridge" routerLinkActive="active"><span class="nl-text">EventBridge</span>@if(p.isDone('aws-eventbridge')){<span class="nl-done">✓</span>}@if(d('aws-eventbridge');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/eventbridge" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">EventBridge</span>
+        @if (p.isDone('aws-eventbridge')) {<span class="nl-done">✓</span>}
+        @if (d('aws-eventbridge'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('eventbridge')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('eventbridge')"
+                  (click)="toggleSubtopics('eventbridge', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('eventbridge'); as ebSubs) {
+        @if (isSubtopicsExpanded('eventbridge')) {
+          <div class="nav-subtopics">
+            @for (s of ebSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/step-functions" routerLinkActive="active"><span class="nl-text">Step Functions</span>@if(p.isDone('aws-step-functions')){<span class="nl-done">✓</span>}@if(d('aws-step-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

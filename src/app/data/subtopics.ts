@@ -2530,4 +2530,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'batchItemFailures Fails the Batch', route: '/aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch' },
     { label: 'SNS FilterPolicyScope=MessageBody', route: '/aws/sqs-sns/sns-filterpolicyscope-messagebody-skips-duplicate-attrs' },
   ],
+  'eventbridge': [
+    { label: 'Archives Default to Indefinite Retention', route: '/aws/eventbridge/archives-default-to-indefinite-retention-not-free' },
+    { label: 'InputTransformer Quoting Rules', route: '/aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects' },
+    { label: 'Duplicate Pattern Keys', route: '/aws/eventbridge/duplicate-event-pattern-keys-silently-use-the-last-one' },
+  ],
 };
