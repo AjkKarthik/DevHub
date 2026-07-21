@@ -3082,7 +3082,38 @@ off here with a date.
   in this hub with subtopics — confirmed all seven toggles coexist correctly, with only the current
   page's own topic auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per subtopic,
   dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/iam` — IAM
+- [x] `/aws/iam` — IAM (2026-07-21 — 3 subtopics:
+  permission-boundary-doesnt-limit-role-session-resource-grants,
+  assumerole-durationseconds-fails-not-truncates-past-max-session,
+  abac-tags-need-their-own-deny-untagresource-protection; all three verified against AWS's own
+  documentation via WebFetch before writing — (1) confirmed via AWS's own permission boundaries
+  evaluation-logic doc that a resource-based policy granting to an IAM ROLE's own ARN IS limited
+  by its permission boundary, but the SAME kind of grant to the ASSUMED-ROLE SESSION ARN
+  (arn:...:assumed-role/Name/session) is explicitly NOT limited by an implicit deny in the
+  boundary — closing a gap where the main page's own "boundary sets the maximum allowed
+  permissions" bullet reads as an unconditional rule; (2) confirmed via AWS's own STS AssumeRole
+  API reference that requesting a DurationSeconds beyond a role's own MaxSessionDuration "fails"
+  the operation outright (not silently clamped), plus confirmed the same fail-not-truncate
+  behavior applies to role chaining's separate 1-hour cap — directly cross-referencing and
+  reinforcing this hub's own earlier `/aws/fundamentals` role-chaining subtopic from a different
+  angle — closing a gap where the main page's own "1h default, up to 12h" phrasing reads like a
+  clamping ceiling; (3) confirmed via AWS's own official ABAC tutorial's reference policy (its
+  "DenyUntagSecretsManagerReservedTags" statement, with the explicit comment "these tags are used
+  to control access to resources, therefore removing tags might remove permissions") that ABAC's
+  security model requires SEPARATELY protecting the tags an ABAC condition depends on — closing a
+  real security gap where the main page's own ABAC example tags a role and an EC2 instance with no
+  protection against either tag being changed afterward by an ordinary tagging permission. Gotcha
+  sweep covered `.html` bound attributes, `.ts` single-quoted fields, theory `points` arrays, and
+  an explicit unescaped-`\${` scan (this batch's own ABAC code tabs legitimately reference
+  `\${aws:PrincipalTag/Team}` inside backtick template literals, requiring careful escaping) — all
+  clean, zero misses; backtick parity across all three `.ts` files — even counts (4/4/4). Build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with
+  zero actual TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename
+  too long" errors (longest new path ~175 relative chars). Browser-verified successfully on all
+  three pages — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now
+  the EIGHTH topic in this hub with subtopics — confirmed all eight toggles coexist correctly,
+  with only the current page's own topic auto-expanding), sidebar showing tailored `tip`/
+  `gotchas`/`related` per subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/iam-roles` — IAM Roles & Federation
 - [ ] `/aws/rds-aurora` — RDS & Aurora
 - [ ] `/aws/dynamodb` — DynamoDB
