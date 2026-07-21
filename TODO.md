@@ -1946,7 +1946,45 @@ off here with a date.
   marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic, confirmed via
   body-text substring check), dark mode (`--bg: #0f172a`) all working correctly. **This continues
   the Containers/K8s hub's Phase 10 rollout — 2 of 22 topics complete.**)
-- [ ] `/containers/docker-images` — Docker Images & Registry
+- [x] `/containers/docker-images` — Docker Images & Registry (2026-07-21 — 3 subtopics:
+  prune-order-stopped-containers-protect-images, all-tags-push-uploads-shared-layers-once,
+  registry-mirror-only-intercepts-docker-hub; the first and third verified against official Docker
+  documentation via WebFetch/WebSearch, the second reasoned entirely from two of the main page's own
+  separately-stated principles — (1) confirmed Docker's own definition verbatim: an image counts as
+  unused for `docker image prune -a` only if it has "at least one container associated to them"
+  removed, meaning no containers of ANY state (running or stopped) reference it — sharpening the
+  main page's own quiz answer ("not currently referenced by any container") into the precise rule
+  that stopped, unremoved containers protect their images exactly as effectively as running ones,
+  making the relative order of `docker container prune` and `docker image prune -a` change the
+  outcome of the SAME command; (2) reasoned directly from the main page's own two already-stated
+  principles — "docker tag creates a new reference... no data is copied" and "docker push uploads
+  only layers not yet present in the remote registry" — applied to the main page's own code tab,
+  which tags one image three times then pushes `--all-tags` with a bare "push all tags at once"
+  comment and no cost explanation; traced that the second and third tag pushes upload zero layer
+  bytes, only a small manifest, since the registry already holds every digest from the first push;
+  (3) confirmed Docker's own documented scope verbatim: "it's currently not possible to mirror
+  another private registry, and only the central Hub can be mirrored" and "if registry mirrors are
+  configured and a user attempts to pull an image from a registry that is not Docker Hub, the
+  mirrors are not considered" — scoping down the main page's own registry-mirrors bullet, introduced
+  as the final item in a list covering Docker Hub, GHCR, ECR, ACR, and GAR together, into the much
+  narrower reality that it only ever intercepts pulls resolving to docker.io, leaving every other
+  registry mentioned on the same page completely unaffected regardless of configuration. `docker-images`
+  collision-checked in `src/app/data/subtopics.ts` (both quoted and unquoted forms) — confirmed
+  collision-free, added as a bare key. Reused the now-fixed `ContainersNavComponent` local-accordion
+  pattern with no further structural changes needed — generalizing cleanly to a third topic in the
+  same hub. Gotcha sweep (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis
+  present; bare single/double brace sweep — clean; apostrophe-after-letter check across all `.ts`
+  fields — clean; backtick parity across all three `.ts` files — even counts (28/22/16); `\${`
+  interpolation-risk scan — clean, no unescaped instances; file-existence check — all 9 files
+  confirmed present, no MAX_PATH issues) came back clean; build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" condition (exceeded by 45.66 kB at this site's
+  current scale, per CLAUDE.md's own known-issues note) with zero actual TypeScript/template compile
+  errors, confirmed via a targeted grep for ERROR lines; browser-verified successfully via direct DOM
+  query — content (all three h1/breadcrumb pairs correct), breadcrumb (all 4 levels), the
+  `ContainersNavComponent` accordion (`.nav-subtopics` container `display: flex`, link correctly
+  marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic, confirmed via
+  body-text substring check), dark mode (`--bg: #0f172a`) all working correctly. **This continues
+  the Containers/K8s hub's Phase 10 rollout — 3 of 22 topics complete.**)
 - [ ] `/containers/dockerfile` — Writing Dockerfiles
 - [ ] `/containers/multi-stage` — Multi-Stage Builds
 - [ ] `/containers/compose` — Docker Compose
