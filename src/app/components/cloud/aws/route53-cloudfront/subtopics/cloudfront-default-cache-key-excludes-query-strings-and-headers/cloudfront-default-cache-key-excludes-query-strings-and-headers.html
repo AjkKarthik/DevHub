@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Route 53 & CloudFront" topicRoute="/aws/route53-cloudfront" subtopicLabel="Default Cache Key Scope" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">CloudFront's Default Cache Key Excludes Query Strings and Headers</h1>
+  <p class="page-subtitle">Only the distribution domain and URL path are in the default cache key — everything else needs an explicit cache policy, or it silently returns the wrong cached response.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="CloudFront" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic disambiguates the main page's own compressed "URL path + selected headers/query strings" wording into the precise default behavior — and shows exactly why the main page's own "CachingDisabled... for APIs" advice exists. Together with the weighted-routing and EvaluateTargetHealth subtopics, this batch covers three genuinely distinct Route 53/CloudFront gaps the main page's own dense theory bullets only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Route 53 & CloudFront" topicRoute="/aws/route53-cloudfront"
+    [prev]="{ label: 'EvaluateTargetHealth Is a No-Op for CloudFront/S3', route: '/aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets' }" />
+</div>

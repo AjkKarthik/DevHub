@@ -108,7 +108,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/aws/route53-cloudfront" routerLinkActive="active"><span class="nl-text">Route 53 &amp; CloudFront</span>@if(p.isDone('aws-route53-cloudfront')){<span class="nl-done">✓</span>}@if(d('aws-route53-cloudfront');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/route53-cloudfront" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Route 53 &amp; CloudFront</span>
+        @if (p.isDone('aws-route53-cloudfront')) {<span class="nl-done">✓</span>}
+        @if (d('aws-route53-cloudfront'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('route53-cloudfront')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('route53-cloudfront')"
+                  (click)="toggleSubtopics('route53-cloudfront', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('route53-cloudfront'); as r53Subs) {
+        @if (isSubtopicsExpanded('route53-cloudfront')) {
+          <div class="nav-subtopics">
+            @for (s of r53Subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/load-balancing" routerLinkActive="active"><span class="nl-text">Elastic Load Balancing</span>@if(p.isDone('aws-load-balancing')){<span class="nl-done">✓</span>}@if(d('aws-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

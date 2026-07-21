@@ -3247,7 +3247,12 @@ export const routes: Routes = [
       { path: 'cross-region-vpc-peering-cant-reference-security-groups-use-cidr', loadComponent: () => import('./components/cloud/aws/vpc/subtopics/cross-region-vpc-peering-cant-reference-security-groups-use-cidr/cross-region-vpc-peering-cant-reference-security-groups-use-cidr').then(m => m.CrossRegionVpcPeeringCantReferenceSecurityGroupsUseCidrSubtopic) },
       { path: 'flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag', loadComponent: () => import('./components/cloud/aws/vpc/subtopics/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag').then(m => m.FlowLogsArentRealTimeAggregationIntervalPlusDeliveryLagSubtopic) },
     ] },
-    { path: 'route53-cloudfront',  loadComponent: () => import('./components/cloud/aws/route53-cloudfront/route53-cloudfront').then(m => m.AwsRoute53Cloudfront) },
+    { path: 'route53-cloudfront', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/route53-cloudfront/route53-cloudfront').then(m => m.AwsRoute53Cloudfront) },
+      { path: 'weight-zero-is-a-silent-standby-not-truly-disabled', loadComponent: () => import('./components/cloud/aws/route53-cloudfront/subtopics/weight-zero-is-a-silent-standby-not-truly-disabled/weight-zero-is-a-silent-standby-not-truly-disabled').then(m => m.WeightZeroIsASilentStandbyNotTrulyDisabledSubtopic) },
+      { path: 'evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets', loadComponent: () => import('./components/cloud/aws/route53-cloudfront/subtopics/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets').then(m => m.EvaluatetargethealthNoOpForCloudfrontS3AliasTargetsSubtopic) },
+      { path: 'cloudfront-default-cache-key-excludes-query-strings-and-headers', loadComponent: () => import('./components/cloud/aws/route53-cloudfront/subtopics/cloudfront-default-cache-key-excludes-query-strings-and-headers/cloudfront-default-cache-key-excludes-query-strings-and-headers').then(m => m.CloudfrontDefaultCacheKeyExcludesQueryStringsAndHeadersSubtopic) },
+    ] },
     { path: 's3',                  loadComponent: () => import('./components/cloud/aws/s3/s3').then(m => m.AwsS3) },
     { path: 'ebs-efs',             loadComponent: () => import('./components/cloud/aws/ebs-efs/ebs-efs').then(m => m.AwsEbsEfs) },
     { path: 'iam',                 loadComponent: () => import('./components/cloud/aws/iam/iam').then(m => m.AwsIam) },

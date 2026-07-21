@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Route 53 & CloudFront" topicRoute="/aws/route53-cloudfront" subtopicLabel="Weight 0 Isn't Truly Disabled" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Weight 0 Is a Silent Standby, Not Truly Disabled</h1>
+  <p class="page-subtitle">A weight-0 record isn't inert — Route 53 automatically falls back to it if every nonzero-weight record in the group becomes unhealthy.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Route 53" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects the main page's own oversimplified "Weight 0 disables without removing the record" line with AWS's actual documented fallback behavior — a real operational surprise for anyone treating weight 0 as equivalent to deletion. Next, the EvaluateTargetHealth subtopic covers a second alias-record nuance the main page's own mixed record examples never explain.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Route 53 & CloudFront" topicRoute="/aws/route53-cloudfront"
+    [next]="{ label: 'EvaluateTargetHealth Is a No-Op for CloudFront/S3', route: '/aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets' }" />
+</div>

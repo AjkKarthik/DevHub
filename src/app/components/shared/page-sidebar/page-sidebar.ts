@@ -37975,6 +37975,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CloudFront origin access control (restricting direct access to an S3 origin bucket, forcing traffic through CloudFront) prevents bypassing the CDN\'s caching and security layer entirely.',
     ],
   },
+  'aws/route53-cloudfront/weight-zero-is-a-silent-standby-not-truly-disabled': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Route 53 & CloudFront overview', route: '/aws/route53-cloudfront' },
+      { label: 'EvaluateTargetHealth Scope', route: '/aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets' },
+    ],
+    tip: 'A weight-0 record isn\'t inert — Route 53 automatically falls back to answering with it if every nonzero-weight record in the group becomes unhealthy.',
+    gotchas: [
+      'A weight-0 record left after a "completed" migration can silently start serving live traffic again during an outage of the active version.',
+      'If the weight-0 record ALSO has an unhealthy standalone health check when the fallback condition triggers, Route 53 answers with neither record at all.',
+    ],
+  },
+  'aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: "Weight 0 Isn't Truly Disabled", route: '/aws/route53-cloudfront/weight-zero-is-a-silent-standby-not-truly-disabled' },
+      { label: 'Default Cache Key Scope', route: '/aws/route53-cloudfront/cloudfront-default-cache-key-excludes-query-strings-and-headers' },
+    ],
+    tip: 'EvaluateTargetHealth only provides real benefit for ELB/Elastic Beanstalk alias targets — it\'s a documented no-op for CloudFront, S3, and other highly-available service targets.',
+    gotchas: [
+      'A CloudFront alias with EvaluateTargetHealth: true gives no signal about the health of the origin BEHIND the distribution — CloudFront itself stays "healthy" regardless.',
+      'Real failover for CloudFront/S3 needs a standalone Route 53 health check attached via HealthCheckId, not EvaluateTargetHealth.',
+    ],
+  },
+  'aws/route53-cloudfront/cloudfront-default-cache-key-excludes-query-strings-and-headers': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EvaluateTargetHealth Scope', route: '/aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets' },
+      { label: 'Route 53 & CloudFront overview', route: '/aws/route53-cloudfront' },
+    ],
+    tip: 'The default CloudFront cache key is ONLY the distribution domain plus URL path — query strings, headers, and cookies are excluded unless a cache policy explicitly adds them.',
+    gotchas: [
+      'An API whose responses vary by query string can silently serve the WRONG cached response under the default cache key — a custom cache policy must whitelist the specific relevant parameters.',
+      'Adding overly-variable values (like User-Agent) into the cache key can explode the number of cached copies and tank the cache hit ratio.',
+    ],
+  },
   'aws/cloudwatch': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

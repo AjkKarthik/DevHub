@@ -2464,4 +2464,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Cross-Region SG Reference Limit', route: '/aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr' },
     { label: "Flow Logs Aren't Real-Time", route: '/aws/vpc/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag' },
   ],
+  'route53-cloudfront': [
+    { label: "Weight 0 Isn't Truly Disabled", route: '/aws/route53-cloudfront/weight-zero-is-a-silent-standby-not-truly-disabled' },
+    { label: 'EvaluateTargetHealth Scope', route: '/aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets' },
+    { label: 'Default Cache Key Scope', route: '/aws/route53-cloudfront/cloudfront-default-cache-key-excludes-query-strings-and-headers' },
+  ],
 };

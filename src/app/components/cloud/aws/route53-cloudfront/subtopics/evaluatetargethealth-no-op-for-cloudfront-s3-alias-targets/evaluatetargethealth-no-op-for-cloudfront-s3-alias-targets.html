@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Route 53 & CloudFront" topicRoute="/aws/route53-cloudfront" subtopicLabel="EvaluateTargetHealth Scope" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">EvaluateTargetHealth Is a No-Op for CloudFront/S3 Alias Targets</h1>
+  <p class="page-subtitle">The main page's own always-true pattern only does something real for ALB/Elastic Beanstalk targets — CloudFront and S3 need a standalone health check instead.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Route 53" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own uniform "EvaluateTargetHealth: true everywhere" pattern into the specific set of targets it actually does something for. Next, the CloudFront cache key subtopic corrects a second piece of imprecise main-page wording — what's actually in the default cache key, and what isn't.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Route 53 & CloudFront" topicRoute="/aws/route53-cloudfront"
+    [prev]="{ label: 'Weight 0 Is a Silent Standby, Not Truly Disabled', route: '/aws/route53-cloudfront/weight-zero-is-a-silent-standby-not-truly-disabled' }"
+    [next]="{ label: 'CloudFront Default Cache Key Excludes Query Strings', route: '/aws/route53-cloudfront/cloudfront-default-cache-key-excludes-query-strings-and-headers' }" />
+</div>
