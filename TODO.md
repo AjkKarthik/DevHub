@@ -2248,7 +2248,54 @@ off here with a date.
   (`.nav-subtopics` container `display: flex`, link correctly marked `active`), sidebar (tailored
   `tip`/`gotchas`/`related` per subtopic, confirmed via body-text substring check), dark mode (`--bg: #0f172a`)
   all working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 9 of 22 topics complete.**)
-- [ ] `/containers/pods-deployments` — Pods, Deployments & ReplicaSets
+- [x] `/containers/pods-deployments` — Pods, Deployments & ReplicaSets (2026-07-21 — 3 subtopics:
+  terminating-pods-still-receive-traffic-without-a-prestop-delay,
+  minreadyseconds-throttles-rollout-pace-not-just-pod-status,
+  generation-vs-observedgeneration-tracks-controller-catch-up; all three verified against
+  official Kubernetes documentation via WebSearch before writing — (1) confirmed the main
+  page's own `terminationGracePeriodSeconds` quickRef entry describes only the kubelet's own
+  SIGTERM/SIGKILL countdown, while Kubernetes' own documented termination flow
+  (kubernetes.io/docs/tutorials/services/pods-and-endpoint-termination-flow) shows the
+  endpoints controller removes the Pod from Endpoints/EndpointSlice at the SAME moment,
+  requiring every OTHER node's kube-proxy to separately observe and reprogram its own
+  iptables/IPVS rules — an unsynchronized, cross-node propagation the main page never
+  mentions, directly cross-referencing this hub's own `k8s-architecture` subtopic on
+  kube-proxy's kernel-only packet forwarding; the documented fix (a `preStop` sleep hook)
+  was confirmed via multiple independent sources describing the same ~5-15s delay pattern;
+  (2) confirmed via WebSearch that the Deployment rollout controller's own maxSurge/
+  maxUnavailable pacing math uses `status.availableReplicas` — Ready continuously for
+  `minReadySeconds` — not just Ready count, meaning the main page's own theory bullet
+  ("seconds a new Pod must be ready before being counted as available") undersells
+  `minReadySeconds` as a cosmetic status-reporting delay when it actually throttles total
+  rollout duration, compounding across every sequential replacement under a small maxSurge;
+  (3) confirmed via WebSearch and Kubernetes' own API conventions that `metadata.generation`
+  (API-server-owned, bumps only on spec changes) and `status.observedGeneration`
+  (Deployment-controller-owned, written once the controller has processed that generation)
+  are two distinct fields with no synchronization guarantee — closing a real gap where the
+  main page's own Challenge hint uses both terms with zero prior explanation anywhere else
+  on the page (not in quickRef, theory, mistakes, quiz, or QnA), unlike readyReplicas/
+  unavailableReplicas which the QnA section does explain. `pods-deployments`
+  collision-checked in `src/app/data/subtopics.ts` (both quoted and unquoted forms) —
+  confirmed collision-free, added as a bare key. Reused the `ContainersNavComponent`
+  local-accordion pattern with no further structural changes needed — generalizing cleanly
+  to an eleventh topic in the same hub. Gotcha sweep (bare `@` — none found; heading fields
+  — no HTML tags or backtick-emphasis present; bare single/double brace sweep — clean;
+  apostrophe-after-letter check across all `.html` bound attributes and `.ts` fields —
+  clean; backtick parity across all three `.ts` files — even counts (20/20/6); `\${`
+  interpolation-risk scan — clean, no unescaped instances; `git add -A` file-existence check
+  — all 9 files confirmed present, no MAX_PATH issues) came back clean; build reported only
+  the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (now ~94kB
+  over, continuing to grow as the site scales) plus one confirmed pre-existing, unrelated
+  `NG8113: RouterLink is not used` warning on `pods-deployments.ts` itself (not touched by
+  this batch's own changes) with zero actual TypeScript/template compile errors, confirmed
+  via a targeted grep for ERROR lines; browser-verified successfully via direct page-text
+  and DOM query on all three pages — content (all three h1/breadcrumb pairs correct),
+  breadcrumb (all 4 levels), the `ContainersNavComponent` accordion (toggle button present,
+  `.nav-subtopics` container found via query), sidebar (tailored `tip`/`gotchas`/`related`
+  per subtopic, confirmed via full page-text render, not DEFAULT fallback), dark mode
+  (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes on all
+  three) all working correctly. **This continues the Containers/K8s hub's Phase 10 rollout —
+  11 of 22 topics complete.**)
 - [ ] `/containers/services-ingress` — Services & Ingress
 - [ ] `/containers/configmaps-secrets` — ConfigMaps & Secrets
 - [ ] `/containers/storage` — Persistent Volumes & Storage
