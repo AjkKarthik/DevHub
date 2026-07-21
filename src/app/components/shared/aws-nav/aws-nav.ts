@@ -285,7 +285,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/aws/api-gateway" routerLinkActive="active"><span class="nl-text">API Gateway</span>@if(p.isDone('aws-api-gateway')){<span class="nl-done">✓</span>}@if(d('aws-api-gateway');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/api-gateway" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">API Gateway</span>
+        @if (p.isDone('aws-api-gateway')) {<span class="nl-done">✓</span>}
+        @if (d('aws-api-gateway'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('api-gateway')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('api-gateway')"
+                  (click)="toggleSubtopics('api-gateway', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('api-gateway'); as apigwSubs) {
+        @if (isSubtopicsExpanded('api-gateway')) {
+          <div class="nav-subtopics">
+            @for (s of apigwSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/sqs-sns" routerLinkActive="active"><span class="nl-text">SQS &amp; SNS</span>@if(p.isDone('aws-sqs-sns')){<span class="nl-done">✓</span>}@if(d('aws-sqs-sns');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/aws/eventbridge" routerLinkActive="active"><span class="nl-text">EventBridge</span>@if(p.isDone('aws-eventbridge')){<span class="nl-done">✓</span>}@if(d('aws-eventbridge');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/aws/step-functions" routerLinkActive="active"><span class="nl-text">Step Functions</span>@if(p.isDone('aws-step-functions')){<span class="nl-done">✓</span>}@if(d('aws-step-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

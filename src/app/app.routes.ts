@@ -3295,7 +3295,12 @@ export const routes: Routes = [
       { path: 'snapstart-freezes-init-state-crac-hooks-refresh-it', loadComponent: () => import('./components/cloud/aws/lambda/subtopics/snapstart-freezes-init-state-crac-hooks-refresh-it/snapstart-freezes-init-state-crac-hooks-refresh-it').then(m => m.SnapstartFreezesInitStateCracHooksRefreshItSubtopic) },
       { path: 'reserved-concurrency-zero-skips-async-retries-entirely', loadComponent: () => import('./components/cloud/aws/lambda/subtopics/reserved-concurrency-zero-skips-async-retries-entirely/reserved-concurrency-zero-skips-async-retries-entirely').then(m => m.ReservedConcurrencyZeroSkipsAsyncRetriesEntirelySubtopic) },
     ] },
-    { path: 'api-gateway',         loadComponent: () => import('./components/cloud/aws/api-gateway/api-gateway').then(m => m.AwsApiGateway) },
+    { path: 'api-gateway', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/api-gateway/api-gateway').then(m => m.AwsApiGateway) },
+      { path: 'authorizer-cache-applies-to-every-resource-not-just-one', loadComponent: () => import('./components/cloud/aws/api-gateway/subtopics/authorizer-cache-applies-to-every-resource-not-just-one/authorizer-cache-applies-to-every-resource-not-just-one').then(m => m.AuthorizerCacheAppliesToEveryResourceNotJustOneSubtopic) },
+      { path: 'resource-policy-has-two-evaluation-phases-not-one', loadComponent: () => import('./components/cloud/aws/api-gateway/subtopics/resource-policy-has-two-evaluation-phases-not-one/resource-policy-has-two-evaluation-phases-not-one').then(m => m.ResourcePolicyHasTwoEvaluationPhasesNotOneSubtopic) },
+      { path: 'websocket-disconnect-is-best-effort-not-guaranteed', loadComponent: () => import('./components/cloud/aws/api-gateway/subtopics/websocket-disconnect-is-best-effort-not-guaranteed/websocket-disconnect-is-best-effort-not-guaranteed').then(m => m.WebsocketDisconnectIsBestEffortNotGuaranteedSubtopic) },
+    ] },
     { path: 'cloudwatch',          loadComponent: () => import('./components/cloud/aws/cloudwatch/cloudwatch').then(m => m.AwsCloudwatch) },
     { path: 'cloudformation-cdk',  loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/cloudformation-cdk').then(m => m.AwsCloudformationCdk) },
     { path: 'security',            loadComponent: () => import('./components/cloud/aws/security/security').then(m => m.AwsSecurity) },

@@ -2504,4 +2504,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SnapStart Frozen Init State', route: '/aws/lambda/snapstart-freezes-init-state-crac-hooks-refresh-it' },
     { label: 'Reserved Concurrency Zero', route: '/aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely' },
   ],
+  'api-gateway': [
+    { label: 'Authorizer Cache Scope', route: '/aws/api-gateway/authorizer-cache-applies-to-every-resource-not-just-one' },
+    { label: 'Resource Policy Two Phases', route: '/aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one' },
+    { label: 'WebSocket $disconnect', route: '/aws/api-gateway/websocket-disconnect-is-best-effort-not-guaranteed' },
+  ],
 };

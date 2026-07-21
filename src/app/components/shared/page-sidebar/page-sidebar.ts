@@ -37992,6 +37992,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Throttling limits are configured per API and per usage plan — a default limit too low for legitimate traffic silently causes 429s under normal load spikes.',
     ],
   },
+  'aws/api-gateway/authorizer-cache-applies-to-every-resource-not-just-one': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'API Gateway overview', route: '/aws/api-gateway' },
+      { label: 'Resource Policy Two Phases', route: '/aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one' },
+    ],
+    tip: 'A TOKEN authoriser\'s cached policy is keyed on the token alone — the same cached policy is reused for ANY route called with that token within the TTL, so it must cover "all resources and methods," per AWS\'s own docs.',
+    gotchas: [
+      'AWS recommends REQUEST authorisers over TOKEN — multiple identity sources combine into a fine-grained cache key, and a missing identity source auto-401s without invoking the Lambda at all.',
+      'A narrowly-scoped IAM policy Resource returned by a TOKEN authoriser can incorrectly deny OTHER routes reusing the same cached policy.',
+    ],
+  },
+  'aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Authorizer Cache Scope', route: '/aws/api-gateway/authorizer-cache-applies-to-every-resource-not-just-one' },
+      { label: 'WebSocket $disconnect', route: '/aws/api-gateway/websocket-disconnect-is-best-effort-not-guaranteed' },
+    ],
+    tip: 'The pre-authoriser phase of resource policy evaluation only screens for explicit denials — an explicit Allow never bypasses the authoriser, it only matters in the SECOND, combined evaluation phase that runs afterward.',
+    gotchas: [
+      'Per AWS\'s own Table A, a Deny from either the authoriser or the resource policy always wins in the combined phase — it is not "whichever ran last."',
+      'Cross-account access is stricter: both the resource policy AND the IAM/Cognito authorizer must explicitly allow — silence on either side denies.',
+    ],
+  },
+  'aws/api-gateway/websocket-disconnect-is-best-effort-not-guaranteed': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Resource Policy Two Phases', route: '/aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one' },
+      { label: 'API Gateway overview', route: '/aws/api-gateway' },
+    ],
+    tip: '$connect is a blocking gate — the connection doesn\'t exist until it succeeds. $disconnect is explicitly documented as best-effort — AWS "cannot guarantee delivery," especially for abrupt (code 1006) disconnects.',
+    gotchas: [
+      'Cleanup logic that MUST run exactly once (decrementing an active-user counter) cannot rely on $disconnect alone — pair it with a TTL-based heartbeat/expiry pattern.',
+      'A clean client-initiated close and an abrupt network failure are NOT equally likely to deliver $disconnect — only the former has a real closing handshake.',
+    ],
+  },
   'aws/s3': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
