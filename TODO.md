@@ -3045,7 +3045,43 @@ off here with a date.
   topic in this hub with subtopics — confirmed all six toggles coexist correctly, with only the
   current page's own topic auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per
   subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/ebs-efs` — EBS, EFS & FSx
+- [x] `/aws/ebs-efs` — EBS, EFS & FSx (2026-07-21 — 3 subtopics:
+  modifyvolume-rate-limit-must-wait-for-completed-state,
+  efs-access-point-iam-scoping-requires-accesspointarn-condition,
+  efs-after-1-access-promotes-files-back-to-standard-immediately; all three verified against AWS's
+  own documentation via WebFetch before writing — (1) confirmed AWS's own EBS Elastic Volumes
+  considerations state a volume must reach the "completed" state before another modification can be
+  initiated (a 1 TiB volume can take up to 6 hours), plus a hard 4-modifications-per-rolling-24-hour
+  quota with no cancel option for an in-progress request — closing a gap where the main page's own
+  "no downtime" ModifyVolume framing never mentions this rate limit at all; (2) confirmed via AWS's
+  own EFS access-point IAM policy doc that the elasticfilesystem:AccessPointArn condition key is
+  what actually scopes an IAM role's ClientMount permission to one specific access point — without
+  it, a role can mount ANY access point on the file system regardless of its own task definition's
+  intent — closing a gap where the main page's own multi-tenant Access Points bullet frames POSIX
+  identity enforcement as the whole isolation story; (3) confirmed via AWS's own EFS LifecyclePolicy
+  API reference that TransitionToPrimaryStorageClass accepts only AFTER_1_ACCESS as its value — a
+  SINGLE read promotes a file back to Standard immediately, with metadata operations (directory
+  listing) explicitly not counting as access — closing a gap where the main page's own EFS code tab
+  uses this exact setting with zero explanation anywhere in its own theory bullets. **A dropped,
+  unverifiable fourth candidate angle worth recording**: multi-volume/RAID EBS snapshot crash
+  consistency (the CreateSnapshots plural API) — WebFetch could not retrieve the actual page content
+  for the specific claim (returned only a page title, twice, on two separate attempts) and produced
+  a plausible-sounding but ungrounded synthesized explanation instead; per this project's own
+  standing "verify before publishing, drop the angle if it won't verify cleanly" discipline, this
+  angle was dropped rather than published on an unconfirmed claim — the general create-snapshot page
+  DID load successfully and confirms multi-volume snapshots exist as a distinct feature and that
+  individual snapshots should have writes paused/unmounted first for consistency, but the deeper
+  "why exactly does CreateSnapshots achieve consistency" mechanism was never independently confirmed
+  and was correctly left unpublished. Gotcha sweep covered `.html` bound attributes, `.ts`
+  single-quoted fields, theory `points` arrays, and a `${` interpolation-risk scan — all clean, zero
+  misses; backtick parity across all three `.ts` files — even counts (4/4/4). Build reported only
+  the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with zero actual
+  TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename too long" errors
+  (longest new path ~177 relative chars). Browser-verified successfully on all three pages —
+  h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now the SEVENTH topic
+  in this hub with subtopics — confirmed all seven toggles coexist correctly, with only the current
+  page's own topic auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per subtopic,
+  dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/iam` — IAM
 - [ ] `/aws/iam-roles` — IAM Roles & Federation
 - [ ] `/aws/rds-aurora` — RDS & Aurora
