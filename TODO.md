@@ -2165,7 +2165,51 @@ off here with a date.
   marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic, confirmed via body-text
   substring check), dark mode (`--bg: #0f172a`) all working correctly. **This continues the
   Containers/K8s hub's Phase 10 rollout — 7 of 22 topics complete.**)
-- [ ] `/containers/k8s-architecture` — Kubernetes Architecture
+- [x] `/containers/k8s-architecture` — Kubernetes Architecture (2026-07-21 — 3 subtopics:
+  not-ready-eviction-is-taint-based-not-a-fixed-flag, dockershim-removal-does-not-break-docker-built-images,
+  kube-proxy-programs-rules-it-does-not-forward-packets; all three verified against official Kubernetes
+  documentation and Docker's own dockershim-removal FAQ via WebFetch/WebSearch before writing — **also fixed
+  a real, pre-existing, live search bug found while wiring**: the search index route `k8s-architecture`
+  collided with the hub's own generic `k8s-` prefix-strip rule in `search.ts`'s `url()` function — since this
+  topic's own bare slug happens to start with the literal string `k8s-`, stripping the hub prefix produced
+  `/containers/architecture` (a non-existent route) instead of the real `/containers/k8s-architecture`; fixed
+  by adding a special-cased check for this exact route (and any of its own subtopics) before the generic rule,
+  confirmed via the live search UI showing the corrected `href="/containers/k8s-architecture"` before this fix
+  would have shown the broken URL — (1) confirmed Kubernetes' own current documented eviction mechanism
+  verbatim: taint-based eviction applies a `node.kubernetes.io/not-ready:NoExecute` (or `:unreachable:NoExecute`)
+  taint, with pods receiving an automatically-injected default `tolerationSeconds: 300` from the
+  DefaultTolerationSeconds admission controller, and that this mechanism "has superseded" the older
+  `node-monitor-grace-period`/`pod-eviction-timeout` kube-controller-manager flags the main page's own QnA
+  describes as if still current — same default numeric outcome (5 minutes), genuinely different (and
+  per-pod-configurable) mechanism; (2) confirmed via Docker's own dockershim-removal FAQ verbatim: "Your images
+  that ran on Kubernetes yesterday with dockershim will run unchanged on Kubernetes 1.24 without dockershim...
+  Container images created by Docker are compliant with the Open Container Initiative (OCI)" — scoping down the
+  main page's own one-clause QnA mention into the precise, widely-misread distinction between Docker as a
+  node-level runtime daemon (what changed) and Docker as a build tool producing OCI images (completely
+  unaffected); (3) confirmed via WebSearch that kube-proxy in iptables/IPVS mode "no longer works as a reverse
+  proxy load balancing traffic between backend Pods... packets never pass through the kube-proxy process;
+  they're handled entirely by kernel netfilter rules" — contrasted against the legacy userspace mode (a genuine
+  in-path proxy) to explain what the main page's own accurate-but-incomplete bullets ("programs iptables/IPVS
+  rules") never state: kube-proxy's own name actively suggests the opposite of how its default modes actually
+  work. `k8s-architecture` collision-checked in `src/app/data/subtopics.ts` (both quoted and unquoted forms) —
+  confirmed collision-free, added as a bare key (no relation to the SEPARATE search.ts routing collision this
+  batch fixed). Reused the now-fixed `ContainersNavComponent` local-accordion pattern with no further structural
+  changes needed — generalizing cleanly to an eighth topic in the same hub. Gotcha sweep (bare `@` — none found;
+  heading fields — no HTML tags or backtick-emphasis present; bare single/double brace sweep — clean;
+  apostrophe-after-letter check across all `.ts` fields — clean; backtick parity across all three `.ts` files —
+  even counts (32/12/4); `\${` interpolation-risk scan — clean, no unescaped instances; file-existence check —
+  all 9 files confirmed present, no MAX_PATH issues) came back clean; build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" condition (exceeded by 75.31 kB at this site's current
+  scale, per CLAUDE.md's own known-issues note) plus one pre-existing, unrelated `NG8113` unused-RouterLink
+  warning (confirmed unrelated to this batch's own changes) with zero actual TypeScript/template compile
+  errors, confirmed via a targeted grep for ERROR lines; browser-verified successfully via direct DOM query —
+  content (all three h1/breadcrumb pairs correct), breadcrumb (all 4 levels), the `ContainersNavComponent`
+  accordion (`.nav-subtopics` container `display: flex`, link correctly marked `active`), sidebar (tailored
+  `tip`/`gotchas`/`related` per subtopic, confirmed via body-text substring check), dark mode
+  (`--bg: #0f172a`) all working correctly, AND confirmed the search-URL fix directly via the live search UI
+  (Ctrl+K, typed "Kubernetes Architecture", confirmed the result option's own `href` attribute now correctly
+  reads `/containers/k8s-architecture`). **This continues the Containers/K8s hub's Phase 10 rollout — 8 of 22
+  topics complete.**)
 - [ ] `/containers/kubectl` — kubectl Fundamentals
 - [ ] `/containers/pods-deployments` — Pods, Deployments & ReplicaSets
 - [ ] `/containers/services-ingress` — Services & Ingress

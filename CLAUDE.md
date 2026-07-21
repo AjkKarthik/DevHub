@@ -1698,11 +1698,16 @@ do this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/containers/home/home.ts`. Progress: `k8sTotal=22` in progress.service.ts.
   Containers pages use `app-common-mistakes` AND `app-revision-card`. Reference page has no PageComplete.
   Challenge.language: `'typescript'`. ContainersNavComponent at `shared/containers-nav/containers-nav.ts`.
-  Phase 10: 7 of 22 topics have subtopics (`/containers/fundamentals`, `/containers/docker-cli`,
+  Phase 10: 8 of 22 topics have subtopics (`/containers/fundamentals`, `/containers/docker-cli`,
   `/containers/docker-images`, `/containers/dockerfile`, `/containers/multi-stage`,
-  `/containers/compose`, `/containers/compose-profiles`, 2026-07-21) — see "Containers/K8s hub
-  subtopic wiring" section above for the `ContainersNavComponent` accordion structural fix and the
-  `k8s-fundamentals` SUBTOPICS-map collision resolution.
+  `/containers/compose`, `/containers/compose-profiles`, `/containers/k8s-architecture`,
+  2026-07-21) — see "Containers/K8s hub subtopic wiring" section above for the
+  `ContainersNavComponent` accordion structural fix and the `k8s-fundamentals` SUBTOPICS-map
+  collision resolution. Note: `search.ts`'s `url()` needed a special case for
+  `k8s-architecture` specifically — its own bare topic slug happens to start with the hub's
+  `k8s-` prefix, so the generic prefix-strip rule was wrongly producing
+  `/containers/architecture` instead of `/containers/k8s-architecture`; check any future
+  hub/topic slug that itself starts with its own hub's search-prefix string for the same risk.
 - **Terraform/IaC hub**: 21 trackable topic pages + 2 reference (23 cards total). Feature-complete.
   Purple theme `$accent: #7b42bc`, `$tint: #f5f3ff`. Search prefix `tf-`. Route: `/terraform`.
   CSS classes: `.tf-page`, `.tf-icon`, `.tf-section`. Icon content: `TF`. `tech="javascript"`.
