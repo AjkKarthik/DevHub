@@ -36812,6 +36812,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Toil (manual, repetitive, automatable operational work) directly competes with an SRE team\'s capacity to improve reliability — time spent on toil is time not spent reducing future toil.',
     ],
   },
+  'devops/sre/dead-mans-switch-mechanism': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'SRE Practices overview', route: '/devops/sre' },
+      { label: 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time', route: '/devops/sre/burn-rate-formula-elapsed-window-disagreement' },
+    ],
+    tip: 'A watchdog alert is always firing (vector(1)) — the actual silence-detection lives entirely in a separate, external service that pages when the constant heartbeat stops arriving, not in Prometheus itself.',
+    gotchas: [
+      'A watchdog routed only to a receiver inside the same monitoring stack fails to notice its own pipeline\'s death — the detector must live outside what it watches.',
+      'A config change can silently break routing for specific real alerts while leaving the watchdog\'s own separate route untouched, so testing it deliberately and periodically matters, not just once at setup.',
+    ],
+  },
+  'devops/sre/burn-rate-formula-elapsed-window-disagreement': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'A Dead Man’s Switch Always Fires — Silence Is the Signal', route: '/devops/sre/dead-mans-switch-mechanism' },
+      { label: 'The Burn-Rate Alerts Reference Recording Rules That Are Never Defined', route: '/devops/sre/alert-rules-reference-undefined-recording-rules' },
+    ],
+    tip: 'calculateErrorBudget reports a burn rate with no elapsed-window context; the main page\'s own separate Challenge scales the identical ratio by windowDays / elapsedDays — the two formulas only agree once the window has fully elapsed.',
+    gotchas: [
+      'The same numeric burn rate implies very different real urgency depending on how much window time remains — calculateErrorBudget has no way to express that difference.',
+      'A "warning" status reported early in a window and the identical status reported near the window\'s end are not equally urgent, even though calculateErrorBudget classifies them the same.',
+    ],
+  },
+  'devops/sre/alert-rules-reference-undefined-recording-rules': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time', route: '/devops/sre/burn-rate-formula-elapsed-window-disagreement' },
+      { label: 'SRE Practices overview', route: '/devops/sre' },
+    ],
+    tip: 'The main page\'s own burn-rate alerts query job:slo_error_rate across four windows; its own recording rules only ever compute job:http_requests_success across two different windows — copied verbatim, the alerts would silently never fire.',
+    gotchas: [
+      'Prometheus does not validate at rule-load time that every metric referenced in an alert expr: has a matching record: rule — a missing one loads cleanly and just never produces an alert.',
+      'A query against a non-existent time series returns an empty result, not an error, so promtool and Prometheus startup both stay silent about the gap.',
+    ],
+  },
 
   // ── AWS: per-page entries ────────────────────────────────────────────────────
   'aws/fundamentals': {

@@ -1812,6 +1812,9 @@ const DEVOPS_LABELS: Record<string, string> = {
   'release-management/hotfix-step-4-already-happened-at-step-3': '“Deploy to Production” Already Happened by the Time the Tag Was Pushed',
   'release-management':    'Release Management',
   'sre':                   'SRE Practices',
+  'sre/dead-mans-switch-mechanism': 'A Dead Man’s Switch Always Fires — Silence Is the Signal',
+  'sre/burn-rate-formula-elapsed-window-disagreement': 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time',
+  'sre/alert-rules-reference-undefined-recording-rules': 'The Burn-Rate Alerts Reference Recording Rules That Are Never Defined',
   'cheatsheet':            'DevOps Cheat Sheet',
 };
 

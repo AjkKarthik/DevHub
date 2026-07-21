@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SRE Practices" topicRoute="/devops/sre" subtopicLabel="A Dead Man’s Switch Always Fires — Silence Is the Signal" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">A Dead Man's Switch Always Fires — Silence Is the Signal</h1>
+  <p class="page-subtitle">
+    The main page's own description reads as if Prometheus detects its own silence. It's the other way round: the
+    watchdog alert never stops firing, and a separate external service pages you when that heartbeat stops arriving.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2015+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic corrects the direction of causality in one line of the main page's own alerting theory. Back
+      to the SRE Practices overview, or continue to a real inconsistency between the main page's own two burn-rate
+      formulas.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SRE Practices"
+    topicRoute="/devops/sre"
+    [next]="{ label: 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time', route: '/devops/sre/burn-rate-formula-elapsed-window-disagreement' }"
+  />
+</div>

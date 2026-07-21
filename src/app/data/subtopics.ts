@@ -1358,6 +1358,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '@semantic-release/npm Updates package.json Only Locally', route: '/devops/release-management/semantic-release-npm-never-commits-back' },
     { label: '“Deploy to Production” Already Happened by the Time the Tag Was Pushed', route: '/devops/release-management/hotfix-step-4-already-happened-at-step-3' },
   ],
+  'sre': [
+    { label: 'A Dead Man’s Switch Always Fires — Silence Is the Signal', route: '/devops/sre/dead-mans-switch-mechanism' },
+    { label: 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time', route: '/devops/sre/burn-rate-formula-elapsed-window-disagreement' },
+    { label: 'The Burn-Rate Alerts Reference Recording Rules That Are Never Defined', route: '/devops/sre/alert-rules-reference-undefined-recording-rules' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

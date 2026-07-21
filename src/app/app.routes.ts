@@ -3001,7 +3001,12 @@ export const routes: Routes = [
       { path: 'semantic-release-npm-never-commits-back', loadComponent: () => import('./components/cloud/devops/release-management/subtopics/semantic-release-npm-never-commits-back/semantic-release-npm-never-commits-back').then(m => m.SemanticReleaseNpmNeverCommitsBackSubtopic) },
       { path: 'hotfix-step-4-already-happened-at-step-3', loadComponent: () => import('./components/cloud/devops/release-management/subtopics/hotfix-step-4-already-happened-at-step-3/hotfix-step-4-already-happened-at-step-3').then(m => m.HotfixStep4AlreadyHappenedAtStep3Subtopic) },
     ]},
-    { path: 'sre',                    loadComponent: () => import('./components/cloud/devops/sre/sre').then(m => m.DevopsSre) },
+    { path: 'sre', children: [
+      { path: '', loadComponent: () => import('./components/cloud/devops/sre/sre').then(m => m.DevopsSre) },
+      { path: 'dead-mans-switch-mechanism', loadComponent: () => import('./components/cloud/devops/sre/subtopics/dead-mans-switch-mechanism/dead-mans-switch-mechanism').then(m => m.DeadMansSwitchMechanismSubtopic) },
+      { path: 'burn-rate-formula-elapsed-window-disagreement', loadComponent: () => import('./components/cloud/devops/sre/subtopics/burn-rate-formula-elapsed-window-disagreement/burn-rate-formula-elapsed-window-disagreement').then(m => m.BurnRateFormulaElapsedWindowDisagreementSubtopic) },
+      { path: 'alert-rules-reference-undefined-recording-rules', loadComponent: () => import('./components/cloud/devops/sre/subtopics/alert-rules-reference-undefined-recording-rules/alert-rules-reference-undefined-recording-rules').then(m => m.AlertRulesReferenceUndefinedRecordingRulesSubtopic) },
+    ]},
     { path: 'cheatsheet',             loadComponent: () => import('./components/cloud/devops/cheatsheet/cheatsheet').then(m => m.DevopsCheatsheet) },
   ] },
   { path: 'linux', children: [

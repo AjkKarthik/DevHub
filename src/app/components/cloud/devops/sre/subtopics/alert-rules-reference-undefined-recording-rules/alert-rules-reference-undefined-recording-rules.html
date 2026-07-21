@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SRE Practices" topicRoute="/devops/sre" subtopicLabel="The Burn-Rate Alerts Reference Recording Rules That Are Never Defined" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">The Burn-Rate Alerts Reference Recording Rules That Are Never Defined</h1>
+  <p class="page-subtitle">
+    The main page's own alert rules query job:slo_error_rate across four windows; its own recording rules only
+    ever compute job:http_requests_success across two different windows — the alerts would silently never fire.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="2018+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at the main page's own SLO tooling by cross-referencing two
+      sections of the same code tab against each other. Back to the SRE Practices overview, or review the burn
+      rate formula disagreement or the dead man's switch mechanism.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SRE Practices"
+    topicRoute="/devops/sre"
+    [prev]="{ label: 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time', route: '/devops/sre/burn-rate-formula-elapsed-window-disagreement' }"
+  />
+</div>
