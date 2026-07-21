@@ -372,7 +372,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/rbac" routerLinkActive="active"><span class="nl-text">Kubernetes RBAC</span>@if(p.isDone('k8s-rbac')){<span class="nl-done">✓</span>}@if(d('k8s-rbac');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/rbac" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Kubernetes RBAC</span>
+        @if (p.isDone('k8s-rbac')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-rbac'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('rbac')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rbac')"
+                  (click)="toggleSubtopics('rbac', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rbac'); as rbacSubs) {
+        @if (isSubtopicsExpanded('rbac')) {
+          <div class="nav-subtopics">
+            @for (s of rbacSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/troubleshooting" routerLinkActive="active"><span class="nl-text">K8s Troubleshooting</span>@if(p.isDone('k8s-troubleshooting')){<span class="nl-done">✓</span>}@if(d('k8s-troubleshooting');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/cheatsheet" routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
     </div>

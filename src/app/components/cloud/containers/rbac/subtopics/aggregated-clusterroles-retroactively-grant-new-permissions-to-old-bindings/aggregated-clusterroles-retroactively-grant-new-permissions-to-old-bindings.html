@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes RBAC" topicRoute="/containers/rbac" subtopicLabel="Aggregated ClusterRoles Retroactively Grant New Permissions to Old Bindings" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Aggregated ClusterRoles Retroactively Grant New Permissions to Old Bindings</h1>
+  <p class="page-subtitle">
+    The main page's own QnA presents aggregation as a maintenance convenience — but it also silently expands what
+    every existing holder of "edit" or "view" can already do, with no re-approval step at all.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered binding-time escalation checks; this one covers a subtler post-binding risk.
+      Last: why a ServiceAccount's own token doesn't live forever anymore.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes RBAC"
+    topicRoute="/containers/rbac"
+    [prev]="{ label: 'The bind Verb Gates Escalation — create on RoleBindings Alone Isn’t Enough', route: '/containers/rbac/bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough' }"
+    [next]="{ label: 'Bound ServiceAccount Tokens Expire in 1 Hour — Legacy Tokens Never Did', route: '/containers/rbac/bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did' }"
+  />
+</div>

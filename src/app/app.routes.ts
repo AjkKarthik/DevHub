@@ -3131,7 +3131,12 @@ export const routes: Routes = [
       { path: 'networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it', loadComponent: () => import('./components/cloud/containers/container-security/subtopics/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it').then(m => m.NetworkpolicySilentlyDoesNothingWithoutACniThatEnforcesItSubtopic) },
       { path: 'psa-restricted-never-checks-readonlyrootfilesystem-at-all', loadComponent: () => import('./components/cloud/containers/container-security/subtopics/psa-restricted-never-checks-readonlyrootfilesystem-at-all/psa-restricted-never-checks-readonlyrootfilesystem-at-all').then(m => m.PsaRestrictedNeverChecksReadonlyrootfilesystemAtAllSubtopic) },
     ]},
-    { path: 'rbac',               loadComponent: () => import('./components/cloud/containers/rbac/rbac').then(m => m.K8sRbac) },
+    { path: 'rbac', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/rbac/rbac').then(m => m.K8sRbac) },
+      { path: 'bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough', loadComponent: () => import('./components/cloud/containers/rbac/subtopics/bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough/bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough').then(m => m.BindVerbGatesEscalationCreateOnRolebindingsAloneIsNotEnoughSubtopic) },
+      { path: 'aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings', loadComponent: () => import('./components/cloud/containers/rbac/subtopics/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings').then(m => m.AggregatedClusterrolesRetroactivelyGrantNewPermissionsToOldBindingsSubtopic) },
+      { path: 'bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did', loadComponent: () => import('./components/cloud/containers/rbac/subtopics/bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did/bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did').then(m => m.BoundServiceaccountTokensExpireIn1HourLegacyTokensNeverDidSubtopic) },
+    ]},
     { path: 'statefulsets',       loadComponent: () => import('./components/cloud/containers/statefulsets/statefulsets').then(m => m.K8sStatefulsets) },
     { path: 'resource-limits',    loadComponent: () => import('./components/cloud/containers/resource-limits/resource-limits').then(m => m.K8sResourceLimits) },
     { path: 'hpa',                loadComponent: () => import('./components/cloud/containers/hpa/hpa').then(m => m.K8sHpa) },

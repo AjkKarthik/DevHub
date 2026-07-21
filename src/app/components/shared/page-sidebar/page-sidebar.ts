@@ -28157,6 +28157,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Granting cluster-admin to a service account that only ever needs read access to one namespace is unnecessary risk if that account is ever compromised.',
     ],
   },
+  'containers/rbac/bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes RBAC overview', route: '/containers/rbac' },
+      { label: 'Aggregated ClusterRoles Retroactively Grant New Permissions to Old Bindings', route: '/containers/rbac/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings' },
+    ],
+    tip: 'Kubernetes blocks binding to a Role/ClusterRole with more permissions than the requester already has, unless the requester also holds the bind verb (or escalate, for editing a Role directly) — rolebindings/create alone cannot self-escalate.',
+    gotchas: [
+      'The real risk combination is create AND bind/escalate together — create alone is rejected outright with a Forbidden error.',
+      'bind and escalate are legitimate verbs needed by automation that provisions RBAC for others — audit for them specifically, they are not rare.',
+    ],
+  },
+  'containers/rbac/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The bind Verb Gates Escalation — create on RoleBindings Alone Isn’t Enough', route: '/containers/rbac/bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough' },
+      { label: 'Bound ServiceAccount Tokens Expire in 1 Hour — Legacy Tokens Never Did', route: '/containers/rbac/bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did' },
+    ],
+    tip: 'Aggregation merges a labeled ClusterRole\'s rules into "view"/"edit"/"admin" automatically — every subject ALREADY bound to that role gains the new permissions instantly, with no new binding and no re-approval step.',
+    gotchas: [
+      'A chart that creates no new RoleBinding can still expand what every existing "edit" holder can do, purely via an aggregate-to-* labeled ClusterRole.',
+      'A one-time review of "edit"\'s own .rules field only captures a snapshot — the real audit surface is every ClusterRole currently carrying the matching label.',
+    ],
+  },
+  'containers/rbac/bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Aggregated ClusterRoles Retroactively Grant New Permissions to Old Bindings', route: '/containers/rbac/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings' },
+      { label: 'Kubernetes RBAC overview', route: '/containers/rbac' },
+    ],
+    tip: 'Since Kubernetes 1.24, the default mounted ServiceAccount token is a bound token expiring in 1 hour (or on Pod deletion) — the older Secret-backed token had no expiration at all and remained valid until manually deleted.',
+    gotchas: [
+      'A leaked bound token more than ~1 hour old (or whose Pod no longer exists) is not a usable credential, regardless of the ServiceAccount\'s permissions.',
+      'Kubelet refreshes the mounted bound token transparently before expiration — applications need no custom rotation logic.',
+    ],
+  },
   'containers/resource-limits': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
