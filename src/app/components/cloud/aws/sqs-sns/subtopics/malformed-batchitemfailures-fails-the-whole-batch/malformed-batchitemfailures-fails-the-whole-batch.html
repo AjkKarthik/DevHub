@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SQS & SNS" topicRoute="/aws/sqs-sns" subtopicLabel="Malformed batchItemFailures Fails the Batch" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Malformed batchItemFailures Fails the Whole Batch</h1>
+  <p class="page-subtitle">The main page's own ReportBatchItemFailures example is correct — but never shows the exact, documented conditions that silently defeat it.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Lambda" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic adds the exact success/failure conditions behind the main page's own SQS + Lambda ESM section. Next, the SNS filter-policy subtopic sharpens the main page's own attribute-based filtering into AWS's own message-body alternative.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SQS & SNS" topicRoute="/aws/sqs-sns"
+    [prev]="{ label: 'FIFO Deduplication Silently Drops', route: '/aws/sqs-sns/fifo-deduplication-silently-drops-not-just-blocks' }"
+    [next]="{ label: 'SNS FilterPolicyScope=MessageBody', route: '/aws/sqs-sns/sns-filterpolicyscope-messagebody-skips-duplicate-attrs' }" />
+</div>

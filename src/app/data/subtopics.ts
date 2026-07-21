@@ -2525,4 +2525,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'KMS Rotation vs Data Keys', route: '/aws/security/kms-rotation-never-touches-already-generated-data-keys' },
     { label: 'Multi-Region Key Policies', route: '/aws/security/multi-region-key-policies-dont-sync-across-replicas' },
   ],
+  'sqs-sns': [
+    { label: 'FIFO Deduplication Silently Drops', route: '/aws/sqs-sns/fifo-deduplication-silently-drops-not-just-blocks' },
+    { label: 'batchItemFailures Fails the Batch', route: '/aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch' },
+    { label: 'SNS FilterPolicyScope=MessageBody', route: '/aws/sqs-sns/sns-filterpolicyscope-messagebody-skips-duplicate-attrs' },
+  ],
 };

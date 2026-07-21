@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SQS & SNS" topicRoute="/aws/sqs-sns" subtopicLabel="FIFO Deduplication Silently Drops" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">FIFO Deduplication Silently Drops, Not Just Blocks</h1>
+  <p class="page-subtitle">The main page's own "exactly-once" framing never explains what actually happens to a duplicate SendMessage call — or how long tracking persists.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="SQS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own FIFO codeTabs with the exact silent-drop mechanism behind ContentBasedDeduplication. Next, the ReportBatchItemFailures subtopic extends the main page's own SQS + Lambda section with the exact conditions that silently defeat partial-batch reporting.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SQS & SNS" topicRoute="/aws/sqs-sns"
+    [next]="{ label: 'Malformed batchItemFailures Fails the Whole Batch', route: '/aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch' }" />
+</div>

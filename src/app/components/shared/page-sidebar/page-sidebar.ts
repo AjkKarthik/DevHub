@@ -38181,6 +38181,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'FIFO queues guarantee order and exactly-once (within a dedup window) at a real throughput cost compared to standard queues.',
     ],
   },
+  'aws/sqs-sns/fifo-deduplication-silently-drops-not-just-blocks': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'SQS & SNS overview', route: '/aws/sqs-sns' },
+      { label: 'batchItemFailures Fails the Batch', route: '/aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch' },
+    ],
+    tip: 'A "duplicate" SendMessage call to a FIFO queue is "acknowledged but not delivered" — no error, valid MessageId returned — and dedup tracking outlives the original message even after it\'s received and deleted.',
+    gotchas: [
+      'ContentBasedDeduplication hashes the message BODY — two genuinely different events with identical content silently collide within the 5-minute window.',
+      'Use an explicit MessageDeduplicationId (varying per logical event) instead of relying on body-hash dedup when identical content could legitimately repeat.',
+    ],
+  },
+  'aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'FIFO Deduplication Silently Drops', route: '/aws/sqs-sns/fifo-deduplication-silently-drops-not-just-blocks' },
+      { label: 'SNS FilterPolicyScope=MessageBody', route: '/aws/sqs-sns/sns-filterpolicyscope-messagebody-skips-duplicate-attrs' },
+    ],
+    tip: 'AWS documents exact success/failure conditions for ReportBatchItemFailures — a bad key name, a nonexistent message ID, or ANY unhandled exception (even outside the per-record loop) fails the ENTIRE batch, not just the record that errored.',
+    gotchas: [
+      'Monitor NumberOfMessagesDeleted (dropping to 0) and ApproximateAgeOfOldestMessage (spiking) to catch this class of silent regression in production.',
+      'Wrap peripheral code after the processing loop (metrics, logging) in its own try/catch — an unrelated exception there still fails the whole batch.',
+    ],
+  },
+  'aws/sqs-sns/sns-filterpolicyscope-messagebody-skips-duplicate-attrs': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'batchItemFailures Fails the Batch', route: '/aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch' },
+      { label: 'SQS & SNS overview', route: '/aws/sqs-sns' },
+    ],
+    tip: 'FilterPolicyScope=MessageBody filters directly on the published JSON body — no need to duplicate fields into message attributes just to make them filterable.',
+    gotchas: [
+      'Filter policy changes (new or edited) take up to 15 minutes to fully propagate — don\'t assume a broken policy from an immediate test.',
+      'MessageBody filtering requires the published message to be well-formed JSON.',
+    ],
+  },
   'aws/eventbridge': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

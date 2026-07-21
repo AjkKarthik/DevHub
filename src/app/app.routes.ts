@@ -3319,7 +3319,12 @@ export const routes: Routes = [
       { path: 'kms-rotation-never-touches-already-generated-data-keys', loadComponent: () => import('./components/cloud/aws/security/subtopics/kms-rotation-never-touches-already-generated-data-keys/kms-rotation-never-touches-already-generated-data-keys').then(m => m.KmsRotationNeverTouchesAlreadyGeneratedDataKeysSubtopic) },
       { path: 'multi-region-key-policies-dont-sync-across-replicas', loadComponent: () => import('./components/cloud/aws/security/subtopics/multi-region-key-policies-dont-sync-across-replicas/multi-region-key-policies-dont-sync-across-replicas').then(m => m.MultiRegionKeyPoliciesDontSyncAcrossReplicasSubtopic) },
     ] },
-    { path: 'sqs-sns',             loadComponent: () => import('./components/cloud/aws/sqs-sns/sqs-sns').then(m => m.AwsSqsSns) },
+    { path: 'sqs-sns', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/sqs-sns/sqs-sns').then(m => m.AwsSqsSns) },
+      { path: 'fifo-deduplication-silently-drops-not-just-blocks', loadComponent: () => import('./components/cloud/aws/sqs-sns/subtopics/fifo-deduplication-silently-drops-not-just-blocks/fifo-deduplication-silently-drops-not-just-blocks').then(m => m.FifoDeduplicationSilentlyDropsNotJustBlocksSubtopic) },
+      { path: 'malformed-batchitemfailures-fails-the-whole-batch', loadComponent: () => import('./components/cloud/aws/sqs-sns/subtopics/malformed-batchitemfailures-fails-the-whole-batch/malformed-batchitemfailures-fails-the-whole-batch').then(m => m.MalformedBatchitemfailuresFailsTheWholeBatchSubtopic) },
+      { path: 'sns-filterpolicyscope-messagebody-skips-duplicate-attrs', loadComponent: () => import('./components/cloud/aws/sqs-sns/subtopics/sns-filterpolicyscope-messagebody-skips-duplicate-attrs/sns-filterpolicyscope-messagebody-skips-duplicate-attrs').then(m => m.SnsFilterpolicyscopeMessagebodySkipsDuplicateAttrsSubtopic) },
+    ] },
     { path: 'eventbridge',         loadComponent: () => import('./components/cloud/aws/eventbridge/eventbridge').then(m => m.AwsEventbridge) },
     { path: 'step-functions',      loadComponent: () => import('./components/cloud/aws/step-functions/step-functions').then(m => m.AwsStepFunctions) },
     { path: 'load-balancing',      loadComponent: () => import('./components/cloud/aws/load-balancing/load-balancing').then(m => m.AwsLoadBalancing) },
