@@ -312,7 +312,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Operations</p>
-      <a routerLink="/aws/cloudwatch" routerLinkActive="active"><span class="nl-text">CloudWatch &amp; X-Ray</span>@if(p.isDone('aws-cloudwatch')){<span class="nl-done">✓</span>}@if(d('aws-cloudwatch');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/cloudwatch" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">CloudWatch &amp; X-Ray</span>
+        @if (p.isDone('aws-cloudwatch')) {<span class="nl-done">✓</span>}
+        @if (d('aws-cloudwatch'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('cloudwatch')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cloudwatch')"
+                  (click)="toggleSubtopics('cloudwatch', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cloudwatch'); as cwSubs) {
+        @if (isSubtopicsExpanded('cloudwatch')) {
+          <div class="nav-subtopics">
+            @for (s of cwSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aws/cloudformation-cdk" routerLinkActive="active"><span class="nl-text">CloudFormation &amp; CDK</span>@if(p.isDone('aws-cloudformation-cdk')){<span class="nl-done">✓</span>}@if(d('aws-cloudformation-cdk');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/aws/security" routerLinkActive="active"><span class="nl-text">AWS Security Services</span>@if(p.isDone('aws-security')){<span class="nl-done">✓</span>}@if(d('aws-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/aws/cost-optimization" routerLinkActive="active"><span class="nl-text">Cost Optimization</span>@if(p.isDone('aws-cost-optimization')){<span class="nl-done">✓</span>}@if(d('aws-cost-optimization');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

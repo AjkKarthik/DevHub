@@ -3301,7 +3301,12 @@ export const routes: Routes = [
       { path: 'resource-policy-has-two-evaluation-phases-not-one', loadComponent: () => import('./components/cloud/aws/api-gateway/subtopics/resource-policy-has-two-evaluation-phases-not-one/resource-policy-has-two-evaluation-phases-not-one').then(m => m.ResourcePolicyHasTwoEvaluationPhasesNotOneSubtopic) },
       { path: 'websocket-disconnect-is-best-effort-not-guaranteed', loadComponent: () => import('./components/cloud/aws/api-gateway/subtopics/websocket-disconnect-is-best-effort-not-guaranteed/websocket-disconnect-is-best-effort-not-guaranteed').then(m => m.WebsocketDisconnectIsBestEffortNotGuaranteedSubtopic) },
     ] },
-    { path: 'cloudwatch',          loadComponent: () => import('./components/cloud/aws/cloudwatch/cloudwatch').then(m => m.AwsCloudwatch) },
+    { path: 'cloudwatch', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/cloudwatch/cloudwatch').then(m => m.AwsCloudwatch) },
+      { path: 'treat-missing-data-decides-insufficient-data-behavior', loadComponent: () => import('./components/cloud/aws/cloudwatch/subtopics/treat-missing-data-decides-insufficient-data-behavior/treat-missing-data-decides-insufficient-data-behavior').then(m => m.TreatMissingDataDecidesInsufficientDataBehaviorSubtopic) },
+      { path: 'emf-dimensions-with-high-cardinality-explode-metric-cost', loadComponent: () => import('./components/cloud/aws/cloudwatch/subtopics/emf-dimensions-with-high-cardinality-explode-metric-cost/emf-dimensions-with-high-cardinality-explode-metric-cost').then(m => m.EmfDimensionsWithHighCardinalityExplodeMetricCostSubtopic) },
+      { path: 'actionssuppressor-natively-suppresses-composite-alarms', loadComponent: () => import('./components/cloud/aws/cloudwatch/subtopics/actionssuppressor-natively-suppresses-composite-alarms/actionssuppressor-natively-suppresses-composite-alarms').then(m => m.ActionssuppressorNativelySuppressesCompositeAlarmsSubtopic) },
+    ] },
     { path: 'cloudformation-cdk',  loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/cloudformation-cdk').then(m => m.AwsCloudformationCdk) },
     { path: 'security',            loadComponent: () => import('./components/cloud/aws/security/security').then(m => m.AwsSecurity) },
     { path: 'sqs-sns',             loadComponent: () => import('./components/cloud/aws/sqs-sns/sqs-sns').then(m => m.AwsSqsSns) },

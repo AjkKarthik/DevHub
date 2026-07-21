@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CloudWatch & X-Ray" topicRoute="/aws/cloudwatch" subtopicLabel="ActionsSuppressor Natively Suppresses Alarms" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">ActionsSuppressor Natively Suppresses Composite Alarms</h1>
+  <p class="page-subtitle">The main page's own EventBridge + Lambda suggestion has a simpler, native alternative — two of them, in fact.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="CloudWatch" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the batch by giving the main page's own "suppress maintenance noise" advice a simpler, fully-native implementation. Together with the missing-data and EMF-cardinality subtopics, this rounds out the main page's own Alerting and Custom Metrics sections with the exact configuration detail production use of each one surfaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CloudWatch & X-Ray" topicRoute="/aws/cloudwatch"
+    [prev]="{ label: 'EMF High-Cardinality Dimensions Explode Cost', route: '/aws/cloudwatch/emf-dimensions-with-high-cardinality-explode-metric-cost' }" />
+</div>

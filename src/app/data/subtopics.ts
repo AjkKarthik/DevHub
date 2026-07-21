@@ -2509,4 +2509,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Resource Policy Two Phases', route: '/aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one' },
     { label: 'WebSocket $disconnect', route: '/aws/api-gateway/websocket-disconnect-is-best-effort-not-guaranteed' },
   ],
+  'cloudwatch': [
+    { label: 'Treat Missing Data', route: '/aws/cloudwatch/treat-missing-data-decides-insufficient-data-behavior' },
+    { label: 'EMF Dimension Cardinality', route: '/aws/cloudwatch/emf-dimensions-with-high-cardinality-explode-metric-cost' },
+    { label: 'ActionsSuppressor', route: '/aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms' },
+  ],
 };

@@ -38274,6 +38274,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Alarms based on a single data point are prone to false positives from transient spikes — evaluating over multiple consecutive periods reduces noisy, self-resolving alerts.',
     ],
   },
+  'aws/cloudwatch/treat-missing-data-decides-insufficient-data-behavior': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'CloudWatch overview', route: '/aws/cloudwatch' },
+      { label: 'ActionsSuppressor', route: '/aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms' },
+    ],
+    tip: 'treat-missing-data defaults to "missing," which sends an alarm to INSUFFICIENT_DATA once its metric stops flowing — set notBreaching or breaching explicitly so a composite AND alarm\'s child can never get silently, permanently stuck.',
+    gotchas: [
+      'AWS/DynamoDB metrics default to ignoring missing data regardless of the alarm\'s own configured setting, unless explicitly overridden.',
+      'A composite alarm using AND logic can never fire again once one child alarm is stuck in INSUFFICIENT_DATA — with no error surfaced anywhere.',
+    ],
+  },
+  'aws/cloudwatch/emf-dimensions-with-high-cardinality-explode-metric-cost': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Treat Missing Data', route: '/aws/cloudwatch/treat-missing-data-decides-insufficient-data-behavior' },
+      { label: 'ActionsSuppressor', route: '/aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms' },
+    ],
+    tip: 'Every EMF DimensionSet creates a NEW CloudWatch custom metric — adding a high-cardinality field like orderId or requestId as a Dimension creates one billed custom metric per unique value, not one metric with many data points.',
+    gotchas: [
+      'Keep high-cardinality identifiers as plain EMF log fields (queryable via Log Insights), never inside the Dimensions array.',
+      'This applies identically whether metrics are published via EMF or a direct PutMetricData call — EMF only removes the API call, not the cardinality cost model.',
+    ],
+  },
+  'aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EMF Dimension Cardinality', route: '/aws/cloudwatch/emf-dimensions-with-high-cardinality-explode-metric-cost' },
+      { label: 'CloudWatch overview', route: '/aws/cloudwatch' },
+    ],
+    tip: 'AWS provides two native alarm-noise-suppression mechanisms — a NOT term in a composite alarm\'s AlarmRule (state-level), and the ActionsSuppressor parameter (actions-only) — neither needs custom EventBridge + Lambda glue code.',
+    gotchas: [
+      'ActionsSuppressor still lets the composite alarm transition state normally — only its notification actions are withheld while the suppressor alarm is in ALARM.',
+      'ActionsSuppressorWaitPeriod and ActionsSuppressorExtensionPeriod guard against races at the start/end of the suppression window.',
+    ],
+  },
   'aws/cloudformation-cdk': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
