@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker Compose" topicRoute="/containers/compose" subtopicLabel="web’s depends_on Lacks a Condition Because api Has No Healthcheck" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">web's depends_on Lacks a Condition Because api Has No Healthcheck</h1>
+  <p class="page-subtitle">
+    The main page's own example looks like it violates its own mistake entry — but condition: service_healthy
+    requires the target service to define its own healthcheck, and api never does.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Compose v2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic resolves an apparent contradiction between the main page's own mistake entry and its own
+      flagship example. Back to the Docker Compose overview, or continue to why the dev override's anonymous
+      node_modules volume actually preserves the container's own content.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker Compose"
+    topicRoute="/containers/compose"
+    [next]="{ label: 'Why the Anonymous node_modules Volume Preserves the Image’s Content', route: '/containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content' }"
+  />
+</div>

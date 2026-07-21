@@ -128,7 +128,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Compose</p>
-      <a routerLink="/containers/compose" routerLinkActive="active"><span class="nl-text">Docker Compose</span>@if(p.isDone('k8s-compose')){<span class="nl-done">✓</span>}@if(d('k8s-compose');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/compose" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Docker Compose</span>
+        @if (p.isDone('k8s-compose')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-compose'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('compose')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('compose')"
+                  (click)="toggleSubtopics('compose', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('compose'); as composeSubs) {
+        @if (isSubtopicsExpanded('compose')) {
+          <div class="nav-subtopics">
+            @for (s of composeSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/compose-profiles" routerLinkActive="active"><span class="nl-text">Compose Profiles &amp; Overrides</span>@if(p.isDone('k8s-compose-profiles')){<span class="nl-done">✓</span>}@if(d('k8s-compose-profiles');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

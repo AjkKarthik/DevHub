@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker Compose" topicRoute="/containers/compose" subtopicLabel="Why the Anonymous node_modules Volume Preserves the Image’s Content" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Why the Anonymous node_modules Volume Preserves the Image's Content</h1>
+  <p class="page-subtitle">
+    The main page's own dev override tab explains this line in five words. The real mechanism: path specificity
+    lets the anonymous volume win over the bind mount, and Docker auto-populates it from the image's own content.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic names the mechanism behind a one-line comment in the main page's own dev override example.
+      Back to the Docker Compose overview, or continue to why that same anonymous volume silently accumulates
+      orphans the main page's own -v discussion never mentions.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker Compose"
+    topicRoute="/containers/compose"
+    [prev]="{ label: 'web’s depends_on Lacks a Condition Because api Has No Healthcheck', route: '/containers/compose/web-depends-on-api-lacks-condition-because-api-has-no-healthcheck' }"
+    [next]="{ label: 'Anonymous Volumes Orphan on Every Container Recreation', route: '/containers/compose/anonymous-volumes-orphan-on-every-recreation' }"
+  />
+</div>

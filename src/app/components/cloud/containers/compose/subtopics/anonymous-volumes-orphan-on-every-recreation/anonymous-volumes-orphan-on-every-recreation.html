@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker Compose" topicRoute="/containers/compose" subtopicLabel="Anonymous Volumes Orphan on Every Container Recreation" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Anonymous Volumes Orphan on Every Container Recreation</h1>
+  <p class="page-subtitle">
+    The main page's own -v discussion is scoped entirely to the named db-data volume. The dev override's own
+    anonymous node_modules volume has a genuinely different lifecycle — a fresh orphan on every rebuild.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at three places where the main page's own compose.yml examples
+      behave differently than their brief explanations suggest. Back to the Docker Compose overview, or review
+      why the anonymous volume preserves image content, or why web's depends_on lacks a healthcheck condition.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker Compose"
+    topicRoute="/containers/compose"
+    [prev]="{ label: 'Why the Anonymous node_modules Volume Preserves the Image’s Content', route: '/containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content' }"
+  />
+</div>

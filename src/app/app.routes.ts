@@ -3065,7 +3065,12 @@ export const routes: Routes = [
       { path: 'npm-prune-production-flag-is-deprecated', loadComponent: () => import('./components/cloud/containers/multi-stage/subtopics/npm-prune-production-flag-is-deprecated/npm-prune-production-flag-is-deprecated').then(m => m.NpmPruneProductionFlagIsDeprecatedSubtopic) },
       { path: 'external-image-copy-still-pulls-the-whole-image', loadComponent: () => import('./components/cloud/containers/multi-stage/subtopics/external-image-copy-still-pulls-the-whole-image/external-image-copy-still-pulls-the-whole-image').then(m => m.ExternalImageCopyStillPullsTheWholeImageSubtopic) },
     ]},
-    { path: 'compose',            loadComponent: () => import('./components/cloud/containers/compose/compose').then(m => m.K8sCompose) },
+    { path: 'compose', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/compose/compose').then(m => m.K8sCompose) },
+      { path: 'web-depends-on-api-lacks-condition-because-api-has-no-healthcheck', loadComponent: () => import('./components/cloud/containers/compose/subtopics/web-depends-on-api-lacks-condition-because-api-has-no-healthcheck/web-depends-on-api-lacks-condition-because-api-has-no-healthcheck').then(m => m.WebDependsOnApiLacksConditionBecauseApiHasNoHealthcheckSubtopic) },
+      { path: 'anonymous-volume-shadows-bind-mount-and-restores-image-content', loadComponent: () => import('./components/cloud/containers/compose/subtopics/anonymous-volume-shadows-bind-mount-and-restores-image-content/anonymous-volume-shadows-bind-mount-and-restores-image-content').then(m => m.AnonymousVolumeShadowsBindMountAndRestoresImageContentSubtopic) },
+      { path: 'anonymous-volumes-orphan-on-every-recreation', loadComponent: () => import('./components/cloud/containers/compose/subtopics/anonymous-volumes-orphan-on-every-recreation/anonymous-volumes-orphan-on-every-recreation').then(m => m.AnonymousVolumesOrphanOnEveryRecreationSubtopic) },
+    ]},
     { path: 'compose-profiles',   loadComponent: () => import('./components/cloud/containers/compose-profiles/compose-profiles').then(m => m.K8sComposeProfiles) },
     { path: 'k8s-architecture',   loadComponent: () => import('./components/cloud/containers/k8s-architecture/k8s-architecture').then(m => m.K8sArchitecture) },
     { path: 'kubectl',            loadComponent: () => import('./components/cloud/containers/kubectl/kubectl').then(m => m.K8sKubectl) },

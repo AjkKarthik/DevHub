@@ -27700,6 +27700,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Custom networks let you segment services for defense-in-depth rather than relying solely on the single default shared network.',
     ],
   },
+  'containers/compose/web-depends-on-api-lacks-condition-because-api-has-no-healthcheck': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Docker Compose overview', route: '/containers/compose' },
+      { label: 'Why the Anonymous node_modules Volume Preserves the Image’s Content', route: '/containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content' },
+    ],
+    tip: 'condition: service_healthy is only valid when the TARGET service defines its own healthcheck — api never does in the main page\'s own example, so web\'s simple-array depends_on is the only option available, not an oversight.',
+    gotchas: [
+      'Adding condition: service_healthy to a depends_on entry without first giving the target service its own healthcheck: block is invalid configuration, not a stricter alternative.',
+      'A service with no healthcheck can still be depended on — just not with the readiness guarantee condition: service_healthy provides.',
+    ],
+  },
+  'containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'web’s depends_on Lacks a Condition Because api Has No Healthcheck', route: '/containers/compose/web-depends-on-api-lacks-condition-because-api-has-no-healthcheck' },
+      { label: 'Anonymous Volumes Orphan on Every Container Recreation', route: '/containers/compose/anonymous-volumes-orphan-on-every-recreation' },
+    ],
+    tip: 'Docker resolves overlapping mounts by path specificity — /app/node_modules wins over the broader /app bind mount, and a fresh volume mounted over existing image content is auto-populated with that content.',
+    gotchas: [
+      'Removing the anonymous node_modules volume line lets the bind mount shadow it with the host\'s own (usually empty) node_modules, breaking the container at runtime despite a correctly-built image.',
+      'Mount order in the compose.yml has no effect on which mount wins — only path specificity does.',
+    ],
+  },
+  'containers/compose/anonymous-volumes-orphan-on-every-recreation': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Why the Anonymous node_modules Volume Preserves the Image’s Content', route: '/containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content' },
+      { label: 'Docker Compose overview', route: '/containers/compose' },
+    ],
+    tip: 'The main page\'s own -v discussion only covers the named db-data volume — the dev override\'s own anonymous node_modules volume gets a brand new orphan on every container recreation, with no name to target it by individually.',
+    gotchas: [
+      'Avoiding docker compose down -v to protect db-data does nothing to stop anonymous volumes from silently accumulating across every rebuild.',
+      'Orphaned anonymous volumes can only be cleaned up in bulk (docker volume prune, or docker compose down -v) — there is no per-volume equivalent of docker volume rm project_db-data for them.',
+    ],
+  },
   'containers/compose-profiles': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
