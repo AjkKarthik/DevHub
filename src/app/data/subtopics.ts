@@ -1444,6 +1444,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden', route: '/containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden' },
     { label: '--set Always Beats -f, Regardless of Command-Line Order', route: '/containers/helm/set-always-beats-f-regardless-of-command-line-order' },
   ],
+  'container-security': [
+    { label: 'fsGroup Makes Non-Root Volume Writes Actually Work', route: '/containers/container-security/fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow' },
+    { label: 'A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It', route: '/containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it' },
+    { label: 'PSA restricted Never Checks readOnlyRootFilesystem At All', route: '/containers/container-security/psa-restricted-never-checks-readonlyrootfilesystem-at-all' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

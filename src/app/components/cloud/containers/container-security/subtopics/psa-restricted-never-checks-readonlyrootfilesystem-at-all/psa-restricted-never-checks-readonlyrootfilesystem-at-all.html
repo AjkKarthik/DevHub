@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Security" topicRoute="/containers/container-security" subtopicLabel="PSA restricted Never Checks readOnlyRootFilesystem At All" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">PSA restricted Never Checks readOnlyRootFilesystem At All</h1>
+  <p class="page-subtitle">
+    The main page's own theory groups <code>readOnlyRootFilesystem</code> with three fields PSA's "restricted"
+    level actually enforces — but Kubernetes' own Pod Security Standards never check it at all.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from volume write access, to network enforcement, to what PSA's strongest level
+      actually guarantees. Back to the Container Security overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Container Security"
+    topicRoute="/containers/container-security"
+    [prev]="{ label: 'A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It', route: '/containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it' }"
+  />
+</div>

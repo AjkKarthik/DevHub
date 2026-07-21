@@ -3125,7 +3125,12 @@ export const routes: Routes = [
       { path: 'history-max-defaults-to-10-old-revisions-are-pruned-not-hidden', loadComponent: () => import('./components/cloud/containers/helm/subtopics/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden').then(m => m.HistoryMaxDefaultsTo10OldRevisionsArePrunedNotHiddenSubtopic) },
       { path: 'set-always-beats-f-regardless-of-command-line-order', loadComponent: () => import('./components/cloud/containers/helm/subtopics/set-always-beats-f-regardless-of-command-line-order/set-always-beats-f-regardless-of-command-line-order').then(m => m.SetAlwaysBeatsFRegardlessOfCommandLineOrderSubtopic) },
     ]},
-    { path: 'container-security', loadComponent: () => import('./components/cloud/containers/container-security/container-security').then(m => m.K8sContainerSecurity) },
+    { path: 'container-security', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/container-security/container-security').then(m => m.K8sContainerSecurity) },
+      { path: 'fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow', loadComponent: () => import('./components/cloud/containers/container-security/subtopics/fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow/fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow').then(m => m.FsgroupMakesNonRootVolumeWritesWorkAndRecursiveChownCanBeSlowSubtopic) },
+      { path: 'networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it', loadComponent: () => import('./components/cloud/containers/container-security/subtopics/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it').then(m => m.NetworkpolicySilentlyDoesNothingWithoutACniThatEnforcesItSubtopic) },
+      { path: 'psa-restricted-never-checks-readonlyrootfilesystem-at-all', loadComponent: () => import('./components/cloud/containers/container-security/subtopics/psa-restricted-never-checks-readonlyrootfilesystem-at-all/psa-restricted-never-checks-readonlyrootfilesystem-at-all').then(m => m.PsaRestrictedNeverChecksReadonlyrootfilesystemAtAllSubtopic) },
+    ]},
     { path: 'rbac',               loadComponent: () => import('./components/cloud/containers/rbac/rbac').then(m => m.K8sRbac) },
     { path: 'statefulsets',       loadComponent: () => import('./components/cloud/containers/statefulsets/statefulsets').then(m => m.K8sStatefulsets) },
     { path: 'resource-limits',    loadComponent: () => import('./components/cloud/containers/resource-limits/resource-limits').then(m => m.K8sResourceLimits) },

@@ -27844,6 +27844,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Image signing (Cosign/Sigstore) addresses supply-chain tampering risks that vulnerability scanning alone does not cover.',
     ],
   },
+  'containers/container-security/fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Container Security overview', route: '/containers/container-security' },
+      { label: 'A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It', route: '/containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it' },
+    ],
+    tip: 'fsGroup sets the GROUP ownership Kubernetes applies to mounted volumes — without it, a non-root runAsUser commonly gets permission-denied writing to an emptyDir/PVC, even with every other hardening field set correctly.',
+    gotchas: [
+      'Kubelet recursively chown()/chmod()s every file in a volume on mount by default — fsGroupChangePolicy: OnRootMismatch can skip this, but has no effect on emptyDir/Secret/ConfigMap at all.',
+      'runAsUser controls the process\'s own UID; fsGroup controls the volume\'s ownership — they solve two different halves of the same problem, not redundant settings.',
+    ],
+  },
+  'containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'fsGroup Makes Non-Root Volume Writes Actually Work', route: '/containers/container-security/fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow' },
+      { label: 'PSA restricted Never Checks readOnlyRootFilesystem At All', route: '/containers/container-security/psa-restricted-never-checks-readonlyrootfilesystem-at-all' },
+    ],
+    tip: 'The API server accepts and stores NetworkPolicy objects unconditionally — actual enforcement depends entirely on the CNI plugin; plain Flannel accepts a default-deny policy with no error, but never blocks any traffic.',
+    gotchas: [
+      'A positive test ("expected traffic still works") can never confirm enforcement — only testing that traffic the policy should explicitly BLOCK actually fails proves the CNI is enforcing anything.',
+      'Calico, Cilium, Weave Net, and Antrea are commonly cited as enforcing NetworkPolicy; plain Flannel does not.',
+    ],
+  },
+  'containers/container-security/psa-restricted-never-checks-readonlyrootfilesystem-at-all': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It', route: '/containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it' },
+      { label: 'Container Security overview', route: '/containers/container-security' },
+    ],
+    tip: 'PSA "restricted" checks runAsNonRoot, allowPrivilegeEscalation: false, seccompProfile, and capabilities.drop: [ALL] — but readOnlyRootFilesystem is never one of the fields any Pod Security Standard level enforces, at any level.',
+    gotchas: [
+      'A Pod can pass restricted admission with a fully writable root filesystem, since readOnlyRootFilesystem is documented as best practice only, never a PSA requirement.',
+      'Closing this specific gap requires a separate policy engine (Kyverno, OPA Gatekeeper) layered on top of PSA, not a stricter PSA label.',
+    ],
+  },
   'containers/helm': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

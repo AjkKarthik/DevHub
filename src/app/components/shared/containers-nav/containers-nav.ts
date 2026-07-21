@@ -352,7 +352,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/container-security" routerLinkActive="active"><span class="nl-text">Container Security</span>@if(p.isDone('k8s-container-security')){<span class="nl-done">✓</span>}@if(d('k8s-container-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/container-security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Container Security</span>
+        @if (p.isDone('k8s-container-security')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-container-security'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('container-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('container-security')"
+                  (click)="toggleSubtopics('container-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('container-security'); as secSubs) {
+        @if (isSubtopicsExpanded('container-security')) {
+          <div class="nav-subtopics">
+            @for (s of secSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/rbac" routerLinkActive="active"><span class="nl-text">Kubernetes RBAC</span>@if(p.isDone('k8s-rbac')){<span class="nl-done">✓</span>}@if(d('k8s-rbac');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/troubleshooting" routerLinkActive="active"><span class="nl-text">K8s Troubleshooting</span>@if(p.isDone('k8s-troubleshooting')){<span class="nl-done">✓</span>}@if(d('k8s-troubleshooting');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/containers/cheatsheet" routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
