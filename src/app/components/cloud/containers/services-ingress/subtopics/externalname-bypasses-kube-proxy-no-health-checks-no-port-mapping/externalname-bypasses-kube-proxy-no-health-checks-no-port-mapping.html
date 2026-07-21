@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Services &amp; Ingress" topicRoute="/containers/services-ingress" subtopicLabel="ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping</h1>
+  <p class="page-subtitle">
+    The main page's own quickRef sums up ExternalName as "no proxying" in four words — here's everything that
+    absence actually removes, and the DNS-caching risk it inherits instead.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered Service-level traffic identity; this one covers what "no proxying" really means
+      for ExternalName. Last: what <code>pathType: Prefix</code> actually matches on, element by element.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Services &amp; Ingress"
+    topicRoute="/containers/services-ingress"
+    [prev]="{ label: 'sessionAffinity: ClientIP Pins the SNAT’d Source, Not the Real Client', route: '/containers/services-ingress/sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client' }"
+    [next]="{ label: 'pathType: Prefix Matches Path Elements, Not Raw String Prefixes', route: '/containers/services-ingress/pathtype-prefix-matches-path-elements-not-raw-string-prefixes' }"
+  />
+</div>

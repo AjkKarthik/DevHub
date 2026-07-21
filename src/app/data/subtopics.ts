@@ -1424,6 +1424,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'minReadySeconds Throttles Rollout Pace, Not Just Pod Status', route: '/containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status' },
     { label: 'Generation vs. observedGeneration Tracks Controller Catch-Up', route: '/containers/pods-deployments/generation-vs-observedgeneration-tracks-controller-catch-up' },
   ],
+  'services-ingress': [
+    { label: 'sessionAffinity: ClientIP Pins the SNAT’d Source, Not the Real Client', route: '/containers/services-ingress/sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client' },
+    { label: 'ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping', route: '/containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping' },
+    { label: 'pathType: Prefix Matches Path Elements, Not Raw String Prefixes', route: '/containers/services-ingress/pathtype-prefix-matches-path-elements-not-raw-string-prefixes' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

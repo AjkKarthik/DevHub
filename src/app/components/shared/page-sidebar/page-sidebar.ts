@@ -28073,6 +28073,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'NodePort exposes a static port on every node\'s IP directly — simple but rarely used directly in production.',
     ],
   },
+  'containers/services-ingress/sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Services & Ingress overview', route: '/containers/services-ingress' },
+      { label: 'ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping', route: '/containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping' },
+      { label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' },
+    ],
+    tip: 'Under the default externalTrafficPolicy: Cluster, kube-proxy SNATs external NodePort/LoadBalancer traffic — sessionAffinity: ClientIP then pins by receiving-node IP, not the real client, unless externalTrafficPolicy: Local is set.',
+    gotchas: [
+      'externalTrafficPolicy: Local preserves the real client IP but trades away even distribution — nodes with no local matching Pod get zero external traffic.',
+      'This SNAT masking only affects external NodePort/LoadBalancer traffic under the default Cluster policy — internal ClusterIP Pod-to-Pod calls are unaffected.',
+    ],
+  },
+  'containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'sessionAffinity: ClientIP Pins the SNAT’d Source, Not the Real Client', route: '/containers/services-ingress/sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client' },
+      { label: 'pathType: Prefix Matches Path Elements, Not Raw String Prefixes', route: '/containers/services-ingress/pathtype-prefix-matches-path-elements-not-raw-string-prefixes' },
+    ],
+    tip: 'ExternalName has no selector, no Endpoints, and no health checking — it is pure DNS CNAME resolution, so an already-cached client resolution or a long-lived connection keeps using the OLD target after externalName is repointed.',
+    gotchas: [
+      'kubectl get endpoints on an ExternalName Service returns NotFound — there was never anything for kube-proxy to program.',
+      'Repointing spec.externalName changes what CoreDNS answers for a FRESH lookup only — it does nothing to force an already-open connection to re-resolve.',
+    ],
+  },
+  'containers/services-ingress/pathtype-prefix-matches-path-elements-not-raw-string-prefixes': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping', route: '/containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping' },
+      { label: 'Services & Ingress overview', route: '/containers/services-ingress' },
+    ],
+    tip: 'pathType: Prefix matches element-by-element after splitting on "/" — /api matches /api/users but never /apiv2, since "api" and "apiv2" are different complete path elements, not a shared string prefix.',
+    gotchas: [
+      'Two paths sharing only leading characters (like /api and /apiv2-legacy) never actually compete for the same traffic — no ordering or Exact pathType is needed to keep them apart.',
+      'A genuinely nested pair like /api and /api/v2 DOES share a complete first element and needs Kubernetes\' own longest-matching-path precedence rule to resolve.',
+    ],
+  },
   'containers/statefulsets': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

@@ -264,7 +264,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Networking</p>
-      <a routerLink="/containers/services-ingress" routerLinkActive="active"><span class="nl-text">Services &amp; Ingress</span>@if(p.isDone('k8s-services-ingress')){<span class="nl-done">✓</span>}@if(d('k8s-services-ingress');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/services-ingress" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Services &amp; Ingress</span>
+        @if (p.isDone('k8s-services-ingress')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-services-ingress'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('services-ingress')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('services-ingress')"
+                  (click)="toggleSubtopics('services-ingress', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('services-ingress'); as svcSubs) {
+        @if (isSubtopicsExpanded('services-ingress')) {
+          <div class="nav-subtopics">
+            @for (s of svcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/containers/network-policies" routerLinkActive="active"><span class="nl-text">Network Policies</span>@if(p.isDone('k8s-network-policies')){<span class="nl-done">✓</span>}@if(d('k8s-network-policies');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

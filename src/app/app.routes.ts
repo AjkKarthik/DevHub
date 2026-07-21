@@ -3095,7 +3095,12 @@ export const routes: Routes = [
       { path: 'minreadyseconds-throttles-rollout-pace-not-just-pod-status', loadComponent: () => import('./components/cloud/containers/pods-deployments/subtopics/minreadyseconds-throttles-rollout-pace-not-just-pod-status/minreadyseconds-throttles-rollout-pace-not-just-pod-status').then(m => m.MinreadysecondsThrottlesRolloutPaceNotJustPodStatusSubtopic) },
       { path: 'generation-vs-observedgeneration-tracks-controller-catch-up', loadComponent: () => import('./components/cloud/containers/pods-deployments/subtopics/generation-vs-observedgeneration-tracks-controller-catch-up/generation-vs-observedgeneration-tracks-controller-catch-up').then(m => m.GenerationVsObservedgenerationTracksControllerCatchUpSubtopic) },
     ]},
-    { path: 'services-ingress',   loadComponent: () => import('./components/cloud/containers/services-ingress/services-ingress').then(m => m.K8sServicesIngress) },
+    { path: 'services-ingress', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/services-ingress/services-ingress').then(m => m.K8sServicesIngress) },
+      { path: 'sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client', loadComponent: () => import('./components/cloud/containers/services-ingress/subtopics/sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client/sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client').then(m => m.SessionaffinityClientipPinsTheSnattedSourceNotTheRealClientSubtopic) },
+      { path: 'externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping', loadComponent: () => import('./components/cloud/containers/services-ingress/subtopics/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping').then(m => m.ExternalnameBypassesKubeProxyNoHealthChecksNoPortMappingSubtopic) },
+      { path: 'pathtype-prefix-matches-path-elements-not-raw-string-prefixes', loadComponent: () => import('./components/cloud/containers/services-ingress/subtopics/pathtype-prefix-matches-path-elements-not-raw-string-prefixes/pathtype-prefix-matches-path-elements-not-raw-string-prefixes').then(m => m.PathtypePrefixMatchesPathElementsNotRawStringPrefixesSubtopic) },
+    ]},
     { path: 'configmaps-secrets', loadComponent: () => import('./components/cloud/containers/configmaps-secrets/configmaps-secrets').then(m => m.K8sConfigmapsSecrets) },
     { path: 'storage',            loadComponent: () => import('./components/cloud/containers/storage/storage').then(m => m.K8sStorage) },
     { path: 'operators-crds', children: [
