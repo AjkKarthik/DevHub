@@ -1469,6 +1469,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest', route: '/containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest' },
     { label: 'Unready Pods Count as 0% Utilization, Diluting the Average', route: '/containers/hpa/unready-pods-count-as-0-percent-utilization-diluting-the-average' },
   ],
+  'network-policies': [
+    { label: 'NetworkPolicies Union Additively — a Second Policy Can Only Allow More', route: '/containers/network-policies/networkpolicies-union-additively-a-second-policy-can-only-allow-more' },
+    { label: 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak', route: '/containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak' },
+    { label: 'The “Always Allow DNS” Egress Rule Has No Destination — a Real Exfiltration Path', route: '/containers/network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Network Policies" topicRoute="/containers/network-policies" subtopicLabel="ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak</h1>
+  <p class="page-subtitle">
+    The main page's own quickRef calls ipBlock "external" — but it's a plain CIDR matcher with no internal/external
+    concept at all, so a broad range can accidentally grant egress to in-cluster pods too.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered policy union semantics; this one covers ipBlock's own scope gap. Last: the
+      "always allow DNS" rule the main page insists on — and what it quietly leaves open.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Network Policies"
+    topicRoute="/containers/network-policies"
+    [prev]="{ label: 'NetworkPolicies Union Additively — a Second Policy Can Only Allow More', route: '/containers/network-policies/networkpolicies-union-additively-a-second-policy-can-only-allow-more' }"
+    [next]="{ label: 'The ‘Always Allow DNS’ Egress Rule Has No Destination — a Real Exfiltration Path', route: '/containers/network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path' }"
+  />
+</div>

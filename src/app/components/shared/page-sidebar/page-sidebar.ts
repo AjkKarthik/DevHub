@@ -28084,6 +28084,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Egress policies (restricting what a compromised pod can reach outbound) are just as important as ingress and are more commonly overlooked.',
     ],
   },
+  'containers/network-policies/networkpolicies-union-additively-a-second-policy-can-only-allow-more': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Network Policies overview', route: '/containers/network-policies' },
+      { label: 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak', route: '/containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak' },
+    ],
+    tip: 'Multiple NetworkPolicies selecting the same pod UNION their rules — there is no precedence or override. A second, narrower policy can only ever add more allowed traffic, never restrict what a broader existing policy already permits.',
+    gotchas: [
+      'To genuinely narrow access, edit or delete the original, broader policy directly — a second "more restrictive" policy alongside it has no restraining effect.',
+      'Kubernetes has no concept of NetworkPolicy ordering or specificity — evaluation is not affected by which policy was created first.',
+    ],
+  },
+  'containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'NetworkPolicies Union Additively — a Second Policy Can Only Allow More', route: '/containers/network-policies/networkpolicies-union-additively-a-second-policy-can-only-allow-more' },
+      { label: 'The “Always Allow DNS” Egress Rule Has No Destination — a Real Exfiltration Path', route: '/containers/network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path' },
+    ],
+    tip: 'ipBlock is a plain CIDR matcher with no internal/external concept in the core API — a broad range overlapping the cluster\'s own Pod/Service CIDR also grants access to in-cluster pods, unless explicitly excluded with except:.',
+    gotchas: [
+      'Check kubectl cluster-info dump for the cluster\'s own Pod/Service CIDR before writing any broad-range ipBlock rule.',
+      'Some CNIs (Cilium) auto-exclude cluster-internal addresses from ipBlock — this is CNI-specific, not a core API guarantee, so don\'t rely on it for portability.',
+    ],
+  },
+  'containers/network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak', route: '/containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak' },
+      { label: 'Network Policies overview', route: '/containers/network-policies' },
+    ],
+    tip: 'The standard "always allow DNS egress" rule has no destination restriction — since NetworkPolicy can\'t inspect DNS query content, this permits DNS tunneling to any external resolver. Scope the rule\'s own to: field to CoreDNS specifically to close it.',
+    gotchas: [
+      'Scoping DNS-allow to only the cluster\'s own CoreDNS service preserves normal service-name resolution while blocking queries to attacker-controlled external resolvers.',
+      'This is a genuinely narrow, well-documented technique (DNS tunneling), not a theoretical edge case — unrestricted port-53 rules are common exactly because DNS resolution must not break.',
+    ],
+  },
   'containers/operators-crds': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [

@@ -3155,7 +3155,12 @@ export const routes: Routes = [
       { path: 'selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest', loadComponent: () => import('./components/cloud/containers/hpa/subtopics/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest').then(m => m.SelectpolicyDefaultsToMaxMultiplePoliciesPickTheFastestNotSafestSubtopic) },
       { path: 'unready-pods-count-as-0-percent-utilization-diluting-the-average', loadComponent: () => import('./components/cloud/containers/hpa/subtopics/unready-pods-count-as-0-percent-utilization-diluting-the-average/unready-pods-count-as-0-percent-utilization-diluting-the-average').then(m => m.UnreadyPodsCountAs0PercentUtilizationDilutingTheAverageSubtopic) },
     ]},
-    { path: 'network-policies',   loadComponent: () => import('./components/cloud/containers/network-policies/network-policies').then(m => m.K8sNetworkPolicies) },
+    { path: 'network-policies', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/network-policies/network-policies').then(m => m.K8sNetworkPolicies) },
+      { path: 'networkpolicies-union-additively-a-second-policy-can-only-allow-more', loadComponent: () => import('./components/cloud/containers/network-policies/subtopics/networkpolicies-union-additively-a-second-policy-can-only-allow-more/networkpolicies-union-additively-a-second-policy-can-only-allow-more').then(m => m.NetworkpoliciesUnionAdditivelyASecondPolicyCanOnlyAllowMoreSubtopic) },
+      { path: 'ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak', loadComponent: () => import('./components/cloud/containers/network-policies/subtopics/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak').then(m => m.IpblockMatchesRawIpsACidrOverlappingTheClusterNetworkCanLeakSubtopic) },
+      { path: 'the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path', loadComponent: () => import('./components/cloud/containers/network-policies/subtopics/dns-egress-no-destination-exfil/dns-egress-no-destination-exfil').then(m => m.TheAlwaysAllowDnsEgressRuleHasNoDestinationARealExfiltrationPathSubtopic) },
+    ]},
     { path: 'troubleshooting',    loadComponent: () => import('./components/cloud/containers/troubleshooting/troubleshooting').then(m => m.K8sTroubleshooting) },
     { path: 'cheatsheet',         loadComponent: () => import('./components/cloud/containers/cheatsheet/cheatsheet').then(m => m.K8sCheatsheet) },
   ] },

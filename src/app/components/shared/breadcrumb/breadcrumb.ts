@@ -1786,6 +1786,9 @@ const CONTAINERS_LABELS: Record<string, string> = {
   'hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest': 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest',
   'hpa/unready-pods-count-as-0-percent-utilization-diluting-the-average': 'Unready Pods Count as 0% Utilization, Diluting the Average',
   'network-policies':   'Network Policies',
+  'network-policies/networkpolicies-union-additively-a-second-policy-can-only-allow-more': 'NetworkPolicies Union Additively — a Second Policy Can Only Allow More',
+  'network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak': 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak',
+  'network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path': 'The "Always Allow DNS" Egress Rule Has No Destination',
   'troubleshooting':    'Kubernetes Troubleshooting',
   'cheatsheet':         'Containers Cheat Sheet',
 };

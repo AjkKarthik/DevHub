@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Network Policies" topicRoute="/containers/network-policies" subtopicLabel="NetworkPolicies Union Additively — a Second Policy Can Only Allow More" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">NetworkPolicies Union Additively — a Second Policy Can Only Allow More</h1>
+  <p class="page-subtitle">
+    The main page's own three-policy worked example never states how the policies combine — every applicable
+    policy's rules union together, so a second, narrower policy can never restrict what a broader one already allows.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own NetworkPolicy claims leave underspecified.
+      Next: what an ipBlock CIDR range can accidentally match inside the cluster.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Network Policies"
+    topicRoute="/containers/network-policies"
+    [next]="{ label: 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak', route: '/containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak' }"
+  />
+</div>

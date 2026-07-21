@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Network Policies" topicRoute="/containers/network-policies" subtopicLabel="The 'Always Allow DNS' Egress Rule Has No Destination — a Real Exfiltration Path" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The "Always Allow DNS" Egress Rule Has No Destination</h1>
+  <p class="page-subtitle">
+    The main page's own DNS-allow rule, repeated three times, has no destination restriction — since NetworkPolicy
+    can't inspect DNS query content, this permits a real, narrow DNS-tunneling exfiltration channel.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from policy union semantics, to ipBlock's own scope gap, to what an unscoped
+      DNS rule quietly permits. Back to the Network Policies overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Network Policies"
+    topicRoute="/containers/network-policies"
+    [prev]="{ label: 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak', route: '/containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak' }"
+  />
+</div>

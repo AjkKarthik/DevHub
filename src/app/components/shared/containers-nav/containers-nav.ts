@@ -360,7 +360,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/network-policies" routerLinkActive="active"><span class="nl-text">Network Policies</span>@if(p.isDone('k8s-network-policies')){<span class="nl-done">✓</span>}@if(d('k8s-network-policies');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/network-policies" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Network Policies</span>
+        @if (p.isDone('k8s-network-policies')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-network-policies'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('network-policies')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('network-policies')"
+                  (click)="toggleSubtopics('network-policies', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('network-policies'); as npSubs) {
+        @if (isSubtopicsExpanded('network-policies')) {
+          <div class="nav-subtopics">
+            @for (s of npSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
