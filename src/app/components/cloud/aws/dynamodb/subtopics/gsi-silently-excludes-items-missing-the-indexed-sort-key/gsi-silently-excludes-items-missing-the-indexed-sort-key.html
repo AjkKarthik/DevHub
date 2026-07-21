@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DynamoDB" topicRoute="/aws/dynamodb" subtopicLabel="GSI Silently Excludes Items Missing the Indexed Key" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">GSI Silently Excludes Items Missing the Indexed Sort Key</h1>
+  <p class="page-subtitle">The main page's own single-table challenge quietly depends on this — a GSI only ever contains items that actually have its key attributes, with no error for the ones that don't.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="DynamoDB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic makes explicit the exact mechanism the main page's own single-table design challenge relies on implicitly. Next, the DAX subtopic sharpens the main page's own "write-through cache" framing into DAX's two genuinely independent caches — one that stays in sync with writes, and one that doesn't.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DynamoDB" topicRoute="/aws/dynamodb"
+    [next]="{ label: 'DAX Item Cache and Query Cache Are Fully Independent', route: '/aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent' }" />
+</div>

@@ -2494,4 +2494,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Switchover vs Unplanned Failover', route: '/aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt' },
     { label: 'Backtrack + Binlog Interaction', route: '/aws/rds-aurora/forcing-backtrack-with-binlog-enabled-breaks-read-replicas' },
   ],
+  'dynamodb': [
+    { label: 'GSI Silently Excludes Items', route: '/aws/dynamodb/gsi-silently-excludes-items-missing-the-indexed-sort-key' },
+    { label: 'DAX Item vs Query Cache', route: '/aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent' },
+    { label: 'Streams Poison Pill Blocking', route: '/aws/dynamodb/streams-poison-pill-blocks-a-shard-for-up-to-a-day' },
+  ],
 };

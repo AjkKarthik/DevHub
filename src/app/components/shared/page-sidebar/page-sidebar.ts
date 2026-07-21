@@ -38015,6 +38015,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'On-demand capacity mode avoids manual capacity planning but costs more per request than well-tuned provisioned capacity at steady, predictable load.',
     ],
   },
+  'aws/dynamodb/gsi-silently-excludes-items-missing-the-indexed-sort-key': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'DynamoDB overview', route: '/aws/dynamodb' },
+      { label: 'DAX Item vs Query Cache', route: '/aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent' },
+    ],
+    tip: 'A GSI only tracks items that actually define its key attributes — a write with a missing key attribute succeeds normally and is simply never propagated to that index, with no error at all.',
+    gotchas: [
+      'This is exactly how the main page\'s own single-table Blog challenge works: only postItem defines GSI1PK/GSI1SK, so GSI1 queries never return users or comments.',
+      'Missing a GSI attribute update on an UpdateItem call (like a "publish" action) leaves an item permanently invisible to that GSI, indistinguishable from the item not existing at all.',
+    ],
+  },
+  'aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'GSI Silently Excludes Items', route: '/aws/dynamodb/gsi-silently-excludes-items-missing-the-indexed-sort-key' },
+      { label: 'Streams Poison Pill Blocking', route: '/aws/dynamodb/streams-poison-pill-blocks-a-shard-for-up-to-a-day' },
+    ],
+    tip: 'DAX runs two independent caches — item cache (GetItem) and query cache (Query/Scan). A write updates only the item cache; a cached Query result stays stale until its own TTL expires, regardless of any write.',
+    gotchas: [
+      'A GetItem through DAX confirming a write is visible does NOT mean a Query that would include that same item is also up to date — they read from completely separate caches.',
+      'Use ConsistentRead: true to skip both caches for a specific call when read-your-writes freshness matters more than DAX\'s latency benefit.',
+    ],
+  },
+  'aws/dynamodb/streams-poison-pill-blocks-a-shard-for-up-to-a-day': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'DAX Item vs Query Cache', route: '/aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent' },
+      { label: 'DynamoDB overview', route: '/aws/dynamodb' },
+    ],
+    tip: 'MaximumRetryAttempts and MaximumRecordAgeInSeconds both default to infinite (-1) — with neither set, a single always-failing record can block its entire shard until the record expires from the stream\'s own 24-hour retention.',
+    gotchas: [
+      'BisectBatchOnFunctionError narrows WHICH records are blocked (isolating the bad one) but does not by itself decide WHEN Lambda gives up on it — an explicit retry/age limit still matters.',
+      'A configured DLQ (OnFailure) only receives a record once retries are exhausted — with infinite retries left on, nothing shows up there for up to a day.',
+    ],
+  },
   'aws/rds-aurora': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

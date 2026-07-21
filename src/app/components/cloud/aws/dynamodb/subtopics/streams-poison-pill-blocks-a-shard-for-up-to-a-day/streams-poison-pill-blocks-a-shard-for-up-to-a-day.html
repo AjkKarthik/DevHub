@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DynamoDB" topicRoute="/aws/dynamodb" subtopicLabel="Streams Poison Pill Blocks a Shard by Default" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Streams Poison Pill Blocks a Shard for Up to a Day</h1>
+  <p class="page-subtitle">The main page's own code tab already sets --bisect-batch-on-function-error and a DLQ — this is exactly why, and what happens with neither.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="DynamoDB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic explains the mechanism behind the main page's own "implement dead-letter handling" advice and its own already-configured Streams code tab. Together with the GSI and DAX subtopics, this rounds out the main page's own indexing, caching, and change-data-capture sections with the operational detail production use of each one eventually surfaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DynamoDB" topicRoute="/aws/dynamodb"
+    [prev]="{ label: 'DAX Item Cache and Query Cache Are Independent', route: '/aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent' }" />
+</div>

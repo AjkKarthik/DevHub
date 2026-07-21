@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DynamoDB" topicRoute="/aws/dynamodb" subtopicLabel="DAX Item Cache and Query Cache Are Independent" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">DAX Item Cache and Query Cache Are Fully Independent</h1>
+  <p class="page-subtitle">The main page's own "write-through cache" framing describes only one of DAX's two caches — a write never touches the other one.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="DynamoDB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic adds the real limit behind the main page's own single "write-through cache" description of DAX. Next, the Streams subtopic sharpens the main page's own "failures retry the entire batch by default" line into the specific, documented worst case that line is quietly warning about.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DynamoDB" topicRoute="/aws/dynamodb"
+    [prev]="{ label: 'GSI Silently Excludes Items Missing the Indexed Key', route: '/aws/dynamodb/gsi-silently-excludes-items-missing-the-indexed-sort-key' }"
+    [next]="{ label: 'Streams Poison Pill Blocks a Shard for Up to a Day', route: '/aws/dynamodb/streams-poison-pill-blocks-a-shard-for-up-to-a-day' }" />
+</div>

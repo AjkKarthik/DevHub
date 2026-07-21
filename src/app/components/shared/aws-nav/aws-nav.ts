@@ -241,7 +241,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/aws/dynamodb" routerLinkActive="active"><span class="nl-text">DynamoDB</span>@if(p.isDone('aws-dynamodb')){<span class="nl-done">✓</span>}@if(d('aws-dynamodb');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/dynamodb" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">DynamoDB</span>
+        @if (p.isDone('aws-dynamodb')) {<span class="nl-done">✓</span>}
+        @if (d('aws-dynamodb'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('dynamodb')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dynamodb')"
+                  (click)="toggleSubtopics('dynamodb', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dynamodb'); as ddbSubs) {
+        @if (isSubtopicsExpanded('dynamodb')) {
+          <div class="nav-subtopics">
+            @for (s of ddbSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

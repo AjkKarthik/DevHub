@@ -3283,7 +3283,12 @@ export const routes: Routes = [
       { path: 'switchover-guarantees-zero-data-loss-unplanned-failover-doesnt', loadComponent: () => import('./components/cloud/aws/rds-aurora/subtopics/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt').then(m => m.SwitchoverGuaranteesZeroDataLossUnplannedFailoverDoesntSubtopic) },
       { path: 'forcing-backtrack-with-binlog-enabled-breaks-read-replicas', loadComponent: () => import('./components/cloud/aws/rds-aurora/subtopics/forcing-backtrack-with-binlog-enabled-breaks-read-replicas/forcing-backtrack-with-binlog-enabled-breaks-read-replicas').then(m => m.ForcingBacktrackWithBinlogEnabledBreaksReadReplicasSubtopic) },
     ] },
-    { path: 'dynamodb',            loadComponent: () => import('./components/cloud/aws/dynamodb/dynamodb').then(m => m.AwsDynamodb) },
+    { path: 'dynamodb', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/dynamodb/dynamodb').then(m => m.AwsDynamodb) },
+      { path: 'gsi-silently-excludes-items-missing-the-indexed-sort-key', loadComponent: () => import('./components/cloud/aws/dynamodb/subtopics/gsi-silently-excludes-items-missing-the-indexed-sort-key/gsi-silently-excludes-items-missing-the-indexed-sort-key').then(m => m.GsiSilentlyExcludesItemsMissingTheIndexedSortKeySubtopic) },
+      { path: 'dax-item-cache-and-query-cache-are-fully-independent', loadComponent: () => import('./components/cloud/aws/dynamodb/subtopics/dax-item-cache-and-query-cache-are-fully-independent/dax-item-cache-and-query-cache-are-fully-independent').then(m => m.DaxItemCacheAndQueryCacheAreFullyIndependentSubtopic) },
+      { path: 'streams-poison-pill-blocks-a-shard-for-up-to-a-day', loadComponent: () => import('./components/cloud/aws/dynamodb/subtopics/streams-poison-pill-blocks-a-shard-for-up-to-a-day/streams-poison-pill-blocks-a-shard-for-up-to-a-day').then(m => m.StreamsPoisonPillBlocksAShardForUpToADaySubtopic) },
+    ] },
     { path: 'lambda',              loadComponent: () => import('./components/cloud/aws/lambda/lambda').then(m => m.AwsLambda) },
     { path: 'api-gateway',         loadComponent: () => import('./components/cloud/aws/api-gateway/api-gateway').then(m => m.AwsApiGateway) },
     { path: 'cloudwatch',          loadComponent: () => import('./components/cloud/aws/cloudwatch/cloudwatch').then(m => m.AwsCloudwatch) },
