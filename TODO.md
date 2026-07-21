@@ -1903,7 +1903,49 @@ off here with a date.
   `tip`/`gotchas`/`related` per subtopic, confirmed via body-text substring check), dark mode
   (`--bg: #0f172a`) all working correctly. **This starts the Containers/K8s hub's Phase 10 rollout —
   1 of 22 topics complete.**)
-- [ ] `/containers/docker-cli` — Docker CLI
+- [x] `/containers/docker-cli` — Docker CLI (2026-07-21 — 3 subtopics:
+  kill-sighup-is-reload-not-termination, kill-does-not-suppress-restart-policy-like-stop,
+  stop-with-empty-ps-q-errors-not-noop; all three verified against official Docker behavior via
+  WebSearch (the first also corroborated by the widely-documented nginx SIGHUP reload pattern, the
+  second by a real, filed Docker engine issue) before writing — (1) confirmed the nginx SIGHUP
+  reload convention verbatim: "it's possible to reload Nginx with a SIGHUP signal: docker kill -s
+  HUP <container>, which reloads the config... without any downtime, and the container does not
+  stop/restart" — resolving an apparent tension the main page's own content creates by placing
+  `docker kill -s SIGHUP api` in the same code tab as its own "reserve kill for unresponsive
+  containers" mistake entry, without ever clarifying that warning is about the SIGKILL default,
+  not about docker kill sending a non-terminating signal; (2) confirmed via WebSearch (corroborated
+  by a real, filed Docker engine issue, moby/moby #47792, "docker kill prevents containers with
+  unless-stopped restart policy to be started after reboot") that docker stop reliably marks a
+  container as explicitly, intentionally stopped in a way the restart-policy engine respects across
+  a daemon restart, while docker kill does not reliably record that same state — sharpening the main
+  page's own theory bullet ("unless-stopped restarts unless manually stopped") into the precise,
+  command-specific mechanism, and revealing that docker kill and docker rm -f (which sends SIGKILL
+  before removing, per the main page's own description) carry a real restart-policy risk docker stop
+  does not; (3) reasoned directly from POSIX/bash command-substitution semantics (no external
+  citation needed) that `docker stop $(docker ps -q)`, shown in the main page's own code tab with
+  the comment "# Stop all running containers," expands to bare `docker stop` with zero arguments
+  when no containers are running — a real CLI usage error and non-zero exit, not the silent no-op a
+  reader would reasonably expect by analogy with the tab's own neighbouring `docker container prune
+  -f` / `docker system prune -f` lines, which DO tolerate an empty result set safely. `docker-cli`
+  collision-checked in `src/app/data/subtopics.ts` (both quoted and unquoted forms) — confirmed
+  collision-free, added as a bare key. Reused the now-fixed `ContainersNavComponent` local-accordion
+  pattern with no further structural changes needed — generalizing cleanly to a second topic in the
+  same hub. Gotcha sweep (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis
+  present; bare single/double brace sweep — clean; apostrophe-after-letter check across all `.ts`
+  fields — clean; backtick parity across all three `.ts` files — even counts (36/44/50); `\${`
+  interpolation-risk scan — clean; a targeted check confirmed every `$(...)` bash command-
+  substitution mention sits inside a SINGLE-quoted `.ts` string field, not a backtick template
+  literal, so no escaping was needed; file-existence check — all 9 files confirmed present, no
+  MAX_PATH issues) came back clean; build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" condition (exceeded by 39.97 kB at this site's current scale, per
+  CLAUDE.md's own known-issues note) with zero actual TypeScript/template compile errors, confirmed
+  via a targeted grep for ERROR lines; browser-verified successfully via direct DOM query — content
+  (all three h1/breadcrumb pairs correct, including the literal `$(docker ps -q)` text rendering
+  correctly with no template-interpolation issues), breadcrumb (all 4 levels), the
+  `ContainersNavComponent` accordion (`.nav-subtopics` container `display: flex`, link correctly
+  marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic, confirmed via
+  body-text substring check), dark mode (`--bg: #0f172a`) all working correctly. **This continues
+  the Containers/K8s hub's Phase 10 rollout — 2 of 22 topics complete.**)
 - [ ] `/containers/docker-images` — Docker Images & Registry
 - [ ] `/containers/dockerfile` — Writing Dockerfiles
 - [ ] `/containers/multi-stage` — Multi-Stage Builds
