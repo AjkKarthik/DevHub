@@ -3013,7 +3013,38 @@ off here with a date.
   five toggles coexist correctly, with only the current page's own topic auto-expanding), sidebar
   showing tailored `tip`/`gotchas`/`related` per subtopic, dark mode (`--bg: #0f172a`) applying
   correctly.)
-- [ ] `/aws/s3` — S3
+- [x] `/aws/s3` — S3 (2026-07-21 — 3 subtopics:
+  objects-under-128kb-dont-transition-storage-class-by-default,
+  sse-kms-encrypted-objects-not-replicated-by-default,
+  access-point-and-bucket-policy-must-both-allow-the-request; all three verified against AWS's
+  own documentation via WebFetch before writing — (1) confirmed AWS applies a default 128 KB
+  minimum object size for ANY lifecycle storage class transition (changed September 2024 — before
+  that, small objects could still transition to Glacier specifically; now the floor applies
+  uniformly), silently excluding smaller objects unless an ObjectSizeGreaterThan filter is added —
+  closing a gap where the main page's own lifecycle example describes transitions purely in terms
+  of object AGE with no mention of size at all; (2) confirmed via AWS's own dedicated KMS
+  replication doc that SSE-KMS and DSSE-KMS encrypted objects are NOT replicated by default (SSE-S3
+  and SSE-C DO replicate normally) — requiring both a SourceSelectionCriteria opt-in AND a
+  ReplicaKmsKeyID, plus additional kms:Decrypt/kms:Encrypt IAM permissions — closing a real,
+  dangerous gap where the main page's own default-SSE-KMS-encryption bucket example and its
+  separate bare-bones replication example silently don't compose, with the initial general "what
+  is/isn't replicated" doc page's own summary wording requiring a second, more specific fetch to
+  disambiguate before this angle could be trusted; (3) confirmed via AWS's own access point policy
+  doc that a request needs BOTH the access point policy AND the underlying bucket policy to permit
+  it (an AND, not an OR) — with AWS's own recommended "delegate access control to access points"
+  pattern via the s3:DataAccessPointAccount condition key, plus the separate VPC-network-origin
+  restriction capability — closing a gap where the main page's own Access Points mention is a
+  single sentence with no mechanism explained at all. Gotcha sweep covered `.html` bound
+  attributes, `.ts` single-quoted `prompt`/`hint`/`solution`/`thought`/`reality`/`label`/`heading`
+  fields, theory `points` arrays, and a `${` interpolation-risk scan — all clean, zero misses;
+  backtick parity across all three `.ts` files — even counts (4/4/4). Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR with zero actual
+  TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename too long"
+  errors (longest new path ~168 relative chars). Browser-verified successfully on all three pages
+  — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now the SIXTH
+  topic in this hub with subtopics — confirmed all six toggles coexist correctly, with only the
+  current page's own topic auto-expanding), sidebar showing tailored `tip`/`gotchas`/`related` per
+  subtopic, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/ebs-efs` — EBS, EFS & FSx
 - [ ] `/aws/iam` — IAM
 - [ ] `/aws/iam-roles` — IAM Roles & Federation
