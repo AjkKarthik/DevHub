@@ -2210,7 +2210,44 @@ off here with a date.
   (Ctrl+K, typed "Kubernetes Architecture", confirmed the result option's own `href` attribute now correctly
   reads `/containers/k8s-architecture`). **This continues the Containers/K8s hub's Phase 10 rollout — 8 of 22
   topics complete.**)
-- [ ] `/containers/kubectl` — kubectl Fundamentals
+- [x] `/containers/kubectl` — kubectl Fundamentals (2026-07-21 — 3 subtopics:
+  apply-uses-three-way-merge-via-last-applied-annotation, force-delete-only-removes-the-etcd-object-not-the-process,
+  scale-against-an-hpa-gets-silently-reverted; all three verified against official Kubernetes documentation and
+  WebSearch before writing — (1) confirmed kubectl apply's own documented mechanism verbatim: "the three-way merge
+  compares the local file (desired state), the live version running in the cluster (current state), and the
+  last-applied-configuration annotation stored on the live resource" and "fields are removed when they are present
+  in the last-applied configuration but absent in the new manifest" — naming the exact mechanism behind the main
+  page's own brief "computes and applies only the diff" claim, and explaining precisely why a field never captured
+  in any prior apply (set via kubectl edit or another controller) survives untouched even when absent from a new
+  manifest; (2) confirmed via WebFetch against Kubernetes' own pod-lifecycle docs that --grace-period=0 --force
+  immediately removes the Pod object from etcd while only BEST-EFFORT notifying the kubelet (not guaranteed) —
+  sharpening the main page's own mistake-entry risk statement ("may still be running on node") into the precise
+  mechanism (skipping the wait for kubelet's own termination confirmation, not adding extra force) and the specific
+  danger case (an unreachable/NotReady node, where the kubelet never receives the notification at all); (3)
+  confirmed via WebSearch that "if applying a change using kubectl apply the replicas field will override any hpa
+  values... any manual scaling with kubectl scale will be temporary — the HPA's next reconciliation cycle will
+  adjust replicas back" — flagging that the main page's own theory/quiz/revision all present kubectl scale as a
+  durable lever with zero mention of HorizontalPodAutoscaler, when an HPA already targeting the same Deployment
+  silently reverts a manual scale on its own next reconciliation tick (~15s), with the durable fix being a change
+  to the HPA's own minReplicas instead. `kubectl` collision-checked in `src/app/data/subtopics.ts` (both quoted
+  and unquoted forms) — confirmed collision-free, added as a bare key. Reused the now-fixed `ContainersNavComponent`
+  local-accordion pattern with no further structural changes needed — generalizing cleanly to a ninth topic in the
+  same hub. **Self-caught and fixed a genuine TypeScript syntax error before the build**: a stray extra closing
+  bracket `]` after the first theory point's own `points:` array (a copy-paste artifact) — caught by a direct file
+  re-read during authoring, not by the build. Gotcha sweep (bare `@` — none found; heading fields — no HTML tags
+  or backtick-emphasis present; bare single/double brace sweep — clean, confirmed the JSON-shaped patch strings
+  inside bash code blocks (`{"spec":{"minReplicas":5}}`) are safely inside backtick template literals with no
+  `${` risk; apostrophe-after-letter check across all `.ts` fields — clean; backtick parity across all three `.ts`
+  files — even counts (10/20/26); `\${` interpolation-risk scan — clean, no unescaped instances; file-existence
+  check — all 9 files confirmed present, no MAX_PATH issues) came back clean; build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" condition (exceeded by 81.17 kB at this site's
+  current scale, per CLAUDE.md's own known-issues note) plus one pre-existing, unrelated `NG8113` unused-RouterLink
+  warning (confirmed unrelated to this batch's own changes) with zero actual TypeScript/template compile errors,
+  confirmed via a targeted grep for ERROR lines; browser-verified successfully via direct DOM query — content (all
+  three h1/breadcrumb pairs correct), breadcrumb (all 4 levels), the `ContainersNavComponent` accordion
+  (`.nav-subtopics` container `display: flex`, link correctly marked `active`), sidebar (tailored
+  `tip`/`gotchas`/`related` per subtopic, confirmed via body-text substring check), dark mode (`--bg: #0f172a`)
+  all working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 9 of 22 topics complete.**)
 - [ ] `/containers/pods-deployments` — Pods, Deployments & ReplicaSets
 - [ ] `/containers/services-ingress` — Services & Ingress
 - [ ] `/containers/configmaps-secrets` — ConfigMaps & Secrets
