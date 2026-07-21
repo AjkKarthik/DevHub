@@ -1718,21 +1718,24 @@ do this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/containers/home/home.ts`. Progress: `k8sTotal=22` in progress.service.ts.
   Containers pages use `app-common-mistakes` AND `app-revision-card`. Reference page has no PageComplete.
   Challenge.language: `'typescript'`. ContainersNavComponent at `shared/containers-nav/containers-nav.ts`.
-  Phase 10: 21 of 22 topics have subtopics (`/containers/fundamentals`, `/containers/docker-cli`,
-  `/containers/docker-images`, `/containers/dockerfile`, `/containers/multi-stage`,
-  `/containers/compose`, `/containers/compose-profiles`, `/containers/k8s-architecture`,
-  `/containers/kubectl`, `/containers/operators-crds`, `/containers/pods-deployments`,
-  `/containers/services-ingress`, `/containers/configmaps-secrets`, `/containers/storage`,
-  `/containers/helm`, `/containers/container-security`, `/containers/rbac`,
-  `/containers/statefulsets`, `/containers/resource-limits`, `/containers/hpa`,
-  `/containers/network-policies`, 2026-07-21) — only `/containers/troubleshooting` remains
-  to complete this hub. See "Containers/K8s hub
+  Phase 10: **COMPLETE — 22 of 22 topics have subtopics** (66 subtopic pages total),
+  finished 2026-07-21. See "Containers/K8s hub
   subtopic wiring" section above for the `ContainersNavComponent` accordion structural fix and
   the `k8s-fundamentals` SUBTOPICS-map collision resolution. Note: `search.ts`'s `url()` needed
   a special case for `k8s-architecture` specifically — its own bare topic slug happens to start
   with the hub's `k8s-` prefix, so the generic prefix-strip rule was wrongly producing
   `/containers/architecture` instead of `/containers/k8s-architecture`; check any future
   hub/topic slug that itself starts with its own hub's search-prefix string for the same risk.
+  Three genuine main-page content inaccuracies were found and corrected during this hub's own
+  subtopic authoring (RBAC's QnA on privilege escalation, StatefulSets' QnA on init-container
+  network-namespace sharing, Resource-Limits' QnA on ResourceQuota admission behavior) — all
+  confirmed against official Kubernetes docs before correction, per the established
+  "fix genuine inaccuracies found during subtopic authoring" precedent. The
+  `/containers/network-policies` batch also hit the documented Windows MAX_PATH gotcha for
+  real (a 79-char subtopic slug + the `network-policies/subtopics/` nesting exceeded 260
+  chars) — fixed per the established short-physical-folder recipe; the very next batch
+  (`/containers/troubleshooting`) proactively kept all three slugs under ~55 chars from the
+  start to avoid a repeat.
 - **Terraform/IaC hub**: 21 trackable topic pages + 2 reference (23 cards total). Feature-complete.
   Purple theme `$accent: #7b42bc`, `$tint: #f5f3ff`. Search prefix `tf-`. Route: `/terraform`.
   CSS classes: `.tf-page`, `.tf-icon`, `.tf-section`. Icon content: `TF`. `tech="javascript"`.

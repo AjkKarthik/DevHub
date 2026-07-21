@@ -2774,7 +2774,57 @@ off here with a date.
   (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all working
   correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 21 of 22 topics
   complete — only `/containers/troubleshooting` remains.**)
-- [ ] `/containers/troubleshooting` — Kubernetes Troubleshooting
+- [x] `/containers/troubleshooting` — Kubernetes Troubleshooting (2026-07-21 — 3 subtopics:
+  crashloop-backoff-resets-after-10-min-stable-running,
+  exit-code-137-is-sigkill-not-always-oomkilled,
+  previous-logs-only-reach-the-latest-crash; all three verified against official Kubernetes
+  documentation and independent operational sources via WebSearch before writing — (1)
+  confirmed the exponential backoff counter (10s→20s→40s…5min cap) only resets after a
+  container has run continuously for 10 minutes without crashing — closing a gap where the
+  main page's own theory describes the climbing sequence but never its reset condition,
+  explaining a genuinely confusing observation (a "rare" crash still showing a full 5-minute
+  delay because it never stayed up 10 stable minutes between occurrences); (2) confirmed via
+  multiple independent sources that exit code 137 only confirms SIGKILL was sent — the OOM
+  killer is one of several possible sources (a grace-period-expired liveness-probe kill is
+  another, common one) — and that `lastState.terminated.reason` is the actual field that
+  confirms or rules out "OOMKilled" specifically; closes a gap where the main page's own quiz
+  AND its own Challenge solution both hard-code exitCode === 137 as sufficient, conclusive
+  proof of an OOM kill; (3) confirmed via documented `kubectl logs` behavior that `--previous`
+  only ever retrieves the single most recently terminated container instance, never a rolling
+  history — closing a gap where the main page's own repeated advice presents `--previous` as
+  a general window into crash history, when in a real multi-restart CrashLoopBackOff, an
+  engineer investigating late may only be able to see a downstream, secondary crash rather
+  than the original root cause. Gotcha sweep (bare `@` — none found; heading fields — no HTML
+  tags or backtick-emphasis present; bare single/double brace sweep of `.html` files — clean;
+  backtick parity across all three `.ts` files — even counts (4/38/16); apostrophe-after-
+  letter check across all `.html` bound `[prev]`/`[next]` attributes — clean; a targeted
+  re-check for the exact escaped-quote-then-unescaped-quote bug pattern (`\''`) caught in
+  earlier batches — clean, zero instances; `\${` interpolation-risk scan — clean; `git add -A`
+  file-existence check — all 9 files confirmed present; **slugs deliberately kept short
+  (~45–55 chars) from the start this batch**, applying the MAX_PATH lesson learned the hard
+  way in the immediately-preceding `/containers/network-policies` batch, and confirmed via
+  `git add -A` with zero "Filename too long" errors on the first attempt) came back clean;
+  build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (now ~165kB over) plus one confirmed pre-existing, unrelated `NG8113: RouterLink is
+  not used` warning on `troubleshooting.ts` itself with zero actual TypeScript/template
+  compile errors; browser-verified successfully via direct page-text and DOM query on all
+  three pages — content (all h1/breadcrumb pairs correct), breadcrumb (all 4 levels), the
+  `ContainersNavComponent` accordion (toggle button present on the K8s Troubleshooting nav
+  link), sidebar (tailored `tip`/`gotchas`/`related` per subtopic), dark mode
+  (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes) all working
+  correctly. **This completes the Containers/K8s hub's ENTIRE Phase 10 rollout — 22 of 22
+  topics now have subtopics, 66 new subtopic pages total across the hub.** Across this hub's
+  full rollout: 3 genuine main-page content inaccuracies were found and corrected during
+  authoring (an RBAC QnA overstating a privilege-escalation risk, a StatefulSets QnA stating
+  init containers do NOT share the Pod's network namespace when they do, and a
+  Resource-Limits QnA describing ResourceQuota as silently zero-counting a resources-less pod
+  when it actually rejects pod creation outright) — all three confirmed via WebSearch/WebFetch
+  against official Kubernetes documentation before correction, following the established
+  "fix genuine inaccuracies found during subtopic authoring" precedent from this project's
+  history. The `ContainersNavComponent` accordion structural fix (local `expandedTopics`
+  signal + `subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` methods) made once during the
+  `/containers/fundamentals` pilot batch generalized cleanly across all 22 topics with no
+  further structural changes needed.)
 
 #### AWS — 21 topic pages
 
