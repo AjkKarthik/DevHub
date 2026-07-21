@@ -37752,6 +37752,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cross-account role assumption requires both the trusting account\'s role trust policy AND the assuming principal\'s own permission to call sts:AssumeRole.',
     ],
   },
+  'aws/iam-roles/external-id-is-not-actually-a-secret-per-aws-own-docs': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IAM Roles & Federation overview', route: '/aws/iam-roles' },
+      { label: "Pod Identity's Real Mechanism", route: '/aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent' },
+    ],
+    tip: 'AWS explicitly states External ID is not treated as a secret — visible to anyone who can view the role. Its real protection is being unguessable and vendor-generated, unique per customer.',
+    gotchas: [
+      'A vendor serving multiple customers must generate a UNIQUE ExternalId per customer themselves — reusing one value across customers defeats its confused-deputy protection.',
+      'AWS\'s own recommended vendor practice: verify a role genuinely rejects assumption without the correct ExternalId before ever storing that customer\'s role ARN.',
+    ],
+  },
+  'aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: "External ID Isn't a Secret", route: '/aws/iam-roles/external-id-is-not-actually-a-secret-per-aws-own-docs' },
+      { label: 'GitHub OIDC Environment Claims', route: '/aws/iam-roles/github-oidc-environment-claims-restrict-beyond-branch-alone' },
+    ],
+    tip: 'Pod Identity isn\'t IRSA minus the OIDC URL — it uses a fixed pods.eks.amazonaws.com principal and requires the separate Pod Identity Agent DaemonSet running on the cluster.',
+    gotchas: [
+      'Correctly-configured trust policies and associations still issue no credentials at all if the Pod Identity Agent add-on was never installed on the cluster.',
+      'Pod Identity has real version/workload restrictions (unavailable on Fargate, Windows pods, Outposts, EKS Anywhere) that IRSA does not share.',
+    ],
+  },
+  'aws/iam-roles/github-oidc-environment-claims-restrict-beyond-branch-alone': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: "Pod Identity's Real Mechanism", route: '/aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent' },
+      { label: 'IAM Roles & Federation overview', route: '/aws/iam-roles' },
+    ],
+    tip: 'A branch-ref sub condition lets ANY workflow run on that branch assume the role — an environment-scoped sub claim lets GitHub\'s own required-reviewer rules gate assumption itself.',
+    gotchas: [
+      'The IAM trust policy condition alone cannot pause for human approval — the actual gate is a GitHub-side environment protection rule, configured separately.',
+      'Environment and branch-ref scoping aren\'t mutually exclusive — an environment\'s own deployment branch rules can layer on top of the trust policy\'s condition.',
+    ],
+  },
   'aws/vpc': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

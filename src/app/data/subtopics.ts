@@ -2484,4 +2484,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'AssumeRole Duration Behavior', route: '/aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session' },
     { label: 'ABAC Tag Protection', route: '/aws/iam/abac-tags-need-their-own-deny-untagresource-protection' },
   ],
+  'iam-roles': [
+    { label: "External ID Isn't a Secret", route: '/aws/iam-roles/external-id-is-not-actually-a-secret-per-aws-own-docs' },
+    { label: "Pod Identity's Real Mechanism", route: '/aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent' },
+    { label: 'GitHub OIDC Environment Claims', route: '/aws/iam-roles/github-oidc-environment-claims-restrict-beyond-branch-alone' },
+  ],
 };

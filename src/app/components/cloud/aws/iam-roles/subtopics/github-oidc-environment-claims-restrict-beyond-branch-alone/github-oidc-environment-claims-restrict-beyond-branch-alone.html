@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="IAM Roles & Federation" topicRoute="/aws/iam-roles" subtopicLabel="GitHub OIDC Environment Claims" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">GitHub OIDC Environment Claims Restrict Beyond Branch Alone</h1>
+  <p class="page-subtitle">The main page's branch-ref condition allows any workflow run on that branch — an environment-scoped claim lets GitHub's own required-reviewer rules gate role assumption itself.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="GitHub Actions" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic extends the main page's own single branch-only OIDC example with GitHub's own recommended, stronger production-deploy pattern. Together with the External ID and EKS Pod Identity subtopics, this batch covers three genuinely distinct IAM Roles & Federation gaps the main page's own dense theory bullets only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="IAM Roles & Federation" topicRoute="/aws/iam-roles"
+    [prev]="{ label: 'EKS Pod Identity’s Real Mechanism', route: '/aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent' }" />
+</div>

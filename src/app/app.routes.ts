@@ -3271,7 +3271,12 @@ export const routes: Routes = [
       { path: 'assumerole-durationseconds-fails-not-truncates-past-max-session', loadComponent: () => import('./components/cloud/aws/iam/subtopics/assumerole-durationseconds-fails-not-truncates-past-max-session/assumerole-durationseconds-fails-not-truncates-past-max-session').then(m => m.AssumeroleDurationsecondsFailsNotTruncatesPastMaxSessionSubtopic) },
       { path: 'abac-tags-need-their-own-deny-untagresource-protection', loadComponent: () => import('./components/cloud/aws/iam/subtopics/abac-tags-need-their-own-deny-untagresource-protection/abac-tags-need-their-own-deny-untagresource-protection').then(m => m.AbacTagsNeedTheirOwnDenyUntagresourceProtectionSubtopic) },
     ] },
-    { path: 'iam-roles',           loadComponent: () => import('./components/cloud/aws/iam-roles/iam-roles').then(m => m.AwsIamRoles) },
+    { path: 'iam-roles', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/iam-roles/iam-roles').then(m => m.AwsIamRoles) },
+      { path: 'external-id-is-not-actually-a-secret-per-aws-own-docs', loadComponent: () => import('./components/cloud/aws/iam-roles/subtopics/external-id-is-not-actually-a-secret-per-aws-own-docs/external-id-is-not-actually-a-secret-per-aws-own-docs').then(m => m.ExternalIdIsNotActuallyASecretPerAwsOwnDocsSubtopic) },
+      { path: 'eks-pod-identity-uses-a-different-principal-and-needs-an-agent', loadComponent: () => import('./components/cloud/aws/iam-roles/subtopics/eks-pod-identity-uses-a-different-principal-and-needs-an-agent/eks-pod-identity-uses-a-different-principal-and-needs-an-agent').then(m => m.EksPodIdentityUsesADifferentPrincipalAndNeedsAnAgentSubtopic) },
+      { path: 'github-oidc-environment-claims-restrict-beyond-branch-alone', loadComponent: () => import('./components/cloud/aws/iam-roles/subtopics/github-oidc-environment-claims-restrict-beyond-branch-alone/github-oidc-environment-claims-restrict-beyond-branch-alone').then(m => m.GithubOidcEnvironmentClaimsRestrictBeyondBranchAloneSubtopic) },
+    ] },
     { path: 'rds-aurora',          loadComponent: () => import('./components/cloud/aws/rds-aurora/rds-aurora').then(m => m.AwsRdsAurora) },
     { path: 'dynamodb',            loadComponent: () => import('./components/cloud/aws/dynamodb/dynamodb').then(m => m.AwsDynamodb) },
     { path: 'lambda',              loadComponent: () => import('./components/cloud/aws/lambda/lambda').then(m => m.AwsLambda) },

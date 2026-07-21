@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="IAM Roles & Federation" topicRoute="/aws/iam-roles" subtopicLabel="Pod Identity's Real Mechanism" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">EKS Pod Identity Uses a Different Principal and Needs an Agent</h1>
+  <p class="page-subtitle">Not IRSA minus the OIDC URL — a fixed service principal plus a required cluster-side DaemonSet, with its own version and workload restrictions.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="EKS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic expands the main page's own compressed "simplifies IRSA" description into the actual, structurally distinct mechanism — a fixed principal, a required agent, and its own version/workload restrictions. Next, the GitHub Actions OIDC subtopic covers a second gap: a stronger restriction mechanism beyond the branch-only condition the main page's own trust policy example uses.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="IAM Roles & Federation" topicRoute="/aws/iam-roles"
+    [prev]="{ label: 'External ID Isn’t a Secret', route: '/aws/iam-roles/external-id-is-not-actually-a-secret-per-aws-own-docs' }"
+    [next]="{ label: 'GitHub OIDC Environment Claims', route: '/aws/iam-roles/github-oidc-environment-claims-restrict-beyond-branch-alone' }" />
+</div>
