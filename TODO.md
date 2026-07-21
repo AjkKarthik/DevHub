@@ -2508,7 +2508,48 @@ off here with a date.
   `tip`/`gotchas`/`related` per subtopic), dark mode (`--bg: #0f172a`), and prev/next
   subtopic-nav pager (correct labels and routes) all working correctly. **This continues the
   Containers/K8s hub's Phase 10 rollout — 15 of 22 topics complete.**)
-- [ ] `/containers/container-security` — Container Security
+- [x] `/containers/container-security` — Container Security (2026-07-21 — 3 subtopics:
+  fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow,
+  networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it,
+  psa-restricted-never-checks-readonlyrootfilesystem-at-all; all three verified against
+  official Kubernetes documentation via WebSearch before writing — (1) confirmed via
+  Kubernetes' own documented fsGroup behavior and its 1.20 fsGroupChangePolicy release notes
+  that fsGroup sets mounted-volume GROUP ownership (with a recursive chown/chmod cost on
+  mount, unaffected by fsGroupChangePolicy for ephemeral volumes) — closing a real gap where
+  the main page's own hardened Pod spec code tab sets `fsGroup: 2000` with zero explanation
+  anywhere in its own theory, quickRef, or QnA; (2) confirmed via Kubernetes' own
+  documentation, verbatim, that "creating a NetworkPolicy resource without a controller that
+  implements it will have no effect," and that plain Flannel is a commonly-cited CNI that
+  does not enforce NetworkPolicy at all — directly paralleling this same hub's own earlier
+  "Ingress needs a controller" gap from the Services & Ingress subtopic batch, a connection
+  the main page's own mistake entry never draws; (3) confirmed via Kubernetes' own official
+  Pod Security Standards that the "restricted" policy checks exactly four fields
+  (runAsNonRoot, allowPrivilegeEscalation: false, seccompProfile, capabilities.drop: [ALL])
+  and that readOnlyRootFilesystem is documented as best practice only, never enforced by any
+  PSA level — closing a real gap where the main page's own theory groups all four
+  Security-Contexts fields together as one hardening checklist without distinguishing which
+  are PSA-enforced guarantees versus author-remembered best practice. Gotcha sweep (bare `@`
+  — none found; heading fields — no HTML tags or backtick-emphasis present; bare
+  single/double brace sweep of `.html` files — clean, only bound `[prev]`/`[next]`
+  attribute expressions contain braces; backtick parity across all three `.ts` files — even
+  counts (16/8/8); apostrophe-after-letter check across all `.html` bound `[prev]`/`[next]`
+  attributes — clean; a targeted re-check for the exact escaped-quote-then-unescaped-quote
+  bug pattern (`\''`) caught in the prior two batches — clean, zero instances; `\${`
+  interpolation-risk scan — clean; `git add -A` file-existence check — all 9 files confirmed
+  present, no MAX_PATH issues) came back clean; build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (now ~126kB over) plus one
+  confirmed pre-existing, unrelated `NG8113: RouterLink is not used` warning on
+  `container-security.ts` itself (the Containers/K8s hub's own file, distinct from the
+  separate, unrelated Security & Auth hub's own same-named `container-security.ts`, verified
+  via full file paths) with zero actual TypeScript/template compile errors; browser-verified
+  successfully via direct page-text and DOM query on all three pages — content (all three
+  h1/breadcrumb pairs correct), breadcrumb (all 4 levels, using the correct `CONTAINERS_LABELS`
+  map distinct from the Security hub's own separate labels map, confirmed via context read
+  before editing), the `ContainersNavComponent` accordion (toggle button present on the
+  Container Security nav link), sidebar (tailored `tip`/`gotchas`/`related` per subtopic),
+  dark mode (`--bg: #0f172a`), and prev/next subtopic-nav pager (correct labels and routes)
+  all working correctly. **This continues the Containers/K8s hub's Phase 10 rollout — 16 of
+  22 topics complete.**)
 - [ ] `/containers/rbac` — Kubernetes RBAC
 - [ ] `/containers/statefulsets` — StatefulSets & DaemonSets
 - [ ] `/containers/resource-limits` — Resource Requests & Limits
