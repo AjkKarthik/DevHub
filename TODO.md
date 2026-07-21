@@ -2252,7 +2252,54 @@ off here with a date.
 - [ ] `/containers/services-ingress` — Services & Ingress
 - [ ] `/containers/configmaps-secrets` — ConfigMaps & Secrets
 - [ ] `/containers/storage` — Persistent Volumes & Storage
-- [ ] `/containers/operators-crds` — Kubernetes Operators & CRDs
+- [x] `/containers/operators-crds` — Kubernetes Operators & CRDs (2026-07-21 — 3 subtopics:
+  update-then-status-update-risks-a-stale-resourceversion-conflict,
+  crd-and-cr-in-the-same-apply-race-the-established-condition,
+  requeue-storm-is-actually-rate-limited-exponential-backoff; all three verified against official
+  Kubernetes/controller-runtime/client-go documentation via WebSearch before writing — (1) confirmed
+  via WebSearch that "a spec update, metadata update, or another status update can make your copy
+  stale" and that the documented fix is `retry.RetryOnConflict()`, which "automatically re-fetches the
+  object... and retries the operation when a conflict error occurs" — tracing the main page's own
+  Reconcile pseudocode's two Update calls (finalizer at step 3, status at step 5, both reusing the
+  same in-memory `db` variable with no re-fetch in between) to show it risks exactly this 409 Conflict
+  the moment anything else touches the object concurrently, a real gap the main page's own separate
+  spec-vs-status mistake entry never fully closes; (2) confirmed via WebSearch a real, filed kubectl
+  issue verbatim: "when CRDs and CRs are deployed in the same apply, the apply will fail due to race
+  condition... between the Kubernetes cluster applying the new CRD types and tools sending requests
+  that use the new types," with the documented fix being `kubectl wait --for=condition=established`
+  between the two applies — flagging that the main page's own CRD code tab places a CRD and a CR of
+  that type in ONE file, separated only by `---`, with zero mention of this intermittent race; (3)
+  confirmed controller-runtime's own documented default rate limiter verbatim: "per-item exponential
+  backoff (base ~5ms, max ~1000s)" and that it is "per-item," meaning "if you continuously fail
+  reconciling one object... you will not start off with a huge delay the first time you fail to
+  reconcile a different object" — sharpening the main page's own "requeue storm" framing (in the
+  NotFound-as-error mistake entry) into the precise, self-limiting mechanism actually in play, while
+  confirming the underlying advice (fix the NotFound handling) remains correct regardless of how
+  quickly the backoff quiets the symptom. **Self-caught and fixed a genuine TypeScript syntax error
+  during authoring**: a stray extra closing bracket `]` immediately after the first theory point's own
+  `points:` array in the first subtopic file (a copy-paste artifact) — caught by a direct file re-read
+  before the build, not by the build itself. `operators-crds` collision-checked in
+  `src/app/data/subtopics.ts` (both quoted and unquoted forms) — confirmed collision-free, added as a
+  bare key. Reused the now-fixed `ContainersNavComponent` local-accordion pattern with no further
+  structural changes needed — generalizing cleanly to a tenth topic in the same hub. Gotcha sweep
+  (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis present; bare
+  single/double brace sweep — clean; apostrophe-after-letter check across all `.ts` fields — clean;
+  backtick parity across all three `.ts` files — even counts (32/22/10); `\${` interpolation-risk scan
+  — clean, no unescaped instances; file-existence check — all 9 files confirmed present, no MAX_PATH
+  issues) came back clean; build reported only the pre-documented harmless "bundle initial exceeded
+  maximum budget" condition (exceeded by 87.57 kB at this site's current scale, per CLAUDE.md's own
+  known-issues note) plus one pre-existing, unrelated `NG8113` unused-RouterLink warning (confirmed
+  unrelated to this batch's own changes) with zero actual TypeScript/template compile errors,
+  confirmed via a targeted grep for ERROR lines. **A preview-server disconnect occurred mid-batch**
+  (the dev server session was lost between conversation turns) — resolved by restarting it via
+  `preview_start` and polling with a `curl`-based until-loop (per the tool's own guidance against
+  standalone `sleep`) until it responded 200, rather than guessing at a fixed wait duration; browser-
+  verified successfully afterward via direct DOM query — content (all three h1/breadcrumb pairs
+  correct), breadcrumb (all 4 levels, typographic curly quotes rendering correctly on the third
+  subtopic's title), the `ContainersNavComponent` accordion (`.nav-subtopics` container `display:
+  flex`, link correctly marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic,
+  confirmed via body-text substring check), dark mode (`--bg: #0f172a`) all working correctly. **This
+  continues the Containers/K8s hub's Phase 10 rollout — 10 of 22 topics complete.**)
 - [ ] `/containers/helm` — Helm
 - [ ] `/containers/container-security` — Container Security
 - [ ] `/containers/rbac` — Kubernetes RBAC
