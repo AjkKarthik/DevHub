@@ -3309,7 +3309,44 @@ off here with a date.
   breadcrumb), the `AwsNavComponent` accordion (now the THIRTEENTH topic in this hub with
   subtopics — confirmed only API Gateway's own toggle open, all twelve others closed), dark mode
   (`--bg: #0f172a`) applying correctly.)
-- [ ] `/aws/cloudwatch` — CloudWatch & X-Ray
+- [x] `/aws/cloudwatch` — CloudWatch & X-Ray (2026-07-21 — 3 subtopics:
+  treat-missing-data-decides-insufficient-data-behavior,
+  emf-dimensions-with-high-cardinality-explode-metric-cost,
+  actionssuppressor-natively-suppresses-composite-alarms; all three verified against AWS's own
+  documentation via WebFetch/WebSearch before writing — (1) confirmed via AWS's own
+  alarms-and-missing-data.html doc the exact 4 treatMissingData options ("notBreaching,"
+  "breaching," "ignore," "missing" — default is "missing") and that AWS/DynamoDB metrics default
+  to ignore regardless of the alarm's own setting — closing a gap where the main page's own
+  composite-alarm QnA names the exact risk (a child alarm stuck in INSUFFICIENT_DATA silently
+  disabling an AND composite alarm forever) but never mentions the AWS-documented setting that
+  actually prevents it; (2) confirmed via AWS's own EMF specification doc the exact warning "If
+  you unintentionally create metrics based on high-cardinality dimensions (such as requestId),
+  the embedded metric format will by design create a custom metric corresponding to each unique
+  dimension combination" and "Every DimensionSet used creates a new metric in CloudWatch" —
+  closing a gap where the main page's own EMF examples always use safe, bounded dimensions
+  (FunctionName, Environment) without ever explaining why, or what a high-cardinality choice like
+  orderId would actually do to CloudWatch billing; (3) confirmed via AWS's own PutCompositeAlarm
+  API reference and AlarmRule documentation two fully native alarm-suppression mechanisms —
+  ActionsSuppressor ("Actions will be suppressed if the suppressor alarm is in the ALARM state")
+  with its WaitPeriod/ExtensionPeriod race-guard parameters, and a plain NOT term in a composite
+  alarm's own AlarmRule ("ALARM(CPUUtilizationTooHigh) AND NOT ALARM(DeploymentInProgress)...
+  reduces alarm noise during a known deployment window") — closing a gap where the main page's
+  own theory bullet suggests custom EventBridge + Lambda glue code as the way to suppress
+  maintenance-window noise, without mentioning either native alternative. Two initial WebFetch
+  attempts (against guessed URLs for the missing-data and ActionsSuppressor docs) returned
+  synthesized, ungrounded responses explicitly admitting no real page content was available —
+  not trusted or used; WebSearch was used first to locate the correct canonical URLs
+  (alarms-and-missing-data.html, API_PutCompositeAlarm.html), which then fetched successfully
+  with fully-grounded, richly-quotable content, per this project's own verify-before-publishing
+  discipline. Gotcha sweep covered `.html` bound attributes, `.ts` single-quoted fields
+  (apostrophe-after-letter grep clean across all three files), bare `@word`/`{` in `.html` prose
+  (none present), and backtick parity (even counts, 4/4/4 across all three `.ts` files). Build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with
+  zero actual TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename
+  too long" errors (longest new path 168 relative chars). Browser-verified successfully on all
+  three pages — h1/breadcrumb pairs correct (all 4 levels), the `AwsNavComponent` accordion (now
+  the FOURTEENTH topic in this hub with subtopics — confirmed only CloudWatch's own toggle open,
+  all thirteen others closed), dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/cloudformation-cdk` — CloudFormation & CDK
 - [ ] `/aws/security` — AWS Security Services
 - [ ] `/aws/sqs-sns` — SQS & SNS
