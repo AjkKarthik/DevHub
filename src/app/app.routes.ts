@@ -3307,7 +3307,12 @@ export const routes: Routes = [
       { path: 'emf-dimensions-with-high-cardinality-explode-metric-cost', loadComponent: () => import('./components/cloud/aws/cloudwatch/subtopics/emf-dimensions-with-high-cardinality-explode-metric-cost/emf-dimensions-with-high-cardinality-explode-metric-cost').then(m => m.EmfDimensionsWithHighCardinalityExplodeMetricCostSubtopic) },
       { path: 'actionssuppressor-natively-suppresses-composite-alarms', loadComponent: () => import('./components/cloud/aws/cloudwatch/subtopics/actionssuppressor-natively-suppresses-composite-alarms/actionssuppressor-natively-suppresses-composite-alarms').then(m => m.ActionssuppressorNativelySuppressesCompositeAlarmsSubtopic) },
     ] },
-    { path: 'cloudformation-cdk',  loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/cloudformation-cdk').then(m => m.AwsCloudformationCdk) },
+    { path: 'cloudformation-cdk', children: [
+      { path: '', loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/cloudformation-cdk').then(m => m.AwsCloudformationCdk) },
+      { path: 'cdk-removal-policy-covers-updatereplacepolicy-too', loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/subtopics/cdk-removal-policy-covers-updatereplacepolicy-too/cdk-removal-policy-covers-updatereplacepolicy-too').then(m => m.CdkRemovalPolicyCoversUpdatereplacepolicyTooSubtopic) },
+      { path: 'cdk-context-lookups-freeze-until-manually-reset', loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/subtopics/cdk-context-lookups-freeze-until-manually-reset/cdk-context-lookups-freeze-until-manually-reset').then(m => m.CdkContextLookupsFreezeUntilManuallyResetSubtopic) },
+      { path: 'nested-stack-rollback-failure-blocks-the-whole-hierarchy', loadComponent: () => import('./components/cloud/aws/cloudformation-cdk/subtopics/nested-stack-rollback-failure-blocks-the-whole-hierarchy/nested-stack-rollback-failure-blocks-the-whole-hierarchy').then(m => m.NestedStackRollbackFailureBlocksTheWholeHierarchySubtopic) },
+    ] },
     { path: 'security',            loadComponent: () => import('./components/cloud/aws/security/security').then(m => m.AwsSecurity) },
     { path: 'sqs-sns',             loadComponent: () => import('./components/cloud/aws/sqs-sns/sqs-sns').then(m => m.AwsSqsSns) },
     { path: 'eventbridge',         loadComponent: () => import('./components/cloud/aws/eventbridge/eventbridge').then(m => m.AwsEventbridge) },

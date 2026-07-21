@@ -38321,6 +38321,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CDK\'s higher-level constructs bundle sensible defaults, but understanding the underlying CloudFormation resources they generate matters for genuinely custom requirements.',
     ],
   },
+  'aws/cloudformation-cdk/cdk-removal-policy-covers-updatereplacepolicy-too': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'CloudFormation & CDK overview', route: '/aws/cloudformation-cdk' },
+      { label: 'Context Lookups Freeze', route: '/aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset' },
+    ],
+    tip: 'CDK\'s applyToUpdateReplacePolicy defaults to true — a single removalPolicy: RETAIN sets BOTH DeletionPolicy and UpdateReplacePolicy in the synthesized template, unlike raw CloudFormation where the two fields must be set independently.',
+    gotchas: [
+      'Run cdk synth and inspect the generated template directly to confirm both fields — don\'t assume based on raw-CloudFormation habits.',
+      'applyRemovalPolicy(policy, { applyToUpdateReplacePolicy: false }) exists for the rare case of genuinely wanting asymmetric policies.',
+    ],
+  },
+  'aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'removalPolicy Covers Both Fields', route: '/aws/cloudformation-cdk/cdk-removal-policy-covers-updatereplacepolicy-too' },
+      { label: 'Nested Stack Rollback Failure', route: '/aws/cloudformation-cdk/nested-stack-rollback-failure-blocks-the-whole-hierarchy' },
+    ],
+    tip: 'ec2.Vpc.fromLookup and similar context lookups are cached in cdk.context.json on first synth and deliberately frozen — a later real-world change (new subnet, etc.) is silently ignored until you run cdk context --reset.',
+    gotchas: [
+      'Never hand-edit cdk.context.json — AWS explicitly warns against it; use cdk context --reset <key> or --clear instead.',
+      'This is the same caching mechanism AWS uses for AMI lookups, specifically to prevent unexpected resource replacement from account drift.',
+    ],
+  },
+  'aws/cloudformation-cdk/nested-stack-rollback-failure-blocks-the-whole-hierarchy': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Context Lookups Freeze', route: '/aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset' },
+      { label: 'CloudFormation & CDK overview', route: '/aws/cloudformation-cdk' },
+    ],
+    tip: 'One nested stack failing to roll back blocks cleanup for the ENTIRE hierarchy — even sibling nested stacks that updated successfully get stuck, per AWS\'s own docs, "regardless of the state that the other nested stacks are in."',
+    gotchas: [
+      'AWS\'s own documented fix for this specific stuck state is "contact AWS Support" — no self-service CLI/console path is documented, unlike an ordinary UPDATE_ROLLBACK_FAILED stack.',
+      'Splitting into nested stacks reduces blast radius for normal updates, but not for this specific rollback-failure scenario.',
+    ],
+  },
   'aws/cost-optimization': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [

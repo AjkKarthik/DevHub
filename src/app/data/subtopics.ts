@@ -2514,4 +2514,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'EMF Dimension Cardinality', route: '/aws/cloudwatch/emf-dimensions-with-high-cardinality-explode-metric-cost' },
     { label: 'ActionsSuppressor', route: '/aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms' },
   ],
+  'cloudformation-cdk': [
+    { label: 'removalPolicy Covers Both Fields', route: '/aws/cloudformation-cdk/cdk-removal-policy-covers-updatereplacepolicy-too' },
+    { label: 'Context Lookups Freeze', route: '/aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset' },
+    { label: 'Nested Stack Rollback Failure', route: '/aws/cloudformation-cdk/nested-stack-rollback-failure-blocks-the-whole-hierarchy' },
+  ],
 };

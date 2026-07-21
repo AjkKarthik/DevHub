@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CloudFormation & CDK" topicRoute="/aws/cloudformation-cdk" subtopicLabel="CDK removalPolicy Covers UpdateReplacePolicy Too" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">CDK removalPolicy Covers UpdateReplacePolicy Too</h1>
+  <p class="page-subtitle">The main page's own QnA warns raw CloudFormation needs two separate fields — this is what CDK's single prop actually does under the hood.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="CDK" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic resolves an ambiguity the main page's own QnA leaves open once you move from raw CloudFormation to CDK. Next, the context lookups subtopic sharpens the main page's own "avoids hardcoding IDs" framing into the exact caching mechanism behind it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CloudFormation & CDK" topicRoute="/aws/cloudformation-cdk"
+    [next]="{ label: 'CDK Context Lookups Freeze Until Manually Reset', route: '/aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset' }" />
+</div>
