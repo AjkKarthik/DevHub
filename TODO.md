@@ -3523,7 +3523,46 @@ off here with a date.
   `AwsNavComponent` accordion (now the NINETEENTH topic in this hub with subtopics — confirmed
   only Step Functions' own toggle open, all eighteen others closed), dark mode (`--bg: #0f172a`)
   applying correctly.)
-- [ ] `/aws/load-balancing` — Elastic Load Balancing
+- [x] `/aws/load-balancing` — Elastic Load Balancing (2026-07-22 — 3 subtopics:
+  nlb-global-fail-open-vs-per-az-dns-removal, nlb-udp-quic-targets-use-non-udp-health-checks,
+  alb-reserved-cookie-names-and-4k-cookie-sharding; all three verified against AWS's own ELB
+  documentation via WebFetch before writing — (1) confirmed via AWS's own NLB target-group
+  health-check docs two DISTINCT, differently-scoped unhealthy-target behaviors: fine-grained
+  per-AZ DNS removal ("If target groups don't have a healthy target in an enabled Availability
+  Zone, we remove the IP address for the corresponding subnet from DNS") versus coarse-grained
+  global fail-open, which only triggers when EVERY AZ is simultaneously unhealthy ("allow traffic
+  to all targets in all enabled Availability Zones, regardless of their health status") — closing
+  a gap where the main page's own health-check theory says only "a target is deregistered from
+  the LB when it fails health checks," a single-target framing that never distinguishes these two
+  whole-AZ/whole-service behaviors; (2) confirmed via the same AWS NLB health-check docs that UDP
+  and QUIC target groups are deliberately health-checked using non-UDP protocols only ("target
+  availability can be tested using non-UDP health checks on your target group. You can use any
+  available health check (TCP, HTTP, or HTTPS)") — closing a gap where the main page names UDP as
+  a supported NLB traffic protocol but its own health-check-protocol list two sections later omits
+  UDP entirely with no explanation; (3) confirmed via AWS's own ALB target-group-attributes docs
+  (Sticky Sessions section) the exact reserved cookie names ("Do not use AWSALB, AWSALBAPP, or
+  AWSALBTG for the cookie name; they're reserved for use by the load balancer"), the 4K-triggered
+  AWSALBAPP sharding mechanism ("the load balancer shards application cookies greater than 4K into
+  multiple cookies... up to 16K in size and can therefore create up to 4 shards... begins with
+  \"AWSALBAPP-\" and includes a fragment number"), and a real precedence rule ("If the Application
+  Load Balancer receives both an AWSALBCORS and an AWSALB duration-based stickiness cookie, the
+  value in AWSALBCORS will take precedence") — closing a gap where the main page's own quickRef
+  and mistake entry mention only "AWSALB or application-based" cookies in passing, with no other
+  reserved names, sharding, or precedence detail. Note: the dedicated `sticky-sessions.html` URL
+  returned an ungrounded/empty WebFetch result across three consecutive attempts; the same content
+  was found instead embedded in the `edit-target-group-attributes.html` page's own Sticky Sessions
+  section, fetched successfully with full grounded quotes — a genuinely different URL than
+  initially assumed, not a dropped angle. Gotcha sweep covered `.html` bound attributes, `.ts`
+  single-quoted fields (apostrophe-after-letter grep clean across all three files), bare
+  `@word`/`{` in `.html` prose (none present), and backtick parity (even counts, 4/4/4). Build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with
+  zero actual TypeScript/template compile errors. `git add -A` staged cleanly with no "Filename
+  too long" errors. Confirmed bare `load-balancing` key collision-free in `SUBTOPICS` map (checked
+  both quoted and unquoted forms) — added as a bare key, no hub-prefixing needed. Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), the
+  `AwsNavComponent` accordion (now the TWENTIETH topic in this hub with subtopics — confirmed only
+  Load Balancing's own toggle open, all nineteen others closed), tailored (non-DEFAULT) sidebar
+  content, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/aws/cost-optimization` — AWS Cost Optimization
 
 #### Azure — 22 topic pages
