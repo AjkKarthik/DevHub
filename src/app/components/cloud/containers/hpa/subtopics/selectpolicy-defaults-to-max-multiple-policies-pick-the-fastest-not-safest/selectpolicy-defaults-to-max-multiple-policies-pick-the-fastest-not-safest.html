@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Horizontal Pod Autoscaler" topicRoute="/containers/hpa" subtopicLabel="selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest</h1>
+  <p class="page-subtitle">
+    The main page's own code tabs only ever show one policy per direction — adding a second, stricter policy as a
+    "safety net" does nothing by default, since selectPolicy: Max always picks the largest allowed change.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered stabilization-window aggregation; this one covers policy selection. Last: what
+      happens to the utilization average when some pods aren't Ready yet.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Horizontal Pod Autoscaler"
+    topicRoute="/containers/hpa"
+    [prev]="{ label: 'Scale-Up and Scale-Down Stabilization Windows Aggregate Oppositely', route: '/containers/hpa/scale-up-and-scale-down-stabilization-windows-aggregate-oppositely' }"
+    [next]="{ label: 'Unready Pods Count as 0% Utilization, Diluting the Average', route: '/containers/hpa/unready-pods-count-as-0-percent-utilization-diluting-the-average' }"
+  />
+</div>

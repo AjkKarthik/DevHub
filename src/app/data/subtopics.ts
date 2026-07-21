@@ -1464,6 +1464,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero', route: '/containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero' },
     { label: 'HPA Scales Against Requests, Not Limits — a Low Request Is Hypersensitive', route: '/containers/resource-limits/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive' },
   ],
+  'hpa': [
+    { label: 'Scale-Up and Scale-Down Stabilization Windows Aggregate Oppositely', route: '/containers/hpa/scale-up-and-scale-down-stabilization-windows-aggregate-oppositely' },
+    { label: 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest', route: '/containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest' },
+    { label: 'Unready Pods Count as 0% Utilization, Diluting the Average', route: '/containers/hpa/unready-pods-count-as-0-percent-utilization-diluting-the-average' },
+  ],
   'patterns': [
     { label: 'getTogglerProps Overwrites a Consumer’s Own id', route: '/react/patterns/testing-that-gettogglerprops-silently-overwrites-a-consumers-own-id-unlike-its-onclick-composition' },
     { label: 'useProductSearch Shares localStorage Across Every Instance', route: '/react/patterns/testing-that-useproductsearch-shares-localstorage-across-every-component-instance-via-its-hardcoded-key' },

@@ -316,7 +316,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/containers/hpa" routerLinkActive="active"><span class="nl-text">Horizontal Pod Autoscaler</span>@if(p.isDone('k8s-hpa')){<span class="nl-done">✓</span>}@if(d('k8s-hpa');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/containers/hpa" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Horizontal Pod Autoscaler</span>
+        @if (p.isDone('k8s-hpa')) {<span class="nl-done">✓</span>}
+        @if (d('k8s-hpa'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('hpa')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('hpa')"
+                  (click)="toggleSubtopics('hpa', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('hpa'); as hpaSubs) {
+        @if (isSubtopicsExpanded('hpa')) {
+          <div class="nav-subtopics">
+            @for (s of hpaSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

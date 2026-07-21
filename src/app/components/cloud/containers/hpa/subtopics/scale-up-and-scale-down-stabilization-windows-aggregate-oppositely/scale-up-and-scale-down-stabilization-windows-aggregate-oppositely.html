@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Horizontal Pod Autoscaler" topicRoute="/containers/hpa" subtopicLabel="Scale-Up and Scale-Down Stabilization Windows Aggregate Oppositely" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Scale-Up and Scale-Down Stabilization Windows Aggregate Oppositely</h1>
+  <p class="page-subtitle">
+    The main page's own quiz explains scale-down's "use the maximum" rule — scale-up's own window uses the
+    opposite aggregation, the minimum, which can silently hold back scaling during a real traffic ramp.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own HPA claims leave underspecified. Next:
+      what actually happens when a namespace has more than one scaling policy per direction.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Horizontal Pod Autoscaler"
+    topicRoute="/containers/hpa"
+    [next]="{ label: 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest', route: '/containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest' }"
+  />
+</div>

@@ -3149,7 +3149,12 @@ export const routes: Routes = [
       { path: 'resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero', loadComponent: () => import('./components/cloud/containers/resource-limits/subtopics/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero').then(m => m.ResourcequotaRejectsPodCreationOutrightItNeverDefaultsToZeroSubtopic) },
       { path: 'hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive', loadComponent: () => import('./components/cloud/containers/resource-limits/subtopics/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive').then(m => m.HpaScalesAgainstRequestsNotLimitsALowRequestIsHypersensitiveSubtopic) },
     ]},
-    { path: 'hpa',                loadComponent: () => import('./components/cloud/containers/hpa/hpa').then(m => m.K8sHpa) },
+    { path: 'hpa', children: [
+      { path: '', loadComponent: () => import('./components/cloud/containers/hpa/hpa').then(m => m.K8sHpa) },
+      { path: 'scale-up-and-scale-down-stabilization-windows-aggregate-oppositely', loadComponent: () => import('./components/cloud/containers/hpa/subtopics/scale-up-and-scale-down-stabilization-windows-aggregate-oppositely/scale-up-and-scale-down-stabilization-windows-aggregate-oppositely').then(m => m.ScaleUpAndScaleDownStabilizationWindowsAggregateOppositelySubtopic) },
+      { path: 'selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest', loadComponent: () => import('./components/cloud/containers/hpa/subtopics/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest').then(m => m.SelectpolicyDefaultsToMaxMultiplePoliciesPickTheFastestNotSafestSubtopic) },
+      { path: 'unready-pods-count-as-0-percent-utilization-diluting-the-average', loadComponent: () => import('./components/cloud/containers/hpa/subtopics/unready-pods-count-as-0-percent-utilization-diluting-the-average/unready-pods-count-as-0-percent-utilization-diluting-the-average').then(m => m.UnreadyPodsCountAs0PercentUtilizationDilutingTheAverageSubtopic) },
+    ]},
     { path: 'network-policies',   loadComponent: () => import('./components/cloud/containers/network-policies/network-policies').then(m => m.K8sNetworkPolicies) },
     { path: 'troubleshooting',    loadComponent: () => import('./components/cloud/containers/troubleshooting/troubleshooting').then(m => m.K8sTroubleshooting) },
     { path: 'cheatsheet',         loadComponent: () => import('./components/cloud/containers/cheatsheet/cheatsheet').then(m => m.K8sCheatsheet) },

@@ -27940,6 +27940,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'behavior.scaleDown.stabilizationWindowSeconds prevents premature scale-down from a brief dip that doesn\'t represent sustained reduced load.',
     ],
   },
+  'containers/hpa/scale-up-and-scale-down-stabilization-windows-aggregate-oppositely': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Horizontal Pod Autoscaler overview', route: '/containers/hpa' },
+      { label: 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest', route: '/containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest' },
+    ],
+    tip: 'Scale-down stabilization uses the MAXIMUM recommendation in the window (keep more pods); scale-up stabilization, if configured, uses the MINIMUM instead — the two directions aggregate oppositely, not symmetrically.',
+    gotchas: [
+      'The main page\'s own default (scaleUp: 0s, scaleDown: 300s) reflects a choice of defaults, not a difference in the underlying mechanism, which is structurally symmetric.',
+      'Adding ANY scale-up window changes behavior from "every fresh recommendation applies" to "the minimum in the window applies" — this can meaningfully slow scale-up during a sustained ramp.',
+    ],
+  },
+  'containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Scale-Up and Scale-Down Stabilization Windows Aggregate Oppositely', route: '/containers/hpa/scale-up-and-scale-down-stabilization-windows-aggregate-oppositely' },
+      { label: 'Unready Pods Count as 0% Utilization, Diluting the Average', route: '/containers/hpa/unready-pods-count-as-0-percent-utilization-diluting-the-average' },
+    ],
+    tip: 'selectPolicy defaults to Max — when a direction has multiple policies, Kubernetes applies whichever allows the LARGEST change, not the most restrictive. A stricter "safety net" policy added without selectPolicy: Min has no effect.',
+    gotchas: [
+      'Two policies for the same direction don\'t automatically combine as a layered safety net — selectPolicy: Min must be set explicitly for the tighter one to actually bind.',
+      'selectPolicy is evaluated fresh per scaling decision — it isn\'t a one-time speed setting, it\'s a per-event choice between the defined policies.',
+    ],
+  },
+  'containers/hpa/unready-pods-count-as-0-percent-utilization-diluting-the-average': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest', route: '/containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest' },
+      { label: 'Horizontal Pod Autoscaler overview', route: '/containers/hpa' },
+    ],
+    tip: 'An unready Pod is counted at exactly 0% utilization in the HPA\'s own average, not excluded — during a rollout or partial incident, this dilutes the reported average even while the Ready pods are genuinely overloaded.',
+    gotchas: [
+      '--horizontal-pod-autoscaler-initial-readiness-delay (default 30s) only covers a pod\'s FIRST startup — a previously-Ready pod that later fails its own readinessProbe has no equivalent grace period.',
+      'A low reported average alongside high per-pod usage on kubectl top is not evidence of a broken HPA — it\'s consistent with documented 0%-counting behavior for unready pods.',
+    ],
+  },
   'containers/k8s-architecture': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
