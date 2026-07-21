@@ -2075,7 +2075,52 @@ off here with a date.
   (`--bg: #0f172a`) all working correctly, AND confirmed the two main-page fixes rendered correctly
   (no more "pip install" text anywhere on the page; the corrected "npm ci" text present in the theory
   bullet). **This continues the Containers/K8s hub's Phase 10 rollout — 5 of 22 topics complete.**)
-- [ ] `/containers/compose` — Docker Compose
+- [x] `/containers/compose` — Docker Compose (2026-07-21 — 3 subtopics:
+  web-depends-on-api-lacks-condition-because-api-has-no-healthcheck,
+  anonymous-volume-shadows-bind-mount-and-restores-image-content,
+  anonymous-volumes-orphan-on-every-recreation; all three verified against official Compose
+  documentation via WebSearch before writing — (1) confirmed Compose's own documented requirement
+  verbatim: "condition: service_healthy... the target service must have a healthcheck defined" —
+  resolving an apparent self-contradiction in the main page's own content, where its own "Using
+  depends_on without a healthcheck condition" mistake entry recommends condition: service_healthy
+  universally, yet its own flagship "Full stack compose.yml" code tab has web use plain
+  `depends_on: [api]` — tracing this to api's own service definition showing it never defines a
+  healthcheck: block at all, making the simple form the only valid option, not a missed application
+  of the mistake entry's advice; (2) confirmed Docker's own documented mount-resolution behavior
+  verbatim: "Docker automatically populates newly created empty volumes with the existing content of
+  the destination path" and "if two volumes... are specified then the one having the more specific
+  path is considered" — naming the exact two-part mechanism (path-specificity mount resolution +
+  auto-population from image content) behind the main page's own five-word dev-override comment
+  ("anonymous vol: keep container node_modules"), which never explains HOW an anonymous volume
+  mounted under a broader bind mount ends up showing the image's own installed dependencies instead
+  of the host's (typically absent) node_modules; (3) confirmed via WebSearch that anonymous volumes
+  are "not removed by default when you run docker compose down" and accumulate as unnamed orphans
+  across container recreations, unlike named volumes — sharpening the main page's own volume-cleanup
+  discussion, which is scoped entirely to the NAMED db-data volume (`docker compose down -v`,
+  `docker volume rm project_db-data`) and never once connects to the SEPARATE anonymous volume its
+  own dev-override code tab uses, which has no name to target individually and requires bulk cleanup
+  (`docker volume prune` or `down -v`) instead. `compose` collision-checked in
+  `src/app/data/subtopics.ts` (both quoted and unquoted forms) — confirmed collision-free, added as
+  a bare key. Reused the now-fixed `ContainersNavComponent` local-accordion pattern with no further
+  structural changes needed — generalizing cleanly to a sixth topic in the same hub. A candidate
+  fourth angle (whether `deploy: replicas: 3` is actually honored by plain `docker compose up`
+  without Swarm) was researched and DROPPED after confirming the main page's own QnA already states
+  this accurately (replicas do apply outside Swarm in Compose v2, with the exact host-port caveat the
+  QnA already names) — no genuine gap found there, so a different, verified angle was used instead.
+  Gotcha sweep (bare `@` — none found; heading fields — no HTML tags or backtick-emphasis present;
+  bare single/double brace sweep — clean; apostrophe-after-letter check across all `.ts` fields —
+  clean; backtick parity across all three `.ts` files — even counts (72/42/36); `\${`
+  interpolation-risk scan — clean, no unescaped instances; file-existence check — all 9 files
+  confirmed present, no MAX_PATH issues) came back clean; build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" condition (exceeded by 63.05 kB at this site's
+  current scale, per CLAUDE.md's own known-issues note) plus two pre-existing, unrelated `NG8113`
+  unused-RouterLink warnings (confirmed unrelated to this batch's own changes) with zero actual
+  TypeScript/template compile errors, confirmed via a targeted grep for ERROR lines; browser-verified
+  successfully via direct DOM query — content (all three h1/breadcrumb pairs correct), breadcrumb
+  (all 4 levels), the `ContainersNavComponent` accordion (`.nav-subtopics` container `display:
+  flex`, link correctly marked `active`), sidebar (tailored `tip`/`gotchas`/`related` per subtopic,
+  confirmed via body-text substring check), dark mode (`--bg: #0f172a`) all working correctly.
+  **This continues the Containers/K8s hub's Phase 10 rollout — 6 of 22 topics complete.**)
 - [ ] `/containers/compose-profiles` — Compose Profiles & Overrides
 - [ ] `/containers/k8s-architecture` — Kubernetes Architecture
 - [ ] `/containers/kubectl` — kubectl Fundamentals
