@@ -3023,7 +3023,12 @@ export const routes: Routes = [
       { path: 'skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency', loadComponent: () => import('./components/cloud/linux/file-system/subtopics/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency').then(m => m.SkipNofailInFstabAndBootHangsThenDropsToEmergencySubtopic) },
       { path: 'usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app', loadComponent: () => import('./components/cloud/linux/file-system/subtopics/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app').then(m => m.UsrLocalVsOptSharedTreeVsOneSubdirectoryPerAppSubtopic) },
     ] },
-    { path: 'essential-commands',   loadComponent: () => import('./components/cloud/linux/essential-commands/essential-commands').then(m => m.LinuxEssentialCommands) },
+    { path: 'essential-commands', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/essential-commands/essential-commands').then(m => m.LinuxEssentialCommands) },
+      { path: 'xargs-without-print0-breaks-on-filenames-with-spaces', loadComponent: () => import('./components/cloud/linux/essential-commands/subtopics/xargs-without-print0-breaks-on-filenames-with-spaces/xargs-without-print0-breaks-on-filenames-with-spaces').then(m => m.XargsWithoutPrint0BreaksOnFilenamesWithSpacesSubtopic) },
+      { path: 'awk-default-field-split-collapses-repeated-delimiters', loadComponent: () => import('./components/cloud/linux/essential-commands/subtopics/awk-default-field-split-collapses-repeated-delimiters/awk-default-field-split-collapses-repeated-delimiters').then(m => m.AwkDefaultFieldSplitCollapsesRepeatedDelimitersSubtopic) },
+      { path: 'tar-already-strips-leading-slashes-unless-p-is-used', loadComponent: () => import('./components/cloud/linux/essential-commands/subtopics/tar-already-strips-leading-slashes-unless-p-is-used/tar-already-strips-leading-slashes-unless-p-is-used').then(m => m.TarAlreadyStripsLeadingSlashesUnlessPIsUsedSubtopic) },
+    ] },
     { path: 'file-permissions',     loadComponent: () => import('./components/cloud/linux/file-permissions/file-permissions').then(m => m.LinuxFilePermissions) },
     { path: 'users-groups',         loadComponent: () => import('./components/cloud/linux/users-groups/users-groups').then(m => m.LinuxUsersGroups) },
     { path: 'process-management',   loadComponent: () => import('./components/cloud/linux/process-management/process-management').then(m => m.LinuxProcessManagement) },

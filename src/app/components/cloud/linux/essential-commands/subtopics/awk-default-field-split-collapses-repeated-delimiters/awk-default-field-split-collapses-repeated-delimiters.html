@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Essential Commands" topicRoute="/linux/essential-commands" subtopicLabel="awk’s Default Field Split Collapses Repeated Delimiters" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">awk's Default Field Splitting Collapses Repeated Delimiters — A Single-Character -F Doesn't</h1>
+  <p class="page-subtitle">The main page treats -F as just "plug in a different character" — awk's own docs confirm the default whitespace splitting is a special case that an explicit single-space -F loses entirely.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own awk coverage — the next subtopic moves from field splitting to a corrected assumption about how tar handles absolute paths.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Essential Commands" topicRoute="/linux/essential-commands"
+    [prev]="{ label: 'xargs Without -print0 Breaks on Filenames With Spaces', route: '/linux/essential-commands/xargs-without-print0-breaks-on-filenames-with-spaces' }"
+    [next]="{ label: 'tar Already Strips Leading Slashes Unless -P Is Used', route: '/linux/essential-commands/tar-already-strips-leading-slashes-unless-p-is-used' }" />
+</div>

@@ -39498,6 +39498,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Command exit codes (0 = success, non-zero = failure) are what && and || chain on — a command that "looks like" it worked but returns non-zero breaks conditional chaining.',
     ],
   },
+  'linux/essential-commands/xargs-without-print0-breaks-on-filenames-with-spaces': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'awk’s Default Field Split Collapses Repeated Delimiters', route: '/linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters' },
+      { label: 'Essential Commands overview', route: '/linux/essential-commands' },
+    ],
+    tip: 'Plain xargs splits on spaces AND newlines by default — a filename with a space gets silently split into multiple wrong arguments. find -print0 | xargs -0 uses a null byte, which can never appear in a real filename.',
+    gotchas: [
+      'find -exec {} + never has this problem — it passes each match as a real argument, with no intermediate text stream to split.',
+      '-print0 and -0 are a matched pair — using only one half still produces broken results.',
+    ],
+  },
+  'linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'xargs Without -print0 Breaks on Filenames With Spaces', route: '/linux/essential-commands/xargs-without-print0-breaks-on-filenames-with-spaces' },
+      { label: 'tar Already Strips Leading Slashes Unless -P Is Used', route: '/linux/essential-commands/tar-already-strips-leading-slashes-unless-p-is-used' },
+    ],
+    tip: 'awk\'s default field separator specially collapses runs of whitespace so two spaces never make an empty field — an explicit -F\' \' loses that special case and treats each space as its own delimiter.',
+    gotchas: [
+      'FS=" " (the literal two-character string) keeps the collapsing behavior — a bare -F\' \' single-character separator does not.',
+      'This breaks parsing of column-aligned output (ls -l, ps) where padding width varies.',
+    ],
+  },
+  'linux/essential-commands/tar-already-strips-leading-slashes-unless-p-is-used': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'awk’s Default Field Split Collapses Repeated Delimiters', route: '/linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters' },
+      { label: 'Essential Commands overview', route: '/linux/essential-commands' },
+    ],
+    tip: 'tar strips the leading slash from an absolute path by default (with a warning) for safety — archiving /etc/nginx/ actually stores etc/nginx/, not /etc/nginx/.',
+    gotchas: [
+      '-P/--absolute-names restores the original absolute path but is explicitly documented as risky — extraction can overwrite system files.',
+      'Safer controlled restores: tar -C / -czf ... etc/nginx archives a relative path with no warning at all.',
+    ],
+  },
   'linux/file-system': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

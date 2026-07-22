@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Essential Commands" topicRoute="/linux/essential-commands" subtopicLabel="xargs Without -print0 Breaks on Filenames With Spaces" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">xargs Without -print0 Silently Breaks on Filenames With Spaces</h1>
+  <p class="page-subtitle">The main page's own QnA mentions the fix in one clause but never shows the failure — xargs' own man page confirms plain splitting breaks on ordinary filenames containing spaces.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own find/xargs coverage — the next subtopic moves from filename splitting to a similar delimiter-collapsing surprise in awk's field splitting.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Essential Commands" topicRoute="/linux/essential-commands"
+    [next]="{ label: 'awk’s Default Field Split Collapses Repeated Delimiters', route: '/linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters' }" />
+</div>
