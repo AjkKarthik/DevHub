@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ConfigMaps &amp; Secrets" topicRoute="/containers/configmaps-secrets" subtopicLabel="Deleting an Immutable ConfigMap Breaks New Pods, Not Running Ones" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Deleting an Immutable ConfigMap Breaks New Pods, Not Running Ones</h1>
+  <p class="page-subtitle">
+    The main page's own content-hash rotation pattern never says when it's safe to delete the OLD ConfigMap — the
+    real risk lands on any Pod recreated afterward, not the ones already running.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from update propagation, to RBAC scoping, to safe cleanup sequencing. Back to the
+      ConfigMaps &amp; Secrets overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="ConfigMaps &amp; Secrets"
+    topicRoute="/containers/configmaps-secrets"
+    [prev]="{ label: 'RBAC resourceNames Cannot Restrict list/watch — the Verb Itself Must Go', route: '/containers/configmaps-secrets/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go' }"
+  />
+</div>

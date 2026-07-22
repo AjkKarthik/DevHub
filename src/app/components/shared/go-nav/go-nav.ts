@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProgressService } from '../../../services/progress.service';
 import { SEARCH_INDEX } from '../../../services/search.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 const DIFF: Record<string, string> = Object.fromEntries(
   SEARCH_INDEX.map(e => [e.route, e.difficulty])
@@ -18,47 +20,446 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/go/fundamentals" routerLinkActive="active"><span class="nl-text">Go Fundamentals</span>@if(p.isDone('go-fundamentals')){<span class="nl-done">✓</span>}@if(d('go-fundamentals');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/structs-interfaces" routerLinkActive="active"><span class="nl-text">Structs &amp; Interfaces</span>@if(p.isDone('go-structs-interfaces')){<span class="nl-done">✓</span>}@if(d('go-structs-interfaces');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(p.isDone('go-error-handling')){<span class="nl-done">✓</span>}@if(d('go-error-handling');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/slices-maps" routerLinkActive="active"><span class="nl-text">Slices &amp; Maps</span>@if(p.isDone('go-slices-maps')){<span class="nl-done">✓</span>}@if(d('go-slices-maps');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/generics" routerLinkActive="active"><span class="nl-text">Go Generics</span>@if(p.isDone('go-generics')){<span class="nl-done">✓</span>}@if(d('go-generics');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/fundamentals" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Go Fundamentals</span>
+        @if (p.isDone('go-fundamentals')) {<span class="nl-done">✓</span>}
+        @if (d('go-fundamentals'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-fundamentals')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-fundamentals')"
+                  (click)="toggleSubtopics('go-fundamentals', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-fundamentals'); as goFundamentalsSubs) {
+        @if (isSubtopicsExpanded('go-fundamentals')) {
+          <div class="nav-subtopics">
+            @for (s of goFundamentalsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/structs-interfaces" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Structs &amp; Interfaces</span>
+        @if (p.isDone('go-structs-interfaces')) {<span class="nl-done">✓</span>}
+        @if (d('go-structs-interfaces'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('structs-interfaces')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('structs-interfaces')"
+                  (click)="toggleSubtopics('structs-interfaces', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('structs-interfaces'); as goStructsSubs) {
+        @if (isSubtopicsExpanded('structs-interfaces')) {
+          <div class="nav-subtopics">
+            @for (s of goStructsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/error-handling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Error Handling</span>
+        @if (p.isDone('go-error-handling')) {<span class="nl-done">✓</span>}
+        @if (d('go-error-handling'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-error-handling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-error-handling')"
+                  (click)="toggleSubtopics('go-error-handling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-error-handling'); as goErrorHandlingSubs) {
+        @if (isSubtopicsExpanded('go-error-handling')) {
+          <div class="nav-subtopics">
+            @for (s of goErrorHandlingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/slices-maps" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Slices &amp; Maps</span>
+        @if (p.isDone('go-slices-maps')) {<span class="nl-done">✓</span>}
+        @if (d('go-slices-maps'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('slices-maps')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('slices-maps')"
+                  (click)="toggleSubtopics('slices-maps', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('slices-maps'); as goSlicesMapsSubs) {
+        @if (isSubtopicsExpanded('slices-maps')) {
+          <div class="nav-subtopics">
+            @for (s of goSlicesMapsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/generics" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Go Generics</span>
+        @if (p.isDone('go-generics')) {<span class="nl-done">✓</span>}
+        @if (d('go-generics'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-generics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-generics')"
+                  (click)="toggleSubtopics('go-generics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-generics'); as goGenericsSubs) {
+        @if (isSubtopicsExpanded('go-generics')) {
+          <div class="nav-subtopics">
+            @for (s of goGenericsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Concurrency</p>
-      <a routerLink="/go/goroutines" routerLinkActive="active"><span class="nl-text">Goroutines</span>@if(p.isDone('go-goroutines')){<span class="nl-done">✓</span>}@if(d('go-goroutines');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/channels" routerLinkActive="active"><span class="nl-text">Channels</span>@if(p.isDone('go-channels')){<span class="nl-done">✓</span>}@if(d('go-channels');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/sync" routerLinkActive="active"><span class="nl-text">sync &amp; sync/atomic</span>@if(p.isDone('go-sync')){<span class="nl-done">✓</span>}@if(d('go-sync');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/context" routerLinkActive="active"><span class="nl-text">context Package</span>@if(p.isDone('go-context')){<span class="nl-done">✓</span>}@if(d('go-context');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/goroutines" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Goroutines</span>
+        @if (p.isDone('go-goroutines')) {<span class="nl-done">✓</span>}
+        @if (d('go-goroutines'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('goroutines')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('goroutines')"
+                  (click)="toggleSubtopics('goroutines', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('goroutines'); as goroutinesSubs) {
+        @if (isSubtopicsExpanded('goroutines')) {
+          <div class="nav-subtopics">
+            @for (s of goroutinesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/channels" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Channels</span>
+        @if (p.isDone('go-channels')) {<span class="nl-done">✓</span>}
+        @if (d('go-channels'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-channels')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-channels')"
+                  (click)="toggleSubtopics('go-channels', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-channels'); as goChannelsSubs) {
+        @if (isSubtopicsExpanded('go-channels')) {
+          <div class="nav-subtopics">
+            @for (s of goChannelsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/sync" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">sync &amp; sync/atomic</span>
+        @if (p.isDone('go-sync')) {<span class="nl-done">✓</span>}
+        @if (d('go-sync'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('sync')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sync')"
+                  (click)="toggleSubtopics('sync', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sync'); as syncSubs) {
+        @if (isSubtopicsExpanded('sync')) {
+          <div class="nav-subtopics">
+            @for (s of syncSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/context" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">context Package</span>
+        @if (p.isDone('go-context')) {<span class="nl-done">✓</span>}
+        @if (d('go-context'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-context')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-context')"
+                  (click)="toggleSubtopics('go-context', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-context'); as goContextSubs) {
+        @if (isSubtopicsExpanded('go-context')) {
+          <div class="nav-subtopics">
+            @for (s of goContextSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">HTTP &amp; APIs</p>
-      <a routerLink="/go/net-http" routerLinkActive="active"><span class="nl-text">net/http &amp; REST</span>@if(p.isDone('go-net-http')){<span class="nl-done">✓</span>}@if(d('go-net-http');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/gin" routerLinkActive="active"><span class="nl-text">Gin Framework</span>@if(p.isDone('go-gin')){<span class="nl-done">✓</span>}@if(d('go-gin');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/json-encoding" routerLinkActive="active"><span class="nl-text">JSON &amp; Encoding</span>@if(p.isDone('go-json-encoding')){<span class="nl-done">✓</span>}@if(d('go-json-encoding');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/grpc" routerLinkActive="active"><span class="nl-text">gRPC in Go</span>@if(p.isDone('go-grpc')){<span class="nl-done">✓</span>}@if(d('go-grpc');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/net-http" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">net/http &amp; REST</span>
+        @if (p.isDone('go-net-http')) {<span class="nl-done">✓</span>}
+        @if (d('go-net-http'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('net-http')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('net-http')"
+                  (click)="toggleSubtopics('net-http', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('net-http'); as netHttpSubs) {
+        @if (isSubtopicsExpanded('net-http')) {
+          <div class="nav-subtopics">
+            @for (s of netHttpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/gin" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Gin Framework</span>
+        @if (p.isDone('go-gin')) {<span class="nl-done">✓</span>}
+        @if (d('go-gin'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('gin')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gin')"
+                  (click)="toggleSubtopics('gin', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gin'); as ginSubs) {
+        @if (isSubtopicsExpanded('gin')) {
+          <div class="nav-subtopics">
+            @for (s of ginSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/json-encoding" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">JSON &amp; Encoding</span>
+        @if (p.isDone('go-json-encoding')) {<span class="nl-done">✓</span>}
+        @if (d('go-json-encoding'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('json-encoding')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('json-encoding')"
+                  (click)="toggleSubtopics('json-encoding', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('json-encoding'); as jsonEncodingSubs) {
+        @if (isSubtopicsExpanded('json-encoding')) {
+          <div class="nav-subtopics">
+            @for (s of jsonEncodingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/grpc" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">gRPC in Go</span>
+        @if (p.isDone('go-grpc')) {<span class="nl-done">✓</span>}
+        @if (d('go-grpc'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('grpc')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('grpc')"
+                  (click)="toggleSubtopics('grpc', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('grpc'); as grpcSubs) {
+        @if (isSubtopicsExpanded('grpc')) {
+          <div class="nav-subtopics">
+            @for (s of grpcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Data &amp; Storage</p>
-      <a routerLink="/go/pgx" routerLinkActive="active"><span class="nl-text">Database with pgx</span>@if(p.isDone('go-pgx')){<span class="nl-done">✓</span>}@if(d('go-pgx');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/gorm" routerLinkActive="active"><span class="nl-text">GORM</span>@if(p.isDone('go-gorm')){<span class="nl-done">✓</span>}@if(d('go-gorm');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/pgx" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Database with pgx</span>
+        @if (p.isDone('go-pgx')) {<span class="nl-done">✓</span>}
+        @if (d('go-pgx'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('pgx')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('pgx')"
+                  (click)="toggleSubtopics('pgx', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('pgx'); as pgxSubs) {
+        @if (isSubtopicsExpanded('pgx')) {
+          <div class="nav-subtopics">
+            @for (s of pgxSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/gorm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">GORM</span>
+        @if (p.isDone('go-gorm')) {<span class="nl-done">✓</span>}
+        @if (d('go-gorm'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('gorm')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gorm')"
+                  (click)="toggleSubtopics('gorm', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gorm'); as gormSubs) {
+        @if (isSubtopicsExpanded('gorm')) {
+          <div class="nav-subtopics">
+            @for (s of gormSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Patterns</p>
-      <a routerLink="/go/patterns" routerLinkActive="active"><span class="nl-text">Go Patterns</span>@if(p.isDone('go-patterns')){<span class="nl-done">✓</span>}@if(d('go-patterns');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Go Patterns</span>
+        @if (p.isDone('go-patterns')) {<span class="nl-done">✓</span>}
+        @if (d('go-patterns'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-patterns')"
+                  (click)="toggleSubtopics('go-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-patterns'); as patternsSubs) {
+        @if (isSubtopicsExpanded('go-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of patternsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Tooling</p>
-      <a routerLink="/go/modules" routerLinkActive="active"><span class="nl-text">Go Modules</span>@if(p.isDone('go-modules')){<span class="nl-done">✓</span>}@if(d('go-modules');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/testing" routerLinkActive="active"><span class="nl-text">Testing in Go</span>@if(p.isDone('go-testing')){<span class="nl-done">✓</span>}@if(d('go-testing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/cli" routerLinkActive="active"><span class="nl-text">Go CLI Tools</span>@if(p.isDone('go-cli')){<span class="nl-done">✓</span>}@if(d('go-cli');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/profiling" routerLinkActive="active"><span class="nl-text">Performance &amp; Profiling</span>@if(p.isDone('go-profiling')){<span class="nl-done">✓</span>}@if(d('go-profiling');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/go/build" routerLinkActive="active"><span class="nl-text">Build &amp; Deployment</span>@if(p.isDone('go-build')){<span class="nl-done">✓</span>}@if(d('go-build');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/go/modules" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Go Modules</span>
+        @if (p.isDone('go-modules')) {<span class="nl-done">✓</span>}
+        @if (d('go-modules'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-modules')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-modules')"
+                  (click)="toggleSubtopics('go-modules', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-modules'); as modulesSubs) {
+        @if (isSubtopicsExpanded('go-modules')) {
+          <div class="nav-subtopics">
+            @for (s of modulesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/testing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Testing in Go</span>
+        @if (p.isDone('go-testing')) {<span class="nl-done">✓</span>}
+        @if (d('go-testing'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('go-testing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('go-testing')"
+                  (click)="toggleSubtopics('go-testing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('go-testing'); as testingSubs) {
+        @if (isSubtopicsExpanded('go-testing')) {
+          <div class="nav-subtopics">
+            @for (s of testingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/cli" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Go CLI Tools</span>
+        @if (p.isDone('go-cli')) {<span class="nl-done">✓</span>}
+        @if (d('go-cli'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('cli')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cli')"
+                  (click)="toggleSubtopics('cli', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cli'); as cliSubs) {
+        @if (isSubtopicsExpanded('cli')) {
+          <div class="nav-subtopics">
+            @for (s of cliSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/profiling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Performance &amp; Profiling</span>
+        @if (p.isDone('go-profiling')) {<span class="nl-done">✓</span>}
+        @if (d('go-profiling'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('profiling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('profiling')"
+                  (click)="toggleSubtopics('profiling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('profiling'); as profilingSubs) {
+        @if (isSubtopicsExpanded('profiling')) {
+          <div class="nav-subtopics">
+            @for (s of profilingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/go/build" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Build &amp; Deployment</span>
+        @if (p.isDone('go-build')) {<span class="nl-done">✓</span>}
+        @if (d('go-build'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('build')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('build')"
+                  (click)="toggleSubtopics('build', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('build'); as buildSubs) {
+        @if (isSubtopicsExpanded('build')) {
+          <div class="nav-subtopics">
+            @for (s of buildSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -71,5 +472,45 @@ const DIFF: Record<string, string> = Object.fromEntries(
 })
 export class GoNavComponent {
   p = inject(ProgressService);
+  private router = inject(Router);
   d(route: string): string | null { return DIFF[route] ?? null; }
+
+  subtopicsOf(routeSlug: string) {
+    return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  // Subtopics list collapses by default; expand state does not persist
+  // across reloads (a fresh page load always starts collapsed), mirroring
+  // the identical behavior for hubs whose nav lives inline in app.html.
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  isSubtopicsExpanded(routeSlug: string): boolean {
+    return this.expandedTopics().has(routeSlug);
+  }
+
+  toggleSubtopics(routeSlug: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const next = new Set(this.expandedTopics());
+    next.has(routeSlug) ? next.delete(routeSlug) : next.add(routeSlug);
+    this.expandedTopics.set(next);
+  }
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  // Auto-expand a topic's subtopics accordion when landing directly on one of
+  // its subtopic pages (bookmark, prev/next pager, refresh).
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [topicSlug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(topicSlug));
+        break;
+      }
+    }
+  }
 }

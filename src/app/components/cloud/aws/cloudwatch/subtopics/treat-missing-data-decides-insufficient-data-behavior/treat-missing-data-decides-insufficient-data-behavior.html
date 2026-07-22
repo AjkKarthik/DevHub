@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CloudWatch & X-Ray" topicRoute="/aws/cloudwatch" subtopicLabel="Treat Missing Data Decides INSUFFICIENT_DATA" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Treat Missing Data Decides INSUFFICIENT_DATA Behavior</h1>
+  <p class="page-subtitle">The main page's own composite alarm QnA names the risk — this is the actual AWS setting that prevents it.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="CloudWatch" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic gives the main page's own composite-alarm QnA its missing fix. Next, the EMF dimensions subtopic sharpens the main page's own "zero extra API calls" EMF framing into the real billing risk a poorly-chosen dimension can create.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CloudWatch & X-Ray" topicRoute="/aws/cloudwatch"
+    [next]="{ label: 'EMF High-Cardinality Dimensions Explode Metric Cost', route: '/aws/cloudwatch/emf-dimensions-with-high-cardinality-explode-metric-cost' }" />
+</div>

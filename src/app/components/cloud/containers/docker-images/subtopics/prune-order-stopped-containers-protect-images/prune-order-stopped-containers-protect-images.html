@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker Images & Registry" topicRoute="/containers/docker-images" subtopicLabel="Stopped Containers Protect Their Images From docker image prune -a" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Stopped Containers Protect Their Images From docker image prune -a</h1>
+  <p class="page-subtitle">
+    The main page's own quiz says prune -a removes images "not referenced by any container" without saying
+    which containers count. Stopped ones count too — so pruning order between containers and images changes the result.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own quiz answer into a real operational dependency between two
+      separate cleanup commands. Back to the Docker Images & Registry overview, or continue to why pushing
+      --all-tags only uploads the shared image content once.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker Images & Registry"
+    topicRoute="/containers/docker-images"
+    [next]="{ label: 'docker push --all-tags Uploads the Shared Layers Once', route: '/containers/docker-images/all-tags-push-uploads-shared-layers-once' }"
+  />
+</div>

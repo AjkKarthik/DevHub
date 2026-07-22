@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Horizontal Pod Autoscaler" topicRoute="/containers/hpa" subtopicLabel="Unready Pods Count as 0% Utilization, Diluting the Average" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Unready Pods Count as 0% Utilization, Diluting the Average</h1>
+  <p class="page-subtitle">
+    The main page's own formula treats "currentMetricValue" as a clean average — an unready pod is counted at
+    exactly 0% usage, not excluded, silently masking real load during a rollout or partial incident.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from stabilization aggregation, to policy selection, to what the average
+      utilization number actually includes. Back to the Horizontal Pod Autoscaler overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Horizontal Pod Autoscaler"
+    topicRoute="/containers/hpa"
+    [prev]="{ label: 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest', route: '/containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest' }"
+  />
+</div>

@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Cost Optimization" topicRoute="/aws/cost-optimization" subtopicLabel="Savings Plans Have No Exit" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Savings Plans Have No Cancellation or Resale Exit</h1>
+  <p class="page-subtitle">The main page's own $45,000 stranded-commitment mistake never explains why that money can't be recovered — here's the exact mechanism, and why it's genuinely worse than an over-bought RI.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Savings Plans" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes the loop on the main page's own $45,000 over-commitment mistake, explaining the exact mechanism (no cancellation, no marketplace) that makes disciplined, incremental buying the only real defense — closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Cost Optimization" topicRoute="/aws/cost-optimization"
+    [prev]="{ label: 'Regional RI Size Flexibility & Normalization', route: '/aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor' }" />
+</div>

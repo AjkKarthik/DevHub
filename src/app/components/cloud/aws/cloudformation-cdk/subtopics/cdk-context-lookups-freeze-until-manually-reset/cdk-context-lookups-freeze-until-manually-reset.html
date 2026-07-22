@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CloudFormation & CDK" topicRoute="/aws/cloudformation-cdk" subtopicLabel="CDK Context Lookups Freeze Until Reset" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">CDK Context Lookups Freeze Until Manually Reset</h1>
+  <p class="page-subtitle">The main page's own "avoids hardcoding IDs" framing skips the caching mechanism that makes context lookups deliberately stale by design.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="CDK" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic explains the caching mechanism behind the main page's own context-lookup recommendation. Next, the nested stack subtopic sharpens the main page's own "modularize with nested stacks" and "automatic rollback" bullets into what happens when the two intersect badly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CloudFormation & CDK" topicRoute="/aws/cloudformation-cdk"
+    [prev]="{ label: 'CDK removalPolicy Covers UpdateReplacePolicy Too', route: '/aws/cloudformation-cdk/cdk-removal-policy-covers-updatereplacepolicy-too' }"
+    [next]="{ label: 'Nested Stack Rollback Failure Blocks the Whole Hierarchy', route: '/aws/cloudformation-cdk/nested-stack-rollback-failure-blocks-the-whole-hierarchy' }" />
+</div>

@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Artifact Management" topicRoute="/devops/artifact-management" subtopicLabel="imagetools create Never Pulls Image Data" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">imagetools create Never Pulls Image Data to Your Machine</h1>
+  <p class="page-subtitle">
+    The main page's own code tab uses skopeo copy and docker buildx imagetools create back to back, with no
+    explanation — both are registry-side operations chosen specifically to avoid a full pull-then-push round trip.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a tool choice the main page's own code tab makes but never justifies. Back to the
+      Artifact Management overview, or continue to why docker inspect's own digest lookup must run after the push,
+      not before.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Artifact Management"
+    topicRoute="/devops/artifact-management"
+    [next]="{ label: 'RepoDigests Is Empty Until a Registry Round Trip', route: '/devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip' }"
+  />
+</div>

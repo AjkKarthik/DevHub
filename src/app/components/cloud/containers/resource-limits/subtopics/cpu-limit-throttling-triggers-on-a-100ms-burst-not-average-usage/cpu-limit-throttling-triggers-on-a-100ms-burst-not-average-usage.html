@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resource Requests &amp; Limits" topicRoute="/containers/resource-limits" subtopicLabel="CPU Limit Throttling Triggers on a 100ms Burst, Not Average Usage" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">CPU Limit Throttling Triggers on a 100ms Burst, Not Average Usage</h1>
+  <p class="page-subtitle">
+    The main page's own sizing advice targets p50/p99 averages — but CFS enforces CPU limits per 100ms period, so
+    a bursty multi-threaded app can be throttled repeatedly while its average usage looks fine.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own resource-sizing claims leave underspecified.
+      Next: what ResourceQuota actually does when a pod skips its resources block.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Resource Requests &amp; Limits"
+    topicRoute="/containers/resource-limits"
+    [next]="{ label: 'A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero', route: '/containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero' }"
+  />
+</div>

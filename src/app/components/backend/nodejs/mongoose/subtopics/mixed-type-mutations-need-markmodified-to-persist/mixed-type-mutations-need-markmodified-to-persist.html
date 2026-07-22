@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="MongoDB with Mongoose" topicRoute="/node/mongoose" subtopicLabel="Mixed Type Change Tracking" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Mixed Type Mutations Need markModified() to Persist</h1>
+  <p class="page-subtitle">
+    Mongoose's change tracking relies on setters triggered by direct assignment — an in-place mutation of a
+    schema-less field is invisible to it, per Mongoose's own docs.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Mongoose 3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three precise mechanics underneath claims the main page states more broadly: exactly which
+      write paths validate, exactly what populate() does with a broken reference, and now exactly which mutations
+      Mongoose's change tracking can and can't see. All three are the kind of gap that a save() call gives no
+      indication it fell into.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MongoDB with Mongoose"
+    topicRoute="/node/mongoose"
+    [prev]="{ label: 'populate() Resolves a Dangling Reference to null', route: '/node/mongoose/populate-resolves-a-dangling-reference-to-null' }"
+  />
+</div>

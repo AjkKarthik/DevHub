@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Fundamentals" topicRoute="/containers/fundamentals" subtopicLabel="The “Rootless” UID Mapping Is Opt-In, Not the Default" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The "Rootless" UID Mapping Is Opt-In, Not the Default</h1>
+  <p class="page-subtitle">
+    Five of the six namespaces the main page lists are active for every container automatically. The user
+    namespace is the exception — without userns-remap configured, container root IS host root.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Docker 1.10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens which of the main page's own six listed namespaces is genuinely automatic and which
+      needs explicit setup. Back to the Container Fundamentals overview, or continue to why the OOM killer targets
+      one process rather than the whole container.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Container Fundamentals"
+    topicRoute="/containers/fundamentals"
+    [prev]="{ label: 'PID 1 Silently Ignores SIGTERM Unless the App Handles It', route: '/containers/fundamentals/pid-1-ignores-sigterm-by-default' }"
+    [next]="{ label: 'The OOM Killer Targets One Process, Not the Whole Container', route: '/containers/fundamentals/oom-killer-targets-a-process-not-the-container' }"
+  />
+</div>

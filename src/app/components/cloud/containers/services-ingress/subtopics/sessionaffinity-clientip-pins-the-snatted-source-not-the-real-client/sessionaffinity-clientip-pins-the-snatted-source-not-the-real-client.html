@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Services &amp; Ingress" topicRoute="/containers/services-ingress" subtopicLabel="sessionAffinity: ClientIP Pins the SNAT'd Source, Not the Real Client" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">sessionAffinity: ClientIP Pins the SNAT'd Source, Not the Real Client</h1>
+  <p class="page-subtitle">
+    The main page's own QnA says <code>sessionAffinity: ClientIP</code> pins traffic by "the client's IP" — but under
+    the default <code>externalTrafficPolicy</code>, kube-proxy SNATs external traffic, masking who that really is.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own Service/Ingress fields leave underspecified.
+      Next: what "no proxying" actually means for an ExternalName Service.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Services &amp; Ingress"
+    topicRoute="/containers/services-ingress"
+    [next]="{ label: 'ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping', route: '/containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping' }"
+  />
+</div>

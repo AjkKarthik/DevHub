@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Slices &amp; Maps" topicRoute="/go/slices-maps" subtopicLabel="append's Growth Factor" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">append's Real Growth Algorithm</h1>
+  <p class="page-subtitle">
+    "Typically doubling" is only half the story — Go's runtime doubles capacity below 256 elements, then
+    deliberately slows to roughly 1.25x growth for larger slices, and neither number is a guaranteed contract.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.18+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own Slices theory covers WHAT append does when capacity runs out — this subtopic covers
+      the precise, two-regime HOW, and why depending on the exact numbers is a mistake. The next subtopic
+      moves from slices to maps: what happens to a map's own memory footprint after deleting most of its keys.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Slices &amp; Maps"
+    topicRoute="/go/slices-maps"
+    [next]="{ label: 'Map Deletes Don’t Shrink Memory', route: '/go/slices-maps/map-deletes-dont-shrink-memory' }"
+  />
+</div>

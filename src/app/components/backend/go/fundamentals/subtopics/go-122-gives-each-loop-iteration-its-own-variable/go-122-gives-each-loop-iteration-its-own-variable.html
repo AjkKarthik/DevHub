@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Fundamentals" topicRoute="/go/fundamentals" subtopicLabel="Go 1.22 Loop Semantics" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Go 1.22 Gives Each Loop Iteration Its Own Variable</h1>
+  <p class="page-subtitle">
+    Go's own release notes confirm the closure-capture fix precisely — but it only applies to modules whose go.mod
+    itself declares go 1.22 or later, not just a newer installed toolchain.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Go 1.22+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own mistake entry flags the Go 1.22 fix in a one-line parenthetical without explaining the
+      mechanism or its go.mod-gated activation — this subtopic fills that gap. The next subtopic moves to a
+      structurally different range gotcha: what the range variable actually contains on each pass.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Fundamentals"
+    topicRoute="/go/fundamentals"
+    [next]="{ label: 'range Copies Each Element Into the Loop Variable', route: '/go/fundamentals/range-copies-each-element-into-the-loop-variable' }"
+  />
+</div>

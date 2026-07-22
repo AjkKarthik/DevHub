@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Django &amp; DRF" topicRoute="/python/django" subtopicLabel="QuerySet Caching" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">QuerySet Caching Is Per-Object, Not Per-Query</h1>
+  <p class="page-subtitle">
+    A QuerySet caches its results after evaluation — but that cache belongs to one specific Python object, not to
+    the equivalent SQL, so a fresh filter() call never benefits from a prior one.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Django 4.x+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory says querysets are "lazy" but stops at evaluation — this subtopic covers what
+      happens to the results afterward. The next subtopic moves away from the ORM entirely, into a signals gotcha:
+      why a side effect fired inside a transaction needs its own deferral mechanism.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Django &amp; DRF"
+    topicRoute="/python/django"
+    [next]="{ label: 'transaction.on_commit() Defers Signal Side Effects', route: '/python/django/transaction-on-commit-defers-signal-side-effects' }"
+  />
+</div>

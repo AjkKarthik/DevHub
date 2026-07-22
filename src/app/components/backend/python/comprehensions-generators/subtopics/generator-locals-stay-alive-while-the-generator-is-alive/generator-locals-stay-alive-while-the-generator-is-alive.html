@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Comprehensions & Generators" topicRoute="/python/comprehensions-generators" subtopicLabel="Generator Frame Memory" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Generator Locals Stay Alive While the Generator Is Alive</h1>
+  <p class="page-subtitle">
+    A paused generator retains its entire suspended frame — including any large local variable — for as long as
+    the generator itself exists, not just while it's actively running.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own "memory-efficient" framing of generators with the one way that promise can
+      quietly fail. The next subtopic moves to a different generator lifecycle question — what actually happens
+      when a generator is abandoned before it finishes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Comprehensions & Generators"
+    topicRoute="/python/comprehensions-generators"
+    [next]="{ label: 'Abandoning a Generator Still Triggers Its finally Block', route: '/python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block' }"
+  />
+</div>

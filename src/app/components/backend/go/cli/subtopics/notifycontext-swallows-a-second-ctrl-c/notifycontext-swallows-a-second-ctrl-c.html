@@ -1,0 +1,35 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go CLI Tools" topicRoute="/go/cli" subtopicLabel="NotifyContext's One-Shot Behavior" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">NotifyContext Swallows a Second Ctrl+C</h1>
+  <p class="page-subtitle">
+    The main page's own Ctrl+C fix changes the OS default entirely — a second, third, or later Ctrl+C press
+    after the first does nothing at all, until the stop function eventually runs.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.16+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own Ctrl+C fix with a real downside worth knowing before
+      shipping it. Back to the Go CLI Tools overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go CLI Tools"
+    topicRoute="/go/cli"
+    [prev]="{ label: 'ldflags -X Only Sets Uninitialized or Constant Vars', route: '/go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars' }"
+  />
+</div>

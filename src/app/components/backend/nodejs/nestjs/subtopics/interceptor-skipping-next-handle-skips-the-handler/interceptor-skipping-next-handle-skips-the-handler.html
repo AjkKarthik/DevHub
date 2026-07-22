@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="NestJS" topicRoute="/node/nestjs" subtopicLabel="Skipping the Handler" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">An Interceptor That Never Calls next.handle() Skips the Handler Entirely</h1>
+  <p class="page-subtitle">
+    next.handle() returns a cold Observable — skipping it means the controller method's body, including its side
+    effects, genuinely never runs.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three boundaries the main page's execution-order summary implies but doesn't fully unpack:
+      what global provider construction misses out on, what middleware's position at the front of the pipeline
+      means for thrown exceptions, and now the exact mechanic that makes an interceptor able to skip the handler
+      altogether rather than merely discard its result.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NestJS"
+    topicRoute="/node/nestjs"
+    [prev]="{ label: 'Middleware Exceptions Bypass Exception Filters', route: '/node/nestjs/middleware-exceptions-bypass-exception-filters' }"
+  />
+</div>

@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EBS, EFS & FSx" topicRoute="/aws/ebs-efs" subtopicLabel="AFTER_1_ACCESS Explained" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">AFTER_1_ACCESS Promotes Files Back to Standard Immediately</h1>
+  <p class="page-subtitle">The main page's own lifecycle code uses this setting without explaining it — a single read can silently undo weeks of IA-tier savings.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="EFS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic explains the second half of the main page's own lifecycle code example — the age-based transition into IA is well covered, but the promotion back out was left completely unexplained despite being right there in the same code block. Together with the ModifyVolume rate limit and Access Point IAM scoping subtopics, this batch covers three genuinely distinct EBS/EFS gaps the main page's own dense theory bullets and code examples only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EBS, EFS & FSx" topicRoute="/aws/ebs-efs"
+    [prev]="{ label: 'EFS Access Point IAM Scoping', route: '/aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition' }" />
+</div>

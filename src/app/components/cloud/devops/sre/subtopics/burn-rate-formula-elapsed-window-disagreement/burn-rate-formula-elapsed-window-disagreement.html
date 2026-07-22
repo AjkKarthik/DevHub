@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SRE Practices" topicRoute="/devops/sre" subtopicLabel="The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">The Page's Own Two Burn Rate Formulas Disagree About Elapsed Time</h1>
+  <p class="page-subtitle">
+    calculateErrorBudget reports a burn rate with zero elapsed-window context; the main page's own separate
+    Challenge scales the identical ratio by windowDays / elapsedDays. The same input produces two different answers.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="2018+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic traces a real inconsistency between two code blocks the main page presents separately without
+      ever comparing them. Back to the SRE Practices overview, or continue to why the burn-rate alert rules
+      reference metrics the page's own recording-rules example never actually defines.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SRE Practices"
+    topicRoute="/devops/sre"
+    [prev]="{ label: 'A Dead Man’s Switch Always Fires — Silence Is the Signal', route: '/devops/sre/dead-mans-switch-mechanism' }"
+    [next]="{ label: 'The Burn-Rate Alerts Reference Recording Rules That Are Never Defined', route: '/devops/sre/alert-rules-reference-undefined-recording-rules' }"
+  />
+</div>

@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lambda" topicRoute="/aws/lambda" subtopicLabel="DLQ Only Captures the Event, Not Why It Failed" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">DLQ Only Captures the Event, Not Why It Failed</h1>
+  <p class="page-subtitle">The main page's own async error-handling story stops at the DLQ — AWS's own docs treat Destinations as the primary feature, and a DLQ as the alternative.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Lambda" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the async-failure-handling feature the main page's own code tab never shows. Next, the SnapStart subtopic sharpens the main page's own latency-only framing of SnapStart into the state-freezing tradeoff a snapshot restore actually introduces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lambda" topicRoute="/aws/lambda"
+    [next]="{ label: 'SnapStart Freezes Init State — CRaC Hooks Refresh It', route: '/aws/lambda/snapstart-freezes-init-state-crac-hooks-refresh-it' }" />
+</div>

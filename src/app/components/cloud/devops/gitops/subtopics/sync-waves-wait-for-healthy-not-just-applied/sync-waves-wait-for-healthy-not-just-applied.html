@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GitOps" topicRoute="/devops/gitops" subtopicLabel="Sync Waves Wait for Healthy, Not Just Applied" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Sync Waves Wait for Healthy, Not Just Applied</h1>
+  <p class="page-subtitle">
+    The main page's own mistake entry shows wave numbers but never says what gates the NEXT wave — ArgoCD waits
+    for real health, which for a Job or Deployment can be minutes past when it was merely created.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own sync-wave mistake entry into the precise health-based gating
+      rule. Back to Flux's dual-interval mechanics, or to the GitOps overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GitOps"
+    topicRoute="/devops/gitops"
+    [prev]="{ label: 'Flux’s Interval Is a Drift Fallback', route: '/devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger' }"
+  />
+</div>

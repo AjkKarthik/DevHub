@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EventBridge" topicRoute="/aws/eventbridge" subtopicLabel="InputTransformer Quoting: Scalars vs Objects" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">InputTransformer Quoting Differs for Scalars vs Objects</h1>
+  <p class="page-subtitle">The main page's own quoted-string/unquoted-number example suggests a simple rule — AWS's own actual rule is scalar vs compound, and getting it wrong corrupts the output.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="EventBridge" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects the natural-but-incomplete generalization from the main page's own single InputTransformer example. Next, the event pattern subtopic sharpens the main page's own list of pattern operators into a silent trap when two of them are combined on the same field.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EventBridge" topicRoute="/aws/eventbridge"
+    [prev]="{ label: 'Archives Default to Indefinite Retention', route: '/aws/eventbridge/archives-default-to-indefinite-retention-not-free' }"
+    [next]="{ label: 'Duplicate Event Pattern Keys Silently Use the Last One', route: '/aws/eventbridge/duplicate-event-pattern-keys-silently-use-the-last-one' }" />
+</div>

@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Build &amp; Deployment" topicRoute="/go/build" subtopicLabel="Two Different Caches" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">go build Caches Compiled Packages in GOCACHE, Not GOMODCACHE</h1>
+  <p class="page-subtitle">
+    The main page's own theory says compiled packages are cached in $GOPATH/pkg/mod/cache — that directory
+    actually holds downloaded dependency source; the build cache lives at a separate location, GOCACHE.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Go 1.10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic corrects a real imprecision in the main page's own caching claim, using the SAME
+      distinction its own CI mistake entry already gets right. Back to the Go Build & Deployment overview,
+      or continue to a real gap in go vet's own default checks.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Build &amp; Deployment"
+    topicRoute="/go/build"
+    [prev]="{ label: 'ldflags -s Already Implies -w', route: '/go/build/ldflags-s-already-implies-w' }"
+    [next]="{ label: 'go vet’s Default Checks Don’t Include Shadow Detection', route: '/go/build/go-vets-default-checks-dont-include-shadow-detection' }"
+  />
+</div>

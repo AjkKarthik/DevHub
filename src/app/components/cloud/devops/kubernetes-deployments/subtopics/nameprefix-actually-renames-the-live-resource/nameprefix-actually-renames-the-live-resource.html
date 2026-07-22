@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Deployments" topicRoute="/devops/kubernetes-deployments" subtopicLabel="namePrefix Actually Renames the Live Resource" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">namePrefix Actually Renames the Live Resource</h1>
+  <p class="page-subtitle">
+    The main page's own code tab sets namePrefix: prod- in one section and references deployment/prod-myapp in
+    another, without ever connecting the two — the prefix is a genuine rename, not a cosmetic label.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic connects two pieces of the main page's own Kustomize code tab that never explicitly reference
+      each other. Back to why --atomic already implies --wait, or continue to what an Argo Rollouts pause with no
+      duration actually does.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Deployments"
+    topicRoute="/devops/kubernetes-deployments"
+    [prev]="{ label: 'atomic Already Implies wait in Helm Upgrade', route: '/devops/kubernetes-deployments/atomic-already-implies-wait-in-helm-upgrade' }"
+    [next]="{ label: 'Pause With No Duration Waits Forever, Not Briefly', route: '/devops/kubernetes-deployments/pause-with-no-duration-waits-forever-not-briefly' }"
+  />
+</div>

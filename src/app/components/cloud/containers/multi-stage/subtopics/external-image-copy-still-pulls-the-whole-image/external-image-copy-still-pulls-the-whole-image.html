@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Stage Builds" topicRoute="/containers/multi-stage" subtopicLabel="COPY --from=external-image Still Pulls the Whole Image" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">COPY --from=external-image Still Pulls the Whole Image</h1>
+  <p class="page-subtitle">
+    The main page's own QnA frames this as avoiding a dedicated FROM stage's overhead — but the actual network
+    cost, a full image pull on a cache miss, is identical either way.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Docker 17.05+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at three places where the main page's own examples cost more
+      (or behave differently) than their framing suggests. Back to the Multi-Stage Builds overview, or review the
+      npm deprecation warning or the test/builder/runtime dependency graph.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Multi-Stage Builds"
+    topicRoute="/containers/multi-stage"
+    [prev]="{ label: 'npm prune --production Is a Deprecated Flag on Current npm', route: '/containers/multi-stage/npm-prune-production-flag-is-deprecated' }"
+  />
+</div>

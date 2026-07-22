@@ -27460,6 +27460,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Deleting files in a later layer does not reclaim space from an earlier layer — bloat persists in the image regardless.',
     ],
   },
+  'containers/fundamentals/pid-1-ignores-sigterm-by-default': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Container Fundamentals overview', route: '/containers/fundamentals' },
+      { label: 'The “Rootless” UID Mapping Is Opt-In, Not the Default', route: '/containers/fundamentals/user-namespace-remapping-not-default' },
+    ],
+    tip: 'The kernel silently ignores SIGTERM at PID 1 unless that process explicitly handles it — a shell-form Dockerfile CMD makes /bin/sh the real PID 1, so the app never even receives the signal docker stop sends.',
+    gotchas: [
+      'A container consistently taking the full docker stop grace period, every time, is a stronger signal of an ignored SIGTERM than of genuine slow cleanup work.',
+      '--init (or a real init like tini) fixes this even for a shell-form CMD, without touching the Dockerfile — it forwards signals correctly to the real child process.',
+    ],
+  },
+  'containers/fundamentals/user-namespace-remapping-not-default': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'PID 1 Silently Ignores SIGTERM Unless the App Handles It', route: '/containers/fundamentals/pid-1-ignores-sigterm-by-default' },
+      { label: 'The OOM Killer Targets One Process, Not the Whole Container', route: '/containers/fundamentals/oom-killer-targets-a-process-not-the-container' },
+    ],
+    tip: 'Of the six namespaces the main page lists, five are active for every container automatically — the user namespace is the exception, requiring userns-remap to be explicitly configured before container root stops being literal host root.',
+    gotchas: [
+      'A root container process on a default, unconfigured Docker install is host UID 0 the moment it starts — nothing about the user namespace is protecting it by default.',
+      'Rootless Docker (daemon runs unprivileged) and userns-remap (containers get UID-shifted) are two separate mechanisms, not the same feature under two names.',
+    ],
+  },
+  'containers/fundamentals/oom-killer-targets-a-process-not-the-container': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The “Rootless” UID Mapping Is Opt-In, Not the Default', route: '/containers/fundamentals/user-namespace-remapping-not-default' },
+      { label: 'Container Fundamentals overview', route: '/containers/fundamentals' },
+    ],
+    tip: 'The cgroup OOM killer scores and kills ONE process, not the whole container — in a multi-process container, a heavy child worker can be killed while PID 1 survives, and Docker keeps reporting the container as healthy.',
+    gotchas: [
+      'Docker only tracks whether PID 1 has exited to decide container health — a dead non-PID-1 worker inside a multi-process container is invisible to that check.',
+      'memory.oom.group forces all-or-nothing OOM behavior per cgroup, but Docker does not set it automatically — it takes manual configuration, or simply one process per container.',
+    ],
+  },
   'containers/dockerfile': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27470,6 +27506,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'CI build caching (--cache-from, BuildKit remote cache) extends this same layer-caching benefit across separate ephemeral CI runs.',
       'Combining related RUN commands into a single layer (using && chains) avoids leaving unreachable bloat in earlier layers.',
+    ],
+  },
+  'containers/dockerfile/build-stage-node-modules-are-discarded': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Writing Dockerfiles overview', route: '/containers/dockerfile' },
+      { label: 'Sibling Stages Build in Parallel, Not Top to Bottom', route: '/containers/dockerfile/sibling-stages-build-in-parallel' },
+    ],
+    tip: 'The runtime image\'s node_modules comes from the deps stage\'s production-only install — the build stage\'s own full npm ci (with devDependencies) is used only to run the build script, then discarded entirely.',
+    gotchas: [
+      'Copying node_modules from build instead of deps ships every devDependency into production with no build or runtime error to flag the regression.',
+      'Removing the "redundant-looking" deps stage in favor of reusing build\'s node_modules silently bloats the final image.',
+    ],
+  },
+  'containers/dockerfile/sibling-stages-build-in-parallel': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The Build Stage’s Own node_modules Is Discarded Entirely', route: '/containers/dockerfile/build-stage-node-modules-are-discarded' },
+      { label: 'The apt-get Cleanup Fix Is About Layer Size, Not Just Staleness', route: '/containers/dockerfile/same-layer-cleanup-is-required-for-size-not-just-staleness' },
+    ],
+    tip: 'BuildKit builds a dependency graph from each stage\'s own FROM/COPY --from references, not file order — deps and build, as independent siblings under base, can build concurrently rather than sequentially.',
+    gotchas: [
+      'Changing FROM base AS build to FROM deps AS build creates a real dependency that forces BuildKit to serialize the two stages, losing the parallelism.',
+      'Only runtime, which references both deps and build via COPY --from, genuinely has to wait for both to finish.',
+    ],
+  },
+  'containers/dockerfile/same-layer-cleanup-is-required-for-size-not-just-staleness': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Sibling Stages Build in Parallel, Not Top to Bottom', route: '/containers/dockerfile/sibling-stages-build-in-parallel' },
+      { label: 'Writing Dockerfiles overview', route: '/containers/dockerfile' },
+    ],
+    tip: 'rm -rf /var/lib/apt/lists/* only actually shrinks the image if it runs in the SAME layer as the install that created those files — in a separate later RUN, the earlier layer still counts their full size.',
+    gotchas: [
+      'A running container\'s filesystem looks identical either way (files appear gone) — only docker image ls or docker history reveals whether the cleanup actually reclaimed space.',
+      'The main page\'s own mistake-entry explanation only credits the staleness fix, not the equally important same-layer size benefit.',
     ],
   },
   'containers/multi-stage': {
@@ -27484,6 +27556,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A minimal final-stage base image (distroless, Alpine) combined with multi-stage builds compounds the security benefit.',
     ],
   },
+  'containers/multi-stage/test-stage-is-sequential-with-builder-parallel-with-runtime': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Stage Builds overview', route: '/containers/multi-stage' },
+      { label: 'npm prune --production Is a Deprecated Flag on Current npm', route: '/containers/multi-stage/npm-prune-production-flag-is-deprecated' },
+    ],
+    tip: 'FROM builder AS test creates a real dependency on builder, forcing sequential execution — the genuine parallelism in the main page\'s own Go example is between test and runtime, both independent siblings under builder.',
+    gotchas: [
+      'A stage can never run concurrently with the exact stage it explicitly derives FROM, regardless of BuildKit optimizations elsewhere in the same file.',
+      'Restructuring a test stage to derive from an earlier shared point instead of directly from builder is what actually unlocks parallelism with the compile step itself.',
+    ],
+  },
+  'containers/multi-stage/npm-prune-production-flag-is-deprecated': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'test Runs After builder, in Parallel With runtime — Not With builder', route: '/containers/multi-stage/test-stage-is-sequential-with-builder-parallel-with-runtime' },
+      { label: 'COPY --from=external-image Still Pulls the Whole Image', route: '/containers/multi-stage/external-image-copy-still-pulls-the-whole-image' },
+    ],
+    tip: 'npm prune --production (and npm ci --only=production) still work on current npm but print a deprecation warning on every build — npm now recommends --omit=dev for the same effect.',
+    gotchas: [
+      'The deprecation warning does not fail the build, so it can go unnoticed in CI logs indefinitely despite printing on every single run.',
+      'Both --production (prune) and --only=production (install/ci) trace back to the same underlying npm consolidation around --omit=dev.',
+    ],
+  },
+  'containers/multi-stage/external-image-copy-still-pulls-the-whole-image': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'npm prune --production Is a Deprecated Flag on Current npm', route: '/containers/multi-stage/npm-prune-production-flag-is-deprecated' },
+      { label: 'Multi-Stage Builds overview', route: '/containers/multi-stage' },
+    ],
+    tip: 'COPY --from=<external image> requires pulling the ENTIRE referenced image on a cache miss, not just the specific path named — a dedicated FROM stage costs exactly the same, just with an explicit name.',
+    gotchas: [
+      'On a warm-cache persistent build host this cost is invisible; on fresh, ephemeral CI runners with no cache, every build pays the full external-image pull.',
+      'There is no sparse/partial fetch mechanism for pulling just one path out of a remote image\'s layers.',
+    ],
+  },
   'containers/docker-images': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27494,6 +27602,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Retagging an image does not create new content — it creates an additional pointer to the same underlying layers.',
       'Digest-pinned deployment references guarantee you are always pulling the exact same image bytes, eliminating silent tag-reassignment risk.',
+    ],
+  },
+  'containers/docker-images/prune-order-stopped-containers-protect-images': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Docker Images & Registry overview', route: '/containers/docker-images' },
+      { label: 'docker push --all-tags Uploads the Shared Layers Once', route: '/containers/docker-images/all-tags-push-uploads-shared-layers-once' },
+    ],
+    tip: 'docker image prune -a only removes images with zero container references of any state — a stopped, unremoved container protects its image exactly as effectively as a running one.',
+    gotchas: [
+      'Running docker container prune before docker image prune -a makes the image prune meaningfully more aggressive, since it frees images that stopped containers were protecting.',
+      'A scheduled image-prune job that never also clears stopped containers will consistently under-clean disk usage over time.',
+    ],
+  },
+  'containers/docker-images/all-tags-push-uploads-shared-layers-once': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Stopped Containers Protect Their Images From docker image prune -a', route: '/containers/docker-images/prune-order-stopped-containers-protect-images' },
+      { label: 'A Registry Mirror Only Ever Intercepts Docker Hub Pulls', route: '/containers/docker-images/registry-mirror-only-intercepts-docker-hub' },
+    ],
+    tip: 'Multiple tags pointing at the same image ID share identical layers — the registry only receives the actual layer content once, regardless of how many tags reference it.',
+    gotchas: [
+      'Pushing both a version tag and :latest costs roughly one small manifest upload extra, not a second full image transfer.',
+      'The layer-deduplication behavior is registry-side and applies the same whether tags are pushed together with --all-tags or as separate sequential push commands.',
+    ],
+  },
+  'containers/docker-images/registry-mirror-only-intercepts-docker-hub': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'docker push --all-tags Uploads the Shared Layers Once', route: '/containers/docker-images/all-tags-push-uploads-shared-layers-once' },
+      { label: 'Docker Images & Registry overview', route: '/containers/docker-images' },
+    ],
+    tip: 'registry-mirrors in daemon.json only ever intercepts pulls resolving to Docker Hub (docker.io) — pulls explicitly addressed to GHCR, ECR, ACR, or any other registry never consult the configured mirror at all.',
+    gotchas: [
+      'A pull with no registry prefix defaults to docker.io and IS mirrored; the exact same daemon config does nothing for docker pull ghcr.io/... or any other explicitly-addressed registry.',
+      'Caching a non-Hub registry requires a genuinely separate mechanism (a proxy-caching registry with an explicit upstream), not a daemon.json setting.',
     ],
   },
   'containers/docker-cli': {
@@ -27508,6 +27652,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'docker exec fails against a stopped container — it requires an existing running container to attach to.',
     ],
   },
+  'containers/docker-cli/kill-sighup-is-reload-not-termination': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Docker CLI overview', route: '/containers/docker-cli' },
+      { label: 'docker kill Doesn’t Suppress a Restart Policy Like docker stop Does', route: '/containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop' },
+    ],
+    tip: 'docker kill defaults to SIGKILL, but -s lets it send any signal — SIGHUP is commonly used for zero-downtime config reload (nginx being the canonical example), not termination.',
+    gotchas: [
+      'Whether -s SIGHUP reloads or kills depends entirely on whether the target app installed a SIGHUP handler — with none, the kernel default is to terminate the process.',
+      'The main page\'s own "reserve kill for unresponsive containers" advice is about the SIGKILL default specifically, not about docker kill sending a non-terminating signal.',
+    ],
+  },
+  'containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'docker kill -s SIGHUP Reloads — It Doesn’t Terminate', route: '/containers/docker-cli/kill-sighup-is-reload-not-termination' },
+      { label: 'docker stop $(docker ps -q) Errors When Nothing Is Running', route: '/containers/docker-cli/stop-with-empty-ps-q-errors-not-noop' },
+    ],
+    tip: 'docker stop reliably marks a container as explicitly stopped, which unless-stopped respects across a daemon restart — docker kill (and the SIGKILL docker rm -f sends) does not reliably record that same state.',
+    gotchas: [
+      'A container under --restart unless-stopped that was killed rather than stopped can unexpectedly come back after the next daemon restart, the opposite of what most operators expect.',
+      'docker rm -f carries the same restart-policy risk as docker kill, since it sends SIGKILL before removing.',
+    ],
+  },
+  'containers/docker-cli/stop-with-empty-ps-q-errors-not-noop': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'docker kill Doesn’t Suppress a Restart Policy Like docker stop Does', route: '/containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop' },
+      { label: 'Docker CLI overview', route: '/containers/docker-cli' },
+    ],
+    tip: 'docker stop $(docker ps -q) with zero running containers expands to bare docker stop with no arguments — a real usage error and non-zero exit, not a silent no-op like the neighboring prune commands.',
+    gotchas: [
+      'A script running this line unconditionally with set -e will abort the rest of the script on any host with nothing currently running.',
+      'docker ps -q | xargs -r docker stop (the -r/--no-run-if-empty flag) turns the empty case into a genuine, safe no-op.',
+    ],
+  },
   'containers/compose': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27518,6 +27698,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'depends_on controls startup ORDER but does not by itself wait for a dependent service to be READY — combine with a healthcheck and condition: service_healthy.',
       'Custom networks let you segment services for defense-in-depth rather than relying solely on the single default shared network.',
+    ],
+  },
+  'containers/compose/web-depends-on-api-lacks-condition-because-api-has-no-healthcheck': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Docker Compose overview', route: '/containers/compose' },
+      { label: 'Why the Anonymous node_modules Volume Preserves the Image’s Content', route: '/containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content' },
+    ],
+    tip: 'condition: service_healthy is only valid when the TARGET service defines its own healthcheck — api never does in the main page\'s own example, so web\'s simple-array depends_on is the only option available, not an oversight.',
+    gotchas: [
+      'Adding condition: service_healthy to a depends_on entry without first giving the target service its own healthcheck: block is invalid configuration, not a stricter alternative.',
+      'A service with no healthcheck can still be depended on — just not with the readiness guarantee condition: service_healthy provides.',
+    ],
+  },
+  'containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'web’s depends_on Lacks a Condition Because api Has No Healthcheck', route: '/containers/compose/web-depends-on-api-lacks-condition-because-api-has-no-healthcheck' },
+      { label: 'Anonymous Volumes Orphan on Every Container Recreation', route: '/containers/compose/anonymous-volumes-orphan-on-every-recreation' },
+    ],
+    tip: 'Docker resolves overlapping mounts by path specificity — /app/node_modules wins over the broader /app bind mount, and a fresh volume mounted over existing image content is auto-populated with that content.',
+    gotchas: [
+      'Removing the anonymous node_modules volume line lets the bind mount shadow it with the host\'s own (usually empty) node_modules, breaking the container at runtime despite a correctly-built image.',
+      'Mount order in the compose.yml has no effect on which mount wins — only path specificity does.',
+    ],
+  },
+  'containers/compose/anonymous-volumes-orphan-on-every-recreation': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Why the Anonymous node_modules Volume Preserves the Image’s Content', route: '/containers/compose/anonymous-volume-shadows-bind-mount-and-restores-image-content' },
+      { label: 'Docker Compose overview', route: '/containers/compose' },
+    ],
+    tip: 'The main page\'s own -v discussion only covers the named db-data volume — the dev override\'s own anonymous node_modules volume gets a brand new orphan on every container recreation, with no name to target it by individually.',
+    gotchas: [
+      'Avoiding docker compose down -v to protect db-data does nothing to stop anonymous volumes from silently accumulating across every rebuild.',
+      'Orphaned anonymous volumes can only be cleaned up in bulk (docker volume prune, or docker compose down -v) — there is no per-volume equivalent of docker volume rm project_db-data for them.',
     ],
   },
   'containers/compose-profiles': {
@@ -27531,6 +27747,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cramming every environment variation into one compose file via profiles can become harder to read than a small number of purpose-specific files.',
     ],
   },
+  'containers/compose-profiles/override-tag-replaces-lists-without-workarounds': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Compose Profiles & Overrides overview', route: '/containers/compose-profiles' },
+      { label: 'The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax', route: '/containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax' },
+    ],
+    tip: '!override replaces a single field\'s value during merge instead of following its normal merge rule — no base-file editing or fresh service names needed, unlike the main page\'s own suggested workaround.',
+    gotchas: [
+      '!reset clears a field back to empty/default rather than replacing it — useful when an override needs to REMOVE something the base set, not add to it.',
+      '!override and !reset are scoped to the single field they\'re applied to; every other field on the same service still merges normally.',
+    ],
+  },
+  'containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: '!override Replaces a Merged List Directly — No Workaround Needed', route: '/containers/compose-profiles/override-tag-replaces-lists-without-workarounds' },
+      { label: 'Map-Form environment: Merges by Key, Not by Concatenation', route: '/containers/compose-profiles/map-form-environment-merges-by-key-not-concatenation' },
+    ],
+    tip: 'Which alias syntax is valid depends on whether the anchor was defined as a YAML mapping or a sequence — x-env is a mapping, so the merge key (<<:) is required; bracket-list syntax would nest it as one list element instead.',
+    gotchas: [
+      'The main page\'s own theory bullet describes environment: [*common-env] in prose, but its own working code tab uses <<: *common-env — only the merge-key form is valid for x-env\'s mapping type.',
+      'Bracket-list alias syntax IS valid, but only for an anchor that was itself defined as a list, not a mapping.',
+    ],
+  },
+  'containers/compose-profiles/map-form-environment-merges-by-key-not-concatenation': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax', route: '/containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax' },
+      { label: 'Compose Profiles & Overrides overview', route: '/containers/compose-profiles' },
+    ],
+    tip: 'The main page\'s own theory groups ports, volumes, and environment as all "concatenated" on merge — but environment written as a mapping (as the page\'s own code tab does) merges key-by-key instead, with the override winning on repeated keys.',
+    gotchas: [
+      'A repeated key in map-form environment (like NODE_ENV) resolves to a single, overridden value — not two coexisting entries the way a genuinely duplicated ports binding does.',
+      'Environment can also be written in list form, which merges by append like ports does — Compose applies its own key-based de-duplication on top either way, but the underlying merge rule genuinely differs by form.',
+    ],
+  },
   'containers/configmaps-secrets': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27541,6 +27793,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Kubernetes does not automatically restart pods on a ConfigMap change — tools like Reloader or content-hash-suffixed names force a rolling deployment when needed.',
       'immutable: true prevents accidental updates and improves kubelet performance, at the cost of requiring a new object name for any config change.',
+    ],
+  },
+  'containers/configmaps-secrets/subpath-volume-mounts-never-receive-configmap-secret-updates': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'ConfigMaps & Secrets overview', route: '/containers/configmaps-secrets' },
+      { label: 'RBAC resourceNames Cannot Restrict list/watch — the Verb Itself Must Go', route: '/containers/configmaps-secrets/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go' },
+    ],
+    tip: 'The "~1 minute" volume-update propagation figure only applies to whole-directory mounts — a subPath-mounted ConfigMap/Secret key bind-mounts once at container start and never receives live updates at all, for the container\'s entire lifetime.',
+    gotchas: [
+      'subPath bypasses kubelet\'s atomic symlink-swap update mechanism entirely — no amount of waiting resolves a stale subPath-mounted file.',
+      'The only fix for a subPath-mounted change is a Pod restart, the same requirement as environment-variable injection.',
+    ],
+  },
+  'containers/configmaps-secrets/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'subPath Volume Mounts Never Receive ConfigMap/Secret Updates At All', route: '/containers/configmaps-secrets/subpath-volume-mounts-never-receive-configmap-secret-updates' },
+      { label: 'Deleting an Immutable ConfigMap Breaks New Pods, Not Running Ones', route: '/containers/configmaps-secrets/deleting-an-immutable-configmap-breaks-new-pods-not-running-ones' },
+    ],
+    tip: 'resourceNames has no effect on list, watch, deletecollection, or top-level create requests — a Role combining list/watch with resourceNames grants full enumeration regardless, silently ignoring the restriction for those verbs.',
+    gotchas: [
+      'A Role that "looks" restricted via resourceNames + list/watch is functionally identical to one with no resourceNames field at all for those two verbs.',
+      'get, update, and delete DO respect resourceNames, since those requests include a specific object name in the URL for the authorizer to check.',
+    ],
+  },
+  'containers/configmaps-secrets/deleting-an-immutable-configmap-breaks-new-pods-not-running-ones': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'RBAC resourceNames Cannot Restrict list/watch — the Verb Itself Must Go', route: '/containers/configmaps-secrets/rbac-resourcenames-cannot-restrict-list-watch-the-verb-itself-must-go' },
+      { label: 'ConfigMaps & Secrets overview', route: '/containers/configmaps-secrets' },
+    ],
+    tip: 'An already-running Pod survives deletion of its own mounted ConfigMap/Secret, since kubelet already synced the content locally — the real risk lands on any Pod recreated afterward, which fails with CreateContainerConfigError.',
+    gotchas: [
+      'Never delete a superseded, content-hash-suffixed ConfigMap until kubectl rollout status confirms the referencing Deployment has fully completed.',
+      'A crash, node drain, or reschedule long after a rollout can still trigger the failure if cleanup happened too early relative to every possible future Pod recreation.',
     ],
   },
   'containers/container-security': {
@@ -27556,6 +27844,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Image signing (Cosign/Sigstore) addresses supply-chain tampering risks that vulnerability scanning alone does not cover.',
     ],
   },
+  'containers/container-security/fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Container Security overview', route: '/containers/container-security' },
+      { label: 'A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It', route: '/containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it' },
+    ],
+    tip: 'fsGroup sets the GROUP ownership Kubernetes applies to mounted volumes — without it, a non-root runAsUser commonly gets permission-denied writing to an emptyDir/PVC, even with every other hardening field set correctly.',
+    gotchas: [
+      'Kubelet recursively chown()/chmod()s every file in a volume on mount by default — fsGroupChangePolicy: OnRootMismatch can skip this, but has no effect on emptyDir/Secret/ConfigMap at all.',
+      'runAsUser controls the process\'s own UID; fsGroup controls the volume\'s ownership — they solve two different halves of the same problem, not redundant settings.',
+    ],
+  },
+  'containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'fsGroup Makes Non-Root Volume Writes Actually Work', route: '/containers/container-security/fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow' },
+      { label: 'PSA restricted Never Checks readOnlyRootFilesystem At All', route: '/containers/container-security/psa-restricted-never-checks-readonlyrootfilesystem-at-all' },
+    ],
+    tip: 'The API server accepts and stores NetworkPolicy objects unconditionally — actual enforcement depends entirely on the CNI plugin; plain Flannel accepts a default-deny policy with no error, but never blocks any traffic.',
+    gotchas: [
+      'A positive test ("expected traffic still works") can never confirm enforcement — only testing that traffic the policy should explicitly BLOCK actually fails proves the CNI is enforcing anything.',
+      'Calico, Cilium, Weave Net, and Antrea are commonly cited as enforcing NetworkPolicy; plain Flannel does not.',
+    ],
+  },
+  'containers/container-security/psa-restricted-never-checks-readonlyrootfilesystem-at-all': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It', route: '/containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it' },
+      { label: 'Container Security overview', route: '/containers/container-security' },
+    ],
+    tip: 'PSA "restricted" checks runAsNonRoot, allowPrivilegeEscalation: false, seccompProfile, and capabilities.drop: [ALL] — but readOnlyRootFilesystem is never one of the fields any Pod Security Standard level enforces, at any level.',
+    gotchas: [
+      'A Pod can pass restricted admission with a fully writable root filesystem, since readOnlyRootFilesystem is documented as best practice only, never a PSA requirement.',
+      'Closing this specific gap requires a separate policy engine (Kyverno, OPA Gatekeeper) layered on top of PSA, not a stricter PSA label.',
+    ],
+  },
   'containers/helm': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27566,6 +27890,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'helm rollback only reverts Kubernetes objects Helm manages — it does not undo external side effects like data migrations.',
       'helm template renders manifests locally without touching the cluster, useful for reviewing exact output before install.',
+    ],
+  },
+  'containers/helm/rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Helm overview', route: '/containers/helm' },
+      { label: 'history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden', route: '/containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden' },
+    ],
+    tip: 'helm rollback triggers only pre-rollback/post-rollback hooks — a pre-upgrade migration Job is never invoked by rollback, so a schema change persists untouched unless a matching pre-rollback hook is explicitly authored.',
+    gotchas: [
+      'Each Helm command maps to its own fixed hook set: install→pre/post-install, upgrade→pre/post-upgrade, rollback→pre/post-rollback, uninstall→pre/post-delete.',
+      'Helm never generates or infers a pre-rollback hook from a pre-upgrade one — the "down" logic must be written and tested separately.',
+    ],
+  },
+  'containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'helm rollback Never Undoes a pre-upgrade Hook — Only pre-rollback Hooks Run', route: '/containers/helm/rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run' },
+      { label: '--set Always Beats -f, Regardless of Command-Line Order', route: '/containers/helm/set-always-beats-f-regardless-of-command-line-order' },
+    ],
+    tip: 'Every helm upgrade silently prunes revision Secrets beyond --history-max (default 10) — "helm history shows all revisions" is only true within that retention window, and a pruned revision can never be rolled back to again.',
+    gotchas: [
+      'helm rollback <release> <revision> fails with "release: not found" once that specific revision\'s Secret has been pruned, even though the release itself is running fine.',
+      'Raising --history-max only affects retention going forward — it cannot restore a revision already deleted by the previous, smaller limit.',
+    ],
+  },
+  'containers/helm/set-always-beats-f-regardless-of-command-line-order': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden', route: '/containers/helm/history-max-defaults-to-10-old-revisions-are-pruned-not-hidden' },
+      { label: 'Helm overview', route: '/containers/helm' },
+    ],
+    tip: '--set has a fixed, type-based precedence over any -f values file, independent of command-line position — placing -f after --set never makes the file win, unlike ordering among multiple -f files or multiple --set flags, which IS left-to-right.',
+    gotchas: [
+      'A CI pipeline placing a per-service -f override "last" to out-rank a shared --set flag will silently fail — the --set value always wins regardless of position.',
+      'The fix is changing which FLAG TYPE carries the value that should win, not reordering flags on the command line.',
     ],
   },
   'containers/hpa': {
@@ -27580,6 +27940,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'behavior.scaleDown.stabilizationWindowSeconds prevents premature scale-down from a brief dip that doesn\'t represent sustained reduced load.',
     ],
   },
+  'containers/hpa/scale-up-and-scale-down-stabilization-windows-aggregate-oppositely': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Horizontal Pod Autoscaler overview', route: '/containers/hpa' },
+      { label: 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest', route: '/containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest' },
+    ],
+    tip: 'Scale-down stabilization uses the MAXIMUM recommendation in the window (keep more pods); scale-up stabilization, if configured, uses the MINIMUM instead — the two directions aggregate oppositely, not symmetrically.',
+    gotchas: [
+      'The main page\'s own default (scaleUp: 0s, scaleDown: 300s) reflects a choice of defaults, not a difference in the underlying mechanism, which is structurally symmetric.',
+      'Adding ANY scale-up window changes behavior from "every fresh recommendation applies" to "the minimum in the window applies" — this can meaningfully slow scale-up during a sustained ramp.',
+    ],
+  },
+  'containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Scale-Up and Scale-Down Stabilization Windows Aggregate Oppositely', route: '/containers/hpa/scale-up-and-scale-down-stabilization-windows-aggregate-oppositely' },
+      { label: 'Unready Pods Count as 0% Utilization, Diluting the Average', route: '/containers/hpa/unready-pods-count-as-0-percent-utilization-diluting-the-average' },
+    ],
+    tip: 'selectPolicy defaults to Max — when a direction has multiple policies, Kubernetes applies whichever allows the LARGEST change, not the most restrictive. A stricter "safety net" policy added without selectPolicy: Min has no effect.',
+    gotchas: [
+      'Two policies for the same direction don\'t automatically combine as a layered safety net — selectPolicy: Min must be set explicitly for the tighter one to actually bind.',
+      'selectPolicy is evaluated fresh per scaling decision — it isn\'t a one-time speed setting, it\'s a per-event choice between the defined policies.',
+    ],
+  },
+  'containers/hpa/unready-pods-count-as-0-percent-utilization-diluting-the-average': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'selectPolicy Defaults to Max — Multiple Policies Pick the Fastest, Not Safest', route: '/containers/hpa/selectpolicy-defaults-to-max-multiple-policies-pick-the-fastest-not-safest' },
+      { label: 'Horizontal Pod Autoscaler overview', route: '/containers/hpa' },
+    ],
+    tip: 'An unready Pod is counted at exactly 0% utilization in the HPA\'s own average, not excluded — during a rollout or partial incident, this dilutes the reported average even while the Ready pods are genuinely overloaded.',
+    gotchas: [
+      '--horizontal-pod-autoscaler-initial-readiness-delay (default 30s) only covers a pod\'s FIRST startup — a previously-Ready pod that later fails its own readinessProbe has no equivalent grace period.',
+      'A low reported average alongside high per-pod usage on kubectl top is not evidence of a broken HPA — it\'s consistent with documented 0%-counting behavior for unready pods.',
+    ],
+  },
   'containers/k8s-architecture': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27590,6 +27986,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'etcd is the single source of truth for all cluster state — losing it without backups means losing the entire cluster\'s configuration.',
       'A control plane outage does not immediately stop already-running pods, since kubelet continues managing existing pods independently for a period.',
+    ],
+  },
+  'containers/k8s-architecture/not-ready-eviction-is-taint-based-not-a-fixed-flag': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Architecture overview', route: '/containers/k8s-architecture' },
+      { label: 'The dockershim Removal Never Broke Docker-Built Images', route: '/containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images' },
+    ],
+    tip: 'Modern Kubernetes (1.13+) uses taint-based eviction, not the flag-based pod-eviction-timeout mechanism — a NoExecute taint plus each pod\'s own tolerationSeconds (default 300s, injected automatically), configurable per pod.',
+    gotchas: [
+      'Changing --pod-eviction-timeout on kube-controller-manager has no effect on a modern cluster — actual timing comes from each pod\'s own tolerationSeconds against the relevant taints.',
+      'A latency-sensitive Deployment can override tolerationSeconds to fail over much faster than the cluster-wide default, something the old flag-based model could never express.',
+    ],
+  },
+  'containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'NotReady Eviction Is Taint-Based, Not a Fixed Global Flag', route: '/containers/k8s-architecture/not-ready-eviction-is-taint-based-not-a-fixed-flag' },
+      { label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' },
+    ],
+    tip: 'dockershim was a kubelet-internal translation layer to the Docker Engine daemon as a node runtime — removing it in 1.24 changed nothing about the OCI image format docker build produces or how Dockerfiles work.',
+    gotchas: [
+      'The removal is entirely a cluster-operations concern (nodes need containerd or CRI-O configured) — not a development-workflow change.',
+      'Most managed Kubernetes services had already migrated their default node images to containerd well before their own 1.24 rollout.',
+    ],
+  },
+  'containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The dockershim Removal Never Broke Docker-Built Images', route: '/containers/k8s-architecture/dockershim-removal-does-not-break-docker-built-images' },
+      { label: 'Kubernetes Architecture overview', route: '/containers/k8s-architecture' },
+    ],
+    tip: 'In iptables/IPVS mode, kube-proxy only writes rules into the kernel ahead of time — actual packet forwarding happens entirely in kernel space with zero involvement from the kube-proxy process per packet.',
+    gotchas: [
+      'Restarting kube-proxy does not interrupt already-flowing connections in iptables/IPVS mode — only new Service/Endpoint changes stop being picked up until it resumes.',
+      'kube-proxy\'s resource usage scales with the number of Services/endpoints (rule count), not with request volume, unlike a literal in-path proxy.',
     ],
   },
   'containers/kubectl': {
@@ -27604,6 +28036,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'kubectl diff (comparing a local manifest against live state before applying) is a useful safety check against unexpected drift.',
     ],
   },
+  'containers/kubectl/apply-uses-three-way-merge-via-last-applied-annotation': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'kubectl Fundamentals overview', route: '/containers/kubectl' },
+      { label: 'Force-Delete Only Removes the etcd Object, Not the Process', route: '/containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process' },
+    ],
+    tip: 'apply compares three things, not two: the last-applied-configuration annotation, the live object, and the new manifest — a field only gets removed if it was present in last-applied but is now absent from the new manifest.',
+    gotchas: [
+      'A field set outside any apply (kubectl edit, another controller) is never in last-applied-configuration, so apply leaves it alone regardless of what the new manifest does or doesn\'t mention.',
+      'Removing a field from your manifest and never having included it at all produce different outcomes on the live object, purely based on last-applied-configuration\'s own history.',
+    ],
+  },
+  'containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'apply Uses a Three-Way Merge via the last-applied-configuration Annotation', route: '/containers/kubectl/apply-uses-three-way-merge-via-last-applied-annotation' },
+      { label: 'scale Against an HPA-Managed Deployment Gets Silently Reverted', route: '/containers/kubectl/scale-against-an-hpa-gets-silently-reverted' },
+    ],
+    tip: '--grace-period=0 --force reaches LESS far than a normal delete, not more — it skips waiting for the kubelet to confirm termination; on an unreachable node, the kubelet never even receives the best-effort notification at all.',
+    gotchas: [
+      'A Pod disappearing from kubectl get pods after a force-delete only means the etcd object is gone, not that the container has stopped.',
+      'The zombie-process/duplicate-instance risk is specifically concentrated on unreachable or NotReady nodes, not healthy ones.',
+    ],
+  },
+  'containers/kubectl/scale-against-an-hpa-gets-silently-reverted': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Force-Delete Only Removes the etcd Object, Not the Process', route: '/containers/kubectl/force-delete-only-removes-the-etcd-object-not-the-process' },
+      { label: 'kubectl Fundamentals overview', route: '/containers/kubectl' },
+    ],
+    tip: 'kubectl scale against a Deployment already managed by an HPA succeeds momentarily, then gets overwritten on the HPA\'s next reconciliation tick (~15s) — the durable fix is changing the HPA\'s own minReplicas, not fighting it with a one-off scale command.',
+    gotchas: [
+      'The scale command\'s own success message gives no indication of whether an HPA will immediately revert it.',
+      'Removing or pausing the HPA is required to make a manual scale command genuinely durable.',
+    ],
+  },
   'containers/network-policies': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27614,6 +28082,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'NetworkPolicies are enforced by the CNI plugin, not Kubernetes core — some CNI plugins don\'t enforce them at all, meaning a policy can exist with zero actual effect.',
       'Egress policies (restricting what a compromised pod can reach outbound) are just as important as ingress and are more commonly overlooked.',
+    ],
+  },
+  'containers/network-policies/networkpolicies-union-additively-a-second-policy-can-only-allow-more': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Network Policies overview', route: '/containers/network-policies' },
+      { label: 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak', route: '/containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak' },
+    ],
+    tip: 'Multiple NetworkPolicies selecting the same pod UNION their rules — there is no precedence or override. A second, narrower policy can only ever add more allowed traffic, never restrict what a broader existing policy already permits.',
+    gotchas: [
+      'To genuinely narrow access, edit or delete the original, broader policy directly — a second "more restrictive" policy alongside it has no restraining effect.',
+      'Kubernetes has no concept of NetworkPolicy ordering or specificity — evaluation is not affected by which policy was created first.',
+    ],
+  },
+  'containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'NetworkPolicies Union Additively — a Second Policy Can Only Allow More', route: '/containers/network-policies/networkpolicies-union-additively-a-second-policy-can-only-allow-more' },
+      { label: 'The “Always Allow DNS” Egress Rule Has No Destination — a Real Exfiltration Path', route: '/containers/network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path' },
+    ],
+    tip: 'ipBlock is a plain CIDR matcher with no internal/external concept in the core API — a broad range overlapping the cluster\'s own Pod/Service CIDR also grants access to in-cluster pods, unless explicitly excluded with except:.',
+    gotchas: [
+      'Check kubectl cluster-info dump for the cluster\'s own Pod/Service CIDR before writing any broad-range ipBlock rule.',
+      'Some CNIs (Cilium) auto-exclude cluster-internal addresses from ipBlock — this is CNI-specific, not a core API guarantee, so don\'t rely on it for portability.',
+    ],
+  },
+  'containers/network-policies/the-always-allow-dns-egress-rule-has-no-destination-a-real-exfiltration-path': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'ipBlock Matches Raw IPs — a CIDR Overlapping the Cluster Network Can Leak', route: '/containers/network-policies/ipblock-matches-raw-ips-a-cidr-overlapping-the-cluster-network-can-leak' },
+      { label: 'Network Policies overview', route: '/containers/network-policies' },
+    ],
+    tip: 'The standard "always allow DNS egress" rule has no destination restriction — since NetworkPolicy can\'t inspect DNS query content, this permits DNS tunneling to any external resolver. Scope the rule\'s own to: field to CoreDNS specifically to close it.',
+    gotchas: [
+      'Scoping DNS-allow to only the cluster\'s own CoreDNS service preserves normal service-name resolution while blocking queries to attacker-controlled external resolvers.',
+      'This is a genuinely narrow, well-documented technique (DNS tunneling), not a theoretical edge case — unrestricted port-53 rules are common exactly because DNS resolution must not break.',
     ],
   },
   'containers/operators-crds': {
@@ -27628,6 +28132,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The reconciliation loop (observe, compare, act, repeat) is the same core mechanism underlying both built-in controllers and custom Operators.',
     ],
   },
+  'containers/operators-crds/update-then-status-update-risks-a-stale-resourceversion-conflict': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Operators & CRDs overview', route: '/containers/operators-crds' },
+      { label: 'A CRD and Its Own CR Applied Together Can Race the Established Condition', route: '/containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition' },
+    ],
+    tip: 'Splitting spec and status into separate Update calls (as the main page\'s own mistake entry advises) is necessary but not sufficient — the second call still needs a current resourceVersion, which the main page\'s own pseudocode never guarantees by re-fetching.',
+    gotchas: [
+      'A 409 Conflict from a second Update call in the same reconcile is expected, well-understood behavior, not a bug requiring bespoke investigation.',
+      'retry.RetryOnConflict() or an explicit re-fetch immediately before the second Update call is the standard, documented fix.',
+    ],
+  },
+  'containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Two Update Calls in One Reconcile Risk a Stale resourceVersion Conflict', route: '/containers/operators-crds/update-then-status-update-risks-a-stale-resourceversion-conflict' },
+      { label: 'The Requeue “Storm” Is Actually Rate-Limited Exponential Backoff', route: '/containers/operators-crds/requeue-storm-is-actually-rate-limited-exponential-backoff' },
+    ],
+    tip: 'A CRD "created" successfully does not mean the API server is ready to serve custom resources of that type yet — the CRD\'s own Established condition needs to become true first, a real, documented, intermittent race when both are applied together.',
+    gotchas: [
+      'kubectl wait --for=condition=established between the two applies removes the race entirely.',
+      'GitOps tools have native equivalents — ArgoCD sync waves, Flux Kustomization dependsOn/healthChecks.',
+    ],
+  },
+  'containers/operators-crds/requeue-storm-is-actually-rate-limited-exponential-backoff': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A CRD and Its Own CR Applied Together Can Race the Established Condition', route: '/containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition' },
+      { label: 'Kubernetes Operators & CRDs overview', route: '/containers/operators-crds' },
+    ],
+    tip: 'controller-runtime\'s default per-item exponential backoff (base ~5ms, max ~1000s) self-limits repeated reconcile failures on a single object within seconds — the main page\'s own "requeue storm" is real but brief, and never affects other, healthy objects.',
+    gotchas: [
+      'The backoff mechanism limits the blast radius of a reconcile bug, it does not fix the bug — the NotFound-as-error mistake still needs the explicit errors.IsNotFound() check.',
+      'Rate limiting is per-object, not global — one misbehaving CR backing off does not slow down reconciliation of any other CR the same controller manages.',
+    ],
+  },
   'containers/pods-deployments': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27638,6 +28178,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'All containers in a Pod are scheduled to the SAME node and share the Pod\'s IP — this co-location is what makes sidecar patterns practical.',
       'Pods are inherently ephemeral — applications must tolerate restarts rather than assuming long-lived process identity.',
+    ],
+  },
+  'containers/pods-deployments/terminating-pods-still-receive-traffic-without-a-prestop-delay': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Pods, Deployments & ReplicaSets overview', route: '/containers/pods-deployments' },
+      { label: 'minReadySeconds Throttles Rollout Pace, Not Just Pod Status', route: '/containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status' },
+      { label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' },
+    ],
+    tip: 'SIGTERM delivery (kubelet, local node) and Endpoints removal propagation (kube-proxy, every other node) are unsynchronized — a preStop sleep buys time for the second process to catch up before the app actually stops accepting connections.',
+    gotchas: [
+      'The readinessProbe only gates whether a NEW Pod is ADDED to Endpoints — it plays no role in safely removing an old, already-healthy Pod from rotation.',
+      'A preStop delay reduces the race window, it does not eliminate the underlying asynchrony between the two termination-side processes.',
+    ],
+  },
+  'containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Terminating Pods Still Receive Traffic Without a preStop Delay', route: '/containers/pods-deployments/terminating-pods-still-receive-traffic-without-a-prestop-delay' },
+      { label: 'Generation vs. observedGeneration Tracks Controller Catch-Up', route: '/containers/pods-deployments/generation-vs-observedgeneration-tracks-controller-catch-up' },
+    ],
+    tip: 'The rollout controller\'s own maxSurge/maxUnavailable pacing math uses AVAILABLE replicas (Ready continuously for minReadySeconds), not just Ready ones — raising minReadySeconds adds real, cumulative time to every sequential replacement in a rollout.',
+    gotchas: [
+      'A Pod showing 1/1 READY in kubectl can still be well short of counting toward the rollout controller\'s own available-replica pacing gate.',
+      'With a small maxSurge, minReadySeconds compounds across every single Pod replacement — small per-Pod delays add up to a substantial total rollout-time increase.',
+    ],
+  },
+  'containers/pods-deployments/generation-vs-observedgeneration-tracks-controller-catch-up': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'minReadySeconds Throttles Rollout Pace, Not Just Pod Status', route: '/containers/pods-deployments/minreadyseconds-throttles-rollout-pace-not-just-pod-status' },
+      { label: 'Pods, Deployments & ReplicaSets overview', route: '/containers/pods-deployments' },
+    ],
+    tip: 'metadata.generation bumps immediately on any spec change; status.observedGeneration is written later, by the Deployment controller, once it has actually processed that generation — checking these must come BEFORE trusting any replica-count-based health signal.',
+    gotchas: [
+      'A status-only update (like a Pod becoming Ready) never bumps generation — only an actual spec edit does, unlike the much noisier resourceVersion.',
+      'readyReplicas can look perfectly healthy while still describing the PREVIOUS generation\'s already-settled state, in the brief window before the controller has caught up to the newest spec change.',
     ],
   },
   'containers/rbac': {
@@ -27652,6 +28229,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Granting cluster-admin to a service account that only ever needs read access to one namespace is unnecessary risk if that account is ever compromised.',
     ],
   },
+  'containers/rbac/bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes RBAC overview', route: '/containers/rbac' },
+      { label: 'Aggregated ClusterRoles Retroactively Grant New Permissions to Old Bindings', route: '/containers/rbac/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings' },
+    ],
+    tip: 'Kubernetes blocks binding to a Role/ClusterRole with more permissions than the requester already has, unless the requester also holds the bind verb (or escalate, for editing a Role directly) — rolebindings/create alone cannot self-escalate.',
+    gotchas: [
+      'The real risk combination is create AND bind/escalate together — create alone is rejected outright with a Forbidden error.',
+      'bind and escalate are legitimate verbs needed by automation that provisions RBAC for others — audit for them specifically, they are not rare.',
+    ],
+  },
+  'containers/rbac/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'The bind Verb Gates Escalation — create on RoleBindings Alone Isn’t Enough', route: '/containers/rbac/bind-verb-gates-escalation-create-on-rolebindings-alone-is-not-enough' },
+      { label: 'Bound ServiceAccount Tokens Expire in 1 Hour — Legacy Tokens Never Did', route: '/containers/rbac/bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did' },
+    ],
+    tip: 'Aggregation merges a labeled ClusterRole\'s rules into "view"/"edit"/"admin" automatically — every subject ALREADY bound to that role gains the new permissions instantly, with no new binding and no re-approval step.',
+    gotchas: [
+      'A chart that creates no new RoleBinding can still expand what every existing "edit" holder can do, purely via an aggregate-to-* labeled ClusterRole.',
+      'A one-time review of "edit"\'s own .rules field only captures a snapshot — the real audit surface is every ClusterRole currently carrying the matching label.',
+    ],
+  },
+  'containers/rbac/bound-serviceaccount-tokens-expire-in-1-hour-legacy-tokens-never-did': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Aggregated ClusterRoles Retroactively Grant New Permissions to Old Bindings', route: '/containers/rbac/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings' },
+      { label: 'Kubernetes RBAC overview', route: '/containers/rbac' },
+    ],
+    tip: 'Since Kubernetes 1.24, the default mounted ServiceAccount token is a bound token expiring in 1 hour (or on Pod deletion) — the older Secret-backed token had no expiration at all and remained valid until manually deleted.',
+    gotchas: [
+      'A leaked bound token more than ~1 hour old (or whose Pod no longer exists) is not a usable credential, regardless of the ServiceAccount\'s permissions.',
+      'Kubelet refreshes the mounted bound token transparently before expiration — applications need no custom rotation logic.',
+    ],
+  },
   'containers/resource-limits': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27662,6 +28275,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'QoS class (Guaranteed/Burstable/BestEffort) is derived from how requests/limits are set and directly determines eviction priority under node pressure.',
       'A pod with no request but a limit gets unpredictable scheduling behavior depending on configuration defaults.',
+    ],
+  },
+  'containers/resource-limits/cpu-limit-throttling-triggers-on-a-100ms-burst-not-average-usage': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Resource Requests & Limits overview', route: '/containers/resource-limits' },
+      { label: 'A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero', route: '/containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero' },
+    ],
+    tip: 'CFS enforces CPU limits per 100ms period, not as a longer-window average — a multi-threaded app can burst its entire quota in a few ms and sit throttled for the rest of the period, invisible to any average/p99 metric.',
+    gotchas: [
+      'Low average/p99 usage on kubectl top or a dashboard does not rule out throttling — check cpu.stat\'s nr_throttled or container_cpu_cfs_throttled_seconds_total directly.',
+      'Capping an app\'s own thread/worker pool to match its CPU limit (not the host\'s core count) often fixes burst throttling better than raising the limit alone.',
+    ],
+  },
+  'containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'CPU Limit Throttling Triggers on a 100ms Burst, Not Average Usage', route: '/containers/resource-limits/cpu-limit-throttling-triggers-on-a-100ms-burst-not-average-usage' },
+      { label: 'HPA Scales Against Requests, Not Limits — a Low Request Is Hypersensitive', route: '/containers/resource-limits/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive' },
+    ],
+    tip: 'A ResourceQuota covering compute resources rejects a pod missing requests/limits outright (HTTP 403) — it never silently admits it and counts it as zero. LimitRange avoids this by injecting defaults BEFORE the quota check runs, not by fixing the count after.',
+    gotchas: [
+      'Without a LimitRange, a ResourceQuota on compute resources is stricter than no quota at all — deployments fail outright rather than slipping through unrestricted.',
+      'LimitRange must be applied before the pod is submitted — it defaults values at admission time, it cannot retroactively fix an already-rejected request.',
+    ],
+  },
+  'containers/resource-limits/hpa-scales-against-requests-not-limits-a-low-request-is-hypersensitive': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A ResourceQuota Rejects Pod Creation Outright — It Never Defaults to Zero', route: '/containers/resource-limits/resourcequota-rejects-pod-creation-outright-it-never-defaults-to-zero' },
+      { label: 'Resource Requests & Limits overview', route: '/containers/resource-limits' },
+    ],
+    tip: 'HPA\'s resource-metric utilization percentage is computed against the CPU REQUEST, never the limit — a deliberately low, p50-sized request (this page\'s own sizing advice) makes any attached HPA trigger on small absolute usage increases.',
+    gotchas: [
+      'averageUtilization above 100% is valid and common — it expresses a target relative to the (larger) limit via the request/limit ratio, e.g. (limit/request) × desired-limit-percentage.',
+      'Fixing HPA hypersensitivity should change the HPA\'s own target percentage, not the request value — lowering request accuracy would undermine the scheduling-efficiency reason it was sized low in the first place.',
     ],
   },
   'containers/services-ingress': {
@@ -27676,6 +28325,43 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'NodePort exposes a static port on every node\'s IP directly — simple but rarely used directly in production.',
     ],
   },
+  'containers/services-ingress/sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Services & Ingress overview', route: '/containers/services-ingress' },
+      { label: 'ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping', route: '/containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping' },
+      { label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' },
+    ],
+    tip: 'Under the default externalTrafficPolicy: Cluster, kube-proxy SNATs external NodePort/LoadBalancer traffic — sessionAffinity: ClientIP then pins by receiving-node IP, not the real client, unless externalTrafficPolicy: Local is set.',
+    gotchas: [
+      'externalTrafficPolicy: Local preserves the real client IP but trades away even distribution — nodes with no local matching Pod get zero external traffic.',
+      'This SNAT masking only affects external NodePort/LoadBalancer traffic under the default Cluster policy — internal ClusterIP Pod-to-Pod calls are unaffected.',
+    ],
+  },
+  'containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'sessionAffinity: ClientIP Pins the SNAT’d Source, Not the Real Client', route: '/containers/services-ingress/sessionaffinity-clientip-pins-the-snatted-source-not-the-real-client' },
+      { label: 'pathType: Prefix Matches Path Elements, Not Raw String Prefixes', route: '/containers/services-ingress/pathtype-prefix-matches-path-elements-not-raw-string-prefixes' },
+    ],
+    tip: 'ExternalName has no selector, no Endpoints, and no health checking — it is pure DNS CNAME resolution, so an already-cached client resolution or a long-lived connection keeps using the OLD target after externalName is repointed.',
+    gotchas: [
+      'kubectl get endpoints on an ExternalName Service returns NotFound — there was never anything for kube-proxy to program.',
+      'Repointing spec.externalName changes what CoreDNS answers for a FRESH lookup only — it does nothing to force an already-open connection to re-resolve.',
+    ],
+  },
+  'containers/services-ingress/pathtype-prefix-matches-path-elements-not-raw-string-prefixes': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping', route: '/containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping' },
+      { label: 'Services & Ingress overview', route: '/containers/services-ingress' },
+    ],
+    tip: 'pathType: Prefix matches element-by-element after splitting on "/" — /api matches /api/users but never /apiv2, since "api" and "apiv2" are different complete path elements, not a shared string prefix.',
+    gotchas: [
+      'Two paths sharing only leading characters (like /api and /apiv2-legacy) never actually compete for the same traffic — no ordering or Exact pathType is needed to keep them apart.',
+      'A genuinely nested pair like /api and /api/v2 DOES share a complete first element and needs Kubernetes\' own longest-matching-path precedence rule to resolve.',
+    ],
+  },
   'containers/statefulsets': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27686,6 +28372,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Pods are created and terminated in strict ORDER by default — later replicas may depend on earlier ones already being initialized.',
       'Using a StatefulSet for a stateless application adds unnecessary operational complexity with no corresponding benefit.',
+    ],
+  },
+  'containers/statefulsets/pdb-only-blocks-voluntary-disruptions-a-node-crash-ignores-it-entirely': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'StatefulSets & DaemonSets overview', route: '/containers/statefulsets' },
+      { label: 'Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently', route: '/containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently' },
+    ],
+    tip: 'A PodDisruptionBudget is checked only by the Eviction API — it throttles voluntary disruptions (drain, upgrade) but has zero effect on an involuntary one (node crash, kernel panic, hardware failure), which never goes through the Eviction API at all.',
+    gotchas: [
+      'minAvailable being violated in practice (fewer replicas Running than the PDB requires) does not mean the PDB failed — it never had a voluntary eviction request to block in the first place.',
+      'Real resilience against involuntary disruptions needs anti-affinity/topology spread and application-level replication, not a PDB.',
+    ],
+  },
+  'containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'PDB Only Blocks Voluntary Disruptions — a Node Crash Ignores It Entirely', route: '/containers/statefulsets/pdb-only-blocks-voluntary-disruptions-a-node-crash-ignores-it-entirely' },
+      { label: 'Init Containers Share the Pod’s Network Namespace, Not Just Its Volumes', route: '/containers/statefulsets/init-containers-share-the-pods-network-namespace-not-just-its-volumes' },
+    ],
+    tip: 'Under the default persistentVolumeClaimRetentionPolicy, scaling a StatefulSet down retains the removed ordinals\' own PVCs — scaling back up silently reattaches each recreated Pod to its exact same PVC, old data included.',
+    gotchas: [
+      'whenScaled: Delete (K8s 1.27+, beta) is a separate opt-in field from whenDeleted — set it explicitly to make scale-up provision genuinely fresh, empty PVCs.',
+      'A Pod recreated after scale-up shows no distinction in kubectl output between "genuinely fresh" and "reattached to old data" — both look identical.',
+    ],
+  },
+  'containers/statefulsets/init-containers-share-the-pods-network-namespace-not-just-its-volumes': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Scaling Back Up Reattaches the Old PVC With Its Old Data, Silently', route: '/containers/statefulsets/scaling-back-up-reattaches-the-old-pvc-with-its-old-data-silently' },
+      { label: 'StatefulSets & DaemonSets overview', route: '/containers/statefulsets' },
+    ],
+    tip: 'Init containers share the Pod\'s network namespace with app containers — same IP, same localhost — which is exactly why a wait-for-dependency check (nc -z) in an init container reliably predicts app-container reachability.',
+    gotchas: [
+      'What init containers do NOT share by default is the PID namespace — each container gets its own unless shareProcessNamespace: true is set.',
+      'Init containers run strictly sequentially, never concurrently with each other or the app container — that lifecycle isolation is real, network isolation is not.',
     ],
   },
   'containers/storage': {
@@ -27700,6 +28422,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The reclaim policy (Retain vs Delete) determines whether underlying storage survives after its PVC is deleted — get this wrong and data disappears permanently.',
     ],
   },
+  'containers/storage/released-pv-never-auto-rebinds-claimref-must-be-cleared-manually': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Persistent Volumes & Storage overview', route: '/containers/storage' },
+      { label: 'A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending', route: '/containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending' },
+    ],
+    tip: 'A Released PV still carries a claimRef pointing at the deleted PVC\'s UID — Kubernetes checks this before comparing size/access-mode/storageClass, so a new matching PVC will not auto-bind until an admin clears claimRef.',
+    gotchas: [
+      'kubectl patch pv <name> -p \'{"spec":{"claimRef":null}}\' flips a Released PV back to Available, unblocking normal binding.',
+      'Targeting a Released PV by volumeName from a new PVC still requires claimRef to be cleared first — it changes HOW matching happens, not the underlying precondition.',
+    ],
+  },
+  'containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A Released PV Never Auto-Rebinds — claimRef Must Be Cleared Manually', route: '/containers/storage/released-pv-never-auto-rebinds-claimref-must-be-cleared-manually' },
+      { label: 'RWOP Closes the Gap RWO Leaves — Same-Node Pods Can Still Double-Write', route: '/containers/storage/rwop-closes-the-gap-rwo-leaves-same-node-pods-can-still-double-write' },
+    ],
+    tip: 'WaitForFirstConsumer only solves zone-matching at the FIRST provisioning moment — once bound, a zonal PV is permanently fixed, and a Pod rescheduled to a different zone after a node/zone failure gets stuck Pending, unable to attach its own volume.',
+    gotchas: [
+      'Deleting only the stuck Pod recreates it with the same PVC reference, hitting the identical zone conflict again — the PVC must be deleted too, in that order.',
+      'Recovering the Pod this way means starting with a fresh, empty PV in the new zone — restoring the actual data requires a backup, not a reattachment.',
+    ],
+  },
+  'containers/storage/rwop-closes-the-gap-rwo-leaves-same-node-pods-can-still-double-write': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending', route: '/containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending' },
+      { label: 'Persistent Volumes & Storage overview', route: '/containers/storage' },
+    ],
+    tip: 'ReadWriteOnce is node-level, not pod-level — multiple Pods co-located on the same node can mount an RWO volume read-write simultaneously; ReadWriteOncePod (GA in 1.29) enforces true single-Pod exclusivity at the API server.',
+    gotchas: [
+      'An old and new Pod for the same StatefulSet replica briefly coexisting on one node during a rollout is normal — RWO provides zero protection against both mounting the volume at once.',
+      'Switching to RWOP is a real behavioral change, not purely additive — a second Pod\'s mount attempt is rejected outright (FailedMount) until the first fully releases the volume.',
+    ],
+  },
   'containers/troubleshooting': {
     apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
     related: [
@@ -27710,6 +28468,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'kubectl logs --previous is required to see logs from a crashed container\'s PREVIOUS instance — without it, the crash-causing logs are lost.',
       'CrashLoopBackOff\'s exponential backoff is normal, expected behavior — the actual root cause is virtually always in the previous container\'s logs or exit code.',
+    ],
+  },
+  'containers/troubleshooting/crashloop-backoff-resets-after-10-min-stable-running': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Troubleshooting overview', route: '/containers/troubleshooting' },
+      { label: 'Exit Code 137 Is SIGKILL, Not Always OOMKilled', route: '/containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled' },
+    ],
+    tip: 'The backoff counter resets to 10s only after a container has run continuously for 10 minutes without crashing — a container crashing every 8 minutes never earns a reset and stays capped at 5 minutes forever.',
+    gotchas: [
+      'A capped 5-minute restart delay does not mean Kubernetes is treating the pod as unusually severe — it means the container never stayed up long enough in one stretch to reset.',
+      'There is no per-Pod override for the backoff schedule — the only real fix is getting the container to actually stay stable past 10 minutes.',
+    ],
+  },
+  'containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'CrashLoop Backoff Resets After 10 Minutes of Stable Running, Not Every Restart', route: '/containers/troubleshooting/crashloop-backoff-resets-after-10-min-stable-running' },
+      { label: 'kubectl logs --previous Only Reaches the Latest Crash', route: '/containers/troubleshooting/previous-logs-only-reach-the-latest-crash' },
+    ],
+    tip: 'Exit code 137 only confirms SIGKILL was sent — check lastState.terminated.reason to confirm it was specifically "OOMKilled" versus a grace-period-expired kubelet kill or another SIGKILL source.',
+    gotchas: [
+      'A failed liveness probe past terminationGracePeriodSeconds produces the identical exit code 137, with reason typically "Error" instead of "OOMKilled".',
+      'Raising limits.memory will not fix a recurring 137 whose reason isn\'t actually OOMKilled — check reason before adjusting the memory limit.',
+    ],
+  },
+  'containers/troubleshooting/previous-logs-only-reach-the-latest-crash': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Exit Code 137 Is SIGKILL, Not Always OOMKilled', route: '/containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled' },
+      { label: 'Kubernetes Troubleshooting overview', route: '/containers/troubleshooting' },
+    ],
+    tip: 'kubectl logs --previous only ever reaches the single most recently terminated instance — once a Pod has restarted more than once, earlier crashes\' logs are already inaccessible via kubectl.',
+    gotchas: [
+      'A later crash in an ongoing CrashLoopBackOff can be a downstream symptom of the restart cycle itself, not a repeat of the original root cause.',
+      'Centralized log shipping (Fluentd, Promtail, Vector) is the only reliable way to retain a crash\'s own logs beyond what kubectl itself can reach.',
     ],
   },
 
@@ -27726,6 +28520,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Zone redundancy handles datacenter failures cheaply; true regional-outage protection requires an actual multi-region deployment.',
     ],
   },
+  'azure/fundamentals/readonly-locks-block-more-than-deletes-control-plane-only': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals overview', route: '/azure/fundamentals' },
+      { label: 'az resource move Orphans Role Assignments', route: '/azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id' },
+    ],
+    tip: 'ReadOnly locks block every control-plane POST/PUT/DELETE request — including operationally harmless ones like restarting a VM or scaling an App Service plan, not just configuration edits.',
+    gotchas: [
+      'Neither CanNotDelete nor ReadOnly protects a storage account\'s own blob/queue/table/file data — locks are control-plane only, never data-plane.',
+      'Locks are inherited top-down and the most restrictive one wins — a ReadOnly lock on a resource group silently blocks VM restarts everywhere inside it.',
+    ],
+  },
+  'azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'ReadOnly Locks Block More Than Deletes', route: '/azure/fundamentals/readonly-locks-block-more-than-deletes-control-plane-only' },
+      { label: 'Zonal vs. Zone-Redundant', route: '/azure/fundamentals/zonal-vs-zone-redundant-and-per-subscription-zone-mapping' },
+    ],
+    tip: 'Moving a resource changes its resource ID — any role assignment scoped directly to that resource becomes orphaned and must be manually re-created against the new ID.',
+    gotchas: [
+      'The move locks BOTH the source and destination resource groups against create/delete/update for up to 4 hours while it completes.',
+      'Dependent resources (disks, NICs) must be included in the same move request as their parent — a partial move fails outright rather than succeeding with a broken resource.',
+    ],
+  },
+  'azure/fundamentals/zonal-vs-zone-redundant-and-per-subscription-zone-mapping': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'az resource move Orphans Role Assignments', route: '/azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id' },
+      { label: 'Fundamentals overview', route: '/azure/fundamentals' },
+    ],
+    tip: 'Zonal resources get NO automatic failover if their zone fails — only zone-redundant resources are automatically replicated and failed over by Microsoft. A "nonzonal" resource is a third, unprotected option.',
+    gotchas: [
+      'Logical zone numbers ("Zone 1") map to different physical datacenters per subscription — two subscriptions\' "Zone 1" are not guaranteed to be the same datacenter.',
+      'A zonal deployment only gets multi-zone resilience if you deliberately deploy separate resources into every zone yourself — Azure does not do this automatically.',
+    ],
+  },
   'azure/arm': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -27736,6 +28566,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A what-if deployment lets you preview exactly what a deployment would change before applying it — critical before running Complete-mode deployments.',
       'Resource dependencies can be inferred automatically from references, or declared explicitly via dependsOn.',
+    ],
+  },
+  'azure/arm/what-if-cant-resolve-reference-and-reports-noise-changes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'ARM overview', route: '/azure/arm' },
+      { label: 'Subscription Scope Needs Nested Templates', route: '/azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources' },
+    ],
+    tip: 'What-if can\'t resolve reference() expressions — those properties always show as "changing" even with zero real change — and it can report "noise" false-positive deletions for Azure-defaulted properties never set in the template.',
+    gotchas: [
+      'What-if silently stops expanding after 500 nested templates, 800 resource groups, or 5 minutes — the untested remainder is marked "Ignore," not flagged as unverified.',
+      'Neither limitation means what-if is untrustworthy generally — only these two specific, documented categories produce false positives.',
+    ],
+  },
+  'azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'What-If Can\'t Resolve reference()', route: '/azure/arm/what-if-cant-resolve-reference-and-reports-noise-changes' },
+      { label: 'Copy Defaults to Parallel & Child Promotion', route: '/azure/arm/copy-defaults-to-parallel-and-child-resources-need-promotion' },
+    ],
+    tip: 'Subscription-level templates use a different schema, and only a specific whitelist of resource types (resourceGroups, policyAssignments, roleAssignments, locks, budgets, tags) can go directly in the top-level resources array — ordinary resources need a nested, resource-group-scoped deployment.',
+    gotchas: [
+      'ARM also supports management-group and tenant deployment scopes, each with their own dedicated CLI commands and template requirements.',
+      'A nested deployment targeting a resource group created in the same template needs an explicit dependsOn — this dependency is never inferred automatically.',
+    ],
+  },
+  'azure/arm/copy-defaults-to-parallel-and-child-resources-need-promotion': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Subscription Scope Needs Nested Templates', route: '/azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources' },
+      { label: 'ARM overview', route: '/azure/arm' },
+    ],
+    tip: 'copy defaults to unordered PARALLEL creation (opt into "serial" + batchSize for staggered rollout), and it can never be attached directly to a nested child resource — the resource must first be promoted to a top-level resource.',
+    gotchas: [
+      'A copy loop\'s count can\'t exceed 800, regardless of any Azure subscription-level resource quota.',
+      'Promoting a child resource for copy requires the fully-qualified type and a "parent-name/child-name" format name to preserve the relationship.',
     ],
   },
   'azure/bicep': {
@@ -27759,6 +28625,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Node pool VMs still count toward your subscription\'s compute quota and cost the same as standalone VMs of the same size.',
       'Different node pools let you run different VM types (general-purpose, GPU) within the same cluster.',
+    ],
+  },
+  'azure/aks/cluster-autoscaler-exact-default-timings-and-thresholds': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'AKS overview', route: '/azure/aks' },
+      { label: 'max-surge Defaults to 1 Node', route: '/azure/aks/max-surge-defaults-to-1-node-not-a-percentage' },
+    ],
+    tip: 'Cluster Autoscaler defaults: 10s scan-interval, 10-minute scale-down-unneeded-time AND scale-down-delay-after-add, 50% scale-down-utilization-threshold — a node needs all of these satisfied before removal.',
+    gotchas: [
+      'The autoscaler profile is cluster-wide — you can\'t set different scale-down aggressiveness per node pool.',
+      'max-total-unready-percentage (default 45%) halts ALL autoscaler operations if too many nodes go unready at once.',
+    ],
+  },
+  'azure/aks/max-surge-defaults-to-1-node-not-a-percentage': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Cluster Autoscaler\'s Exact Defaults', route: '/azure/aks/cluster-autoscaler-exact-default-timings-and-thresholds' },
+      { label: 'Control Plane Can Be 3 Minor Versions Ahead', route: '/azure/aks/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes' },
+    ],
+    tip: 'max-surge defaults to exactly ONE extra node (not a percentage) if omitted — Microsoft recommends 33% for production node pools, trading faster upgrades against subscription/IP quota needed for the surge.',
+    gotchas: [
+      'A percentage max-surge scales with pool size; a fixed integer does not — these produce genuinely different behavior as a pool grows.',
+      'Node surges require available subscription compute quota AND (on Azure CNI) subnet IP quota for every surged node simultaneously.',
+    ],
+  },
+  'azure/aks/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'max-surge Defaults to 1 Node', route: '/azure/aks/max-surge-defaults-to-1-node-not-a-percentage' },
+      { label: 'AKS overview', route: '/azure/aks' },
+    ],
+    tip: 'AKS allows the control plane to be up to 3 minor versions ahead of any node pool — but every upgrade (control plane or node pool) must still proceed one minor version at a time, no skipping.',
+    gotchas: [
+      'AKS can silently trigger a node pool upgrade alongside a control plane upgrade to restore compliance if the skew would otherwise be exceeded.',
+      'Control plane upgrades typically take 5-15 minutes; node pool upgrades take longer (draining and reimaging) — size maintenance windows accordingly if both are bundled.',
     ],
   },
   'azure/container-apps': {
@@ -27785,6 +28687,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A consistently high-traffic function may actually cost LESS on Premium once cold-start-avoidance is factored against per-execution Consumption costs.',
     ],
   },
+  'azure/functions/queue-and-service-bus-triggers-default-to-16-concurrent-not-one': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Functions overview', route: '/azure/functions' },
+      { label: 'Service Bus Max Delivery Count Defaults to 10', route: '/azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5' },
+    ],
+    tip: 'Storage Queue triggers default to a batch size of 16 (up to 24 concurrent per instance); Service Bus defaults maxConcurrentCalls to 16, multiplied by core count — neither defaults to "one message at a time."',
+    gotchas: [
+      'Setting batchSize/maxConcurrentCalls to 1 only serializes processing WITHIN one instance — multiple scaled-out instances can still run concurrently with each other.',
+      'Service Bus splits concurrency config by session mode: maxConcurrentCalls applies when sessions are disabled, maxConcurrentSessions (default 8) when enabled.',
+    ],
+  },
+  'azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Queue/Service Bus Default to 16 Concurrent', route: '/azure/functions/queue-and-service-bus-triggers-default-to-16-concurrent-not-one' },
+      { label: 'ContinueAsNew Resets History', route: '/azure/functions/continueasnew-resets-history-and-discards-incomplete-tasks' },
+    ],
+    tip: 'Service Bus MaxDeliveryCount defaults to 10 (double Storage Queue\'s 5) — and dead-lettering has several distinct reason codes (MaxDeliveryCountExceeded, TTLExpiredException, HeaderSizeExceeded), not just "failed processing."',
+    gotchas: [
+      'A separate transfer dead-letter queue (TDLQ) holds auto-forwarding failures on the SOURCE entity — monitoring only the destination\'s regular DLQ misses these.',
+      'MaxDeliveryCountExceeded behavior can\'t be disabled entirely — only tuned to a larger number.',
+    ],
+  },
+  'azure/functions/continueasnew-resets-history-and-discards-incomplete-tasks': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Service Bus Max Delivery Count Defaults to 10', route: '/azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5' },
+      { label: 'Functions overview', route: '/azure/functions' },
+    ],
+    tip: 'continue-as-new resets an orchestrator\'s replay history (keeping the same instance ID) to prevent unbounded growth in eternal orchestrations — but it discards the results of any still-pending timer or activity call.',
+    gotchas: [
+      'External event preservation across continue-as-new differs by language — C# preserves by default, Python needs save_events=True, JavaScript needs an explicit saveEvents flag.',
+      'A call to continue-as-new from a finally block does NOT restart the orchestration after an uncaught exception.',
+    ],
+  },
   'azure/app-service': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -27795,6 +28733,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Multiple apps sharing a single App Service Plan share its compute — one app\'s heavy load can affect others on the same plan.',
       'Free/Shared tiers run on shared infrastructure with no SLA — production workloads need Standard tier or above.',
+    ],
+  },
+  'azure/app-service/health-check-defaults-to-10-failures-and-never-removes-all-instances': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'App Service overview', route: '/azure/app-service' },
+      { label: 'Auto-Heal: 4 Conditions, 3 Actions', route: '/azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions' },
+    ],
+    tip: 'WEBSITE_HEALTHCHECK_MAXPINGFAILURES defaults to 10 consecutive failures, and WEBSITE_HEALTHCHECK_MAXUNHEALTHYWORKERPERCENT caps removal at 50% by default — and if ALL instances are unhealthy, App Service removes none to avoid a self-inflicted outage.',
+    gotchas: [
+      'Health check configuration is NOT slot-specific — after a swap, each slot keeps pinging whatever path was configured for that slot position, not the app content.',
+      'Health check only evaluates HTTP status code — it has no visibility into slow-but-successful responses or memory usage (that\'s what Auto-Heal is for).',
+    ],
+  },
+  'azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Health Check: 10 Failures, Never All Removed', route: '/azure/app-service/health-check-defaults-to-10-failures-and-never-removes-all-instances' },
+      { label: 'SCM Basic Auth Is a Separate Attack Surface', route: '/azure/app-service/scm-basic-auth-is-a-separate-attack-surface-from-kudu' },
+    ],
+    tip: 'Auto-Heal recycles the worker process in place based on internal conditions (Request Duration, Memory Limit, Request Count, Status Codes) — a separate, process-level mechanism from Health Check\'s load-balancer-level instance removal.',
+    gotchas: [
+      'Auto-Heal is explicitly a temporary mitigation — Microsoft\'s own guidance is to still find and fix the root cause, not rely on repeated auto-recycling.',
+      'The Log an Event action takes no disruptive action at all — useful for gathering frequency data before committing to an automatic Recycle Process rule.',
+    ],
+  },
+  'azure/app-service/scm-basic-auth-is-a-separate-attack-surface-from-kudu': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Auto-Heal: 4 Conditions, 3 Actions', route: '/azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions' },
+      { label: 'App Service overview', route: '/azure/app-service' },
+    ],
+    tip: 'SCM Basic Auth Publishing Credentials gates Kudu console/API access independently of the app\'s own authentication — and SCM basic auth must stay enabled for FTP basic auth to work at all.',
+    gotchas: [
+      'Disabling SCM basic auth affects deployment methods differently — modern Azure CLI and Azure Pipelines fall back to Microsoft Entra automatically, while Local Git and older GitHub Actions integrations break outright.',
+      'Disabling FTP basic auth alone does NOT affect Kudu/SCM access — they are independent toggles despite both being "deployment credentials."',
     ],
   },
   'azure/virtual-machines': {
@@ -27809,6 +28783,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Rolling upgrades update a batch of instances at a time, reducing the risk that a bad image update takes down the whole fleet simultaneously.',
     ],
   },
+  'azure/virtual-machines/standard-sku-public-ips-are-now-always-static-not-dynamic': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'VM overview', route: '/azure/virtual-machines' },
+      { label: 'Scheduled Events Covers 5 Event Types', route: '/azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction' },
+    ],
+    tip: 'Since Basic SKU public IPs were retired September 30, 2025, Standard SKU (the only option now) is always Static allocation — the classic "IP changes on restart" surprise only applies to Dynamic allocation, which new IPs no longer use.',
+    gotchas: [
+      'A Static IP is released only when the IP resource itself is deleted, never on a VM stop/start cycle — always confirm allocation method with az network public-ip show rather than assuming.',
+      'Older resources predating the Basic SKU retirement may still carry Dynamic-allocation IPs — check before assuming Static behavior on legacy deployments.',
+    ],
+  },
+  'azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Standard SKU Public IPs Are Now Static', route: '/azure/virtual-machines/standard-sku-public-ips-are-now-always-static-not-dynamic' },
+      { label: 'VMSS Flexible: Real VMs, No Default Outbound', route: '/azure/virtual-machines/vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity' },
+    ],
+    tip: 'Scheduled Events reports five event types (Freeze, Reboot, Redeploy, Preempt, Terminate) — only Preempt (Spot eviction) gets 30 seconds notice; the other four give 10-15 minutes and apply to regular VMs too.',
+    gotchas: [
+      'User-initiated actions (a teammate running az vm restart) generate real Scheduled Events too, with EventSource: "User" — not just platform maintenance.',
+      'Approving an event early doesn\'t guarantee an immediate start — Azure may wait for all VMs on the same host to approve first.',
+    ],
+  },
+  'azure/virtual-machines/vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Scheduled Events Covers 5 Event Types', route: '/azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction' },
+      { label: 'VM overview', route: '/azure/virtual-machines' },
+    ],
+    tip: 'Flexible-mode VMSS instances are genuine standalone Microsoft.Compute/virtualMachines resources (manageable with standard VM APIs) — but unlike Uniform mode, Flexible mode has NO default outbound internet connectivity; a NAT Gateway or LB outbound rule must be configured explicitly.',
+    gotchas: [
+      'Uniform-mode instances are NOT standard VM resources — no compatibility with standard VM APIs, RBAC, Azure Backup, or Site Recovery.',
+      'VM extensions must be targeted for standard VMs on Flexible mode, not the Uniform-orchestration-targeted extension packages.',
+    ],
+  },
   'azure/virtual-network': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
@@ -27819,6 +28829,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'VNet peering does NOT automatically transit through a peered network\'s own peering connections — this non-transitive property causes "why can\'t A reach C through B" confusion.',
       'Both subnet-level AND NIC-level NSGs must allow traffic if both are configured — the effective rule set is the intersection, not the union.',
+    ],
+  },
+  'azure/virtual-network/nsg-default-rules-have-exact-priorities-and-can-be-overridden': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Virtual Network overview', route: '/azure/virtual-network' },
+      { label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' },
+    ],
+    tip: 'Default NSG rules sit at priority 65000/65001/65500 — deliberately last, so any custom rule (100-4096) always overrides them. Platform IPs 168.63.129.16/169.254.169.254 bypass NSGs entirely unless explicitly targeted.',
+    gotchas: [
+      'az network nsg rule list only shows custom rules by default — pass --include-default to see the six built-in defaults.',
+      'You can\'t delete default rules, but a custom rule at any valid priority effectively overrides them for matching traffic.',
+    ],
+  },
+  'azure/virtual-network/private-dns-registration-enabled-only-works-for-vms': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'NSG Default Rules Have Exact Priorities', route: '/azure/virtual-network/nsg-default-rules-have-exact-priorities-and-can-be-overridden' },
+      { label: 'Security Admin Rules Bypass NSG Evaluation', route: '/azure/virtual-network/security-admin-rules-can-bypass-nsg-evaluation-entirely' },
+    ],
+    tip: 'Autoregistration only creates DNS records for VMs (primary NIC only) — it does nothing for private endpoints, load balancers, or other non-VM resources, and a VNet can have autoregistration enabled on only ONE linked zone at a time.',
+    gotchas: [
+      'A Storage/Key Vault/SQL private endpoint\'s own DNS record comes from the private endpoint provisioning process, completely independent of registration-enabled.',
+      'Autoregistration doesn\'t support reverse DNS (PTR) records.',
+    ],
+  },
+  'azure/virtual-network/security-admin-rules-can-bypass-nsg-evaluation-entirely': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' },
+      { label: 'Virtual Network overview', route: '/azure/virtual-network' },
+    ],
+    tip: 'Azure Virtual Network Manager\'s Security Admin Rules always evaluate before NSGs — "Always allow" and "Deny" rule types terminate evaluation entirely, meaning they can override even a resource owner\'s own explicit NSG rule.',
+    gotchas: [
+      'An "Allow" admin rule lets evaluation continue to NSG rules afterward; "Always allow" and "Deny" skip NSG evaluation entirely.',
+      'A resource owner\'s own NSG tooling gives no visibility into whether a Security Admin Rule is affecting their traffic.',
     ],
   },
   'azure/load-balancer': {
@@ -28758,6 +29804,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Python passes references by value — a mutable argument can be modified in place with the change visible to the caller, but reassigning the parameter name is not.',
     ],
   },
+  'python/fundamentals/why-is-sometimes-works-for-small-ints-and-strings': {
+    apis: ['id()', 'sys.intern()', 'is'],
+    related: [
+      { label: 'Python Fundamentals (overview)', route: '/python/fundamentals' },
+      { label: 'for/else Runs on Empty Iterables Too', route: '/python/fundamentals/for-else-runs-on-empty-iterables-too' },
+      { label: 'Comprehensions Get Their Own Scope in Python 3', route: '/python/fundamentals/comprehensions-get-their-own-scope-in-python-3' },
+    ],
+    tip: 'CPython caches integers -5 to 256 and commonly interns identifier-like string literals — Python\'s own docs say this "should not be relied upon"; only == is guaranteed to check value equality.',
+    docs: [
+      { label: 'Python Docs — Data Model (object identity)', url: 'https://docs.python.org/3/reference/datamodel.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Modern CPython emits a SyntaxWarning for is comparisons written directly against literals, specifically because this caching boundary was never meant to be programmed against.',
+      'is remains correct for singleton checks (is None, is True, is False) — the issue is specifically using it for int/str value comparison.',
+    ],
+  },
+  'python/fundamentals/for-else-runs-on-empty-iterables-too': {
+    apis: ['for...else', 'break'],
+    related: [
+      { label: 'Python Fundamentals (overview)', route: '/python/fundamentals' },
+      { label: 'Why is Sometimes Works for Small Ints and Strings', route: '/python/fundamentals/why-is-sometimes-works-for-small-ints-and-strings' },
+      { label: 'Comprehensions Get Their Own Scope in Python 3', route: '/python/fundamentals/comprehensions-get-their-own-scope-in-python-3' },
+    ],
+    tip: 'else on a for loop only checks "did a break happen" — per Python\'s own docs, an empty iterable is exhausted with zero iterations and no break, so else still fires, same as a fully-iterated non-empty loop.',
+    docs: [
+      { label: 'Python Docs — The for statement', url: 'https://docs.python.org/3/reference/compound_stmts.html#the-for-statement' },
+    ],
+    resources: [],
+    gotchas: [
+      'for/else cannot distinguish "searched real items and found nothing" from "had nothing to search at all" — both hit the same else branch.',
+      'If that distinction matters, add an explicit emptiness check before the loop rather than relying on for/else to express it.',
+    ],
+  },
+  'python/fundamentals/comprehensions-get-their-own-scope-in-python-3': {
+    apis: ['list/set/dict comprehensions', 'generator expressions'],
+    related: [
+      { label: 'Python Fundamentals (overview)', route: '/python/fundamentals' },
+      { label: 'Why is Sometimes Works for Small Ints and Strings', route: '/python/fundamentals/why-is-sometimes-works-for-small-ints-and-strings' },
+      { label: 'for/else Runs on Empty Iterables Too', route: '/python/fundamentals/for-else-runs-on-empty-iterables-too' },
+    ],
+    tip: 'A comprehension runs in its own implicit nested scope in Python 3 — per the language reference, this "ensures that names assigned to in the target list don\'t leak into the enclosing scope," unlike a plain for loop.',
+    docs: [
+      { label: 'Python Docs — Displays for lists, sets, dictionaries', url: 'https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries' },
+    ],
+    resources: [],
+    gotchas: [
+      'This was a deliberate Python 3.0 change — Python 2\'s list comprehensions DID leak their loop variable into the enclosing scope.',
+      'Code relying on a comprehension\'s loop variable surviving afterward (the way a plain for loop\'s does) raises NameError instead.',
+    ],
+  },
   'python/functions-closures': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28768,6 +29865,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'nonlocal/global are required to explicitly permit a nested function to reassign an outer-scope variable — without them, assignment creates a new local variable instead.',
       'This late-binding trap is a frequent source of bugs creating callback lists in a loop.',
+    ],
+  },
+  'python/functions-closures/lru-cache-on-a-method-keeps-the-instance-alive': {
+    apis: ['functools.lru_cache', 'functools.cached_property'],
+    related: [
+      { label: 'Functions & Closures (overview)', route: '/python/functions-closures' },
+      { label: 'Stacked Decorators Apply Bottom-Up but Run Top-Down', route: '/python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down' },
+      { label: 'wraps() Silently Skips Metadata Missing From a partial', route: '/python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial' },
+    ],
+    tip: 'Python\'s own docs confirm self is part of the cache key when lru_cache decorates a method — the cache keeps that instance alive until the entry ages out or is cleared. Use cached_property for per-instance caching instead.',
+    docs: [
+      { label: 'Python FAQ — How do I cache method calls?', url: 'https://docs.python.org/3/faq/programming.html#faq-cache-method-calls' },
+    ],
+    resources: [],
+    gotchas: [
+      'maxsize=None means entries never age out on their own — every instance that ever called the cached method is retained forever.',
+      'cached_property stores its value on the instance itself, so it never creates an external reference keeping the instance alive.',
+    ],
+  },
+  'python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down': {
+    apis: ['decorator syntax', '@functools.wraps'],
+    related: [
+      { label: 'Functions & Closures (overview)', route: '/python/functions-closures' },
+      { label: 'lru_cache on a Method Keeps the Instance Alive', route: '/python/functions-closures/lru-cache-on-a-method-keeps-the-instance-alive' },
+      { label: 'wraps() Silently Skips Metadata Missing From a partial', route: '/python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial' },
+    ],
+    tip: 'fn = A(B(fn)) describes bottom-up application at definition time — but calling fn() invokes A\'s wrapper first, meaning execution order is actually top-down, the reverse of how the stack was built.',
+    docs: [
+      { label: 'Python Docs — Function definitions (decorators)', url: 'https://docs.python.org/3/reference/compound_stmts.html#function-definitions' },
+    ],
+    resources: [],
+    gotchas: [
+      'Stacking order genuinely changes behavior when decorators aren\'t independent — e.g. timing the whole retry loop vs. timing one attempt at a time.',
+      'An outer decorator (like a cache) can skip calling into an inner decorator entirely under some conditions, not just delay it.',
+    ],
+  },
+  'python/functions-closures/wraps-silently-skips-metadata-missing-from-a-partial': {
+    apis: ['functools.wraps', 'functools.update_wrapper', 'functools.partial'],
+    related: [
+      { label: 'Functions & Closures (overview)', route: '/python/functions-closures' },
+      { label: 'lru_cache on a Method Keeps the Instance Alive', route: '/python/functions-closures/lru-cache-on-a-method-keeps-the-instance-alive' },
+      { label: 'Stacked Decorators Apply Bottom-Up but Run Top-Down', route: '/python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down' },
+    ],
+    tip: 'A functools.partial has no __name__ of its own — Python\'s own update_wrapper docs confirm missing attributes are silently skipped, not an AttributeError, so @wraps on a partial "succeeds" while copying nothing useful.',
+    docs: [
+      { label: 'Python Docs — functools (partial, update_wrapper)', url: 'https://docs.python.org/3/library/functools.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'No error being raised does not mean metadata copying fully succeeded — check wrapper.__name__ directly rather than assuming.',
+      'The fix is assigning __name__/__doc__ to the partial explicitly before wrapping it, not changing anything about @wraps itself.',
     ],
   },
   'python/decorators-context-managers': {
@@ -28782,6 +29930,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'contextlib.contextmanager lets a single generator function implement a full context manager without a class.',
     ],
   },
+  'python/decorators-context-managers/exitstack-callback-unwinds-in-the-same-lifo-order': {
+    apis: ['ExitStack.callback()', 'ExitStack.enter_context()'],
+    related: [
+      { label: 'Decorators & Context Managers (overview)', route: '/python/decorators-context-managers' },
+      { label: 'A @contextmanager Generator Is Single-Use Only', route: '/python/decorators-context-managers/a-contextmanager-generator-is-single-use-only' },
+      { label: 'ContextDecorator Discards the __enter__() Return Value', route: '/python/decorators-context-managers/contextdecorator-discards-the-enter-return-value' },
+    ],
+    tip: 'ExitStack.callback() registers a plain cleanup callable — Python\'s own docs confirm it shares ONE stack with enter_context(), unwound together in reverse registration order, not as two separate phases.',
+    docs: [
+      { label: 'Python Docs — contextlib.ExitStack', url: 'https://docs.python.org/3/library/contextlib.html#contextlib.ExitStack' },
+    ],
+    resources: [],
+    gotchas: [
+      'A callback registered via callback() cannot suppress an exception — it is never passed the exception details, unlike a real context manager\'s __exit__.',
+      'Registration order matters: register unconditional cleanup FIRST if it needs to run LAST, since LIFO means first-registered unwinds last.',
+    ],
+  },
+  'python/decorators-context-managers/a-contextmanager-generator-is-single-use-only': {
+    apis: ['@contextlib.contextmanager', 'RuntimeError'],
+    related: [
+      { label: 'Decorators & Context Managers (overview)', route: '/python/decorators-context-managers' },
+      { label: 'ExitStack.callback() Unwinds in the Same LIFO Order', route: '/python/decorators-context-managers/exitstack-callback-unwinds-in-the-same-lifo-order' },
+      { label: 'ContextDecorator Discards the __enter__() Return Value', route: '/python/decorators-context-managers/contextdecorator-discards-the-enter-return-value' },
+    ],
+    tip: 'Python\'s own docs confirm @contextmanager objects "are also single use" — reusing the same instance a second time raises RuntimeError: generator didn\'t yield. Always call the decorated function fresh.',
+    docs: [
+      { label: 'Python Docs — contextlib.contextmanager', url: 'https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager' },
+    ],
+    resources: [],
+    gotchas: [
+      'Caching a context manager instance for "efficiency" saves nothing — creating one is cheap, and it guarantees a RuntimeError on the second use.',
+      'Using the decorated function AS a decorator is safe — each invocation calls the underlying generator function fresh.',
+    ],
+  },
+  'python/decorators-context-managers/contextdecorator-discards-the-enter-return-value': {
+    apis: ['contextlib.ContextDecorator', '__enter__()'],
+    related: [
+      { label: 'Decorators & Context Managers (overview)', route: '/python/decorators-context-managers' },
+      { label: 'ExitStack.callback() Unwinds in the Same LIFO Order', route: '/python/decorators-context-managers/exitstack-callback-unwinds-in-the-same-lifo-order' },
+      { label: 'A @contextmanager Generator Is Single-Use Only', route: '/python/decorators-context-managers/a-contextmanager-generator-is-single-use-only' },
+    ],
+    tip: 'Python\'s own docs confirm decorator syntax has no equivalent to a with statement\'s "as" clause — used as @cm, there\'s no way to access __enter__()\'s return value at all.',
+    docs: [
+      { label: 'Python Docs — contextlib.ContextDecorator', url: 'https://docs.python.org/3/library/contextlib.html#contextlib.ContextDecorator' },
+    ],
+    resources: [],
+    gotchas: [
+      'A dual-purpose context manager must treat its __enter__() return value as optional — code relying on it loses that capability entirely when used as a decorator.',
+      'The fix when the return value IS needed is switching to an explicit with ... as x: statement, not trying to work around the decorator syntax.',
+    ],
+  },
   'python/type-hints': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28794,6 +29993,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Gradual typing (mixing typed/untyped code) is what has driven type hints\' widespread incremental adoption across the ecosystem.',
     ],
   },
+  'python/type-hints/overload-stubs-raise-notimplementederror-if-called-directly': {
+    apis: ['@typing.overload', 'NotImplementedError'],
+    related: [
+      { label: 'Type Hints & mypy (overview)', route: '/python/type-hints' },
+      { label: 'Protocol Classes Cannot Be Instantiated Directly', route: '/python/type-hints/protocol-classes-cannot-be-instantiated-directly' },
+      { label: 'TYPE_CHECKING-Only Names Need Quoting Before Python 3.14', route: '/python/type-hints/type-checking-only-names-need-quoting-before-python-314' },
+    ],
+    tip: 'Python\'s own typing docs confirm calling an @overload-decorated function directly raises NotImplementedError — every stub is replaced with a dummy at decoration time, not left as ordinary, silently-returning-None code.',
+    docs: [
+      { label: 'Python Docs — typing.overload', url: 'https://docs.python.org/3/library/typing.html#typing.overload' },
+    ],
+    resources: [],
+    gotchas: [
+      'A missing real implementation produces no import-time error — only the first actual call reveals the mistake, loudly.',
+      'The identical NotImplementedError is raised whether the omission was deliberate or accidental — there\'s no way to distinguish the two from the error alone.',
+    ],
+  },
+  'python/type-hints/protocol-classes-cannot-be-instantiated-directly': {
+    apis: ['typing.Protocol', 'TypeError'],
+    related: [
+      { label: 'Type Hints & mypy (overview)', route: '/python/type-hints' },
+      { label: '@overload Stubs Raise NotImplementedError If Called Directly', route: '/python/type-hints/overload-stubs-raise-notimplementederror-if-called-directly' },
+      { label: 'TYPE_CHECKING-Only Names Need Quoting Before Python 3.14', route: '/python/type-hints/type-checking-only-names-need-quoting-before-python-314' },
+    ],
+    tip: 'PEP 544 confirms "protocols cannot be instantiated" — a class directly inheriting from Protocol raises TypeError regardless of whether its methods have real bodies, unlike an ABC which only blocks instantiation for unimplemented @abstractmethods.',
+    docs: [
+      { label: 'PEP 544 — Protocols', url: 'https://peps.python.org/pep-0544/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Giving Protocol methods real implementations instead of ... changes nothing about this restriction.',
+      'A quick, throwaway concrete implementation needs a genuinely separate class that satisfies the Protocol structurally, without inheriting from it.',
+    ],
+  },
+  'python/type-hints/type-checking-only-names-need-quoting-before-python-314': {
+    apis: ['typing.TYPE_CHECKING', 'from __future__ import annotations'],
+    related: [
+      { label: 'Type Hints & mypy (overview)', route: '/python/type-hints' },
+      { label: '@overload Stubs Raise NotImplementedError If Called Directly', route: '/python/type-hints/overload-stubs-raise-notimplementederror-if-called-directly' },
+      { label: 'Protocol Classes Cannot Be Instantiated Directly', route: '/python/type-hints/protocol-classes-cannot-be-instantiated-directly' },
+    ],
+    tip: 'On Python ≤3.13, an unquoted TYPE_CHECKING-only name in an annotation raises NameError at definition time — PEP 649 made lazy evaluation the default only starting in Python 3.14.',
+    docs: [
+      { label: 'Python Docs — typing.TYPE_CHECKING', url: 'https://docs.python.org/3/library/typing.html#typing.TYPE_CHECKING' },
+    ],
+    resources: [],
+    gotchas: [
+      'Code tested locally on a newer interpreter can pass while failing in CI/production pinned to an older Python version — verify against the actual target version.',
+      'Quoting the name, or adding from __future__ import annotations, remains the safe default for any codebase not yet requiring Python 3.14+ exclusively.',
+    ],
+  },
   'python/oop': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28803,6 +30053,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Python\'s multiple inheritance and Method Resolution Order make deep/wide hierarchies especially prone to the "diamond problem."',
       'Two unrelated classes implementing the same method signature can be used interchangeably without sharing a common base class.',
+    ],
+  },
+  'python/oop/slots-and-a-class-level-default-value-conflict': {
+    apis: ['__slots__', 'ValueError'],
+    related: [
+      { label: 'OOP in Python (overview)', route: '/python/oop' },
+      { label: 'Zero-Arg super() Breaks Inside a Nested Function', route: '/python/oop/zero-arg-super-breaks-inside-a-nested-function' },
+      { label: 'A Mismatched Setter Name Creates a Second Attribute', route: '/python/oop/a-mismatched-setter-name-creates-a-second-attribute' },
+    ],
+    tip: 'A name listed in __slots__ becomes a class-level descriptor — Python\'s own data model docs confirm a plain class-level value of the same name conflicts with it, raising ValueError at class-creation time, before any instance exists.',
+    docs: [
+      { label: 'Python Docs — Data Model (__slots__)', url: 'https://docs.python.org/3/reference/datamodel.html#slots' },
+    ],
+    resources: [],
+    gotchas: [
+      'A slotted attribute\'s default must be provided in __init__ — __slots__ has no default-value mechanism of its own.',
+      'This most often bites when refactoring a plain class into a __slots__-based one without also moving existing class-level defaults into __init__.',
+    ],
+  },
+  'python/oop/zero-arg-super-breaks-inside-a-nested-function': {
+    apis: ['super()', '__class__ cell'],
+    related: [
+      { label: 'OOP in Python (overview)', route: '/python/oop' },
+      { label: '__slots__ and a Class-Level Default Value Conflict', route: '/python/oop/slots-and-a-class-level-default-value-conflict' },
+      { label: 'A Mismatched Setter Name Creates a Second Attribute', route: '/python/oop/a-mismatched-setter-name-creates-a-second-attribute' },
+    ],
+    tip: 'Python\'s own docs warn that zero-argument super() "will not work as expected within nested functions" — the compiler-injected __class__ cell it relies on is tied to the method\'s own top-level body.',
+    docs: [
+      { label: 'Python Docs — super()', url: 'https://docs.python.org/3/library/functions.html#super' },
+    ],
+    resources: [],
+    gotchas: [
+      'The failure manifests as RuntimeError: super(): __class__ cell not found — confusing since the code looks like it\'s inside a normal method.',
+      'The fix inside a nested function/lambda is the explicit two-argument form, super(ClassName, self), which doesn\'t depend on the __class__ cell at all.',
+    ],
+  },
+  'python/oop/a-mismatched-setter-name-creates-a-second-attribute': {
+    apis: ['property', '@x.setter'],
+    related: [
+      { label: 'OOP in Python (overview)', route: '/python/oop' },
+      { label: '__slots__ and a Class-Level Default Value Conflict', route: '/python/oop/slots-and-a-class-level-default-value-conflict' },
+      { label: 'Zero-Arg super() Breaks Inside a Nested Function', route: '/python/oop/zero-arg-super-breaks-inside-a-nested-function' },
+    ],
+    tip: 'property.setter() returns a NEW property object bound to whatever name follows def — naming the setter function differently from the getter silently creates a second, separate attribute instead of updating the original.',
+    docs: [
+      { label: 'Python Docs — property', url: 'https://docs.python.org/3/library/functions.html#property' },
+    ],
+    resources: [],
+    gotchas: [
+      'No error is raised anywhere in this process — the only visible symptom is a delayed AttributeError the first time code tries to use the setter through the original property name.',
+      'This is most likely when a getter and setter are defined far apart in a large class body, or a getter is renamed during a refactor without updating its setter/deleter to match.',
     ],
   },
   'python/dataclasses-pydantic': {
@@ -28817,6 +30118,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'FastAPI\'s deep Pydantic integration (auto OpenAPI schema, request/response validation) is a major reason for Pydantic\'s dominance in modern Python APIs.',
     ],
   },
+  'python/dataclasses-pydantic/dataclass-eq-requires-the-identical-class-not-just-fields': {
+    apis: ['dataclass(eq=True)', '__eq__'],
+    related: [
+      { label: 'Dataclasses & Pydantic (overview)', route: '/python/dataclasses-pydantic' },
+      { label: 'model_validator(mode="before") Receives Unvalidated Raw Input', route: '/python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input' },
+      { label: 'Mutating a Frozen Dataclass List Field Corrupts Its Hash', route: '/python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash' },
+    ],
+    tip: 'Python\'s own docs confirm the generated __eq__ requires "both instances... to be of the identical type" — a subclass instance is never == to a parent instance, even with identical field values.',
+    docs: [
+      { label: 'Python Docs — dataclasses (eq parameter)', url: 'https://docs.python.org/3/library/dataclasses.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is the opposite of duck typing — dataclass equality is deliberately strict about exact type, not structural compatibility.',
+      'Surfaces most often in tests comparing against a base type when a function actually returns a subclass instance.',
+    ],
+  },
+  'python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input': {
+    apis: ['@model_validator(mode="before")', '@model_validator(mode="after")'],
+    related: [
+      { label: 'Dataclasses & Pydantic (overview)', route: '/python/dataclasses-pydantic' },
+      { label: 'dataclass __eq__ Requires the Identical Class, Not Just Fields', route: '/python/dataclasses-pydantic/dataclass-eq-requires-the-identical-class-not-just-fields' },
+      { label: 'Mutating a Frozen Dataclass List Field Corrupts Its Hash', route: '/python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash' },
+    ],
+    tip: 'Pydantic\'s own docs confirm "before" validators "have to deal with the raw input" — no field coercion has run yet. Only "after" validators are guaranteed fields are already validated Python types.',
+    docs: [
+      { label: 'Pydantic Docs — Model Validators', url: 'https://docs.pydantic.dev/latest/concepts/validators/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A "before" validator can receive a numeric field as a string, or any arbitrary object — never assume it\'s already the declared type.',
+      'Code that works in tests (hand-constructed, already-typed data) can fail in production against real JSON input with different apparent types.',
+    ],
+  },
+  'python/dataclasses-pydantic/mutating-a-frozen-dataclass-list-field-corrupts-its-hash': {
+    apis: ['dataclass(frozen=True)', '__hash__'],
+    related: [
+      { label: 'Dataclasses & Pydantic (overview)', route: '/python/dataclasses-pydantic' },
+      { label: 'dataclass __eq__ Requires the Identical Class, Not Just Fields', route: '/python/dataclasses-pydantic/dataclass-eq-requires-the-identical-class-not-just-fields' },
+      { label: 'model_validator(mode="before") Receives Unvalidated Raw Input', route: '/python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input' },
+    ],
+    tip: 'frozen=True only locks attribute assignment — a mutable field\'s contents can still change, which changes hash(instance) live, breaking Python\'s own "hashable objects must not change their hash while stored" invariant.',
+    docs: [
+      { label: 'Python Docs — Glossary (hashable)', url: 'https://docs.python.org/3/glossary.html#term-hashable' },
+    ],
+    resources: [],
+    gotchas: [
+      'A corrupted object can remain physically present in a set/dict while becoming permanently unfindable via normal lookup.',
+      'The reliable fix is using genuinely immutable field types (tuple, frozenset) on any frozen dataclass relied on for hashability.',
+    ],
+  },
   'python/comprehensions-generators': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28826,6 +30178,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A generator can only be iterated once — passing it to code expecting multiple passes is a common source of "why is my second loop empty" bugs.',
       'Nested comprehensions past two levels usually hurt readability more than an explicit loop would.',
+    ],
+  },
+  'python/comprehensions-generators/generator-locals-stay-alive-while-the-generator-is-alive': {
+    apis: ['generator frame', 'yield'],
+    related: [
+      { label: 'Comprehensions & Generators (overview)', route: '/python/comprehensions-generators' },
+      { label: 'Abandoning a Generator Still Triggers Its finally Block', route: '/python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block' },
+      { label: 'islice Does Not Support Negative start, stop, or step', route: '/python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step' },
+    ],
+    tip: 'Python\'s own docs confirm a paused generator retains all local state — a large local variable stays alive in memory for the generator\'s entire lifetime, not just while it\'s actively running, unless the generator is written so nothing large ever crosses a yield.',
+    docs: [
+      { label: 'Python Docs — Yield expressions', url: 'https://docs.python.org/3/reference/expressions.html#yield-expressions' },
+    ],
+    resources: [],
+    gotchas: [
+      'Using yield alone does not automatically make a generator memory-efficient — it depends on whether large data ever lives in a local variable across a yield.',
+      'A generator that loads everything into a local variable before its first yield gets none of the lazy-evaluation memory benefit, despite still using yield.',
+    ],
+  },
+  'python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block': {
+    apis: ['generator.close()', 'GeneratorExit', 'try/finally'],
+    related: [
+      { label: 'Comprehensions & Generators (overview)', route: '/python/comprehensions-generators' },
+      { label: 'Generator Locals Stay Alive While the Generator Is Alive', route: '/python/comprehensions-generators/generator-locals-stay-alive-while-the-generator-is-alive' },
+      { label: 'islice Does Not Support Negative start, stop, or step', route: '/python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step' },
+    ],
+    tip: 'Per Python\'s own docs, an un-exhausted generator that gets garbage collected still has close() called on it, raising GeneratorExit at the paused yield — any pending finally or with-block cleanup still runs, even if the caller stopped early.',
+    docs: [
+      { label: 'Python Docs — Generator-iterator methods', url: 'https://docs.python.org/3/reference/expressions.html#generator-iterator-methods' },
+    ],
+    resources: [],
+    gotchas: [
+      'Cleanup is guaranteed to eventually happen per the language spec, but its exact TIMING is not guaranteed to be immediate on every Python implementation.',
+      'Code with strict timing requirements (a small connection pool under load) should call close() explicitly rather than rely on garbage-collection timing.',
+    ],
+  },
+  'python/comprehensions-generators/islice-does-not-support-negative-start-stop-or-step': {
+    apis: ['itertools.islice', 'collections.deque(maxlen)', 'reversed()'],
+    related: [
+      { label: 'Comprehensions & Generators (overview)', route: '/python/comprehensions-generators' },
+      { label: 'Generator Locals Stay Alive While the Generator Is Alive', route: '/python/comprehensions-generators/generator-locals-stay-alive-while-the-generator-is-alive' },
+      { label: 'Abandoning a Generator Still Triggers Its finally Block', route: '/python/comprehensions-generators/abandoning-a-generator-still-triggers-its-finally-block' },
+    ],
+    tip: 'itertools.islice\'s own docs state it "does not support negative values for start, stop, or step" — a structural limitation since islice works on iterables with no known length or ability to look backward, not just an unimplemented feature.',
+    docs: [
+      { label: 'Python Docs — itertools.islice', url: 'https://docs.python.org/3/library/itertools.html#itertools.islice' },
+    ],
+    resources: [],
+    gotchas: [
+      'For "the last N items" of a lazy iterable, use collections.deque(iterable, maxlen=n) instead — still O(n) memory, still fully consumes the iterable, but never materializes the whole thing.',
+      'reversed() only works on sequences with __reversed__ or __len__/__getitem__ — not on a plain generator, which must be materialized to a list first.',
     ],
   },
   'python/collections-itertools': {
@@ -28839,6 +30242,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'itertools functions operate lazily, avoiding materializing large intermediate lists for large or infinite iterables.',
     ],
   },
+  'python/collections-itertools/deque-indexed-access-is-o-n-not-o-1': {
+    apis: ['collections.deque', 'deque[i]'],
+    related: [
+      { label: 'Collections & Itertools (overview)', route: '/python/collections-itertools' },
+      { label: 'groupby Sub-Iterators Share One Source and Vanish', route: '/python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish' },
+      { label: 'heapq Tuples Need a Tie-Breaker for Equal Priorities', route: '/python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities' },
+    ],
+    tip: 'Python\'s own docs confirm deque indexed access "is O(1) at both ends but slows to O(n) in the middle" — deque is not a universal list replacement, only the right tool for algorithms that only ever touch the two ends.',
+    docs: [
+      { label: 'Python Docs — collections.deque', url: 'https://docs.python.org/3/library/collections.html#collections.deque' },
+    ],
+    resources: [],
+    gotchas: [
+      'An algorithm needing genuine random access (like binary search) degrades from O(log n) to O(n log n) if its list is swapped for a deque.',
+      'The main page\'s own sliding-window solution only ever touches dq[0]/dq[-1] — exactly why deque is the right choice there specifically.',
+    ],
+  },
+  'python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish': {
+    apis: ['itertools.groupby'],
+    related: [
+      { label: 'Collections & Itertools (overview)', route: '/python/collections-itertools' },
+      { label: 'deque Indexed Access Is O(n), Not O(1)', route: '/python/collections-itertools/deque-indexed-access-is-o-n-not-o-1' },
+      { label: 'heapq Tuples Need a Tie-Breaker for Equal Priorities', route: '/python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities' },
+    ],
+    tip: 'Python\'s own docs confirm each groupby group "shares the underlying iterable with groupby()" — advancing the outer loop silently invalidates the previous group unless it was already consumed into a list.',
+    docs: [
+      { label: 'Python Docs — itertools.groupby', url: 'https://docs.python.org/3/library/itertools.html#itertools.groupby' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a SECOND, distinct groupby gotcha beyond the well-known pre-sorting requirement — correctly sorted input does not protect against it.',
+      'The fix is list(group) inside the same loop iteration that produced it, before the outer loop advances to the next key.',
+    ],
+  },
+  'python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities': {
+    apis: ['heapq.heappush()', 'heapq.heappop()', 'itertools.count()'],
+    related: [
+      { label: 'Collections & Itertools (overview)', route: '/python/collections-itertools' },
+      { label: 'deque Indexed Access Is O(n), Not O(1)', route: '/python/collections-itertools/deque-indexed-access-is-o-n-not-o-1' },
+      { label: 'groupby Sub-Iterators Share One Source and Vanish', route: '/python/collections-itertools/groupby-sub-iterators-share-one-source-and-vanish' },
+    ],
+    tip: 'Python\'s own "Priority Queue Implementation Notes" confirm tuple comparison "breaks for (priority, task) pairs if the priorities are equal and the tasks do not have a default comparison order" — add a unique entry count as the middle element to prevent this.',
+    docs: [
+      { label: 'Python Docs — heapq (Priority Queue Implementation Notes)', url: 'https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes' },
+    ],
+    resources: [],
+    gotchas: [
+      'This bug is condition-dependent — it can pass extensive testing where priorities happen to stay unique, then crash the first time a real tie occurs.',
+      'itertools.count() as the tie-breaker guarantees tuple comparison never reaches the (potentially non-orderable) payload object at all.',
+    ],
+  },
   'python/file-io': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28848,6 +30302,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Reading a very large file entirely with .read() can exhaust memory — iterate line-by-line or in fixed chunks to keep usage bounded.',
       'File handle leaks accumulate silently until the OS descriptor limit is hit, often invisible in dev but a production surprise.',
+    ],
+  },
+  'python/file-io/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path': {
+    apis: ['Path.mkdir(exist_ok)'],
+    related: [
+      { label: 'File I/O & Pathlib (overview)', route: '/python/file-io' },
+      { label: 'shutil.copy() Does Not Preserve Timestamps — copy2() Does', route: '/python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does' },
+      { label: 'Path.glob() Matches Dotfiles, Unlike Shell Globbing', route: '/python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing' },
+    ],
+    tip: 'Python\'s own docs confirm exist_ok=True only suppresses FileExistsError if the existing path is a directory — a plain file already at that path still raises, matching POSIX mkdir -p semantics.',
+    docs: [
+      { label: 'Python Docs — pathlib (Path.mkdir)', url: 'https://docs.python.org/3/library/pathlib.html#pathlib.Path.mkdir' },
+    ],
+    resources: [],
+    gotchas: [
+      'This surfaces most often when a path is repurposed from a file to a directory (or vice versa) across a codebase\'s lifetime, leaving a stale file blocking a later mkdir call.',
+      'Catching FileExistsError and checking .is_file() on the target path gives a much clearer error than letting it propagate unexplained.',
+    ],
+  },
+  'python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does': {
+    apis: ['shutil.copy()', 'shutil.copy2()', 'shutil.copystat()'],
+    related: [
+      { label: 'File I/O & Pathlib (overview)', route: '/python/file-io' },
+      { label: 'mkdir(exist_ok=True) Still Raises If a File Blocks the Path', route: '/python/file-io/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path' },
+      { label: 'Path.glob() Matches Dotfiles, Unlike Shell Globbing', route: '/python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing' },
+    ],
+    tip: 'shutil.copy() preserves only content and permission bits — Python\'s own docs state creation/modification times are "not preserved." Use copy2() when a downstream sync/build/pipeline step depends on the original mtime.',
+    docs: [
+      { label: 'Python Docs — shutil (copy, copy2)', url: 'https://docs.python.org/3/library/shutil.html#shutil.copy2' },
+    ],
+    resources: [],
+    gotchas: [
+      'The two functions produce byte-identical file content, so choosing the wrong one rarely produces a visible bug immediately.',
+      'Incremental sync tools, build systems, and pipelines that compare mtimes are the most common place this silently breaks.',
+    ],
+  },
+  'python/file-io/path-glob-matches-dotfiles-unlike-shell-globbing': {
+    apis: ['Path.glob()', 'Path.rglob()'],
+    related: [
+      { label: 'File I/O & Pathlib (overview)', route: '/python/file-io' },
+      { label: 'mkdir(exist_ok=True) Still Raises If a File Blocks the Path', route: '/python/file-io/mkdir-exist-ok-still-raises-if-a-file-blocks-the-path' },
+      { label: 'shutil.copy() Does Not Preserve Timestamps — copy2() Does', route: '/python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does' },
+    ],
+    tip: 'Pathlib\'s own docs state dotfiles "are not special in pathlib" — Path.glob("*") matches .env, .git, and every other hidden file by default, the opposite of shell globbing and the standalone glob module.',
+    docs: [
+      { label: 'Python Docs — pathlib (Comparison to the glob module)', url: 'https://docs.python.org/3/library/pathlib.html#comparison-to-the-glob-module' },
+    ],
+    resources: [],
+    gotchas: [
+      'A broad rglob("*") used to collect files for archiving/uploading will silently include .git internals and .env secrets unless explicitly filtered.',
+      'Code migrated from the standalone glob module to pathlib can silently change behavior with the identical pattern string.',
     ],
   },
   'python/asyncio': {
@@ -28862,6 +30367,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A fire-and-forget async void-style event handler can silently crash a whole async application if its exception is never awaited.',
     ],
   },
+  'python/asyncio/create-task-needs-a-saved-reference-or-it-vanishes': {
+    apis: ['asyncio.create_task()', 'Task'],
+    related: [
+      { label: 'Async Python (asyncio) (overview)', route: '/python/asyncio' },
+      { label: 'gather() Does Not Cancel Siblings on Failure', route: '/python/asyncio/gather-does-not-cancel-siblings-on-failure' },
+      { label: 'shield() Protects Inner Work, Not the Outer Awaiter', route: '/python/asyncio/shield-protects-inner-work-not-the-outer-awaiter' },
+    ],
+    tip: 'Python\'s own docs warn "the event loop only keeps weak references to tasks" — an unreferenced fire-and-forget task can be garbage collected mid-execution, silently, with no error raised anywhere.',
+    docs: [
+      { label: 'Python Docs — asyncio.create_task()', url: 'https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task' },
+    ],
+    resources: [],
+    gotchas: [
+      'The documented fix: add the task to a module-level set, and use task.add_done_callback(the_set.discard) for automatic cleanup.',
+      'This bug is non-deterministic and tied to actual GC timing — more likely to surface under real production load than light local testing.',
+    ],
+  },
+  'python/asyncio/gather-does-not-cancel-siblings-on-failure': {
+    apis: ['asyncio.gather()', 'asyncio.TaskGroup'],
+    related: [
+      { label: 'Async Python (asyncio) (overview)', route: '/python/asyncio' },
+      { label: 'create_task() Needs a Saved Reference or It Vanishes', route: '/python/asyncio/create-task-needs-a-saved-reference-or-it-vanishes' },
+      { label: 'shield() Protects Inner Work, Not the Outer Awaiter', route: '/python/asyncio/shield-protects-inner-work-not-the-outer-awaiter' },
+    ],
+    tip: 'Python\'s own docs confirm gather()\'s default behavior only stops WAITING when one coroutine fails — "other awaitables... won\'t be cancelled and will continue to run," unlike TaskGroup which actively cancels siblings.',
+    docs: [
+      { label: 'Python Docs — asyncio.gather()', url: 'https://docs.python.org/3/library/asyncio-task.html#asyncio.gather' },
+    ],
+    resources: [],
+    gotchas: [
+      'Code after a caught gather() exception cannot assume every other coroutine has stopped — they may still be running and produce effects later.',
+      'TaskGroup (3.11+) is the fix when sibling cancellation on failure is genuinely needed.',
+    ],
+  },
+  'python/asyncio/shield-protects-inner-work-not-the-outer-awaiter': {
+    apis: ['asyncio.shield()', 'CancelledError'],
+    related: [
+      { label: 'Async Python (asyncio) (overview)', route: '/python/asyncio' },
+      { label: 'create_task() Needs a Saved Reference or It Vanishes', route: '/python/asyncio/create-task-needs-a-saved-reference-or-it-vanishes' },
+      { label: 'gather() Does Not Cancel Siblings on Failure', route: '/python/asyncio/gather-does-not-cancel-siblings-on-failure' },
+    ],
+    tip: 'Python\'s own docs confirm shield() keeps the inner task running despite outer cancellation, but "its caller is still cancelled, so the \'await\' expression still raises a CancelledError" — the outer code still needs its own handling.',
+    docs: [
+      { label: 'Python Docs — asyncio.shield()', url: 'https://docs.python.org/3/library/asyncio-task.html#asyncio.shield' },
+    ],
+    resources: [],
+    gotchas: [
+      'shield() is not on the main page at all — it\'s a distinct tool from the ordinary "always re-raise CancelledError" cancellation discipline.',
+      'To genuinely wait for the shielded work\'s result after catching CancelledError, await the same shielded awaitable a second time, now outside the cancelled scope.',
+    ],
+  },
   'python/threading-multiprocessing': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28872,6 +30428,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A race condition can still occur even with the GIL, since bytecode-level operations can interleave in ways that corrupt compound "read, modify, write" operations.',
       'Deadlock from acquiring multiple locks in inconsistent order across code paths is a common bug — always acquire in a consistent, globally-agreed order.',
+    ],
+  },
+  'python/threading-multiprocessing/an-unread-future-exception-is-silently-swallowed': {
+    apis: ['Future.result()', 'Future.exception()'],
+    related: [
+      { label: 'Threading & Multiprocessing (overview)', route: '/python/threading-multiprocessing' },
+      { label: 'fork vs. spawn Changes What a Child Process Inherits', route: '/python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits' },
+      { label: 'A Crashed Worker Breaks the Whole Process Pool', route: '/python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool' },
+    ],
+    tip: 'A submitted task\'s exception is stored on its Future, not raised automatically — Python\'s own docs describe it surfacing only via .result() or .exception(), with no documented logging if neither is ever called.',
+    docs: [
+      { label: 'Python Docs — concurrent.futures (Future)', url: 'https://docs.python.org/3/library/concurrent.futures.html#future-objects' },
+    ],
+    resources: [],
+    gotchas: [
+      'Side-effect-only tasks (no return value needed) still need .result()/.exception() checked — otherwise a failure has no documented way to surface anywhere.',
+      'A program can report normal, error-free completion while individual submitted tasks silently failed.',
+    ],
+  },
+  'python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits': {
+    apis: ['multiprocessing.get_start_method()', 'os.fork()'],
+    related: [
+      { label: 'Threading & Multiprocessing (overview)', route: '/python/threading-multiprocessing' },
+      { label: 'An Unread Future Exception Is Silently Swallowed', route: '/python/threading-multiprocessing/an-unread-future-exception-is-silently-swallowed' },
+      { label: 'A Crashed Worker Breaks the Whole Process Pool', route: '/python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool' },
+    ],
+    tip: 'fork copies parent memory via os.fork(); spawn starts a fresh interpreter re-importing __main__. Windows/macOS default to spawn (macOS since 3.8, for safety) — Linux\'s own default is changing again in Python 3.14.',
+    docs: [
+      { label: 'Python Docs — multiprocessing (start methods)', url: 'https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is the deeper mechanism behind the main page\'s own Windows "if __name__ == \'__main__\'" requirement.',
+      'The reliable, cross-platform-safe pattern is passing all needed state explicitly as arguments, never relying on implicit inheritance.',
+    ],
+  },
+  'python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool': {
+    apis: ['concurrent.futures.process.BrokenProcessPool'],
+    related: [
+      { label: 'Threading & Multiprocessing (overview)', route: '/python/threading-multiprocessing' },
+      { label: 'An Unread Future Exception Is Silently Swallowed', route: '/python/threading-multiprocessing/an-unread-future-exception-is-silently-swallowed' },
+      { label: 'fork vs. spawn Changes What a Child Process Inherits', route: '/python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits' },
+    ],
+    tip: 'A worker terminating non-cleanly (a crash) raises BrokenProcessPool — Python\'s own docs confirm this affects the executor broadly, not just the one task; every other pending/future submission on that instance also fails.',
+    docs: [
+      { label: 'Python Docs — concurrent.futures (BrokenProcessPool)', url: 'https://docs.python.org/3/library/concurrent.futures.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'No amount of per-task try/except fixes this — the POOL itself is broken and must be discarded and recreated, not retried.',
+      'A rare per-task crash probability compounds into a real operational concern over enough total task volume in a long-running service.',
     ],
   },
   'python/concurrency-patterns': {
@@ -28886,6 +30493,60 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mixing these models incorrectly is a frequent source of "why isn\'t this faster" surprises.',
     ],
   },
+  'python/concurrency-patterns/taskgroup-raises-exceptiongroup': {
+    apis: ['asyncio.TaskGroup', 'ExceptionGroup', 'except*'],
+    related: [
+      { label: 'Concurrency Patterns (overview)', route: '/python/concurrency-patterns' },
+      { label: 'ProcessPoolExecutor Can’t Pickle Closures or Lambdas', route: '/python/concurrency-patterns/processpool-requires-picklable-closures' },
+      { label: 'The Default Executor’s Thread Pool Size Isn’t Unlimited', route: '/python/concurrency-patterns/default-executor-thread-pool-sizing' },
+    ],
+    tip: 'A plain except Exception catches an ExceptionGroup as one object — e.exceptions holds the originals. except* (PEP 654, 3.11+) is the tool for matching by the type of exception inside the group.',
+    docs: [
+      { label: 'Python Docs — asyncio.TaskGroup', url: 'https://docs.python.org/3/library/asyncio-task.html#asyncio.TaskGroup' },
+      { label: 'Python Docs — ExceptionGroup', url: 'https://docs.python.org/3/library/exceptions.html#ExceptionGroup' },
+    ],
+    resources: [],
+    gotchas: [
+      'A BaseExceptionGroup (present when any wrapped exception is a bare BaseException, not an Exception) is NOT caught by a plain except Exception at all.',
+      'KeyboardInterrupt/SystemExit bypass the wrapping entirely — TaskGroup still cancels siblings but re-raises the original signal exception directly.',
+    ],
+  },
+  'python/concurrency-patterns/processpool-requires-picklable-closures': {
+    apis: ['concurrent.futures.ProcessPoolExecutor', 'pickle'],
+    related: [
+      { label: 'Concurrency Patterns (overview)', route: '/python/concurrency-patterns' },
+      { label: 'TaskGroup Raises an ExceptionGroup, Not the First Exception', route: '/python/concurrency-patterns/taskgroup-raises-exceptiongroup' },
+      { label: 'The Default Executor’s Thread Pool Size Isn’t Unlimited', route: '/python/concurrency-patterns/default-executor-thread-pool-sizing' },
+    ],
+    tip: 'ProcessPoolExecutor sends work across a real process boundary via pickle — a lambda or closure has no top-level, fully-qualified name pickle can serialize by, so it fails even though the identical code works fine with ThreadPoolExecutor.',
+    docs: [
+      { label: 'Python Docs — concurrent.futures (ProcessPoolExecutor)', url: 'https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor' },
+      { label: 'Python Docs — pickle (what can be pickled)', url: 'https://docs.python.org/3/library/pickle.html#what-can-be-pickled-and-unpickled' },
+    ],
+    resources: [],
+    gotchas: [
+      'The fix is always a module-level def with explicit, picklable arguments — never a lambda or a nested closure.',
+      'Code that works with ThreadPoolExecutor can silently fail the moment it is switched to ProcessPoolExecutor, since threads share memory and never need pickling at all.',
+    ],
+  },
+  'python/concurrency-patterns/default-executor-thread-pool-sizing': {
+    apis: ['loop.run_in_executor()', 'asyncio.to_thread()', 'concurrent.futures.ThreadPoolExecutor'],
+    related: [
+      { label: 'Concurrency Patterns (overview)', route: '/python/concurrency-patterns' },
+      { label: 'TaskGroup Raises an ExceptionGroup, Not the First Exception', route: '/python/concurrency-patterns/taskgroup-raises-exceptiongroup' },
+      { label: 'ProcessPoolExecutor Can’t Pickle Closures or Lambdas', route: '/python/concurrency-patterns/processpool-requires-picklable-closures' },
+    ],
+    tip: 'run_in_executor(None, fn) and asyncio.to_thread() share one lazily-created, cached ThreadPoolExecutor per event loop, capped at min(32, os.cpu_count() + 4) workers — not a fresh thread per call.',
+    docs: [
+      { label: 'Python Docs — loop.run_in_executor()', url: 'https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor' },
+      { label: 'Python Docs — ThreadPoolExecutor (default max_workers)', url: 'https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor' },
+    ],
+    resources: [],
+    gotchas: [
+      'asyncio.to_thread() has no way to accept a custom executor — the escape hatch for a workload needing more concurrency is loop.run_in_executor(custom_pool, fn, *args) instead.',
+      'On machines with few cores, the cap can be much smaller than 32 (e.g. 8 workers on a 4-core machine) — the 32 in the formula is only a ceiling.',
+    ],
+  },
   'python/django': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28896,6 +30557,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Django Debug Toolbar makes N+1 problems visible during development — without it, they often go unnoticed until production load.',
       'select_related and prefetch_related solve structurally different relationship types — using the wrong one still leaves N+1 queries.',
+    ],
+  },
+  'python/django/queryset-caching-is-per-object-not-per-query': {
+    apis: ['QuerySet._result_cache', 'QuerySet.count()'],
+    related: [
+      { label: 'Django & DRF (overview)', route: '/python/django' },
+      { label: 'transaction.on_commit() Defers Signal Side Effects', route: '/python/django/transaction-on-commit-defers-signal-side-effects' },
+      { label: 'has_object_permission() Skips List and Create', route: '/python/django/has-object-permission-skips-list-and-create' },
+    ],
+    tip: 'A QuerySet caches results after full evaluation (iteration, list(), bool()) — but each fresh filter() call builds a brand-new object with its own empty cache. Reuse the same variable to benefit from it.',
+    docs: [
+      { label: 'Django Docs — QuerySet API (caching)', url: 'https://docs.djangoproject.com/en/5.0/ref/models/querysets/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Slicing an unevaluated queryset generates a fresh LIMIT/OFFSET query; the identical slice on an already-evaluated queryset is served from the in-memory cache instead.',
+      'Printing a queryset does NOT populate its cache — __repr__() only evaluates a small slice for display.',
+    ],
+  },
+  'python/django/transaction-on-commit-defers-signal-side-effects': {
+    apis: ['django.db.transaction.on_commit()', 'django.db.models.signals.post_save'],
+    related: [
+      { label: 'Django & DRF (overview)', route: '/python/django' },
+      { label: 'QuerySet Caching Is Per-Object, Not Per-Query', route: '/python/django/queryset-caching-is-per-object-not-per-query' },
+      { label: 'has_object_permission() Skips List and Create', route: '/python/django/has-object-permission-skips-list-and-create' },
+    ],
+    tip: 'A signal handler runs synchronously the instant .save() is called, mid-transaction. Wrap external side effects in transaction.on_commit() so they only fire if the transaction actually commits.',
+    docs: [
+      { label: 'Django Docs — Performing actions after commit', url: 'https://docs.djangoproject.com/en/5.0/topics/db/transactions/#performing-actions-after-commit' },
+    ],
+    resources: [],
+    gotchas: [
+      'Calling on_commit() with no open transaction executes the callback immediately — it only defers anything inside an actual atomic() block.',
+      'TestCase rolls back its wrapping transaction after each test, so on_commit() callbacks never run unless the test uses captureOnCommitCallbacks().',
+    ],
+  },
+  'python/django/has-object-permission-skips-list-and-create': {
+    apis: ['rest_framework.permissions.BasePermission', 'GenericAPIView.get_object()'],
+    related: [
+      { label: 'Django & DRF (overview)', route: '/python/django' },
+      { label: 'QuerySet Caching Is Per-Object, Not Per-Query', route: '/python/django/queryset-caching-is-per-object-not-per-query' },
+      { label: 'transaction.on_commit() Defers Signal Side Effects', route: '/python/django/transaction-on-commit-defers-signal-side-effects' },
+    ],
+    tip: 'has_object_permission() only runs when a view calls get_object() — list() and create() never do. A permission class that only overrides it provides zero protection for those two actions.',
+    docs: [
+      { label: 'DRF Docs — Permissions (object level)', url: 'https://www.django-rest-framework.org/api-guide/permissions/#limitations-of-object-level-permissions' },
+    ],
+    resources: [],
+    gotchas: [
+      'Fix list() by filtering get_queryset() itself, not by strengthening has_object_permission().',
+      'Fix create() in perform_create() or the serializer — there is no existing object for has_object_permission() to check yet.',
     ],
   },
   'python/fastapi': {
@@ -28910,6 +30622,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing dependencies for stateless utility functions adds unnecessary indirection — reserve them for genuinely request-scoped concerns.',
     ],
   },
+  'python/fastapi/dependency-cache-keys-on-the-callable-object': {
+    apis: ['fastapi.Depends', 'fastapi.dependencies.models.Dependant.cache_key'],
+    related: [
+      { label: 'FastAPI (overview)', route: '/python/fastapi' },
+      { label: 'BackgroundTasks Merge Into One Sequential List', route: '/python/fastapi/background-tasks-merge-into-one-sequential-list' },
+      { label: 'response_model Needs from_attributes for ORM Objects', route: '/python/fastapi/response-model-needs-from-attributes-for-orm-objects' },
+    ],
+    tip: 'FastAPI\'s per-request dependency cache is keyed by (call, scopes, computed_scope) — the literal callable object, not by name or behavior. Only the SAME reused reference (like the main page\'s DB alias) shares a cache slot.',
+    docs: [
+      { label: 'FastAPI Docs — Sub-dependencies (caching)', url: 'https://fastapi.tiangolo.com/tutorial/dependencies/sub-dependencies/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Two separately-constructed functools.partial() objects wrapping the identical function with identical arguments do NOT share a cache slot — only the same object reference does.',
+      'Two functions with byte-for-byte identical bodies are still two different objects to Python, and therefore two different cache keys.',
+    ],
+  },
+  'python/fastapi/background-tasks-merge-into-one-sequential-list': {
+    apis: ['fastapi.BackgroundTasks', 'starlette.background.BackgroundTasks'],
+    related: [
+      { label: 'FastAPI (overview)', route: '/python/fastapi' },
+      { label: 'Dependency Cache Keys on the Callable Object', route: '/python/fastapi/dependency-cache-keys-on-the-callable-object' },
+      { label: 'response_model Needs from_attributes for ORM Objects', route: '/python/fastapi/response-model-needs-from-attributes-for-orm-objects' },
+    ],
+    tip: 'FastAPI reuses ONE BackgroundTasks object across every dependency and the handler for a request. Starlette runs its tasks with a plain sequential for loop — no concurrency, and one failure halts every task queued after it.',
+    docs: [
+      { label: 'FastAPI Docs — Background Tasks', url: 'https://fastapi.tiangolo.com/tutorial/background-tasks/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A background task exception does not affect the already-sent response, but it does silently (from the client\'s view) skip every task queued after it.',
+      'Wrap each task function\'s own body in try/except if unrelated tasks must not affect each other\'s execution.',
+    ],
+  },
+  'python/fastapi/response-model-needs-from-attributes-for-orm-objects': {
+    apis: ['pydantic.ConfigDict(from_attributes=True)', 'Pydantic v1 orm_mode'],
+    related: [
+      { label: 'FastAPI (overview)', route: '/python/fastapi' },
+      { label: 'Dependency Cache Keys on the Callable Object', route: '/python/fastapi/dependency-cache-keys-on-the-callable-object' },
+      { label: 'BackgroundTasks Merge Into One Sequential List', route: '/python/fastapi/background-tasks-merge-into-one-sequential-list' },
+    ],
+    tip: 'Pydantic validates dict-like input by default — a response schema needs model_config = ConfigDict(from_attributes=True) before it can read attributes off a raw ORM instance, per Pydantic\'s own docs (the v2 rename of v1\'s orm_mode).',
+    docs: [
+      { label: 'Pydantic Docs — from_attributes', url: 'https://docs.pydantic.dev/latest/concepts/models/#arbitrary-class-instances' },
+    ],
+    resources: [],
+    gotchas: [
+      'The need for from_attributes depends on what object type is passed at runtime across EVERY route using that schema, not on the schema\'s own field definitions.',
+      'FastAPI\'s newer SQLModel-based SQL tutorial sidesteps this issue entirely, making the requirement easy to forget when hand-rolling plain SQLAlchemy + Pydantic.',
+    ],
+  },
   'python/sqlalchemy': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28919,6 +30682,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Lazy loading (the default for relationships) can cause the same N+1 problem as Django\'s ORM — joinedload()/selectinload() are the equivalent fix.',
       'Detached instance errors (accessing a relationship after the session closes) are a common pitfall.',
+    ],
+  },
+  'python/sqlalchemy/session-get-hits-the-identity-map-select-does-not': {
+    apis: ['Session.get()', 'Session.execute(select(...))', 'populate_existing'],
+    related: [
+      { label: 'SQLAlchemy (overview)', route: '/python/sqlalchemy' },
+      { label: 'Autobegin Starts a New Transaction After Commit', route: '/python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit' },
+      { label: 'delete-orphan Needs ORM-Tracked Disassociation', route: '/python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation' },
+    ],
+    tip: 'Session.get() checks the identity map first and skips SQL entirely if the object is cached and unexpired. select()-based queries never get this shortcut — they always hit the database.',
+    docs: [
+      { label: 'SQLAlchemy Docs — Session.get()', url: 'https://docs.sqlalchemy.org/en/20/orm/session_api.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A commit() with the default expire_on_commit=True expires cached objects, forcing even get() to re-query on the next call.',
+      'get(Model, pk, populate_existing=True) deliberately bypasses the identity-map shortcut to force a fresh reload.',
+    ],
+  },
+  'python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit': {
+    apis: ['Session.autobegin', 'Session.in_transaction()'],
+    related: [
+      { label: 'SQLAlchemy (overview)', route: '/python/sqlalchemy' },
+      { label: 'session.get() Hits the Identity Map — select() Does Not', route: '/python/sqlalchemy/session-get-hits-the-identity-map-select-does-not' },
+      { label: 'delete-orphan Needs ORM-Tracked Disassociation', route: '/python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation' },
+    ],
+    tip: 'The next operation needing the database after commit()/rollback()/close() silently opens a new transaction — this "autobegin" behavior dates to SQLAlchemy 1.4, not 2.0.',
+    docs: [
+      { label: 'SQLAlchemy Docs — Session Basics (Autobegin)', url: 'https://docs.sqlalchemy.org/en/20/orm/session_basics.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Reading an expired attribute after a commit triggers autobegin identically to running a brand-new query.',
+      'session.close() resets the session the same way commit()/rollback() does — it does not disable or pre-empt the next autobegin.',
+    ],
+  },
+  'python/sqlalchemy/delete-orphan-needs-orm-tracked-disassociation': {
+    apis: ['relationship(cascade="all, delete-orphan")', 'Session.delete()'],
+    related: [
+      { label: 'SQLAlchemy (overview)', route: '/python/sqlalchemy' },
+      { label: 'session.get() Hits the Identity Map — select() Does Not', route: '/python/sqlalchemy/session-get-hits-the-identity-map-select-does-not' },
+      { label: 'Autobegin Starts a New Transaction After Commit', route: '/python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit' },
+    ],
+    tip: 'delete-orphan only fires on an ORM-tracked disassociation event through the relationship collection — session.delete() and bulk delete() statements both bypass cascade logic entirely, per SQLAlchemy\'s own documented warning.',
+    docs: [
+      { label: 'SQLAlchemy Docs — Cascades (delete-orphan)', url: 'https://docs.sqlalchemy.org/en/20/orm/cascades.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'session.delete(child) still deletes the row, but through a completely different code path than delete-orphan cascade.',
+      'A bulk session.execute(delete(Model).where(...)) never loads ORM objects at all, so cascade has no way to evaluate or intervene.',
     ],
   },
   'python/numpy-pandas': {
@@ -28932,6 +30746,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pandas is built on NumPy arrays, so using vectorized operations over .iterrows() is essential for acceptable performance on non-trivial datasets.',
     ],
   },
+  'python/numpy-pandas/basic-slicing-is-a-view-fancy-indexing-is-a-copy': {
+    apis: ['ndarray.base', 'basics.copies-and-views'],
+    related: [
+      { label: 'NumPy & Pandas (overview)', route: '/python/numpy-pandas' },
+      { label: 'Broadcasting (3,) and (3,1) Silently Produces a (3,3)', route: '/python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3' },
+      { label: 'groupby() Silently Drops NaN Keys by Default', route: '/python/numpy-pandas/groupby-silently-drops-nan-keys-by-default' },
+    ],
+    tip: 'NumPy\'s own docs state basic slicing "always" returns a view sharing memory with the original; advanced (fancy/boolean) indexing "always" returns a copy — opposite, documented guarantees.',
+    docs: [
+      { label: 'NumPy Docs — Copies and Views', url: 'https://numpy.org/doc/stable/user/basics.copies.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Direct assignment through fancy indexing (arr[[1,3]] = 0) still writes through — the copy only matters once the result is read and stored in its own variable.',
+      'A view\'s .base attribute points back to the original array; a copy\'s .base is None — a concrete way to check which relationship a given array has.',
+    ],
+  },
+  'python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3': {
+    apis: ['ndarray.shape', 'keepdims'],
+    related: [
+      { label: 'NumPy & Pandas (overview)', route: '/python/numpy-pandas' },
+      { label: 'Basic Slicing Is a View, Fancy Indexing Is a Copy', route: '/python/numpy-pandas/basic-slicing-is-a-view-fancy-indexing-is-a-copy' },
+      { label: 'groupby() Silently Drops NaN Keys by Default', route: '/python/numpy-pandas/groupby-silently-drops-nan-keys-by-default' },
+    ],
+    tip: 'A (3,) array is left-padded to (1,3) before comparison against a (3,1) array — both dimension pairs pass the "equal or one of them is 1" rule, producing a (3,3) result instead of an error or simple element-wise addition.',
+    docs: [
+      { label: 'NumPy Docs — Broadcasting', url: 'https://numpy.org/doc/stable/user/basics.broadcasting.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A common trigger: a prior .reshape(-1, 1) or .mean(axis=1, keepdims=True) column vector later combined with an unrelated flat array assumed to be "the same length."',
+      'This exact shape collision is not named as a dedicated warning in NumPy\'s own docs — it follows from the documented alignment mechanism, not a called-out pitfall.',
+    ],
+  },
+  'python/numpy-pandas/groupby-silently-drops-nan-keys-by-default': {
+    apis: ['DataFrame.groupby(dropna=)', 'Series.isna()'],
+    related: [
+      { label: 'NumPy & Pandas (overview)', route: '/python/numpy-pandas' },
+      { label: 'Basic Slicing Is a View, Fancy Indexing Is a Copy', route: '/python/numpy-pandas/basic-slicing-is-a-view-fancy-indexing-is-a-copy' },
+      { label: 'Broadcasting (3,) and (3,1) Silently Produces a (3,3)', route: '/python/numpy-pandas/broadcasting-3-and-3-1-silently-produces-a-3x3' },
+    ],
+    tip: 'Pandas\' own docs state groupby()\'s dropna defaults to True — NaN-keyed rows are dropped from every group and the aggregation entirely, not placed into their own NaN group as SQL\'s GROUP BY would.',
+    docs: [
+      { label: 'Pandas Docs — DataFrame.groupby', url: 'https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A grouped summary with excluded NaN keys looks completely normal — check df[key].isna().sum() before trusting a groupby total matches the ungrouped total.',
+      'dropna=False recovers the missing rows as an explicit NaN group, distinct from how .mean() already ignores NaN among the VALUES being aggregated.',
+    ],
+  },
   'python/scikit-learn': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28941,6 +30806,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Pipeline ensures fit() only runs on training data and transform() applies consistently — a structural safeguard against accidental leakage.',
       'A model performing far better on training than test data has memorized noise rather than learned generalizable patterns.',
+    ],
+  },
+  'python/scikit-learn/cv-integer-auto-selects-stratifiedkfold': {
+    apis: ['cross_val_score(cv=)', 'StratifiedKFold', 'KFold'],
+    related: [
+      { label: 'Machine Learning (overview)', route: '/python/scikit-learn' },
+      { label: 'Feature Selection Before cross_val_score Still Leaks', route: '/python/scikit-learn/feature-selection-before-cv-still-leaks' },
+      { label: 'Permutation Importance: Train vs. Test Data', route: '/python/scikit-learn/permutation-importance-train-vs-test-data' },
+    ],
+    tip: 'scikit-learn\'s own docs state cv=integer uses StratifiedKFold "if the estimator derives from ClassifierMixin," and plain KFold otherwise — automatic, not something you opt into.',
+    docs: [
+      { label: 'scikit-learn Docs — Cross-validation', url: 'https://scikit-learn.org/stable/modules/cross_validation.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'train_test_split has no estimator to inspect, so stratify=y must still be passed explicitly there — only cv=integer benefits from the automatic detection.',
+      'GridSearchCV inherits the identical automatic splitter selection, with no separate stratify parameter to remember.',
+    ],
+  },
+  'python/scikit-learn/feature-selection-before-cv-still-leaks': {
+    apis: ['SelectKBest', 'Pipeline', 'cross_val_score'],
+    related: [
+      { label: 'Machine Learning (overview)', route: '/python/scikit-learn' },
+      { label: 'cv=Integer Auto-Selects StratifiedKFold for Classifiers', route: '/python/scikit-learn/cv-integer-auto-selects-stratifiedkfold' },
+      { label: 'Permutation Importance: Train vs. Test Data', route: '/python/scikit-learn/permutation-importance-train-vs-test-data' },
+    ],
+    tip: 'scikit-learn\'s own "Common pitfalls" guide warns feature selection run on the full dataset before cross_val_score leaks test-fold information, even if the model itself is wrapped in a Pipeline.',
+    docs: [
+      { label: 'scikit-learn Docs — Common Pitfalls (data leakage)', url: 'https://scikit-learn.org/stable/common_pitfalls.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'The fix is moving the feature selector INSIDE the same Pipeline object passed to cross_val_score, not just fitting it on "the training set" once beforehand.',
+      'PCA and other dimensionality-reduction steps are susceptible to the identical leak, not just SelectKBest specifically.',
+    ],
+  },
+  'python/scikit-learn/permutation-importance-train-vs-test-data': {
+    apis: ['permutation_importance()'],
+    related: [
+      { label: 'Machine Learning (overview)', route: '/python/scikit-learn' },
+      { label: 'cv=Integer Auto-Selects StratifiedKFold for Classifiers', route: '/python/scikit-learn/cv-integer-auto-selects-stratifiedkfold' },
+      { label: 'Feature Selection Before cross_val_score Still Leaks', route: '/python/scikit-learn/feature-selection-before-cv-still-leaks' },
+    ],
+    tip: 'scikit-learn\'s own docs warn a feature important on the training set but not the held-out set "might cause the model to overfit" — compute permutation importance on test data to measure genuine generalization.',
+    docs: [
+      { label: 'scikit-learn Docs — Permutation Feature Importance', url: 'https://scikit-learn.org/stable/modules/permutation_importance.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A large train-vs-test importance gap for one feature is itself a diagnostic signal for overfitting specifically attributable to that feature.',
+      'Both calls run without error or warning — scikit-learn does not stop you from computing (and misinterpreting) training-set-only importance.',
     ],
   },
   'python/pytest': {
@@ -28954,6 +30870,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Parametrized tests reduce boilerplate for testing the same logic against many input/output pairs.',
     ],
   },
+  'python/pytest/autouse-fixtures-run-without-being-requested': {
+    apis: ['@pytest.fixture(autouse=True)'],
+    related: [
+      { label: 'Testing with pytest (overview)', route: '/python/pytest' },
+      { label: 'pytest.raises() Matches Subclasses Too', route: '/python/pytest/pytest-raises-matches-subclasses-too' },
+      { label: 'A Test File’s Fixture Overrides conftest.py by Name', route: '/python/pytest/a-test-file-fixture-overrides-conftest-by-name' },
+    ],
+    tip: 'pytest\'s own docs state autouse fixtures "make all tests automatically request them" — a test can be affected by a fixture it never names, with no signal in its own signature.',
+    docs: [
+      { label: 'pytest Docs — Autouse Fixtures', url: 'https://docs.pytest.org/en/stable/how-to/fixtures.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Documented ordering: higher scope first, then autouse before non-autouse at the same scope, then dependencies before dependents.',
+      'A conftest.py autouse fixture silently applies to every test in that directory tree — check --fixtures output, not just a test\'s own parameter list.',
+    ],
+  },
+  'python/pytest/pytest-raises-matches-subclasses-too': {
+    apis: ['pytest.raises()', 'excinfo.type'],
+    related: [
+      { label: 'Testing with pytest (overview)', route: '/python/pytest' },
+      { label: 'autouse Fixtures Run Without Being Requested', route: '/python/pytest/autouse-fixtures-run-without-being-requested' },
+      { label: 'A Test File’s Fixture Overrides conftest.py by Name', route: '/python/pytest/a-test-file-fixture-overrides-conftest-by-name' },
+    ],
+    tip: 'pytest\'s own docs state pytest.raises() "will match the exception type or any subclasses (like the standard except statement)" — a broad class can mask the wrong specific exception.',
+    docs: [
+      { label: 'pytest Docs — Assertions about expected exceptions', url: 'https://docs.pytest.org/en/stable/how-to/assert.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'assert excinfo.type is ExactException after the with block is pytest\'s own documented pattern for exact-type verification.',
+      'Preferring the narrowest exception class directly in pytest.raises() is often simpler than a broad class plus a separate type assertion.',
+    ],
+  },
+  'python/pytest/a-test-file-fixture-overrides-conftest-by-name': {
+    apis: ['fixture override', 'pytest --fixtures'],
+    related: [
+      { label: 'Testing with pytest (overview)', route: '/python/pytest' },
+      { label: 'autouse Fixtures Run Without Being Requested', route: '/python/pytest/autouse-fixtures-run-without-being-requested' },
+      { label: 'pytest.raises() Matches Subclasses Too', route: '/python/pytest/pytest-raises-matches-subclasses-too' },
+    ],
+    tip: 'pytest\'s own docs confirm a same-named fixture "can be overridden for a certain test module" — the closest definition wins, with no error or warning.',
+    docs: [
+      { label: 'pytest Docs — Override a fixture', url: 'https://docs.pytest.org/en/stable/how-to/fixtures.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'An overriding fixture can request a parameter with its own name to reach the fixture it is shadowing — pytest resolves that to the next one up the hierarchy.',
+      'pytest --fixtures <path> is the reliable way to confirm which fixture definition actually applies to a given test, rather than trusting conftest.py alone.',
+    ],
+  },
   'python/debugging-profiling': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28963,6 +30930,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Memory profiling (tracemalloc) answers a different question than time profiling — a function can be fast but leak memory across many calls.',
       'A debugger is best for understanding WHY logic produces an unexpected value; a profiler is best for WHERE time/memory is spent — conflating the two wastes debugging effort.',
+    ],
+  },
+  'python/debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion': {
+    apis: ['cProfile.Profile', 'py-spy'],
+    related: [
+      { label: 'Debugging & Profiling (overview)', route: '/python/debugging-profiling' },
+      { label: 'tracemalloc Defaults to One Frame of Traceback', route: '/python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback' },
+      { label: 'The gc Module Only Matters for Reference Cycles', route: '/python/debugging-profiling/gc-module-only-matters-for-reference-cycles' },
+    ],
+    tip: 'Python\'s own profile docs warn functions "called many times, or call many functions, will typically accumulate this error" — cProfile\'s own per-call instrumentation cost can dominate a trivial function\'s reported tottime.',
+    docs: [
+      { label: 'Python Docs — profile / cProfile', url: 'https://docs.python.org/3/library/profile.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A candidate hot function that is ALSO called an unusually large number of times deserves cross-checking with py-spy, which has no per-call instrumentation cost.',
+      'Narrowing cProfile\'s scope to just the suspected function (already the main page\'s own advice) also reduces this accumulated distortion.',
+    ],
+  },
+  'python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback': {
+    apis: ['tracemalloc.start(nframe)', 'snapshot.statistics("traceback")'],
+    related: [
+      { label: 'Debugging & Profiling (overview)', route: '/python/debugging-profiling' },
+      { label: 'cProfile Overhead Distorts Tight Loops and Recursion', route: '/python/debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion' },
+      { label: 'The gc Module Only Matters for Reference Cycles', route: '/python/debugging-profiling/gc-module-only-matters-for-reference-cycles' },
+    ],
+    tip: 'Python\'s own docs state tracemalloc.start() defaults to nframe=1 — a shared helper called from many places collapses every caller into one line unless a deeper frame count is requested up front.',
+    docs: [
+      { label: 'Python Docs — tracemalloc', url: 'https://docs.python.org/3/library/tracemalloc.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A larger nframe alone is not enough — statistics must also be grouped by "traceback" (not "lineno") to actually surface the deeper caller chain.',
+      'Deeper frame capture has its own memory/CPU cost — reach for it deliberately when a shared allocation site needs disambiguating, not as a default.',
+    ],
+  },
+  'python/debugging-profiling/gc-module-only-matters-for-reference-cycles': {
+    apis: ['gc.collect()', 'weakref.ref'],
+    related: [
+      { label: 'Debugging & Profiling (overview)', route: '/python/debugging-profiling' },
+      { label: 'cProfile Overhead Distorts Tight Loops and Recursion', route: '/python/debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion' },
+      { label: 'tracemalloc Defaults to One Frame of Traceback', route: '/python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback' },
+    ],
+    tip: 'Python\'s own gc docs confirm the collector "supplements" reference counting — ordinary objects are freed immediately with no gc.collect() involved; the cyclic collector exists only for reference cycles refcounting cannot resolve alone.',
+    docs: [
+      { label: 'Python Docs — gc', url: 'https://docs.python.org/3/library/gc.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'gc.collect() consistently finding thousands of objects is a signal of ongoing cycle CREATION somewhere in the code, not routine, healthy cleanup.',
+      'An ever-growing cache with no eviction is a genuine memory leak but involves no cycle at all — gc.collect() would find nothing wrong with it.',
     ],
   },
   'python/packaging': {
@@ -28976,6 +30994,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'pyproject.toml has become the modern standard, replacing the older setup.py-based approach.',
     ],
   },
+  'python/packaging/poetry-caret-special-case-for-0-x-versions': {
+    apis: ['Poetry caret requirements'],
+    related: [
+      { label: 'Packaging & venv (overview)', route: '/python/packaging' },
+      { label: 'pip’s Resolver Refuses Conflicting Requirements Since 20.3', route: '/python/packaging/pip-resolver-refuses-conflicting-requirements' },
+      { label: 'pip freeze Outputs a Local Path for Editable Installs', route: '/python/packaging/pip-freeze-editable-installs-output-local-path' },
+    ],
+    tip: 'Poetry\'s own docs state the caret rule as "the left-most non-zero digit" staying fixed — for a 0.x version that\'s the minor (or patch) digit, not the major, so ^0.2.3 allows only <0.3.0.',
+    docs: [
+      { label: 'Poetry Docs — Dependency Specification', url: 'https://python-poetry.org/docs/dependency-specification/' },
+    ],
+    resources: [],
+    gotchas: [
+      '^0.0.3 is the tightest case — >=0.0.3, <0.0.4 — since Poetry treats 0.0.x as "not considered compatible with any other version" at all.',
+      'A pre-1.0 dependency constraint that visually looks as permissive as a post-1.0 one can silently block a minor version bump poetry update would otherwise pick up.',
+    ],
+  },
+  'python/packaging/pip-resolver-refuses-conflicting-requirements': {
+    apis: ['pip 20.3+ resolver', 'ResolutionImpossible'],
+    related: [
+      { label: 'Packaging & venv (overview)', route: '/python/packaging' },
+      { label: 'Poetry’s Caret Has a Special Case for 0.x Versions', route: '/python/packaging/poetry-caret-special-case-for-0-x-versions' },
+      { label: 'pip freeze Outputs a Local Path for Editable Installs', route: '/python/packaging/pip-freeze-editable-installs-output-local-path' },
+    ],
+    tip: 'pip\'s own docs confirm the resolver defaulted to the new, stricter version since pip 20.3 — it "will no longer install a combination of packages that is mutually inconsistent," refusing with a named conflict instead.',
+    docs: [
+      { label: 'pip Docs — Dependency Resolution', url: 'https://pip.pypa.io/en/stable/topics/dependency-resolution/' },
+    ],
+    resources: [],
+    gotchas: [
+      'The strict check is scoped to one install command — pip explicitly documents it "may break already-installed packages" across separate installs; pip check audits an existing environment.',
+      'A pip 19.x "successful" install of conflicting packages does not mean the packages are compatible — it means the old resolver never checked.',
+    ],
+  },
+  'python/packaging/pip-freeze-editable-installs-output-local-path': {
+    apis: ['pip freeze --exclude-editable'],
+    related: [
+      { label: 'Packaging & venv (overview)', route: '/python/packaging' },
+      { label: 'Poetry’s Caret Has a Special Case for 0.x Versions', route: '/python/packaging/poetry-caret-special-case-for-0-x-versions' },
+      { label: 'pip’s Resolver Refuses Conflicting Requirements Since 20.3', route: '/python/packaging/pip-resolver-refuses-conflicting-requirements' },
+    ],
+    tip: 'A plain pip freeze captures a pip install -e . package as an -e <local path> line, not a version pin — per pip\'s own documented requirement-line format — making requirements.txt non-portable unless generated with --exclude-editable.',
+    docs: [
+      { label: 'pip Docs — pip freeze', url: 'https://pip.pypa.io/en/stable/cli/pip_freeze/' },
+    ],
+    resources: [],
+    gotchas: [
+      'The two-step fix: pip freeze --exclude-editable for portable third-party pins, plus a separate documented pip install -e . step for the project itself.',
+      'This affects any project following the main page\'s own recommended editable-install development workflow, not just unusual VCS-based setups.',
+    ],
+  },
   'python/celery': {
     apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
     related: [
@@ -28986,6 +31055,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'acks_late=True reduces the window where a crashed worker silently loses a task, but increases the chance of duplicate execution — a deliberate tradeoff.',
       'Retries with exponential backoff avoid overwhelming an already-struggling downstream service with near-simultaneous retry attempts.',
+    ],
+  },
+  'python/celery/pending-state-cannot-distinguish-unknown-from-queued': {
+    apis: ['AsyncResult.state', 'task_track_started'],
+    related: [
+      { label: 'Celery & Task Queues (overview)', route: '/python/celery' },
+      { label: 'chain() Prepends One Argument, Not an Unpacked Tuple', route: '/python/celery/chain-prepends-one-argument-not-unpacked-tuple' },
+      { label: 'Redis visibility_timeout Can Redeliver Long Tasks', route: '/python/celery/redis-visibility-timeout-can-redeliver-long-tasks' },
+    ],
+    tip: 'Celery\'s own docs state any unknown task ID "is implied to be in the pending state" — a bogus ID and a genuinely queued task report the identical PENDING string, with no distinguishing error.',
+    docs: [
+      { label: 'Celery Docs — Task States', url: 'https://docs.celeryq.dev/en/stable/userguide/tasks.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'task_track_started adds a STARTED signal for real tasks but does nothing for a bogus ID, which never reaches any state a worker would set.',
+      'Celery has no built-in "does this task ID exist" check — track dispatched IDs independently if that distinction matters.',
+    ],
+  },
+  'python/celery/chain-prepends-one-argument-not-unpacked-tuple': {
+    apis: ['celery.chain', 'Signature._merge()'],
+    related: [
+      { label: 'Celery & Task Queues (overview)', route: '/python/celery' },
+      { label: 'PENDING Can’t Distinguish Unknown from Queued', route: '/python/celery/pending-state-cannot-distinguish-unknown-from-queued' },
+      { label: 'Redis visibility_timeout Can Redeliver Long Tasks', route: '/python/celery/redis-visibility-timeout-can-redeliver-long-tasks' },
+    ],
+    tip: 'A chain link always prepends the previous task\'s WHOLE return value as one argument — a returned tuple is never automatically unpacked into multiple arguments for the next task.',
+    docs: [
+      { label: 'Celery Docs — Canvas (chains)', url: 'https://docs.celeryq.dev/en/stable/userguide/canvas.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'The receiving task must manually destructure a tuple/list argument, or the sending task should return a dict instead.',
+      'chord callbacks use the identical mechanism — the group\'s entire results list arrives as one argument, never unpacked per-member.',
+    ],
+  },
+  'python/celery/redis-visibility-timeout-can-redeliver-long-tasks': {
+    apis: ['broker_transport_options', 'task_acks_late'],
+    related: [
+      { label: 'Celery & Task Queues (overview)', route: '/python/celery' },
+      { label: 'PENDING Can’t Distinguish Unknown from Queued', route: '/python/celery/pending-state-cannot-distinguish-unknown-from-queued' },
+      { label: 'chain() Prepends One Argument, Not an Unpacked Tuple', route: '/python/celery/chain-prepends-one-argument-not-unpacked-tuple' },
+    ],
+    tip: 'Redis\'s default visibility_timeout is 1 hour — a task with acks_late=True that runs longer gets redelivered to another worker mid-run, with no actual crash required.',
+    docs: [
+      { label: 'Celery Docs — Redis Broker (Caveats)', url: 'https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/redis.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Celery\'s own docs warn a task exceeding visibility_timeout can execute "again, and again in a loop."',
+      'Raising visibility_timeout app-wide is explicitly discouraged — scope it per-queue instead, matched to that queue\'s realistic task durations.',
     ],
   },
   'python/interview-prep': {
@@ -30894,6 +33014,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Forgetting await before an async function call means the calling code continues without waiting for it — a subtle and common source of race conditions.',
     ],
   },
+  'node/promises-async/unhandledrejection-fires-after-a-turn-not-instantly': {
+    apis: ['unhandledRejection', 'rejectionHandled'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/node/promises-async' },
+      { label: 'Top-Level await Delays the Import Chain', route: '/node/promises-async/top-level-await-delays-the-import-chain-not-the-graph' },
+      { label: 'enterWith() Leaks Context, run() Restores It', route: '/node/promises-async/enterwith-leaks-context-run-restores-it-automatically' },
+    ],
+    tip: 'A .catch() attached synchronously, within the same turn as the rejection, never triggers unhandledRejection at all — only a handler attached in a later turn does, and even then a companion rejectionHandled event fires to correct the record.',
+    docs: [
+      { label: 'Node.js — process: unhandledRejection', url: 'https://nodejs.org/api/process.html#event-unhandledrejection' },
+    ],
+    resources: [],
+    gotchas: [
+      'A global unhandledRejection handler that calls process.exit(1) can crash the process before a genuinely-late .catch() ever gets the chance to run and correct the record.',
+      'Node\'s docs describe the timing as "a turn of the event loop," not a specific documented internal mechanism — avoid over-claiming exactly how that\'s implemented.',
+    ],
+  },
+  'node/promises-async/top-level-await-delays-the-import-chain-not-the-graph': {
+    apis: ['top-level await', 'ES Modules'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/node/promises-async' },
+      { label: 'unhandledRejection Fires After a Turn, Not Instantly', route: '/node/promises-async/unhandledrejection-fires-after-a-turn-not-instantly' },
+      { label: 'enterWith() Leaks Context, run() Restores It', route: '/node/promises-async/enterwith-leaks-context-run-restores-it-automatically' },
+    ],
+    tip: 'A slow top-level await delays every module that imports it, directly or transitively — but modules on an unrelated branch of the import graph are unaffected, since the delay follows actual dependency edges, not the whole graph.',
+    docs: [
+      { label: 'TC39 — Top-level await proposal', url: 'https://github.com/tc39/proposal-top-level-await' },
+    ],
+    resources: [],
+    gotchas: [
+      'A commonly-imported module with a slow top-level await can meaningfully delay the startup of many seemingly-unrelated modules, simply because they transitively import it.',
+      'If a truly unrelated module appears delayed too, suspect a hidden transitive import rather than assuming top-level await affects the whole graph indiscriminately.',
+    ],
+  },
+  'node/promises-async/enterwith-leaks-context-run-restores-it-automatically': {
+    apis: ['AsyncLocalStorage.run()', 'AsyncLocalStorage.enterWith()'],
+    related: [
+      { label: 'Promises & Async/Await (overview)', route: '/node/promises-async' },
+      { label: 'unhandledRejection Fires After a Turn, Not Instantly', route: '/node/promises-async/unhandledrejection-fires-after-a-turn-not-instantly' },
+      { label: 'Top-Level await Delays the Import Chain', route: '/node/promises-async/top-level-await-delays-the-import-chain-not-the-graph' },
+    ],
+    tip: 'Node\'s own docs recommend run() over enterWith() unless there\'s a strong reason otherwise — enterWith() mutates the current context for the rest of the synchronous execution with no automatic restoration.',
+    docs: [
+      { label: 'Node.js — AsyncLocalStorage', url: 'https://nodejs.org/api/async_context.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'enterWith()\'s context can bleed into subsequent, unrelated event handlers running in the same synchronous stretch — a real, documented risk run() specifically avoids by auto-restoring the previous context.',
+      'The main page\'s own middleware pattern (wrapping next() inside a run() callback) is the safe, leak-proof choice — not just one stylistic option among equals.',
+    ],
+  },
   'node/error-handling': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30904,6 +33075,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A try/catch around synchronous code does NOT catch errors from an async callback executed later — the async boundary breaks the normal exception-propagation path.',
       'Global uncaughtException/unhandledRejection handlers are a last-resort safety net for logging, not a substitute for proper error handling at the source.',
+    ],
+  },
+  'node/error-handling/error-cause-does-not-survive-json-stringify': {
+    apis: ['Error.cause', 'JSON.stringify()'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/node/error-handling' },
+      { label: 'process.exit() Can Truncate Unflushed Output', route: '/node/error-handling/process-exit-can-truncate-unflushed-output' },
+      { label: 'An uncaughtException Listener Disables the Default Crash', route: '/node/error-handling/uncaughtexception-listener-disables-default-crash' },
+    ],
+    tip: 'message, stack, and cause are all non-enumerable on an Error instance — JSON.stringify(someError) produces "{}" unless you manually extract those fields first, recursively down the cause chain.',
+    docs: [
+      { label: 'MDN — Error.prototype.cause', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause' },
+    ],
+    resources: [],
+    gotchas: [
+      'A cause chain compounds the problem — err.cause is typically another Error with the same non-enumerable-property issue, so a single-level extraction still loses the nested cause.',
+      'Structured-logging setups that call JSON.stringify(err) directly, rather than extracting fields first, silently produce empty log entries for exactly the errors most worth investigating.',
+    ],
+  },
+  'node/error-handling/process-exit-can-truncate-unflushed-output': {
+    apis: ['process.exit()', 'process.exitCode'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/node/error-handling' },
+      { label: 'Error.cause Doesn’t Survive JSON.stringify()', route: '/node/error-handling/error-cause-does-not-survive-json-stringify' },
+      { label: 'An uncaughtException Listener Disables the Default Crash', route: '/node/error-handling/uncaughtexception-listener-disables-default-crash' },
+    ],
+    tip: 'Node\'s own docs recommend setting process.exitCode and letting the process exit naturally over calling process.exit() directly, specifically to avoid truncating pending stdout/stderr writes.',
+    docs: [
+      { label: 'Node.js — process.exit()', url: 'https://nodejs.org/api/process.html#processexitcode' },
+    ],
+    resources: [],
+    gotchas: [
+      'The console.error()/logger call made immediately before process.exit() in a crash handler is exactly the kind of write most at risk of truncation.',
+      'Writes to a piped destination (common in production, via a log collector or container runtime) are more likely to be asynchronous than writes to a plain interactive terminal.',
+    ],
+  },
+  'node/error-handling/uncaughtexception-listener-disables-default-crash': {
+    apis: ['process.on(\'uncaughtException\')', 'EventEmitter'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/node/error-handling' },
+      { label: 'Error.cause Doesn’t Survive JSON.stringify()', route: '/node/error-handling/error-cause-does-not-survive-json-stringify' },
+      { label: 'process.exit() Can Truncate Unflushed Output', route: '/node/error-handling/process-exit-can-truncate-unflushed-output' },
+    ],
+    tip: 'Registering an uncaughtException listener overrides Node\'s default crash-and-exit behavior — if no registered listener calls process.exit(), the process keeps running in an undefined state.',
+    docs: [
+      { label: 'Node.js — Event: \'uncaughtException\'', url: 'https://nodejs.org/api/process.html#event-uncaughtexception' },
+    ],
+    resources: [],
+    gotchas: [
+      'process is a regular EventEmitter — multiple uncaughtException listeners (yours plus a third-party monitoring SDK\'s) all run, but the process only exits if at least one of them actually calls process.exit().',
+      'An exception thrown inside the uncaughtException handler itself is not caught by that same mechanism — Node exits nonzero via a different path.',
     ],
   },
   'node/streams': {
@@ -30918,6 +33140,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Forgetting to handle the "error" event on a stream lets stream errors go completely unhandled, unlike a promise rejection which at least crashes visibly.',
     ],
   },
+  'node/streams/never-mix-data-listener-with-for-await-of': {
+    apis: ['Readable.on(\'data\')', 'for await...of', 'Symbol.asyncIterator'],
+    related: [
+      { label: 'Streams & Buffers (overview)', route: '/node/streams' },
+      { label: 'close, Not finish/end, Signals Resources Are Released', route: '/node/streams/close-not-finish-end-signals-resources-are-released' },
+      { label: 'highWaterMark Counts Objects, Not Bytes', route: '/node/streams/highwatermark-counts-objects-not-bytes-in-object-mode' },
+    ],
+    tip: 'Node\'s own docs warn against combining on(\'data\'), on(\'readable\'), pipe(), or async iterators on one stream — pick exactly one consumption method per stream.',
+    docs: [
+      { label: 'Node.js — Stream: Two Reading Modes', url: 'https://nodejs.org/api/stream.html#two-reading-modes' },
+    ],
+    resources: [],
+    gotchas: [
+      'A Readable starts in paused mode — attaching a \'data\' listener, calling .resume(), or calling .pipe() switches it into flowing mode.',
+      'A \'data\' listener attached elsewhere in a codebase can silently starve an unrelated for await...of loop on the same stream instance.',
+    ],
+  },
+  'node/streams/close-not-finish-end-signals-resources-are-released': {
+    apis: ['\'close\' event', '\'finish\' event', '\'end\' event', 'autoDestroy'],
+    related: [
+      { label: 'Streams & Buffers (overview)', route: '/node/streams' },
+      { label: 'Never Mix a data Listener With for await...of', route: '/node/streams/never-mix-data-listener-with-for-await-of' },
+      { label: 'highWaterMark Counts Objects, Not Bytes', route: '/node/streams/highwatermark-counts-objects-not-bytes-in-object-mode' },
+    ],
+    tip: '\'finish\' and \'end\' only confirm data flow completed — \'close\' is the event Node\'s docs tie explicitly to the underlying file descriptor or socket actually being released.',
+    docs: [
+      { label: 'Node.js — Stream events', url: 'https://nodejs.org/api/stream.html#class-streamwritable' },
+    ],
+    resources: [],
+    gotchas: [
+      '\'close\' firing depends on autoDestroy and emitClose both defaulting to true — a stream constructed with autoDestroy: false won\'t emit it automatically.',
+      'Code that needs to know a file descriptor is truly released (before renaming or deleting a just-written file) should wait for \'close\', not \'finish\'.',
+    ],
+  },
+  'node/streams/highwatermark-counts-objects-not-bytes-in-object-mode': {
+    apis: ['highWaterMark', 'objectMode'],
+    related: [
+      { label: 'Streams & Buffers (overview)', route: '/node/streams' },
+      { label: 'Never Mix a data Listener With for await...of', route: '/node/streams/never-mix-data-listener-with-for-await-of' },
+      { label: 'close, Not finish/end, Signals Resources Are Released', route: '/node/streams/close-not-finish-end-signals-resources-are-released' },
+    ],
+    tip: 'Node\'s docs state the default is "16384 (16 KB), or 16 for objectMode streams" — the same option name switches units entirely depending on objectMode.',
+    docs: [
+      { label: 'Node.js — new stream.Readable(options)', url: 'https://nodejs.org/api/stream.html#new-streamreadableoptions' },
+    ],
+    resources: [],
+    gotchas: [
+      'In object mode, highWaterMark counts individual objects with zero awareness of their size — a stream of large objects can buffer far more memory than the number alone suggests.',
+      'Reusing a byte-oriented number (like 16384) as an object-mode highWaterMark configures buffering of that many OBJECTS, not bytes — often far larger than intended.',
+    ],
+  },
   'node/worker-threads': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -30928,6 +33201,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Data passed between the main thread and a worker is COPIED by default (structured clone), not shared — SharedArrayBuffer is required for genuine shared memory, with its own synchronization concerns.',
       'Spawning a new worker thread has real startup overhead — a worker pool reused across requests is usually more appropriate than spawning one per request.',
+    ],
+  },
+  'node/worker-threads/each-worker-gets-its-own-process-env-snapshot': {
+    apis: ['new Worker(url, { env })', 'worker.SHARE_ENV', 'process.env'],
+    related: [
+      { label: 'Worker Threads (overview)', route: '/node/worker-threads' },
+      { label: 'terminate() Cannot Interrupt Synchronous CPU Work', route: '/node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work' },
+      { label: 'stdout: true Makes You Responsible for Draining the Stream', route: '/node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream' },
+    ],
+    tip: 'A worker\'s process.env is a copy taken at creation time — a long-lived worker pool created once at startup will keep using stale environment values indefinitely unless env: worker.SHARE_ENV is explicitly requested.',
+    docs: [
+      { label: 'Node.js — Worker Threads', url: 'https://nodejs.org/api/worker_threads.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Setting process.env inside a worker after creation has zero effect on the main thread or any sibling worker\'s environment — the isolation runs in both directions.',
+      'SHARE_ENV shares the ENTIRE environment object, not just the one variable that changed — often broader sharing than actually needed.',
+    ],
+  },
+  'node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work': {
+    apis: ['worker.terminate()', 'Promise'],
+    related: [
+      { label: 'Worker Threads (overview)', route: '/node/worker-threads' },
+      { label: 'Each Worker Gets Its Own process.env Snapshot', route: '/node/worker-threads/each-worker-gets-its-own-process-env-snapshot' },
+      { label: 'stdout: true Makes You Responsible for Draining the Stream', route: '/node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream' },
+    ],
+    tip: 'terminate() stops execution "as soon as possible," not instantly — a worker stuck in a tight synchronous loop can\'t be interrupted until that loop finishes on its own, since a pending termination request can only be processed once the worker\'s single-threaded event loop is free.',
+    docs: [
+      { label: 'Node.js — Worker Threads (terminate)', url: 'https://nodejs.org/api/worker_threads.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A worker-pool "cancel task" feature built on terminate() alone is reliable only for tasks with async yield points — a genuinely interruptible CPU-bound task needs cooperative cancellation built into the computation itself.',
+      'This follows from JavaScript\'s general single-threaded, run-to-completion execution model, not a worker_threads-specific documented caveat stated in those exact terms.',
+    ],
+  },
+  'node/worker-threads/stdout-true-makes-you-responsible-for-draining-the-stream': {
+    apis: ['new Worker(url, { stdout })', 'worker.stdout', 'stream.on(\'data\')'],
+    related: [
+      { label: 'Worker Threads (overview)', route: '/node/worker-threads' },
+      { label: 'Each Worker Gets Its Own process.env Snapshot', route: '/node/worker-threads/each-worker-gets-its-own-process-env-snapshot' },
+      { label: 'terminate() Cannot Interrupt Synchronous CPU Work', route: '/node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work' },
+    ],
+    tip: 'By default a worker\'s console output auto-pipes to the parent process\'s own stdout — passing { stdout: true } turns that off and hands you a readable worker.stdout stream that produces nothing until your own code explicitly consumes it.',
+    docs: [
+      { label: 'Node.js — Worker Threads (stdout)', url: 'https://nodejs.org/api/worker_threads.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only opt into { stdout: true } when there is a genuine reason to capture a worker\'s output separately — and always attach a real consumer immediately, rather than leaving the stream unread.',
+      'The "unconsumed stream data risks backing up" consequence is an inference from Node\'s general streams backpressure model, not a documented warning specific to this exact scenario.',
     ],
   },
   'node/express': {
@@ -31072,6 +33396,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The framework\'s opinionated structure pays off most for larger, longer-lived services — a tiny microservice may not need its full ceremony.',
     ],
   },
+  'node/nestjs/useglobalpipes-bypasses-di-use-app-pipe-instead': {
+    apis: ['APP_PIPE', 'APP_GUARD', 'APP_INTERCEPTOR', 'APP_FILTER'],
+    related: [
+      { label: 'NestJS (overview)', route: '/node/nestjs' },
+      { label: 'Middleware Exceptions Bypass Exception Filters', route: '/node/nestjs/middleware-exceptions-bypass-exception-filters' },
+      { label: 'Skipping next.handle() Skips the Handler', route: '/node/nestjs/interceptor-skipping-next-handle-skips-the-handler' },
+    ],
+    tip: 'A pipe/guard/interceptor/filter registered via useGlobalXxx() works fine until it needs an injected dependency — at which point APP_PIPE-style module registration is the only version that supports DI.',
+    docs: [
+      { label: 'NestJS — Pipes (global scope)', url: 'https://docs.nestjs.com/pipes#global-scoped-pipes' },
+    ],
+    resources: [],
+    gotchas: [
+      'Both approaches apply globally to every route — APP_PIPE is not a more limited alternative, it is the DI-capable version of the same global scope.',
+      'The failure mode is silent: a missing dependency inside a useGlobalXxx()-registered class shows up as undefined at runtime, not a clear startup error pointing at the cause.',
+    ],
+  },
+  'node/nestjs/middleware-exceptions-bypass-exception-filters': {
+    apis: ['NestMiddleware', 'ExceptionFilter', '@Catch()'],
+    related: [
+      { label: 'NestJS (overview)', route: '/node/nestjs' },
+      { label: 'app.useGlobalPipes() Bypasses Nest’s DI Container', route: '/node/nestjs/useglobalpipes-bypasses-di-use-app-pipe-instead' },
+      { label: 'Skipping next.handle() Skips the Handler', route: '/node/nestjs/interceptor-skipping-next-handle-skips-the-handler' },
+    ],
+    tip: 'For rejection logic that needs Nest\'s exception-filter-formatted responses, use a Guard instead of middleware — middleware runs entirely before Nest\'s own exception-handling chain begins.',
+    docs: [
+      { label: 'NestJS — Request lifecycle', url: 'https://docs.nestjs.com/faq/request-lifecycle' },
+    ],
+    resources: [],
+    gotchas: [
+      'This specific limitation is not stated explicitly anywhere in NestJS\'s own docs — it follows from the documented pipeline ordering, not a direct doc quote.',
+      'A thrown exception in middleware falls through to the underlying Express/Fastify platform\'s own error handling, which looks and behaves differently from Nest\'s filter-formatted output.',
+    ],
+  },
+  'node/nestjs/interceptor-skipping-next-handle-skips-the-handler': {
+    apis: ['CallHandler.handle()', 'NestInterceptor', 'RxJS Observable'],
+    related: [
+      { label: 'NestJS (overview)', route: '/node/nestjs' },
+      { label: 'app.useGlobalPipes() Bypasses Nest’s DI Container', route: '/node/nestjs/useglobalpipes-bypasses-di-use-app-pipe-instead' },
+      { label: 'Middleware Exceptions Bypass Exception Filters', route: '/node/nestjs/middleware-exceptions-bypass-exception-filters' },
+    ],
+    tip: 'next.handle() returns a cold Observable — nothing about the route handler executes until it\'s subscribed to, which is exactly the mechanism a caching interceptor exploits by returning a different Observable instead.',
+    docs: [
+      { label: 'NestJS — Interceptors', url: 'https://docs.nestjs.com/interceptors' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is not "the result gets discarded" — the handler\'s method body, including any side effects, genuinely never runs when next.handle() is skipped.',
+      'Logging or checking a condition inside intercept() has no effect on whether the handler runs — only whether next.handle() is actually called does.',
+    ],
+  },
   'node/rest-api': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -31209,6 +33584,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'JWTs are stateless and cannot be revoked before expiry without an additional server-side revocation mechanism.',
     ],
   },
+  'node/jwt-auth/rs256-hs256-algorithm-confusion-needs-explicit-pinning': {
+    apis: ['jwt.verify() algorithms option', 'CVE-2022-23540'],
+    related: [
+      { label: 'Auth with JWT & Passport (overview)', route: '/node/jwt-auth' },
+      { label: 'clockTolerance Handles Drift Between Servers', route: '/node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers' },
+      { label: 'Concurrent Refresh Requests Trigger a False Positive', route: '/node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection' },
+    ],
+    tip: 'A public RS256 key is not secret — verifying without algorithms: ["RS256"] historically let an attacker forge an HS256 token signed with that same public key as an HMAC secret.',
+    docs: [
+      { label: 'jsonwebtoken — verify() options', url: 'https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback' },
+    ],
+    resources: [],
+    gotchas: [
+      'jsonwebtoken v9.0.0+ (fixing CVE-2022-23540) auto-restricts algorithms by the key\'s actual cryptographic type by default — explicit pinning is still best practice, not the only remaining safeguard.',
+      'An app pinned to jsonwebtoken@8.x or earlier without explicit algorithms pinning remains genuinely vulnerable to this exact attack.',
+    ],
+  },
+  'node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers': {
+    apis: ['clockTolerance', 'clockTimestamp'],
+    related: [
+      { label: 'Auth with JWT & Passport (overview)', route: '/node/jwt-auth' },
+      { label: 'RS256 Public Keys Can Be Forged as HS256 Secrets', route: '/node/jwt-auth/rs256-hs256-algorithm-confusion-needs-explicit-pinning' },
+      { label: 'Concurrent Refresh Requests Trigger a False Positive', route: '/node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection' },
+    ],
+    tip: 'exp is checked against the VERIFYING server\'s own clock, not the issuing server\'s — clockTolerance absorbs normal drift between distributed server instances.',
+    docs: [
+      { label: 'jsonwebtoken — clockTolerance', url: 'https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback' },
+    ],
+    resources: [],
+    gotchas: [
+      'This never surfaces in local development (one machine, one clock) — it becomes a real, intermittent bug only once an app scales to multiple hosts.',
+      'clockTolerance and clockTimestamp are different options — one absorbs real drift, the other overrides "now" entirely for deterministic tests.',
+    ],
+  },
+  'node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection': {
+    apis: ['Refresh Token Rotation', 'Grace Period'],
+    related: [
+      { label: 'Auth with JWT & Passport (overview)', route: '/node/jwt-auth' },
+      { label: 'RS256 Public Keys Can Be Forged as HS256 Secrets', route: '/node/jwt-auth/rs256-hs256-algorithm-confusion-needs-explicit-pinning' },
+      { label: 'clockTolerance Handles Drift Between Servers', route: '/node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers' },
+    ],
+    tip: 'Two legitimate, near-simultaneous refresh requests from the same user produce the exact same "already-used token" signal as real theft — a short grace period for the immediately-prior token is the common mitigation.',
+    docs: [
+      { label: 'Refresh token rotation false positives', url: 'https://danmercer.net/p/refresh-token-false-positives/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A grace period is a genuine tradeoff, not a free fix — an attacker who also has the old token gets the same window to use it.',
+      'This is a widely recognized limitation of strict refresh-token rotation generally, not a flaw specific to any one implementation.',
+    ],
+  },
   'node/security': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -31219,6 +33645,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'npm audit surfaces known vulnerabilities in dependencies, but does not catch vulnerabilities in your OWN application logic — it complements, not replaces, secure coding practices.',
       'Environment variables holding secrets should never be logged or included in error responses — a surprisingly common accidental leak.',
+    ],
+  },
+  'node/security/csp-nonces-must-be-regenerated-on-every-single-request': {
+    apis: ['Content-Security-Policy nonce', 'crypto.randomBytes()'],
+    related: [
+      { label: 'Security Best Practices (overview)', route: '/node/security' },
+      { label: 'trust proxy Must Be Configured Behind a Reverse Proxy', route: '/node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy' },
+      { label: 'bcrypt Silently Truncates Passwords Longer Than 72 Bytes', route: '/node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes' },
+    ],
+    tip: 'MDN\'s own docs state a nonce "should be generated differently each time the page loads" — a value reused across requests is readable via one view-source and defeats the entire protection.',
+    docs: [
+      { label: 'MDN — nonce global attribute', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce' },
+    ],
+    resources: [],
+    gotchas: [
+      'A nonce computed once at server startup (a module-level constant) is functionally equivalent to no nonce at all, once the first page load leaks it.',
+      'Nonce-based CSP and full-page HTTP/CDN caching are in genuine tension — most deployments exclude nonce-bearing pages from cache entirely.',
+    ],
+  },
+  'node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy': {
+    apis: ['app.set(\'trust proxy\')', 'req.ip', 'X-Forwarded-For'],
+    related: [
+      { label: 'Security Best Practices (overview)', route: '/node/security' },
+      { label: 'CSP Nonces Must Be Regenerated on Every Request', route: '/node/security/csp-nonces-must-be-regenerated-on-every-single-request' },
+      { label: 'bcrypt Silently Truncates Passwords Longer Than 72 Bytes', route: '/node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes' },
+    ],
+    tip: 'A Redis-backed rate limiter shares counter state correctly across instances, but does nothing to fix req.ip itself — that depends entirely on the trust proxy setting matching the app\'s real network topology.',
+    docs: [
+      { label: 'Express — Behind proxies', url: 'https://expressjs.com/en/guide/behind-proxies.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Left unset behind a proxy, req.ip returns the proxy\'s own IP for every request — express-rate-limit\'s own docs describe this as "effectively a global" limiter shared by all users.',
+      'Set to bare true, trust proxy trusts every hop unconditionally, letting a client spoof X-Forwarded-For to bypass IP-based rate limiting entirely.',
+    ],
+  },
+  'node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes': {
+    apis: ['bcrypt.hash()', 'Buffer.byteLength()'],
+    related: [
+      { label: 'Security Best Practices (overview)', route: '/node/security' },
+      { label: 'CSP Nonces Must Be Regenerated on Every Request', route: '/node/security/csp-nonces-must-be-regenerated-on-every-single-request' },
+      { label: 'trust proxy Must Be Configured Behind a Reverse Proxy', route: '/node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy' },
+    ],
+    tip: 'bcrypt only processes the first 72 BYTES of a password — not 72 characters — per the algorithm\'s own npm README; two passwords sharing that prefix hash identically and both authenticate.',
+    docs: [
+      { label: 'OWASP — Password Storage Cheat Sheet', url: 'https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A character-count validation (like the main page\'s own max(128)) does not prevent this — multi-byte UTF-8 characters (emoji, accents) can cross 72 bytes in far fewer than 72 characters.',
+      'Argon2id does not share this limitation — its spec supports inputs up to 2^32−1 bytes, one concrete reason OWASP lists it as the primary recommendation over bcrypt.',
     ],
   },
   'node/env-config': {
@@ -31298,15 +33775,117 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Logging sensitive data (passwords, tokens, full request bodies) is a common compliance and security failure mode worth explicitly guarding against.',
     ],
   },
+  'node/logging/pino-redact-paths-must-match-the-exact-log-object-shape': {
+    apis: ['pino({ redact })', 'fast-redact'],
+    related: [
+      { label: 'Logging with Pino/Winston (overview)', route: '/node/logging' },
+      { label: 'base Option Replaces, Not Merges, pid and hostname', route: '/node/logging/pino-base-option-replaces-not-merges-pid-and-hostname' },
+      { label: 'redact() Never Touches the Log Message String', route: '/node/logging/pino-redact-never-touches-the-log-message-string' },
+    ],
+    tip: 'A redact path that doesn\'t match the logged object\'s real shape fails completely silently — no error, no warning, the field just stays in plain text.',
+    docs: [
+      { label: 'Pino — Redaction', url: 'https://github.com/pinojs/pino/blob/main/docs/redaction.md' },
+    ],
+    resources: [],
+    gotchas: [
+      'The main page\'s own two code samples use genuinely different, non-interchangeable redact paths (headers.authorization vs req.headers.authorization) for what looks like the same intent.',
+      'A redact path that was correct can silently stop matching anything after a refactor changes the shape of the logged object, with zero indication anywhere.',
+    ],
+  },
+  'node/logging/pino-base-option-replaces-not-merges-pid-and-hostname': {
+    apis: ['pino({ base })', 'process.pid', 'os.hostname()'],
+    related: [
+      { label: 'Logging with Pino/Winston (overview)', route: '/node/logging' },
+      { label: 'Pino Redact Paths Must Match the Exact Log Object Shape', route: '/node/logging/pino-redact-paths-must-match-the-exact-log-object-shape' },
+      { label: 'redact() Never Touches the Log Message String', route: '/node/logging/pino-redact-never-touches-the-log-message-string' },
+    ],
+    tip: 'Pino\'s own docs confirm base\'s default is a single value ({ pid, hostname }) that gets entirely replaced, not merged, once explicitly set — the main page\'s own config silently drops both.',
+    docs: [
+      { label: 'Pino — API (base option)', url: 'https://github.com/pinojs/pino/blob/main/docs/api.md' },
+    ],
+    resources: [],
+    gotchas: [
+      'In any multi-instance deployment, pid/hostname are often the only fields distinguishing which process/pod produced a given log line — losing them silently hurts incident response.',
+      'The fix is including process.pid and os.hostname() manually inside the same custom base object, not choosing between defaults and custom fields.',
+    ],
+  },
+  'node/logging/pino-redact-never-touches-the-log-message-string': {
+    apis: ['pino({ redact })', 'template literals'],
+    related: [
+      { label: 'Logging with Pino/Winston (overview)', route: '/node/logging' },
+      { label: 'Pino Redact Paths Must Match the Exact Log Object Shape', route: '/node/logging/pino-redact-paths-must-match-the-exact-log-object-shape' },
+      { label: 'base Option Replaces, Not Merges, pid and hostname', route: '/node/logging/pino-base-option-replaces-not-merges-pid-and-hostname' },
+    ],
+    tip: 'redact only ever examines the structured object argument\'s properties — a value interpolated directly into the message string is completely invisible to it, regardless of configuration.',
+    docs: [
+      { label: 'Pino — Redaction', url: 'https://github.com/pinojs/pino/blob/main/docs/redaction.md' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is not a misconfiguration bug like the earlier subtopics in this batch — it\'s a category of leak redact was never designed to address at all.',
+      'The reliable discipline: sensitive values always go in the object argument, never the message string, specifically so redact has any chance of protecting them.',
+    ],
+  },
   'node/testing': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
       { label: 'Express',   route: '/node/express' },
     ],
-    tip: 'Testing an Express/Fastify app with supertest lets you make real HTTP requests against the app in-process, without actually binding to a network port — fast, reliable integration-style tests of routing and middleware behavior.',
+    tip: 'Testing an Express/Fastify app with supertest makes real HTTP requests against an OS-assigned ephemeral port bound automatically for you — no hardcoded port to manage or coordinate across parallel test files, for fast, reliable integration-style tests of routing and middleware behavior.',
     gotchas: [
       'Mocking a database call versus using a real test database (via Testcontainers) is the same integration-vs-unit tradeoff that applies to testing any backend — both have their place.',
       'Async test code that forgets to await a promise can report false passes, since the test completes before the assertion actually runs.',
+    ],
+  },
+  'node/testing/context-mock-auto-restores-top-level-mock-does-not': {
+    apis: ['t.mock.method()', 'node:test mock (top-level)', 'MockTracker'],
+    related: [
+      { label: 'Testing Node.js Apps (overview)', route: '/node/testing' },
+      { label: 'clearAllMocks() Does Not Reset Module-Level State', route: '/node/testing/clearallmocks-does-not-reset-module-level-state' },
+      { label: 'Supertest Still Binds a Real Ephemeral Port', route: '/node/testing/supertest-still-binds-a-real-ephemeral-port' },
+    ],
+    tip: 'Node\'s own docs guarantee t.mock (the per-test context mock tracker) auto-restores everything once that test finishes — the top-level mock import has no such guarantee and needs an explicit mock.restoreAll(), typically in afterEach.',
+    docs: [
+      { label: 'Node.js — Test Runner (Mocking)', url: 'https://nodejs.org/api/test.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Mixing the two mock sources in the same file is an easy mistake — anything set up via the top-level mock import needs its own explicit cleanup, unlike t.mock.',
+      'Preferring t.mock whenever a mock does not need to outlive its own test removes an entire category of cleanup bugs by construction.',
+    ],
+  },
+  'node/testing/clearallmocks-does-not-reset-module-level-state': {
+    apis: ['jest.clearAllMocks()', 'jest.resetAllMocks()', 'jest.resetModules()'],
+    related: [
+      { label: 'Testing Node.js Apps (overview)', route: '/node/testing' },
+      { label: 't.mock Auto-Restores; the Top-Level mock Import Does Not', route: '/node/testing/context-mock-auto-restores-top-level-mock-does-not' },
+      { label: 'Supertest Still Binds a Real Ephemeral Port', route: '/node/testing/supertest-still-binds-a-real-ephemeral-port' },
+    ],
+    tip: 'clearAllMocks()/resetAllMocks() only reset Jest\'s own mock-function bookkeeping — a module\'s own top-level state (a counter, a Map) is untouched by either, and survives across tests in the same file until jest.resetModules() clears the require cache.',
+    docs: [
+      { label: 'Jest — The Jest Object', url: 'https://jestjs.io/docs/jest-object' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is an easy over-generalization of the main page\'s own "clear mocks in afterEach" fix — that rule only ever covered mock call history, not a module\'s own internal state.',
+      'The real fix for leaking module-level state is an explicit reset export the tests call directly, or jest.resetModules() plus a fresh re-require.',
+    ],
+  },
+  'node/testing/supertest-still-binds-a-real-ephemeral-port': {
+    apis: ['supertest(app)', 'http.createServer()', '.listen(0)'],
+    related: [
+      { label: 'Testing Node.js Apps (overview)', route: '/node/testing' },
+      { label: 't.mock Auto-Restores; the Top-Level mock Import Does Not', route: '/node/testing/context-mock-auto-restores-top-level-mock-does-not' },
+      { label: 'clearAllMocks() Does Not Reset Module-Level State', route: '/node/testing/clearallmocks-does-not-reset-module-level-state' },
+    ],
+    tip: 'No visible app.listen() call does not mean no networking — Supertest wraps an unlistening Express app via http.createServer(app) and binds a real, OS-assigned ephemeral port with .listen(0) on the first request.',
+    docs: [
+      { label: 'Supertest — README', url: 'https://github.com/ladjs/supertest' },
+    ],
+    resources: [],
+    gotchas: [
+      'The genuine benefit is never having to pick or coordinate a port number yourself — not the absence of networking, which is a common misreading of Supertest\'s ergonomics.',
+      'Because a real port is bound, code paths gated on the server actually listening can genuinely execute during a Supertest-driven test.',
     ],
   },
   'node/performance': {
@@ -31321,6 +33900,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Clustering (running multiple Node processes) is required to use more than one CPU core, since a single Node process is fundamentally single-threaded for JS execution.',
     ],
   },
+  'node/performance/worker-threads-postmessage-copies-data-by-default': {
+    apis: ['postMessage()', 'SharedArrayBuffer', 'transferList'],
+    related: [
+      { label: 'Node.js Performance (overview)', route: '/node/performance' },
+      { label: 'monitorEventLoopDelay() Is a Purpose-Built Alternative', route: '/node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram' },
+      { label: '--max-old-space-size Does Not Cap Total Process Memory', route: '/node/performance/max-old-space-size-does-not-cap-total-process-memory' },
+    ],
+    tip: 'Node\'s own docs confirm postMessage()/workerData use the structured clone algorithm by default — a real, size-proportional copy avoided only by SharedArrayBuffer or transferList.',
+    docs: [
+      { label: 'Node.js — worker_threads', url: 'https://nodejs.org/api/worker_threads.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A transferred ArrayBuffer becomes unusable (zero-length) in the sending thread afterward — a hand-off, not a copy, with a real consequence for the original reference.',
+      'SharedArrayBuffer and transferList solve different problems — ongoing shared access versus a one-shot zero-copy hand-off — not interchangeable optimizations.',
+    ],
+  },
+  'node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram': {
+    apis: ['perf_hooks.monitorEventLoopDelay()', 'Histogram'],
+    related: [
+      { label: 'Node.js Performance (overview)', route: '/node/performance' },
+      { label: 'worker_threads postMessage() Copies Data by Default', route: '/node/performance/worker-threads-postmessage-copies-data-by-default' },
+      { label: '--max-old-space-size Does Not Cap Total Process Memory', route: '/node/performance/max-old-space-size-does-not-cap-total-process-memory' },
+    ],
+    tip: 'A one-line histogram.enable() replaces a hand-rolled rolling-buffer lag monitor — .mean, .max, and .percentile(n) are computed internally, in nanoseconds.',
+    docs: [
+      { label: 'Node.js — perf_hooks', url: 'https://nodejs.org/api/perf_hooks.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Histogram values are reported in NANOSECONDS — divide by 1e6 to get milliseconds, an easy unit mismatch when porting from a millisecond-based hand-rolled implementation.',
+      'A hand-rolled setInterval-based lag monitor is itself application code competing for the same event loop time it\'s trying to measure — Node\'s own internal sampling mechanism avoids that specific confound.',
+    ],
+  },
+  'node/performance/max-old-space-size-does-not-cap-total-process-memory': {
+    apis: ['process.memoryUsage()', '--max-old-space-size', 'Buffer'],
+    related: [
+      { label: 'Node.js Performance (overview)', route: '/node/performance' },
+      { label: 'worker_threads postMessage() Copies Data by Default', route: '/node/performance/worker-threads-postmessage-copies-data-by-default' },
+      { label: 'monitorEventLoopDelay() Is a Purpose-Built Alternative', route: '/node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram' },
+    ],
+    tip: 'Buffer instances are allocated outside the V8 heap entirely, per Node\'s own docs — a Buffer-heavy workload can be OOM-killed by a container with heapUsed staying low the whole time.',
+    docs: [
+      { label: 'Node.js — Buffer', url: 'https://nodejs.org/api/buffer.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'An OOM kill from external/Buffer memory growth produces NO "JavaScript heap out of memory" error — V8 never approached its own limit, so there\'s nothing for it to throw.',
+      'rss (not heapUsed/heapTotal) is the figure that actually corresponds to what a container orchestrator measures against a memory limit.',
+    ],
+  },
   'node/caching': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -31330,6 +33960,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Cache invalidation on writes must be deliberate — forgetting to invalidate on update serves stale data indefinitely until a TTL naturally expires.',
       'An unbounded in-memory cache (no max size, no eviction) is a memory leak waiting to happen in a long-running process.',
+    ],
+  },
+  'node/caching/lock-ttl-can-expire-while-the-holder-is-still-working': {
+    apis: ['SET NX EX', 'EXPIRE', 'Distributed Locks'],
+    related: [
+      { label: 'Caching with Redis (overview)', route: '/node/caching' },
+      { label: 'SCAN Does Not Guarantee a Consistent Snapshot', route: '/node/caching/scan-does-not-guarantee-a-consistent-snapshot' },
+      { label: 'SET NX Lock Is Not Safe Across a Redis Failover', route: '/node/caching/set-nx-lock-is-not-safe-across-a-redis-failover' },
+    ],
+    tip: 'Redis\'s own docs state mutual exclusion holds only "as long as the client... terminates its work within the lock validity time" — a fixed TTL and slow fetchFn() can let a second process duplicate the work.',
+    docs: [
+      { label: 'Redis — Distributed Locks', url: 'https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/' },
+    ],
+    resources: [],
+    gotchas: [
+      'The documented mitigation is periodic lock extension (a watchdog) while work is genuinely ongoing, not simply picking a longer fixed TTL.',
+      'Redis\'s own docs go further and recommend fencing tokens as the real safeguard for operations where a stale lock-holder writing anyway would cause real damage.',
+    ],
+  },
+  'node/caching/scan-does-not-guarantee-a-consistent-snapshot': {
+    apis: ['SCAN', 'HSCAN', 'SSCAN'],
+    related: [
+      { label: 'Caching with Redis (overview)', route: '/node/caching' },
+      { label: 'Lock TTL Can Expire While the Holder Is Still Working', route: '/node/caching/lock-ttl-can-expire-while-the-holder-is-still-working' },
+      { label: 'SET NX Lock Is Not Safe Across a Redis Failover', route: '/node/caching/set-nx-lock-is-not-safe-across-a-redis-failover' },
+    ],
+    tip: 'SCAN only guarantees a key present for the ENTIRE scan duration is returned at least once — keys added or removed mid-scan are explicitly left undefined by Redis\'s own docs, and duplicates are possible.',
+    docs: [
+      { label: 'Redis — SCAN command', url: 'https://redis.io/docs/latest/commands/scan/' },
+    ],
+    resources: [],
+    gotchas: [
+      '"Non-blocking" (why SCAN replaces KEYS) and "consistent snapshot" are different properties — SCAN only provides the former.',
+      'Code that counts or processes each scanned key (not just deletes it) needs explicit deduplication, since the same key can be returned more than once.',
+    ],
+  },
+  'node/caching/set-nx-lock-is-not-safe-across-a-redis-failover': {
+    apis: ['Redlock', 'Fencing Tokens', 'Replication'],
+    related: [
+      { label: 'Caching with Redis (overview)', route: '/node/caching' },
+      { label: 'Lock TTL Can Expire While the Holder Is Still Working', route: '/node/caching/lock-ttl-can-expire-while-the-holder-is-still-working' },
+      { label: 'SCAN Does Not Guarantee a Consistent Snapshot', route: '/node/caching/scan-does-not-guarantee-a-consistent-snapshot' },
+    ],
+    tip: 'Redis\'s own docs walk through a primary crashing before replicating a lock write, letting a promoted replica grant the "same" lock to a second client — labeled outright a "SAFETY VIOLATION!"',
+    docs: [
+      { label: 'Redis — Distributed Locks (failover safety)', url: 'https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a genuinely separate failure mode from TTL expiry — it can happen for near-instantaneous work, with no slow operation involved at all.',
+      'For a cache-population lock specifically, the worst case is a harmless duplicate refresh — full Redlock is usually disproportionate; reserve it for genuinely irreversible operations.',
     ],
   },
   'node/mongoose': {
@@ -31343,6 +34024,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Reusing a single connection (not creating one per request) is essential — Mongoose manages connection pooling internally when used correctly.',
     ],
   },
+  'node/mongoose/update-validators-are-off-by-default-need-runvalidators': {
+    apis: ['runValidators', 'updateOne()', 'findOneAndUpdate()'],
+    related: [
+      { label: 'MongoDB with Mongoose (overview)', route: '/node/mongoose' },
+      { label: 'populate() Resolves a Dangling Reference to null', route: '/node/mongoose/populate-resolves-a-dangling-reference-to-null' },
+      { label: 'Mixed Type Mutations Need markModified()', route: '/node/mongoose/mixed-type-mutations-need-markmodified-to-persist' },
+    ],
+    tip: 'Mongoose\'s own docs state update validators are off by default — updateOne()/findOneAndUpdate() write invalid data with no error unless { runValidators: true } is passed explicitly.',
+    docs: [
+      { label: 'Mongoose — Validation', url: 'https://mongoosejs.com/docs/validation.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Inside an update validator, "this" refers to the Query, not the document — a real difference from a .save()-triggered validator context.',
+      'Update validators only check paths actually present in the update (for $set/$unset/$push/etc.) — untouched fields are never re-validated, even with runValidators: true.',
+    ],
+  },
+  'node/mongoose/populate-resolves-a-dangling-reference-to-null': {
+    apis: ['populate()', 'Schema.Types.ObjectId'],
+    related: [
+      { label: 'MongoDB with Mongoose (overview)', route: '/node/mongoose' },
+      { label: 'Update Validators Are Off by Default', route: '/node/mongoose/update-validators-are-off-by-default-need-runvalidators' },
+      { label: 'Mixed Type Mutations Need markModified()', route: '/node/mongoose/mixed-type-mutations-need-markmodified-to-persist' },
+    ],
+    tip: 'Mongoose\'s own docs compare populate() to a SQL LEFT JOIN — a reference to a deleted document resolves to null, never an error, since Mongoose enforces no referential integrity.',
+    docs: [
+      { label: 'Mongoose — Populate', url: 'https://mongoosejs.com/docs/populate.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Code accessing a populated field\'s properties without a null check (post.author.name) throws a TypeError the moment it hits a dangling reference.',
+      'A soft-delete pattern (deletedAt instead of an actual delete) sidesteps this entirely, since the referenced document still physically exists for populate() to find.',
+    ],
+  },
+  'node/mongoose/mixed-type-mutations-need-markmodified-to-persist': {
+    apis: ['Schema.Types.Mixed', 'markModified()'],
+    related: [
+      { label: 'MongoDB with Mongoose (overview)', route: '/node/mongoose' },
+      { label: 'Update Validators Are Off by Default', route: '/node/mongoose/update-validators-are-off-by-default-need-runvalidators' },
+      { label: 'populate() Resolves a Dangling Reference to null', route: '/node/mongoose/populate-resolves-a-dangling-reference-to-null' },
+    ],
+    tip: 'Mongoose\'s own docs state Mixed "loses the ability to auto detect and save" in-place changes — mutating a nested property without reassigning the whole field silently never persists.',
+    docs: [
+      { label: 'Mongoose — Schema Types (Mixed)', url: 'https://mongoosejs.com/docs/schematypes.html#mixed' },
+    ],
+    resources: [],
+    gotchas: [
+      'A full reassignment (doc.field = {...}) IS detected normally — only in-place mutation of an existing Mixed object\'s properties is invisible to Mongoose.',
+      'markModified() only affects the current pending save — every subsequent in-place mutation needs its own call, with no persistent tracking carried forward.',
+    ],
+  },
   'node/prisma': {
     apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
     related: [
@@ -31352,6 +34084,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Prisma migrations should be reviewed before applying in production — an auto-generated migration can occasionally include a destructive operation (a column drop) that needs manual confirmation.',
       'The Prisma Client instance should be a SINGLETON reused across the app, not instantiated per request, to avoid exhausting database connections.',
+    ],
+  },
+  'node/prisma/interactive-transactions-have-a-default-5-second-timeout': {
+    apis: ['$transaction()', 'maxWait', 'timeout', 'P2028'],
+    related: [
+      { label: 'Database with Prisma (overview)', route: '/node/prisma' },
+      { label: '$queryRaw Can Return BigInt', route: '/node/prisma/queryraw-can-return-bigint-json-stringify-throws' },
+      { label: 'PrismaClient Singleton Needs globalThis Caching', route: '/node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev' },
+    ],
+    tip: 'Prisma\'s own docs warn against network requests inside a transaction callback — the default 5-second timeout can roll back an otherwise-successful transaction if a slow external call is mixed in.',
+    docs: [
+      { label: 'Prisma — Transactions and batch queries', url: 'https://www.prisma.io/docs/orm/prisma-client/queries/transactions' },
+    ],
+    resources: [],
+    gotchas: [
+      'maxWait (2000ms default) and timeout (5000ms default) are two separate limits — one for acquiring a transaction slot, one for the callback\'s own execution time.',
+      'The documented fix is architectural — move slow, non-database work outside the transaction callback — not simply raising the timeout value.',
+    ],
+  },
+  'node/prisma/queryraw-can-return-bigint-json-stringify-throws': {
+    apis: ['$queryRaw', 'JSON.stringify()', 'BigInt'],
+    related: [
+      { label: 'Database with Prisma (overview)', route: '/node/prisma' },
+      { label: 'Interactive Transactions Have a 5-Second Timeout', route: '/node/prisma/interactive-transactions-have-a-default-5-second-timeout' },
+      { label: 'PrismaClient Singleton Needs globalThis Caching', route: '/node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev' },
+    ],
+    tip: 'A COUNT() aggregate or 64-bit integer column from a raw query can map to JS BigInt — res.json() crashes with a 500 the instant one reaches JSON.stringify().',
+    docs: [
+      { label: 'Prisma — Fields & types (BigInt)', url: 'https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types' },
+    ],
+    resources: [],
+    gotchas: [
+      'Whether a result maps to BigInt depends on the database column TYPE category, not the actual numeric value — a count of 3 and a count of 3 million behave identically.',
+      'The documented fix is a JSON.stringify() replacer function converting BigInt to a string, not res.json() directly on raw query results.',
+    ],
+  },
+  'node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev': {
+    apis: ['globalThis', 'PrismaClient', 'NODE_ENV'],
+    related: [
+      { label: 'Database with Prisma (overview)', route: '/node/prisma' },
+      { label: 'Interactive Transactions Have a 5-Second Timeout', route: '/node/prisma/interactive-transactions-have-a-default-5-second-timeout' },
+      { label: '$queryRaw Can Return BigInt', route: '/node/prisma/queryraw-can-return-bigint-json-stringify-throws' },
+    ],
+    tip: 'A plain module-level singleton is correct in production, but hot-module-reloading in dev can re-evaluate the module and create a new connection pool on every save — Prisma\'s own Next.js docs recommend caching on globalThis instead.',
+    docs: [
+      { label: 'Prisma ORM with Next.js', url: 'https://www.prisma.io/docs/orm/more/troubleshooting/nextjs' },
+    ],
+    resources: [],
+    gotchas: [
+      'Prisma\'s documented pattern only writes to globalThis when NODE_ENV !== "production" — production\'s single module evaluation never had this problem.',
+      'globalThis persists across a hot-reload cycle in a way a re-evaluated module\'s own local scope does not.',
     ],
   },
   'node/deployment': {
@@ -31364,6 +34147,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A process manager (PM2, or a container orchestrator\'s own restart policy) that immediately restarts a crashing process can mask an underlying bug that should actually be fixed, not just auto-recovered from.',
       'Health check endpoints should verify genuine readiness (DB connectivity, dependent service availability), not just "the process is running."',
+    ],
+  },
+  'node/deployment/server-close-and-idle-keep-alive-connections-since-node-19': {
+    apis: ['server.close()', 'server.closeIdleConnections()', 'server.closeAllConnections()'],
+    related: [
+      { label: 'Deploying Node.js Apps (overview)', route: '/node/deployment' },
+      { label: 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes', route: '/node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes' },
+      { label: 'npm ci Deletes node_modules Before Installing', route: '/node/deployment/npm-ci-deletes-node-modules-before-installing' },
+    ],
+    tip: 'Before Node 19, an idle keep-alive connection could keep server.close()\'s callback from ever firing — Node 19 changed the default to close idle connections automatically; closeAllConnections() still matters for a hard cutoff on any version.',
+    docs: [
+      { label: 'Node.js — HTTP (server.close)', url: 'https://nodejs.org/api/http.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'The main page\'s own force-exit timeout is still worth keeping even on Node 19+ — it protects against genuinely slow in-flight requests, a different scenario than an idle connection with no work at all.',
+      'Shutdown code shared across services on different Node versions can behave differently — check the actual pinned Node version before assuming an older workaround is now redundant.',
+    ],
+  },
+  'node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes': {
+    apis: ['Dockerfile HEALTHCHECK', 'readinessProbe', 'livenessProbe'],
+    related: [
+      { label: 'Deploying Node.js Apps (overview)', route: '/node/deployment' },
+      { label: 'server.close() and Idle Keep-Alive Connections Since Node 19', route: '/node/deployment/server-close-and-idle-keep-alive-connections-since-node-19' },
+      { label: 'npm ci Deletes node_modules Before Installing', route: '/node/deployment/npm-ci-deletes-node-modules-before-installing' },
+    ],
+    tip: 'Kubernetes\' kubelet never reads a Dockerfile\'s own HEALTHCHECK instruction — it relies entirely on readinessProbe/livenessProbe defined separately in the pod spec, even if both check the exact same endpoint.',
+    docs: [
+      { label: 'Kubernetes — Liveness, Readiness, Startup Probes', url: 'https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/' },
+    ],
+    resources: [],
+    gotchas: [
+      'A pod with no readinessProbe/livenessProbe defined in its manifest has NO functioning Kubernetes-level health check, no matter how correct the image\'s own Dockerfile HEALTHCHECK is.',
+      'Under plain docker run, a --restart policy only triggers when the process actually exits, not merely because HEALTHCHECK reports unhealthy — only Docker Swarm actively reschedules on that status.',
+    ],
+  },
+  'node/deployment/npm-ci-deletes-node-modules-before-installing': {
+    apis: ['npm ci', 'BuildKit --mount=type=cache'],
+    related: [
+      { label: 'Deploying Node.js Apps (overview)', route: '/node/deployment' },
+      { label: 'server.close() and Idle Keep-Alive Connections Since Node 19', route: '/node/deployment/server-close-and-idle-keep-alive-connections-since-node-19' },
+      { label: 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes', route: '/node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes' },
+    ],
+    tip: 'npm ci deletes any existing node_modules before installing, per npm\'s own docs — a BuildKit cache mount targeting node_modules gives it no benefit; cache npm\'s own download directory (~/.npm) instead.',
+    docs: [
+      { label: 'npm Docs — npm ci', url: 'https://docs.npmjs.com/cli/v10/commands/npm-ci' },
+    ],
+    resources: [],
+    gotchas: [
+      'The main page\'s own Dockerfile already gets its speedup from Docker LAYER caching (copying the lockfile before source code), not from any caching of node_modules\' actual contents.',
+      'npm install does NOT delete node_modules first — this delete-then-install behavior is specific to npm ci.',
     ],
   },
   'node/websockets': {
@@ -31442,6 +34276,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Go has no generics-style function overloading — a function name can only have one signature per package scope.',
     ],
   },
+  'go/fundamentals/go-122-gives-each-loop-iteration-its-own-variable': {
+    apis: ['go.mod go directive', 'go1.22 release notes'],
+    related: [
+      { label: 'Fundamentals (overview)', route: '/go/fundamentals' },
+      { label: 'range Copies Each Element Into the Loop Variable', route: '/go/fundamentals/range-copies-each-element-into-the-loop-variable' },
+      { label: 'Arrays Are Comparable, Slices Are Not', route: '/go/fundamentals/arrays-are-comparable-slices-are-not' },
+    ],
+    tip: 'Go\'s own 1.22 release notes state each loop iteration now creates new variables — but only for modules whose go.mod itself declares go 1.22 or later, not just a newer installed toolchain.',
+    docs: [
+      { label: 'Go Docs — Go 1.22 Release Notes', url: 'https://go.dev/doc/go1.22' },
+    ],
+    resources: [],
+    gotchas: [
+      'The v := v shadowing workaround still compiles and still works correctly under either semantics — it just becomes unnecessary once a module adopts go 1.22+.',
+      'A newer compiler alone does not activate the fix — check the module\'s own go.mod go directive, not just the installed toolchain version.',
+    ],
+  },
+  'go/fundamentals/range-copies-each-element-into-the-loop-variable': {
+    apis: ['for range value semantics'],
+    related: [
+      { label: 'Fundamentals (overview)', route: '/go/fundamentals' },
+      { label: 'Go 1.22 Gives Each Loop Iteration Its Own Variable', route: '/go/fundamentals/go-122-gives-each-loop-iteration-its-own-variable' },
+      { label: 'Arrays Are Comparable, Slices Are Not', route: '/go/fundamentals/arrays-are-comparable-slices-are-not' },
+    ],
+    tip: 'for i, v := range slice assigns v BY VALUE — mutating v never reaches the original slice. Write through slice[i] instead, unless the slice holds pointers.',
+    docs: [
+      { label: 'Go Wiki — Range', url: 'https://go.dev/wiki/Range' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a different problem from the closure-capture-in-goroutines issue — shadowing (v := v) does nothing to fix a mutation problem, since v was never connected to the slice\'s memory at all.',
+      'A slice of POINTERS ([]*T) behaves differently — the copied pointer still refers to the same underlying struct, so mutating through it does reach the original.',
+    ],
+  },
+  'go/fundamentals/arrays-are-comparable-slices-are-not': {
+    apis: ['comparison operators', 'map key types'],
+    related: [
+      { label: 'Fundamentals (overview)', route: '/go/fundamentals' },
+      { label: 'Go 1.22 Gives Each Loop Iteration Its Own Variable', route: '/go/fundamentals/go-122-gives-each-loop-iteration-its-own-variable' },
+      { label: 'range Copies Each Element Into the Loop Variable', route: '/go/fundamentals/range-copies-each-element-into-the-loop-variable' },
+    ],
+    tip: 'Go\'s own spec: arrays are comparable if their element type is comparable; slices are never comparable except to nil. A struct is comparable only if ALL its fields are.',
+    docs: [
+      { label: 'Go Spec — Comparison Operators', url: 'https://go.dev/ref/spec#Comparison_operators' },
+    ],
+    resources: [],
+    gotchas: [
+      'If a field\'s size is genuinely fixed at compile time, switching it from a slice to an array (or a plain scalar) restores == comparability with no helper function needed.',
+      'A single non-comparable field anywhere in a struct (one slice) makes the WHOLE struct non-comparable — there is no partial state.',
+    ],
+  },
   'go/structs-interfaces': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31452,6 +34337,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A nil interface holding a typed nil pointer is NOT itself nil — err != nil can be true even when the underlying concrete value is nil, a classic Go gotcha.',
       'Embedding a struct promotes its fields/methods to the outer struct, but this is composition, not inheritance — there is no polymorphic dispatch to the embedded type.',
+    ],
+  },
+  'go/structs-interfaces/method-sets-t-vs-pointer-t': {
+    apis: ['Go Spec — Method Sets'],
+    related: [
+      { label: 'Structs & Interfaces (overview)', route: '/go/structs-interfaces' },
+      { label: 'Embedded Methods Satisfy Interfaces Too', route: '/go/structs-interfaces/embedded-methods-satisfy-interfaces-too' },
+      { label: 'Comparing Interfaces Can Panic at Runtime', route: '/go/structs-interfaces/comparing-interfaces-can-panic-at-runtime' },
+    ],
+    tip: 'Go\'s own spec: T\'s method set has only value-receiver methods; *T\'s method set has both value- and pointer-receiver methods — exactly why a value type can fail interface satisfaction a pointer passes fine.',
+    docs: [
+      { label: 'Go Spec — Method Sets', url: 'https://go.dev/ref/spec#Method_sets' },
+    ],
+    resources: [],
+    gotchas: [
+      'Calling a pointer-receiver method directly on an addressable value still works (Go implicitly takes the address) — that convenience does not extend to interface satisfaction.',
+      'Mixing receiver kinds on one type creates a real, load-bearing asymmetry between its value and pointer forms, not just a style inconsistency.',
+    ],
+  },
+  'go/structs-interfaces/embedded-methods-satisfy-interfaces-too': {
+    apis: ['Go Spec — Struct Types (Promoted Fields and Methods)'],
+    related: [
+      { label: 'Structs & Interfaces (overview)', route: '/go/structs-interfaces' },
+      { label: 'Method Sets: T vs. *T', route: '/go/structs-interfaces/method-sets-t-vs-pointer-t' },
+      { label: 'Comparing Interfaces Can Panic at Runtime', route: '/go/structs-interfaces/comparing-interfaces-can-panic-at-runtime' },
+    ],
+    tip: 'Go\'s own spec states promoted methods are genuinely included in the embedding struct\'s own method set — a struct can satisfy an interface entirely through what it embeds, with no methods of its own.',
+    docs: [
+      { label: 'Go Spec — Struct Types', url: 'https://go.dev/ref/spec#Struct_types' },
+    ],
+    resources: [],
+    gotchas: [
+      'Embedding an interface field left nil still satisfies the interface at compile time — calling a promoted method through it panics at runtime with a nil pointer dereference.',
+      'Embedding a POINTER to a type promotes its FULL combined method set (value- and pointer-receiver methods both) into the outer struct.',
+    ],
+  },
+  'go/structs-interfaces/comparing-interfaces-can-panic-at-runtime': {
+    apis: ['Go Spec — Comparison Operators'],
+    related: [
+      { label: 'Structs & Interfaces (overview)', route: '/go/structs-interfaces' },
+      { label: 'Method Sets: T vs. *T', route: '/go/structs-interfaces/method-sets-t-vs-pointer-t' },
+      { label: 'Embedded Methods Satisfy Interfaces Too', route: '/go/structs-interfaces/embedded-methods-satisfy-interfaces-too' },
+    ],
+    tip: 'Go\'s own spec: comparing two interface values with == always compiles, but panics at runtime if they share an identical, non-comparable dynamic type — a slice, map, or function.',
+    docs: [
+      { label: 'Go Spec — Comparison Operators', url: 'https://go.dev/ref/spec#Comparison_operators' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a separate issue from the nil-interface pitfall — it applies to two definitely-non-nil interface values that happen to share a non-comparable dynamic type.',
+      'The identical risk applies to map keys typed any/interface{} — inserting a non-comparable dynamic type as a key panics on insertion, not just on ==.',
     ],
   },
   'go/slices-maps': {
@@ -31465,6 +34401,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A nil map can be READ from safely (returns zero value) but WRITING to a nil map panics — a common source of confusion for newcomers.',
     ],
   },
+  'go/slices-maps/append-growth-factor-shrinks-past-256': {
+    apis: ['runtime/slice.go — nextslicecap'],
+    related: [
+      { label: 'Slices & Maps (overview)', route: '/go/slices-maps' },
+      { label: 'Map Deletes Don’t Shrink Memory', route: '/go/slices-maps/map-deletes-dont-shrink-memory' },
+      { label: 'Struct Map Values Aren’t Addressable', route: '/go/slices-maps/struct-map-values-arent-addressable' },
+    ],
+    tip: 'append doubles capacity below a 256-element threshold, then slows to roughly 1.25x growth above it — and neither number is a guaranteed language contract, only an internal runtime detail that has changed across Go versions.',
+    docs: [
+      { label: 'Go Source — runtime/slice.go', url: 'https://go.dev/src/runtime/slice.go' },
+    ],
+    resources: [],
+    gotchas: [
+      'Never assert on the exact cap(s) after an append-triggered reallocation in tests — the growth strategy is explicitly unspecified and can change between Go releases.',
+      'When the final size is known ahead of time, make([]T, 0, n) sidesteps the growth-regime question entirely with one exact allocation.',
+    ],
+  },
+  'go/slices-maps/map-deletes-dont-shrink-memory': {
+    apis: ['delete', 'runtime.MemStats'],
+    related: [
+      { label: 'Slices & Maps (overview)', route: '/go/slices-maps' },
+      { label: 'append’s Real Growth Algorithm', route: '/go/slices-maps/append-growth-factor-shrinks-past-256' },
+      { label: 'Struct Map Values Aren’t Addressable', route: '/go/slices-maps/struct-map-values-arent-addressable' },
+    ],
+    tip: 'delete(m, key) shrinks len(m) immediately, but Go\'s runtime never automatically shrinks a map\'s own underlying bucket array back down — reclaiming that memory requires rebuilding into a fresh map.',
+    docs: [
+      { label: 'golang/go issue — map memory after delete', url: 'https://github.com/golang/go/issues/20135' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is not a traditional memory leak — nothing is unreachable, and len(m) is completely accurate. The gap is between the map\'s peak historical size and its current logical size.',
+      'A map whose peak size vastly exceeds its steady-state size (periodic caches, batch-job state) should be periodically rebuilt into a fresh, right-sized map, not just have its excess keys deleted.',
+    ],
+  },
+  'go/slices-maps/struct-map-values-arent-addressable': {
+    apis: ['Go Spec — Index expressions'],
+    related: [
+      { label: 'Slices & Maps (overview)', route: '/go/slices-maps' },
+      { label: 'append’s Real Growth Algorithm', route: '/go/slices-maps/append-growth-factor-shrinks-past-256' },
+      { label: 'Map Deletes Don’t Shrink Memory', route: '/go/slices-maps/map-deletes-dont-shrink-memory' },
+    ],
+    tip: 'm[key].Field = x fails to compile — map index expressions are not addressable in Go, unlike array/slice elements, because a map\'s internal storage can move entries during growth and rehashing.',
+    docs: [
+      { label: 'Go Spec — Index Expressions', url: 'https://go.dev/ref/spec#Index_expressions' },
+    ],
+    resources: [],
+    gotchas: [
+      'Two real fixes with a real tradeoff: map[K]*T gives shared, aliased mutation; read-modify-write (temp := m[key]; ...; m[key] = temp) preserves independent value semantics.',
+      'Compound assignments like m[key]++ work fine on primitive values — Go rewrites them as a full value reassignment under the hood, sidestepping the same addressability restriction without looking like a workaround.',
+    ],
+  },
   'go/generics': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31474,6 +34461,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Generics do not eliminate the need for interfaces — they solve a DIFFERENT problem (type-safe reuse across concrete types) than interfaces (behavioral abstraction).',
       'Overusing generics where a plain interface or duplication would be clearer can hurt readability — Go\'s culture leans toward simplicity over generic-everything.',
+    ],
+  },
+  'go/generics/zero-value-of-a-type-parameter': {
+    apis: ['var zero T', 'new(T)'],
+    related: [
+      { label: 'Go Generics (overview)', route: '/go/generics' },
+      { label: 'A Constraint Can Combine a Union and a Method', route: '/go/generics/constraint-can-combine-union-and-method' },
+      { label: 'comparable Can Panic Since Go 1.20', route: '/go/generics/comparable-can-panic-since-go120' },
+    ],
+    tip: 'nil doesn\'t compile for a plain type parameter T — it\'s only valid for pointers, interfaces, maps, slices, channels, and functions. "var zero T" (or the *new(T) shorthand) asks the compiler for T\'s own zero value instead.',
+    docs: [
+      { label: 'Go Spec — Type Parameter Declarations', url: 'https://go.dev/ref/spec#Type_parameter_declarations' },
+    ],
+    resources: [],
+    gotchas: [
+      'This fails to compile at the function\'s OWN definition, independent of what any specific caller\'s type argument happens to be — the body must work for every possible T satisfying the constraint.',
+      'var zero T and *new(T) are functionally identical — the choice between them is a readability preference, not a performance one.',
+    ],
+  },
+  'go/generics/constraint-can-combine-union-and-method': {
+    apis: ['type constraints', 'interface { ~T; Method() }'],
+    related: [
+      { label: 'Go Generics (overview)', route: '/go/generics' },
+      { label: 'The Zero Value of a Type Parameter', route: '/go/generics/zero-value-of-a-type-parameter' },
+      { label: 'comparable Can Panic Since Go 1.20', route: '/go/generics/comparable-can-panic-since-go120' },
+    ],
+    tip: 'A constraint can require BOTH a specific underlying type AND a method, per Go\'s own spec example: interface { ~int; String() string }. The one restriction: a multi-term union cannot contain a method directly inside its own | list.',
+    docs: [
+      { label: 'Go Spec — Interface Types', url: 'https://go.dev/ref/spec#Interface_types' },
+    ],
+    resources: [],
+    gotchas: [
+      'Methods must be a structurally separate interface element alongside the union — never folded into the union\'s own | terms.',
+      'A single-term "union" (no |) can sit alongside a method without this restriction applying at all.',
+    ],
+  },
+  'go/generics/comparable-can-panic-since-go120': {
+    apis: ['comparable'],
+    related: [
+      { label: 'Go Generics (overview)', route: '/go/generics' },
+      { label: 'The Zero Value of a Type Parameter', route: '/go/generics/zero-value-of-a-type-parameter' },
+      { label: 'A Constraint Can Combine a Union and a Method', route: '/go/generics/constraint-can-combine-union-and-method' },
+    ],
+    tip: 'Since Go 1.20, any also satisfies comparable — per the Go blog, "generic functions that rely on comparable are not statically type-safe anymore." The same interface-comparison panic risk this hub\'s own Structs & Interfaces subtopic covers can now reach through a generic instantiated with any.',
+    docs: [
+      { label: 'Go Blog — When to use generics', url: 'https://go.dev/blog/comparable' },
+    ],
+    resources: [],
+    gotchas: [
+      'This only becomes a real risk once a comparable-constrained generic is instantiated with any or another interface type — the main page\'s own string/int examples were never at risk.',
+      'A non-comparable value can "sneak through" several layers of generic code before the panic actually fires, per the Go team\'s own description of the tradeoff.',
     ],
   },
   'go/goroutines': {
@@ -31488,6 +34526,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Spawning goroutines without any bound (one per incoming request with no limit) can exhaust memory under high load — a worker pool or semaphore pattern caps concurrency deliberately.',
     ],
   },
+  'go/goroutines/gomaxprocs-doesnt-cap-blocked-threads': {
+    apis: ['runtime.GOMAXPROCS', 'GOMAXPROCS env var'],
+    related: [
+      { label: 'Goroutines (overview)', route: '/go/goroutines' },
+      { label: 'Unsynchronized Reads Have No Guarantee', route: '/go/goroutines/unsynchronized-reads-have-no-guarantee' },
+      { label: 'WaitGroup Reuse: Add After Wait Returns', route: '/go/goroutines/waitgroup-reuse-add-after-wait-returns' },
+    ],
+    tip: 'GOMAXPROCS limits threads executing Go code simultaneously — per Go\'s own runtime docs, "there is no limit to the number of threads that can be blocked in system calls," so total OS thread count can genuinely exceed GOMAXPROCS.',
+    docs: [
+      { label: 'pkg.go.dev/runtime — GOMAXPROCS', url: 'https://pkg.go.dev/runtime#GOMAXPROCS' },
+    ],
+    resources: [],
+    gotchas: [
+      'Idiomatic net/http calls route through the runtime\'s own netpoller and park the GOROUTINE, not an OS thread — this thread-pinning risk mainly applies to cgo calls and traditional blocking file I/O.',
+      'A correctly-tuned GOMAXPROCS (matching a container\'s CPU quota) does not cap OS thread count for programs doing heavy blocking syscalls — a high thread count alongside it is not automatically evidence the fix failed.',
+    ],
+  },
+  'go/goroutines/unsynchronized-reads-have-no-guarantee': {
+    apis: ['Go Memory Model', 'sync/atomic'],
+    related: [
+      { label: 'Goroutines (overview)', route: '/go/goroutines' },
+      { label: 'GOMAXPROCS Doesn’t Cap Blocked Threads', route: '/go/goroutines/gomaxprocs-doesnt-cap-blocked-threads' },
+      { label: 'WaitGroup Reuse: Add After Wait Returns', route: '/go/goroutines/waitgroup-reuse-add-after-wait-returns' },
+    ],
+    tip: 'Go\'s own Memory Model states plainly of its busy-wait example: "there is no guarantee that the write... will ever be observed" and "the loop... is not guaranteed to finish" — a data race is not bounded to "stale value," it is genuinely undefined.',
+    docs: [
+      { label: 'Go Memory Model', url: 'https://go.dev/ref/mem' },
+    ],
+    resources: [],
+    gotchas: [
+      '"It worked in testing" and "go run -race didn\'t flag it" are both weak evidence — the race detector only flags races it actually observes during one specific run.',
+      'A pointer or bool being a single CPU instruction does not exempt it — the Memory Model\'s guarantees operate at the Go language level (channels, Mutex, WaitGroup, atomic), not the hardware instruction level.',
+    ],
+  },
+  'go/goroutines/waitgroup-reuse-add-after-wait-returns': {
+    apis: ['sync.WaitGroup'],
+    related: [
+      { label: 'Goroutines (overview)', route: '/go/goroutines' },
+      { label: 'GOMAXPROCS Doesn’t Cap Blocked Threads', route: '/go/goroutines/gomaxprocs-doesnt-cap-blocked-threads' },
+      { label: 'Unsynchronized Reads Have No Guarantee', route: '/go/goroutines/unsynchronized-reads-have-no-guarantee' },
+    ],
+    tip: 'Reusing one WaitGroup across multiple waves is safe only if strictly ordered — per sync.WaitGroup\'s own docs, "new Add calls must happen after all previous Wait calls have returned," not merely after the counter reaches zero.',
+    docs: [
+      { label: 'pkg.go.dev/sync — WaitGroup', url: 'https://pkg.go.dev/sync#WaitGroup' },
+    ],
+    resources: [],
+    gotchas: [
+      'Violating the reuse ordering can panic at runtime with "sync: WaitGroup misuse: Add called concurrently with Wait" — or produce other undefined behavior, even when the Add/Done counts mathematically balance.',
+      'Declaring a brand-new sync.WaitGroup per wave sidesteps the reuse rule entirely and is the simpler default whenever the same variable isn\'t needed for anything else afterward.',
+    ],
+  },
   'go/channels': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31498,6 +34587,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Only the SENDER should close a channel, never the receiver — closing from the receiver side (or closing twice) causes a panic.',
       'An unbuffered channel send blocks until a receiver is ready — this can deadlock if no other goroutine is set up to receive.',
+    ],
+  },
+  'go/channels/closing-a-closed-channel-panics-too': {
+    apis: ['close', 'sync.Once'],
+    related: [
+      { label: 'Channels (overview)', route: '/go/channels' },
+      { label: 'Close Doesn’t Discard Buffered Values', route: '/go/channels/close-doesnt-discard-buffered-values' },
+      { label: 'time.After’s Timer Leak — Fixed in Go 1.23', route: '/go/channels/time-after-timer-leak-fixed-in-go123' },
+    ],
+    tip: 'close(ch) on an already-closed channel panics with "close of closed channel" — a distinct panic from send-on-closed. sync.Once (independent goroutines) or a coordinator goroutine (one owner) are the two real fixes.',
+    docs: [
+      { label: 'pkg.go.dev/builtin — close', url: 'https://pkg.go.dev/builtin#close' },
+    ],
+    resources: [],
+    gotchas: [
+      'This risk shows up most in fan-in/multi-producer designs where more than one code path (an error path AND a success path, for instance) could plausibly reach its own "close now" call.',
+      'sync.Once fits genuinely independent close-triggering paths; a coordinator goroutine fits when one goroutine can naturally own the entire wait-then-close responsibility.',
+    ],
+  },
+  'go/channels/close-doesnt-discard-buffered-values': {
+    apis: ['close', 'range'],
+    related: [
+      { label: 'Channels (overview)', route: '/go/channels' },
+      { label: 'Closing a Closed Channel Panics Too', route: '/go/channels/closing-a-closed-channel-panics-too' },
+      { label: 'time.After’s Timer Leak — Fixed in Go 1.23', route: '/go/channels/time-after-timer-leak-fixed-in-go123' },
+    ],
+    tip: 'close() "has the effect of shutting down the channel after the last sent value is received" — every already-buffered value stays fully receivable with ok=true; only after the buffer drains does a receive return the zero value with ok=false.',
+    docs: [
+      { label: 'pkg.go.dev/builtin — close', url: 'https://pkg.go.dev/builtin#close' },
+    ],
+    resources: [],
+    gotchas: [
+      'It is always safe to close as soon as the sender is logically done, regardless of how many values are still sitting unreceived in the buffer — nothing is discarded.',
+      'This protection never extends to sending — a send after close always panics, unconditionally, even with free buffer capacity remaining.',
+    ],
+  },
+  'go/channels/time-after-timer-leak-fixed-in-go123': {
+    apis: ['time.After', 'time.NewTimer'],
+    related: [
+      { label: 'Channels (overview)', route: '/go/channels' },
+      { label: 'Closing a Closed Channel Panics Too', route: '/go/channels/closing-a-closed-channel-panics-too' },
+      { label: 'Close Doesn’t Discard Buffered Values', route: '/go/channels/close-doesnt-discard-buffered-values' },
+    ],
+    tip: 'Before Go 1.23, a fresh time.After(d) called every loop iteration left each iteration\'s unreferenced Timer alive until it fired. Go 1.23\'s GC can now recover unreferenced, unstopped timers — "no reason to prefer NewTimer when After will do."',
+    docs: [
+      { label: 'pkg.go.dev/time — After', url: 'https://pkg.go.dev/time#After' },
+    ],
+    resources: [],
+    gotchas: [
+      'A single, one-shot time.After call (like the main page\'s own Timeout pattern) was never at risk on any Go version — the leak specifically requires repeated calls inside a loop.',
+      'On pre-1.23 Go, the fix is time.NewTimer plus an explicit Stop() call when the other select case wins — unnecessary verbosity once targeting Go 1.23+.',
     ],
   },
   'go/sync': {
@@ -31512,6 +34652,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'sync.RWMutex allows multiple concurrent readers OR one writer — using it for write-heavy workloads provides no benefit over a plain Mutex and adds overhead.',
     ],
   },
+  'go/sync/sync-pool-victim-cache-since-go113': {
+    apis: ['sync.Pool', 'Go 1.13 release notes'],
+    related: [
+      { label: 'sync & sync/atomic (overview)', route: '/go/sync' },
+      { label: 'sync.Cond: Wait Must Loop, Not If', route: '/go/sync/sync-cond-wait-must-loop-not-if' },
+      { label: 'sync.Map.Range Has No Consistent Snapshot', route: '/go/sync/sync-map-range-no-consistent-snapshot' },
+    ],
+    tip: 'Pool\'s "may be removed at any time" contract hasn\'t changed, but since Go 1.13 the runtime no longer clears the whole pool on every GC — per the release notes, it "retains some objects across GCs" via an informal victim-cache mechanism.',
+    docs: [
+      { label: 'Go 1.13 Release Notes', url: 'https://go.dev/doc/go1.13' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is a real, documented PERFORMANCE improvement, not a new correctness guarantee — code must still never assume any object survives a GC boundary.',
+      'The victim-cache mechanism has no exposed public API — its effect is only observable indirectly, through overall allocation behavior.',
+    ],
+  },
+  'go/sync/sync-cond-wait-must-loop-not-if': {
+    apis: ['sync.Cond', 'Cond.Wait'],
+    related: [
+      { label: 'sync & sync/atomic (overview)', route: '/go/sync' },
+      { label: 'sync.Pool’s Victim Cache (Go 1.13+)', route: '/go/sync/sync-pool-victim-cache-since-go113' },
+      { label: 'sync.Map.Range Has No Consistent Snapshot', route: '/go/sync/sync-map-range-no-consistent-snapshot' },
+    ],
+    tip: 'Wait() atomically unlocks, sleeps, and re-locks c.L — but per Cond\'s own docs, "the caller typically cannot assume that the condition is true when Wait returns," which is exactly why Wait must always sit inside a for loop, never a single if.',
+    docs: [
+      { label: 'pkg.go.dev/sync — Cond', url: 'https://pkg.go.dev/sync#Cond' },
+    ],
+    resources: [],
+    gotchas: [
+      'This bug is invisible with exactly one waiting goroutine and surfaces reliably the moment a second concurrent waiter is added — easy to miss in single-goroutine testing.',
+      'Calling Wait() without already holding c.L violates its documented atomic-unlock contract entirely — the lock must be held first.',
+    ],
+  },
+  'go/sync/sync-map-range-no-consistent-snapshot': {
+    apis: ['sync.Map', 'Map.Range'],
+    related: [
+      { label: 'sync & sync/atomic (overview)', route: '/go/sync' },
+      { label: 'sync.Pool’s Victim Cache (Go 1.13+)', route: '/go/sync/sync-pool-victim-cache-since-go113' },
+      { label: 'sync.Cond: Wait Must Loop, Not If', route: '/go/sync/sync-cond-wait-must-loop-not-if' },
+    ],
+    tip: 'Range() is safe from panics/corruption during concurrent writes, but per sync.Map\'s own docs, it "does not necessarily correspond to any consistent snapshot" — different keys can reflect completely different points in time within one call.',
+    docs: [
+      { label: 'pkg.go.dev/sync — Map.Range', url: 'https://pkg.go.dev/sync#Map.Range' },
+    ],
+    resources: [],
+    gotchas: [
+      'An aggregate (sum, count) computed via Range under concurrent writes is not even bounded to fall between the before-call and after-call totals — it can land outside that range entirely.',
+      'When a true consistent snapshot is required, sync.Map is structurally the wrong tool — map + sync.RWMutex with RLock() held for the whole traversal is the fix.',
+    ],
+  },
   'go/context': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31524,6 +34715,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Forgetting to call the cancel function returned by context.WithCancel/WithTimeout leaks resources, even if the context itself is never explicitly cancelled.',
     ],
   },
+  'go/context/withcancelcause-and-context-cause': {
+    apis: ['context.WithCancelCause', 'context.Cause'],
+    related: [
+      { label: 'context Package (overview)', route: '/go/context' },
+      { label: 'Each WithValue Call Wraps a New Node', route: '/go/context/each-withvalue-call-wraps-a-new-node' },
+      { label: 'A Child’s Deadline Is Clamped to Its Parent’s', route: '/go/context/child-deadline-clamped-to-parents' },
+    ],
+    tip: 'ctx.Err() only ever returns context.Canceled or context.DeadlineExceeded — WithCancelCause (Go 1.21+) lets each layer attach its own specific error, retrievable via context.Cause() anywhere downstream, even from a parent\'s own cancellation.',
+    docs: [
+      { label: 'pkg.go.dev/context — Cause', url: 'https://pkg.go.dev/context#Cause' },
+    ],
+    resources: [],
+    gotchas: [
+      'Cause() is a strict superset of Err() — for contexts that never use CancelCauseFunc, Cause() degrades gracefully to exactly what Err() already returns.',
+      'A cause set on a PARENT via CancelCauseFunc propagates and is retrievable via Cause() on any CHILD, even one created with plain WithCancel.',
+    ],
+  },
+  'go/context/each-withvalue-call-wraps-a-new-node': {
+    apis: ['context.WithValue', 'context.Value'],
+    related: [
+      { label: 'context Package (overview)', route: '/go/context' },
+      { label: 'WithCancelCause and context.Cause()', route: '/go/context/withcancelcause-and-context-cause' },
+      { label: 'A Child’s Deadline Is Clamped to Its Parent’s', route: '/go/context/child-deadline-clamped-to-parents' },
+    ],
+    tip: 'WithValue doesn\'t add a key to a shared map — each call wraps the parent in a new, single-key valueCtx node. Value() walks that chain linearly, checking one key per node, confirmed directly in the standard library source.',
+    docs: [
+      { label: 'go.dev/src/context — valueCtx', url: 'https://go.dev/src/context/context.go' },
+    ],
+    resources: [],
+    gotchas: [
+      'A handful of WithValue calls (the main page\'s own use case) makes this cost negligible — the risk is specific to many small values attached via many separate calls, e.g. a long middleware chain.',
+      'Fix: consolidate frequently-read values into one struct attached via a single WithValue call, instead of one call per value.',
+    ],
+  },
+  'go/context/child-deadline-clamped-to-parents': {
+    apis: ['context.WithDeadline', 'context.WithTimeout'],
+    related: [
+      { label: 'context Package (overview)', route: '/go/context' },
+      { label: 'WithCancelCause and context.Cause()', route: '/go/context/withcancelcause-and-context-cause' },
+      { label: 'Each WithValue Call Wraps a New Node', route: '/go/context/each-withvalue-call-wraps-a-new-node' },
+    ],
+    tip: 'A child requesting a LATER deadline than its parent already has gets no effect — per Go\'s own docs, "WithDeadline(parent, d) is semantically equivalent to parent" whenever the parent\'s deadline is already earlier.',
+    docs: [
+      { label: 'pkg.go.dev/context — WithDeadline', url: 'https://pkg.go.dev/context#WithDeadline' },
+    ],
+    resources: [],
+    gotchas: [
+      'The main page\'s own HTTP handler example — "add a timeout on top of" an incoming context — can only ever shorten the effective deadline, never lengthen it, despite how "on top of" reads.',
+      'The effective budget for any operation in a context chain is always the SHORTEST deadline anywhere in that chain, not the most recently or most specifically requested one.',
+    ],
+  },
   'go/error-handling': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31533,6 +34775,58 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Ignoring an error with the blank identifier (_, err := ...) is a deliberate choice that should be rare and commented — silently swallowing errors is a common source of hard-to-diagnose bugs.',
       'panic/recover should be reserved for genuinely unrecoverable programmer errors, not as a general error-handling mechanism — idiomatic Go prefers explicit error returns.',
+    ],
+  },
+  'go/error-handling/errors-join-multi-error-trees': {
+    apis: ['errors.Join', 'errors — Unwrap() []error'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/go/error-handling' },
+      { label: 'Custom Is() and As() Methods', route: '/go/error-handling/custom-is-as-methods' },
+      { label: 'panic/recover Is Goroutine-Scoped', route: '/go/error-handling/panic-recover-goroutine-scoped' },
+    ],
+    tip: 'errors.Join wraps several independent errors via a PLURAL Unwrap() []error — errors.Is/As traverse the whole tree depth-first, but the plain errors.Unwrap() function only recognizes the singular Unwrap() error shape and returns nil on a joined error.',
+    docs: [
+      { label: 'pkg.go.dev/errors — Join', url: 'https://pkg.go.dev/errors#Join' },
+    ],
+    resources: [],
+    gotchas: [
+      'errors.Join discards nil arguments and returns nil itself if every argument was nil — no special-casing needed before calling if err != nil on the result.',
+      'A manual for e := err; e != nil; e = errors.Unwrap(e) loop silently stops after one iteration the moment any link was produced by errors.Join instead of fmt.Errorf.',
+    ],
+  },
+  'go/error-handling/custom-is-as-methods': {
+    apis: ['errors.Is', 'errors.As'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/go/error-handling' },
+      { label: 'errors.Join & Multi-Error Trees', route: '/go/error-handling/errors-join-multi-error-trees' },
+      { label: 'panic/recover Is Goroutine-Scoped', route: '/go/error-handling/panic-recover-goroutine-scoped' },
+    ],
+    tip: 'errors.Is checks == OR a custom Is(error) bool method; errors.As checks type-assignability OR a custom As(any) bool method — and a custom As method is responsible for SETTING target itself, unlike the default path\'s automatic type assertion.',
+    docs: [
+      { label: 'pkg.go.dev/errors — Is/As', url: 'https://pkg.go.dev/errors#Is' },
+    ],
+    resources: [],
+    gotchas: [
+      'A custom Is method should only shallowly compare err and target — the chain-walking itself stays errors.Is\'s own responsibility, not the method\'s.',
+      'A custom As method can synthesize and return an entirely different, richer error type than the original ever held — not just confirm a type match.',
+    ],
+  },
+  'go/error-handling/panic-recover-goroutine-scoped': {
+    apis: ['recover', 'panic'],
+    related: [
+      { label: 'Error Handling (overview)', route: '/go/error-handling' },
+      { label: 'errors.Join & Multi-Error Trees', route: '/go/error-handling/errors-join-multi-error-trees' },
+      { label: 'Custom Is() and As() Methods', route: '/go/error-handling/custom-is-as-methods' },
+      { label: 'Goroutines', route: '/go/goroutines' },
+    ],
+    tip: 'Each goroutine has its own independent panic/recover chain — a deferred recover() in the caller cannot catch a panic inside a goroutine launched with go, and an unrecovered panic anywhere crashes the ENTIRE program, not just that one goroutine.',
+    docs: [
+      { label: 'Go Blog — Defer, Panic, and Recover', url: 'https://go.dev/blog/defer-panic-and-recover' },
+    ],
+    resources: [],
+    gotchas: [
+      'A single top-level recover() in main() protects nothing inside goroutines launched with go — each such goroutine needs its own deferred recover if a failure must not crash the whole process.',
+      'This is exactly why worker-pool and per-request-handler code wraps each unit of work with its own recover, isolating one bad job from taking down every other in-flight job.',
     ],
   },
   'go/net-http': {
@@ -31547,6 +34841,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The default http.Client reuses connections via a shared Transport — creating a new client per request defeats connection pooling and hurts performance under load.',
     ],
   },
+  'go/net-http/pattern-conflicts-panic-at-registration': {
+    apis: ['http.ServeMux'],
+    related: [
+      { label: 'net/http & REST APIs (overview)', route: '/go/net-http' },
+      { label: 'The {$} Wildcard Matches an Exact Subtree Root', route: '/go/net-http/dollar-wildcard-matches-exact-subtree-root' },
+      { label: 'The ... Wildcard Matches Remaining Segments', route: '/go/net-http/ellipsis-wildcard-matches-remaining-segments' },
+    ],
+    tip: '"More specific wins" only resolves overlapping patterns where one IS more specific — per Go\'s own routing blog, two patterns that overlap with neither being more specific (like /posts/{id} and /{resource}/latest) "conflict," and registering both panics at startup.',
+    docs: [
+      { label: 'Go Blog — Routing Enhancements', url: 'https://go.dev/blog/routing-enhancements' },
+    ],
+    resources: [],
+    gotchas: [
+      'This risk grows as routes are split across multiple files/packages — two independently-written features can define genuinely conflicting wildcard patterns without either author noticing.',
+      'The panic happens at mux.HandleFunc/Handle call time, not per-request — constructing and registering the full production mux in a test catches a conflict deterministically.',
+    ],
+  },
+  'go/net-http/dollar-wildcard-matches-exact-subtree-root': {
+    apis: ['http.ServeMux'],
+    related: [
+      { label: 'net/http & REST APIs (overview)', route: '/go/net-http' },
+      { label: 'ServeMux Pattern Conflicts Panic at Registration', route: '/go/net-http/pattern-conflicts-panic-at-registration' },
+      { label: 'The ... Wildcard Matches Remaining Segments', route: '/go/net-http/ellipsis-wildcard-matches-remaining-segments' },
+    ],
+    tip: 'A plain trailing-slash pattern like "/posts/" matches the ENTIRE subtree, root included — per Go\'s own blog, "/posts/{$}" matches only "/posts/" and nothing else, letting the subtree root get its own dedicated, more specific handler.',
+    docs: [
+      { label: 'Go Blog — Routing Enhancements', url: 'https://go.dev/blog/routing-enhancements' },
+    ],
+    resources: [],
+    gotchas: [
+      'This does not trigger a pattern-conflict panic against the broader subtree pattern — one pattern\'s matches are a strict subset of the other\'s, so the precedence rule resolves it cleanly.',
+      'A common practical use: separating a collection-listing endpoint from a file-serving subtree without manual r.URL.Path branching inside one shared handler.',
+    ],
+  },
+  'go/net-http/ellipsis-wildcard-matches-remaining-segments': {
+    apis: ['http.ServeMux', 'Request.PathValue'],
+    related: [
+      { label: 'net/http & REST APIs (overview)', route: '/go/net-http' },
+      { label: 'ServeMux Pattern Conflicts Panic at Registration', route: '/go/net-http/pattern-conflicts-panic-at-registration' },
+      { label: 'The {$} Wildcard Matches an Exact Subtree Root', route: '/go/net-http/dollar-wildcard-matches-exact-subtree-root' },
+    ],
+    tip: 'A single-segment wildcard like {id} matches exactly one path segment — per Go\'s own blog, a wildcard "ending in ... can match all the remaining segments," as in "/files/{pathname...}", captured as one named, inspectable value.',
+    docs: [
+      { label: 'Go Blog — Routing Enhancements', url: 'https://go.dev/blog/routing-enhancements' },
+    ],
+    resources: [],
+    gotchas: [
+      'Unlike StripPrefix handing the remainder opaquely to http.FileServer, the captured value is directly available to the handler — but it is still attacker-controlled and needs sanitizing (filepath.Clean) before file-system use.',
+      'The same registration-time conflict-detection rules apply uniformly to this wildcard shape too, not just single-segment wildcards.',
+    ],
+  },
   'go/gin': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31556,6 +34901,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Gin panics inside a handler are recovered by the default Recovery middleware — but relying on this as your ONLY error handling strategy hides bugs that should be fixed at the source.',
       'Binding request bodies (c.ShouldBindJSON) validates structure but not business rules — additional validation is still needed for domain-specific constraints.',
+    ],
+  },
+  'go/gin/context-copy-required-for-goroutines': {
+    apis: ['gin.Context.Copy'],
+    related: [
+      { label: 'Gin Framework (overview)', route: '/go/gin' },
+      { label: 'ShouldBindBodyWith Caches the Body for Reuse', route: '/go/gin/shouldbindbodywith-caches-body-for-reuse' },
+      { label: 'gin.Error’s Type: Public, Private, and Meta', route: '/go/gin/ginerror-type-classification-public-private' },
+    ],
+    tip: 'gin.Context is pooled and reused for performance — per Gin\'s own docs, Copy() "has to be used when the context has to be passed to a goroutine," since a goroutine holding the original can read data already belonging to a different, later request.',
+    docs: [
+      { label: 'pkg.go.dev — gin.Context.Copy', url: 'https://pkg.go.dev/github.com/gin-gonic/gin#Context.Copy' },
+    ],
+    resources: [],
+    gotchas: [
+      'Values already extracted into plain local variables before launching a goroutine need no Copy() — the risk is specifically the Context object itself crossing into the goroutine, not data already read from it.',
+      'A common real need: async logging, event publishing, or background jobs triggered by a handler that must not block the response.',
+    ],
+  },
+  'go/gin/shouldbindbodywith-caches-body-for-reuse': {
+    apis: ['gin.Context.ShouldBindBodyWith'],
+    related: [
+      { label: 'Gin Framework (overview)', route: '/go/gin' },
+      { label: 'Context.Copy() Is Required for Goroutines', route: '/go/gin/context-copy-required-for-goroutines' },
+      { label: 'gin.Error’s Type: Public, Private, and Meta', route: '/go/gin/ginerror-type-classification-public-private' },
+    ],
+    tip: 'A request body can normally be bound only once — it\'s a stream, not a buffer. ShouldBindBodyWith "stores the request body into the context, and reuse[s] when it is called again," at an explicit performance cost over a single-use ShouldBindWith.',
+    docs: [
+      { label: 'Gin Source — context.go', url: 'https://raw.githubusercontent.com/gin-gonic/gin/master/context.go' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only needed when something genuinely reads the body twice (e.g. an audit-logging middleware plus the route handler) — using it everywhere "just in case" adds unneeded buffering cost.',
+      'The FIRST call in execution order establishes the cache — if anything between two reads uses plain ShouldBindJSON instead, the caching chain breaks.',
+    ],
+  },
+  'go/gin/ginerror-type-classification-public-private': {
+    apis: ['gin.Error', 'Context.Errors'],
+    related: [
+      { label: 'Gin Framework (overview)', route: '/go/gin' },
+      { label: 'Context.Copy() Is Required for Goroutines', route: '/go/gin/context-copy-required-for-goroutines' },
+      { label: 'ShouldBindBodyWith Caches the Body for Reuse', route: '/go/gin/shouldbindbodywith-caches-body-for-reuse' },
+    ],
+    tip: 'c.Error(err) returns a structured *gin.Error, not a bare log entry — its Type (Public/Private/Bind/Render/Any) and Meta fields let c.Errors.ByType(gin.ErrorTypePublic) build a client response from only errors explicitly marked safe to show.',
+    docs: [
+      { label: 'Gin Source — errors.go', url: 'https://raw.githubusercontent.com/gin-gonic/gin/master/errors.go' },
+    ],
+    resources: [],
+    gotchas: [
+      'An error left at the default type is not automatically safe — always positively classify sensitive errors as ErrorTypePrivate right where they occur, rather than relying on them failing to qualify as Public by omission.',
+      'SetType and SetMeta serve different purposes: Type is a small fixed set of values used for filtering; Meta is open-ended per-instance context.',
     ],
   },
   'go/grpc': {
@@ -31569,6 +34965,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Generated gRPC code from .proto files should be regenerated and committed whenever the schema changes — a stale generated file silently drifts from the actual contract.',
     ],
   },
+  'go/grpc/bidi-streaming-directions-are-independent': {
+    apis: ['grpc.ServerStream', 'stream.Send / stream.Recv'],
+    related: [
+      { label: 'gRPC in Go (overview)', route: '/go/grpc' },
+      { label: 'NewClient Lazily Connects on First RPC', route: '/go/grpc/newclient-lazy-connects-on-first-rpc' },
+      { label: 'ChainUnaryInterceptor: First Is Outermost', route: '/go/grpc/chain-interceptor-first-is-outermost' },
+    ],
+    tip: 'Per gRPC\'s own docs, "the two streams operate independently, so clients and servers can read and write in whatever order they like" — a correct bidi client needs a separate goroutine for one direction, not a single send-then-receive loop.',
+    docs: [
+      { label: 'grpc.io — Go Basics', url: 'https://grpc.io/docs/languages/go/basics/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Only the ORDER WITHIN each direction is preserved — the two directions have no fixed relationship to each other at all.',
+      'A sequential "send everything, then receive" implementation can silently delay processing responses the server already sent, not just run slower.',
+    ],
+  },
+  'go/grpc/newclient-lazy-connects-on-first-rpc': {
+    apis: ['grpc.NewClient', 'ClientConn.Connect'],
+    related: [
+      { label: 'gRPC in Go (overview)', route: '/go/grpc' },
+      { label: 'Bidi Streaming: The Two Directions Are Independent', route: '/go/grpc/bidi-streaming-directions-are-independent' },
+      { label: 'ChainUnaryInterceptor: First Is Outermost', route: '/go/grpc/chain-interceptor-first-is-outermost' },
+    ],
+    tip: 'grpc.NewClient performs no I/O at all — per its own docs, "use of the ClientConn for RPCs will automatically cause it to connect." A nil error only confirms local config was valid, never that the server is reachable.',
+    docs: [
+      { label: 'pkg.go.dev — grpc.NewClient', url: 'https://pkg.go.dev/google.golang.org/grpc#NewClient' },
+    ],
+    resources: [],
+    gotchas: [
+      'Unreachability errors never surface through NewClient\'s own return value under any timing — only through the first actual RPC call.',
+      'For genuine startup reachability checks, use the documented cc.Connect() + cc.WaitForStateChange()/cc.GetState() pattern instead of trusting NewClient\'s own success.',
+    ],
+  },
+  'go/grpc/chain-interceptor-first-is-outermost': {
+    apis: ['grpc.ChainUnaryInterceptor'],
+    related: [
+      { label: 'gRPC in Go (overview)', route: '/go/grpc' },
+      { label: 'Bidi Streaming: The Two Directions Are Independent', route: '/go/grpc/bidi-streaming-directions-are-independent' },
+      { label: 'NewClient Lazily Connects on First RPC', route: '/go/grpc/newclient-lazy-connects-on-first-rpc' },
+    ],
+    tip: 'Per grpc-go\'s own docs, "the first interceptor will be the outer most, while the last interceptor will be the inner most wrapper around the real call" — swapping order changes whether a request-rejecting interceptor lets a later one run at all.',
+    docs: [
+      { label: 'pkg.go.dev — ChainUnaryInterceptor', url: 'https://pkg.go.dev/google.golang.org/grpc#ChainUnaryInterceptor' },
+    ],
+    resources: [],
+    gotchas: [
+      'Auth registered before logging means rejected/unauthenticated requests never reach the logging interceptor at all — a silent audit-trail gap, not an error.',
+      'A missing-data bug in chained interceptors is not always an ordering mistake — check what each interceptor\'s own before/after code actually records too.',
+    ],
+  },
   'go/json-encoding': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31578,6 +35025,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'omitempty on a field omits it from JSON output when the field holds its zero value — but this means a genuinely-set false or 0 is indistinguishable from "not set" without using a pointer type instead.',
       'json.Unmarshal silently ignores unknown fields in the input by default unless a DisallowUnknownFields decoder option is explicitly set.',
+    ],
+  },
+  'go/json-encoding/marshal-sorts-map-keys': {
+    apis: ['json.Marshal'],
+    related: [
+      { label: 'JSON Encoding (overview)', route: '/go/json-encoding' },
+      { label: 'An Embedded Field’s json Tag Disables Promotion', route: '/go/json-encoding/embedded-json-tag-disables-promotion' },
+      { label: 'Unmarshal Leaves Absent Fields Unchanged', route: '/go/json-encoding/unmarshal-leaves-absent-fields-unchanged' },
+    ],
+    tip: 'Map iteration is randomized in Go, but json.Marshal is not — per encoding/json\'s own docs, "the map keys are sorted and used as JSON object keys," making Marshal output on a map deterministic and safe to compare or hash.',
+    docs: [
+      { label: 'pkg.go.dev — encoding/json', url: 'https://pkg.go.dev/encoding/json' },
+    ],
+    resources: [],
+    gotchas: [
+      'This sorting guarantee is specific to MAP keys — struct field order in JSON output follows declaration order, not sorting.',
+      'Two maps built via different insertion sequences still marshal to byte-for-byte identical JSON, since sorting happens at marshal time based on key values, not insertion or iteration order.',
+    ],
+  },
+  'go/json-encoding/embedded-json-tag-disables-promotion': {
+    apis: ['json.Marshal', 'struct tags'],
+    related: [
+      { label: 'JSON Encoding (overview)', route: '/go/json-encoding' },
+      { label: 'json.Marshal Sorts Map Keys Deterministically', route: '/go/json-encoding/marshal-sorts-map-keys' },
+      { label: 'Unmarshal Leaves Absent Fields Unchanged', route: '/go/json-encoding/unmarshal-leaves-absent-fields-unchanged' },
+    ],
+    tip: 'An embedded struct\'s exported fields are promoted (flattened) into the outer JSON object by default — per encoding/json\'s own docs, giving the embedded field its own json tag switches it to a nested object, with zero change to Go-side field access.',
+    docs: [
+      { label: 'pkg.go.dev — encoding/json', url: 'https://pkg.go.dev/encoding/json' },
+    ],
+    resources: [],
+    gotchas: [
+      'This is the opposite of what many developers expect coming from languages where "nested struct" always means "nested JSON object."',
+      'Adding or removing the json tag on the embedded field only changes JSON shape — the underlying Go embedding relationship (and promoted field access like p.ID) is completely unaffected.',
+    ],
+  },
+  'go/json-encoding/unmarshal-leaves-absent-fields-unchanged': {
+    apis: ['json.Unmarshal'],
+    related: [
+      { label: 'JSON Encoding (overview)', route: '/go/json-encoding' },
+      { label: 'json.Marshal Sorts Map Keys Deterministically', route: '/go/json-encoding/marshal-sorts-map-keys' },
+      { label: 'An Embedded Field’s json Tag Disables Promotion', route: '/go/json-encoding/embedded-json-tag-disables-promotion' },
+    ],
+    tip: 'Unmarshal merges into its target rather than resetting it first — a field absent from the JSON keeps whatever value the target already had, making it a natural fit for PATCH-style partial updates.',
+    docs: [
+      { label: 'pkg.go.dev — encoding/json', url: 'https://pkg.go.dev/encoding/json' },
+    ],
+    resources: [],
+    gotchas: [
+      'Reusing a struct variable across multiple Unmarshal calls (e.g. in a loop, "to avoid redeclaring it") without resetting it lets stale data from a PREVIOUS decode silently leak into fields the CURRENT payload omits.',
+      'The risk is easy to miss in testing since it only manifests for payloads that genuinely omit a field, not every call.',
     ],
   },
   'go/modules': {
@@ -31591,6 +35089,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'go mod tidy removes unused dependencies from go.mod — running it periodically keeps the dependency graph accurate as code changes.',
     ],
   },
+  'go/modules/go-embed-excludes-dot-and-underscore-files': {
+    apis: ['//go:embed', 'embed.FS', 'all: prefix'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Go Modules overview', route: '/go/modules' },
+      { label: 'A go Line Alone Can Trigger a Toolchain Switch', route: '/go/modules/go-line-alone-can-trigger-a-toolchain-switch' },
+    ],
+    tip: 'A stray .gitkeep or _drafts/ directory inside an embedded path vanishes from the build with zero warning — the all: prefix is the only way to include dot/underscore-prefixed content.',
+    gotchas: [
+      'The exclusion applies to whole directories too — an underscore-prefixed subdirectory and everything inside it is skipped, not just files directly named with a leading dot or underscore.',
+      'A build succeeding is not proof every intended file was embedded — check the embedded fs.FS contents directly when debugging a "file not found" at runtime.',
+    ],
+  },
+  'go/modules/go-line-alone-can-trigger-a-toolchain-switch': {
+    apis: ['go.mod go line', 'toolchain line', 'GOTOOLCHAIN'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'go:embed Excludes Dot and Underscore Files', route: '/go/modules/go-embed-excludes-dot-and-underscore-files' },
+      { label: 'Replace Directives Are Ignored Outside the Main Module', route: '/go/modules/replace-directives-are-ignored-outside-the-main-module' },
+    ],
+    tip: 'GOTOOLCHAIN defaults to auto, which silently downloads a newer Go toolchain when go.mod requires one — set GOTOOLCHAIN=local to force a hard error instead of an automatic download.',
+    gotchas: [
+      'An omitted toolchain line is not "no pin" — it is an implicit pin to the exact version on the go line.',
+      'A CI runner with GOTOOLCHAIN=local and an older Go binary will fail a build that works fine on a developer machine with the default auto setting.',
+    ],
+  },
+  'go/modules/replace-directives-are-ignored-outside-the-main-module': {
+    apis: ['replace directive', 'go.work use directive'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'A go Line Alone Can Trigger a Toolchain Switch', route: '/go/modules/go-line-alone-can-trigger-a-toolchain-switch' },
+      { label: 'Go Modules overview', route: '/go/modules' },
+    ],
+    tip: 'A replace directive only ever affects the module you are directly building — it is read and discarded the instant that module is consumed as someone else\'s dependency, not "inherited" by consumers.',
+    gotchas: [
+      'A library shipped with a local-path replace directive does not force that path on consumers — it fails to resolve, or silently falls back to whatever the real upstream module actually is.',
+      'go.work workspaces avoid this scoping problem entirely, which is why they are preferred over replace for local multi-module development.',
+    ],
+  },
   'go/testing': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31600,6 +35140,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       't.Parallel() marks a test safe to run concurrently with other parallel tests — calling it on a test with shared mutable state can introduce race conditions the test suite itself creates.',
       'go test -race enables the race detector — running the full suite with it periodically catches data races that would otherwise only manifest intermittently in production.',
+    ],
+  },
+  'go/testing/duplicate-subtest-names-get-an-auto-numbered-suffix': {
+    apis: ['testing.T.Run', 'testing.T.Name'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Testing in Go overview', route: '/go/testing' },
+      { label: 'go test Can Print (cached) Instead of Actually Running', route: '/go/testing/go-test-can-print-cached-instead-of-actually-running' },
+    ],
+    tip: 'A #01 suffix in a subtest name is never something you typed — it means two table entries share a name, and only the first keeps the plain, un-suffixed name.',
+    gotchas: [
+      'go test -run only matches the exact disambiguated name — a filter targeting the base name silently stops matching the duplicate once a #01 appears.',
+      'Give every table-driven case a genuinely distinct name rather than relying on the auto-suffix to keep them runnable individually.',
+    ],
+  },
+  'go/testing/go-test-can-print-cached-instead-of-actually-running': {
+    apis: ['go test -count', 'go test cache'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Duplicate Subtest Names Get an Auto-Numbered Suffix', route: '/go/testing/duplicate-subtest-names-get-an-auto-numbered-suffix' },
+      { label: 't.Cleanup Runs in LIFO Order, Not Registration Order', route: '/go/testing/t-cleanup-runs-in-lifo-order-not-registration-order' },
+    ],
+    tip: 'The cache only tracks module file reads and environment variables — a test depending on a live network call or database state can report a stale (cached) pass after the real behavior changed.',
+    gotchas: [
+      '"(cached)" appears in place of the elapsed time in go test output — that is the only visible sign the test binary did not actually run.',
+      'Use go test -count=1 to force a genuine re-run when debugging something the cache would not have noticed changed.',
+    ],
+  },
+  'go/testing/t-cleanup-runs-in-lifo-order-not-registration-order': {
+    apis: ['testing.T.Cleanup'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'go test Can Print (cached) Instead of Actually Running', route: '/go/testing/go-test-can-print-cached-instead-of-actually-running' },
+      { label: 'Testing in Go overview', route: '/go/testing' },
+    ],
+    tip: 'Multiple t.Cleanup calls unwind in the exact reverse of registration order — the same LIFO discipline defer already uses within a single function.',
+    gotchas: [
+      'Register cleanup immediately after creating each resource, in setup order — LIFO teardown then tears down dependents before their dependencies automatically.',
+      'Getting the dependency direction wrong only breaks teardown for resources that actually depend on each other — independent resources hide the bug either way.',
     ],
   },
   'go/profiling': {
@@ -31613,6 +35195,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Benchmark functions (BenchmarkXxx) should avoid unintentionally including setup cost in the timed portion — use b.ResetTimer() after expensive setup.',
     ],
   },
+  'go/profiling/runtime-gc-before-writeheapprofile-avoids-stale-data': {
+    apis: ['runtime.GC', 'pprof.WriteHeapProfile'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Performance & Profiling overview', route: '/go/profiling' },
+      { label: 'The Heap Profile Samples One Allocation per 512KB', route: '/go/profiling/heap-profile-samples-one-allocation-per-512kb' },
+    ],
+    tip: 'A heap profile reports data as of the last completed GC, not a live snapshot — call runtime.GC() immediately before WriteHeapProfile, every time, to force a fresh one.',
+    gotchas: [
+      'The same staleness applies to the /debug/pprof/heap HTTP endpoint on a live server — it also reflects the process\'s last completed GC, not one triggered fresh by the request.',
+      'Placing runtime.GC() anywhere other than immediately before the write reintroduces the exact staleness the call exists to prevent.',
+    ],
+  },
+  'go/profiling/heap-profile-samples-one-allocation-per-512kb': {
+    apis: ['runtime.MemProfileRate'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'runtime.GC() Before WriteHeapProfile Avoids Stale Data', route: '/go/profiling/runtime-gc-before-writeheapprofile-avoids-stale-data' },
+      { label: 'Escape Analysis (-gcflags=-m) Shows Why a Var Heap-Allocates', route: '/go/profiling/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates' },
+    ],
+    tip: 'The default heap profile samples roughly one allocation per 512KB — a function making many small allocations can be a real memory contributor while ranking low or absent in top10 output.',
+    gotchas: [
+      'runtime.MemProfileRate = 1 captures every allocation for a targeted investigation, but must be set once, as early as possible — changing it mid-run breaks the standard tooling\'s assumptions.',
+      'Not appearing near the top of a default heap profile is not proof a function is not a meaningful allocator — only that its individual allocations rarely land on a sampled boundary.',
+    ],
+  },
+  'go/profiling/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates': {
+    apis: ['go build -gcflags=-m'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'The Heap Profile Samples One Allocation per 512KB', route: '/go/profiling/heap-profile-samples-one-allocation-per-512kb' },
+      { label: 'Performance & Profiling overview', route: '/go/profiling' },
+    ],
+    tip: 'Taking a variable\'s address only makes it a CANDIDATE for heap allocation — the compiler\'s own proof about whether the pointer outlives the function is what actually decides.',
+    gotchas: [
+      'A single interface-typed call site (fmt.Sprintf, a logging call) buried at the end of a function can force an otherwise-stack-safe variable to escape for its entire lifetime.',
+      '-gcflags=-m output is per VARIABLE with an exact file/line, not a per-function summary — one function can show a mix of escaping and non-escaping lines.',
+    ],
+  },
   'go/gorm': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31624,6 +35248,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Silent failures (GORM\'s default error handling in some chained calls) can mask a failed operation — always check the returned error explicitly.',
     ],
   },
+  'go/gorm/firstorcreate-doesnt-update-on-find': {
+    apis: ['gorm.DB.FirstOrCreate', 'Attrs', 'Assign'],
+    related: [
+      { label: 'GORM (overview)', route: '/go/gorm' },
+      { label: 'gorm.Expr Pushes Arithmetic to the Database', route: '/go/gorm/gormexpr-pushes-arithmetic-to-the-database' },
+      { label: 'Association Mode Is Not Preload', route: '/go/gorm/association-mode-is-not-preload' },
+    ],
+    tip: 'Per GORM\'s own docs, "if the user is found, no new record is created" — nothing about an existing match is updated. Attrs() fields only apply on creation; Assign() fields apply either way, updating a found record too.',
+    docs: [
+      { label: 'gorm.io — Advanced Query', url: 'https://gorm.io/docs/advanced_query.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'A single struct passed directly to FirstOrCreate plays both roles at once — search condition AND insert values — which only stays safe when every field should legitimately be part of the match.',
+      'Passing fields you want to always keep up to date (found or not) requires Assign(), not the plain struct argument or Attrs().',
+    ],
+  },
+  'go/gorm/gormexpr-pushes-arithmetic-to-the-database': {
+    apis: ['gorm.Expr'],
+    related: [
+      { label: 'GORM (overview)', route: '/go/gorm' },
+      { label: 'FirstOrCreate Doesn’t Update on a Find', route: '/go/gorm/firstorcreate-doesnt-update-on-find' },
+      { label: 'Association Mode Is Not Preload', route: '/go/gorm/association-mode-is-not-preload' },
+    ],
+    tip: 'gorm.Expr("balance - ?", amount) computes the subtraction inside the database as part of one atomic UPDATE — avoiding the lost-update race a Go-side read-modify-write has under concurrent writes to the same row.',
+    docs: [
+      { label: 'gorm.io — Update', url: 'https://gorm.io/docs/update.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'The naive "read into Go, compute, write back" pattern looks correct in isolation and only breaks under genuine concurrent writes to the same row.',
+      'This is complementary to FOR UPDATE row locking (see the pgx hub), not a replacement — it protects one UPDATE\'s own read-then-write, not a multi-statement decision that needs a lock.',
+    ],
+  },
+  'go/gorm/association-mode-is-not-preload': {
+    apis: ['gorm.DB.Association'],
+    related: [
+      { label: 'GORM (overview)', route: '/go/gorm' },
+      { label: 'FirstOrCreate Doesn’t Update on a Find', route: '/go/gorm/firstorcreate-doesnt-update-on-find' },
+      { label: 'gorm.Expr Pushes Arithmetic to the Database', route: '/go/gorm/gormexpr-pushes-arithmetic-to-the-database' },
+    ],
+    tip: 'Preload is a read-time concern attached to a query, avoiding N+1 by eager-loading related rows. Association Mode (Append/Replace/Delete/Clear/Count) operates on an already-loaded instance to directly manipulate its own relationships — a genuinely different tool.',
+    docs: [
+      { label: 'gorm.io — Associations', url: 'https://gorm.io/docs/associations.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'Association Mode requires an already-identified, typically already-loaded parent instance — it has no meaning attached to a fresh, not-yet-executed query the way Preload does.',
+      'Count() issues a targeted SQL COUNT with no rows loaded — meaningfully cheaper than Preload followed by len() when only the number is needed.',
+    ],
+  },
   'go/pgx': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31633,6 +35308,57 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Connection pooling (pgxpool) must be configured explicitly — a default pool size that doesn\'t match actual concurrency needs can bottleneck or waste database connections.',
       'Using pgx-specific types (like pgtype.Text) instead of standard library types requires understanding pgx\'s specific null-handling conventions.',
+    ],
+  },
+  'go/pgx/pgx-batch-sends-queries-in-one-round-trip': {
+    apis: ['pgx.Batch', 'BatchResults'],
+    related: [
+      { label: 'Database with pgx (overview)', route: '/go/pgx' },
+      { label: 'FOR UPDATE Lock Ordering Can Deadlock', route: '/go/pgx/for-update-lock-ordering-can-deadlock' },
+      { label: 'Context Cancel Closes the Connection', route: '/go/pgx/context-cancel-closes-the-connection' },
+    ],
+    tip: 'Queue accumulates queries without touching the network — SendBatch sends them all in ONE round-trip. Per pgx\'s own docs, "the returned BatchResults must be closed before the connection is used again."',
+    docs: [
+      { label: 'pkg.go.dev — pgx.Batch', url: 'https://pkg.go.dev/github.com/jackc/pgx/v5#Batch' },
+    ],
+    resources: [],
+    gotchas: [
+      'Results must be read back in the SAME order queries were queued — there is no other way to correlate a result to its originating query.',
+      'An error partway through a batch can leave the connection unusable — pgx may close it entirely rather than return it to the pool.',
+    ],
+  },
+  'go/pgx/for-update-lock-ordering-can-deadlock': {
+    apis: ['FOR UPDATE', 'PostgreSQL row locks'],
+    related: [
+      { label: 'Database with pgx (overview)', route: '/go/pgx' },
+      { label: 'pgx.Batch Sends Queries in One Round-Trip', route: '/go/pgx/pgx-batch-sends-queries-in-one-round-trip' },
+      { label: 'Context Cancel Closes the Connection', route: '/go/pgx/context-cancel-closes-the-connection' },
+    ],
+    tip: 'FOR UPDATE locks the selected row for the rest of the transaction — always locking rows in caller-determined order (like "fromID" first) risks a real PostgreSQL-documented deadlock when two concurrent transactions lock the same rows in opposite orders.',
+    docs: [
+      { label: 'PostgreSQL — Explicit Locking', url: 'https://www.postgresql.org/docs/current/explicit-locking.html' },
+    ],
+    resources: [],
+    gotchas: [
+      'PostgreSQL resolves a deadlock by aborting one of the two transactions automatically — which one is aborted is documented as unpredictable and should not be relied upon.',
+      'The durable fix is consistent lock ordering (e.g. always the lower ID first), not just retrying after a deadlock error.',
+    ],
+  },
+  'go/pgx/context-cancel-closes-the-connection': {
+    apis: ['pgconn.CancelRequest', 'ctxwatch.Handler'],
+    related: [
+      { label: 'Database with pgx (overview)', route: '/go/pgx' },
+      { label: 'pgx.Batch Sends Queries in One Round-Trip', route: '/go/pgx/pgx-batch-sends-queries-in-one-round-trip' },
+      { label: 'FOR UPDATE Lock Ordering Can Deadlock', route: '/go/pgx/for-update-lock-ordering-can-deadlock' },
+    ],
+    tip: '"The pool cleans up the connection automatically" means closing it by default, per pgconn\'s own docs — a workload with frequent, expected cancellations can mean constant connection churn unless CancelRequestContextWatcherHandler is configured.',
+    docs: [
+      { label: 'pkg.go.dev — pgconn', url: 'https://pkg.go.dev/github.com/jackc/pgx/v5/pgconn' },
+    ],
+    resources: [],
+    gotchas: [
+      'By default, cancelling a Go context does NOT tell PostgreSQL to stop running the query on the server — it only stops the Go side from waiting.',
+      'CancelRequestContextWatcherHandler trades connection reuse for cancellation certainty — pgx\'s own docs note "there is no way to be sure a query was canceled" with it.',
     ],
   },
   'go/patterns': {
@@ -31647,6 +35373,50 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing interfaces for "future flexibility" that never materializes adds indirection Go\'s culture generally discourages — define interfaces at the CONSUMER, not preemptively at the producer.',
     ],
   },
+  'go/patterns/sync-once-do-treats-a-panic-as-already-run': {
+    apis: ['sync.Once.Do'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Go Patterns overview', route: '/go/patterns' },
+      { label: 'errgroup.WithContext Cancels Siblings on the First Error', route: '/go/patterns/errgroup-withcontext-cancels-siblings-on-error' },
+    ],
+    tip: 'If a Once-guarded init can fail, store the error alongside the result and have every caller check it — do not rely on sync.Once itself to represent success.',
+    gotchas: [
+      'A panic inside Do(f) permanently marks the Once done — recover() elsewhere in the call stack cannot reset it.',
+      'This reproduces with a single goroutine calling twice in a row — no concurrency is needed to hit it.',
+    ],
+  },
+  'go/patterns/errgroup-withcontext-cancels-siblings-on-error': {
+    apis: ['errgroup.WithContext', 'errgroup.Group.Go', 'errgroup.Group.Wait'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'sync.Once.Do Treats a Panic as Already Run', route: '/go/patterns/sync-once-do-treats-a-panic-as-already-run' },
+      { label: 'Middleware Composition: First Wrap Runs Outermost', route: '/go/patterns/middleware-composition-first-wrap-runs-outermost' },
+      { label: 'Go Context', route: '/go/context' },
+    ],
+    tip: 'Passing the derived ctx into an actual outbound call (http.NewRequestWithContext, a DB query) is what makes cancellation real — capturing it in a closure without reading it does nothing.',
+    gotchas: [
+      'g.Wait() always waits for every goroutine to return, even after the group has already failed — a slow unrelated goroutine still runs its full duration.',
+      'g.Go() only tracks completion and captures errors — it does not inject any cancellation-checking into the goroutine body.',
+    ],
+  },
+  'go/patterns/middleware-composition-first-wrap-runs-outermost': {
+    apis: ['http.Handler', 'http.HandlerFunc', 'ServeHTTP'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'errgroup.WithContext Cancels Siblings on the First Error', route: '/go/patterns/errgroup-withcontext-cancels-siblings-on-error' },
+      { label: 'Go Patterns overview', route: '/go/patterns' },
+      { label: 'gRPC in Go', route: '/go/grpc' },
+    ],
+    tip: 'The outermost wrap in logging(auth(rateLimiter(base))) is the first handler actually invoked at request time, even though it is the last function applied while building the chain.',
+    gotchas: [
+      'Reordering middleware changes real behavior, not just readability — an outer rate limiter can reject a request before an inner auth check ever runs.',
+      'Each middleware\'s own code splits around its call to next.ServeHTTP — logic before that call runs on the way in, logic after it runs on the way out, in reverse order.',
+    ],
+  },
   'go/cli': {
     apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
     related: [
@@ -31656,6 +35426,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Cross-compiling for a different OS/architecture (GOOS/GOARCH) is built into the toolchain with no extra tooling required — a genuine advantage for distributing CLI tools across platforms.',
       'CGO-dependent code breaks the "single static binary, cross-compile trivially" advantage, since it links against a C library — pure-Go dependencies preserve this benefit.',
+    ],
+  },
+  'go/cli/bufio-scanner-has-a-64kb-default-token-limit': {
+    apis: ['bufio.Scanner', 'Scanner.Buffer', 'bufio.MaxScanTokenSize'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Go CLI Tools overview', route: '/go/cli' },
+      { label: 'ldflags -X Only Sets Uninitialized or Constant Vars', route: '/go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars' },
+    ],
+    tip: 'A "bufio.Scanner: token too long" error from scanner.Err() means a single line exceeded 64KB — call Scanner.Buffer(buf, max) right after NewScanner, before the first Scan(), to raise it.',
+    gotchas: [
+      'A tool that never checks scanner.Err() stops reading partway through oversized input with zero indication anything was truncated.',
+      'Scanner.Buffer panics if called after scanning has already started — it must be set up front, not reactively mid-loop.',
+    ],
+  },
+  'go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars': {
+    apis: ['-ldflags -X', 'go build'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'bufio.Scanner Has a 64KB Default Token Limit', route: '/go/cli/bufio-scanner-has-a-64kb-default-token-limit' },
+      { label: 'NotifyContext Swallows a Second Ctrl+C', route: '/go/cli/notifycontext-swallows-a-second-ctrl-c' },
+    ],
+    tip: '-X only works on a variable declared uninitialized or set to a constant string literal — refactoring it to call a function silently disqualifies it, with zero build or link errors.',
+    gotchas: [
+      'The importpath in -X main.version=... must match exactly — a version var moved to an internal/build package needs the full import path, not just the short package name.',
+      'A silently-ignored -X flag looks identical to a successful build — the only symptom is the variable keeping its own Go-computed default.',
+    ],
+  },
+  'go/cli/notifycontext-swallows-a-second-ctrl-c': {
+    apis: ['signal.NotifyContext', 'signal.Notify'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'ldflags -X Only Sets Uninitialized or Constant Vars', route: '/go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars' },
+      { label: 'Go CLI Tools overview', route: '/go/cli' },
+    ],
+    tip: 'NotifyContext disables the OS default Ctrl+C behavior entirely — a second Ctrl+C during a hung operation does nothing until the returned stop function eventually runs.',
+    gotchas: [
+      'If the operation being canceled never actually checks ctx.Done(), Ctrl+C becomes completely ineffective, not just slow — repeated presses have zero additional effect.',
+      'A raw signal.Notify channel (not NotifyContext) is the way to detect a repeated signal and force os.Exit as an explicit escape hatch.',
     ],
   },
   'go/build': {
@@ -31668,6 +35480,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The Go build cache speeds up repeated builds significantly — a CI pipeline not preserving the cache across runs pays the full compile cost every single time.',
       'Stripping debug symbols (-ldflags="-s -w") reduces binary size for distribution but also removes information useful for later debugging a shipped binary.',
+    ],
+  },
+  'go/build/ldflags-s-already-implies-w': {
+    apis: ['cmd/link -s', 'cmd/link -w'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Go Build & Deployment overview', route: '/go/build' },
+      { label: 'go build Caches Compiled Packages in GOCACHE, Not GOMODCACHE', route: '/go/build/go-build-caches-compiled-packages-in-gocache-not-gomodcache' },
+    ],
+    tip: '-s already implies -w — -ldflags="-s -w=0" strips the symbol table while explicitly keeping DWARF, a debuggable-yet-smaller middle ground the plain "-s -w" pairing can\'t express.',
+    gotchas: [
+      '-ldflags="-s -w" and -ldflags="-s" alone produce byte-for-byte identical stripping — the -w is redundant, not wrong.',
+      'A fully stripped binary (-s -w) cannot be attached to with Delve for post-mortem debugging — plan ahead if production crash analysis matters.',
+    ],
+  },
+  'go/build/go-build-caches-compiled-packages-in-gocache-not-gomodcache': {
+    apis: ['go env GOCACHE', 'go env GOMODCACHE', 'go clean -cache', 'go clean -modcache'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'ldflags -s Already Implies -w', route: '/go/build/ldflags-s-already-implies-w' },
+      { label: 'go vet’s Default Checks Don’t Include Shadow Detection', route: '/go/build/go-vets-default-checks-dont-include-shadow-detection' },
+    ],
+    tip: 'GOMODCACHE ($GOPATH/pkg/mod) stores downloaded dependency source; GOCACHE stores compiled build artifacts — two separate directories with separate clean commands.',
+    gotchas: [
+      'go clean -modcache does not touch stale compiled objects at all — go clean -cache is the command that actually forces a full recompile.',
+      'CI caching should preserve both directories separately, exactly as actions/setup-go\'s own cache: true option does.',
+    ],
+  },
+  'go/build/go-vets-default-checks-dont-include-shadow-detection': {
+    apis: ['go vet', 'go vet -vettool', 'golang.org/x/tools shadow analyzer'],
+    docs: GO_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'go build Caches Compiled Packages in GOCACHE, Not GOMODCACHE', route: '/go/build/go-build-caches-compiled-packages-in-gocache-not-gomodcache' },
+      { label: 'Go Build & Deployment overview', route: '/go/build' },
+    ],
+    tip: 'Variable shadowing (an inner := silently discarding an outer err) is a real "compiles fine, silently wrong" bug class — plain go vet ./... provides zero coverage for it by default.',
+    gotchas: [
+      'Shadow detection requires installing a genuinely separate tool and running go vet -vettool=$(which shadow) ./... as its own CI step, not a flag on the existing vet command.',
+      'A green go vet + go test -race CI pipeline is not evidence a codebase is shadow-bug-free — neither step checks for it at all.',
     ],
   },
 
@@ -33017,6 +36871,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DevOps is as much an organizational/cultural shift as a toolchain — adopting the tools without the collaboration model behind them rarely delivers the expected benefit.',
     ],
   },
+  'devops/sdlc-agile/agile-manifesto-values-the-right-side-too-just-less': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'SDLC & Agile overview', route: '/devops/sdlc-agile' },
+      { label: 'Little’s Law Assumes a Steady State', route: '/devops/sdlc-agile/littles-law-assumes-a-steady-state' },
+    ],
+    tip: 'The Manifesto\'s own text says "while there is value in the items on the right, we value the items on the left more" — a weighting for trade-offs, not a license to eliminate documentation, contracts, or plans entirely.',
+    gotchas: [
+      'Zero documentation and zero API contracts is not "doing Agile well" — it is a misreading of a comparison the Manifesto\'s own authors never intended as absolute.',
+      'The correct application is a tie-breaker for genuine conflicts, not a standing policy to discard the right-hand items by default.',
+    ],
+  },
+  'devops/sdlc-agile/littles-law-assumes-a-steady-state': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'The Agile Manifesto Values the Right Side Too, Just Less', route: '/devops/sdlc-agile/agile-manifesto-values-the-right-side-too-just-less' },
+      { label: 'Cumulative Flow Diagrams Reveal the Bottleneck', route: '/devops/sdlc-agile/cumulative-flow-diagrams-reveal-the-bottleneck' },
+    ],
+    tip: 'Lead Time = WIP / Throughput only holds when arrivals and departures are roughly balanced — a growing backlog means the formula understates true future lead time.',
+    gotchas: [
+      'A Little\'s Law calculation that looks stable week over week can still be hiding a worsening trend if WIP is climbing while throughput sits flat.',
+      'WIP limits aren\'t just a productivity technique — they\'re what keeps a system close enough to steady state for the formula to remain trustworthy at all.',
+    ],
+  },
+  'devops/sdlc-agile/cumulative-flow-diagrams-reveal-the-bottleneck': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Little’s Law Assumes a Steady State', route: '/devops/sdlc-agile/littles-law-assumes-a-steady-state' },
+      { label: 'SDLC & Agile overview', route: '/devops/sdlc-agile' },
+    ],
+    tip: 'The vertical gap between two adjacent bands on a CFD is that stage\'s current WIP — a widening gap means items are entering that stage faster than they\'re leaving it.',
+    gotchas: [
+      'A CFD localizes a bottleneck to one specific workflow stage, something a single aggregate cycle-time or throughput number can\'t do on its own.',
+      'A widening band is the visual signature of exactly the arrivals-exceed-departures condition that breaks Little\'s Law\'s own steady-state assumption.',
+    ],
+  },
   'devops/culture': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33029,6 +36925,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       '"You build it, you run it" only works with genuine on-call support and tooling investment — without them, it just shifts operational burden onto developers without the means to handle it well.',
     ],
   },
+  'devops/culture/dora-metrics-evolved-from-four-keys-to-five': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'DevOps Culture overview', route: '/devops/culture' },
+      { label: 'Project Aristotle Ranked Five Dynamics, Not Just Safety', route: '/devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety' },
+    ],
+    tip: 'DORA\'s own current guide has moved past the original four keys — Deployment Rework Rate is the fifth metric worth tracking alongside the classic four.',
+    gotchas: [
+      'A team can score "Elite" on all four original metrics while still having a real, DORA-measurable rework problem the original four cannot see.',
+      'MTTR is not DORA\'s own current name for the recovery metric anymore — it is now "Failed deployment recovery time," more precisely scoped to deployment-triggered failures specifically.',
+    ],
+  },
+  'devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'DORA Metrics Evolved From Four Keys to Five', route: '/devops/culture/dora-metrics-evolved-from-four-keys-to-five' },
+      { label: 'The SRE Book’s Own Definition Sharpens “Blameless”', route: '/devops/culture/sre-books-own-definition-sharpens-blameless' },
+    ],
+    tip: 'Google\'s own research ranks five dynamics "in order of importance" — psychological safety is first, but Dependability, Structure and Clarity, Meaning, and Impact are part of the same finding, not separate ideas.',
+    gotchas: [
+      'A team can score very well on psychological safety while still being clearly weak on a different, independently-measured dynamic like Structure and Clarity.',
+      'The ranked ORDER is itself part of the finding — foundational dynamics like safety are worth prioritizing before dynamics like Meaning and Impact, per Google\'s own ranking.',
+    ],
+  },
+  'devops/culture/sre-books-own-definition-sharpens-blameless': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Project Aristotle Ranked Five Dynamics, Not Just Safety', route: '/devops/culture/project-aristotle-ranked-five-dynamics-not-just-safety' },
+      { label: 'DevOps Culture overview', route: '/devops/culture' },
+    ],
+    tip: 'The real test for a blameless action item, per Google\'s own SRE book, is not "does it avoid naming a person" — it\'s "does it fix why someone had incomplete or incorrect information."',
+    gotchas: [
+      'An action item like "engineers should be more careful" can pass a surface no-blame check while still failing to close any real information gap.',
+      'Identifying specific actions and decisions in the incident timeline is necessary for a good post-mortem — blameless means not indicting the person for those actions, not omitting them.',
+    ],
+  },
   'devops/git-workflows': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33038,6 +36976,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Long-lived feature branches accumulate merge conflict risk proportional to how long they diverge — this is a direct argument for trunk-based development at scale.',
       'A branching strategy should match team size and release cadence — GitFlow\'s heavier ceremony fits some release schedules better than others, not universally.',
+    ],
+  },
+  'devops/git-workflows/force-with-lease-isnt-foolproof-without-a-fresh-fetch': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Git Workflows overview', route: '/devops/git-workflows' },
+      { label: 'BREAKING CHANGE and ! Are Independent Signals', route: '/devops/git-workflows/breaking-change-and-bang-are-independent-signals' },
+    ],
+    tip: 'A bare --force-with-lease checks against your OWN local remote-tracking ref — a background auto-fetch (an IDE, a cron job) can silently update that ref and defeat the safety check entirely.',
+    gotchas: [
+      'The explicit form (--force-with-lease=<branch>:<sha>) compares against a SHA you name yourself, closing the gap the bare form leaves open.',
+      '--force-with-lease is still a real improvement over plain --force in the common case — this is one specific scenario where the bare form alone isn\'t enough.',
+    ],
+  },
+  'devops/git-workflows/breaking-change-and-bang-are-independent-signals': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: '--force-with-lease Isn’t Foolproof Without a Fresh Fetch', route: '/devops/git-workflows/force-with-lease-isnt-foolproof-without-a-fresh-fetch' },
+      { label: 'The 400-Line PR Limit Has a Speed Limit Attached', route: '/devops/git-workflows/the-400-line-pr-limit-has-a-speed-limit-attached' },
+    ],
+    tip: 'The Conventional Commits spec treats "!" and a "BREAKING CHANGE:" footer as independent signals — either one alone is fully valid and triggers the same major version bump.',
+    gotchas: [
+      'A footer-only breaking change is invisible in a "git log --oneline" scan — using "!" even alongside a full footer keeps breaking changes human-scannable.',
+      'semantic-release\'s commit-analyzer parses both forms identically — there\'s no automation reason to require both together.',
+    ],
+  },
+  'devops/git-workflows/the-400-line-pr-limit-has-a-speed-limit-attached': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'BREAKING CHANGE and ! Are Independent Signals', route: '/devops/git-workflows/breaking-change-and-bang-are-independent-signals' },
+      { label: 'Git Workflows overview', route: '/devops/git-workflows' },
+    ],
+    tip: 'The famous "400 lines" PR-size number comes from a real SmartBear/Cisco study that measured it TOGETHER with a review pace (under 500 LOC/hour) — a correctly-sized PR reviewed in 5 minutes doesn\'t get the study\'s own 70-90% defect-detection yield.',
+    gotchas: [
+      'A PR-size CI check alone enforces only half the finding — nothing stops reviewers from rubber-stamping a compliant PR in a few minutes.',
+      'A team serious about the review-effectiveness benefit needs some pace discipline alongside the size limit, not just the size limit.',
     ],
   },
   'devops/continuous-integration': {
@@ -33052,6 +37032,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CI pipeline speed matters — a 45-minute pipeline gets run less often locally and delays feedback, undermining the fast-feedback goal CI exists to serve.',
     ],
   },
+  'devops/continuous-integration/fail-fast-false-lets-every-matrix-job-finish': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Continuous Integration overview', route: '/devops/continuous-integration' },
+      { label: 'New-Code Quality Gates vs. Global Coverage Thresholds', route: '/devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds' },
+    ],
+    tip: 'fail-fast: false is load-bearing for a genuine compatibility matrix — without it, the first failing combination cancels every other combination before it can report its own result, defeating the point of testing multiple versions at once.',
+    gotchas: [
+      'The default (fail-fast: true) cancels all in-progress and queued matrix jobs the instant one fails — this is invisible in the UI unless you know to look for canceled, not failed, job statuses.',
+      'fail-fast: false trades more compute on a failing run for a complete compatibility picture — worth it for genuine version matrices, wasteful for pure work-sharding matrices.',
+    ],
+  },
+  'devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'fail-fast: false Lets Every Matrix Job Finish', route: '/devops/continuous-integration/fail-fast-false-lets-every-matrix-job-finish' },
+      { label: 'merge-multiple Flattens Artifact Subdirectories', route: '/devops/continuous-integration/merge-multiple-flattens-artifact-subdirectories' },
+    ],
+    tip: 'SonarQube\'s own "Clean as You Code" philosophy scopes its default Quality Gate to new code specifically — a global Jest coverageThreshold enforces the same-looking percentage against the WHOLE codebase, which can block a legacy project from merging anything at all.',
+    gotchas: [
+      'A team adopting coverage gates on a legacy codebase should reach for a new-code-scoped gate, not a global one, to avoid an all-or-nothing wall.',
+      'SonarQube\'s own docs actively discourage adding overall-code conditions on top of an already-adopted new-code gate.',
+    ],
+  },
+  'devops/continuous-integration/merge-multiple-flattens-artifact-subdirectories': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'New-Code Quality Gates vs. Global Coverage Thresholds', route: '/devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds' },
+      { label: 'Continuous Integration overview', route: '/devops/continuous-integration' },
+    ],
+    tip: 'merge-multiple: true on download-artifact flattens every matched artifact into one shared directory — without it, each artifact lands in its own named subdirectory, invisible to a downstream command that only scans the current directory.',
+    gotchas: [
+      'A merge step that finds zero matching files often doesn\'t error — it can silently produce an empty, technically-successful result instead.',
+      'The correct merge-multiple setting depends on what the downstream step expects: a flat merge wants true, a step that needs to know which artifact a file came from wants the default (false).',
+    ],
+  },
   'devops/continuous-delivery': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33062,6 +37078,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A pipeline that "could" deploy but requires manual approval at every stage isn\'t genuinely continuous — the discipline is in removing unnecessary manual gates, not just having automation exist.',
       'Feature flags let code be deployed without being immediately user-visible, decoupling deployment from release — a key enabler of safe continuous delivery.',
+    ],
+  },
+  'devops/continuous-delivery/service-selector-switch-isnt-actually-instant': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Continuous Delivery overview', route: '/devops/continuous-delivery' },
+      { label: 'awk’s BEGIN-exit Idiom for Comparing Floats', route: '/devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats' },
+    ],
+    tip: 'kube-proxy syncs each node\'s routing rules on its own schedule after a Service selector changes — the API update is atomic, but the actual traffic cutover briefly runs through a node-by-node sync window, not a single instant.',
+    gotchas: [
+      'A brief mixed-traffic window after a Blue/Green switch is expected Kubernetes behavior, not a sign the deployment tooling is broken.',
+      'A rollback patch goes through the exact same sync process as the forward switch — it isn\'t inherently faster or more instant.',
+    ],
+  },
+  'devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'The Service Selector Switch Isn’t Actually Instant', route: '/devops/continuous-delivery/service-selector-switch-isnt-actually-instant' },
+      { label: 'Phase 3’s Timing Is About References, Not Elapsed Time', route: '/devops/continuous-delivery/phase-3-timing-is-about-references-not-elapsed-time' },
+    ],
+    tip: 'bash\'s own [ ]/-gt comparison expects integer operands — a realistic decimal error rate needs awk\'s native floating-point comparison instead, wrapped in a BEGIN block purely as an arithmetic calculator.',
+    gotchas: [
+      'The ! in exit !(...) is load-bearing — it reconciles awk\'s "true is 1" convention with bash\'s "success is 0" convention, not decorative negation.',
+      'Removing that ! silently inverts which branch of the surrounding if statement runs, for every value, not just edge cases.',
+    ],
+  },
+  'devops/continuous-delivery/phase-3-timing-is-about-references-not-elapsed-time': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'awk’s BEGIN-exit Idiom for Comparing Floats', route: '/devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats' },
+      { label: 'Continuous Delivery overview', route: '/devops/continuous-delivery' },
+    ],
+    tip: 'Elapsed calendar time is a proxy for expand-contract\'s Phase 3 safety, not the actual criterion — the real requirement is zero remaining references to the old column, checkable directly via a codebase-wide search.',
+    gotchas: [
+      'An infrequently-run job (quarterly reports, month-end batch scripts) may not execute even once during a multi-week waiting period, hiding a real dependency.',
+      'The reference search needs to cover reporting/ETL tools and other services, not just the actively-migrating application\'s own repository.',
     ],
   },
   'devops/environment-strategy': {
@@ -33075,6 +37127,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Ephemeral environments (spun up per PR, torn down after) avoid drift entirely by always starting from a known-clean baseline, at the cost of provisioning overhead per environment.',
     ],
   },
+  'devops/environment-strategy/terraform-workspaces-arent-meant-for-environment-isolation': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Environment Strategy overview', route: '/devops/environment-strategy' },
+      { label: 'Kubernetes Secrets Are Base64, Not Encrypted, By Default', route: '/devops/environment-strategy/kubernetes-secrets-are-base64-not-encrypted-by-default' },
+    ],
+    tip: 'Terraform\'s own docs say workspaces "are not appropriate for... deployments requiring separate credentials and access controls" — exactly what dev/staging/prod usually need.',
+    gotchas: [
+      'All workspaces of one configuration share the same backend and credentials — a forgotten workspace switch applies against whatever workspace was already selected, with no credential boundary to catch it.',
+      'Separate root configurations per environment, each with its own backend block, can still share code via a common module — isolation doesn\'t require full duplication.',
+    ],
+  },
+  'devops/environment-strategy/kubernetes-secrets-are-base64-not-encrypted-by-default': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Terraform Workspaces Aren’t Meant for Environment Isolation', route: '/devops/environment-strategy/terraform-workspaces-arent-meant-for-environment-isolation' },
+      { label: 'Kubernetes Has No Built-In Namespace TTL', route: '/devops/environment-strategy/kubernetes-has-no-built-in-namespace-ttl' },
+    ],
+    tip: 'Kubernetes\' own docs state Secrets are unencrypted in etcd by default — base64 is an encoding, not a cipher; encryption at rest is a separate, cluster-admin-level opt-in step.',
+    gotchas: [
+      'Enabling encryption at rest only protects NEW writes — Secrets already stored before it was enabled stay unencrypted until individually rewritten.',
+      'Managed Kubernetes providers vary on whether encryption at rest is on by default — never assume it without checking the specific cluster.',
+    ],
+  },
+  'devops/environment-strategy/kubernetes-has-no-built-in-namespace-ttl': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Kubernetes Secrets Are Base64, Not Encrypted, By Default', route: '/devops/environment-strategy/kubernetes-secrets-are-base64-not-encrypted-by-default' },
+      { label: 'Environment Strategy overview', route: '/devops/environment-strategy' },
+    ],
+    tip: 'Kubernetes\' built-in ttlSecondsAfterFinished only applies to Jobs reaching a finished state — there is no equivalent for a Namespace, and no built-in concept of "inactivity" at all.',
+    gotchas: [
+      '"Add a TTL" for ephemeral environments requires genuinely new automation (a scheduled job or a tool like kube-janitor) — it is not a Kubernetes configuration flag.',
+      'Any "last activity" signal has to be actively tracked by the team\'s own tooling (e.g. a custom annotation the pipeline updates) — Kubernetes has nothing to read this off of.',
+    ],
+  },
   'devops/release-management': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33086,6 +37180,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Feature flags decouple deployment from release, letting a "released" feature be toggled off instantly without a full redeploy if something goes wrong.',
     ],
   },
+  'devops/release-management/release-please-never-publishes': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Release Management overview', route: '/devops/release-management' },
+      { label: '@semantic-release/npm Updates package.json Only Locally', route: '/devops/release-management/semantic-release-npm-never-commits-back' },
+    ],
+    tip: 'release-please-action only ever bumps the version, updates the changelog, tags, and creates a GitHub Release — actually publishing to npm needs a separate job gated on the action\'s own release_created output, which the main page\'s own one-step workflow never adds.',
+    gotchas: [
+      'A release-please workflow can succeed on every run for months while the npm registry never receives a single new version, because nothing ever failed — the workflow just never included a publish step.',
+      'An unconditional publish step added without the release_created gate runs on every push to main, not just the ones where a release was actually cut.',
+    ],
+  },
+  'devops/release-management/semantic-release-npm-never-commits-back': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'release-please Automates Everything Except the Actual Publish', route: '/devops/release-management/release-please-never-publishes' },
+      { label: '“Deploy to Production” Already Happened by the Time the Tag Was Pushed', route: '/devops/release-management/hotfix-step-4-already-happened-at-step-3' },
+    ],
+    tip: '@semantic-release/npm updates package.json only in the CI runner\'s local working directory as part of building and publishing the tarball — it never commits that change back to the repository. Only @semantic-release/git does that, and the main page\'s own .releaserc.json omits it.',
+    gotchas: [
+      'semantic-release computes the next version from git tag history and commit messages, never from reading the current package.json — a stale package.json in the repo does not affect what version publishes next.',
+      'Without @semantic-release/git, the repo\'s own package.json can sit many releases behind what npm has actually published, indefinitely, with every release still succeeding.',
+    ],
+  },
+  'devops/release-management/hotfix-step-4-already-happened-at-step-3': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: '@semantic-release/npm Updates package.json Only Locally', route: '/devops/release-management/semantic-release-npm-never-commits-back' },
+      { label: 'Release Management overview', route: '/devops/release-management' },
+    ],
+    tip: 'The main page\'s own hotfix step 3 (pushing the v2.4.1 tag) matches the same code tab\'s own tag-triggered release workflow glob — the npm publish that IS step 4\'s "deploy to production" starts automatically the instant step 3\'s tag push completes.',
+    gotchas: [
+      'Manually running a deploy for step 4 on a project already wired with a tag-triggered release workflow risks a duplicate, failing npm publish attempt for a version already published automatically.',
+      'A numbered step with no command underneath it, like step 4, is worth checking against the rest of the SAME page for an already-shown mechanism before assuming it needs external tooling.',
+    ],
+  },
   'devops/iac': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33095,6 +37225,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'IaC configuration drift (a manual change made directly in the cloud console, bypassing the IaC tool) silently diverges from what the code describes until the next apply forcibly reconciles it.',
       'Always reviewing a plan/diff before applying is essential — an unexpected "destroy" in a plan output is the single most common way teams accidentally lose production infrastructure.',
+    ],
+  },
+  'devops/iac/pipefail-is-not-the-github-actions-shell-default': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Infrastructure as Code overview', route: '/devops/iac' },
+      { label: 'Incremental Mode Never Deletes Unmanaged Resources', route: '/devops/iac/incremental-mode-never-deletes-unmanaged-resources' },
+    ],
+    tip: 'GitHub\'s own default shell template for an unspecified run: step omits pipefail — a $? check right after piping through tee silently captures tee\'s exit code, not the command before it, unless shell: bash is set explicitly.',
+    gotchas: [
+      'A drift-detection step missing shell: bash can run "successfully" forever while its alert condition never actually fires — a silent, permanent false negative.',
+      'PIPESTATUS[0] reads the first command\'s exit code directly and works regardless of pipefail, as an alternative fix.',
+    ],
+  },
+  'devops/iac/incremental-mode-never-deletes-unmanaged-resources': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'pipefail Is Not the GitHub Actions Shell Default', route: '/devops/iac/pipefail-is-not-the-github-actions-shell-default' },
+      { label: 'check Filters What Runs, soft-fail-on Filters What Blocks', route: '/devops/iac/check-filters-what-runs-soft-fail-on-what-blocks' },
+    ],
+    tip: 'Bicep\'s Incremental deployment mode never deletes a resource just because it\'s absent from the template — the opposite of Terraform\'s default reconciliation. Complete mode is the (not recommended) alternative that does delete unmanaged resources.',
+    gotchas: [
+      'A resource created manually or by another tool survives every Incremental-mode redeploy indefinitely, by design.',
+      'Complete mode can delete resources the person running the deployment doesn\'t even know exist in that resource group — Microsoft\'s own docs recommend running what-if first.',
+    ],
+  },
+  'devops/iac/check-filters-what-runs-soft-fail-on-what-blocks': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Incremental Mode Never Deletes Unmanaged Resources', route: '/devops/iac/incremental-mode-never-deletes-unmanaged-resources' },
+      { label: 'Infrastructure as Code overview', route: '/devops/iac' },
+    ],
+    tip: 'Checkov\'s --check with explicit IDs is an allowlist — only those checks ever run. --soft-fail-on runs the full default rule set and only changes which severities can fail the build. They are not two variations on the same idea.',
+    gotchas: [
+      'A HIGH-severity finding can go completely undetected if the check that would catch it isn\'t on a narrow --check allowlist — not soft-failed, simply never run.',
+      'Copying the wrong one of the main page\'s own two Checkov commands can silently produce a far narrower security gate than intended.',
     ],
   },
   'devops/gitops': {
@@ -33109,6 +37275,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Secrets in a GitOps repo need special handling (sealed secrets, external secret operators) since the repo itself shouldn\'t contain plaintext credentials.',
     ],
   },
+  'devops/gitops/retry-backoff-is-exponential-not-linear': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'GitOps overview', route: '/devops/gitops' },
+      { label: 'Flux’s Interval Is a Drift Fallback', route: '/devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger' },
+    ],
+    tip: 'ArgoCD\'s retry.backoff.factor compounds the wait time between attempts (5s, 10s, 20s...) rather than repeating a fixed delay — backoff.maxDuration caps how large any single wait can grow, independent of the retry limit itself.',
+    gotchas: [
+      'A higher retry limit without maxDuration set can produce individual waits that grow surprisingly large purely from repeated doubling.',
+      'limit controls how many retries happen; backoff controls how long each wait between them is — they\'re independent settings.',
+    ],
+  },
+  'devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Retry Backoff Is Exponential, Not Linear', route: '/devops/gitops/retry-backoff-is-exponential-not-linear' },
+      { label: 'Sync Waves Wait for Healthy, Not Just Applied', route: '/devops/gitops/sync-waves-wait-for-healthy-not-just-applied' },
+    ],
+    tip: 'A Git push is handled instantly via a Kubernetes event, not gated by the Kustomization\'s own periodic interval — that interval is really the fallback check that catches drift Flux was never notified about, like a manual kubectl edit.',
+    gotchas: [
+      'Shortening a Kustomization\'s interval mostly speeds up drift detection, not Git-triggered deploy latency, which is already event-driven.',
+      'GitRepository.interval and Kustomization.interval govern two separate controllers with separate jobs, not one combined "Flux interval."',
+    ],
+  },
+  'devops/gitops/sync-waves-wait-for-healthy-not-just-applied': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Flux’s Interval Is a Drift Fallback', route: '/devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger' },
+      { label: 'GitOps overview', route: '/devops/gitops' },
+    ],
+    tip: 'ArgoCD advances to the next sync wave only once the current wave is in-sync AND healthy — for a ConfigMap that\'s instant, but for a Job or Deployment, health can lag well behind the moment the resource was merely created.',
+    gotchas: [
+      'A migration Job placed in an earlier wave is correctly waited on until it COMPLETES, not just starts — this is what makes migration-before-app ordering actually safe.',
+      'Resources within the same wave are ordered by kind then name, not by their order in the source manifest.',
+    ],
+  },
   'devops/kubernetes-deployments': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33119,6 +37321,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Readiness probes must accurately reflect genuine readiness — a rolling update routing traffic to a not-yet-ready pod causes real request failures during the deploy.',
       'A deployment with no resource limits set can starve other workloads on a shared node during a rollout that temporarily runs both old and new pod versions.',
+    ],
+  },
+  'devops/kubernetes-deployments/atomic-already-implies-wait-in-helm-upgrade': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Deployments overview', route: '/devops/kubernetes-deployments' },
+      { label: 'namePrefix Actually Renames the Live Resource', route: '/devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource' },
+    ],
+    tip: 'Helm\'s own docs state --wait is set automatically the moment --atomic is used — the rollback mechanism depends on the same readiness-waiting behavior, so passing both flags explicitly is harmless but redundant.',
+    gotchas: [
+      'Dropping --atomic while keeping --wait removes automatic rollback-on-failure entirely, even though the waiting itself still happens — the two flags aren\'t interchangeable.',
+      '--timeout bounds how long the wait-then-rollback process is allowed to take, independent of whether --wait was passed explicitly.',
+    ],
+  },
+  'devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'atomic Already Implies wait in Helm Upgrade', route: '/devops/kubernetes-deployments/atomic-already-implies-wait-in-helm-upgrade' },
+      { label: 'Pause With No Duration Waits Forever', route: '/devops/kubernetes-deployments/pause-with-no-duration-waits-forever-not-briefly' },
+    ],
+    tip: 'Kustomize\'s namePrefix rewrites metadata.name on the live resource — the base manifest\'s own declared name never actually exists as a live object once an overlay with namePrefix is applied.',
+    gotchas: [
+      'Any command referencing the resource by name after applying through the overlay must use the prefixed name, or it fails with NotFound.',
+      'namePrefix does not automatically affect Pod template labels — that\'s a separate, independently-controlled transformation.',
+    ],
+  },
+  'devops/kubernetes-deployments/pause-with-no-duration-waits-forever-not-briefly': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'namePrefix Actually Renames the Live Resource', route: '/devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource' },
+      { label: 'Kubernetes Deployments overview', route: '/devops/kubernetes-deployments' },
+    ],
+    tip: 'An Argo Rollouts pause step with no duration field waits indefinitely, per Argo Rollouts\' own docs — there\'s no implicit timeout, only an explicit promote command can move it forward.',
+    gotchas: [
+      'A rollout stuck at a pause: {} step for days is expected behavior, not a bug, if nobody has run the promote command yet.',
+      'Mixing timed pauses (automatic) with one final untimed pause (a genuine human gate) is a standard, documented canary pattern.',
     ],
   },
   'devops/docker-cicd': {
@@ -33133,6 +37371,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Tagging images by content digest (not just a mutable version tag) in the deployment manifest guarantees exactly which image bytes are actually running.',
     ],
   },
+  'devops/docker-cicd/ignore-unfixed-excludes-unpatched-not-minor-cves': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Docker in CI/CD overview', route: '/devops/docker-cicd' },
+      { label: 'type=semver Never Fires Without a Git Tag Push', route: '/devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push' },
+    ],
+    tip: 'Trivy\'s --ignore-unfixed excludes CVEs with no available patch yet, regardless of severity — a scan passing under this flag means "no fixable critical findings," not "no critical findings at all."',
+    gotchas: [
+      'An unfixed critical CVE can be silently present in an image the whole time a gated scan reports success, purely because no patch existed yet.',
+      'Pair --ignore-unfixed build gates with a separate, periodic ungated scan so newly-fixed CVEs get noticed once a patch actually ships.',
+    ],
+  },
+  'devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'ignore-unfixed Excludes Unpatched, Not Minor, CVEs', route: '/devops/docker-cicd/ignore-unfixed-excludes-unpatched-not-minor-cves' },
+      { label: 'SBOM Lists Contents, Provenance Describes the Build', route: '/devops/docker-cicd/sbom-lists-contents-provenance-describes-the-build' },
+    ],
+    tip: 'docker/metadata-action\'s type=semver rule only fires on a push TAG event — a workflow whose on: block only configures branch pushes and PRs can include this rule forever without it ever actually producing a tag.',
+    gotchas: [
+      'A workflow can run successfully many times, with two of three configured tag rules working correctly, while the third silently never activates.',
+      'Fixing it requires adding a tags: pattern to the push trigger AND actually pushing a matching git tag — merging to main alone never satisfies the precondition.',
+    ],
+  },
+  'devops/docker-cicd/sbom-lists-contents-provenance-describes-the-build': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'type=semver Never Fires Without a Git Tag Push', route: '/devops/docker-cicd/type-semver-never-fires-without-a-git-tag-push' },
+      { label: 'Docker in CI/CD overview', route: '/devops/docker-cicd' },
+    ],
+    tip: 'SBOM lists what\'s inside an image; provenance describes how it was built — genuinely different questions, and provenance\'s default attestation only attaches to images actually pushed to a registry, unlike SBOM.',
+    gotchas: [
+      'Dropping --push for a quick local test build can silently leave provenance unattached even with --provenance=true set, while SBOM still works fine.',
+      'Cosign signing and admission-controller policies rely on provenance as their evidence, not SBOM, for verifying build origin.',
+    ],
+  },
   'devops/artifact-management': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33142,6 +37416,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Retention policies need explicit configuration — an unbounded artifact registry accumulates storage cost indefinitely without cleanup of old, unused versions.',
       'Artifact signing and provenance attestation address supply-chain tampering risks that storage alone does not cover.',
+    ],
+  },
+  'devops/artifact-management/imagetools-create-never-pulls-image-data': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Artifact Management overview', route: '/devops/artifact-management' },
+      { label: 'RepoDigests Is Empty Until a Registry Round Trip', route: '/devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip' },
+    ],
+    tip: 'docker buildx imagetools create and skopeo copy both operate registry-side — neither pulls image data to the machine running the command, which is why they avoid the cost of a full pull-then-push round trip just to add a tag.',
+    gotchas: [
+      'imagetools create can only reference a manifest that already exists in the target registry — it cannot tag an image that was never pushed.',
+      'A plain docker pull + tag + push achieves the same end result but transfers the full image twice for no functional benefit.',
+    ],
+  },
+  'devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'imagetools create Never Pulls Image Data', route: '/devops/artifact-management/imagetools-create-never-pulls-image-data' },
+      { label: 'Scoped Packages Are Private Unless access Is public', route: '/devops/artifact-management/scoped-packages-are-private-unless-access-is-public' },
+    ],
+    tip: 'A Docker image\'s digest is computed by the registry, not the local daemon — RepoDigests stays empty until a push or pull actually completes, which is why the digest lookup must run strictly after the push, not in parallel with it.',
+    gotchas: [
+      'Indexing into an empty RepoDigests array produces a hard template error, not a stale-but-plausible digest value.',
+      'This is a genuine data dependency, not just narrative step ordering — refactoring the steps to run in parallel introduces a real race condition.',
+    ],
+  },
+  'devops/artifact-management/scoped-packages-are-private-unless-access-is-public': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'RepoDigests Is Empty Until a Registry Round Trip', route: '/devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip' },
+      { label: 'Artifact Management overview', route: '/devops/artifact-management' },
+    ],
+    tip: 'A scoped npm package (@org/name) is private by default — on an org without the paid private-packages feature, the very first publish fails with a 402 error unless publishConfig.access: "public" is set or --access public is passed.',
+    gotchas: [
+      'The access setting is established per package at its first publish, not inherited from the org or from other packages that already publish successfully.',
+      'publishConfig.access in package.json applies automatically to every future publish, including automated ones (semantic-release) that never pass the flag themselves.',
     ],
   },
   'devops/github-actions': {
@@ -33156,6 +37466,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Secrets referenced in a workflow are masked in logs by default, but a poorly-written step can still accidentally echo a secret value into output.',
     ],
   },
+  'devops/github-actions/the-fork-pr-token-restriction-not-all-pr-workflows': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'GitHub Actions overview', route: '/devops/github-actions' },
+      { label: 'workflow_run Grants Secrets the Trigger Didn’t Have', route: '/devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have' },
+    ],
+    tip: 'GitHub\'s own docs scope the read-only token and no-secrets restriction specifically to pull requests from FORKS — a same-repo branch PR gets full permissions and secrets.',
+    gotchas: [
+      'A workflow using secrets can appear to work reliably for months if every PR tested happens to come from the same repository, then silently break on the first external fork PR.',
+      'Check github.event.pull_request.head.repo.full_name == github.repository to explicitly detect and skip fork PRs rather than relying on the default restriction alone.',
+    ],
+  },
+  'devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'The Fork-PR Token Restriction, Not All PR Workflows', route: '/devops/github-actions/the-fork-pr-token-restriction-not-all-pr-workflows' },
+      { label: 'paths-ignore Can Permanently Block a Required Check', route: '/devops/github-actions/paths-ignore-can-permanently-block-a-required-check' },
+    ],
+    tip: 'workflow_run grants secrets and write-token access "even if the previous workflow was not" allowed to have them — the standard safe pattern for privileged deploys after untrusted CI, but dangerous if it checks out and runs the untrusted branch\'s own code.',
+    gotchas: [
+      'Filtering workflow_run to branches: [main] and checking out main\'s own content (not the triggering PR\'s branch) is what keeps this pattern safe.',
+      'Checking out and building a fork PR\'s own code inside a workflow_run job exposes deploy secrets to a malicious build script.',
+    ],
+  },
+  'devops/github-actions/paths-ignore-can-permanently-block-a-required-check': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'workflow_run Grants Secrets the Trigger Didn’t Have', route: '/devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have' },
+      { label: 'GitHub Actions overview', route: '/devops/github-actions' },
+    ],
+    tip: 'A workflow skipped by paths-ignore never reports ANY status — if that same workflow is a required status check, the PR is blocked from merging forever, not just delayed.',
+    gotchas: [
+      '"Re-run the check" and "wait longer" don\'t help — there\'s no workflow run in progress to complete for a check that was never queued at all.',
+      'The documented fix is running the job unconditionally and making only the expensive WORK conditional via if:, so a real status is always reported.',
+    ],
+  },
   'devops/jenkins': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33167,6 +37519,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A Jenkins master that also runs build agents directly can be starved of resources by heavy builds — dedicated agent nodes isolate this.',
     ],
   },
+  'devops/jenkins/stash-is-scoped-to-the-current-build-only': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Jenkins overview', route: '/devops/jenkins' },
+      { label: 'disableConcurrentBuilds Queues, Doesn’t Abort', route: '/devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default' },
+    ],
+    tip: 'archiveArtifacts is the tool for keeping a file around past the end of a run — stash/unstash is only ever for moving a file between stages of the SAME run, and is auto-deleted the moment that run finishes.',
+    gotchas: [
+      'A stash created in one build cannot be unstashed in a later, separate build — its lifetime is tied to the single pipeline run that created it.',
+      'The Copy Artifact plugin, paired with archiveArtifacts, is the actual mechanism for pulling a file from a previous build into a new one.',
+    ],
+  },
+  'devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'stash Is Scoped to the Current Build Only', route: '/devops/jenkins/stash-is-scoped-to-the-current-build-only' },
+      { label: 'changed Fires Broader Than Break-or-Recovery', route: '/devops/jenkins/changed-fires-broader-than-break-or-recovery-alone' },
+    ],
+    tip: 'disableConcurrentBuilds(abortPrevious: true) is the explicit opt-in for "always deploy the latest commit" — the bare option alone only prevents overlap, it queues stale builds rather than canceling them.',
+    gotchas: [
+      'Without abortPrevious: true, a burst of pushes all eventually run to completion, one after another, including commits already superseded by the time their turn comes.',
+      'This option is scoped to preventing simultaneous accesses to shared resources by default — cancellation behavior is a separate, opt-in concern.',
+    ],
+  },
+  'devops/jenkins/changed-fires-broader-than-break-or-recovery-alone': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'disableConcurrentBuilds Queues, Doesn’t Abort', route: '/devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default' },
+      { label: 'Jenkins overview', route: '/devops/jenkins' },
+    ],
+    tip: 'regression and fixed are the precise post-condition tools for break/recovery alerting — changed fires on any completion-status difference at all, including transitions like a manually aborted build that most teams wouldn’t call a regression.',
+    gotchas: [
+      'A Slack notification wired to changed can fire on a manually canceled build, producing noisy, low-signal alerts.',
+      'regression explicitly counts an aborted current run as a qualifying "broke" status when the previous run succeeded, per Jenkins’s own documented definition.',
+    ],
+  },
   'devops/azure-pipelines': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33176,6 +37564,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Templates let common stages be defined once and reused across many pipelines, reducing duplication versus copy-pasting the same steps into every pipeline.',
       'YAML pipelines have a steeper initial learning curve than the Classic editor\'s drag-and-drop interface, but pay off in long-term maintainability.',
+    ],
+  },
+  'devops/azure-pipelines/curly-double-braces-are-compile-time-not-runtime': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Azure Pipelines overview', route: '/devops/azure-pipelines' },
+      { label: 'A Custom condition: Overwrites the Default', route: '/devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default' },
+    ],
+    tip: 'Compile time, queue time, and runtime aren\'t interchangeable labels for "when a value gets substituted" — each has a genuinely different scope of what\'s visible, which is why a template\'s own parameters only ever work inside ${{ }}.',
+    gotchas: [
+      'A runtime expression ($[]) has no access to template parameters at all — parameter substitution is fundamentally a compile-time-only operation.',
+      'The queue-time macro ($()) doesn\'t care how a variable\'s value was produced — it happily reads a value that itself came from a compile-time or runtime expression.',
+    ],
+  },
+  'devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Compile-Time Expressions, Not Runtime', route: '/devops/azure-pipelines/curly-double-braces-are-compile-time-not-runtime' },
+      { label: 'Stages Depend on Whatever Came Right Before Them', route: '/devops/azure-pipelines/stages-depend-on-whatever-stage-came-right-before-them' },
+    ],
+    tip: 'Microsoft\'s own recommended pattern is and(succeeded(), custom_condition) for exactly this reason — writing a condition without succeeded() silently discards the implicit "previous stage must succeed" check, not adds a redundant one.',
+    gotchas: [
+      'A stage without a job status check function (succeeded/failed/always) in its condition can keep running even after the whole build is canceled.',
+      'This is a general Azure Pipelines rule, not specific to stages — the same overwrite happens on job and step conditions too.',
+    ],
+  },
+  'devops/azure-pipelines/stages-depend-on-whatever-stage-came-right-before-them': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'A Custom condition: Overwrites the Default', route: '/devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default' },
+      { label: 'Azure Pipelines overview', route: '/devops/azure-pipelines' },
+    ],
+    tip: 'dependsOn: [] is the explicit escape hatch for genuine parallelism — reordering stage blocks in the YAML never produces parallel execution, it only changes which single stage the implicit dependency points at.',
+    gotchas: [
+      'Moving a stage block to a different position in the file silently changes its implicit dependency, even if no dependsOn key is touched.',
+      'Fan-out/fan-in graphs (two stages depending on one, a later stage depending on both) are only reachable by writing every dependsOn out explicitly.',
     ],
   },
   'devops/incident-response': {
@@ -33190,6 +37614,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Declaring an incident resolved once symptoms disappear, without confirming root cause, risks the same issue recurring shortly after.',
     ],
   },
+  'devops/incident-response/continue-true-is-what-lets-a-second-route-also-fire': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'On-call & Incident Response overview', route: '/devops/incident-response' },
+      { label: 'PagerDuty’s severity Field Is Not the Alert’s Label', route: '/devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label' },
+    ],
+    tip: 'AlertManager stops at the first matching route by default — continue: true is specifically what lets evaluation proceed to check a sibling route too, and each route in a chain needs its own continue: true to pass evaluation further along.',
+    gotchas: [
+      'A route missing continue: true silently makes every route after it unreachable for that alert, with no error anywhere.',
+      'Adding a third route to an existing continue: true chain requires adding continue: true to the second route too, not just the first.',
+    ],
+  },
+  'devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'continue: true Is What Lets a Second Route Also Fire', route: '/devops/incident-response/continue-true-is-what-lets-a-second-route-also-fire' },
+      { label: 'Duration and MTTR Measure From Different Endpoints', route: '/devops/incident-response/duration-and-mttr-measure-from-different-endpoints' },
+    ],
+    tip: 'AlertManager\'s own severity label is an arbitrary routing string the team chooses; PagerDuty\'s own severity field is a separate, fixed vocabulary (critical/warning/error/info) that PagerDuty itself validates — templating one directly into the other only works if the values already align.',
+    gotchas: [
+      'Hardcoding PagerDuty\'s severity field is often the correct choice, not an oversight, when the team\'s own AlertManager label vocabulary doesn\'t match PagerDuty\'s accepted values.',
+      'PagerDuty incidents reaching the same receiver all show the identical hardcoded severity unless the original alert-level severity is explicitly templated into description or details instead.',
+    ],
+  },
+  'devops/incident-response/duration-and-mttr-measure-from-different-endpoints': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'PagerDuty’s severity Field Is Not the Alert’s Label', route: '/devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label' },
+      { label: 'On-call & Incident Response overview', route: '/devops/incident-response' },
+    ],
+    tip: 'MTTR ends at actual service restoration; a broader "duration" figure can end much later, at full incident closure including communication steps like a status page update — both numbers are correct, they just measure from different endpoints.',
+    gotchas: [
+      'Reporting only MTTR can hide a real process gap, like a delayed status page update, that a later-endpoint duration figure would surface.',
+      'A postmortem\'s own "what went wrong" section naming a communication delay should usually get its own action item, not just a mention.',
+    ],
+  },
   'devops/monitoring': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33202,6 +37662,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Dashboards are not a substitute for alerting — nobody watches a dashboard 24/7, which is why alerting design matters as its own discipline.',
     ],
   },
+  'devops/monitoring/the-short-window-is-for-fast-reset-not-confirmation': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Monitoring & Alerting overview', route: '/devops/monitoring' },
+      { label: 'group_wait, group_interval, repeat_interval Are Different Timers', route: '/devops/monitoring/group-wait-interval-repeat-interval-are-different-timers' },
+    ],
+    tip: 'Google\'s own SRE Workbook is explicit: the short window in a multi-window burn-rate alert exists for fast reset time — a long-window-only alert can stay firing for up to an hour after the real problem is already fixed.',
+    gotchas: [
+      'Requiring both windows to breach with "and" means the alert clears the moment the short window recovers, not when the long window eventually does.',
+      'Removing the short window "to simplify" trades a small detection-speed benefit for a much worse reset-time cost.',
+    ],
+  },
+  'devops/monitoring/group-wait-interval-repeat-interval-are-different-timers': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'The Short Window Is for Fast Reset, Not Confirmation', route: '/devops/monitoring/the-short-window-is-for-fast-reset-not-confirmation' },
+      { label: 'histogram_quantile Accuracy Depends on Bucket Boundaries', route: '/devops/monitoring/histogram-quantile-accuracy-depends-on-bucket-boundaries' },
+    ],
+    tip: 'AlertManager\'s own docs define three separate moments: group_wait (first notification for a new group), group_interval (a new alert joining an already-notified group), and repeat_interval (a reminder when nothing has changed at all) — they don\'t substitute for each other.',
+    gotchas: [
+      'A new alert joining an already-notified group is surfaced via group_interval, not repeat_interval — tuning the wrong one leaves the actual complaint unaddressed.',
+      'repeat_interval explicitly does not fire once anything in the group has changed since the last notification.',
+    ],
+  },
+  'devops/monitoring/histogram-quantile-accuracy-depends-on-bucket-boundaries': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'group_wait, group_interval, repeat_interval Are Different Timers', route: '/devops/monitoring/group-wait-interval-repeat-interval-are-different-timers' },
+      { label: 'Monitoring & Alerting overview', route: '/devops/monitoring' },
+    ],
+    tip: 'histogram_quantile()\'s result is an interpolated estimate, not an exact value — Prometheus\'s own docs state its error is limited by the width of the bucket the true quantile falls in, so coarse buckets near the real value can produce a p99 that looks precise but is significantly wrong.',
+    gotchas: [
+      'Switching from a Summary to a Histogram fixes cross-instance aggregation, but does nothing for bucket-boundary precision — they are separate concerns.',
+      'A suspiciously stable, unchanging quantile value can be a symptom of the true value sitting inside one wide bucket, not evidence the metric is accurate.',
+    ],
+  },
   'devops/logging': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33211,6 +37707,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Structured logs (JSON with consistent fields) are queryable at scale; free-text logs require fragile regex parsing to extract the same information.',
       'Sensitive data (passwords, tokens) must never be logged — a common compliance and security failure mode across CI/CD pipelines too, not just application code.',
+    ],
+  },
+  'devops/logging/merge-log-vs-k8s-logging-parser-are-different-mechanisms': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Logging Pipelines overview', route: '/devops/logging' },
+      { label: 'Label_Keys traceId Is a Loki Cardinality Explosion', route: '/devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion' },
+    ],
+    tip: 'Merge_Log is a filter-wide default applied to every pod automatically; K8S-Logging.Parser is a per-pod, annotation-based opt-in to a different named parser — they operate at genuinely different scopes, not two versions of the same idea.',
+    gotchas: [
+      'One pod behaving differently from the rest of the cluster points at that pod\'s own annotations, not the shared filter config.',
+      'K8S-Logging.Parser requires two separate gates: the filter option enabled AND the pod\'s own annotation naming an already-registered parser.',
+    ],
+  },
+  'devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Merge_Log vs. K8S-Logging.Parser', route: '/devops/logging/merge-log-vs-k8s-logging-parser-are-different-mechanisms' },
+      { label: 'ILM min_age Counts From Rollover, Not Creation', route: '/devops/logging/ilm-min-age-counts-from-rollover-not-creation' },
+    ],
+    tip: 'Loki\'s own docs name trace IDs directly as a value that should never be a label — each unique value creates a new stream, the same cardinality-explosion failure mode Prometheus suffers from a user_id label.',
+    gotchas: [
+      'A Loki cardinality problem shows up as disproportionate index/storage overhead, not necessarily a rise in actual log volume.',
+      'Structured metadata (or plain | json filtering on log content) is the documented alternative for high-cardinality fields that still need to be searchable.',
+    ],
+  },
+  'devops/logging/ilm-min-age-counts-from-rollover-not-creation': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Label_Keys traceId Is a Loki Cardinality Explosion', route: '/devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion' },
+      { label: 'Logging Pipelines overview', route: '/devops/logging' },
+    ],
+    tip: 'Elastic\'s own docs are explicit: once an index rolls over, every later phase\'s min_age counts from the rollover date, not the index\'s original creation date — so two indices under the same policy can reach the same phase at genuinely different total ages.',
+    gotchas: [
+      'Calculating "when will this log be deleted" by adding min_age to the original write date silently assumes rollover and creation happened at the same instant.',
+      'The _ilm/explain API reports an index\'s current phase and rollover-relative age directly, more reliable than manual calculation.',
     ],
   },
   'devops/devsecops': {
@@ -33225,6 +37757,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Shifting security "left" (earlier in the pipeline) doesn\'t eliminate the need for runtime/production security monitoring — both are needed, not one instead of the other.',
     ],
   },
+  'devops/devsecops/dependabot-auto-merge': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'DevSecOps overview', route: '/devops/devsecops' },
+      { label: 'Security Tab Findings Aren’t Automatically a Blocked Merge', route: '/devops/devsecops/codeql-merge-blocking' },
+    ],
+    tip: 'dependabot.yml has no auto-merge field at all — merging patch-level PRs automatically needs a separate workflow reading the dependabot/fetch-metadata action\'s update-type output, plus the repo\'s own "Allow auto-merge" setting enabled.',
+    gotchas: [
+      'gh pr merge --auto QUEUES a merge, it doesn\'t force one — a patch bump with a failing required check still sits open, unmerged, even after the workflow itself reports success.',
+      'Without any required status checks configured on the repo, --auto can merge immediately with no CI gate at all — the safety net comes from branch protection, not from the auto-merge workflow.',
+    ],
+  },
+  'devops/devsecops/codeql-merge-blocking': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Auto-Merge for Patch Updates Is a Workflow, Not a Setting', route: '/devops/devsecops/dependabot-auto-merge' },
+      { label: 'What fetch-depth: 0 Actually Buys Gitleaks on a Push', route: '/devops/devsecops/gitleaks-scan-scope' },
+    ],
+    tip: 'The Security tab and PR comments populate from the workflow\'s own upload-sarif step alone — actually blocking a merge needs a SEPARATE branch protection rule requiring the "Code scanning results" check, and even then only High-or-above severity fails it by default.',
+    gotchas: [
+      'A repo can run CodeQL correctly, show alerts in the Security tab every time, and still let every PR merge freely if branch protection was never told to require that check.',
+      'Medium and Low severity CodeQL findings still appear as alerts and PR comments, but do not fail the required status check by default — only High/Critical do.',
+    ],
+  },
+  'devops/devsecops/gitleaks-scan-scope': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Security Tab Findings Aren’t Automatically a Blocked Merge', route: '/devops/devsecops/codeql-merge-blocking' },
+      { label: 'DevSecOps overview', route: '/devops/devsecops' },
+    ],
+    tip: 'fetch-depth: 0 only makes full history available locally so a pull_request-triggered diff scan has a base commit to compare against — gitleaks-action itself still only scans this push\'s new commits or this PR\'s diff, never the whole log, on either trigger.',
+    gotchas: [
+      'A secret committed years before gitleaks was ever added will never be caught by the routine push/PR-triggered CI workflow — only a deliberate, separate `gitleaks detect` run against the full git log finds it.',
+      'The "scan full history" comment on fetch-depth: 0 describes what the checkout step fetches, not what the gitleaks-action step then scans.',
+    ],
+  },
   'devops/platform-engineering': {
     apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
     related: [
@@ -33234,6 +37802,48 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A platform team building tooling nobody asked for (or that ignores actual developer pain points) produces shelf-ware — platform engineering succeeds specifically by treating internal developers as real customers with real feedback loops.',
       'Too rigid a "golden path" without escape hatches for genuinely unusual needs frustrates teams with legitimate edge cases.',
+    ],
+  },
+  'devops/platform-engineering/platform-team-is-its-own-team-topologies-type': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Platform Engineering overview', route: '/devops/platform-engineering' },
+      { label: 'The SPACE Framework Has Five Dimensions, Not One', route: '/devops/platform-engineering/the-space-framework-has-five-dimensions-not-one' },
+    ],
+    tip: 'Team Topologies defines four separate team types with no hybrids intended — Platform team is its own category, not a "stream-aligned enabler" blend of two other types.',
+    gotchas: [
+      'Enabling teams work temporarily in Collaboration mode; Platform teams provide a standing product via X-as-a-Service mode — blending the two creates real scheduling conflicts between coaching and on-call duty.',
+      'The main page\'s own theory gets the X-as-a-Service interaction mode right elsewhere — only its Quick Reference naming conflates the team types.',
+    ],
+  },
+  'devops/platform-engineering/the-space-framework-has-five-dimensions-not-one': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'Platform Team Is Its Own Team Topologies Type', route: '/devops/platform-engineering/platform-team-is-its-own-team-topologies-type' },
+      { label: 'Cognitive Load Has Three Types — Platforms Target One', route: '/devops/platform-engineering/cognitive-load-has-three-types-platforms-target-one' },
+    ],
+    tip: 'SPACE stands for Satisfaction, Performance, Activity, Communication, and Efficiency — the framework\'s own principle is to measure across at least three dimensions, not just satisfaction.',
+    gotchas: [
+      'A platform tracking only a satisfaction survey can miss real problems (like flat golden-path adoption) visible only in the Activity dimension.',
+      'The main page\'s own other metrics (adoption rate, time to first deploy, support tickets) already map onto SPACE\'s other dimensions without naming them.',
+    ],
+  },
+  'devops/platform-engineering/cognitive-load-has-three-types-platforms-target-one': {
+    apis: DEVOPS_DEFAULT.apis,
+    docs: DEVOPS_DEFAULT.docs,
+    resources: [],
+    related: [
+      { label: 'The SPACE Framework Has Five Dimensions, Not One', route: '/devops/platform-engineering/the-space-framework-has-five-dimensions-not-one' },
+      { label: 'Platform Engineering overview', route: '/devops/platform-engineering' },
+    ],
+    tip: 'Only extraneous cognitive load (tooling friction) should be eliminated — intrinsic load (real domain complexity) and germane load (productive learning) should be preserved, not stripped away alongside it.',
+    gotchas: [
+      'A platform that reduces decision count by auto-selecting infrastructure choices can silently remove germane load too, leaving new hires without the judgment to debug incidents later.',
+      'Replacing raw Kubernetes complexity with custom CRDs and a bespoke CLI is a same-category swap — extraneous load relocated, not eliminated.',
     ],
   },
   'devops/sre': {
@@ -33246,6 +37856,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'An error budget policy only works if it has real teeth — a budget that gets overridden every time it\'s exhausted provides no actual behavioral incentive.',
       'Toil (manual, repetitive, automatable operational work) directly competes with an SRE team\'s capacity to improve reliability — time spent on toil is time not spent reducing future toil.',
+    ],
+  },
+  'devops/sre/dead-mans-switch-mechanism': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'SRE Practices overview', route: '/devops/sre' },
+      { label: 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time', route: '/devops/sre/burn-rate-formula-elapsed-window-disagreement' },
+    ],
+    tip: 'A watchdog alert is always firing (vector(1)) — the actual silence-detection lives entirely in a separate, external service that pages when the constant heartbeat stops arriving, not in Prometheus itself.',
+    gotchas: [
+      'A watchdog routed only to a receiver inside the same monitoring stack fails to notice its own pipeline\'s death — the detector must live outside what it watches.',
+      'A config change can silently break routing for specific real alerts while leaving the watchdog\'s own separate route untouched, so testing it deliberately and periodically matters, not just once at setup.',
+    ],
+  },
+  'devops/sre/burn-rate-formula-elapsed-window-disagreement': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'A Dead Man’s Switch Always Fires — Silence Is the Signal', route: '/devops/sre/dead-mans-switch-mechanism' },
+      { label: 'The Burn-Rate Alerts Reference Recording Rules That Are Never Defined', route: '/devops/sre/alert-rules-reference-undefined-recording-rules' },
+    ],
+    tip: 'calculateErrorBudget reports a burn rate with no elapsed-window context; the main page\'s own separate Challenge scales the identical ratio by windowDays / elapsedDays — the two formulas only agree once the window has fully elapsed.',
+    gotchas: [
+      'The same numeric burn rate implies very different real urgency depending on how much window time remains — calculateErrorBudget has no way to express that difference.',
+      'A "warning" status reported early in a window and the identical status reported near the window\'s end are not equally urgent, even though calculateErrorBudget classifies them the same.',
+    ],
+  },
+  'devops/sre/alert-rules-reference-undefined-recording-rules': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'The Page’s Own Two Burn Rate Formulas Disagree About Elapsed Time', route: '/devops/sre/burn-rate-formula-elapsed-window-disagreement' },
+      { label: 'SRE Practices overview', route: '/devops/sre' },
+    ],
+    tip: 'The main page\'s own burn-rate alerts query job:slo_error_rate across four windows; its own recording rules only ever compute job:http_requests_success across two different windows — copied verbatim, the alerts would silently never fire.',
+    gotchas: [
+      'Prometheus does not validate at rule-load time that every metric referenced in an alert expr: has a matching record: rule — a missing one loads cleanly and just never produces an alert.',
+      'A query against a non-existent time series returns an empty result, not an error, so promtool and Prometheus startup both stay silent about the gap.',
     ],
   },
 
@@ -33262,6 +37908,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The Well-Architected Framework\'s five pillars (operational excellence, security, reliability, performance, cost) provide a structured way to review an architecture, not just a checklist to skim.',
     ],
   },
+  'aws/fundamentals/cli-credential-chain-order-container-before-instance-profile': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'AWS Fundamentals overview', route: '/aws/fundamentals' },
+      { label: 'STS Role Chaining Caps Sessions at 1 Hour', route: '/aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2' },
+    ],
+    tip: 'The full CLI/SDK credential provider chain, in order: command-line options → env vars → credentials file → config file → container credentials (ECS task role) → EC2 instance profile — the search stops at the first source that resolves.',
+    gotchas: [
+      'Container (ECS task role) credentials are checked BEFORE the EC2 instance profile — the reverse of a common assumption.',
+      'The credentials file (~/.aws/credentials) and config file (~/.aws/config) are two distinct, separately-ordered steps, not one combined step.',
+    ],
+  },
+  'aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'CLI Credential Chain Order', route: '/aws/fundamentals/cli-credential-chain-order-container-before-instance-profile' },
+      { label: 'Local Zones Run Only a Subset of Services', route: '/aws/fundamentals/local-zones-run-a-subset-of-services-not-a-full-region' },
+    ],
+    tip: 'Using an already-assumed role\'s temporary credentials to call assume-role again ("role chaining") caps the new session at exactly 1 hour, regardless of the target role\'s own MaxSessionDuration or the --duration-seconds requested.',
+    gotchas: [
+      'No flag or role configuration raises the 1-hour chained-session cap — the only fix is to assume the target role directly from long-lived credentials instead.',
+      'Assuming a role directly from an EC2 instance profile\'s own credentials is exempt from the chaining cap, per AWS\'s own documentation.',
+    ],
+  },
+  'aws/fundamentals/local-zones-run-a-subset-of-services-not-a-full-region': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'STS Role Chaining Caps Sessions at 1 Hour', route: '/aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2' },
+      { label: 'AWS Fundamentals overview', route: '/aws/fundamentals' },
+    ],
+    tip: 'A Local Zone runs only a curated subset of services locally (typically EC2, EBS, some ELB, VPC) — everything else an application needs reaches the parent Region transparently over AWS\'s own private backbone network.',
+    gotchas: [
+      'Local Zones are opt-in per account/region — describe-availability-zones shows them as "not-opted-in" until modify-availability-zone-group is called explicitly.',
+      'Lambda, DynamoDB, and standard S3 buckets are typically not available directly inside a Local Zone, despite being fully reachable from an instance running there.',
+    ],
+  },
   'aws/iam': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33272,6 +37954,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'An explicit Deny in ANY applicable policy always wins over an Allow, regardless of how many other policies grant access — a common source of "why can\'t this identity do X" confusion.',
       'S3 bucket policies and IAM policies are evaluated together for S3 access — both must allow the action, not just one.',
+    ],
+  },
+  'aws/iam/permission-boundary-doesnt-limit-role-session-resource-grants': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IAM overview', route: '/aws/iam' },
+      { label: 'AssumeRole Duration Behavior', route: '/aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session' },
+    ],
+    tip: 'A permission boundary caps a role\'s own identity-based policy — but a resource-based policy granting to the ASSUMED-ROLE SESSION ARN (not the role ARN) bypasses it entirely.',
+    gotchas: [
+      'A grant to arn:...:role/Name is capped by the boundary; the same grant to arn:...:assumed-role/Name/session is NOT — the ARN form is the whole distinction.',
+      'A boundary review that only tests the role-ARN form of a grant doesn\'t confirm behavior for the session-ARN form.',
+    ],
+  },
+  'aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Permission Boundary Exception', route: '/aws/iam/permission-boundary-doesnt-limit-role-session-resource-grants' },
+      { label: 'ABAC Tag Protection', route: '/aws/iam/abac-tags-need-their-own-deny-untagresource-protection' },
+    ],
+    tip: 'Requesting a DurationSeconds beyond a role\'s own MaxSessionDuration fails the entire AssumeRole call outright — it does not silently clamp to the role\'s actual maximum.',
+    gotchas: [
+      'MaxSessionDuration is configured per role (1-12 hours) — the same duration request can succeed on one role and fail outright on another.',
+      'The same fail-not-truncate behavior applies to role chaining\'s separate 1-hour cap, not just a role\'s own configured maximum.',
+    ],
+  },
+  'aws/iam/abac-tags-need-their-own-deny-untagresource-protection': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'AssumeRole Duration Behavior', route: '/aws/iam/assumerole-durationseconds-fails-not-truncates-past-max-session' },
+      { label: 'IAM overview', route: '/aws/iam' },
+    ],
+    tip: 'An ABAC condition is only as trustworthy as the tags it reads — AWS\'s own official ABAC reference implementation explicitly denies changing the tags the policy depends on.',
+    gotchas: [
+      'A principal with an ordinary, unrelated tagging permission can retag a resource to match their own principal tags and self-grant access an ABAC rule never intended.',
+      'The Deny only needs to target the specific ABAC-relevant tag key — other tags used for cost allocation or metadata stay freely editable.',
     ],
   },
   'aws/iam-roles': {
@@ -33286,6 +38004,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cross-account role assumption requires both the trusting account\'s role trust policy AND the assuming principal\'s own permission to call sts:AssumeRole.',
     ],
   },
+  'aws/iam-roles/external-id-is-not-actually-a-secret-per-aws-own-docs': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IAM Roles & Federation overview', route: '/aws/iam-roles' },
+      { label: "Pod Identity's Real Mechanism", route: '/aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent' },
+    ],
+    tip: 'AWS explicitly states External ID is not treated as a secret — visible to anyone who can view the role. Its real protection is being unguessable and vendor-generated, unique per customer.',
+    gotchas: [
+      'A vendor serving multiple customers must generate a UNIQUE ExternalId per customer themselves — reusing one value across customers defeats its confused-deputy protection.',
+      'AWS\'s own recommended vendor practice: verify a role genuinely rejects assumption without the correct ExternalId before ever storing that customer\'s role ARN.',
+    ],
+  },
+  'aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: "External ID Isn't a Secret", route: '/aws/iam-roles/external-id-is-not-actually-a-secret-per-aws-own-docs' },
+      { label: 'GitHub OIDC Environment Claims', route: '/aws/iam-roles/github-oidc-environment-claims-restrict-beyond-branch-alone' },
+    ],
+    tip: 'Pod Identity isn\'t IRSA minus the OIDC URL — it uses a fixed pods.eks.amazonaws.com principal and requires the separate Pod Identity Agent DaemonSet running on the cluster.',
+    gotchas: [
+      'Correctly-configured trust policies and associations still issue no credentials at all if the Pod Identity Agent add-on was never installed on the cluster.',
+      'Pod Identity has real version/workload restrictions (unavailable on Fargate, Windows pods, Outposts, EKS Anywhere) that IRSA does not share.',
+    ],
+  },
+  'aws/iam-roles/github-oidc-environment-claims-restrict-beyond-branch-alone': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: "Pod Identity's Real Mechanism", route: '/aws/iam-roles/eks-pod-identity-uses-a-different-principal-and-needs-an-agent' },
+      { label: 'IAM Roles & Federation overview', route: '/aws/iam-roles' },
+    ],
+    tip: 'A branch-ref sub condition lets ANY workflow run on that branch assume the role — an environment-scoped sub claim lets GitHub\'s own required-reviewer rules gate assumption itself.',
+    gotchas: [
+      'The IAM trust policy condition alone cannot pause for human approval — the actual gate is a GitHub-side environment protection rule, configured separately.',
+      'Environment and branch-ref scoping aren\'t mutually exclusive — an environment\'s own deployment branch rules can layer on top of the trust policy\'s condition.',
+    ],
+  },
   'aws/vpc': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33296,6 +38050,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A public subnet is defined by having a route to an Internet Gateway — simply naming a subnet "public" does nothing without the actual route table entry.',
       'VPC peering is non-transitive — VPC A peered with B and B peered with C does NOT let A reach C through B.',
+    ],
+  },
+  'aws/vpc/tgw-route-tables-need-both-association-and-propagation-for-isolation': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'VPC & Networking overview', route: '/aws/vpc' },
+      { label: 'Cross-Region SG Reference Limit', route: '/aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr' },
+    ],
+    tip: 'Association picks which TGW route table an attachment\'s OWN traffic is evaluated against — propagation is the separate mechanism that decides whether other attachments\' routes actually appear in that table.',
+    gotchas: [
+      'A "DefaultRouteTablePropagation=enable" TGW auto-propagates every attachment\'s routes into every route table — an "isolated" route table isn\'t isolated at all unless propagation is explicitly and asymmetrically controlled.',
+      'One-way reachability (prod can reach dev, dev cannot reach prod) is achieved purely through asymmetric propagation, not a firewall or extra security layer on the TGW itself.',
+    ],
+  },
+  'aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'TGW Association vs Propagation', route: '/aws/vpc/tgw-route-tables-need-both-association-and-propagation-for-isolation' },
+      { label: "Flow Logs Aren't Real-Time", route: '/aws/vpc/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag' },
+    ],
+    tip: 'Security group references across a VPC peering connection only work when the peer VPC is in the SAME Region — cross-Region peering must fall back to CIDR-block rules instead.',
+    gotchas: [
+      'A CIDR-based fallback rule does not auto-adjust to specific instances the way an SG reference does — it grants access to the entire peer VPC CIDR.',
+      'Deleting a peering connection leaves referencing SG rules "stale" (not auto-removed) — use describe-stale-security-groups to find and manually clean them up.',
+    ],
+  },
+  'aws/vpc/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Cross-Region SG Reference Limit', route: '/aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr' },
+      { label: 'VPC & Networking overview', route: '/aws/vpc' },
+    ],
+    tip: 'A flow log record is an aggregated summary of a window (up to 10 minutes by default) plus best-effort delivery time (~5-10 more minutes) — not a live event stream.',
+    gotchas: [
+      'A Nitro-based instance\'s network interface always gets a 1-minute-or-less aggregation interval automatically, regardless of the flow log\'s own configured maximum.',
+      'A newly-created flow log has no historical data and still needs a full aggregation-plus-delivery cycle before its first record appears — not useful for an in-the-moment live incident.',
     ],
   },
   'aws/ec2': {
@@ -33310,6 +38100,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Spot instances offer significant cost savings but can be reclaimed with only a short warning — appropriate for fault-tolerant, interruptible workloads, not stateful primary capacity.',
     ],
   },
+  'aws/ec2/t3-launches-unlimited-by-default-surplus-credits-can-surcharge': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EC2 & Auto Scaling overview', route: '/aws/ec2' },
+      { label: 'IMDS Hop Limit of 1 Breaks Containers', route: '/aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access' },
+    ],
+    tip: 'T3/T3a/T4g instances launch in Unlimited mode by default (unlike T2, which defaults to Standard) — sustained above-baseline CPU usage over a rolling 24-hour window incurs a real, uncapped surplus-credit surcharge.',
+    gotchas: [
+      'A freshly-launched instance with no idle time to accrue credits still gets billed for surplus credits immediately if it runs above baseline in Unlimited mode.',
+      'Standard mode has no surcharge risk at all — it just throttles CPU back to baseline once the credit balance is exhausted.',
+    ],
+  },
+  'aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'T3 Launches Unlimited by Default', route: '/aws/ec2/t3-launches-unlimited-by-default-surplus-credits-can-surcharge' },
+      { label: 'io1 Multi-Attach Lacks I/O Fencing', route: '/aws/ec2/io1-multi-attach-lacks-io-fencing-io2-supports-it' },
+    ],
+    tip: 'HttpPutResponseHopLimit defaults to 1 — enough for a request made directly on the host, but not enough for a request from inside a container, which crosses an extra network hop each way.',
+    gotchas: [
+      'Enforcing IMDSv2 (HttpTokens: required) and raising the hop limit are independent settings — fixing one does not fix the other.',
+      'Raise HttpPutResponseHopLimit to at least 2 for any instance that will run containerized workloads needing metadata/credential access.',
+    ],
+  },
+  'aws/ec2/io1-multi-attach-lacks-io-fencing-io2-supports-it': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IMDS Hop Limit of 1 Breaks Containers', route: '/aws/ec2/imds-hop-limit-of-1-breaks-container-metadata-access' },
+      { label: 'EC2 & Auto Scaling overview', route: '/aws/ec2' },
+    ],
+    tip: 'Only Multi-Attach io2 volumes support I/O fencing via NVMe reservations — io1 Multi-Attach volumes do not, leaving a real gap against a stale writer even with a cluster-aware filesystem in place.',
+    gotchas: [
+      'A cluster-aware filesystem coordinates which node SHOULD write — only storage-layer fencing can physically stop a stale node from writing anyway.',
+      'AWS recommends io2 over io1 generally, for better performance, consistency, and durability — the fencing gap is one concrete reason why.',
+    ],
+  },
   'aws/ecs-eks': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33320,6 +38146,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Fargate (usable with both ECS and EKS) removes node management entirely — you pay per task/pod resource usage instead of managing underlying EC2 instances.',
       'Choosing ECS over EKS is a real lock-in tradeoff — migrating away from ECS later requires re-platforming to Kubernetes manifests, unlike EKS which is already standard Kubernetes.',
+    ],
+  },
+  'aws/ecs-eks/irsa-oidc-token-exchange-exact-service-account-match-required': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'ECS & EKS overview', route: '/aws/ecs-eks' },
+      { label: 'VPC CNI IP Exhaustion', route: '/aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory' },
+    ],
+    tip: 'IRSA works by exchanging a signed OIDC projected service account token for temporary credentials via AssumeRoleWithWebIdentity — no access keys are ever created or distributed to the pod.',
+    gotchas: [
+      'The IAM role\'s trust policy requires an EXACT match on "system:serviceaccount:<namespace>:<name>" — a namespace or name mismatch fails silently with a generic "unable to locate credentials" error.',
+      'A correct role-arn annotation on the service account is necessary but not sufficient — the trust policy\'s own condition is a separate, independent check.',
+    ],
+  },
+  'aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'How IRSA Actually Works', route: '/aws/ecs-eks/irsa-oidc-token-exchange-exact-service-account-match-required' },
+      { label: 'ECS Circuit Breaker Is Opt-In', route: '/aws/ecs-eks/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag' },
+    ],
+    tip: 'Every pod needs its own real VPC IP — each node has a hard pod-count ceiling set by its instance type\'s ENI/IP limits, completely independent of CPU/memory capacity.',
+    gotchas: [
+      'A "FailedScheduling: Insufficient pods" event (not "Insufficient cpu/memory") is the signal that IP exhaustion, not compute pressure, is the actual blocker.',
+      'IP Prefix Delegation raises the per-node pod ceiling without needing a larger instance type — but existing nodes need replacing, not just updating, to adopt it cleanly.',
+    ],
+  },
+  'aws/ecs-eks/circuit-breaker-disabled-by-default-needs-explicit-rollback-flag': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'VPC CNI IP Exhaustion', route: '/aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory' },
+      { label: 'ECS & EKS overview', route: '/aws/ecs-eks' },
+    ],
+    tip: 'minimumHealthyPercent/maximumPercent only control deployment PACE — automatic failure detection and rollback need the separate, opt-in deploymentCircuitBreaker={enable=true,rollback=true} setting.',
+    gotchas: [
+      'Without the circuit breaker enabled, a deployment where every new task crashes on startup just sits stuck indefinitely — nothing detects or reverses it automatically.',
+      'The circuit breaker works on the standard ECS rolling-update deployment type — no CodeDeploy or Blue/Green setup required.',
     ],
   },
   'aws/lambda': {
@@ -33334,6 +38196,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Lambda\'s default execution timeout and memory settings often need explicit tuning for anything beyond a trivial function — memory allocation also proportionally affects CPU allocation.',
     ],
   },
+  'aws/lambda/dlq-only-captures-the-event-not-why-it-failed': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Lambda overview', route: '/aws/lambda' },
+      { label: 'Reserved Concurrency Zero', route: '/aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely' },
+    ],
+    tip: 'A DLQ only ever gets the raw event, capped at a 1 KB ErrorMessage attribute. An on-failure Destination gets the full invocation record — retry condition, error type, and complete response payload — in the same message.',
+    gotchas: [
+      'AWS\'s own docs frame the DLQ as "an alternative to an on-failure destination," not the primary feature — Destinations support both success and failure conditions across five target types.',
+      'Only a Destination invocation record includes requestContext.condition (e.g. "RetriesExhausted") — a DLQ message never states why Lambda stopped retrying.',
+    ],
+  },
+  'aws/lambda/snapstart-freezes-init-state-crac-hooks-refresh-it': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'DLQ vs Destinations', route: '/aws/lambda/dlq-only-captures-the-event-not-why-it-failed' },
+      { label: 'Reserved Concurrency Zero', route: '/aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely' },
+    ],
+    tip: 'SnapStart reuses ONE snapshot across every restored execution environment — a UUID, random seed, or credential generated at module scope before the snapshot is shared identically by all of them, not regenerated per environment.',
+    gotchas: [
+      'CRaC\'s afterRestore() hook is the fix, but registering an anonymous Resource (or one with no strong reference held) can be silently garbage-collected before it ever runs.',
+      'SnapStart now supports Java 11+, Python 3.12+, and .NET 8+ — not Java-only, despite older framings suggesting otherwise.',
+    ],
+  },
+  'aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'SnapStart Frozen Init State', route: '/aws/lambda/snapstart-freezes-init-state-crac-hooks-refresh-it' },
+      { label: 'DLQ vs Destinations', route: '/aws/lambda/dlq-only-captures-the-event-not-why-it-failed' },
+    ],
+    tip: 'Setting reserved concurrency to 0 on an async-triggered function skips the normal 2 built-in retries entirely — new events go straight to the DLQ/destination, immediately, with no backoff.',
+    gotchas: [
+      'Restoring concurrency afterward does NOT automatically replay events diverted while it was 0 — they must be manually consumed from the DLQ or destination.',
+      'This behavior is specific to asynchronous invocations — the main page\'s own blanket "set to 0 to throttle completely" line doesn\'t distinguish sync from async.',
+    ],
+  },
   'aws/api-gateway': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33344,6 +38242,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Request/response transformation (mapping templates) adds real complexity — keep transformations simple, or push complex logic into the Lambda function itself instead.',
       'Throttling limits are configured per API and per usage plan — a default limit too low for legitimate traffic silently causes 429s under normal load spikes.',
+    ],
+  },
+  'aws/api-gateway/authorizer-cache-applies-to-every-resource-not-just-one': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'API Gateway overview', route: '/aws/api-gateway' },
+      { label: 'Resource Policy Two Phases', route: '/aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one' },
+    ],
+    tip: 'A TOKEN authoriser\'s cached policy is keyed on the token alone — the same cached policy is reused for ANY route called with that token within the TTL, so it must cover "all resources and methods," per AWS\'s own docs.',
+    gotchas: [
+      'AWS recommends REQUEST authorisers over TOKEN — multiple identity sources combine into a fine-grained cache key, and a missing identity source auto-401s without invoking the Lambda at all.',
+      'A narrowly-scoped IAM policy Resource returned by a TOKEN authoriser can incorrectly deny OTHER routes reusing the same cached policy.',
+    ],
+  },
+  'aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Authorizer Cache Scope', route: '/aws/api-gateway/authorizer-cache-applies-to-every-resource-not-just-one' },
+      { label: 'WebSocket $disconnect', route: '/aws/api-gateway/websocket-disconnect-is-best-effort-not-guaranteed' },
+    ],
+    tip: 'The pre-authoriser phase of resource policy evaluation only screens for explicit denials — an explicit Allow never bypasses the authoriser, it only matters in the SECOND, combined evaluation phase that runs afterward.',
+    gotchas: [
+      'Per AWS\'s own Table A, a Deny from either the authoriser or the resource policy always wins in the combined phase — it is not "whichever ran last."',
+      'Cross-account access is stricter: both the resource policy AND the IAM/Cognito authorizer must explicitly allow — silence on either side denies.',
+    ],
+  },
+  'aws/api-gateway/websocket-disconnect-is-best-effort-not-guaranteed': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Resource Policy Two Phases', route: '/aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one' },
+      { label: 'API Gateway overview', route: '/aws/api-gateway' },
+    ],
+    tip: '$connect is a blocking gate — the connection doesn\'t exist until it succeeds. $disconnect is explicitly documented as best-effort — AWS "cannot guarantee delivery," especially for abrupt (code 1006) disconnects.',
+    gotchas: [
+      'Cleanup logic that MUST run exactly once (decrementing an active-user counter) cannot rely on $disconnect alone — pair it with a TTL-based heartbeat/expiry pattern.',
+      'A clean client-initiated close and an abrupt network failure are NOT equally likely to deliver $disconnect — only the former has a real closing handshake.',
     ],
   },
   'aws/s3': {
@@ -33358,6 +38292,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'S3 event notifications (triggering Lambda on object creation) are eventually consistent and can occasionally deliver duplicate events — consumers should be idempotent.',
     ],
   },
+  'aws/s3/objects-under-128kb-dont-transition-storage-class-by-default': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'S3 overview', route: '/aws/s3' },
+      { label: 'SSE-KMS Replication Gap', route: '/aws/s3/sse-kms-encrypted-objects-not-replicated-by-default' },
+    ],
+    tip: 'AWS applies a default 128 KB minimum for ANY lifecycle storage class transition — objects smaller than that are silently excluded unless an explicit ObjectSizeGreaterThan filter is added.',
+    gotchas: [
+      'A lifecycle rule can be perfectly configured and still leave small objects un-transitioned indefinitely, with no error anywhere — only checking each object\'s actual storage class reveals it.',
+      'This default changed in September 2024 — before then, small objects could still transition to Glacier specifically; now the 128 KB floor applies to every storage class uniformly.',
+    ],
+  },
+  'aws/s3/sse-kms-encrypted-objects-not-replicated-by-default': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: '128 KB Transition Floor', route: '/aws/s3/objects-under-128kb-dont-transition-storage-class-by-default' },
+      { label: 'Access Point Authorization', route: '/aws/s3/access-point-and-bucket-policy-must-both-allow-the-request' },
+    ],
+    tip: 'SSE-KMS and DSSE-KMS encrypted objects are NOT replicated by default — even with replication otherwise fully configured, they need an explicit SourceSelectionCriteria opt-in plus a ReplicaKmsKeyID.',
+    gotchas: [
+      'Excluded SSE-KMS objects show no ReplicationStatus at all — standard "alert on FAILED replication" monitoring never catches this, since the objects were never attempted.',
+      'The replication IAM role needs additional kms:Decrypt/kms:Encrypt permissions beyond a standard S3-only replication role.',
+    ],
+  },
+  'aws/s3/access-point-and-bucket-policy-must-both-allow-the-request': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'SSE-KMS Replication Gap', route: '/aws/s3/sse-kms-encrypted-objects-not-replicated-by-default' },
+      { label: 'S3 overview', route: '/aws/s3' },
+    ],
+    tip: 'A grant in an access point policy is never sufficient on its own — the underlying bucket must independently permit the same access, or the request is denied regardless.',
+    gotchas: [
+      'AWS\'s own recommended fix is delegating access control to access points via an s3:DataAccessPointAccount condition on the bucket policy, rather than duplicating permissions per grant.',
+      'A VPC-restricted access point rejects out-of-VPC requests at the network layer, before any IAM policy (access point or bucket) is even evaluated.',
+    ],
+  },
   'aws/dynamodb': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33367,6 +38337,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'DynamoDB has no native JOIN — data modeling relies on denormalization and single-table design patterns unfamiliar to developers coming from relational databases.',
       'On-demand capacity mode avoids manual capacity planning but costs more per request than well-tuned provisioned capacity at steady, predictable load.',
+    ],
+  },
+  'aws/dynamodb/gsi-silently-excludes-items-missing-the-indexed-sort-key': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'DynamoDB overview', route: '/aws/dynamodb' },
+      { label: 'DAX Item vs Query Cache', route: '/aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent' },
+    ],
+    tip: 'A GSI only tracks items that actually define its key attributes — a write with a missing key attribute succeeds normally and is simply never propagated to that index, with no error at all.',
+    gotchas: [
+      'This is exactly how the main page\'s own single-table Blog challenge works: only postItem defines GSI1PK/GSI1SK, so GSI1 queries never return users or comments.',
+      'Missing a GSI attribute update on an UpdateItem call (like a "publish" action) leaves an item permanently invisible to that GSI, indistinguishable from the item not existing at all.',
+    ],
+  },
+  'aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'GSI Silently Excludes Items', route: '/aws/dynamodb/gsi-silently-excludes-items-missing-the-indexed-sort-key' },
+      { label: 'Streams Poison Pill Blocking', route: '/aws/dynamodb/streams-poison-pill-blocks-a-shard-for-up-to-a-day' },
+    ],
+    tip: 'DAX runs two independent caches — item cache (GetItem) and query cache (Query/Scan). A write updates only the item cache; a cached Query result stays stale until its own TTL expires, regardless of any write.',
+    gotchas: [
+      'A GetItem through DAX confirming a write is visible does NOT mean a Query that would include that same item is also up to date — they read from completely separate caches.',
+      'Use ConsistentRead: true to skip both caches for a specific call when read-your-writes freshness matters more than DAX\'s latency benefit.',
+    ],
+  },
+  'aws/dynamodb/streams-poison-pill-blocks-a-shard-for-up-to-a-day': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'DAX Item vs Query Cache', route: '/aws/dynamodb/dax-item-cache-and-query-cache-are-fully-independent' },
+      { label: 'DynamoDB overview', route: '/aws/dynamodb' },
+    ],
+    tip: 'MaximumRetryAttempts and MaximumRecordAgeInSeconds both default to infinite (-1) — with neither set, a single always-failing record can block its entire shard until the record expires from the stream\'s own 24-hour retention.',
+    gotchas: [
+      'BisectBatchOnFunctionError narrows WHICH records are blocked (isolating the bad one) but does not by itself decide WHEN Lambda gives up on it — an explicit retry/age limit still matters.',
+      'A configured DLQ (OnFailure) only receives a record once retries are exhausted — with infinite retries left on, nothing shows up there for up to a day.',
     ],
   },
   'aws/rds-aurora': {
@@ -33380,6 +38386,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Multi-AZ RDS provides failover for availability, not read scaling — a separate read replica is needed specifically to offload read traffic.',
     ],
   },
+  'aws/rds-aurora/rds-proxy-connection-pinning-defeats-pooling-silently': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'RDS & Aurora overview', route: '/aws/rds-aurora' },
+      { label: 'Switchover vs Unplanned Failover', route: '/aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt' },
+    ],
+    tip: 'Temp tables, prepared statements, LOCK TABLES, and even a single statement over 16 KB "pin" a client connection to one underlying DB connection for the rest of its session — defeating pooling for that connection.',
+    gotchas: [
+      'A correctly-sized, correctly-configured RDS Proxy can still see "too many connections" errors if enough client connections get pinned by a specific query pattern.',
+      'Watch DatabaseConnectionsCurrentlySessionPinned in CloudWatch — a rising trend is the signal, not an error message.',
+    ],
+  },
+  'aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'RDS Proxy Connection Pinning', route: '/aws/rds-aurora/rds-proxy-connection-pinning-defeats-pooling-silently' },
+      { label: 'Backtrack + Binlog Interaction', route: '/aws/rds-aurora/forcing-backtrack-with-binlog-enabled-breaks-read-replicas' },
+    ],
+    tip: 'Switchover waits for full sync first, guaranteeing RPO=0 — unplanned failover does NOT wait, and AWS explicitly documents it can lose recent writes and risks split-brain.',
+    gotchas: [
+      'The main page\'s own "<1s RPO" figure describes switchover (healthy-cluster only) — an actual regional outage uses unplanned failover instead, with a different, non-zero RPO.',
+      'AWS requires an explicit --allow-data-loss flag for unplanned failover specifically because the data-loss tradeoff is real and deliberate, not accidental.',
+    ],
+  },
+  'aws/rds-aurora/forcing-backtrack-with-binlog-enabled-breaks-read-replicas': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Switchover vs Unplanned Failover', route: '/aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt' },
+      { label: 'RDS & Aurora overview', route: '/aws/rds-aurora' },
+    ],
+    tip: 'AWS blocks backtracking a cluster with binary logging enabled by default — forcing past that block breaks downstream binlog-dependent replicas and blue/green deployments, per AWS\'s own documentation.',
+    gotchas: [
+      'A broken downstream replica after a forced backtrack can\'t simply "catch up" — it needs to be recreated from scratch.',
+      'Backtrack causes a brief real disruption (dropped connections, uncommitted work) despite the "database remains online" framing — it is not a silent, zero-impact rewind.',
+    ],
+  },
   'aws/sqs-sns': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33389,6 +38431,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'SQS visibility timeout hides a message during processing — expiring before deletion causes redelivery, meaning consumers must be idempotent regardless of standard vs FIFO queue choice.',
       'FIFO queues guarantee order and exactly-once (within a dedup window) at a real throughput cost compared to standard queues.',
+    ],
+  },
+  'aws/sqs-sns/fifo-deduplication-silently-drops-not-just-blocks': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'SQS & SNS overview', route: '/aws/sqs-sns' },
+      { label: 'batchItemFailures Fails the Batch', route: '/aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch' },
+    ],
+    tip: 'A "duplicate" SendMessage call to a FIFO queue is "acknowledged but not delivered" — no error, valid MessageId returned — and dedup tracking outlives the original message even after it\'s received and deleted.',
+    gotchas: [
+      'ContentBasedDeduplication hashes the message BODY — two genuinely different events with identical content silently collide within the 5-minute window.',
+      'Use an explicit MessageDeduplicationId (varying per logical event) instead of relying on body-hash dedup when identical content could legitimately repeat.',
+    ],
+  },
+  'aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'FIFO Deduplication Silently Drops', route: '/aws/sqs-sns/fifo-deduplication-silently-drops-not-just-blocks' },
+      { label: 'SNS FilterPolicyScope=MessageBody', route: '/aws/sqs-sns/sns-filterpolicyscope-messagebody-skips-duplicate-attrs' },
+    ],
+    tip: 'AWS documents exact success/failure conditions for ReportBatchItemFailures — a bad key name, a nonexistent message ID, or ANY unhandled exception (even outside the per-record loop) fails the ENTIRE batch, not just the record that errored.',
+    gotchas: [
+      'Monitor NumberOfMessagesDeleted (dropping to 0) and ApproximateAgeOfOldestMessage (spiking) to catch this class of silent regression in production.',
+      'Wrap peripheral code after the processing loop (metrics, logging) in its own try/catch — an unrelated exception there still fails the whole batch.',
+    ],
+  },
+  'aws/sqs-sns/sns-filterpolicyscope-messagebody-skips-duplicate-attrs': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'batchItemFailures Fails the Batch', route: '/aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch' },
+      { label: 'SQS & SNS overview', route: '/aws/sqs-sns' },
+    ],
+    tip: 'FilterPolicyScope=MessageBody filters directly on the published JSON body — no need to duplicate fields into message attributes just to make them filterable.',
+    gotchas: [
+      'Filter policy changes (new or edited) take up to 15 minutes to fully propagate — don\'t assume a broken policy from an immediate test.',
+      'MessageBody filtering requires the published message to be well-formed JSON.',
     ],
   },
   'aws/eventbridge': {
@@ -33402,6 +38480,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'EventBridge adds rule-evaluation routing overhead compared to SNS\'s simpler unconditional fan-out, usually negligible but worth knowing.',
     ],
   },
+  'aws/eventbridge/archives-default-to-indefinite-retention-not-free': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EventBridge overview', route: '/aws/eventbridge' },
+      { label: 'InputTransformer Quoting Rules', route: '/aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects' },
+    ],
+    tip: 'An archive with no --retention-days stores events indefinitely by default, and "EventBridge charges apply to archives" — a separate, unbounded cost from normal event ingestion.',
+    gotchas: [
+      'Replay has its own timing quirks: a 10-minute recommended delay before replaying, and events delivered in one-minute batched intervals, not strict chronological order.',
+      'Set an explicit RetentionDays (or use UpdateArchive on an existing archive) rather than relying on any assumed default.',
+    ],
+  },
+  'aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Archives Default to Indefinite Retention', route: '/aws/eventbridge/archives-default-to-indefinite-retention-not-free' },
+      { label: 'Duplicate Pattern Keys', route: '/aws/eventbridge/duplicate-event-pattern-keys-silently-use-the-last-one' },
+    ],
+    tip: 'Quotes are OPTIONAL for scalar InputTemplate variables (EventBridge auto-adds them) — the real rule is never quoting a variable representing a JSON object or array, or its own internal quotes get stripped.',
+    gotchas: [
+      'Quoting aws.events.event.json (or any object/array-valued variable) silently corrupts the nested structure instead of failing loudly.',
+      'The reserved aws.events.event.json variable embeds the full original event — no manual field-by-field reconstruction needed, as long as it stays unquoted.',
+    ],
+  },
+  'aws/eventbridge/duplicate-event-pattern-keys-silently-use-the-last-one': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'InputTransformer Quoting Rules', route: '/aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects' },
+      { label: 'EventBridge overview', route: '/aws/eventbridge' },
+    ],
+    tip: 'A repeated key in an event pattern JSON object silently keeps only the LAST occurrence — PutRule succeeds with no error, and the earlier condition is completely discarded.',
+    gotchas: [
+      'Use $or to genuinely combine two different match types on the same field — duplicating the key does NOT produce AND logic.',
+      'Always verify a multi-condition pattern with test-event-pattern against real sample events — a successful PutRule call alone proves nothing about the intended logic.',
+    ],
+  },
   'aws/step-functions': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33411,6 +38525,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Standard workflows bill per state transition and can run up to a year; Express workflows are cheaper for high-volume, short-duration workloads but have a 5-minute max duration.',
       'Step Functions state machines are defined in Amazon States Language (JSON) — a real learning curve distinct from writing plain application code.',
+    ],
+  },
+  'aws/step-functions/distributed-map-lifts-classic-maps-40-concurrency-cap': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Step Functions overview', route: '/aws/step-functions' },
+      { label: 'HeartbeatSeconds Is a Separate Deadline', route: '/aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline' },
+    ],
+    tip: 'Classic (Inline) Map states cap at 40 concurrency AND a 25,000-entry execution history limit — the history limit is often hit first. Distributed Map lifts both, running each iteration as its own child workflow execution.',
+    gotchas: [
+      'Distributed Map can also read its item list directly from an S3 data source (JSON, CSV, object list) instead of requiring the full array inline in the state input.',
+      'A Standard workflow processing thousands of items via classic Map can fail on history limits well before concurrency is ever the bottleneck.',
+    ],
+  },
+  'aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Map Lifts the Cap', route: '/aws/step-functions/distributed-map-lifts-classic-maps-40-concurrency-cap' },
+      { label: 'ResultSelector: the Missing Fifth Field', route: '/aws/step-functions/resultselector-filters-results-before-resultpath-applies' },
+    ],
+    tip: 'HeartbeatSeconds is a recurring "still alive" interval, not an overall duration cap — TimeoutSeconds (defaulting to ~3.17 years if unset) governs the true overall deadline.',
+    gotchas: [
+      'A waitForTaskToken task with only HeartbeatSeconds set and no explicit TimeoutSeconds effectively has no real overall cap — the heartbeat interval becomes the only deadline in practice.',
+      'Both a missed heartbeat and an expired overall timeout raise the identical States.Timeout error name — check the Cause detail to distinguish them.',
+    ],
+  },
+  'aws/step-functions/resultselector-filters-results-before-resultpath-applies': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'HeartbeatSeconds Is a Separate Deadline', route: '/aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline' },
+      { label: 'Step Functions overview', route: '/aws/step-functions' },
+    ],
+    tip: 'ResultSelector filters/reshapes a state\'s raw result BEFORE ResultPath merges it in — a real fifth data-flow field beyond InputPath/Parameters/ResultPath/OutputPath, built for trimming noisy SDK-integration metadata.',
+    gotchas: [
+      'Available on Task, Map, and Parallel states — also useful for flattening a Parallel/Map array-of-arrays result via the [*][*] wildcard syntax.',
+      'Using ResultPath alone merges the ENTIRE raw result (including SDK metadata like HTTP headers and request IDs) into the execution data.',
     ],
   },
   'aws/load-balancing': {
@@ -33425,6 +38575,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cross-zone load balancing (whether traffic is distributed evenly across ALL AZ targets or only within the receiving AZ) affects both cost and traffic distribution evenness.',
     ],
   },
+  'aws/load-balancing/nlb-global-fail-open-vs-per-az-dns-removal': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing overview', route: '/aws/load-balancing' },
+      { label: 'NLB UDP/QUIC Health Checks', route: '/aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks' },
+    ],
+    tip: 'NLB fail-open only triggers once EVERY target in EVERY enabled AZ is unhealthy simultaneously — a single AZ losing all healthy targets is handled separately, by removing that AZ\'s IP from DNS.',
+    gotchas: [
+      'The per-AZ DNS-removal rule has no deregistration-delay-style graceful drain — existing connections to the removed AZ\'s static IP are left to fail on their own.',
+      'Fail-open routes to unhealthy targets "regardless of health status" — it does not relax health-check thresholds or give targets more chances to pass.',
+    ],
+  },
+  'aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'NLB Fail-Open vs. Per-AZ DNS Removal', route: '/aws/load-balancing/nlb-global-fail-open-vs-per-az-dns-removal' },
+      { label: 'ALB Reserved Cookie Names', route: '/aws/load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding' },
+    ],
+    tip: 'UDP and QUIC target groups are health-checked with TCP, HTTP, or HTTPS — never UDP itself, since UDP is not a valid health-check protocol option at all.',
+    gotchas: [
+      'A UDP-only service with no other open port needs a separate lightweight TCP/HTTP endpoint added purely for health-check purposes.',
+      'The decoupling exists because UDP has no handshake or acknowledgment — a health check cannot reliably tell "target down" from "probe packet dropped in transit."',
+    ],
+  },
+  'aws/load-balancing/alb-reserved-cookie-names-and-4k-cookie-sharding': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'NLB UDP/QUIC Health Checks', route: '/aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks' },
+      { label: 'Load Balancing overview', route: '/aws/load-balancing' },
+    ],
+    tip: 'AWS reserves three exact cookie names (AWSALB, AWSALBAPP, AWSALBTG) for the load balancer itself, and shards application cookies over 4K into numbered AWSALBAPP-N fragments (up to 16K / 4 shards total).',
+    gotchas: [
+      'If both AWSALBCORS and AWSALB arrive in the same request, AWSALBCORS takes precedence for routing — even if AWSALB was set or refreshed more recently.',
+      'AWSALBCORS is sent to every client unconditionally, including non-CORS requests — it is not withheld from same-origin clients.',
+    ],
+  },
   'aws/route53-cloudfront': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33435,6 +38621,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Route 53 health checks combined with failover routing enable automatic DNS-level failover, but DNS TTL means clients may still cache the old resolution briefly during a cutover.',
       'CloudFront origin access control (restricting direct access to an S3 origin bucket, forcing traffic through CloudFront) prevents bypassing the CDN\'s caching and security layer entirely.',
+    ],
+  },
+  'aws/route53-cloudfront/weight-zero-is-a-silent-standby-not-truly-disabled': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Route 53 & CloudFront overview', route: '/aws/route53-cloudfront' },
+      { label: 'EvaluateTargetHealth Scope', route: '/aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets' },
+    ],
+    tip: 'A weight-0 record isn\'t inert — Route 53 automatically falls back to answering with it if every nonzero-weight record in the group becomes unhealthy.',
+    gotchas: [
+      'A weight-0 record left after a "completed" migration can silently start serving live traffic again during an outage of the active version.',
+      'If the weight-0 record ALSO has an unhealthy standalone health check when the fallback condition triggers, Route 53 answers with neither record at all.',
+    ],
+  },
+  'aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: "Weight 0 Isn't Truly Disabled", route: '/aws/route53-cloudfront/weight-zero-is-a-silent-standby-not-truly-disabled' },
+      { label: 'Default Cache Key Scope', route: '/aws/route53-cloudfront/cloudfront-default-cache-key-excludes-query-strings-and-headers' },
+    ],
+    tip: 'EvaluateTargetHealth only provides real benefit for ELB/Elastic Beanstalk alias targets — it\'s a documented no-op for CloudFront, S3, and other highly-available service targets.',
+    gotchas: [
+      'A CloudFront alias with EvaluateTargetHealth: true gives no signal about the health of the origin BEHIND the distribution — CloudFront itself stays "healthy" regardless.',
+      'Real failover for CloudFront/S3 needs a standalone Route 53 health check attached via HealthCheckId, not EvaluateTargetHealth.',
+    ],
+  },
+  'aws/route53-cloudfront/cloudfront-default-cache-key-excludes-query-strings-and-headers': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EvaluateTargetHealth Scope', route: '/aws/route53-cloudfront/evaluatetargethealth-no-op-for-cloudfront-s3-alias-targets' },
+      { label: 'Route 53 & CloudFront overview', route: '/aws/route53-cloudfront' },
+    ],
+    tip: 'The default CloudFront cache key is ONLY the distribution domain plus URL path — query strings, headers, and cookies are excluded unless a cache policy explicitly adds them.',
+    gotchas: [
+      'An API whose responses vary by query string can silently serve the WRONG cached response under the default cache key — a custom cache policy must whitelist the specific relevant parameters.',
+      'Adding overly-variable values (like User-Agent) into the cache key can explode the number of cached copies and tank the cache hit ratio.',
     ],
   },
   'aws/cloudwatch': {
@@ -33448,6 +38670,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Alarms based on a single data point are prone to false positives from transient spikes — evaluating over multiple consecutive periods reduces noisy, self-resolving alerts.',
     ],
   },
+  'aws/cloudwatch/treat-missing-data-decides-insufficient-data-behavior': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'CloudWatch overview', route: '/aws/cloudwatch' },
+      { label: 'ActionsSuppressor', route: '/aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms' },
+    ],
+    tip: 'treat-missing-data defaults to "missing," which sends an alarm to INSUFFICIENT_DATA once its metric stops flowing — set notBreaching or breaching explicitly so a composite AND alarm\'s child can never get silently, permanently stuck.',
+    gotchas: [
+      'AWS/DynamoDB metrics default to ignoring missing data regardless of the alarm\'s own configured setting, unless explicitly overridden.',
+      'A composite alarm using AND logic can never fire again once one child alarm is stuck in INSUFFICIENT_DATA — with no error surfaced anywhere.',
+    ],
+  },
+  'aws/cloudwatch/emf-dimensions-with-high-cardinality-explode-metric-cost': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Treat Missing Data', route: '/aws/cloudwatch/treat-missing-data-decides-insufficient-data-behavior' },
+      { label: 'ActionsSuppressor', route: '/aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms' },
+    ],
+    tip: 'Every EMF DimensionSet creates a NEW CloudWatch custom metric — adding a high-cardinality field like orderId or requestId as a Dimension creates one billed custom metric per unique value, not one metric with many data points.',
+    gotchas: [
+      'Keep high-cardinality identifiers as plain EMF log fields (queryable via Log Insights), never inside the Dimensions array.',
+      'This applies identically whether metrics are published via EMF or a direct PutMetricData call — EMF only removes the API call, not the cardinality cost model.',
+    ],
+  },
+  'aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EMF Dimension Cardinality', route: '/aws/cloudwatch/emf-dimensions-with-high-cardinality-explode-metric-cost' },
+      { label: 'CloudWatch overview', route: '/aws/cloudwatch' },
+    ],
+    tip: 'AWS provides two native alarm-noise-suppression mechanisms — a NOT term in a composite alarm\'s AlarmRule (state-level), and the ActionsSuppressor parameter (actions-only) — neither needs custom EventBridge + Lambda glue code.',
+    gotchas: [
+      'ActionsSuppressor still lets the composite alarm transition state normally — only its notification actions are withheld while the suppressor alarm is in ALARM.',
+      'ActionsSuppressorWaitPeriod and ActionsSuppressorExtensionPeriod guard against races at the start/end of the suppression window.',
+    ],
+  },
   'aws/cloudformation-cdk': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33457,6 +38715,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'A CloudFormation stack update that requires REPLACING a resource (not just modifying it) can cause unexpected downtime or data loss if the resource holds state — always review the change set before applying.',
       'CDK\'s higher-level constructs bundle sensible defaults, but understanding the underlying CloudFormation resources they generate matters for genuinely custom requirements.',
+    ],
+  },
+  'aws/cloudformation-cdk/cdk-removal-policy-covers-updatereplacepolicy-too': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'CloudFormation & CDK overview', route: '/aws/cloudformation-cdk' },
+      { label: 'Context Lookups Freeze', route: '/aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset' },
+    ],
+    tip: 'CDK\'s applyToUpdateReplacePolicy defaults to true — a single removalPolicy: RETAIN sets BOTH DeletionPolicy and UpdateReplacePolicy in the synthesized template, unlike raw CloudFormation where the two fields must be set independently.',
+    gotchas: [
+      'Run cdk synth and inspect the generated template directly to confirm both fields — don\'t assume based on raw-CloudFormation habits.',
+      'applyRemovalPolicy(policy, { applyToUpdateReplacePolicy: false }) exists for the rare case of genuinely wanting asymmetric policies.',
+    ],
+  },
+  'aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'removalPolicy Covers Both Fields', route: '/aws/cloudformation-cdk/cdk-removal-policy-covers-updatereplacepolicy-too' },
+      { label: 'Nested Stack Rollback Failure', route: '/aws/cloudformation-cdk/nested-stack-rollback-failure-blocks-the-whole-hierarchy' },
+    ],
+    tip: 'ec2.Vpc.fromLookup and similar context lookups are cached in cdk.context.json on first synth and deliberately frozen — a later real-world change (new subnet, etc.) is silently ignored until you run cdk context --reset.',
+    gotchas: [
+      'Never hand-edit cdk.context.json — AWS explicitly warns against it; use cdk context --reset <key> or --clear instead.',
+      'This is the same caching mechanism AWS uses for AMI lookups, specifically to prevent unexpected resource replacement from account drift.',
+    ],
+  },
+  'aws/cloudformation-cdk/nested-stack-rollback-failure-blocks-the-whole-hierarchy': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Context Lookups Freeze', route: '/aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset' },
+      { label: 'CloudFormation & CDK overview', route: '/aws/cloudformation-cdk' },
+    ],
+    tip: 'One nested stack failing to roll back blocks cleanup for the ENTIRE hierarchy — even sibling nested stacks that updated successfully get stuck, per AWS\'s own docs, "regardless of the state that the other nested stacks are in."',
+    gotchas: [
+      'AWS\'s own documented fix for this specific stuck state is "contact AWS Support" — no self-service CLI/console path is documented, unlike an ordinary UPDATE_ROLLBACK_FAILED stack.',
+      'Splitting into nested stacks reduces blast radius for normal updates, but not for this specific rollback-failure scenario.',
     ],
   },
   'aws/cost-optimization': {
@@ -33471,6 +38765,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Orphaned resources (unattached EBS volumes, idle load balancers) are a common, easy-to-overlook source of ongoing unnecessary cost that periodic review catches.',
     ],
   },
+  'aws/cost-optimization/spot-rebalance-recommendations-arrive-before-the-2-minute-notice': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Cost Optimization overview', route: '/aws/cost-optimization' },
+      { label: 'Regional RI Size Flexibility', route: '/aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor' },
+    ],
+    tip: 'The rebalance recommendation is a separate, earlier "elevated risk" signal from the 2-minute interruption notice — but AWS documents it can arrive together with the 2-minute notice, not always ahead of it.',
+    gotchas: [
+      'Rebalance recommendations are only supported for Spot Instances launched after November 5, 2020.',
+      'Both signals are emitted "on a best effort basis" — an application still needs to tolerate an interruption with zero warning at all.',
+    ],
+  },
+  'aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Spot Rebalance vs. 2-Minute Notice', route: '/aws/cost-optimization/spot-rebalance-recommendations-arrive-before-the-2-minute-notice' },
+      { label: 'Savings Plans Have No Exit', route: '/aws/cost-optimization/savings-plans-have-no-cancellation-or-resale-exit' },
+    ],
+    tip: 'Instance size flexibility only applies to Regional RIs, never Zonal — it uses a normalization factor table (small=1, medium=2, large=4, xlarge=8...) that can apply full OR partial benefit depending on whether the units divide evenly.',
+    gotchas: [
+      'Instance size flexibility is excluded for several GPU/HPC families, several Windows/RHEL/SUSE OS variants, and any RI with dedicated tenancy — even when purchased regionally.',
+      'A mismatched normalization factor (e.g. a large RI against a running xlarge instance) applies only partial benefit — the remainder bills at the On-Demand rate.',
+    ],
+  },
+  'aws/cost-optimization/savings-plans-have-no-cancellation-or-resale-exit': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Regional RI Size Flexibility', route: '/aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor' },
+      { label: 'Cost Optimization overview', route: '/aws/cost-optimization' },
+    ],
+    tip: 'Savings Plans can\'t be cancelled during the term, and — unlike Standard RIs — have no equivalent resale marketplace at all; the RI Marketplace is scoped only to Standard regional/zonal RIs.',
+    gotchas: [
+      '`delete-queued-savings-plan` only removes a plan that hasn\'t started yet (a future-dated purchase) — it cannot exit an already-active commitment.',
+      'The only real mitigation for over-commitment is growing other eligible usage to consume more of the existing commitment, not adjusting or exiting it.',
+    ],
+  },
   'aws/security': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33483,6 +38813,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'AWS Config tracks resource configuration changes over time, essential for auditing "when did this security group rule actually change" after an incident.',
     ],
   },
+  'aws/security/guardduty-eks-runtime-monitoring-needs-a-security-agent': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'AWS Security overview', route: '/aws/security' },
+      { label: 'KMS Rotation vs Data Keys', route: '/aws/security/kms-rotation-never-touches-already-generated-data-keys' },
+    ],
+    tip: 'GuardDuty\'s "no agents to install" claim describes its base log analysis only — EKS Runtime Monitoring deploys a real EKS add-on (aws-guardduty-agent) and doesn\'t support Fargate-based clusters at all.',
+    gotchas: [
+      'Automated agent management auto-creates a VPC endpoint + security group; manual management makes that YOUR prerequisite responsibility.',
+      'Fargate-based and Hybrid Nodes EKS clusters get zero in-container runtime visibility from this feature, regardless of configuration.',
+    ],
+  },
+  'aws/security/kms-rotation-never-touches-already-generated-data-keys': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EKS Runtime Monitoring Agent', route: '/aws/security/guardduty-eks-runtime-monitoring-needs-a-security-agent' },
+      { label: 'Multi-Region Key Policies', route: '/aws/security/multi-region-key-policies-dont-sync-across-replicas' },
+    ],
+    tip: 'CMK rotation never touches data keys already generated via generate-data-key — AWS states directly it "will not mitigate the effect of a compromised data key." 365-day rotation is only the default; RotationPeriodInDays is configurable.',
+    gotchas: [
+      'A compromised data key requires re-encrypting the affected data under a NEW data key — rotating the parent CMK does nothing for data already wrapped.',
+      'Only AWS managed keys (aws/s3, aws/rds) have a truly fixed rotation period — customer managed keys can set a custom RotationPeriodInDays.',
+    ],
+  },
+  'aws/security/multi-region-key-policies-dont-sync-across-replicas': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'KMS Rotation vs Data Keys', route: '/aws/security/kms-rotation-never-touches-already-generated-data-keys' },
+      { label: 'AWS Security overview', route: '/aws/security' },
+    ],
+    tip: 'Multi-Region key replicas share Key ID, key material, and rotation settings automatically — but key policy, grants, aliases, and tags are "independent properties" AWS never synchronizes.',
+    gotchas: [
+      'A key policy change (like revoking cross-account access) on the primary key has zero effect on any replica — each region\'s policy must be updated independently.',
+      'A replica is a fully independent KMS key resource, not a pointer to the primary — audit for key-policy drift across regions periodically.',
+    ],
+  },
   'aws/ebs-efs': {
     apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
     related: [
@@ -33492,6 +38858,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'An EBS volume\'s performance (IOPS, throughput) depends on the volume TYPE chosen (gp3, io2, etc.) — the wrong type for a workload\'s actual I/O pattern silently bottlenecks application performance.',
       'EFS is generally more expensive per GB than EBS — appropriate specifically when genuine multi-instance concurrent file access is needed, not as a default storage choice.',
+    ],
+  },
+  'aws/ebs-efs/modifyvolume-rate-limit-must-wait-for-completed-state': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EBS, EFS & FSx overview', route: '/aws/ebs-efs' },
+      { label: 'Access Point IAM Scoping', route: '/aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition' },
+    ],
+    tip: 'A volume must reach the "completed" state before it can be modified again — up to 4 modifications per rolling 24 hours, and a 1 TiB volume can take up to 6 hours to complete.',
+    gotchas: [
+      'A size increase becomes usable within seconds, but that\'s a different milestone from "completed" — the gate for a second modification is the latter, which can take hours.',
+      'A submitted modification cannot be canceled — for a stuck or wrong change on a non-root volume, detach/modify/reattach is the documented workaround.',
+    ],
+  },
+  'aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'ModifyVolume Rate Limit', route: '/aws/ebs-efs/modifyvolume-rate-limit-must-wait-for-completed-state' },
+      { label: 'AFTER_1_ACCESS Explained', route: '/aws/ebs-efs/efs-after-1-access-promotes-files-back-to-standard-immediately' },
+    ],
+    tip: 'An access point\'s own POSIX/root-directory enforcement only kicks in for whichever access point a mount targets — real isolation needs an IAM policy scoped to each access point via elasticfilesystem:AccessPointArn.',
+    gotchas: [
+      'An unscoped elasticfilesystem:ClientMount grant lets a role mount ANY access point on the file system, not just the one its own task definition intended.',
+      'The access point\'s POSIX enforcement provides no fallback protection if IAM authorized the wrong access point in the first place — the two layers are independent.',
+    ],
+  },
+  'aws/ebs-efs/efs-after-1-access-promotes-files-back-to-standard-immediately': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Access Point IAM Scoping', route: '/aws/ebs-efs/efs-access-point-iam-scoping-requires-accesspointarn-condition' },
+      { label: 'EBS, EFS & FSx overview', route: '/aws/ebs-efs' },
+    ],
+    tip: 'TransitionToPrimaryStorageClass: AFTER_1_ACCESS (the only valid value) promotes a file back to Standard on a SINGLE read — a real cost-thrashing trap for periodically-accessed files.',
+    gotchas: [
+      'A file read once a month, with both age-based IA transition and AFTER_1_ACCESS enabled, can spend almost no time actually billed at genuine IA rates.',
+      'Listing a directory does not count as a file access event — only reading the specific file\'s own contents triggers the promotion.',
     ],
   },
 

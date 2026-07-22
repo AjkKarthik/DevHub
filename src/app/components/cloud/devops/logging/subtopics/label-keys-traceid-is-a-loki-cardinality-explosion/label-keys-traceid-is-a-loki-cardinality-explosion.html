@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Logging Pipelines" topicRoute="/devops/logging" subtopicLabel="Label_Keys traceId Is a Loki Cardinality Explosion" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Label_Keys traceId Is a Loki Cardinality Explosion</h1>
+  <p class="page-subtitle">
+    The main page's own Fluent Bit config promotes traceId into a Loki label with no warning — Loki's own docs
+    name trace IDs directly as a value that should never be used as a label.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic flags a real cardinality risk in the main page's own Loki output config. Back to why
+      Merge_Log and K8S-Logging.Parser are different mechanisms, or continue to why ILM's min_age counts from
+      rollover, not index creation.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging Pipelines"
+    topicRoute="/devops/logging"
+    [prev]="{ label: 'Merge_Log vs. K8S-Logging.Parser', route: '/devops/logging/merge-log-vs-k8s-logging-parser-are-different-mechanisms' }"
+    [next]="{ label: 'ILM min_age Counts From Rollover, Not Creation', route: '/devops/logging/ilm-min-age-counts-from-rollover-not-creation' }"
+  />
+</div>

@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Kubernetes Service" topicRoute="/azure/aks" subtopicLabel="Control Plane Can Be 3 Minor Versions Ahead" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Control Plane Can Be Up to 3 Minor Versions Ahead of Nodes</h1>
+  <p class="page-subtitle">The main page's own QnA explains why control plane upgrades come first — here's AKS's own exact skew limit, and what happens if node pools are left behind too long.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="AKS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic gives the exact number behind the main page's own control-plane-first ordering rule, closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Kubernetes Service" topicRoute="/azure/aks"
+    [prev]="{ label: 'max-surge Defaults to 1 Node', route: '/azure/aks/max-surge-defaults-to-1-node-not-a-percentage' }" />
+</div>

@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="File I/O & Pathlib" topicRoute="/python/file-io" subtopicLabel="mkdir exist_ok Nuance" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">mkdir(exist_ok=True) Still Raises If a File Blocks the Path</h1>
+  <p class="page-subtitle">
+    exist_ok=True only forgives an existing directory — a plain file already sitting at that exact path still
+    raises FileExistsError, matching POSIX mkdir -p.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sharpens the main page's own "exist_ok=True avoids FileExistsError" quick-reference entry with the one
+      condition it doesn't cover. The next subtopic moves to shutil — a similarly named-pair distinction between
+      copy() and copy2() the main page doesn't draw out.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="File I/O & Pathlib"
+    topicRoute="/python/file-io"
+    [next]="{ label: 'shutil.copy() Does Not Preserve Timestamps — copy2() Does', route: '/python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does' }"
+  />
+</div>

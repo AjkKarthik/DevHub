@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="S3" topicRoute="/aws/s3" subtopicLabel="SSE-KMS Replication Gap" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">SSE-KMS Encrypted Objects Aren't Replicated by Default</h1>
+  <p class="page-subtitle">The main page's own default-encryption and replication examples silently don't compose — SSE-KMS objects need two additional pieces of configuration to replicate at all.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="S3" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic connects two of the main page's own separate code examples (default encryption, replication) that silently don't compose the way a reader would assume — a real, dangerous gap for exactly the kind of compliance/DR setup the main page's own theory describes. Next, the S3 Access Points subtopic expands a mechanism the main page mentions but never explains at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="S3" topicRoute="/aws/s3"
+    [prev]="{ label: 'Objects Under 128 KB Don’t Transition by Default', route: '/aws/s3/objects-under-128kb-dont-transition-storage-class-by-default' }"
+    [next]="{ label: 'Access Point AND Bucket Policy Must Both Allow', route: '/aws/s3/access-point-and-bucket-policy-must-both-allow-the-request' }" />
+</div>

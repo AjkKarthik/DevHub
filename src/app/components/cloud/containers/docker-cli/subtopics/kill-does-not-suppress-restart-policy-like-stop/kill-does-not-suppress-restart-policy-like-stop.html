@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker CLI" topicRoute="/containers/docker-cli" subtopicLabel="docker kill Doesn’t Suppress a Restart Policy Like docker stop Does" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">docker kill Doesn't Suppress a Restart Policy Like docker stop Does</h1>
+  <p class="page-subtitle">
+    The main page treats "the container is no longer running" as one outcome regardless of command. For a
+    container under unless-stopped, docker stop and docker kill leave it in genuinely different states.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own stop-vs-kill framing beyond graceful-vs-immediate shutdown, into
+      a restart-policy consequence the page never mentions. Back to the Docker CLI overview, or continue to why
+      docker stop $(docker ps -q) errors instead of doing nothing when no containers are running.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker CLI"
+    topicRoute="/containers/docker-cli"
+    [prev]="{ label: 'docker kill -s SIGHUP Reloads — It Doesn’t Terminate', route: '/containers/docker-cli/kill-sighup-is-reload-not-termination' }"
+    [next]="{ label: 'docker stop $(docker ps -q) Errors When Nothing Is Running', route: '/containers/docker-cli/stop-with-empty-ps-q-errors-not-noop' }"
+  />
+</div>

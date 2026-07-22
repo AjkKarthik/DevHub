@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="On-call & Incident Response" topicRoute="/devops/incident-response" subtopicLabel="continue: true Is What Lets a Second Route Also Fire" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">continue: true Is What Lets a Second Route Also Fire</h1>
+  <p class="page-subtitle">
+    The main page's own routing config comments the intent ("also send to Slack") but never explains the
+    mechanism — without continue: true on the first matching route, the second route is never even evaluated.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a routing mechanism the main page's own config relies on but never states. Back to
+      the On-call & Incident Response overview, or continue to why PagerDuty's own severity field is a separate
+      concept from the alert's severity label.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="On-call & Incident Response"
+    topicRoute="/devops/incident-response"
+    [next]="{ label: 'PagerDuty’s severity Field Is Not the Alert’s Label', route: '/devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label' }"
+  />
+</div>

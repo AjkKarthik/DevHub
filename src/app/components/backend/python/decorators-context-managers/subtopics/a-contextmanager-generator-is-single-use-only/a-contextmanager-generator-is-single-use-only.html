@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Decorators & Context Managers" topicRoute="/python/decorators-context-managers" subtopicLabel="Single-Use @contextmanager" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">A &#64;contextmanager Generator Is Single-Use Only</h1>
+  <p class="page-subtitle">
+    Calling a &#64;contextmanager-decorated function fresh each time is safe — storing and reusing the same context
+    manager object raises RuntimeError on the second use.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sharpens the main page's own &#64;contextmanager pattern with a real single-use limitation worth knowing
+      before caching an instance for "efficiency." The final subtopic moves to ContextDecorator — a structural gap
+      between its two usage styles the main page only mentions in passing.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Decorators & Context Managers"
+    topicRoute="/python/decorators-context-managers"
+    [prev]="{ label: 'ExitStack.callback() Unwinds in the Same LIFO Order', route: '/python/decorators-context-managers/exitstack-callback-unwinds-in-the-same-lifo-order' }"
+    [next]="{ label: 'ContextDecorator Discards the __enter__() Return Value', route: '/python/decorators-context-managers/contextdecorator-discards-the-enter-return-value' }"
+  />
+</div>

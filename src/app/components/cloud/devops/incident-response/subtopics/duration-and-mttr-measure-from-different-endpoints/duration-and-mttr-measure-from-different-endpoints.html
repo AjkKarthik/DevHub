@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="On-call & Incident Response" topicRoute="/devops/incident-response" subtopicLabel="Duration and MTTR Measure From Different Endpoints" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Duration and MTTR Measure From Different Endpoints</h1>
+  <p class="page-subtitle">
+    The main page's own worked postmortem states "Duration: 47 minutes" and "MTTR: 11 minutes" for the same
+    incident with no reconciliation — the gap between them is exactly the process failure it flags but never fixes.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic reconciles two numbers in the main page's own worked postmortem example that look
+      inconsistent but aren't. Back to why PagerDuty's own severity field is a separate concept from the alert's
+      label, or to the On-call & Incident Response overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="On-call & Incident Response"
+    topicRoute="/devops/incident-response"
+    [prev]="{ label: 'PagerDuty’s severity Field Is Not the Alert’s Label', route: '/devops/incident-response/pagerdutys-severity-field-is-not-the-alert-label' }"
+  />
+</div>

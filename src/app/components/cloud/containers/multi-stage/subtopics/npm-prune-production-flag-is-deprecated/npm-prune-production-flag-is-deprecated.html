@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Stage Builds" topicRoute="/containers/multi-stage" subtopicLabel="npm prune --production Is a Deprecated Flag on Current npm" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">npm prune --production Is a Deprecated Flag on Current npm</h1>
+  <p class="page-subtitle">
+    The main page's own code tab and mistake entry both use npm prune --production — current npm prints a
+    deprecation warning on every build and recommends --omit=dev instead.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="npm 9+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic flags a real, current npm deprecation warning the main page's own code would trigger on every
+      build. Back to the Multi-Stage Builds overview, or continue to why COPY --from=external-image still pulls
+      the entire image.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Multi-Stage Builds"
+    topicRoute="/containers/multi-stage"
+    [prev]="{ label: 'test Runs After builder, in Parallel With runtime — Not With builder', route: '/containers/multi-stage/test-stage-is-sequential-with-builder-parallel-with-runtime' }"
+    [next]="{ label: 'COPY --from=external-image Still Pulls the Whole Image', route: '/containers/multi-stage/external-image-copy-still-pulls-the-whole-image' }"
+  />
+</div>

@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="FastAPI" topicRoute="/python/fastapi" subtopicLabel="BackgroundTasks Queue" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">BackgroundTasks Merge Into One Sequential List</h1>
+  <p class="page-subtitle">
+    Every BackgroundTasks() injected across a request's dependencies and handler is the same shared object, run
+    strictly one task at a time after the response is sent — and one failure halts the rest.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="FastAPI 0.100+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory describes BackgroundTasks running "after the response is sent, in the same
+      process" — this subtopic fills in the shared-object, sequential-execution, and failure-propagation mechanics
+      behind that summary. The final subtopic moves to a different corner of the framework entirely: what
+      response_model actually needs from a schema before it can serialize a raw ORM object.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="FastAPI"
+    topicRoute="/python/fastapi"
+    [prev]="{ label: 'Dependency Cache Keys on the Callable Object', route: '/python/fastapi/dependency-cache-keys-on-the-callable-object' }"
+    [next]="{ label: 'response_model Needs from_attributes for ORM Objects', route: '/python/fastapi/response-model-needs-from-attributes-for-orm-objects' }"
+  />
+</div>

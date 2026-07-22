@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Auth with JWT & Passport" topicRoute="/node/jwt-auth" subtopicLabel="clockTolerance" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">clockTolerance Handles Clock Drift Between Distributed Servers</h1>
+  <p class="page-subtitle">
+    exp is checked against the verifying server's own clock, not the issuing server's — normal clock drift can
+    reject a token that should still be valid.
+  </p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="jsonwebtoken 4.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sharpens the main page's own exp-checking quiz question with a distributed-systems edge case it doesn't
+      mention. The final subtopic in this batch turns to the main page's own refresh-rotation code — a genuine
+      race condition hiding in its theft-detection logic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Auth with JWT & Passport"
+    topicRoute="/node/jwt-auth"
+    [prev]="{ label: 'RS256 Public Keys Can Be Forged as HS256 Secrets', route: '/node/jwt-auth/rs256-hs256-algorithm-confusion-needs-explicit-pinning' }"
+    [next]="{ label: 'Concurrent Refresh Requests Trigger a False Positive', route: '/node/jwt-auth/concurrent-refresh-requests-trigger-false-theft-detection' }"
+  />
+</div>

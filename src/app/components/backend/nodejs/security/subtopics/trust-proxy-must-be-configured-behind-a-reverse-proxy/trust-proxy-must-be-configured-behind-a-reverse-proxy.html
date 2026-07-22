@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security Best Practices" topicRoute="/node/security" subtopicLabel="trust proxy Setting" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">trust proxy Must Be Configured Behind a Reverse Proxy</h1>
+  <p class="page-subtitle">
+    Misconfigured either way, req.ip either becomes one shared value for every user or a value an attacker can
+    freely spoof — a Redis-backed rate limiter fixes neither.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This isolates a problem hiding beneath the main page's own multi-instance rate-limiting fix. The final
+      subtopic in this batch turns to a completely different security surface — a well-documented, algorithm-level
+      limitation of bcrypt itself, directly relevant to the main page's own password-hashing code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Security Best Practices"
+    topicRoute="/node/security"
+    [prev]="{ label: 'CSP Nonces Must Be Regenerated on Every Request', route: '/node/security/csp-nonces-must-be-regenerated-on-every-single-request' }"
+    [next]="{ label: 'bcrypt Silently Truncates Passwords Longer Than 72 Bytes', route: '/node/security/bcrypt-silently-truncates-passwords-longer-than-72-bytes' }"
+  />
+</div>

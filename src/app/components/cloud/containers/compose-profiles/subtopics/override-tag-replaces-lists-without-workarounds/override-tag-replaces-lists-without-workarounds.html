@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Compose Profiles & Overrides" topicRoute="/containers/compose-profiles" subtopicLabel="!override Replaces a Merged List Directly — No Workaround Needed" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">!override Replaces a Merged List Directly — No Workaround Needed</h1>
+  <p class="page-subtitle">
+    The main page's own mistake-entry fix says "remove the base entry or use a fresh service name." Compose has a
+    dedicated !override YAML tag built specifically to replace one field during merge — never mentioned on the page.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Compose 2.24+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic replaces the main page's own vague mistake-entry workaround with Compose's actual built-in
+      mechanism for the same problem. Back to the Compose Profiles & Overrides overview, or continue to why the
+      theory's own environment-merge example uses a different YAML syntax than its working code tab.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Compose Profiles & Overrides"
+    topicRoute="/containers/compose-profiles"
+    [next]="{ label: 'The Merge Key Needs a Mapping Anchor, Not the List-Alias Syntax', route: '/containers/compose-profiles/merge-key-needs-mapping-not-list-alias-syntax' }"
+  />
+</div>

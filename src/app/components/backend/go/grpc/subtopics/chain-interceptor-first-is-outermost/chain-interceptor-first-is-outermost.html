@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC in Go" topicRoute="/go/grpc" subtopicLabel="Interceptor Chain Order" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">ChainUnaryInterceptor: First Is Outermost</h1>
+  <p class="page-subtitle">
+    Per grpc-go's own docs, "the first interceptor will be the outer most" — swapping the order of a logging
+    and an auth interceptor changes whether rejected requests get logged at all, with no error or crash either way.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.21+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic answers the ordering question the main page's own separate logging and auth interceptor
+      examples never raise together. Back to the gRPC in Go overview, or continue to Database with pgx, where
+      connection-lifecycle questions come up again in a different context.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="gRPC in Go"
+    topicRoute="/go/grpc"
+    [prev]="{ label: 'NewClient Lazily Connects on First RPC', route: '/go/grpc/newclient-lazy-connects-on-first-rpc' }"
+  />
+</div>

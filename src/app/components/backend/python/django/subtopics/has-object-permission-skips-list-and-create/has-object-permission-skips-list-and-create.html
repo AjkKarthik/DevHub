@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Django &amp; DRF" topicRoute="/python/django" subtopicLabel="DRF Permissions Gap" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">has_object_permission() Skips List and Create</h1>
+  <p class="page-subtitle">
+    has_object_permission() only runs when a view calls get_object() — list() and create() never do, so an
+    object-level-only permission class silently protects nothing for either action.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="DRF 3.x" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own challenge builds IsOwnerOrReadOnly using has_object_permission() alongside
+      IsAuthenticatedOrReadOnly for the detail routes — this subtopic shows exactly where that pattern needs a
+      second, different mechanism to cover list and create. Together with the previous two subtopics, this
+      completes the pattern: how queryset results are cached, how a signal's side effects should be deferred until
+      commit, and how object-level permissions do and don't reach every action type.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Django &amp; DRF"
+    topicRoute="/python/django"
+    [prev]="{ label: 'transaction.on_commit() Defers Signal Side Effects', route: '/python/django/transaction-on-commit-defers-signal-side-effects' }"
+  />
+</div>

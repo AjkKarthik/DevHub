@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/node/error-handling" subtopicLabel="uncaughtException Default Override" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">An uncaughtException Listener Disables Node's Default Crash Behavior</h1>
+  <p class="page-subtitle">
+    Registering the listener overrides Node's automatic crash-and-exit — if no listener calls process.exit(), the
+    process keeps running in an undefined state.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 0.1.18+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three precise mechanics behind the main page's own global-handler and logging patterns:
+      why a cause chain vanishes in JSON logs, why the exit call itself can lose output, and now why registering
+      the handler in the first place changes Node's behavior before any of that even runs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/node/error-handling"
+    [prev]="{ label: 'process.exit() Can Truncate Unflushed Output', route: '/node/error-handling/process-exit-can-truncate-unflushed-output' }"
+  />
+</div>

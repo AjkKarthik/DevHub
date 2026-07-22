@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Step Functions" topicRoute="/aws/step-functions" subtopicLabel="Distributed Map Lifts the 40-Concurrency Cap" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Distributed Map Lifts Classic Map's 40-Concurrency Cap</h1>
+  <p class="page-subtitle">The main page's own quickRef states "up to 40" as if that's Map's whole story — its own ETL pattern actually needs the mode that removes it.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Step Functions" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic resolves a real inconsistency in the main page's own Map-state framing and gives its ETL pattern the mode it actually needs at scale. Next, the HeartbeatSeconds subtopic sharpens the main page's own unexplained waitForTaskToken field into AWS's own precise definition.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Step Functions" topicRoute="/aws/step-functions"
+    [next]="{ label: 'HeartbeatSeconds Is a Separate, Repeating Deadline', route: '/aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline' }" />
+</div>

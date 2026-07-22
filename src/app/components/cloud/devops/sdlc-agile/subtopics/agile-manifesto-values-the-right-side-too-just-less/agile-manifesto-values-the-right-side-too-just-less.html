@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SDLC &amp; Agile" topicRoute="/devops/sdlc-agile" subtopicLabel="The Manifesto's Missing Sentence" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">The Agile Manifesto Values the Right Side Too, Just Less</h1>
+  <p class="page-subtitle">
+    The main page's own four-value list reads as an absolute choice — the Manifesto's own next sentence
+    clarifies it's a weighting for trade-offs, not a license to discard documentation, contracts, and plans.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="2001+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic adds the Manifesto's own qualifying sentence to the main page's bare four-value list.
+      Back to the SDLC & Agile overview, or continue to the steady-state assumption hiding inside Little's Law.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SDLC &amp; Agile"
+    topicRoute="/devops/sdlc-agile"
+    [next]="{ label: 'Little’s Law Assumes a Steady State', route: '/devops/sdlc-agile/littles-law-assumes-a-steady-state' }"
+  />
+</div>

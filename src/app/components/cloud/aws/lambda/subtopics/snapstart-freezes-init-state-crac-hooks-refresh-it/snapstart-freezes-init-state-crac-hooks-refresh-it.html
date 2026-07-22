@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Lambda" topicRoute="/aws/lambda" subtopicLabel="SnapStart Freezes Init State" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">SnapStart Freezes Init State — CRaC Hooks Refresh It</h1>
+  <p class="page-subtitle">The main page's own SnapStart bullets describe the latency win — never what happens to state a function initialized before the snapshot was taken.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Lambda" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic adds the real tradeoff behind the main page's own SnapStart bullets, now corrected to reflect its broader Java/Python/.NET support. Next, the reserved concurrency subtopic sharpens the main page's own "set to 0 to throttle completely" line into the specific, documented behavior that line glosses over for async-triggered functions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Lambda" topicRoute="/aws/lambda"
+    [prev]="{ label: 'DLQ Only Captures the Event, Not Why It Failed', route: '/aws/lambda/dlq-only-captures-the-event-not-why-it-failed' }"
+    [next]="{ label: 'Reserved Concurrency Zero Skips Async Retries', route: '/aws/lambda/reserved-concurrency-zero-skips-async-retries-entirely' }" />
+</div>

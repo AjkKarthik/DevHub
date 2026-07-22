@@ -1,0 +1,38 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Structs &amp; Interfaces" topicRoute="/go/structs-interfaces" subtopicLabel="Embedding &amp; Method Sets" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Embedded Methods Satisfy Interfaces Too</h1>
+  <p class="page-subtitle">
+    Go's own spec: promoted methods are genuinely included in the embedding struct's own method set — a struct
+    can satisfy an interface entirely through what it embeds.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory describes embedding as promoting fields and methods "onto" the outer struct
+      without stating whether that counts toward interface satisfaction — this subtopic confirms it does, directly
+      from the spec. The final subtopic moves to a different interface mechanic: what happens when two interface
+      values are compared with ==.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Structs &amp; Interfaces"
+    topicRoute="/go/structs-interfaces"
+    [prev]="{ label: 'Method Sets: T vs. *T', route: '/go/structs-interfaces/method-sets-t-vs-pointer-t' }"
+    [next]="{ label: 'Comparing Interfaces Can Panic at Runtime', route: '/go/structs-interfaces/comparing-interfaces-can-panic-at-runtime' }"
+  />
+</div>

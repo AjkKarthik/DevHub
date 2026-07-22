@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="File I/O & Pathlib" topicRoute="/python/file-io" subtopicLabel="glob() Dotfile Behavior" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Path.glob() Matches Dotfiles, Unlike Shell Globbing</h1>
+  <p class="page-subtitle">
+    Pathlib's own docs confirm dotfiles "are not special" to Path.glob()/.rglob() — the reverse of shell wildcards
+    and the standalone glob module, and a genuine security-relevant gap to guard against.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of pathlib/shutil internals that look
+      simpler than they are — mkdir's exist_ok boundary condition, copy()'s silent metadata gap, and now glob()'s
+      reversed dotfile convention — each correcting a plausible but incomplete mental model with the actual
+      documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="File I/O & Pathlib"
+    topicRoute="/python/file-io"
+    [prev]="{ label: 'shutil.copy() Does Not Preserve Timestamps — copy2() Does', route: '/python/file-io/shutil-copy-does-not-preserve-timestamps-copy2-does' }"
+  />
+</div>

@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SDLC &amp; Agile" topicRoute="/devops/sdlc-agile" subtopicLabel="Reading a CFD" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Cumulative Flow Diagrams Reveal the Bottleneck</h1>
+  <p class="page-subtitle">
+    The main page names the Cumulative Flow Diagram once, in a bullet list, with zero explanation — the gap
+    between two bands is that stage's WIP, and a widening band is the visual signature of a bottleneck.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Kanban" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic gives the main page's own bare CFD mention an actual reading guide, and connects it to
+      this hub's own Little's Law subtopic. Back to the SDLC & Agile overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SDLC &amp; Agile"
+    topicRoute="/devops/sdlc-agile"
+    [prev]="{ label: 'Little’s Law Assumes a Steady State', route: '/devops/sdlc-agile/littles-law-assumes-a-steady-state' }"
+  />
+</div>

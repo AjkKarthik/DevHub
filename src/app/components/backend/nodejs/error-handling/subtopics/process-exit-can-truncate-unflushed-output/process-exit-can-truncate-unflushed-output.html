@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/node/error-handling" subtopicLabel="process.exit() vs exitCode" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">process.exit() Can Truncate Unflushed Output — Use exitCode Instead</h1>
+  <p class="page-subtitle">
+    Node's own docs warn stdout/stderr writes are sometimes asynchronous — the crash log you most need to keep is
+    exactly the one process.exit() can cut off mid-flight.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 0.1.13+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This examines the exact exit mechanism the main page's own global-handler code sample uses. The final
+      subtopic in this batch turns to what happens BEFORE that exit call is even reached — whether registering an
+      uncaughtException listener at all changes Node's default crash behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/node/error-handling"
+    [prev]="{ label: 'Error.cause Doesn’t Survive JSON.stringify()', route: '/node/error-handling/error-cause-does-not-survive-json-stringify' }"
+    [next]="{ label: 'An uncaughtException Listener Disables the Default Crash', route: '/node/error-handling/uncaughtexception-listener-disables-default-crash' }"
+  />
+</div>

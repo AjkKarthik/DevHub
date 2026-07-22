@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker Images & Registry" topicRoute="/containers/docker-images" subtopicLabel="A Registry Mirror Only Ever Intercepts Docker Hub Pulls" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">A Registry Mirror Only Ever Intercepts Docker Hub Pulls</h1>
+  <p class="page-subtitle">
+    The main page introduces registry-mirrors right after listing Docker Hub, GHCR, ECR, ACR, and GAR together —
+    but it only ever caches pulls resolving to Docker Hub, never the other registries mentioned in the same breath.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic scopes down a one-line main-page bullet that reads as more general than it actually is,
+      closing out this batch's look at three commands and settings the main page shows without their full
+      context. Back to the Docker Images & Registry overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker Images & Registry"
+    topicRoute="/containers/docker-images"
+    [prev]="{ label: 'docker push --all-tags Uploads the Shared Layers Once', route: '/containers/docker-images/all-tags-push-uploads-shared-layers-once' }"
+  />
+</div>

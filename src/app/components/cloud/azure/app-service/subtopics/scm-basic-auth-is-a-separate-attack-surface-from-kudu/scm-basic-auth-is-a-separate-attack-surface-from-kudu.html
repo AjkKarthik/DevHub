@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure App Service" topicRoute="/azure/app-service" subtopicLabel="SCM Basic Auth Is a Separate Attack Surface" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">SCM Basic Auth Is a Separate Attack Surface From Kudu Itself</h1>
+  <p class="page-subtitle">The main page names Kudu as a management dashboard but never discusses how it authenticates — here's the SCM/FTP toggle dependency and per-deployment-method fallback behavior.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="App Service" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic adds a security dimension to the main page's own Kudu mention, closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure App Service" topicRoute="/azure/app-service"
+    [prev]="{ label: 'Auto-Heal: 4 Conditions, 3 Actions', route: '/azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions' }" />
+</div>

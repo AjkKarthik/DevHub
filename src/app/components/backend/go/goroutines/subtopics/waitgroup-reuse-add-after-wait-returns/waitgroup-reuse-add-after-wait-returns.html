@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Goroutines" topicRoute="/go/goroutines" subtopicLabel="WaitGroup Reuse" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">WaitGroup Reuse: Add After Wait Returns</h1>
+  <p class="page-subtitle">
+    Reusing one sync.WaitGroup across multiple waves of work is safe — but only if every new Add call happens
+    after the previous wave's Wait call has actually returned, per sync.WaitGroup's own documented rule.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic extends the main page's own Add/Done mistake entries into a case they don't cover: reusing
+      one WaitGroup across multiple waves. Back to the Goroutines overview, or continue to Channels, where
+      the close()-as-synchronization-event pattern from this topic's own memory-model subtopic is used constantly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Goroutines"
+    topicRoute="/go/goroutines"
+    [prev]="{ label: 'Unsynchronized Reads Have No Guarantee', route: '/go/goroutines/unsynchronized-reads-have-no-guarantee' }"
+  />
+</div>

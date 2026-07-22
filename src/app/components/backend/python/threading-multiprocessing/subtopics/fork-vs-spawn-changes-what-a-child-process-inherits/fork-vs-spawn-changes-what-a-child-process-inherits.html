@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Threading & Multiprocessing" topicRoute="/python/threading-multiprocessing" subtopicLabel="fork vs spawn" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">fork vs. spawn Changes What a Child Process Inherits</h1>
+  <p class="page-subtitle">
+    fork copies the parent's memory; spawn starts a fresh interpreter that re-imports __main__ — Python's own docs
+    confirm this differs by platform, and it's changing again in 3.14.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 3.8+ (macOS default change)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This explains the actual mechanism behind the main page's own Windows "if __name__ == '__main__'" mistake
+      entry. The final subtopic moves to a more severe failure mode — a crashed worker that the main page's own
+      per-task exception handling can't address at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Threading & Multiprocessing"
+    topicRoute="/python/threading-multiprocessing"
+    [prev]="{ label: 'An Unread Future Exception Is Silently Swallowed', route: '/python/threading-multiprocessing/an-unread-future-exception-is-silently-swallowed' }"
+    [next]="{ label: 'A Crashed Worker Breaks the Whole Process Pool', route: '/python/threading-multiprocessing/a-crashed-worker-breaks-the-whole-process-pool' }"
+  />
+</div>

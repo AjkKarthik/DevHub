@@ -1,0 +1,35 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing in Go" topicRoute="/go/testing" subtopicLabel="t.Cleanup's Ordering" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">t.Cleanup Runs in LIFO Order, Not Registration Order</h1>
+  <p class="page-subtitle">
+    The main page's own t.Cleanup example is a single call with no ordering guarantee ever discussed — with
+    multiple calls, teardown unwinds in the exact reverse of registration, the same discipline defer uses.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Go 1.14+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic expands the main page's single t.Cleanup call into its documented multi-call ordering
+      guarantee, connecting it to Go's own defer semantics. Back to the Testing in Go overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing in Go"
+    topicRoute="/go/testing"
+    [prev]="{ label: 'go test Can Print (cached) Instead of Actually Running', route: '/go/testing/go-test-can-print-cached-instead-of-actually-running' }"
+  />
+</div>

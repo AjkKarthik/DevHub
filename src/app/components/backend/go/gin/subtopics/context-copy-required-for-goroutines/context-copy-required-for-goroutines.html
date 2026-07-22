@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Gin Framework" topicRoute="/go/gin" subtopicLabel="Context.Copy()" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Context.Copy() Is Required for Goroutines</h1>
+  <p class="page-subtitle">
+    gin.Context is pooled and reused across requests for performance — a goroutine holding the original,
+    uncopied Context can read data that already belongs to a completely different, later request.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Gin v1.9+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic extends the main page's own c.Set/c.MustGet middleware pattern into the async case it
+      doesn't cover. The next subtopic covers a related constraint: why the request body can normally only be
+      bound once, and the method Gin provides to bind it more than once safely.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Gin Framework"
+    topicRoute="/go/gin"
+    [next]="{ label: 'ShouldBindBodyWith Caches the Body for Reuse', route: '/go/gin/shouldbindbodywith-caches-body-for-reuse' }"
+  />
+</div>

@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Environment Strategy" topicRoute="/devops/environment-strategy" subtopicLabel="The Missing TTL Mechanism" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Kubernetes Has No Built-In Namespace TTL</h1>
+  <p class="page-subtitle">
+    The main page's own "add a TTL (destroy after 24h of inactivity)" reads as a simple option — Kubernetes'
+    only built-in TTL controller is scoped to finished Jobs, not namespaces, and has no concept of inactivity.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Kubernetes 1.23+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills the implementation gap behind the main page's own casually-mentioned TTL bullet.
+      Back to the Environment Strategy overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Environment Strategy"
+    topicRoute="/devops/environment-strategy"
+    [prev]="{ label: 'Kubernetes Secrets Are Base64, Not Encrypted, By Default', route: '/devops/environment-strategy/kubernetes-secrets-are-base64-not-encrypted-by-default' }"
+  />
+</div>

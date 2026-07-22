@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS Fundamentals" topicRoute="/aws/fundamentals" subtopicLabel="Local Zones Service Subset" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Local Zones Run Only a Subset of Services</h1>
+  <p class="page-subtitle">Not a full Region, not a standard AZ — a curated compute/storage subset connected to its parent Region over AWS's own backbone.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="AWS Global Infra" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a real gap in the main page's own "Global Infrastructure" section — Local Zones and Wavelength Zones are a genuine third tier of AWS's physical footprint beyond the Region/AZ pair the main page describes, and they come up in any real discussion of low-latency edge architectures. Compute (next in this hub's own nav) is exactly where the "which instance types are available where" question this subtopic raises becomes concrete.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS Fundamentals" topicRoute="/aws/fundamentals"
+    [prev]="{ label: 'STS Role Chaining Caps Sessions at 1 Hour', route: '/aws/fundamentals/role-chaining-caps-sessions-at-1-hour-except-from-ec2' }" />
+</div>

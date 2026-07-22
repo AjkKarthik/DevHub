@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RDS & Aurora" topicRoute="/aws/rds-aurora" subtopicLabel="Switchover vs Unplanned Failover" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Switchover Guarantees Zero Data Loss — Unplanned Failover Doesn't</h1>
+  <p class="page-subtitle">The main page's single "&lt;1s RPO" figure only describes the healthy-cluster mechanism — a genuine regional outage uses a different one, with real data-loss risk.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Aurora" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic splits the main page's own single DR figure into the two genuinely different mechanisms it conflates — a real distinction any DR runbook needs to get right. Next, the Aurora Backtrack subtopic covers a third gap: a real, documented limitation the main page's own "rewinds without restoring" framing never mentions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RDS & Aurora" topicRoute="/aws/rds-aurora"
+    [prev]="{ label: 'RDS Proxy Connection Pinning', route: '/aws/rds-aurora/rds-proxy-connection-pinning-defeats-pooling-silently' }"
+    [next]="{ label: 'Forcing Backtrack with Binlog Breaks Read Replicas', route: '/aws/rds-aurora/forcing-backtrack-with-binlog-enabled-breaks-read-replicas' }" />
+</div>

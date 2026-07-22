@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Security" topicRoute="/containers/container-security" subtopicLabel="fsGroup Makes Non-Root Volume Writes Actually Work" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">fsGroup Makes Non-Root Volume Writes Actually Work</h1>
+  <p class="page-subtitle">
+    The main page's own hardened Pod spec sets <code>fsGroup: 2000</code> without ever explaining it — it's what
+    lets <code>runAsUser: 1000</code> actually write to a mounted volume instead of hitting permission denied.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own hardening claims leave underspecified.
+      Next: what actually enforces a NetworkPolicy — and what happens when nothing does.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Container Security"
+    topicRoute="/containers/container-security"
+    [next]="{ label: 'A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It', route: '/containers/container-security/networkpolicy-silently-does-nothing-without-a-cni-that-enforces-it' }"
+  />
+</div>

@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Celery &amp; Task Queues" topicRoute="/python/celery" subtopicLabel="Redis visibility_timeout" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Redis visibility_timeout Can Redeliver Long Tasks</h1>
+  <p class="page-subtitle">
+    With acks_late, a task that runs longer than Redis's visibility_timeout (default 1 hour) gets redelivered to
+    another worker mid-run — no crash required, just duration.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Celery 5.x+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory covers acks_late as trading at-most-once for at-least-once delivery on crash — this
+      subtopic shows the Redis-specific clock that can trigger that same redelivery with no crash involved at all.
+      Together with the previous two subtopics, this completes the pattern: how a task's status can lie by omission,
+      how a chain actually wires arguments between tasks, and how a broker's own timing assumptions can duplicate
+      work silently.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Celery &amp; Task Queues"
+    topicRoute="/python/celery"
+    [prev]="{ label: 'chain() Prepends One Argument, Not an Unpacked Tuple', route: '/python/celery/chain-prepends-one-argument-not-unpacked-tuple' }"
+  />
+</div>

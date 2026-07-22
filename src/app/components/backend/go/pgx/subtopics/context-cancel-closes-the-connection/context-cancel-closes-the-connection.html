@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database with pgx" topicRoute="/go/pgx" subtopicLabel="Context Cancel &amp; Connections" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Context Cancel Closes the Connection</h1>
+  <p class="page-subtitle">
+    "The pool cleans up the connection automatically" means closing it by default, not returning it —
+    frequent, expected cancellations can mean constant connection churn unless a different handler is configured.
+  </p>
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="pgx v5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic makes the main page's own vague "cleans up automatically" phrase precise. Back to the
+      Database with pgx overview, or continue to GORM, where the same connection-pool and transaction concerns
+      resurface behind a higher-level ORM API.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Database with pgx"
+    topicRoute="/go/pgx"
+    [prev]="{ label: 'FOR UPDATE Lock Ordering Can Deadlock', route: '/go/pgx/for-update-lock-ordering-can-deadlock' }"
+  />
+</div>

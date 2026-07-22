@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Promises & Async/Await" topicRoute="/node/promises-async" subtopicLabel="Top-Level await Scope" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Top-Level await Delays Every Importer Along the Chain, Not the Whole Graph</h1>
+  <p class="page-subtitle">
+    The delay propagates transitively through actual import relationships — unrelated branches of the module graph
+    evaluate on their own schedule, unaffected.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 14.8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having covered a Promise-level timing detail and a module-loading-level one, the final subtopic in this batch
+      turns to AsyncLocalStorage — briefly introduced on the main page as a way to propagate context, but with a
+      real leakage risk hiding in one of its two entry-point methods.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Promises & Async/Await"
+    topicRoute="/node/promises-async"
+    [prev]="{ label: 'unhandledRejection Fires After a Turn, Not Instantly', route: '/node/promises-async/unhandledrejection-fires-after-a-turn-not-instantly' }"
+    [next]="{ label: 'enterWith() Leaks Context, run() Restores It', route: '/node/promises-async/enterwith-leaks-context-run-restores-it-automatically' }"
+  />
+</div>

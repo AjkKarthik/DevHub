@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/go/error-handling" subtopicLabel="Custom Is() &amp; As()" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Custom Is() and As() Methods</h1>
+  <p class="page-subtitle">
+    errors.Is and errors.As are not limited to == and type-assignability — an error type can implement its own
+    Is(error) bool or As(any) bool method to take over the matching logic itself.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.13+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered the SHAPE errors.Is/As traverse (a linear chain, or a Join'd tree) — this one
+      covers the MATCH LOGIC applied at each step. The next subtopic moves away from errors entirely, into a
+      related but distinct failure mode: what panic and recover can and cannot catch across goroutines.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/go/error-handling"
+    [prev]="{ label: 'errors.Join & Multi-Error Trees', route: '/go/error-handling/errors-join-multi-error-trees' }"
+    [next]="{ label: 'panic/recover Is Goroutine-Scoped', route: '/go/error-handling/panic-recover-goroutine-scoped' }"
+  />
+</div>

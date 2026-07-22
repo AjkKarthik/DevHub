@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database with Prisma" topicRoute="/node/prisma" subtopicLabel="Interactive Transaction Timeout" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Interactive Transactions Have a Default 5-Second Timeout</h1>
+  <p class="page-subtitle">
+    Prisma's own docs warn against network requests inside a transaction callback — exceeding the default timeout
+    rolls back everything with a P2028 error.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Prisma 2.29+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own interactive-transaction example with the timing limit behind it. The next
+      subtopic moves to a completely different corner of Prisma — a serialization gotcha hiding in the main page's
+      own raw-query COUNT() example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Database with Prisma"
+    topicRoute="/node/prisma"
+    [next]="{ label: '$queryRaw Can Return BigInt', route: '/node/prisma/queryraw-can-return-bigint-json-stringify-throws' }"
+  />
+</div>

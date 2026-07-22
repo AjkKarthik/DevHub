@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="ECS & EKS" topicRoute="/aws/ecs-eks" subtopicLabel="ECS Circuit Breaker Is Opt-In" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">ECS Circuit Breaker Is Disabled by Default</h1>
+  <p class="page-subtitle">minimumHealthyPercent and maximumPercent control deployment pace only — automatic failure detection and rollback need a separate, opt-in flag.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="ECS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes the gap between the main page's own rolling-update pace controls and its separately-described Blue/Green rollback story — the circuit breaker gives standard rolling deployments the same automatic-rollback safety net, without needing CodeDeploy at all. Together with the IRSA and VPC CNI subtopics, this batch covers three genuinely distinct ECS/EKS failure categories the main page's own dense theory bullets only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="ECS & EKS" topicRoute="/aws/ecs-eks"
+    [prev]="{ label: 'VPC CNI IP Exhaustion — Pods Pending Despite Free CPU/Memory', route: '/aws/ecs-eks/vpc-cni-ip-exhaustion-pods-pending-despite-free-cpu-memory' }" />
+</div>

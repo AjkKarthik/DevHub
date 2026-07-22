@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Persistent Volumes &amp; Storage" topicRoute="/containers/storage" subtopicLabel="RWOP Closes the Gap RWO Leaves — Same-Node Pods Can Still Double-Write" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">RWOP Closes the Gap RWO Leaves — Same-Node Pods Can Still Double-Write</h1>
+  <p class="page-subtitle">
+    The main page's own QnA reveals RWO is node-level, not pod-level, but never connects that to why RWOP exists —
+    here's the concrete double-mount risk RWOP was built specifically to close.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from recovering a Released PV, to a zone-locked StatefulSet Pod, to why RWOP
+      exists at all. Back to the Persistent Volumes &amp; Storage overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Persistent Volumes &amp; Storage"
+    topicRoute="/containers/storage"
+    [prev]="{ label: 'A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending', route: '/containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending' }"
+  />
+</div>

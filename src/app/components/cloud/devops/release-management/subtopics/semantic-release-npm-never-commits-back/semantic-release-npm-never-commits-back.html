@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Release Management" topicRoute="/devops/release-management" subtopicLabel="@semantic-release/npm Updates package.json Only Locally" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">&#64;semantic-release/npm Updates package.json Only Locally</h1>
+  <p class="page-subtitle">
+    The main page's own .releaserc.json lists five plugins with no &#64;semantic-release/git — the npm plugin
+    publishes the new version, but the repository's own package.json never learns about it.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic traces the same "update package.json" phrase from the main page's own theory into a second
+      automation tool with the identical gap. Back to the Release Management overview, or continue to why step 4
+      of the main page's own hotfix process already happened by the time step 3 finished.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Release Management"
+    topicRoute="/devops/release-management"
+    [prev]="{ label: 'release-please Automates Everything Except the Actual Publish', route: '/devops/release-management/release-please-never-publishes' }"
+    [next]="{ label: '“Deploy to Production” Already Happened by the Time the Tag Was Pushed', route: '/devops/release-management/hotfix-step-4-already-happened-at-step-3' }"
+  />
+</div>

@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Type Hints & mypy" topicRoute="/python/type-hints" subtopicLabel="Protocol Instantiation" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Protocol Classes Cannot Be Instantiated Directly</h1>
+  <p class="page-subtitle">
+    PEP 544 confirms it directly — a class inheriting from Protocol raises TypeError on instantiation, even with
+    every method fully implemented, for a genuinely different reason than a plain ABC.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This clarifies a genuine gap in the main page's own Protocol examples, which never show a Protocol used
+      any other way than as a pure specification. The final subtopic moves to TYPE_CHECKING — a version-dependent
+      wrinkle in the main page's own unquoted annotation example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Type Hints & mypy"
+    topicRoute="/python/type-hints"
+    [prev]="{ label: '@overload Stubs Raise NotImplementedError If Called Directly', route: '/python/type-hints/overload-stubs-raise-notimplementederror-if-called-directly' }"
+    [next]="{ label: 'TYPE_CHECKING-Only Names Need Quoting Before Python 3.14', route: '/python/type-hints/type-checking-only-names-need-quoting-before-python-314' }"
+  />
+</div>

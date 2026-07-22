@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Deploying Node.js Apps" topicRoute="/node/deployment" subtopicLabel="server.close() Internals" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">server.close() and Idle Keep-Alive Connections Since Node 19</h1>
+  <p class="page-subtitle">
+    An idle keep-alive connection used to be able to hang server.close()'s callback indefinitely — Node 19 changed
+    the default, and closeIdleConnections()/closeAllConnections() exist for the rest.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 18.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own graceful-shutdown code with the exact mechanism behind why a force-exit
+      timeout is needed at all. The next subtopic moves to a different layer entirely — what a Dockerfile's own
+      HEALTHCHECK instruction actually does once that image reaches Kubernetes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Deploying Node.js Apps"
+    topicRoute="/node/deployment"
+    [next]="{ label: 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes', route: '/node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes' }"
+  />
+</div>

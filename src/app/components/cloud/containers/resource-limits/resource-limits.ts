@@ -211,7 +211,7 @@ const qna: QnaItem[] = [
   },
   {
     q: 'What happens when a namespace exceeds its ResourceQuota?',
-    a: 'Kubernetes rejects new resource creation (Pod, Deployment, PVC, etc.) with a "forbidden: exceeded quota" error. Existing resources are not affected — only new creations and updates that would exceed the quota are blocked. This is why ResourceQuota is paired with LimitRange: LimitRange ensures every pod has requests/limits, without which ResourceQuota counts every pod as having zero requests and cannot track consumption accurately.',
+    a: 'Kubernetes rejects new resource creation (Pod, Deployment, PVC, etc.) with a "forbidden: exceeded quota" error. Existing resources are not affected — only new creations and updates that would exceed the quota are blocked. This is why ResourceQuota is paired with LimitRange for a DIFFERENT reason than tracking accuracy: once a ResourceQuota covers requests.cpu/requests.memory (or limits.*) in a namespace, Kubernetes requires every new pod to specify those fields explicitly — a pod submitted with no resources block is rejected outright (HTTP 403), not silently counted as zero. LimitRange avoids this by injecting default requests/limits at admission time, before the ResourceQuota check runs.',
   },
   {
     q: 'Should I always set requests == limits (Guaranteed QoS)?',

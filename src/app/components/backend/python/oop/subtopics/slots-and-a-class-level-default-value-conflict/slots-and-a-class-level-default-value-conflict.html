@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OOP in Python" topicRoute="/python/oop" subtopicLabel="__slots__ Default-Value Trap" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">__slots__ and a Class-Level Default Value Conflict</h1>
+  <p class="page-subtitle">
+    Giving a slotted attribute a plain class-level default value raises ValueError the moment the class body
+    finishes executing — before any instance is ever created.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own __slots__ memory-efficiency theory with a real refactoring pitfall it
+      doesn't cover. The next subtopic moves to super() — the exact compiler mechanism behind the main page's own
+      "always use super()" recommendation, and where it breaks.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OOP in Python"
+    topicRoute="/python/oop"
+    [next]="{ label: 'Zero-Arg super() Breaks Inside a Nested Function', route: '/python/oop/zero-arg-super-breaks-inside-a-nested-function' }"
+  />
+</div>

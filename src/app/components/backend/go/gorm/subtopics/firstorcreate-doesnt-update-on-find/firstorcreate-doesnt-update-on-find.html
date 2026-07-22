@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GORM" topicRoute="/go/gorm" subtopicLabel="FirstOrCreate" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">FirstOrCreate Doesn't Update on a Find</h1>
+  <p class="page-subtitle">
+    The main page's own challenge solution uses FirstOrCreate without ever explaining it — on a match, nothing
+    about the existing record is touched. Attrs() only applies on creation; Assign() applies either way.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="GORM v2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a method the main page's own challenge solution uses without ever covering it in
+      theory. The next subtopic covers another unexplained call from the main page's own Transactions example:
+      what gorm.Expr actually buys you over a plain Go-side read-modify-write.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GORM"
+    topicRoute="/go/gorm"
+    [next]="{ label: 'gorm.Expr Pushes Arithmetic to the Database', route: '/go/gorm/gormexpr-pushes-arithmetic-to-the-database' }"
+  />
+</div>

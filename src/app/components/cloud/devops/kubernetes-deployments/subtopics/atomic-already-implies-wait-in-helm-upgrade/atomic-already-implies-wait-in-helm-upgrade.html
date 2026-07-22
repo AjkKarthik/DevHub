@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Deployments" topicRoute="/devops/kubernetes-deployments" subtopicLabel="atomic Already Implies wait in Helm Upgrade" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">--atomic Already Implies --wait in Helm Upgrade</h1>
+  <p class="page-subtitle">
+    The main page's own Helm command passes both --atomic and --wait, as if they were two independently
+    necessary flags — Helm's own docs say --wait is set automatically the moment --atomic is used.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic clears up a flag redundancy in the main page's own Helm command. Back to the Kubernetes
+      Deployments overview, or continue to why the Kustomize overlay's own namePrefix isn't just cosmetic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Deployments"
+    topicRoute="/devops/kubernetes-deployments"
+    [next]="{ label: 'namePrefix Actually Renames the Live Resource', route: '/devops/kubernetes-deployments/nameprefix-actually-renames-the-live-resource' }"
+  />
+</div>

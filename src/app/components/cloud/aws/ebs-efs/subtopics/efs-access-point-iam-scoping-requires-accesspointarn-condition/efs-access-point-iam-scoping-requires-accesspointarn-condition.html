@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EBS, EFS & FSx" topicRoute="/aws/ebs-efs" subtopicLabel="Access Point IAM Scoping" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">EFS Access Point IAM Scoping Needs the AccessPointArn Condition</h1>
+  <p class="page-subtitle">POSIX identity enforcement isn't the whole isolation story — without IAM scoping, a role can mount the WRONG access point on the same file system.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="EFS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic completes the isolation story the main page's own multi-tenant Access Points example leaves half-explained — POSIX enforcement plus IAM scoping together, not POSIX enforcement alone. Next, the EFS lifecycle subtopic covers a third mechanism used in the main page's own code without explanation: what TransitionToPrimaryStorageClass actually does.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EBS, EFS & FSx" topicRoute="/aws/ebs-efs"
+    [prev]="{ label: 'ModifyVolume Rate Limit', route: '/aws/ebs-efs/modifyvolume-rate-limit-must-wait-for-completed-state' }"
+    [next]="{ label: 'AFTER_1_ACCESS Promotes Files Back Immediately', route: '/aws/ebs-efs/efs-after-1-access-promotes-files-back-to-standard-immediately' }" />
+</div>

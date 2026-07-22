@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Troubleshooting" topicRoute="/containers/troubleshooting" subtopicLabel="CrashLoop Backoff Resets After 10 Minutes of Stable Running, Not Every Restart" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">CrashLoop Backoff Resets After 10 Minutes of Stable Running, Not Every Restart</h1>
+  <p class="page-subtitle">
+    The main page's own theory describes the climbing 10s-to-5min sequence but never its reset condition — a
+    container crashing every 8 minutes never earns a reset, staying capped at 5 minutes forever.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own troubleshooting claims leave underspecified.
+      Next: what exit code 137 actually confirms, and what it doesn't.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Troubleshooting"
+    topicRoute="/containers/troubleshooting"
+    [next]="{ label: 'Exit Code 137 Is SIGKILL, Not Always OOMKilled — Check the reason Field', route: '/containers/troubleshooting/exit-code-137-is-sigkill-not-always-oomkilled' }"
+  />
+</div>

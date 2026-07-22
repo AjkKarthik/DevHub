@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Gateway" topicRoute="/aws/api-gateway" subtopicLabel="Resource Policy Has Two Evaluation Phases" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Resource Policy Has Two Evaluation Phases, Not One</h1>
+  <p class="page-subtitle">The main page's own "evaluated before authoriser" line hides that only an explicit Deny short-circuits the authoriser — an Allow never does.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="API Gateway" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic completes the picture of the main page's own authorisation section by adding the exact combined-evaluation logic AWS documents. Next, the WebSocket subtopic fills in a lifecycle detail the main page's own theory never covers at all — what $disconnect actually guarantees.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Gateway" topicRoute="/aws/api-gateway"
+    [prev]="{ label: 'Authorizer Cache Applies to Every Resource', route: '/aws/api-gateway/authorizer-cache-applies-to-every-resource-not-just-one' }"
+    [next]="{ label: 'WebSocket $disconnect Is Best-Effort', route: '/aws/api-gateway/websocket-disconnect-is-best-effort-not-guaranteed' }" />
+</div>

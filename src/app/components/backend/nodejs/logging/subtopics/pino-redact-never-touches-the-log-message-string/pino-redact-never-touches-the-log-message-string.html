@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Logging with Pino/Winston" topicRoute="/node/logging" subtopicLabel="Message String Blind Spot" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">redact() Never Touches the Log Message String</h1>
+  <p class="page-subtitle">
+    A perfectly-configured redact setup does nothing for a value interpolated into the message text instead of
+    passed as an object property.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three precise gaps behind the main page's own Pino configuration and mistake-fix patterns:
+      when a redact path silently fails to match, what a customized base option quietly drops, and now the specific
+      category of leak redact was never designed to catch at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging with Pino/Winston"
+    topicRoute="/node/logging"
+    [prev]="{ label: 'base Option Replaces, Not Merges, pid and hostname', route: '/node/logging/pino-base-option-replaces-not-merges-pid-and-hostname' }"
+  />
+</div>

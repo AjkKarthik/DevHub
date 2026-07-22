@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching with Redis" topicRoute="/node/caching" subtopicLabel="Lock Failover Safety" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">The Simple SET NX Lock Isn't Safe Across a Redis Failover</h1>
+  <p class="page-subtitle">
+    Redis's own docs walk through the exact sequence — an unreplicated write before a crash lets a new primary
+    grant the "same" lock twice, calling it a safety violation outright.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Redis 2.6.12+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three distinct, documented gaps in the main page's own Redis patterns: a lock that can
+      expire mid-work, a SCAN that doesn't guarantee a consistent snapshot, and now a lock that can fail across
+      infrastructure changes entirely independent of timing. Together they're less a reason to distrust these tools
+      than a case for knowing exactly which guarantee each one actually makes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Caching with Redis"
+    topicRoute="/node/caching"
+    [prev]="{ label: 'SCAN Does Not Guarantee a Consistent Snapshot', route: '/node/caching/scan-does-not-guarantee-a-consistent-snapshot' }"
+  />
+</div>

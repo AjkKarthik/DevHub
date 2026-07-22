@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Persistent Volumes &amp; Storage" topicRoute="/containers/storage" subtopicLabel="A Released PV Never Auto-Rebinds — claimRef Must Be Cleared Manually" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">A Released PV Never Auto-Rebinds — claimRef Must Be Cleared Manually</h1>
+  <p class="page-subtitle">
+    The main page's own theory says an admin must "manually reclaim" a Released PV — here's the mechanical reason
+    why: its claimRef still points at the deleted PVC, and Kubernetes checks that before anything else.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own storage claims leave underspecified. Next:
+      why a zonal PVC can strand a rescheduled StatefulSet Pod in Pending.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Persistent Volumes &amp; Storage"
+    topicRoute="/containers/storage"
+    [next]="{ label: 'A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending', route: '/containers/storage/a-zonal-pvc-can-strand-a-rescheduled-statefulset-pod-in-pending' }"
+  />
+</div>

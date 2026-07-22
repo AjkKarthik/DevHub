@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Error Handling" topicRoute="/go/error-handling" subtopicLabel="errors.Join &amp; Multi-Error Trees" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">errors.Join: Multi-Error Trees</h1>
+  <p class="page-subtitle">
+    errors.Join (Go 1.20+) combines several independent errors via a plural Unwrap() []error — errors.Is and
+    errors.As traverse the whole tree, but the plain errors.Unwrap() function cannot see into it at all.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.20+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own Error Wrapping Chain example covers the singular %w chain and a manual errors.Unwrap()
+      loop — this subtopic shows the second, plural shape errors.Join introduced, and the exact place the two
+      diverge. The next subtopic moves from tree SHAPE to MATCH LOGIC: how a type can customize what errors.Is
+      and errors.As consider a match in the first place.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/go/error-handling"
+    [next]="{ label: 'Custom Is() and As() Methods', route: '/go/error-handling/custom-is-as-methods' }"
+  />
+</div>

@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching with Redis" topicRoute="/node/caching" subtopicLabel="SCAN Consistency" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">SCAN Does Not Guarantee a Consistent Snapshot</h1>
+  <p class="page-subtitle">
+    "Non-blocking" and "consistent" are different properties — Redis's own docs leave keys added or removed
+    mid-scan explicitly undefined, and allow duplicate returns.
+  </p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Redis 2.8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This adds precision to the main page's own SCAN recommendation. The final subtopic in this batch returns to
+      the mutex-lock pattern one more time, from a different angle — what happens to that same lock across a Redis
+      Cluster failover, not just a slow fetch.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Caching with Redis"
+    topicRoute="/node/caching"
+    [prev]="{ label: 'Lock TTL Can Expire While the Holder Is Still Working', route: '/node/caching/lock-ttl-can-expire-while-the-holder-is-still-working' }"
+    [next]="{ label: 'SET NX Lock Is Not Safe Across a Redis Failover', route: '/node/caching/set-nx-lock-is-not-safe-across-a-redis-failover' }"
+  />
+</div>

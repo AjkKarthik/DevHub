@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Node.js Performance" topicRoute="/node/performance" subtopicLabel="--max-old-space-size Gap" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">--max-old-space-size Does Not Cap Total Process Memory</h1>
+  <p class="page-subtitle">
+    Buffer instances live outside the V8 heap entirely — a Buffer-heavy workload can be OOM-killed with headroom
+    left on this flag and no "heap out of memory" error anywhere.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three precise gaps underneath the main page's own tools and patterns: the real cost hiding
+      behind a worker_threads hand-off, a purpose-built alternative to a hand-rolled lag monitor, and now the exact
+      boundary of what a memory-limiting flag actually limits.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Node.js Performance"
+    topicRoute="/node/performance"
+    [prev]="{ label: 'monitorEventLoopDelay() Is a Purpose-Built Alternative', route: '/node/performance/monitoreventloopdelay-is-a-purpose-built-lag-histogram' }"
+  />
+</div>

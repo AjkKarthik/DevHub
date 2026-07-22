@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Resource Manager" topicRoute="/azure/arm" subtopicLabel="Subscription Scope Needs Nested Templates" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Subscription-Scope Deployments Need Nested Templates for Normal Resources</h1>
+  <p class="page-subtitle">The main page only ever shows "az deployment group create" — here's the subscription/management-group/tenant scopes it never mentions, and why most resource types can't go directly in a subscription-level template.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="ARM" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a real gap — the main page never mentions any scope beyond resource group. Next, the copy-loop subtopic covers the main page's own briefly-mentioned "copy element" in full depth.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Resource Manager" topicRoute="/azure/arm"
+    [prev]="{ label: 'What-If Can’t Resolve reference()', route: '/azure/arm/what-if-cant-resolve-reference-and-reports-noise-changes' }"
+    [next]="{ label: 'Copy Defaults to Parallel & Child Promotion', route: '/azure/arm/copy-defaults-to-parallel-and-child-resources-need-promotion' }" />
+</div>

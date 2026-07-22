@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security Best Practices" topicRoute="/node/security" subtopicLabel="CSP Nonce Freshness" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">CSP Nonces Must Be Regenerated on Every Single Request</h1>
+  <p class="page-subtitle">
+    A nonce reused across requests is trivially discoverable via one page-source view — MDN's own docs say it
+    should be "generated differently each time the page loads."
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own nonce-based CSP code sample with the one requirement that makes it actually
+      work. The next subtopic moves to a completely different security surface — why the main page's own rate
+      limiting code can silently misbehave behind a reverse proxy.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Security Best Practices"
+    topicRoute="/node/security"
+    [next]="{ label: 'trust proxy Must Be Configured Behind a Reverse Proxy', route: '/node/security/trust-proxy-must-be-configured-behind-a-reverse-proxy' }"
+  />
+</div>

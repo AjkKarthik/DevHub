@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dataclasses & Pydantic" topicRoute="/python/dataclasses-pydantic" subtopicLabel="frozen Hash Corruption" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Mutating a Frozen Dataclass List Field Corrupts Its Hash</h1>
+  <p class="page-subtitle">
+    frozen=True doesn't make a mutable field's contents immutable — mutating it after the instance is stored in a
+    set or dict silently breaks Python's own hash-stability invariant.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 3.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of dataclass/Pydantic internals that look
+      simpler than they are — __eq__'s type-identity requirement, model_validator's mode-dependent input shape,
+      and now frozen=True's real limits — each correcting a plausible but incomplete mental model with the actual
+      documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dataclasses & Pydantic"
+    topicRoute="/python/dataclasses-pydantic"
+    [prev]="{ label: 'model_validator(mode=’before’) Receives Unvalidated Raw Input', route: '/python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input' }"
+  />
+</div>

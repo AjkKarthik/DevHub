@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Continuous Integration" topicRoute="/devops/continuous-integration" subtopicLabel="New-Code Gates vs. Global Coverage Thresholds" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">New-Code Quality Gates vs. Global Coverage Thresholds</h1>
+  <p class="page-subtitle">
+    The main page shows SonarQube's "new code coverage" rule and Jest's global coverageThreshold side by side —
+    without ever explaining they enforce coverage in fundamentally different, non-interchangeable ways.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens two coverage-gate mechanisms the main page shows side by side into a real design
+      choice. Back to fail-fast's matrix behavior, or continue to what merge-multiple does in the main page's
+      own artifact-download step.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Continuous Integration"
+    topicRoute="/devops/continuous-integration"
+    [prev]="{ label: 'fail-fast: false Lets Every Matrix Job Finish', route: '/devops/continuous-integration/fail-fast-false-lets-every-matrix-job-finish' }"
+    [next]="{ label: 'merge-multiple Flattens Artifact Subdirectories', route: '/devops/continuous-integration/merge-multiple-flattens-artifact-subdirectories' }"
+  />
+</div>

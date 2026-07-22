@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Continuous Integration" topicRoute="/devops/continuous-integration" subtopicLabel="fail-fast: false Lets Every Matrix Job Finish" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">fail-fast: false Lets Every Matrix Combination Finish</h1>
+  <p class="page-subtitle">
+    The main page's own first code tab sets fail-fast: false without ever explaining it — the default cancels
+    every other matrix job the instant one fails, defeating a compatibility matrix's whole purpose.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills in a matrix option the main page's own code tab uses but never explains. Back to the
+      Continuous Integration overview, or continue to why SonarQube's Quality Gate and Jest's coverageThreshold
+      enforce coverage in two genuinely different ways.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Continuous Integration"
+    topicRoute="/devops/continuous-integration"
+    [next]="{ label: 'New-Code Quality Gates vs. Global Coverage Thresholds', route: '/devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds' }"
+  />
+</div>

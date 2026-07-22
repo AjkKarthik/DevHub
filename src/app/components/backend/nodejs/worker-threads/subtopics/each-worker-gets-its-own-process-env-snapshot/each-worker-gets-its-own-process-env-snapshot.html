@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Worker Threads" topicRoute="/node/worker-threads" subtopicLabel="process.env Snapshot" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Each Worker Gets Its Own process.env Snapshot</h1>
+  <p class="page-subtitle">
+    A worker's process.env is a copy taken at creation time, not a live reference — changes on either side stay
+    invisible to the other unless SHARE_ENV is explicitly requested.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 10.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory describes workers sharing memory via SharedArrayBuffer and communicating via
+      message passing — process.env is a specific exception worth knowing before it silently breaks a long-lived
+      worker pool. The next subtopic turns to a different kind of surprise entirely — what actually happens (and
+      doesn't happen) when you try to stop a worker mid-task.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Worker Threads"
+    topicRoute="/node/worker-threads"
+    [next]="{ label: 'terminate() Cannot Interrupt Synchronous CPU Work', route: '/node/worker-threads/worker-terminate-cannot-interrupt-synchronous-cpu-work' }"
+  />
+</div>

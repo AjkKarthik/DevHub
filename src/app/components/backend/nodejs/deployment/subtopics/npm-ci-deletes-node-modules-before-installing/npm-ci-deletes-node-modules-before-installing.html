@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Deploying Node.js Apps" topicRoute="/node/deployment" subtopicLabel="npm ci Internals" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">npm ci Deletes node_modules Before Installing</h1>
+  <p class="page-subtitle">
+    npm ci unconditionally wipes any existing node_modules before it installs — a cache mount targeting that
+    directory gives it no benefit at all.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="npm 7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of deployment-tooling internals that look
+      simpler than they are — server.close()'s version-dependent idle-connection behavior, Docker HEALTHCHECK's
+      invisibility to Kubernetes, and now what npm ci actually does to node_modules — each correcting a plausible
+      but incomplete mental model with the actual documented mechanism.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Deploying Node.js Apps"
+    topicRoute="/node/deployment"
+    [prev]="{ label: 'Docker HEALTHCHECK Is Invisible to Kubernetes Probes', route: '/node/deployment/docker-healthcheck-is-invisible-to-kubernetes-probes' }"
+  />
+</div>

@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Debugging &amp; Profiling" topicRoute="/python/debugging-profiling" subtopicLabel="gc Module vs. Refcounting" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">The gc Module Only Matters for Reference Cycles</h1>
+  <p class="page-subtitle">
+    Reference counting frees ordinary objects immediately, with no gc.collect() involved — the cyclic collector
+    exists solely for the one case refcounting cannot solve on its own.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Python 3.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory mentions gc.collect() and gc.garbage in passing without explaining why reference
+      cycles need a separate mechanism at all. Together with the previous two subtopics, this completes the
+      pattern: how cProfile's own measurement can distort its findings, how tracemalloc's default depth can hide
+      the real caller, and why the garbage collector only has work to do when cycles exist.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Debugging &amp; Profiling"
+    topicRoute="/python/debugging-profiling"
+    [prev]="{ label: 'tracemalloc Defaults to One Frame of Traceback', route: '/python/debugging-profiling/tracemalloc-defaults-to-one-frame-of-traceback' }"
+  />
+</div>

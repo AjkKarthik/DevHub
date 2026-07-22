@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SQS & SNS" topicRoute="/aws/sqs-sns" subtopicLabel="SNS FilterPolicyScope=MessageBody" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">SNS FilterPolicyScope=MessageBody Skips Duplicate Attrs</h1>
+  <p class="page-subtitle">The main page's own filter examples always duplicate data into a message attribute — AWS supports filtering the body directly instead.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="SNS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the batch by giving the main page's own filter-policy examples a simpler, native alternative. Together with the FIFO deduplication and ReportBatchItemFailures subtopics, this rounds out the main page's own SQS and SNS sections with the operational detail production use of each one surfaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SQS & SNS" topicRoute="/aws/sqs-sns"
+    [prev]="{ label: 'Malformed batchItemFailures Fails the Batch', route: '/aws/sqs-sns/malformed-batchitemfailures-fails-the-whole-batch' }" />
+</div>

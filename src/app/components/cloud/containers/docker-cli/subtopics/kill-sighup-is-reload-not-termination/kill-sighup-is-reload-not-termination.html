@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker CLI" topicRoute="/containers/docker-cli" subtopicLabel="docker kill -s SIGHUP Reloads — It Doesn’t Terminate" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">docker kill -s SIGHUP Reloads — It Doesn't Terminate</h1>
+  <p class="page-subtitle">
+    The main page's own mistake entry warns against docker kill's SIGKILL default. Its own code tab also shows
+    docker kill -s SIGHUP, a completely different, non-terminating use of the same command — nginx's reload signal.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic resolves an apparent tension between the main page's own mistake entry and its own code
+      example. Back to the Docker CLI overview, or continue to why docker kill doesn't protect a restart:
+      unless-stopped container the same way docker stop does.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker CLI"
+    topicRoute="/containers/docker-cli"
+    [next]="{ label: 'docker kill Doesn’t Suppress a Restart Policy Like docker stop Does', route: '/containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop' }"
+  />
+</div>

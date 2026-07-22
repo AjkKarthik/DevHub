@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="FastAPI" topicRoute="/python/fastapi" subtopicLabel="Dependency Caching" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Dependency Cache Keys on the Callable Object</h1>
+  <p class="page-subtitle">
+    FastAPI's per-request dependency cache is keyed by the literal callable object passed to Depends() — not by
+    what the function does, so two functionally identical dependencies can silently run twice.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="FastAPI 0.100+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own DB alias pattern relies on exactly this mechanism to work correctly — this subtopic
+      explains why, and where it silently breaks. The next subtopic moves to a different dependency-adjacent
+      mechanic: how BackgroundTasks added from multiple places in the same request actually combine.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="FastAPI"
+    topicRoute="/python/fastapi"
+    [next]="{ label: 'BackgroundTasks Merge Into One Sequential List', route: '/python/fastapi/background-tasks-merge-into-one-sequential-list' }"
+  />
+</div>

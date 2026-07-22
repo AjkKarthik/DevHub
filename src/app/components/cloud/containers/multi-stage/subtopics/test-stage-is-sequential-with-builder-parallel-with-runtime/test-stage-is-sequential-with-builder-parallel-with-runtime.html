@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Stage Builds" topicRoute="/containers/multi-stage" subtopicLabel="test Runs After builder, in Parallel With runtime — Not With builder" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">test Runs After builder, in Parallel With runtime — Not With builder</h1>
+  <p class="page-subtitle">
+    FROM builder AS test creates a real dependency — test must wait for builder to finish. The genuine
+    parallelism in the main page's own example is between test and runtime, both independent siblings under builder.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Docker 18.09+ (BuildKit)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic pins down exactly which pair of stages in the main page's own Go example genuinely runs
+      concurrently. Back to the Multi-Stage Builds overview, or continue to why npm prune --production prints a
+      deprecation warning on current npm.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Multi-Stage Builds"
+    topicRoute="/containers/multi-stage"
+    [next]="{ label: 'npm prune --production Is a Deprecated Flag on Current npm', route: '/containers/multi-stage/npm-prune-production-flag-is-deprecated' }"
+  />
+</div>

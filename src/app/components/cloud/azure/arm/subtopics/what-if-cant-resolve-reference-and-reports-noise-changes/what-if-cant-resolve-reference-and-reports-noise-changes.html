@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Resource Manager" topicRoute="/azure/arm" subtopicLabel="What-If Can't Resolve reference()" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">What-If Can't Resolve reference() and Reports "Noise" Changes</h1>
+  <p class="page-subtitle">The main page's own advice is "always run what-if first" — here are the two documented ways its preview can be wrong, and the hard limits that silently truncate it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ARM" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own "preview exactly what a deployment would change" claim about what-if into its two documented accuracy gaps. Next, the subscription-scope subtopic covers a deployment target the main page never mentions at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Resource Manager" topicRoute="/azure/arm"
+    [next]="{ label: 'Subscription Scope Needs Nested Templates', route: '/azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources' }" />
+</div>

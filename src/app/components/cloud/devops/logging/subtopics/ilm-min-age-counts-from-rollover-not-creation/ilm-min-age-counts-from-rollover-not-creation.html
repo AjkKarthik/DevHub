@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Logging Pipelines" topicRoute="/devops/logging" subtopicLabel="ILM min_age Counts From Rollover, Not Creation" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">ILM min_age Counts From Rollover, Not Index Creation</h1>
+  <p class="page-subtitle">
+    The main page's own ILM policy sets min_age values that read like a straightforward age-since-creation — but
+    Elastic's own docs say the clock actually starts at rollover, which varies index by index.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic corrects a natural but wrong reading of the main page's own ILM policy's timing. Back to why
+      promoting traceId into a Loki label is a cardinality risk, or to the Logging Pipelines overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging Pipelines"
+    topicRoute="/devops/logging"
+    [prev]="{ label: 'Label_Keys traceId Is a Loki Cardinality Explosion', route: '/devops/logging/label-keys-traceid-is-a-loki-cardinality-explosion' }"
+  />
+</div>

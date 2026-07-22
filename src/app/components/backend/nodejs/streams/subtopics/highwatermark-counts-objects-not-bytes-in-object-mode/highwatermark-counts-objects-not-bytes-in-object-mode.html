@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Streams & Buffers" topicRoute="/node/streams" subtopicLabel="highWaterMark in Object Mode" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">highWaterMark Counts Objects, Not Bytes, in Object Mode</h1>
+  <p class="page-subtitle">
+    The same constructor option name silently switches units — 16384 bytes by default, or 16 objects with no
+    awareness of their individual size.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three precise mechanics underneath concepts the main page introduces at a higher level:
+      which consumption methods can safely coexist on one stream, which event actually confirms resource cleanup,
+      and now what highWaterMark's number actually means once objectMode changes the unit it counts in.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Streams & Buffers"
+    topicRoute="/node/streams"
+    [prev]="{ label: 'close, Not finish/end, Signals Resources Are Released', route: '/node/streams/close-not-finish-end-signals-resources-are-released' }"
+  />
+</div>

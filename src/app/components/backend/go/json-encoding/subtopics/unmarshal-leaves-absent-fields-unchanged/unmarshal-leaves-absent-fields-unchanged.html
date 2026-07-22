@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JSON Encoding" topicRoute="/go/json-encoding" subtopicLabel="Unmarshal Merges" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Unmarshal Leaves Absent Fields Unchanged</h1>
+  <p class="page-subtitle">
+    json.Unmarshal merges into its target rather than resetting it first — a field with no corresponding key in
+    the JSON keeps whatever value the target already had, which makes it a natural fit for partial updates and
+    a real risk when a struct variable is reused across decodes.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own error-handling advice with the more precise, general behavior
+      behind it. Back to the JSON Encoding overview, or continue to gRPC, where Protocol Buffers take a very
+      different, schema-driven approach to the same encode/decode problem.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="JSON Encoding"
+    topicRoute="/go/json-encoding"
+    [prev]="{ label: 'An Embedded Field’s json Tag Disables Promotion', route: '/go/json-encoding/embedded-json-tag-disables-promotion' }"
+  />
+</div>

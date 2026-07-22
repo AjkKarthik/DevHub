@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Fundamentals" topicRoute="/azure/fundamentals" subtopicLabel="Zonal vs. Zone-Redundant" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Zonal vs. Zone-Redundant, and Per-Subscription Zone Mapping</h1>
+  <p class="page-subtitle">The main page's "spread across 3 AZs" theory hides three genuinely different deployment types — and a surprising fact about what "Zone 1" actually means.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure AZs" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own "spread across 3 AZs" theory into the three real deployment types (zonal, zone-redundant, nonzonal), closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Fundamentals" topicRoute="/azure/fundamentals"
+    [prev]="{ label: 'az resource move Orphans Role Assignments', route: '/azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id' }" />
+</div>

@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Machine Learning with scikit-learn" topicRoute="/python/scikit-learn" subtopicLabel="Pre-CV Feature Selection Leakage" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Feature Selection Before cross_val_score Still Leaks</h1>
+  <p class="page-subtitle">
+    Running SelectKBest or PCA on the full dataset before calling cross_val_score leaks test-fold information, even
+    when the model itself is wrapped in a Pipeline.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="scikit-learn 1.3+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own mistake entry covers scaler leakage from a raw train/test split — this subtopic covers a
+      structurally different leak that survives even correct Pipeline usage for the model. The final subtopic
+      leaves leakage behind for a different question entirely: what a feature importance score actually means
+      depending on which dataset computed it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Machine Learning with scikit-learn"
+    topicRoute="/python/scikit-learn"
+    [prev]="{ label: 'cv=Integer Auto-Selects StratifiedKFold for Classifiers', route: '/python/scikit-learn/cv-integer-auto-selects-stratifiedkfold' }"
+    [next]="{ label: 'Permutation Importance: Train vs. Test Data', route: '/python/scikit-learn/permutation-importance-train-vs-test-data' }"
+  />
+</div>

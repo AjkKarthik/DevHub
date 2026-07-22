@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Async Python (asyncio)" topicRoute="/python/asyncio" subtopicLabel="shield() Semantics" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">shield() Protects Inner Work, Not the Outer Awaiter</h1>
+  <p class="page-subtitle">
+    The shielded task survives outer cancellation — but Python's own docs confirm the caller's own await still
+    raises CancelledError, exactly as it would without shield() at all.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 3.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of asyncio internals that look simpler than
+      they are — create_task()'s weak-reference trap, gather()'s real failure semantics, and now shield()'s split
+      protection — each correcting a plausible but incomplete mental model with the actual documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Async Python (asyncio)"
+    topicRoute="/python/asyncio"
+    [prev]="{ label: 'gather() Does Not Cancel Siblings on Failure', route: '/python/asyncio/gather-does-not-cancel-siblings-on-failure' }"
+  />
+</div>

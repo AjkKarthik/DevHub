@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker CLI" topicRoute="/containers/docker-cli" subtopicLabel="docker stop $(docker ps -q) Errors When Nothing Is Running" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">docker stop $(docker ps -q) Errors When Nothing Is Running</h1>
+  <p class="page-subtitle">
+    The main page's own batch command is only demonstrated for the case where containers exist to stop. With
+    zero running containers, the substitution leaves docker stop with no arguments — a real usage error, not a no-op.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at three commands the main page's own code tabs show without
+      their less-obvious edge case. Back to the Docker CLI overview, or review the kill-vs-stop restart-policy
+      difference or the SIGHUP reload pattern.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker CLI"
+    topicRoute="/containers/docker-cli"
+    [prev]="{ label: 'docker kill Doesn’t Suppress a Restart Policy Like docker stop Does', route: '/containers/docker-cli/kill-does-not-suppress-restart-policy-like-stop' }"
+  />
+</div>

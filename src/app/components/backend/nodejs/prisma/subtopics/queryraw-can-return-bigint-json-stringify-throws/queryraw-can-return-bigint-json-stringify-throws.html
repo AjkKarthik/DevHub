@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database with Prisma" topicRoute="/node/prisma" subtopicLabel="$queryRaw and BigInt" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">$queryRaw Can Return BigInt — JSON.stringify() Throws on It</h1>
+  <p class="page-subtitle">
+    A 64-bit integer aggregate like COUNT() maps to JS BigInt — res.json() crashes with a 500 the instant one shows
+    up in the response.
+  </p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Prisma 2.10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own raw-query example with a serialization gotcha it doesn't mention. The final
+      subtopic in this batch turns to the main page's OTHER foundational rule — the PrismaClient singleton — and
+      the specific way that pattern needs to change in a hot-reloading dev environment.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Database with Prisma"
+    topicRoute="/node/prisma"
+    [prev]="{ label: 'Interactive Transactions Have a 5-Second Timeout', route: '/node/prisma/interactive-transactions-have-a-default-5-second-timeout' }"
+    [next]="{ label: 'PrismaClient Singleton Needs globalThis Caching', route: '/node/prisma/prismaclient-singleton-needs-globalthis-caching-in-dev' }"
+  />
+</div>

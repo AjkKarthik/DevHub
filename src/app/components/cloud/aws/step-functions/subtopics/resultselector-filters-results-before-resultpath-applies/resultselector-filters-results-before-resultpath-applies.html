@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Step Functions" topicRoute="/aws/step-functions" subtopicLabel="ResultSelector: the Missing Fifth Field" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">ResultSelector Filters Before ResultPath Applies</h1>
+  <p class="page-subtitle">The main page's own QnA counts exactly four data-flow fields — AWS documents a real fifth, built specifically to trim noisy SDK-integration results.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Step Functions" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the batch by completing the main page's own data-flow field count. Together with the Distributed Map and HeartbeatSeconds subtopics, this rounds out the main page's own Map, waitForTaskToken, and SDK-integration content with the exact detail production use of each one surfaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Step Functions" topicRoute="/aws/step-functions"
+    [prev]="{ label: 'HeartbeatSeconds Is a Separate Deadline', route: '/aws/step-functions/heartbeatseconds-is-a-separate-repeating-deadline' }" />
+</div>

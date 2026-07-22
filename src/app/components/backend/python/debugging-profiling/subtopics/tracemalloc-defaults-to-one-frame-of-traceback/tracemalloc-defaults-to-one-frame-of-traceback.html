@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Debugging &amp; Profiling" topicRoute="/python/debugging-profiling" subtopicLabel="tracemalloc Frame Depth" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">tracemalloc Defaults to One Frame of Traceback</h1>
+  <p class="page-subtitle">
+    tracemalloc.start() captures only the single most recent frame by default — a shared helper's callers all
+    collapse into one line unless a deeper nframe is requested up front.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Python 3.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own QnA describes comparing tracemalloc snapshots "by lineno" without covering how shallow
+      that grouping is by default — this subtopic fills that gap. The final subtopic leaves profiling behind for a
+      deeper mechanic: what the gc module actually does, and does not, need to be involved in.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Debugging &amp; Profiling"
+    topicRoute="/python/debugging-profiling"
+    [prev]="{ label: 'cProfile Overhead Distorts Tight Loops and Recursion', route: '/python/debugging-profiling/cprofile-overhead-distorts-tight-loops-and-recursion' }"
+    [next]="{ label: 'The gc Module Only Matters for Reference Cycles', route: '/python/debugging-profiling/gc-module-only-matters-for-reference-cycles' }"
+  />
+</div>

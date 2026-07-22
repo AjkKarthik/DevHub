@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Generics" topicRoute="/go/generics" subtopicLabel="comparable's Go 1.20 Risk" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">comparable Can Panic Since Go 1.20</h1>
+  <p class="page-subtitle">
+    The main page treats comparable as a clean compile-time guarantee — since Go 1.20, any also satisfies it,
+    meaning a comparable-constrained generic can compile fine and still panic at runtime on a non-comparable value.
+  </p>
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="Go 1.20+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic connects the main page's own comparable coverage to a real safety tradeoff Go's own team
+      made, and to this hub's own earlier interface-comparison-panic subtopic. Back to the Go Generics
+      overview, or continue to Go Patterns, where these same generic building blocks recur in idiomatic form.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Generics"
+    topicRoute="/go/generics"
+    [prev]="{ label: 'A Constraint Can Combine a Union and a Method', route: '/go/generics/constraint-can-combine-union-and-method' }"
+  />
+</div>

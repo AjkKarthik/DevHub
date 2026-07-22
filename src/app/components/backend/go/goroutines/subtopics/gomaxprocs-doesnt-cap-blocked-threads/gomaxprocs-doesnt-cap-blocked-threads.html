@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Goroutines" topicRoute="/go/goroutines" subtopicLabel="GOMAXPROCS &amp; Threads" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">GOMAXPROCS Doesn't Cap Blocked Threads</h1>
+  <p class="page-subtitle">
+    GOMAXPROCS limits threads executing Go code, not Go's total OS thread count — threads blocked in system
+    calls sit entirely outside that limit, per Go's own runtime documentation.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own GOMAXPROCS description and directly extends its Kubernetes
+      CFS-throttling Q&amp;A. The next subtopic moves from scheduling mechanics to correctness: what Go's own
+      Memory Model actually guarantees about unsynchronized access between goroutines — and what it explicitly
+      does not.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Goroutines"
+    topicRoute="/go/goroutines"
+    [next]="{ label: 'Unsynchronized Reads Have No Guarantee', route: '/go/goroutines/unsynchronized-reads-have-no-guarantee' }"
+  />
+</div>

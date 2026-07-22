@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Continuous Delivery" topicRoute="/devops/continuous-delivery" subtopicLabel="awk's BEGIN-exit Idiom for Comparing Floats in Bash" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">awk's BEGIN-exit Idiom Is How Bash Scripts Compare Floats</h1>
+  <p class="page-subtitle">
+    The main page's own Canary code tab uses a genuinely different numeric comparison than its own Blue/Green
+    tab, with no explanation — bash's native comparison can't handle the decimal error rates this check needs.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic decodes a terse bash idiom the main page's own Canary code tab uses without comment. Back to
+      why the Blue/Green traffic switch isn't quite instant, or continue to the expand-contract pattern's real
+      Phase 3 timing criterion.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Continuous Delivery"
+    topicRoute="/devops/continuous-delivery"
+    [prev]="{ label: 'The Service Selector Switch Isn’t Actually Instant', route: '/devops/continuous-delivery/service-selector-switch-isnt-actually-instant' }"
+    [next]="{ label: 'Phase 3’s Timing Is About References, Not Elapsed Time', route: '/devops/continuous-delivery/phase-3-timing-is-about-references-not-elapsed-time' }"
+  />
+</div>

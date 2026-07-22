@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Django &amp; DRF" topicRoute="/python/django" subtopicLabel="Signals &amp; Transactions" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">transaction.on_commit() Defers Signal Side Effects</h1>
+  <p class="page-subtitle">
+    A post_save signal fires the instant .save() is called, mid-transaction — an external side effect inside it
+    needs on_commit() or it fires even if the transaction later rolls back.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Django 4.x+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory notes signals "run in the same transaction" without spelling out the consequence
+      for external side effects — this subtopic fills that gap. The final subtopic moves to DRF permissions: a
+      documented blind spot in has_object_permission() that the main page's own challenge solution never surfaces.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Django &amp; DRF"
+    topicRoute="/python/django"
+    [prev]="{ label: 'QuerySet Caching Is Per-Object, Not Per-Query', route: '/python/django/queryset-caching-is-per-object-not-per-query' }"
+    [next]="{ label: 'has_object_permission() Skips List and Create', route: '/python/django/has-object-permission-skips-list-and-create' }"
+  />
+</div>

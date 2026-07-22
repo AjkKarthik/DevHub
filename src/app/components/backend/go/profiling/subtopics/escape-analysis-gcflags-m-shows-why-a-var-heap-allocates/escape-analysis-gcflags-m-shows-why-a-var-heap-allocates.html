@@ -1,0 +1,35 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Performance &amp; Profiling" topicRoute="/go/profiling" subtopicLabel="Reading Escape Analysis Output" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Escape Analysis (-gcflags=-m) Shows Why a Var Heap-Allocates</h1>
+  <p class="page-subtitle">
+    The main page's QnA names the exact command but never shows its output — taking a variable's address
+    only makes it a candidate for escape; the compiler's own proof about lifetime decides the rest.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic turns the main page's own one-line escape analysis mention into readable, worked
+      compiler output. Back to the Go Performance & Profiling overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Performance &amp; Profiling"
+    topicRoute="/go/profiling"
+    [prev]="{ label: 'The Heap Profile Samples One Allocation per 512KB', route: '/go/profiling/heap-profile-samples-one-allocation-per-512kb' }"
+  />
+</div>

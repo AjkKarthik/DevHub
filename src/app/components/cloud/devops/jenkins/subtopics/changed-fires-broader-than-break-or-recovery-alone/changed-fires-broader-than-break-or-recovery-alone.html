@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Jenkins" topicRoute="/devops/jenkins" subtopicLabel="changed Fires Broader Than Break-or-Recovery" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">post's changed Condition Fires Broader Than Break-or-Recovery Alone</h1>
+  <p class="page-subtitle">
+    The main page recommends changed for "when something breaks or recovers" — but Jenkins's own docs define two
+    separate, more precise conditions, fixed and regression, for exactly that pair of cases.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2016+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own post-block theory into the precise tool for break/recovery alerting.
+      Back to disableConcurrentBuilds, or to the Jenkins overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Jenkins"
+    topicRoute="/devops/jenkins"
+    [prev]="{ label: 'disableConcurrentBuilds Queues, Doesn’t Abort', route: '/devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default' }"
+  />
+</div>

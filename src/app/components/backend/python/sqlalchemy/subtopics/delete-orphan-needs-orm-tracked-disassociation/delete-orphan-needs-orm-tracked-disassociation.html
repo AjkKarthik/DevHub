@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SQLAlchemy" topicRoute="/python/sqlalchemy" subtopicLabel="delete-orphan Cascade" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">delete-orphan Needs ORM-Tracked Disassociation</h1>
+  <p class="page-subtitle">
+    delete-orphan only fires when the ORM detects a child removed from a tracked relationship collection — direct
+    session.delete() calls and bulk DML both bypass it entirely.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="SQLAlchemy 2.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory describes delete-orphan cascade in one sentence — this subtopic shows the narrow,
+      documented trigger condition behind it and the two common ways code can bypass it entirely. Together with the
+      previous two subtopics, this completes the pattern: how the identity map shortcuts a query, how a session's
+      transaction lifecycle silently restarts, and how a cascade rule depends on exactly which API removed a row.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQLAlchemy"
+    topicRoute="/python/sqlalchemy"
+    [prev]="{ label: 'Autobegin Starts a New Transaction After Commit', route: '/python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit' }"
+  />
+</div>

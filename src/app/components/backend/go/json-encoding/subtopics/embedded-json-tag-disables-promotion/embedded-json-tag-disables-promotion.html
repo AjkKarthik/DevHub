@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="JSON Encoding" topicRoute="/go/json-encoding" subtopicLabel="Embedded Field Promotion" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">An Embedded Field's json Tag Disables Promotion</h1>
+  <p class="page-subtitle">
+    An embedded struct's own fields are flattened into the outer JSON object by default — giving the embedded
+    field its own json tag switches it to a nested object instead, with zero change to Go-side field access.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic covers a marshalling mechanic distinct from the main page's own Alias-trick coverage for
+      custom MarshalJSON. The next subtopic moves from Marshal to Unmarshal — a genuinely useful behavior for
+      partial updates that the main page's own error-checking coverage doesn't mention.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="JSON Encoding"
+    topicRoute="/go/json-encoding"
+    [prev]="{ label: 'json.Marshal Sorts Map Keys Deterministically', route: '/go/json-encoding/marshal-sorts-map-keys' }"
+    [next]="{ label: 'Unmarshal Leaves Absent Fields Unchanged', route: '/go/json-encoding/unmarshal-leaves-absent-fields-unchanged' }"
+  />
+</div>

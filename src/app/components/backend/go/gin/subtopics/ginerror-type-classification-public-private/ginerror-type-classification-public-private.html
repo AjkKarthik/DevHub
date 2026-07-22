@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Gin Framework" topicRoute="/go/gin" subtopicLabel="gin.Error Type &amp; Meta" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">gin.Error's Type: Public, Private, and Meta</h1>
+  <p class="page-subtitle">
+    c.Error(err) returns a structured *gin.Error, not a bare log entry — its Type (Public/Private/Bind/Render)
+    and Meta fields let a downstream middleware filter what reaches the client from what stays internal-only.
+  </p>
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="Gin v1.9+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic turns the main page's own one-line c.Error() mention into a genuine structured
+      error-handling system. Back to the Gin Framework overview, or continue to JSON Encoding, where the
+      encoding/json behavior underneath every c.JSON call in this topic gets its own deep dive.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Gin Framework"
+    topicRoute="/go/gin"
+    [prev]="{ label: 'ShouldBindBodyWith Caches the Body for Reuse', route: '/go/gin/shouldbindbodywith-caches-body-for-reuse' }"
+  />
+</div>

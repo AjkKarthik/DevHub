@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Architecture" topicRoute="/containers/k8s-architecture" subtopicLabel="The dockershim Removal Never Broke Docker-Built Images" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The dockershim Removal Never Broke Docker-Built Images</h1>
+  <p class="page-subtitle">
+    The main page's own QnA states the removal in one clause with no scope attached. It changed a node-level
+    runtime bridge — docker build, Dockerfiles, and every OCI image this hub teaches you to build are unaffected.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Kubernetes 1.24+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic scopes down a widely-misread one-line change into exactly what did and didn't change. Back to
+      the Kubernetes Architecture overview, or continue to why kube-proxy only programs kernel rules and never
+      forwards packets itself.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Architecture"
+    topicRoute="/containers/k8s-architecture"
+    [prev]="{ label: 'NotReady Eviction Is Taint-Based, Not a Fixed Global Flag', route: '/containers/k8s-architecture/not-ready-eviction-is-taint-based-not-a-fixed-flag' }"
+    [next]="{ label: 'kube-proxy Programs Rules — It Never Forwards Packets Itself', route: '/containers/k8s-architecture/kube-proxy-programs-rules-it-does-not-forward-packets' }"
+  />
+</div>

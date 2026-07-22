@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS Fundamentals" topicRoute="/aws/fundamentals" subtopicLabel="STS Role Chaining" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">STS Role Chaining Caps Sessions at 1 Hour</h1>
+  <p class="page-subtitle">Assuming a role from an already-assumed role's credentials silently truncates the session — with one documented exception for EC2.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="AWS CLI v2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic expands the main page's brief mention of assuming a role into a real, commonly-hit operational gotcha — cross-account pipelines and federated SSO setups that chain roles together are exactly where this 1-hour cap silently bites. It builds directly on the previous subtopic's credential-chain-order theory: knowing WHICH credentials a call started from is exactly what determines whether a given assume-role call counts as chaining. Next, see how AWS Local Zones affect which services are even available to call in the first place.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS Fundamentals" topicRoute="/aws/fundamentals"
+    [prev]="{ label: 'CLI Credential Chain Order', route: '/aws/fundamentals/cli-credential-chain-order-container-before-instance-profile' }"
+    [next]="{ label: 'Local Zones Run Only a Subset of Services', route: '/aws/fundamentals/local-zones-run-a-subset-of-services-not-a-full-region' }" />
+</div>

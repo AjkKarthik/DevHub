@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Collections & Itertools" topicRoute="/python/collections-itertools" subtopicLabel="groupby Sub-Iterators" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">groupby Sub-Iterators Share One Source and Vanish</h1>
+  <p class="page-subtitle">
+    Correctly sorted input isn't the only groupby gotcha — Python's own docs confirm each group shares the SAME
+    underlying source, silently emptying once the outer loop advances.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 2.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own well-known "groupby needs sorted input" gotcha with a second, distinct
+      sharp edge. The final subtopic moves to heapq — a real crash risk the main page's own tuple-based example
+      never exercises.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Collections & Itertools"
+    topicRoute="/python/collections-itertools"
+    [prev]="{ label: 'deque Indexed Access Is O(n), Not O(1)', route: '/python/collections-itertools/deque-indexed-access-is-o-n-not-o-1' }"
+    [next]="{ label: 'heapq Tuples Need a Tie-Breaker for Equal Priorities', route: '/python/collections-itertools/heapq-tuples-need-a-tie-breaker-for-equal-priorities' }"
+  />
+</div>

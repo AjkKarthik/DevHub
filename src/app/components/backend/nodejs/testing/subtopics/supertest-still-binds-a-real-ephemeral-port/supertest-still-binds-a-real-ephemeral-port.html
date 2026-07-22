@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing Node.js Apps" topicRoute="/node/testing" subtopicLabel="Supertest Internals" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Supertest Still Binds a Real Ephemeral Port</h1>
+  <p class="page-subtitle">
+    No visible app.listen() call doesn't mean no networking — Supertest wraps your app in a real HTTP server and
+    binds an OS-assigned port on the first request.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Supertest 6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of testing-tool internals that look simpler
+      than they are — node:test's mock cleanup, Jest's mock-clearing scope, and now what Supertest genuinely does
+      under the hood — each correcting a plausible but incomplete mental model with the actual documented mechanism.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing Node.js Apps"
+    topicRoute="/node/testing"
+    [prev]="{ label: 'clearAllMocks() Does Not Reset Module-Level State', route: '/node/testing/clearallmocks-does-not-reset-module-level-state' }"
+  />
+</div>

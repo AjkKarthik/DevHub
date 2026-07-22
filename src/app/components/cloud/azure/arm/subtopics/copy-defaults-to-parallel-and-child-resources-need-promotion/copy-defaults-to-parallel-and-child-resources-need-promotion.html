@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Resource Manager" topicRoute="/azure/arm" subtopicLabel="Copy Defaults to Parallel & Child Promotion" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">copy Defaults to Parallel, and Child Resources Need Promotion</h1>
+  <p class="page-subtitle">The main page's own QnA covers the copy element in one paragraph — here's the unordered-by-default creation behavior, and the absolute restriction on using copy for a nested child resource.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ARM" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic expands the main page's own brief copy-element QnA into its real ordering behavior and child-resource restriction, closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Resource Manager" topicRoute="/azure/arm"
+    [prev]="{ label: 'Subscription Scope Needs Nested Templates', route: '/azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources' }" />
+</div>

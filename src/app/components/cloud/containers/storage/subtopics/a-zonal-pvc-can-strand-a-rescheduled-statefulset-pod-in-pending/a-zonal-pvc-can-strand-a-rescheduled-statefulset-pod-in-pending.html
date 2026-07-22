@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Persistent Volumes &amp; Storage" topicRoute="/containers/storage" subtopicLabel="A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">A Zonal PVC Can Strand a Rescheduled StatefulSet Pod in Pending</h1>
+  <p class="page-subtitle">
+    The main page's own mistake entry treats <code>WaitForFirstConsumer</code> as a permanent fix — it only governs
+    the FIRST provisioning moment, and a zone failure afterward can still strand the Pod forever.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered recovering a Released PV; this one covers a StatefulSet Pod stuck by its own PVC's
+      zone lock. Last: why RWOP exists at all, given what RWO already claims to guarantee.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Persistent Volumes &amp; Storage"
+    topicRoute="/containers/storage"
+    [prev]="{ label: 'A Released PV Never Auto-Rebinds — claimRef Must Be Cleared Manually', route: '/containers/storage/released-pv-never-auto-rebinds-claimref-must-be-cleared-manually' }"
+    [next]="{ label: 'RWOP Closes the Gap RWO Leaves — Same-Node Pods Can Still Double-Write', route: '/containers/storage/rwop-closes-the-gap-rwo-leaves-same-node-pods-can-still-double-write' }"
+  />
+</div>

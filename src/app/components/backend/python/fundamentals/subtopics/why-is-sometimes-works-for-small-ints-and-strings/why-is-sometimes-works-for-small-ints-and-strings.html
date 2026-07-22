@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Python Fundamentals" topicRoute="/python/fundamentals" subtopicLabel="is vs == Internals" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">Why is Sometimes "Works" for Small Ints and Strings</h1>
+  <p class="page-subtitle">
+    CPython caches small integers and interns identifier-like strings — which is exactly why is can look reliable
+    for them, even though it never was.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.x (CPython)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own "never use is to compare strings or integers" warning with the exact
+      CPython mechanism behind why it can seem to work anyway. The next subtopic moves to a different
+      easy-to-misread control-flow feature — what for/else actually requires to fire.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Python Fundamentals"
+    topicRoute="/python/fundamentals"
+    [next]="{ label: 'for/else Runs on Empty Iterables Too', route: '/python/fundamentals/for-else-runs-on-empty-iterables-too' }"
+  />
+</div>

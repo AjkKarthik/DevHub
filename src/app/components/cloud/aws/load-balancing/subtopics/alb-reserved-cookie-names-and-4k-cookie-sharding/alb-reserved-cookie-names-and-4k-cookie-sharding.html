@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Load Balancing" topicRoute="/aws/load-balancing" subtopicLabel="ALB Reserved Cookie Names" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">ALB's Reserved Cookie Names and 4K Cookie Sharding</h1>
+  <p class="page-subtitle">The main page mentions "the AWSALB cookie" in passing — here's the full reserved-name family, what happens to large application cookies, and a real precedence rule between two of them.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ALB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic expands the main page's own brief "AWSALB or application-based" mention into the full reserved-cookie mechanism behind ALB sticky sessions, closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Load Balancing" topicRoute="/aws/load-balancing"
+    [prev]="{ label: 'NLB UDP/QUIC Targets Use Non-UDP Health Checks', route: '/aws/load-balancing/nlb-udp-quic-targets-use-non-udp-health-checks' }" />
+</div>

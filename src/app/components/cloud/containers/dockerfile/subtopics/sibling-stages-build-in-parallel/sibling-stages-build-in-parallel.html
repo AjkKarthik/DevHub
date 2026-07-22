@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Writing Dockerfiles" topicRoute="/containers/dockerfile" subtopicLabel="Sibling Stages Build in Parallel, Not Top to Bottom" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Sibling Stages Build in Parallel, Not Top to Bottom</h1>
+  <p class="page-subtitle">
+    The main page's own Dockerfile reads deps, then build, then runtime — but deps and build are independent
+    siblings under base, and BuildKit runs them concurrently rather than in file order.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Docker 18.09+ (BuildKit)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic corrects a natural top-to-bottom reading of the main page's own multi-stage Dockerfile with
+      how BuildKit actually schedules independent stages. Back to the Writing Dockerfiles overview, or continue
+      to why the apt-get cleanup fix is about more than just stale cache.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Writing Dockerfiles"
+    topicRoute="/containers/dockerfile"
+    [prev]="{ label: 'The Build Stage’s Own node_modules Is Discarded Entirely', route: '/containers/dockerfile/build-stage-node-modules-are-discarded' }"
+    [next]="{ label: 'The apt-get Cleanup Fix Is About Layer Size, Not Just Staleness', route: '/containers/dockerfile/same-layer-cleanup-is-required-for-size-not-just-staleness' }"
+  />
+</div>

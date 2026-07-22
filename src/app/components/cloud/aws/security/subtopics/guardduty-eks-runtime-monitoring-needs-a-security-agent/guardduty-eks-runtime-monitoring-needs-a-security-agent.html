@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS Security" topicRoute="/aws/security" subtopicLabel="EKS Runtime Monitoring Needs a Security Agent" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">GuardDuty EKS Runtime Monitoring Needs a Security Agent</h1>
+  <p class="page-subtitle">The main page's own "no agents to install" claim describes GuardDuty's base service — this specific feature is a documented exception.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="GuardDuty" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own GuardDuty framing with a real, documented exception. Next, the KMS rotation subtopic connects the main page's own envelope-encryption teaching to what CMK rotation actually does and doesn't protect.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS Security" topicRoute="/aws/security"
+    [next]="{ label: 'KMS Rotation Never Touches Already-Generated Data Keys', route: '/aws/security/kms-rotation-never-touches-already-generated-data-keys' }" />
+</div>

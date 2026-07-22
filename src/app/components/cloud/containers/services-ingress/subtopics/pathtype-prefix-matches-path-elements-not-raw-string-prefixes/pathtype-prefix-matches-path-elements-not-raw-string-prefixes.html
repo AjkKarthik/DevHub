@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Services &amp; Ingress" topicRoute="/containers/services-ingress" subtopicLabel="pathType: Prefix Matches Path Elements, Not Raw String Prefixes" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">pathType: Prefix Matches Path Elements, Not Raw String Prefixes</h1>
+  <p class="page-subtitle">
+    The main page's own mistake entry describes Prefix with examples that all happen to be clean sub-paths — the
+    actual rule is element-wise matching split on "/", and <code>/api</code> never matches <code>/apiv2</code>.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the batch — from who a Service thinks the client is, to what ExternalName actually removes,
+      to what Prefix actually matches on. Back to the Services &amp; Ingress overview to continue.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Services &amp; Ingress"
+    topicRoute="/containers/services-ingress"
+    [prev]="{ label: 'ExternalName Bypasses kube-proxy — No Health Checks, No Port Mapping', route: '/containers/services-ingress/externalname-bypasses-kube-proxy-no-health-checks-no-port-mapping' }"
+  />
+</div>

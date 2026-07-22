@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SDLC &amp; Agile" topicRoute="/devops/sdlc-agile" subtopicLabel="Little's Law's Hidden Precondition" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Little's Law Assumes a Steady State</h1>
+  <p class="page-subtitle">
+    The main page applies Lead Time = WIP / Throughput as a plug-and-compute formula — the calculation only
+    holds when arrivals and departures are roughly balanced; a growing backlog makes it actively misleading.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="1961+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic adds the steady-state precondition the main page's own WIP/Throughput formula depends
+      on but never states. Back to the SDLC & Agile overview, or continue to what a Cumulative Flow Diagram
+      actually shows, beyond just being named in the theory.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SDLC &amp; Agile"
+    topicRoute="/devops/sdlc-agile"
+    [prev]="{ label: 'The Agile Manifesto Values the Right Side Too, Just Less', route: '/devops/sdlc-agile/agile-manifesto-values-the-right-side-too-just-less' }"
+    [next]="{ label: 'Cumulative Flow Diagrams Reveal the Bottleneck', route: '/devops/sdlc-agile/cumulative-flow-diagrams-reveal-the-bottleneck' }"
+  />
+</div>

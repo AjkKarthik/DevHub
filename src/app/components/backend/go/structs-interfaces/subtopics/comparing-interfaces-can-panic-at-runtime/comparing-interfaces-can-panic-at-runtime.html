@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Structs &amp; Interfaces" topicRoute="/go/structs-interfaces" subtopicLabel="Interface Comparison" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Comparing Interfaces Can Panic at Runtime</h1>
+  <p class="page-subtitle">
+    Two interface values with the same non-comparable dynamic type — a slice, map, or function — compile fine
+    with == but panic the instant that comparison actually runs.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own mistake entry covers the nil-interface pitfall specifically — this subtopic covers a
+      separate, non-nil interface comparison risk the main page never mentions. Together with the previous two
+      subtopics, this completes the pattern: which methods a value type actually has, how embedding extends that
+      set, and where interface equality itself can still surprise you.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Structs &amp; Interfaces"
+    topicRoute="/go/structs-interfaces"
+    [prev]="{ label: 'Embedded Methods Satisfy Interfaces Too', route: '/go/structs-interfaces/embedded-methods-satisfy-interfaces-too' }"
+  />
+</div>

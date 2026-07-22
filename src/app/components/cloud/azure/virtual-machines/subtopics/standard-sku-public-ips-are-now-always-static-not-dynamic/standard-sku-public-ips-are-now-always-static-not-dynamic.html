@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Virtual Machines" topicRoute="/azure/virtual-machines" subtopicLabel="Standard SKU Public IPs Are Now Static" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Standard SKU Public IPs Are Now Always Static, Not Dynamic</h1>
+  <p class="page-subtitle">The main page explains what az vm deallocate stops billing for — but never says what happens to the VM's public IP, and the classic answer changed in September 2025.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="2025" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a real gap next to the main page's own deallocate/billing explanation. Next, the Scheduled Events subtopic expands the main page's own Spot-eviction-only mention of that API into its full, broader scope.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Virtual Machines" topicRoute="/azure/virtual-machines"
+    [next]="{ label: 'Scheduled Events Covers 5 Event Types', route: '/azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CloudFormation & CDK" topicRoute="/aws/cloudformation-cdk" subtopicLabel="Nested Stack Rollback Failure Blocks the Hierarchy" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Nested Stack Rollback Failure Blocks the Whole Hierarchy</h1>
+  <p class="page-subtitle">The main page's own "one stack per logical unit" advice doesn't mention this specific failure mode — or that AWS's own fix is "contact Support."</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="CloudFormation" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the batch by sharpening the main page's own stack-separation advice with the one failure mode it doesn't fully isolate against. Together with the removalPolicy and context-lookup subtopics, this rounds out the main page's own Update Strategies and CDK Workflow sections with the operational detail production use of each one surfaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CloudFormation & CDK" topicRoute="/aws/cloudformation-cdk"
+    [prev]="{ label: 'CDK Context Lookups Freeze Until Reset', route: '/aws/cloudformation-cdk/cdk-context-lookups-freeze-until-manually-reset' }" />
+</div>

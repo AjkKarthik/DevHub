@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Fundamentals" topicRoute="/containers/fundamentals" subtopicLabel="PID 1 Silently Ignores SIGTERM Unless the App Handles It" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">PID 1 Silently Ignores SIGTERM Unless the App Handles It</h1>
+  <p class="page-subtitle">
+    The main page's own PID namespace and docker stop bullets read as a clean story together — but neither
+    mentions that the kernel silently discards SIGTERM at PID 1 unless that process explicitly handles it.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic connects two of the main page's own separate bullets into a single, very common real-world
+      failure mode. Back to the Container Fundamentals overview, or continue to why user namespace remapping —
+      despite the main page's own wording — is not something a container gets automatically.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Container Fundamentals"
+    topicRoute="/containers/fundamentals"
+    [next]="{ label: 'The “Rootless” UID Mapping Is Opt-In, Not the Default', route: '/containers/fundamentals/user-namespace-remapping-not-default' }"
+  />
+</div>

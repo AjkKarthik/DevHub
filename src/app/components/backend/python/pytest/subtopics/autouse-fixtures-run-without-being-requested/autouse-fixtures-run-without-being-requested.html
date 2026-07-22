@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing with pytest" topicRoute="/python/pytest" subtopicLabel="autouse Fixtures" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">autouse Fixtures Run Without Being Requested</h1>
+  <p class="page-subtitle">
+    A fixture marked autouse=True applies to every test in its scope automatically — with no parameter, no
+    signal in the test's own signature, and a documented, precise execution order.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="pytest 7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory describes fixtures entirely through explicit "injected by name" requesting — this
+      subtopic covers the one mechanism that breaks that model. The next subtopic stays with a different pytest
+      assertion mechanic: what pytest.raises() actually matches against.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing with pytest"
+    topicRoute="/python/pytest"
+    [next]="{ label: 'pytest.raises() Matches Subclasses Too', route: '/python/pytest/pytest-raises-matches-subclasses-too' }"
+  />
+</div>

@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProgressService } from '../../../services/progress.service';
 import { SEARCH_INDEX } from '../../../services/search.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 const DIFF: Record<string, string> = Object.fromEntries(
   SEARCH_INDEX.map(e => [e.route, e.difficulty])
@@ -18,23 +20,156 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/azure/fundamentals" routerLinkActive="active"><span class="nl-text">Azure Fundamentals</span>@if(p.isDone('azure-fundamentals')){<span class="nl-done">✓</span>}@if(d('azure-fundamentals');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/azure/arm" routerLinkActive="active"><span class="nl-text">Azure Resource Manager</span>@if(p.isDone('azure-arm')){<span class="nl-done">✓</span>}@if(d('azure-arm');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/fundamentals" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Azure Fundamentals</span>
+        @if (p.isDone('azure-fundamentals')) {<span class="nl-done">✓</span>}
+        @if (d('azure-fundamentals'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('azure-fundamentals')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('azure-fundamentals')"
+                  (click)="toggleSubtopics('azure-fundamentals', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('azure-fundamentals'); as fSubs) {
+        @if (isSubtopicsExpanded('azure-fundamentals')) {
+          <div class="nav-subtopics">
+            @for (s of fSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/azure/arm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Azure Resource Manager</span>
+        @if (p.isDone('azure-arm')) {<span class="nl-done">✓</span>}
+        @if (d('azure-arm'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('arm')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('arm')"
+                  (click)="toggleSubtopics('arm', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('arm'); as armSubs) {
+        @if (isSubtopicsExpanded('arm')) {
+          <div class="nav-subtopics">
+            @for (s of armSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/bicep" routerLinkActive="active"><span class="nl-text">Azure Bicep Deep-dive</span>@if(p.isDone('azure-bicep')){<span class="nl-done">✓</span>}@if(d('azure-bicep');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Compute</p>
-      <a routerLink="/azure/virtual-machines" routerLinkActive="active"><span class="nl-text">Virtual Machines</span>@if(p.isDone('azure-virtual-machines')){<span class="nl-done">✓</span>}@if(d('azure-virtual-machines');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/azure/app-service" routerLinkActive="active"><span class="nl-text">App Service</span>@if(p.isDone('azure-app-service')){<span class="nl-done">✓</span>}@if(d('azure-app-service');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/azure/functions" routerLinkActive="active"><span class="nl-text">Azure Functions</span>@if(p.isDone('azure-functions')){<span class="nl-done">✓</span>}@if(d('azure-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
-      <a routerLink="/azure/aks" routerLinkActive="active"><span class="nl-text">AKS</span>@if(p.isDone('azure-aks')){<span class="nl-done">✓</span>}@if(d('azure-aks');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/virtual-machines" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Virtual Machines</span>
+        @if (p.isDone('azure-virtual-machines')) {<span class="nl-done">✓</span>}
+        @if (d('azure-virtual-machines'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('virtual-machines')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('virtual-machines')"
+                  (click)="toggleSubtopics('virtual-machines', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('virtual-machines'); as vmSubs) {
+        @if (isSubtopicsExpanded('virtual-machines')) {
+          <div class="nav-subtopics">
+            @for (s of vmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/azure/app-service" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">App Service</span>
+        @if (p.isDone('azure-app-service')) {<span class="nl-done">✓</span>}
+        @if (d('azure-app-service'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('app-service')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('app-service')"
+                  (click)="toggleSubtopics('app-service', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('app-service'); as asSubs) {
+        @if (isSubtopicsExpanded('app-service')) {
+          <div class="nav-subtopics">
+            @for (s of asSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/azure/functions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Azure Functions</span>
+        @if (p.isDone('azure-functions')) {<span class="nl-done">✓</span>}
+        @if (d('azure-functions'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('azure-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('azure-functions')"
+                  (click)="toggleSubtopics('azure-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('azure-functions'); as fnSubs) {
+        @if (isSubtopicsExpanded('azure-functions')) {
+          <div class="nav-subtopics">
+            @for (s of fnSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/azure/aks" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">AKS</span>
+        @if (p.isDone('azure-aks')) {<span class="nl-done">✓</span>}
+        @if (d('azure-aks'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('aks')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aks')"
+                  (click)="toggleSubtopics('aks', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aks'); as aksSubs) {
+        @if (isSubtopicsExpanded('aks')) {
+          <div class="nav-subtopics">
+            @for (s of aksSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/container-apps" routerLinkActive="active"><span class="nl-text">Container Apps</span>@if(p.isDone('azure-container-apps')){<span class="nl-done">✓</span>}@if(d('azure-container-apps');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Networking</p>
-      <a routerLink="/azure/virtual-network" routerLinkActive="active"><span class="nl-text">Virtual Network</span>@if(p.isDone('azure-virtual-network')){<span class="nl-done">✓</span>}@if(d('azure-virtual-network');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/virtual-network" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Virtual Network</span>
+        @if (p.isDone('azure-virtual-network')) {<span class="nl-done">✓</span>}
+        @if (d('azure-virtual-network'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('virtual-network')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('virtual-network')"
+                  (click)="toggleSubtopics('virtual-network', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('virtual-network'); as vnetSubs) {
+        @if (isSubtopicsExpanded('virtual-network')) {
+          <div class="nav-subtopics">
+            @for (s of vnetSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/load-balancer" routerLinkActive="active"><span class="nl-text">Load Balancer &amp; Front Door</span>@if(p.isDone('azure-load-balancer')){<span class="nl-done">✓</span>}@if(d('azure-load-balancer');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 
@@ -75,5 +210,40 @@ const DIFF: Record<string, string> = Object.fromEntries(
 })
 export class AzureNavComponent {
   p = inject(ProgressService);
+  private router = inject(Router);
   d(route: string): string | null { return DIFF[route] ?? null; }
+
+  subtopicsOf(routeSlug: string) {
+    return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  isSubtopicsExpanded(routeSlug: string): boolean {
+    return this.expandedTopics().has(routeSlug);
+  }
+
+  toggleSubtopics(routeSlug: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const next = new Set(this.expandedTopics());
+    next.has(routeSlug) ? next.delete(routeSlug) : next.add(routeSlug);
+    this.expandedTopics.set(next);
+  }
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [topicSlug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(topicSlug));
+        break;
+      }
+    }
+  }
 }

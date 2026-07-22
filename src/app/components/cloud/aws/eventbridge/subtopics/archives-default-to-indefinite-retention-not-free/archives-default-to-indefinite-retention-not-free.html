@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="EventBridge" topicRoute="/aws/eventbridge" subtopicLabel="Archives Default to Indefinite Retention" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Archives Default to Indefinite Retention, Not Free</h1>
+  <p class="page-subtitle">The main page's only archive example always sets a retention period — this is exactly why, and what an archive does without one.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="EventBridge" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the cost and timing detail behind the main page's own archive/replay feature. Next, the InputTransformer subtopic sharpens the main page's own scalar-only quoting example into AWS's own more precise, and more surprising, rule.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="EventBridge" topicRoute="/aws/eventbridge"
+    [next]="{ label: 'InputTransformer Quoting Differs for Scalars vs Objects', route: '/aws/eventbridge/inputtransformer-quoting-differs-for-scalars-vs-objects' }" />
+</div>

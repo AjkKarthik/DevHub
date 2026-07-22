@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Streams & Buffers" topicRoute="/node/streams" subtopicLabel="Flowing vs Paused Mode" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Never Mix a 'data' Listener With for await...of on the Same Stream</h1>
+  <p class="page-subtitle">
+    Node's own docs name this exact combination as producing "unintuitive behavior" — the two consumption
+    mechanisms compete for the same underlying chunks.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Node 10+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sharpens the main page's brief mention of 'data' events with the mode-switching mechanic behind them.
+      The next subtopic moves to a different corner of stream lifecycle — which event actually signals that
+      underlying resources like file descriptors have been released.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Streams & Buffers"
+    topicRoute="/node/streams"
+    [next]="{ label: 'close, Not finish/end, Signals Resources Are Released', route: '/node/streams/close-not-finish-end-signals-resources-are-released' }"
+  />
+</div>

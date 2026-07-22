@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DevSecOps" topicRoute="/devops/devsecops" subtopicLabel="Security Tab Findings Aren’t Automatically a Blocked Merge" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Security Tab Findings Aren't Automatically a Blocked Merge</h1>
+  <p class="page-subtitle">
+    The main page's own sentence joins two separate systems: the Security tab always fills in from the workflow
+    alone, but blocking a merge needs a branch protection rule the workflow never configures.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2020+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic separates two systems the main page's own SAST theory presents as one continuous behavior.
+      Back to the DevSecOps overview, or continue to what gitleaks-action actually scans on a normal push despite
+      the main page's own "scan full history" comment.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DevSecOps"
+    topicRoute="/devops/devsecops"
+    [prev]="{ label: 'Auto-Merge for Patch Updates Is a Workflow, Not a Setting', route: '/devops/devsecops/dependabot-auto-merge' }"
+    [next]="{ label: 'What fetch-depth: 0 Actually Buys Gitleaks on a Push', route: '/devops/devsecops/gitleaks-scan-scope' }"
+  />
+</div>

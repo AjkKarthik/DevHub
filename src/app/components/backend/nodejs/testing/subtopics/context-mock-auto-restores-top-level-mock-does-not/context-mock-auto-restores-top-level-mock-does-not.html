@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing Node.js Apps" topicRoute="/node/testing" subtopicLabel="node:test Mock Cleanup" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">t.mock Auto-Restores; the Top-Level mock Import Does Not</h1>
+  <p class="page-subtitle">
+    node:test's per-test context mock tracker cleans itself up automatically — the top-level mock import behaves
+    like Jest's default, needing explicit reset.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 18+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own "Not clearing mocks between tests" mistake shows this exact class of bug in Jest — this
+      subtopic shows node:test's built-in runner offers a way to avoid it by construction. The next subtopic
+      returns to Jest specifically, correcting a related over-generalization about what clearAllMocks() actually
+      resets.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing Node.js Apps"
+    topicRoute="/node/testing"
+    [next]="{ label: 'clearAllMocks() Does Not Reset Module-Level State', route: '/node/testing/clearallmocks-does-not-reset-module-level-state' }"
+  />
+</div>

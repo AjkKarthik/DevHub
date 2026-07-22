@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CloudWatch & X-Ray" topicRoute="/aws/cloudwatch" subtopicLabel="EMF High-Cardinality Dimensions Explode Cost" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">EMF High-Cardinality Dimensions Explode Metric Cost</h1>
+  <p class="page-subtitle">The main page's own EMF examples always use bounded dimensions — this is exactly why, and what happens with an unbounded one instead.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="CloudWatch" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic explains the reasoning behind the main page's own consistently-safe EMF dimension choices. Next, the composite alarm subtopic sharpens the main page's own EventBridge + Lambda suppression suggestion into AWS's own simpler, native mechanism.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CloudWatch & X-Ray" topicRoute="/aws/cloudwatch"
+    [prev]="{ label: 'Treat Missing Data Decides INSUFFICIENT_DATA', route: '/aws/cloudwatch/treat-missing-data-decides-insufficient-data-behavior' }"
+    [next]="{ label: 'ActionsSuppressor Natively Suppresses Composite Alarms', route: '/aws/cloudwatch/actionssuppressor-natively-suppresses-composite-alarms' }" />
+</div>

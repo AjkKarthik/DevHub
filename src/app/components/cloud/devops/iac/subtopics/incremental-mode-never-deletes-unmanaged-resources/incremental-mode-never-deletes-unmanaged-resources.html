@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Infrastructure as Code" topicRoute="/devops/iac" subtopicLabel="Incremental Mode Never Deletes Unmanaged Resources" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Incremental Mode Never Deletes Unmanaged Resources</h1>
+  <p class="page-subtitle">
+    The main page's own Bicep deploy step sets --mode Incremental with no explanation — unlike Terraform's default
+    reconciliation, it never removes resources just because they're absent from the template.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a deploy-mode flag the main page's own code tab sets but never justifies. Back to
+      why $? after tee doesn't always mean what it looks like, or continue to what Checkov's two different
+      filtering flags actually do.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Infrastructure as Code"
+    topicRoute="/devops/iac"
+    [prev]="{ label: 'pipefail Is Not the GitHub Actions Shell Default', route: '/devops/iac/pipefail-is-not-the-github-actions-shell-default' }"
+    [next]="{ label: 'check Filters What Runs, soft-fail-on Filters What Blocks', route: '/devops/iac/check-filters-what-runs-soft-fail-on-what-blocks' }"
+  />
+</div>

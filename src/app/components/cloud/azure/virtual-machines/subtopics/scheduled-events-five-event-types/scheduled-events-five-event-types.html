@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Virtual Machines" topicRoute="/azure/virtual-machines" subtopicLabel="Scheduled Events Covers 5 Event Types" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Scheduled Events Covers Five Event Types, Not Just Spot Eviction</h1>
+  <p class="page-subtitle">The main page's only mention of the Scheduled Events API is Spot eviction with a 30-second warning — here's the other four event types, and their much longer notice periods.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="IMDS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic expands the main page's own Spot-only mention of Scheduled Events into its full, broader scope. Next, the VMSS Flexible subtopic covers a real, documented networking gotcha the main page's own orchestration-mode quiz never mentions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Virtual Machines" topicRoute="/azure/virtual-machines"
+    [prev]="{ label: 'Standard SKU Public IPs Are Now Static', route: '/azure/virtual-machines/standard-sku-public-ips-are-now-always-static-not-dynamic' }"
+    [next]="{ label: 'VMSS Flexible: Real VMs, No Default Outbound', route: '/azure/virtual-machines/vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity' }" />
+</div>

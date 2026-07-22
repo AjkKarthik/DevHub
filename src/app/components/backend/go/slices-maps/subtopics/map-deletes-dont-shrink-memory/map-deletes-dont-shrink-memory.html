@@ -1,0 +1,38 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Slices &amp; Maps" topicRoute="/go/slices-maps" subtopicLabel="Map Deletes &amp; Memory" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Map Deletes Don't Shrink Memory</h1>
+  <p class="page-subtitle">
+    delete(m, key) correctly shrinks len(m) immediately — but the map's own underlying bucket array stays
+    sized for its historical peak, with no automatic shrink-back and no built-in way to compact it.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      The previous subtopic covered slices growing; this one covers maps NOT shrinking — the two-sided version
+      of "reallocation is not free" that the main page's own delete(m, key) quick-ref entry doesn't mention.
+      The next subtopic covers a different map surprise entirely: why you cannot mutate a struct field stored
+      directly as a map value.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Slices &amp; Maps"
+    topicRoute="/go/slices-maps"
+    [prev]="{ label: 'append’s Real Growth Algorithm', route: '/go/slices-maps/append-growth-factor-shrinks-past-256' }"
+    [next]="{ label: 'Struct Map Values Aren’t Addressable', route: '/go/slices-maps/struct-map-values-arent-addressable' }"
+  />
+</div>

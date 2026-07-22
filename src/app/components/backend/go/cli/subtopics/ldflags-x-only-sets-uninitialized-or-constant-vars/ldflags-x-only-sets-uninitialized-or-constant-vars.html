@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go CLI Tools" topicRoute="/go/cli" subtopicLabel="-X's Silent Requirement" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">ldflags -X Only Sets Uninitialized or Constant Vars</h1>
+  <p class="page-subtitle">
+    The main page's own version-embedding example works only because its variables happen to satisfy an
+    unstated rule — a natural refactor to compute a default instead silently disqualifies -X, with zero errors.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains exactly why the main page's own -X example works, and how an innocent-looking
+      refactor breaks it silently. Back to the Go CLI Tools overview, or continue to why a second Ctrl+C
+      does nothing once signal.NotifyContext has already caught the first one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go CLI Tools"
+    topicRoute="/go/cli"
+    [prev]="{ label: 'bufio.Scanner Has a 64KB Default Token Limit', route: '/go/cli/bufio-scanner-has-a-64kb-default-token-limit' }"
+    [next]="{ label: 'NotifyContext Swallows a Second Ctrl+C', route: '/go/cli/notifycontext-swallows-a-second-ctrl-c' }"
+  />
+</div>

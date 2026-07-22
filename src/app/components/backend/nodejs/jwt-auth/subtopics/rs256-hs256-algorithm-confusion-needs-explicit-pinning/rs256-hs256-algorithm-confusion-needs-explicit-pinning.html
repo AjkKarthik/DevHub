@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Auth with JWT & Passport" topicRoute="/node/jwt-auth" subtopicLabel="Algorithm Confusion Attack" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">RS256 Public Keys Can Be Forged as HS256 Secrets Without Pinning</h1>
+  <p class="page-subtitle">
+    A well-documented 2015 vulnerability class, fixed by default in jsonwebtoken v9+ — but explicit
+    algorithms: [...] pinning remains the recommended, defense-in-depth practice.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="jsonwebtoken 9.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own brief "validate the alg header" advice with the specific, historically real
+      attack behind it. The next subtopic moves to a completely different corner of JWT verification — a library
+      option that handles clock drift between distributed servers.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Auth with JWT & Passport"
+    topicRoute="/node/jwt-auth"
+    [next]="{ label: 'clockTolerance Handles Drift Between Servers', route: '/node/jwt-auth/clocktolerance-handles-drift-between-distributed-servers' }"
+  />
+</div>

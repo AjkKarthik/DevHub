@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Performance &amp; Profiling" topicRoute="/go/profiling" subtopicLabel="Heap Profiling Is Sampled" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">The Heap Profile Samples One Allocation per 512KB</h1>
+  <p class="page-subtitle">
+    The main page treats the heap profile as recording every allocation — by default it samples roughly one
+    allocation per 512KB, so many small allocations can be significant yet invisible in top10 output.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic expands the main page's own heap-profile coverage with the sampling mechanism behind
+      it. Back to the Go Performance & Profiling overview, or continue to what escape analysis output
+      actually looks like, beyond the QnA's one-line mention.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Performance &amp; Profiling"
+    topicRoute="/go/profiling"
+    [prev]="{ label: 'runtime.GC() Before WriteHeapProfile Avoids Stale Data', route: '/go/profiling/runtime-gc-before-writeheapprofile-avoids-stale-data' }"
+    [next]="{ label: 'Escape Analysis (-gcflags=-m) Shows Why a Var Heap-Allocates', route: '/go/profiling/escape-analysis-gcflags-m-shows-why-a-var-heap-allocates' }"
+  />
+</div>

@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="FastAPI" topicRoute="/python/fastapi" subtopicLabel="response_model &amp; ORM Objects" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">response_model Needs from_attributes for ORM Objects</h1>
+  <p class="page-subtitle">
+    Pydantic validates dict-like input by default — a raw SQLAlchemy instance needs the response schema to
+    explicitly opt in with from_attributes before response_model can serialize it at all.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="FastAPI 0.100+ / Pydantic v2" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own mistake entry shows the wrong-vs-right code for returning an ORM object safely through
+      response_model, but assumes the schema already validates ORM input correctly — this subtopic fills in the
+      exact configuration that makes that assumption true. Together with the previous two subtopics, this
+      completes the pattern: how a shared dependency cache behaves, how a shared background task queue behaves,
+      and how a response schema itself needs to be configured for the data it actually receives.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="FastAPI"
+    topicRoute="/python/fastapi"
+    [prev]="{ label: 'BackgroundTasks Merge Into One Sequential List', route: '/python/fastapi/background-tasks-merge-into-one-sequential-list' }"
+  />
+</div>

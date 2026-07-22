@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Virtual Machines" topicRoute="/azure/virtual-machines" subtopicLabel="VMSS Flexible: Real VMs, No Default Outbound" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">VMSS Flexible Uses Real VMs, and Has No Default Outbound Connectivity</h1>
+  <p class="page-subtitle">The main page's own quiz explains what Flexible mode supports — here's the architectural reason why, and a real networking gotcha it never mentions.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="VMSS Flexible" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic expands the main page's own Flexible-vs-Uniform quiz answer into the real architectural difference and its networking consequence, closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Virtual Machines" topicRoute="/azure/virtual-machines"
+    [prev]="{ label: 'Scheduled Events Covers 5 Event Types', route: '/azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction' }" />
+</div>

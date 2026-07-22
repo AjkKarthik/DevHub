@@ -1,0 +1,37 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Docker Images & Registry" topicRoute="/containers/docker-images" subtopicLabel="docker push --all-tags Uploads the Shared Layers Once" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">docker push --all-tags Uploads the Shared Layers Once</h1>
+  <p class="page-subtitle">
+    The main page's own code tab tags one image three times, then pushes all of them, without connecting this to
+    its own separate rule that push only uploads layers the registry doesn't already have.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic connects two of the main page's own separate statements into a concrete cost explanation.
+      Back to the Docker Images & Registry overview, or continue to why a configured registry mirror only ever
+      intercepts Docker Hub pulls.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Docker Images & Registry"
+    topicRoute="/containers/docker-images"
+    [prev]="{ label: 'Stopped Containers Protect Their Images From docker image prune -a', route: '/containers/docker-images/prune-order-stopped-containers-protect-images' }"
+    [next]="{ label: 'A Registry Mirror Only Ever Intercepts Docker Hub Pulls', route: '/containers/docker-images/registry-mirror-only-intercepts-docker-hub' }"
+  />
+</div>

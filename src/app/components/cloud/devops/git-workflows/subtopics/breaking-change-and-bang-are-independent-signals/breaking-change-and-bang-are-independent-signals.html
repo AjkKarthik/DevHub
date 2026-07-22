@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Git Workflows" topicRoute="/devops/git-workflows" subtopicLabel="Two Signals, Either One Works" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">BREAKING CHANGE and ! Are Independent Signals</h1>
+  <p class="page-subtitle">
+    The main page's own breaking-change example shows the ! prefix and the BREAKING CHANGE: footer together —
+    the spec treats them as independent signals; either one alone is fully valid.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2020+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic clarifies the exact spec rule behind the main page's own single breaking-change example.
+      Back to the Git Workflows overview, or continue to the specific study behind the "400 lines" PR-size
+      claim.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Git Workflows"
+    topicRoute="/devops/git-workflows"
+    [prev]="{ label: '--force-with-lease Isn’t Foolproof Without a Fresh Fetch', route: '/devops/git-workflows/force-with-lease-isnt-foolproof-without-a-fresh-fetch' }"
+    [next]="{ label: 'The 400-Line PR Limit Has a Speed Limit Attached', route: '/devops/git-workflows/the-400-line-pr-limit-has-a-speed-limit-attached' }"
+  />
+</div>

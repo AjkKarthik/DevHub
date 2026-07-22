@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GitOps" topicRoute="/devops/gitops" subtopicLabel="Retry Backoff Is Exponential, Not Linear" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">ArgoCD's Retry Backoff Is Exponential, Not Linear</h1>
+  <p class="page-subtitle">
+    The main page's own Application YAML sets retry.backoff.duration and factor with zero explanation — the wait
+    between attempts compounds, it doesn't stay fixed at the base duration.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills in a retry option the main page's own Application YAML uses but never explains. Back to
+      the GitOps overview, or continue to how Flux's two separate intervals actually interact.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GitOps"
+    topicRoute="/devops/gitops"
+    [next]="{ label: 'Flux’s Interval Is a Drift Fallback, Not the Git Trigger', route: '/devops/gitops/flux-interval-is-a-drift-fallback-not-a-git-trigger' }"
+  />
+</div>

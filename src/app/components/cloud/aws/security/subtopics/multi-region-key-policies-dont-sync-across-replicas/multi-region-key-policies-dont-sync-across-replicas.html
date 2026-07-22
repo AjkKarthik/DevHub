@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AWS Security" topicRoute="/aws/security" subtopicLabel="Multi-Region Key Policies Don’t Sync" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Multi-Region Key Policies Don't Sync Across Replicas</h1>
+  <p class="page-subtitle">The main page's own QnA on multi-Region keys only covers the encrypt/decrypt benefit — access control is a completely separate story per region.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="KMS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the batch by extending the main page's own multi-region KMS content with a security-critical detail it never mentions. Together with the EKS Runtime Monitoring and rotation subtopics, this rounds out the main page's own GuardDuty and KMS sections with the operational detail production use of each one surfaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AWS Security" topicRoute="/aws/security"
+    [prev]="{ label: 'KMS Rotation Never Touches Data Keys', route: '/aws/security/kms-rotation-never-touches-already-generated-data-keys' }" />
+</div>

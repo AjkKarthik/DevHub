@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GitHub Actions" topicRoute="/devops/github-actions" subtopicLabel="Two Good Ideas, One Bad Combination" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">paths-ignore Can Permanently Block a Required Check</h1>
+  <p class="page-subtitle">
+    The main page recommends paths-ignore purely as a cost/speed optimization — combined with a required
+    status check, a skipped workflow never reports a status, and the PR is blocked from merging forever.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2020+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic connects two of the main page's own separate recommendations (paths-ignore and required
+      status checks) and shows how they can combine badly. Back to the GitHub Actions overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GitHub Actions"
+    topicRoute="/devops/github-actions"
+    [prev]="{ label: 'workflow_run Grants Secrets the Trigger Didn’t Have', route: '/devops/github-actions/workflow-run-grants-secrets-the-trigger-didnt-have' }"
+  />
+</div>

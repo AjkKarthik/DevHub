@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go CLI Tools" topicRoute="/go/cli" subtopicLabel="Scanner's Hidden Ceiling" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">bufio.Scanner Has a 64KB Default Token Limit</h1>
+  <p class="page-subtitle">
+    The main page's own wordcount tool checks scanner.Err() correctly but never explains what it can
+    actually return — a single line over 64KB stops scanning with "token too long," by default.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Go 1.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic expands the main page's own correctly-written but unexplained scanner.Err() check into
+      the specific limit it's guarding against. Back to the Go CLI Tools overview, or continue to why
+      -ldflags -X can silently fail to set a version string.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go CLI Tools"
+    topicRoute="/go/cli"
+    [next]="{ label: 'ldflags -X Only Sets Uninitialized or Constant Vars', route: '/go/cli/ldflags-x-only-sets-uninitialized-or-constant-vars' }"
+  />
+</div>

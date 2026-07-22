@@ -1,0 +1,35 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes RBAC" topicRoute="/containers/rbac" subtopicLabel="The bind Verb Gates Escalation — create on RoleBindings Alone Isn't Enough" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The bind Verb Gates Escalation — create on RoleBindings Alone Isn't Enough</h1>
+  <p class="page-subtitle">
+    The main page's own QnA on RBAC blast radius was corrected as part of this batch — here's the mechanism:
+    Kubernetes blocks binding to a more powerful role unless you separately hold the <code>bind</code> verb.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the first of three subtopics on what the main page's own RBAC claims leave underspecified. Next:
+      how an aggregated ClusterRole retroactively grants new permissions to bindings that already exist.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes RBAC"
+    topicRoute="/containers/rbac"
+    [next]="{ label: 'Aggregated ClusterRoles Retroactively Grant New Permissions to Old Bindings', route: '/containers/rbac/aggregated-clusterroles-retroactively-grant-new-permissions-to-old-bindings' }"
+  />
+</div>

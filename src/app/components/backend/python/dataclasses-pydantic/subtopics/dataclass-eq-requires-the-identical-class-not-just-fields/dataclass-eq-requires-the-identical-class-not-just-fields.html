@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dataclasses & Pydantic" topicRoute="/python/dataclasses-pydantic" subtopicLabel="Dataclass Equality" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">dataclass __eq__ Requires the Identical Class, Not Just Fields</h1>
+  <p class="page-subtitle">
+    A subclass instance is never == to a parent dataclass instance, even with byte-for-byte identical field
+    values — type identity is checked before any field comparison happens.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This sharpens the main page's own field-focused description of __eq__ with the type-identity precondition it
+      leaves out. The next subtopic moves to Pydantic — the actual difference between "before" and "after"
+      model validators the main page only demonstrates one side of.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dataclasses & Pydantic"
+    topicRoute="/python/dataclasses-pydantic"
+    [next]="{ label: 'model_validator(mode=’before’) Receives Unvalidated Raw Input', route: '/python/dataclasses-pydantic/model-validator-before-mode-receives-unvalidated-raw-input' }"
+  />
+</div>

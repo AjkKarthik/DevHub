@@ -5354,36 +5354,302 @@
           </div>
         }
       }
-      <a routerLink="/node/nestjs" routerLinkActive="active"><span class="nl-text">NestJS</span>@if(progress.isDone('node-nestjs')){<span class="nl-done">✓</span>}@if(diff('node-nestjs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/nestjs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">NestJS</span>
+        @if (progress.isDone('node-nestjs')) {<span class="nl-done">✓</span>}
+        @if (diff('node-nestjs'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('nestjs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('nestjs')"
+                  (click)="toggleSubtopics('nestjs', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('nestjs'); as nodeNestjsSubs) {
+        @if (isSubtopicsExpanded('nestjs')) {
+          <div class="nav-subtopics">
+            @for (s of nodeNestjsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Async &amp; Streams</p>
-      <a routerLink="/node/promises-async" routerLinkActive="active"><span class="nl-text">Promises &amp; Async/Await</span>@if(progress.isDone('node-promises-async')){<span class="nl-done">✓</span>}@if(diff('node-promises-async');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/streams" routerLinkActive="active"><span class="nl-text">Streams &amp; Buffers</span>@if(progress.isDone('node-streams')){<span class="nl-done">✓</span>}@if(diff('node-streams');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('node-error-handling')){<span class="nl-done">✓</span>}@if(diff('node-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/promises-async" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Promises &amp; Async/Await</span>
+        @if (progress.isDone('node-promises-async')) {<span class="nl-done">✓</span>}
+        @if (diff('node-promises-async'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('promises-async')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('promises-async')"
+                  (click)="toggleSubtopics('promises-async', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('promises-async'); as nodePromisesAsyncSubs) {
+        @if (isSubtopicsExpanded('promises-async')) {
+          <div class="nav-subtopics">
+            @for (s of nodePromisesAsyncSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/streams" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Streams &amp; Buffers</span>
+        @if (progress.isDone('node-streams')) {<span class="nl-done">✓</span>}
+        @if (diff('node-streams'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('streams')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('streams')"
+                  (click)="toggleSubtopics('streams', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('streams'); as nodeStreamsSubs) {
+        @if (isSubtopicsExpanded('streams')) {
+          <div class="nav-subtopics">
+            @for (s of nodeStreamsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/error-handling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Error Handling</span>
+        @if (progress.isDone('node-error-handling')) {<span class="nl-done">✓</span>}
+        @if (diff('node-error-handling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-error-handling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-error-handling')"
+                  (click)="toggleSubtopics('node-error-handling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-error-handling'); as nodeErrorHandlingSubs) {
+        @if (isSubtopicsExpanded('node-error-handling')) {
+          <div class="nav-subtopics">
+            @for (s of nodeErrorHandlingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Database</p>
-      <a routerLink="/node/prisma" routerLinkActive="active"><span class="nl-text">Database with Prisma</span>@if(progress.isDone('node-prisma')){<span class="nl-done">✓</span>}@if(diff('node-prisma');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/mongoose" routerLinkActive="active"><span class="nl-text">MongoDB with Mongoose</span>@if(progress.isDone('node-mongoose')){<span class="nl-done">✓</span>}@if(diff('node-mongoose');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/caching" routerLinkActive="active"><span class="nl-text">Caching with Redis</span>@if(progress.isDone('node-caching')){<span class="nl-done">✓</span>}@if(diff('node-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/prisma" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Database with Prisma</span>
+        @if (progress.isDone('node-prisma')) {<span class="nl-done">✓</span>}
+        @if (diff('node-prisma'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('prisma')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('prisma')"
+                  (click)="toggleSubtopics('prisma', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('prisma'); as nodePrismaSubs) {
+        @if (isSubtopicsExpanded('prisma')) {
+          <div class="nav-subtopics">
+            @for (s of nodePrismaSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/mongoose" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">MongoDB with Mongoose</span>
+        @if (progress.isDone('node-mongoose')) {<span class="nl-done">✓</span>}
+        @if (diff('node-mongoose'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('mongoose')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mongoose')"
+                  (click)="toggleSubtopics('mongoose', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mongoose'); as nodeMongooseSubs) {
+        @if (isSubtopicsExpanded('mongoose')) {
+          <div class="nav-subtopics">
+            @for (s of nodeMongooseSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/caching" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Caching with Redis</span>
+        @if (progress.isDone('node-caching')) {<span class="nl-done">✓</span>}
+        @if (diff('node-caching'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-caching')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-caching')"
+                  (click)="toggleSubtopics('node-caching', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-caching'); as nodeCachingSubs) {
+        @if (isSubtopicsExpanded('node-caching')) {
+          <div class="nav-subtopics">
+            @for (s of nodeCachingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Auth &amp; Security</p>
-      <a routerLink="/node/jwt-auth" routerLinkActive="active"><span class="nl-text">Auth with JWT &amp; Passport</span>@if(progress.isDone('node-jwt-auth')){<span class="nl-done">✓</span>}@if(diff('node-jwt-auth');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/security" routerLinkActive="active"><span class="nl-text">Security Best Practices</span>@if(progress.isDone('node-security')){<span class="nl-done">✓</span>}@if(diff('node-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/jwt-auth" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Auth with JWT &amp; Passport</span>
+        @if (progress.isDone('node-jwt-auth')) {<span class="nl-done">✓</span>}
+        @if (diff('node-jwt-auth'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('jwt-auth')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('jwt-auth')"
+                  (click)="toggleSubtopics('jwt-auth', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('jwt-auth'); as nodeJwtAuthSubs) {
+        @if (isSubtopicsExpanded('jwt-auth')) {
+          <div class="nav-subtopics">
+            @for (s of nodeJwtAuthSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Security Best Practices</span>
+        @if (progress.isDone('node-security')) {<span class="nl-done">✓</span>}
+        @if (diff('node-security'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-security')"
+                  (click)="toggleSubtopics('node-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-security'); as nodeSecuritySubs) {
+        @if (isSubtopicsExpanded('node-security')) {
+          <div class="nav-subtopics">
+            @for (s of nodeSecuritySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Performance &amp; Tooling</p>
-      <a routerLink="/node/performance" routerLinkActive="active"><span class="nl-text">Node.js Performance</span>@if(progress.isDone('node-performance')){<span class="nl-done">✓</span>}@if(diff('node-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/logging" routerLinkActive="active"><span class="nl-text">Logging with Pino/Winston</span>@if(progress.isDone('node-logging')){<span class="nl-done">✓</span>}@if(diff('node-logging');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/worker-threads" routerLinkActive="active"><span class="nl-text">Worker Threads</span>@if(progress.isDone('node-worker-threads')){<span class="nl-done">✓</span>}@if(diff('node-worker-threads');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/testing" routerLinkActive="active"><span class="nl-text">Testing Node.js Apps</span>@if(progress.isDone('node-testing')){<span class="nl-done">✓</span>}@if(diff('node-testing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/node/deployment" routerLinkActive="active"><span class="nl-text">Deploying Node.js Apps</span>@if(progress.isDone('node-deployment')){<span class="nl-done">✓</span>}@if(diff('node-deployment');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/node/performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Node.js Performance</span>
+        @if (progress.isDone('node-performance')) {<span class="nl-done">✓</span>}
+        @if (diff('node-performance'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('performance')"
+                  (click)="toggleSubtopics('performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('performance'); as nodePerformanceSubs) {
+        @if (isSubtopicsExpanded('performance')) {
+          <div class="nav-subtopics">
+            @for (s of nodePerformanceSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/logging" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Logging with Pino/Winston</span>
+        @if (progress.isDone('node-logging')) {<span class="nl-done">✓</span>}
+        @if (diff('node-logging'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('logging')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('logging')"
+                  (click)="toggleSubtopics('logging', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('logging'); as nodeLoggingSubs) {
+        @if (isSubtopicsExpanded('logging')) {
+          <div class="nav-subtopics">
+            @for (s of nodeLoggingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/worker-threads" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Worker Threads</span>
+        @if (progress.isDone('node-worker-threads')) {<span class="nl-done">✓</span>}
+        @if (diff('node-worker-threads'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('worker-threads')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('worker-threads')"
+                  (click)="toggleSubtopics('worker-threads', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('worker-threads'); as nodeWorkerThreadsSubs) {
+        @if (isSubtopicsExpanded('worker-threads')) {
+          <div class="nav-subtopics">
+            @for (s of nodeWorkerThreadsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/testing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Testing Node.js Apps</span>
+        @if (progress.isDone('node-testing')) {<span class="nl-done">✓</span>}
+        @if (diff('node-testing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('node-testing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('node-testing')"
+                  (click)="toggleSubtopics('node-testing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('node-testing'); as nodeTestingSubs) {
+        @if (isSubtopicsExpanded('node-testing')) {
+          <div class="nav-subtopics">
+            @for (s of nodeTestingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/node/deployment" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Deploying Node.js Apps</span>
+        @if (progress.isDone('node-deployment')) {<span class="nl-done">✓</span>}
+        @if (diff('node-deployment'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('deployment')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('deployment')"
+                  (click)="toggleSubtopics('deployment', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('deployment'); as nodeDeploymentSubs) {
+        @if (isSubtopicsExpanded('deployment')) {
+          <div class="nav-subtopics">
+            @for (s of nodeDeploymentSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -5403,51 +5669,450 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/python/fundamentals" routerLinkActive="active"><span class="nl-text">Python Fundamentals</span>@if(progress.isDone('py-fundamentals')){<span class="nl-done">✓</span>}@if(diff('py-fundamentals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/functions-closures" routerLinkActive="active"><span class="nl-text">Functions &amp; Closures</span>@if(progress.isDone('py-functions-closures')){<span class="nl-done">✓</span>}@if(diff('py-functions-closures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/comprehensions-generators" routerLinkActive="active"><span class="nl-text">Comprehensions &amp; Generators</span>@if(progress.isDone('py-comprehensions-generators')){<span class="nl-done">✓</span>}@if(diff('py-comprehensions-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/file-io" routerLinkActive="active"><span class="nl-text">File I/O &amp; Pathlib</span>@if(progress.isDone('py-file-io')){<span class="nl-done">✓</span>}@if(diff('py-file-io');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/fundamentals" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Python Fundamentals</span>
+        @if (progress.isDone('py-fundamentals')) {<span class="nl-done">✓</span>}
+        @if (diff('py-fundamentals'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('python-fundamentals')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('python-fundamentals')"
+                  (click)="toggleSubtopics('python-fundamentals', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('python-fundamentals'); as pyFundamentalsSubs) {
+        @if (isSubtopicsExpanded('python-fundamentals')) {
+          <div class="nav-subtopics">
+            @for (s of pyFundamentalsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/functions-closures" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Functions &amp; Closures</span>
+        @if (progress.isDone('py-functions-closures')) {<span class="nl-done">✓</span>}
+        @if (diff('py-functions-closures'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('functions-closures')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('functions-closures')"
+                  (click)="toggleSubtopics('functions-closures', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('functions-closures'); as pyFuncClosuresSubs) {
+        @if (isSubtopicsExpanded('functions-closures')) {
+          <div class="nav-subtopics">
+            @for (s of pyFuncClosuresSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/comprehensions-generators" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Comprehensions &amp; Generators</span>
+        @if (progress.isDone('py-comprehensions-generators')) {<span class="nl-done">✓</span>}
+        @if (diff('py-comprehensions-generators'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('comprehensions-generators')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('comprehensions-generators')"
+                  (click)="toggleSubtopics('comprehensions-generators', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('comprehensions-generators'); as pyCompGenSubs) {
+        @if (isSubtopicsExpanded('comprehensions-generators')) {
+          <div class="nav-subtopics">
+            @for (s of pyCompGenSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/file-io" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">File I/O &amp; Pathlib</span>
+        @if (progress.isDone('py-file-io')) {<span class="nl-done">✓</span>}
+        @if (diff('py-file-io'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('file-io')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('file-io')"
+                  (click)="toggleSubtopics('file-io', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('file-io'); as pyFileIoSubs) {
+        @if (isSubtopicsExpanded('file-io')) {
+          <div class="nav-subtopics">
+            @for (s of pyFileIoSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">OOP &amp; Patterns</p>
-      <a routerLink="/python/oop" routerLinkActive="active"><span class="nl-text">OOP in Python</span>@if(progress.isDone('py-oop')){<span class="nl-done">✓</span>}@if(diff('py-oop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/dataclasses-pydantic" routerLinkActive="active"><span class="nl-text">Dataclasses &amp; Pydantic</span>@if(progress.isDone('py-dataclasses-pydantic')){<span class="nl-done">✓</span>}@if(diff('py-dataclasses-pydantic');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/decorators-context-managers" routerLinkActive="active"><span class="nl-text">Decorators &amp; Context Managers</span>@if(progress.isDone('py-decorators-context-managers')){<span class="nl-done">✓</span>}@if(diff('py-decorators-context-managers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/oop" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">OOP in Python</span>
+        @if (progress.isDone('py-oop')) {<span class="nl-done">✓</span>}
+        @if (diff('py-oop'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('python-oop')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('python-oop')"
+                  (click)="toggleSubtopics('python-oop', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('python-oop'); as pyOopSubs) {
+        @if (isSubtopicsExpanded('python-oop')) {
+          <div class="nav-subtopics">
+            @for (s of pyOopSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/dataclasses-pydantic" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Dataclasses &amp; Pydantic</span>
+        @if (progress.isDone('py-dataclasses-pydantic')) {<span class="nl-done">✓</span>}
+        @if (diff('py-dataclasses-pydantic'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('dataclasses-pydantic')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dataclasses-pydantic')"
+                  (click)="toggleSubtopics('dataclasses-pydantic', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dataclasses-pydantic'); as pyDataclassesSubs) {
+        @if (isSubtopicsExpanded('dataclasses-pydantic')) {
+          <div class="nav-subtopics">
+            @for (s of pyDataclassesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/decorators-context-managers" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Decorators &amp; Context Managers</span>
+        @if (progress.isDone('py-decorators-context-managers')) {<span class="nl-done">✓</span>}
+        @if (diff('py-decorators-context-managers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('decorators-context-managers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('decorators-context-managers')"
+                  (click)="toggleSubtopics('decorators-context-managers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('decorators-context-managers'); as pyDecoratorsCmSubs) {
+        @if (isSubtopicsExpanded('decorators-context-managers')) {
+          <div class="nav-subtopics">
+            @for (s of pyDecoratorsCmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Data &amp; Types</p>
-      <a routerLink="/python/type-hints" routerLinkActive="active"><span class="nl-text">Type Hints &amp; mypy</span>@if(progress.isDone('py-type-hints')){<span class="nl-done">✓</span>}@if(diff('py-type-hints');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/collections-itertools" routerLinkActive="active"><span class="nl-text">Collections &amp; Itertools</span>@if(progress.isDone('py-collections-itertools')){<span class="nl-done">✓</span>}@if(diff('py-collections-itertools');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/type-hints" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Type Hints &amp; mypy</span>
+        @if (progress.isDone('py-type-hints')) {<span class="nl-done">✓</span>}
+        @if (diff('py-type-hints'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('type-hints')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('type-hints')"
+                  (click)="toggleSubtopics('type-hints', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('type-hints'); as pyTypeHintsSubs) {
+        @if (isSubtopicsExpanded('type-hints')) {
+          <div class="nav-subtopics">
+            @for (s of pyTypeHintsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/collections-itertools" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Collections &amp; Itertools</span>
+        @if (progress.isDone('py-collections-itertools')) {<span class="nl-done">✓</span>}
+        @if (diff('py-collections-itertools'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('collections-itertools')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('collections-itertools')"
+                  (click)="toggleSubtopics('collections-itertools', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('collections-itertools'); as pyCollectionsSubs) {
+        @if (isSubtopicsExpanded('collections-itertools')) {
+          <div class="nav-subtopics">
+            @for (s of pyCollectionsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Async</p>
-      <a routerLink="/python/asyncio" routerLinkActive="active"><span class="nl-text">Async Python (asyncio)</span>@if(progress.isDone('py-asyncio')){<span class="nl-done">✓</span>}@if(diff('py-asyncio');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/threading-multiprocessing" routerLinkActive="active"><span class="nl-text">Threading &amp; Multiprocessing</span>@if(progress.isDone('py-threading-multiprocessing')){<span class="nl-done">✓</span>}@if(diff('py-threading-multiprocessing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/concurrency-patterns" routerLinkActive="active"><span class="nl-text">Concurrency Patterns</span>@if(progress.isDone('py-concurrency-patterns')){<span class="nl-done">✓</span>}@if(diff('py-concurrency-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/asyncio" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Async Python (asyncio)</span>
+        @if (progress.isDone('py-asyncio')) {<span class="nl-done">✓</span>}
+        @if (diff('py-asyncio'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('asyncio')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('asyncio')"
+                  (click)="toggleSubtopics('asyncio', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('asyncio'); as pyAsyncioSubs) {
+        @if (isSubtopicsExpanded('asyncio')) {
+          <div class="nav-subtopics">
+            @for (s of pyAsyncioSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/threading-multiprocessing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Threading &amp; Multiprocessing</span>
+        @if (progress.isDone('py-threading-multiprocessing')) {<span class="nl-done">✓</span>}
+        @if (diff('py-threading-multiprocessing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('threading-multiprocessing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('threading-multiprocessing')"
+                  (click)="toggleSubtopics('threading-multiprocessing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('threading-multiprocessing'); as pyThreadingSubs) {
+        @if (isSubtopicsExpanded('threading-multiprocessing')) {
+          <div class="nav-subtopics">
+            @for (s of pyThreadingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/concurrency-patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Concurrency Patterns</span>
+        @if (progress.isDone('py-concurrency-patterns')) {<span class="nl-done">✓</span>}
+        @if (diff('py-concurrency-patterns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('concurrency-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('concurrency-patterns')"
+                  (click)="toggleSubtopics('concurrency-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('concurrency-patterns'); as pyConcurrencySubs) {
+        @if (isSubtopicsExpanded('concurrency-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of pyConcurrencySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Web &amp; APIs</p>
-      <a routerLink="/python/fastapi" routerLinkActive="active"><span class="nl-text">FastAPI</span>@if(progress.isDone('py-fastapi')){<span class="nl-done">✓</span>}@if(diff('py-fastapi');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/django" routerLinkActive="active"><span class="nl-text">Django &amp; DRF</span>@if(progress.isDone('py-django')){<span class="nl-done">✓</span>}@if(diff('py-django');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/sqlalchemy" routerLinkActive="active"><span class="nl-text">SQLAlchemy</span>@if(progress.isDone('py-sqlalchemy')){<span class="nl-done">✓</span>}@if(diff('py-sqlalchemy');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/celery" routerLinkActive="active"><span class="nl-text">Celery &amp; Task Queues</span>@if(progress.isDone('py-celery')){<span class="nl-done">✓</span>}@if(diff('py-celery');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/fastapi" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">FastAPI</span>
+        @if (progress.isDone('py-fastapi')) {<span class="nl-done">✓</span>}
+        @if (diff('py-fastapi'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('fastapi')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('fastapi')"
+                  (click)="toggleSubtopics('fastapi', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('fastapi'); as pyFastapiSubs) {
+        @if (isSubtopicsExpanded('fastapi')) {
+          <div class="nav-subtopics">
+            @for (s of pyFastapiSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/django" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Django &amp; DRF</span>
+        @if (progress.isDone('py-django')) {<span class="nl-done">✓</span>}
+        @if (diff('py-django'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('django')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('django')"
+                  (click)="toggleSubtopics('django', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('django'); as pyDjangoSubs) {
+        @if (isSubtopicsExpanded('django')) {
+          <div class="nav-subtopics">
+            @for (s of pyDjangoSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/sqlalchemy" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">SQLAlchemy</span>
+        @if (progress.isDone('py-sqlalchemy')) {<span class="nl-done">✓</span>}
+        @if (diff('py-sqlalchemy'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sqlalchemy')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sqlalchemy')"
+                  (click)="toggleSubtopics('sqlalchemy', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sqlalchemy'); as pySqlalchemySubs) {
+        @if (isSubtopicsExpanded('sqlalchemy')) {
+          <div class="nav-subtopics">
+            @for (s of pySqlalchemySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/celery" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Celery &amp; Task Queues</span>
+        @if (progress.isDone('py-celery')) {<span class="nl-done">✓</span>}
+        @if (diff('py-celery'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('celery')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('celery')"
+                  (click)="toggleSubtopics('celery', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('celery'); as pyCelerySubs) {
+        @if (isSubtopicsExpanded('celery')) {
+          <div class="nav-subtopics">
+            @for (s of pyCelerySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Data Science</p>
-      <a routerLink="/python/numpy-pandas" routerLinkActive="active"><span class="nl-text">NumPy &amp; Pandas</span>@if(progress.isDone('py-numpy-pandas')){<span class="nl-done">✓</span>}@if(diff('py-numpy-pandas');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/scikit-learn" routerLinkActive="active"><span class="nl-text">Machine Learning (scikit-learn)</span>@if(progress.isDone('py-scikit-learn')){<span class="nl-done">✓</span>}@if(diff('py-scikit-learn');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/numpy-pandas" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">NumPy &amp; Pandas</span>
+        @if (progress.isDone('py-numpy-pandas')) {<span class="nl-done">✓</span>}
+        @if (diff('py-numpy-pandas'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('numpy-pandas')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('numpy-pandas')"
+                  (click)="toggleSubtopics('numpy-pandas', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('numpy-pandas'); as pyNumpySubs) {
+        @if (isSubtopicsExpanded('numpy-pandas')) {
+          <div class="nav-subtopics">
+            @for (s of pyNumpySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/scikit-learn" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Machine Learning (scikit-learn)</span>
+        @if (progress.isDone('py-scikit-learn')) {<span class="nl-done">✓</span>}
+        @if (diff('py-scikit-learn'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('scikit-learn')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('scikit-learn')"
+                  (click)="toggleSubtopics('scikit-learn', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('scikit-learn'); as pySklearnSubs) {
+        @if (isSubtopicsExpanded('scikit-learn')) {
+          <div class="nav-subtopics">
+            @for (s of pySklearnSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Tooling</p>
-      <a routerLink="/python/pytest" routerLinkActive="active"><span class="nl-text">Testing with pytest</span>@if(progress.isDone('py-pytest')){<span class="nl-done">✓</span>}@if(diff('py-pytest');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/packaging" routerLinkActive="active"><span class="nl-text">Packaging &amp; venv</span>@if(progress.isDone('py-packaging')){<span class="nl-done">✓</span>}@if(diff('py-packaging');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/python/debugging-profiling" routerLinkActive="active"><span class="nl-text">Debugging &amp; Profiling</span>@if(progress.isDone('py-debugging-profiling')){<span class="nl-done">✓</span>}@if(diff('py-debugging-profiling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/pytest" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Testing with pytest</span>
+        @if (progress.isDone('py-pytest')) {<span class="nl-done">✓</span>}
+        @if (diff('py-pytest'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('pytest')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('pytest')"
+                  (click)="toggleSubtopics('pytest', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('pytest'); as pyPytestSubs) {
+        @if (isSubtopicsExpanded('pytest')) {
+          <div class="nav-subtopics">
+            @for (s of pyPytestSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/packaging" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Packaging &amp; venv</span>
+        @if (progress.isDone('py-packaging')) {<span class="nl-done">✓</span>}
+        @if (diff('py-packaging'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('packaging')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('packaging')"
+                  (click)="toggleSubtopics('packaging', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('packaging'); as pyPackagingSubs) {
+        @if (isSubtopicsExpanded('packaging')) {
+          <div class="nav-subtopics">
+            @for (s of pyPackagingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/python/debugging-profiling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Debugging &amp; Profiling</span>
+        @if (progress.isDone('py-debugging-profiling')) {<span class="nl-done">✓</span>}
+        @if (diff('py-debugging-profiling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('debugging-profiling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('debugging-profiling')"
+                  (click)="toggleSubtopics('debugging-profiling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('debugging-profiling'); as pyDebugSubs) {
+        @if (isSubtopicsExpanded('debugging-profiling')) {
+          <div class="nav-subtopics">
+            @for (s of pyDebugSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

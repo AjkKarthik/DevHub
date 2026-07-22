@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Async Python (asyncio)" topicRoute="/python/asyncio" subtopicLabel="gather() Failure Semantics" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">gather() Does Not Cancel Siblings on Failure</h1>
+  <p class="page-subtitle">
+    gather()'s default behavior only stops WAITING when one coroutine fails — Python's own docs confirm the others
+    keep running in the background, unlike TaskGroup.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 3.4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This confirms the exact documented mechanism behind a risk the main page's own QnA already flags in
+      passing. The final subtopic moves to shield() — a genuinely separate cancellation tool the main page never
+      covers at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Async Python (asyncio)"
+    topicRoute="/python/asyncio"
+    [prev]="{ label: 'create_task() Needs a Saved Reference or It Vanishes', route: '/python/asyncio/create-task-needs-a-saved-reference-or-it-vanishes' }"
+    [next]="{ label: 'shield() Protects Inner Work, Not the Outer Awaiter', route: '/python/asyncio/shield-protects-inner-work-not-the-outer-awaiter' }"
+  />
+</div>

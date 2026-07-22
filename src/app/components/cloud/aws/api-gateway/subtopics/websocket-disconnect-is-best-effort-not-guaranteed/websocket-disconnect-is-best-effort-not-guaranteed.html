@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Gateway" topicRoute="/aws/api-gateway" subtopicLabel="WebSocket $disconnect Is Best-Effort" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">WebSocket $disconnect Is Best-Effort, Not Guaranteed</h1>
+  <p class="page-subtitle">The main page's own WebSocket coverage never mentions $connect/$disconnect at all — AWS documents $disconnect as an explicitly unguaranteed event.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="API Gateway" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills the WebSocket API lifecycle gap the main page's own single-line coverage leaves open. Together with the authoriser caching and resource policy subtopics, this batch rounds out the main page's own Authorisation and API-type sections with the operational detail production use of each one surfaces.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Gateway" topicRoute="/aws/api-gateway"
+    [prev]="{ label: 'Resource Policy Has Two Evaluation Phases', route: '/aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one' }" />
+</div>

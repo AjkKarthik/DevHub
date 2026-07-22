@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Release Management" topicRoute="/devops/release-management" subtopicLabel="“Deploy to Production” Already Happened by the Time the Tag Was Pushed" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">"Deploy to Production" Already Happened by the Time the Tag Was Pushed</h1>
+  <p class="page-subtitle">
+    The main page's own hotfix step 4 has no command under it — but the same code tab's own tag-triggered
+    release workflow, a few lines further down, is what step 3's tag push already started automatically.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2020+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic connects two pieces of the main page's own single code tab that are never linked in words,
+      closing out this batch's look at three places where the main page names an outcome without showing (or
+      pointing to) the mechanism. Back to the Release Management overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Release Management"
+    topicRoute="/devops/release-management"
+    [prev]="{ label: '@semantic-release/npm Updates package.json Only Locally', route: '/devops/release-management/semantic-release-npm-never-commits-back' }"
+  />
+</div>

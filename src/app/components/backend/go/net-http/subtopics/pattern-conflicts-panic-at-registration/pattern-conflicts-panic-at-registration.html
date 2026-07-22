@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="net/http &amp; REST APIs" topicRoute="/go/net-http" subtopicLabel="Pattern Conflicts Panic" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">ServeMux Pattern Conflicts Panic at Registration</h1>
+  <p class="page-subtitle">
+    "More specific wins" only resolves patterns where one IS more specific — when two patterns overlap with
+    neither containing the other, Go 1.22's ServeMux refuses to guess and panics at registration time instead.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.22+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own precedence rule with the case it leaves out: genuine ambiguity.
+      The next subtopic covers a related Go 1.22 addition the main page's single wildcard example doesn't show:
+      the &#123;$&#125; suffix for matching a subtree root exactly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="net/http &amp; REST APIs"
+    topicRoute="/go/net-http"
+    [next]="{ label: 'The {$} Wildcard Matches an Exact Subtree Root', route: '/go/net-http/dollar-wildcard-matches-exact-subtree-root' }"
+  />
+</div>

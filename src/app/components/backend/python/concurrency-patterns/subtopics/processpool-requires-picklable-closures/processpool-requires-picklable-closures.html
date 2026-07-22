@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Python Concurrency Patterns" topicRoute="/python/concurrency-patterns" subtopicLabel="ProcessPoolExecutor Pickling" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">ProcessPoolExecutor Can’t Pickle Closures or Lambdas</h1>
+  <p class="page-subtitle">
+    Bridging CPU-bound work into a process pool sends the callable across a real process boundary by pickling it —
+    and lambdas and closures fail that step in a way threads never expose.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Python 3.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory says CPU-bound bridging needs a "self-contained" task with "picklable args/returns"
+      — this subtopic shows exactly what breaks when that rule is violated, and why the same code can work fine
+      with threads first. The final subtopic moves to a subtler limit: the default thread pool that
+      asyncio.to_thread() itself quietly shares and caps.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Python Concurrency Patterns"
+    topicRoute="/python/concurrency-patterns"
+    [prev]="{ label: 'TaskGroup Raises an ExceptionGroup, Not the First Exception', route: '/python/concurrency-patterns/taskgroup-raises-exceptiongroup' }"
+    [next]="{ label: 'The Default Executor’s Thread Pool Size Isn’t Unlimited', route: '/python/concurrency-patterns/default-executor-thread-pool-sizing' }"
+  />
+</div>

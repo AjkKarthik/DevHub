@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SQLAlchemy" topicRoute="/python/sqlalchemy" subtopicLabel="Identity Map vs. select()" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">session.get() Hits the Identity Map — select() Does Not</h1>
+  <p class="page-subtitle">
+    session.get() checks the session's in-memory identity map first and can skip the database entirely — a
+    select()-by-primary-key query never gets that shortcut, even for the exact same row.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="SQLAlchemy 2.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory covers select() as the standard query pattern but never mentions get()'s identity
+      map shortcut — this subtopic fills that gap. The next subtopic follows the same Session directly into what
+      happens the instant its one transaction ends.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQLAlchemy"
+    topicRoute="/python/sqlalchemy"
+    [next]="{ label: 'Autobegin Starts a New Transaction After Commit', route: '/python/sqlalchemy/autobegin-starts-a-new-transaction-after-commit' }"
+  />
+</div>

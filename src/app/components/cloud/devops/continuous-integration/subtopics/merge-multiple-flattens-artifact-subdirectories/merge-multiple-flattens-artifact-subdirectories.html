@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Continuous Integration" topicRoute="/devops/continuous-integration" subtopicLabel="merge-multiple Flattens Artifact Subdirectories" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">merge-multiple Flattens Artifact Subdirectories</h1>
+  <p class="page-subtitle">
+    The main page's own merge-coverage job depends on merge-multiple: true to work at all — without it, four
+    downloaded shards land in four separate folders the very next nyc merge command can't find.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills in the last unexplained option in the main page's own Test Parallelisation code tab.
+      Back to the new-code vs. global coverage-gate distinction, or to the Continuous Integration overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Continuous Integration"
+    topicRoute="/devops/continuous-integration"
+    [prev]="{ label: 'New-Code Quality Gates vs. Global Coverage Thresholds', route: '/devops/continuous-integration/new-code-quality-gates-vs-global-coverage-thresholds' }"
+  />
+</div>

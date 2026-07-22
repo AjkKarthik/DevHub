@@ -60,7 +60,7 @@ const theory: TheoryPoint[] = [
       'Enable BuildKit: DOCKER_BUILDKIT=1 docker build . or set in /etc/docker/daemon.json.',
       'BuildKit runs independent stages in parallel — a test stage and a prod stage build simultaneously.',
       'RUN --mount=type=cache,target=/root/.npm npm ci caches the npm download cache between builds.',
-      'RUN --mount=type=secret,id=npm_token,target=/root/.npmrc pip install avoids baking auth tokens in layers.',
+      'RUN --mount=type=secret,id=npm_token,target=/root/.npmrc npm ci avoids baking auth tokens in layers.',
       'In CI, use --cache-from type=registry,ref=myimage:cache to warm the build cache from the registry.',
     ],
   },
@@ -89,7 +89,8 @@ const codeTabs: CodeTab[] = [
       'COPY . .\n' +
       'RUN CGO_ENABLED=0 GOOS=linux go build -o /bin/server ./cmd/server\n' +
       '\n' +
-      '# --- Stage 2: test (runs in parallel with builder) ---\n' +
+      '# --- Stage 2: test (derives FROM builder, so runs AFTER it;\n' +
+      '#     but runs in parallel with the runtime stage below) ---\n' +
       'FROM builder AS test\n' +
       'RUN go test ./...\n' +
       '\n' +
@@ -166,7 +167,7 @@ const mistakes: CommonMistake[] = [
     title: 'Not running tests in a stage',
     wrong: '# No test stage — tests only run in CI separately\nFROM golang:1.22 AS builder\nRUN go build ./...',
     right: 'FROM golang:1.22 AS builder\nRUN go build ./...\nFROM builder AS test\nRUN go test ./...\nFROM scratch AS runtime\nCOPY --from=builder /bin/app /app',
-    explanation: 'Embedding tests as a build stage ensures the image cannot be built without passing tests. BuildKit runs it in parallel with other stages, so there\'s no speed penalty.',
+    explanation: 'Embedding tests as a build stage ensures the image cannot be built without passing tests. Since the test stage derives FROM builder, it runs after builder finishes — but it runs in parallel with the runtime stage (which also derives FROM builder independently), so the total build time is barely extended.',
   },
   {
     title: 'Using scratch without CA certificates',

@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Decorators & Context Managers" topicRoute="/python/decorators-context-managers" subtopicLabel="ContextDecorator Limits" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">ContextDecorator Discards the __enter__() Return Value</h1>
+  <p class="page-subtitle">
+    Used as a decorator instead of a with statement, there's no "as" slot for __enter__()'s return value to bind
+    to — Python's own docs confirm it's simply unreachable.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of context-manager internals that look
+      simpler than they are — ExitStack's unified cleanup ordering, &#64;contextmanager's single-use limitation, and
+      now ContextDecorator's lost return value — each correcting a plausible but incomplete mental model with the
+      actual documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Decorators & Context Managers"
+    topicRoute="/python/decorators-context-managers"
+    [prev]="{ label: 'A @contextmanager Generator Is Single-Use Only', route: '/python/decorators-context-managers/a-contextmanager-generator-is-single-use-only' }"
+  />
+</div>

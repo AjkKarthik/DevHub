@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Virtual Network" topicRoute="/azure/virtual-network" subtopicLabel="registration-enabled Only Works for VMs" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Private DNS registration-enabled Only Works for VMs</h1>
+  <p class="page-subtitle">The main page's own code sets --registration-enabled false with zero explanation — here's what autoregistration actually does, and why it's irrelevant to the Storage private endpoint example it's attached to.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure DNS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic explains a flag the main page's own code uses but never discusses. Next, the Security Admin Rules subtopic covers a rule layer that sits entirely above NSGs, which the main page never mentions at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Virtual Network" topicRoute="/azure/virtual-network"
+    [prev]="{ label: 'NSG Default Rules Have Exact Priorities', route: '/azure/virtual-network/nsg-default-rules-have-exact-priorities-and-can-be-overridden' }"
+    [next]="{ label: 'Security Admin Rules Bypass NSG Evaluation', route: '/azure/virtual-network/security-admin-rules-can-bypass-nsg-evaluation-entirely' }" />
+</div>

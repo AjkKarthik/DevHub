@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="VPC & Networking" topicRoute="/aws/vpc" subtopicLabel="Flow Logs Aren't Real-Time" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Flow Logs Aren't Real-Time — Aggregation Interval Plus Delivery Lag</h1>
+  <p class="page-subtitle">The main page's own "filter for REJECT records" debugging advice can take 10-20 minutes to become queryable after the actual rejected packet.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="VPC" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic adds the timing dimension the main page's own Flow Logs debugging advice is missing — knowing Flow Logs exist to filter REJECT records isn't enough without knowing how stale that view can be during an active incident. Together with the TGW and cross-region SG subtopics, this batch covers three genuinely distinct VPC gaps the main page's own dense theory bullets only gesture at.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="VPC & Networking" topicRoute="/aws/vpc"
+    [prev]="{ label: 'Cross-Region VPC Peering Can’t Reference Security Groups', route: '/aws/vpc/cross-region-vpc-peering-cant-reference-security-groups-use-cidr' }" />
+</div>

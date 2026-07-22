@@ -478,6 +478,26 @@ to the topic page, not its subtopics.
   check which binding a shared component actually uses (grep its own `.ts` template) rather than
   assuming based on a sibling field in the same data shape.
 
+- **A backtick-wrapped inline-code span containing an escaped shell single-quote, inside a
+  single-quoted TS field, is a real string-termination trap distinct from the plain
+  apostrophe-in-prose gotcha.** Confirmed via a real, self-caught bug during authoring
+  (`/containers/storage`'s Released-PV subtopic, 2026-07-21): a `solution:` field (itself
+  single-quoted, `'...'`) contained an inline code span meant to render `` `kubectl patch pv
+  <name> -p '{"spec":{"claimRef":null}}'` `` — the trailing `\'` (the escaped closing shell
+  quote, correctly escaped per the standard apostrophe rule) was immediately followed by ONE
+  MORE stray, unescaped `'` left over from drafting — that extra unescaped quote closed the
+  outer TS string right there, turning the rest of the sentence (`, which flips the PV's
+  status...`) into loose, invalid syntax outside any string at all. This is mechanically the
+  SAME root cause as every other delimiter-collision gotcha in this file (a delimiter
+  character appearing literally where it isn't expected), but the fix here was not
+  re-escaping — the extra character was a genuine typo, not a missing escape — caught only
+  by a direct file re-read, not by the standard "grep for a bare `'` after a letter" sweep
+  (the character before it was itself a `'`, not a letter). **Any subtopic field mixing
+  inline code (backticks) with a quoted shell command inside it is worth a manual re-read of
+  that specific line before building**, since the standard automated sweeps are tuned for
+  apostrophes-after-letters and don't reliably catch a doubled/stray quote character next to
+  another quote.
+
 - **Literal `@word` text (anywhere — `<h1>`, `<p>`, `<code>`, etc.) in the `.html` template**
   must be escaped as `&#64;word` — writing a literal `@if`/`@defer`/`@placeholder`/etc. as TEXT
   CONTENT between tags is parsed by the Angular compiler as the start of a control-flow/defer
@@ -1168,6 +1188,97 @@ Confirmed via a dedicated Explore-agent investigation before writing (`/node/arc
    proportionally a LARGER share of the total gotcha surface for this hub than for Blazor/C# —
    worth double-checking which delimiter rule applies (`.ts` field → `\'`; `.html` bound
    attribute → `’`) rather than defaulting to whichever one was used most recently.
+9. **A NEW variant of the delimiter-collision gotcha: bare straight-quote marks used as inline
+   emphasis inside an already single-quoted `.ts` string field breaks the build the same way a
+   stray apostrophe does — but this one isn't a possessive/contraction, so the "grep for a bare
+   `'` after a letter" sweep pattern doesn't reliably catch it.** During `/node/logging`, a
+   `theory.points` entry wrote `...illustration: 'headers.authorization' as a redact path...`
+   — using bare `'` marks purely for emphasis (quoting a code term), not as an apostrophe — inside
+   a field already delimited by `'...'`. The first `'` prematurely closed the string; everything
+   after became loose, invalid syntax. Caught by manual review before the sweep (the string
+   visibly "looked wrong" reading it back), not by the standard apostrophe grep, since the
+   character immediately before the quote was a space/colon, not a letter. **Fix: never use bare
+   quote marks for inline emphasis inside a single-quoted TS field — drop the quotes and rely on
+   surrounding prose, or use backticks (safe inside a `'...'`-delimited string) instead.** Add a
+   second sweep pattern going forward: grep for `: '` or ` '` followed later by another bare `'`
+   mid-string (not just letter-adjacent) when a file discusses code identifiers/paths in prose.
+10. **Grepping only the QUOTED form of a `SUBTOPICS` map key before adding a new entry misses a
+    collision if the existing key was written unquoted.** JS/TS object literals allow bare
+    identifier keys (`testing: [...]`) alongside quoted ones (`'testing': [...]`) — both compile
+    to the exact same property, but they don't look alike in a grep for `'testing':`. Hit for real
+    on `/node/testing`: Angular's own `testing` topic had been keyed as a bare, unquoted `testing:`
+    (not `'testing':`) elsewhere in the same `SUBTOPICS` map; the standard quoted-form grep before
+    adding `'testing':` for the Node.js hub came back clean, and the collision only surfaced as a
+    `TS1117: An object literal cannot have multiple properties with the same name` build error.
+    **Fix: grep for BOTH forms of a candidate key before adding — `'<slug>':` AND `\b<slug>:`
+    (bare identifier followed by a colon)** — not just the quoted form this file's own established
+    collision-checking guidance has focused on until now. Resolved the same way as every other
+    collision: hub-prefixed the new entry (`node-testing`), left Angular's pre-existing bare
+    `testing` key untouched, and updated only the Node.js hub's own three nav-accordion helper
+    calls in `app.html` to the prefixed key.
+
+### Python hub subtopic wiring — first pilot, confirms conventions and catches a stale CLAUDE.md note
+
+Confirmed via a dedicated Explore-agent investigation before writing (`/python/fundamentals`,
+2026-07-16) — do this same check before any other new hub's first subtopic set:
+1. **`PYTHON_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+2. **Progress/search keys are `py-` PREFIXED** (`py-fundamentals`), confirmed via existing nav
+   markup. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'python/fundamentals'`, confirmed the
+   base entry already existed) — subtopic composite keys follow suit:
+   `'python/fundamentals/<subtopic-slug>'`.
+3. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked BOTH quoted and unquoted forms,
+   per the collision-detection gap this same file documents from the `/node/testing` batch).
+   Hub-prefixed to `'python-fundamentals'`, with the same `// NOTE:` comment pattern used for
+   every other resolved collision — the three nav-accordion helper calls in `app.html`
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) all use `'python-fundamentals'` too,
+   not the bare slug.
+4. **Nav accordion is INLINE in `app.html`**, not extracted into a separate `PythonNavComponent` —
+   confirmed by finding the existing `@if (currentSection() === 'python')` block directly in
+   `app.html`, same pattern as Node.js/Blazor.
+5. **CORRECTED A STALE NOTE IN THIS FILE'S OWN "Current state" SECTION**: the Python hub's page
+   wrapper/section classes were previously documented here as `.python-page`/`.python-section` —
+   this was WRONG. Direct inspection of the real `fundamentals.html`/`.scss` confirms the actual
+   classes are **`.py-page`/`.py-icon`/`.py-section`** (the icon class was already correctly
+   documented; only the wrapper and section classes were stale). **`.py-page`'s wrapper rule is
+   NOT global** (absent from `src/styles.scss`) — every Python subtopic `.scss` must include the
+   full `.py-page { max-width: 860px; margin: 0 auto; }` rule, padding `2rem 1.25rem 4rem`.
+   **Lesson: a hub's own "Current state" summary in this file can itself be stale — verify
+   against the real component files before trusting a documented class name, the same
+   verify-before-recommend discipline that applies to any other kind of memory/documentation.**
+6. **Icon is LIGHT TINT** (`background: $tint; color: $accent;`), content `🐍` at
+   `font-size: 1.8rem` — confirmed matching the documented default and the real `.scss`.
+   `$accent: #3776ab`, `$tint: #eff8ff`.
+7. `tech="javascript"` in `app-page-meta` — confirmed via the real main page (not a copy-paste
+   bug despite initially looking like one; `'python'` IS a valid value in `PageMetaComponent`'s
+   own type union, but the template has no branch for it, so every one of the hub's 21 existing
+   topic pages consistently uses `tech="javascript"` instead, matching the CSS/HTML hubs' own
+   "share the JS playground" convention) — subtopic pages should match this existing, consistent
+   hub-wide choice, not "fix" it to `tech="python"` unilaterally.
+8. **No in-browser Python runtime** — every subtopic uses `<app-code-block>`, matching the
+   established C#/SQL/Blazor/Node.js pattern; no `LivePlaygroundComponent`/`PlaygroundFile`
+   import.
+9. **A genuine rendering bug, distinct from every previously-documented gotcha**: writing a
+   literal `\n` (backslash-n) inside a plain single-quoted `.ts` string field (a `TryItExercise
+   .solution`) to represent "insert a line break here" in the rendered prose does NOT work the
+   way a template literal's `\n` would — a bare `\\n` (double-backslash-n, needed to survive the
+   JS string literal's own escaping) renders as the LITERAL two characters `\n` visible to the
+   reader, not an actual line break, since `solution` binds via plain interpolation (no HTML
+   parsing to convert anything). Caught by direct browser inspection after the build (the build
+   itself does not catch this — it's valid TS, just semantically wrong output). **Fix: never try
+   to force a line break inside a single-quoted prose field this way — rephrase with punctuation
+   (a comma, an em dash, "then") instead of relying on an embedded newline escape.**
+10. **Confirms the standard bare-`@word`-in-`.html`-bare-text gotcha applies to Python content too**,
+    despite Python having no Razor-style `@` syntax of its own to worry about — the trigger is
+    Angular's own template compiler, not anything about the hub's source language. Hit for real on
+    `/python/functions-closures`'s wraps-on-a-partial subtopic: a `page-subtitle` sentence mentioning
+    `@wraps` as plain prose (describing the `@functools.wraps` decorator by its short name) was parsed
+    by Angular as the start of a control-flow block. Fixed with the standard `&#64;wraps` entity
+    escape. **Any hub whose subject matter involves decorator syntax (`@something`) needs the same
+    `.html`-bare-text sweep as the Blazor/ASP.NET hubs' own `@if`/`@page` Razor-syntax gotcha, for
+    the same underlying reason (Angular's compiler, not the source language, is what's parsing it).**
 
 ### CSS hub subtopic wiring — first pilot, confirms most conventions match the HTML/TS/React pattern
 
@@ -1263,6 +1374,289 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
     the "with" and "without" cases showed the same trapped-child result until this was caught and
     fixed by switching to `position: relative` on a `position: fixed` OUTER wrapper only).
 
+### Go hub subtopic wiring — first `*NavComponent`-based hub to get Phase 10 subtopics; a real structural fix required
+
+Confirmed via a dedicated Explore-agent investigation before writing (`/go/fundamentals`,
+2026-07-17) — do this same check before any other `*NavComponent`-based hub's first
+subtopic set (Redis, GraphQL, Messaging, Testing, DSA, AI, DevOps, Containers, AWS, Azure,
+Linux, Terraform, Service Mesh, Sysdesign, Arch Patterns, Design Patterns, Security, API
+Design, Observability, Mongo — every hub whose nav is extracted into its own component
+rather than inline in `app.html`):
+
+1. **`GO_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are
+   bare too (`'fundamentals/<subtopic-slug>'`).
+2. **Progress/search keys are `go-` PREFIXED** (`go-fundamentals`). **`SIDEBAR_MAP` keys
+   are FULL-PATH PREFIXED** (`'go/fundamentals'`, confirmed the base entry already
+   existed) — subtopic composite keys follow suit: `'go/fundamentals/<subtopic-slug>'`.
+3. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and
+   unquoted forms). Hub-prefixed to `'go-fundamentals'`, same `// NOTE:` comment pattern
+   as every other resolved collision.
+4. **THE STRUCTURAL DISCOVERY — Go's own nav is NOT inline in `app.html` at all.** Unlike
+   every hub whose Phase 10 subtopics had been built before this one, Go's left-nav is a
+   dedicated standalone component, `GoNavComponent` at `shared/go-nav/go-nav.ts` (built
+   earlier specifically "to prevent TS2563 in app.ts" per this file's own "Current state"
+   notes) — confirmed by finding **no** `@if (currentSection() === 'go')` block anywhere in
+   `app.html`, and confirmed `GoNavComponent` had **zero** subtopics-accordion support:
+   no `subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` methods, no accordion markup,
+   nothing. Adding subtopic support meant building this from scratch for the component,
+   not copying an existing inline block the way every previous hub's pilot did.
+5. **The naive fix — importing `SUBTOPICS` from `app.ts` into `go-nav.ts` — creates a
+   circular import** and must not be done: `app.ts` already imports `GoNavComponent`
+   (`import { GoNavComponent } from './components/shared/go-nav/go-nav'`), so
+   `go-nav.ts` importing anything back from `'../../../app'` forms a cycle. **The actual
+   fix**: extracted the ENTIRE `SUBTOPICS: Record<string, SubtopicNavEntry[]>` map (at the
+   time, ~2100 lines covering every hub's subtopics so far) and the `SubtopicNavEntry`
+   interface OUT of `app.ts` into a new standalone file, **`src/app/data/subtopics.ts`**,
+   with both `export`ed. `app.ts` now does
+   `import { SUBTOPICS, SubtopicNavEntry } from './data/subtopics'` instead of declaring
+   the map locally — its own `subtopicsOf()`/`isSubtopicsExpanded()`/`toggleSubtopics()`/
+   `autoExpandForCurrentUrl()` methods are otherwise byte-identical, just reading from the
+   imported binding instead of a local `const`. This is now the **shared, canonical
+   location** for the subtopics map — every future hub's own `SUBTOPICS` entries (whether
+   consumed by inline `app.html` markup or a `*NavComponent`) get added to
+   `src/app/data/subtopics.ts`, not `app.ts`.
+6. **`GoNavComponent` needed its own LOCAL copy of the accordion-state pattern**, since it
+   is a separate component instance with no access to `AppComponent`'s own private state —
+   added directly to the component class: a private `expandedTopics = signal<Set<string>>
+   (new Set())`, the same three methods (`subtopicsOf`, `isSubtopicsExpanded`,
+   `toggleSubtopics`) reading/writing that LOCAL signal (not `AppComponent`'s), and the
+   identical router-subscription-based `autoExpandForCurrentUrl()` logic in the
+   constructor (`inject(Router)`, subscribe to `NavigationEnd`, call once eagerly too for
+   the initial render). The template markup itself (chevron toggle button + nested
+   `<div class="nav-subtopics">` list) is otherwise the exact same block copied from any
+   inline-`app.html` hub, just referencing the component's own local methods instead of
+   `AppComponent`'s.
+7. **No `.go-page` wrapper-global gotcha** — confirmed already documented and current:
+   `.go-page` is defined in the topic's OWN component `.scss` (not globally in
+   `src/styles.scss`), so every subtopic `.scss` needs the standard
+   `.go-page { max-width: 860px; margin: 0 auto; }` redeclaration, same as every other
+   non-global hub.
+8. **A raw Go backtick inside a code sample remains the standing hazard this file already
+   documented in the Go hub's own main "Current state" line** ("Go backticks in code
+   examples must use string concatenation — they terminate TS template literals") — this
+   pilot batch's own Go code samples happened to need zero raw backticks (no Go raw-string
+   literals were used), so the hazard didn't surface here, but the discipline still applies
+   to any future Go subtopic whose sample code needs one.
+9. **Theme, icon, `tech=` attribute**: unchanged from the hub's own established values —
+   `$accent: #00add8`, `$tint: #e8f8fd`, `.go-page`/`.go-icon`/`.go-section` CSS classes,
+   icon content the literal text `Go`, `tech="javascript"` in `app-page-meta` (Go pages
+   share the JS/TS playground and run-it links, same as CSS/HTML/Node.js/Python).
+
+### DevOps hub subtopic wiring — first pilot; the first CONCEPTUAL (non-API-driven) hub, plus
+another `*NavComponent` missing the subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/devops/culture`, 2026-07-18) — do this
+same check before any other new hub's first subtopic set:
+
+1. **`DevopsNavComponent` (`shared/devops-nav/devops-nav.ts`) had ZERO subtopics-accordion
+   support** — no `expandedTopics` signal, no `subtopicsOf`/`isSubtopicsExpanded`/
+   `toggleSubtopics` methods, no router-subscription auto-expand — the exact same structural gap
+   `GoNavComponent` had before its own pilot (see the Go hub section above). Fixed identically:
+   added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from
+   `data/subtopics.ts`) to the imports, then the same three methods and constructor-level router
+   subscription, byte-for-byte the same pattern as `GoNavComponent`'s own. **Any future
+   `*NavComponent`-based hub's first pilot must check for this same gap before assuming the
+   component already supports subtopics** — it is not safe to assume a `*NavComponent` hub has
+   this wiring just because `GoNavComponent` does; each one needs its own confirmed check.
+2. **Progress/search keys are `devops-` PREFIXED** (`devops-culture`), confirmed via existing
+   nav markup. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'devops/culture'`, confirmed the
+   base entry already existed, with its own `DEVOPS_DEFAULT` constant) — subtopic composite keys
+   follow suit: `'devops/culture/<slug>'`.
+3. **No `SUBTOPICS` map bare-key collision for `culture`** (checked both quoted and unquoted
+   forms, confirmed collision-free) — added as a bare key. **A real process mistake caught and
+   corrected before the build**: the nav wiring was initially written using a hub-prefixed
+   `'devops-culture'` key by habit (carried over from several recent Go-hub collisions in a row),
+   BEFORE the actual collision check was run — then corrected to the bare `'culture'` key once
+   the check came back clean. **The collision check must happen BEFORE choosing bare vs.
+   prefixed, not be treated as a formality after already assuming a prefix is needed** — recent
+   back-to-back collisions on other hubs made prefixing feel like the default, but it is not;
+   confirm first.
+4. `DEVOPS_LABELS` breadcrumb map uses bare keys (`'culture'`), matching the generic pattern
+   every hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'culture/<slug>'`).
+5. **Theme**: `.devops-page`/`.devops-icon`/`.devops-section` CSS classes, confirmed NOT global
+   (absent from `src/styles.scss`) — every subtopic `.scss` needs the full `.devops-page {
+   max-width: 860px; margin: 0 auto; }` wrapper rule. `$accent: #ee5d25`, `$tint: #fff7ed`, icon
+   content `⚙️`, `tech="javascript"` in `app-page-meta` (DevOps pages share the JS/TS playground
+   and run-it links, same as CSS/HTML/Node.js/Python/Go).
+6. **No live playground** — DevOps culture content has no runtime to demonstrate at all (it is a
+   methodology/culture topic, not code), following the same `<app-code-block>`-only pattern as
+   the non-Angular hubs (C#/SQL/Blazor/Go), using illustrative bash/YAML checklists and templates
+   as `codeTabs` content instead of running code — matching the main page's own code tab style
+   exactly (the main topic page itself already uses bash/YAML/TypeScript code tabs for templates
+   and conceptual models, not runnable demos).
+7. **THE FIRST CONCEPTUAL, NON-API-DRIVEN HUB — the research-verification approach itself had to
+   change.** Every hub before this one (even the "no runtime available" ones like C#/Blazor/
+   Node.js) verified claims against API docs, language specs, or framework documentation — a
+   fundamentally different research task from DevOps culture's actual subject matter (CALMS,
+   DORA metrics, Project Aristotle, blameless postmortems), which has no API surface at all.
+   Sources shifted accordingly: DORA's own current methodology guide (dora.dev), Google's own
+   re:Work research page for Project Aristotle, and Google's own SRE book chapter for blameless
+   postmortem culture — authoritative PRIMARY research/methodology sources instead of API docs,
+   but the same "verify before publishing, drop the angle if it won't verify cleanly" discipline
+   applied identically. **`WebFetch` repeatedly 404'd or was blocked (403) on plausible-looking
+   URLs for this batch** (an outdated `rework.withgoogle.com` path, `codeascraft.com` blocking
+   the fetch entirely) — `WebSearch` was needed first to find the actual correct, current URLs
+   before `WebFetch` could pull exact quotes. **For any future conceptual/methodology hub topic
+   (SRE practices, incident response, platform engineering, etc.), expect to need `WebSearch` to
+   locate the right primary source BEFORE `WebFetch` can quote it** — guessing at a plausible
+   direct URL (as worked reliably for `pkg.go.dev` throughout the entire Go hub) is much less
+   reliable for general web research sources than it is for structured API documentation sites.
+8. **A genuine, worth-knowing finding from this batch**: DORA's own current metrics guide has
+   evolved past the "Four Key Metrics" framing still extremely common in DevOps educational
+   content (including this hub's own main page) — it is now a five-metric model, with MTTR
+   renamed to "Failed deployment recovery time" and a new "Deployment Rework Rate" metric added.
+   Worth checking whether other DevOps-hub topics (or any other hub's own DORA mentions) still
+   reference the old four-metric framing as if it were current and unchanged.
+9. **Escalated the typographic-quote rule from single apostrophes to scare-quote double-quotes**:
+   a `[prev]`/`[next]` label needing literal double-quote punctuation around a word (e.g. "The
+   SRE Book's Own Definition Sharpens "Blameless"") used curly `"`/`"` marks (U+201C/U+201D)
+   rather than straight ASCII `"` — the same underlying reasoning as the established `'`
+   (U+2019) apostrophe rule (a delimiter character must not appear literally inside a
+   same-delimiter-quoted string), just applied to double quotes instead of single ones. Since
+   the outer Angular attribute is itself double-quoted (`[next]="..."`), a literal straight `"`
+   inside the label text would have closed the outer attribute prematurely — the curly-quote
+   substitution avoids this the same way `’` avoids the single-quote collision.
+
+### Containers/K8s hub subtopic wiring — first pilot; another `*NavComponent` missing the
+subtopics-accordion structural fix, plus a real SUBTOPICS collision
+
+Confirmed via direct file inspection before the pilot (`/containers/fundamentals`, 2026-07-21) —
+do this same check before any other new hub's first subtopic set:
+
+1. **`ContainersNavComponent` (`shared/containers-nav/containers-nav.ts`) had ZERO
+   subtopics-accordion support** — the same structural gap already hit and fixed on
+   `GoNavComponent` and `DevopsNavComponent` before their own pilots. Fixed identically: added
+   `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from
+   `data/subtopics.ts`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, byte-for-byte the same pattern as the other two. **This is now the THIRD
+   `*NavComponent`-based hub in a row missing this wiring at pilot time — do not assume any
+   `*NavComponent` hub has it; confirm per hub, every time.**
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted
+   forms, per the standing collision-detection discipline). Hub-prefixed to `k8s-fundamentals`
+   — matching this hub's own established progress/search key prefix (`k8s-`, confirmed via the
+   pre-existing `p.isDone('k8s-fundamentals')` nav markup) — with the usual `// NOTE:` comment.
+   All three `ContainersNavComponent` accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'k8s-fundamentals'`
+   key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'containers/fundamentals'`, confirmed the
+   base entry — and its own `K8S_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'containers/fundamentals/<slug>'`.
+4. **`CONTAINERS_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the
+   generic pattern every hub's own dedicated labels map shares — composite subtopic keys there
+   are bare too (`'fundamentals/<slug>'`), since each hub's own labels map has no cross-hub
+   collision risk regardless of what the shared `SUBTOPICS` map needed to do.
+5. **No live playground** — Docker/Kubernetes content has no in-browser runtime, following the
+   same `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/Blazor/Go/
+   DevOps/Node.js's server-only topics) — every code tab across all three subtopics uses plain
+   bash command transcripts, matching the main page's own `codeTabs` style exactly.
+6. Theme: `.k8s-page`/`.k8s-icon`/`.k8s-section` CSS classes, confirmed NOT global (absent from
+   `src/styles.scss`) — every subtopic `.scss` needs the full `.k8s-page { max-width: 860px;
+   margin: 0 auto; }` wrapper rule. `$accent: #326ce5`, `$tint: #eff6ff`, icon content `⎈`,
+   `tech="javascript"` in `app-page-meta` (Containers pages share the JS/TS playground and
+   run-it links, same as CSS/HTML/Node.js/Python/Go/DevOps).
+
+### AWS hub subtopic wiring — first pilot; the 4th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/aws/fundamentals`, 2026-07-21) — do this
+same check before any other new hub's first subtopic set:
+
+1. **`AwsNavComponent` (`shared/aws-nav/aws-nav.ts`) had ZERO subtopics-accordion support** —
+   same structural gap already hit and fixed on `GoNavComponent`, `DevopsNavComponent`, and
+   `ContainersNavComponent` before their own pilots. Fixed identically: added `signal`, `Router`,
+   `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from `../../../data/subtopics`) to the
+   imports, then the same three methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`)
+   and constructor-level router subscription, byte-for-byte the same pattern as the other three.
+   **This is now the FOURTH `*NavComponent`-based hub in a row missing this wiring at pilot
+   time — never assume any `*NavComponent` hub has it; confirm per hub, every time.**
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `aws-fundamentals` —
+   matching this hub's own established progress/search key prefix (`aws-`) — with the usual
+   `// NOTE:` comment. All three `AwsNavComponent` accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'aws-fundamentals'`
+   key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'aws/fundamentals'`, confirmed the base
+   entry — and its own `AWS_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'aws/fundamentals/<slug>'`.
+4. **`AWS_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+5. **No live playground** — AWS CLI/SDK/IAM content has no in-browser runtime, following the
+   same `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/Blazor/Go/
+   DevOps/Node.js/Containers) — every code tab across all three subtopics uses plain bash/AWS CLI
+   command transcripts, matching the main page's own `codeTabs` style exactly.
+6. Theme: `.aws-page`/`.aws-icon`/`.aws-section` CSS classes, confirmed NOT global (absent from
+   `src/styles.scss`) — every subtopic `.scss` needs the full `.aws-page { max-width: 860px;
+   margin: 0 auto; }` wrapper rule. `$accent: #ff9900`, `$tint: #fff7ed`, icon content `AWS`,
+   `tech="javascript"` in `app-page-meta` (AWS pages share the JS/TS playground and run-it links,
+   same as CSS/HTML/Node.js/Python/Go/DevOps/Containers).
+7. **A genuine main-page inaccuracy found and fixed during pilot authoring**: `fundamentals.ts`'s
+   own "AWS CLI & SDK" theory bullet listed the CLI/SDK credential provider chain as "env vars →
+   ~/.aws/credentials → instance profile → ECS task role" — the last two links reversed relative
+   to AWS's own documented standardized credential provider chain, which checks container
+   credentials (ECS task role) BEFORE the EC2 instance profile, not after. Corrected via the same
+   "verify against official docs, fix the main page directly" precedent already established
+   across the Containers/K8s hub (3 similar fixes) and other hubs before it.
+8. **The apostrophe-after-letter pre-build sweep must cover `.ts` files' own single-quoted
+   fields too, not just `.html` bound attributes.** A real build failure on the `/aws/ec2` batch
+   (io1 Multi-Attach subtopic): one bare, unescaped apostrophe in "the main page's own" inside an
+   `exercise.prompt` field — a LATER apostrophe in the same field ("subtopic's theory") was
+   correctly escaped, so this was an isolated single miss, not a systemic one. The sweep run
+   before that build only checked the three `.html` files' `[prev]`/`[next]` bound attributes,
+   never the `.ts` files' own single-quoted `prompt:`/`hint:`/`solution:`/`thought:`/`reality:`/
+   `points:` field bodies. **Fix, now standing practice**: run the apostrophe-after-letter grep
+   against `.ts` files too, targeting those specific single-quoted field bodies — backtick-
+   delimited `code:` fields are unaffected (backticks tolerate bare apostrophes fine) and don't
+   need this check.
+
+### Azure hub subtopic wiring — first pilot; the 5th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/azure/fundamentals`, 2026-07-22) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`AzureNavComponent` (`shared/azure-nav/azure-nav.ts`) had ZERO subtopics-accordion
+   support** — the same structural gap already hit and fixed on `GoNavComponent`,
+   `DevopsNavComponent`, `ContainersNavComponent`, and `AwsNavComponent` before their own pilots.
+   Fixed identically: added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS`
+   (from `../../../data/subtopics`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, byte-for-byte the same pattern as the other four. **This is now the FIFTH
+   `*NavComponent`-based hub in a row missing this wiring at pilot time — never assume any
+   `*NavComponent` hub has it; confirm per hub, every time.**
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `azure-fundamentals` —
+   matching this hub's own established progress/search key prefix (`azure-`) — with the usual
+   `// NOTE:` comment. All three `AzureNavComponent` accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'azure-fundamentals'`
+   key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'azure/fundamentals'`, confirmed the base
+   entry — and its own `AZURE_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'azure/fundamentals/<slug>'`.
+4. **`AZURE_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+5. **No live playground** — Azure CLI/ARM content has no in-browser runtime, following the same
+   `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/Blazor/Go/DevOps/
+   Node.js/Containers/AWS) — every code tab across all three subtopics uses plain `az` CLI command
+   transcripts, matching the main page's own `codeTabs` style exactly.
+6. Theme: `.azure-page`/`.azure-icon`/`.azure-section` CSS classes, confirmed NOT global (absent
+   from `src/styles.scss`) — every subtopic `.scss` needs the full `.azure-page { max-width:
+   860px; margin: 0 auto; }` wrapper rule. `$accent: #0089d6`, `$tint: #e8f4fd`, icon content
+   `Az`, `tech="javascript"` in `app-page-meta` (Azure pages share the JS/TS playground and run-it
+   links, same as every other non-JS-runtime hub).
+7. No genuine main-page inaccuracy found in this pilot batch — all three subtopic angles
+   EXPANDED on main-page content that was accurate but incomplete (a single lock example, a
+   one-sentence mention of a CLI command, a flat "spread across 3 AZs" theory bullet) rather than
+   correcting anything wrong.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -1333,9 +1727,13 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
   Challenge.language must be `'typescript'` — never `'go'`. `{}` in HTML must be escaped as `&#123;&#125;`.
   Go backticks in code examples must use string concatenation — they terminate TS template literals.
   GoNavComponent at `shared/go-nav/go-nav.ts` extracts Go navigation (prevents TS2563 in app.ts).
+  Phase 10: 1 of 21 topics have subtopics (`/go/fundamentals`, pilot batch, 2026-07-17) — see
+  "Go hub subtopic wiring" section above for the `SUBTOPICS` circular-import fix
+  (`src/app/data/subtopics.ts`) every future `*NavComponent`-based hub's own pilot needs too.
 - **Python hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
   Blue theme `$accent: #3776ab`, tint `#eff8ff`. Search prefix `py-`. Route: `/python`.
-  CSS classes: `.python-page`, `.py-icon`, `.python-section`. Icon content: `🐍` at `font-size: 1.8rem`. `tech="javascript"`.
+  CSS classes: `.py-page`, `.py-icon`, `.py-section` (corrected 2026-07-16 — previously misdocumented as
+  `.python-page`/`.python-section`; confirmed against the real `fundamentals.html`/`.scss`). Icon content: `🐍` at `font-size: 1.8rem`. `tech="javascript"`.
   Nav groups: Foundations, OOP & Patterns, Data & Types, Async, Web & APIs, Data Science, Tooling, Reference.
   All 23 cards `available: true` in `backend/python/home/home.ts`. Progress: `pyTotal=21` in progress.service.ts.
   Python pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
@@ -1354,6 +1752,21 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
   All 22 cards `available: true` in `cloud/devops/home/home.ts`. Progress: `devopsTotal=21` in progress.service.ts.
   DevOps pages use `app-common-mistakes` AND `app-revision-card`. Reference page (cheatsheet) has no PageComplete.
   Challenge.language: `'typescript'` or `'bash'`.
+- **AWS hub**: 21 trackable topic pages + 1 cheatsheet reference (22 cards total). Feature-complete.
+  Orange theme `$accent: #ff9900`, `$tint: #fff7ed`, dark `#fb923c`. Search prefix `aws-`. Route: `/aws`.
+  CSS classes: `.aws-page`, `.aws-icon`, `.aws-section`. Icon content: `AWS`. `tech="javascript"`.
+  Nav groups: Foundations, Compute, Networking, Storage, IAM, Databases, Serverless, Operations, Reference.
+  All 22 cards `available: true` in `cloud/aws/home/home.ts`. Progress: `awsTotal=21` in progress.service.ts.
+  AWS pages use `app-common-mistakes` AND `app-revision-card`. Reference page (cheatsheet) has no PageComplete.
+  Challenge.language: `'typescript'`. AwsNavComponent at `shared/aws-nav/aws-nav.ts`.
+  Phase 10: **COMPLETE — 21 of 21 topics have subtopics** (`/aws/fundamentals`, `/aws/ec2`,
+  `/aws/ecs-eks`, `/aws/vpc`, `/aws/route53-cloudfront`, `/aws/s3`, `/aws/ebs-efs`, `/aws/iam`,
+  `/aws/iam-roles`, `/aws/rds-aurora`, `/aws/dynamodb`, `/aws/lambda`, `/aws/api-gateway`,
+  `/aws/cloudwatch`, `/aws/cloudformation-cdk`, `/aws/security`, `/aws/sqs-sns`,
+  `/aws/eventbridge`, `/aws/step-functions`, `/aws/load-balancing`, `/aws/cost-optimization`,
+  finished 2026-07-22) — see "AWS hub subtopic wiring" section above for the `AwsNavComponent`
+  accordion structural fix and the `aws-fundamentals`/`aws-security` SUBTOPICS-map collision
+  resolutions (`aws-security` collided with the SQL hub's own bare `security` topic key).
 - **Azure hub**: 22 trackable topic pages + 1 cheatsheet reference (23 cards total). Feature-complete.
   Blue theme `$accent: #0089d6`, tint `#e8f4fd`, dark `#60b9f8`. Search prefix `azure-`. Route: `/azure`.
   CSS classes: `.azure-page`, `.azure-icon`, `.azure-section`. Icon content: `Az`. `tech="javascript"`.
@@ -1361,6 +1774,18 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
   All 23 cards `available: true` in `cloud/azure/home/home.ts`. Progress: `azureTotal=22` in progress.service.ts.
   Azure pages use `app-common-mistakes` AND `app-revision-card`. Cheatsheet reference has no PageComplete.
   Challenge.language: `'typescript'`. CodeTab.language: never `'json'` or `'bicep'` — use `'bash'` instead.
+  AzureNavComponent at `shared/azure-nav/azure-nav.ts`.
+  Phase 10: 7 of 22 topics have subtopics (`/azure/fundamentals`, `/azure/arm`,
+  `/azure/virtual-machines`, `/azure/app-service`, `/azure/functions`, `/azure/aks`,
+  `/azure/virtual-network`, 2026-07-22) — see
+  "Azure hub subtopic wiring" section above for the `AzureNavComponent` accordion structural fix
+  and the `azure-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript
+  hub's own bare `fundamentals` topic key). **Real gap caught on the `/azure/arm` batch**: adding
+  a NEW topic's nav-link toggle to `AzureNavComponent` is a per-topic edit, not something the
+  accordion structural fix from the pilot batch covers automatically — the ARM toggle was
+  initially left unwired and only caught by a post-build browser check showing 1 open toggle
+  instead of the expected 2. Verify the toggle COUNT on the topic overview page (not just that
+  each subtopic page's own toggle opens) for every future Azure-hub batch.
 - **Linux hub**: 19 trackable topic pages + 2 reference pages (21 cards total). Feature-complete.
   Yellow theme `$accent: #fcc624`, tint `#fef9e7`, dark `#fde68a`. Search prefix `linux-`. Route: `/linux`.
   CSS classes: `.linux-page`, `.linux-icon`, `.linux-section`. Icon content: `🐧` at `font-size: 1.8rem`. `tech="javascript"`.
@@ -1417,6 +1842,24 @@ Confirmed via direct file inspection before the first subtopic set (`/css/box-mo
   All 23 cards `available: true` in `cloud/containers/home/home.ts`. Progress: `k8sTotal=22` in progress.service.ts.
   Containers pages use `app-common-mistakes` AND `app-revision-card`. Reference page has no PageComplete.
   Challenge.language: `'typescript'`. ContainersNavComponent at `shared/containers-nav/containers-nav.ts`.
+  Phase 10: **COMPLETE — 22 of 22 topics have subtopics** (66 subtopic pages total),
+  finished 2026-07-21. See "Containers/K8s hub
+  subtopic wiring" section above for the `ContainersNavComponent` accordion structural fix and
+  the `k8s-fundamentals` SUBTOPICS-map collision resolution. Note: `search.ts`'s `url()` needed
+  a special case for `k8s-architecture` specifically — its own bare topic slug happens to start
+  with the hub's `k8s-` prefix, so the generic prefix-strip rule was wrongly producing
+  `/containers/architecture` instead of `/containers/k8s-architecture`; check any future
+  hub/topic slug that itself starts with its own hub's search-prefix string for the same risk.
+  Three genuine main-page content inaccuracies were found and corrected during this hub's own
+  subtopic authoring (RBAC's QnA on privilege escalation, StatefulSets' QnA on init-container
+  network-namespace sharing, Resource-Limits' QnA on ResourceQuota admission behavior) — all
+  confirmed against official Kubernetes docs before correction, per the established
+  "fix genuine inaccuracies found during subtopic authoring" precedent. The
+  `/containers/network-policies` batch also hit the documented Windows MAX_PATH gotcha for
+  real (a 79-char subtopic slug + the `network-policies/subtopics/` nesting exceeded 260
+  chars) — fixed per the established short-physical-folder recipe; the very next batch
+  (`/containers/troubleshooting`) proactively kept all three slugs under ~55 chars from the
+  start to avoid a repeat.
 - **Terraform/IaC hub**: 21 trackable topic pages + 2 reference (23 cards total). Feature-complete.
   Purple theme `$accent: #7b42bc`, `$tint: #f5f3ff`. Search prefix `tf-`. Route: `/terraform`.
   CSS classes: `.tf-page`, `.tf-icon`, `.tf-section`. Icon content: `TF`. `tech="javascript"`.

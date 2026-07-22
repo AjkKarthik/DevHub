@@ -1,0 +1,37 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Slices &amp; Maps" topicRoute="/go/slices-maps" subtopicLabel="Struct Map Values" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Struct Map Values Aren't Addressable</h1>
+  <p class="page-subtitle">
+    m[key].Field = x fails to compile — map index expressions are not addressable in Go, unlike array and
+    slice elements, because a map's internal storage can move entries during growth and rehashing.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains why every one of the main page's own struct-in-map patterns quietly avoids direct
+      field mutation — now it's explicit, with both real fixes and the tradeoff between them. Back to the
+      Slices &amp; Maps overview, or continue to Goroutines, where the concurrency implications of the
+      pointer-vs-value choice made here become directly relevant.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Slices &amp; Maps"
+    topicRoute="/go/slices-maps"
+    [prev]="{ label: 'Map Deletes Don’t Shrink Memory', route: '/go/slices-maps/map-deletes-dont-shrink-memory' }"
+  />
+</div>

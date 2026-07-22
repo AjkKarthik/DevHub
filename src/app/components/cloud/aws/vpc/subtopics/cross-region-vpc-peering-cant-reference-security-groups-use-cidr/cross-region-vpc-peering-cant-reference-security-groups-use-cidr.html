@@ -1,0 +1,27 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="VPC & Networking" topicRoute="/aws/vpc" subtopicLabel="Cross-Region SG Reference Limit" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Cross-Region VPC Peering Can’t Reference Security Groups</h1>
+  <p class="page-subtitle">The main page's own SG-chaining tip only works within a Region — cross-Region peering falls back to broader, non-adjusting CIDR rules.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="VPC" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic sharpens the main page's own general SG-chaining recommendation into its actual, region-bound scope, plus a related operational trap (stale rules after a peering connection is deleted) the main page never mentions at all. Next, the VPC Flow Logs subtopic covers a third gap: the main page's own "filter for REJECT records to debug connectivity" advice implies a real-time signal that Flow Logs genuinely are not.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="VPC & Networking" topicRoute="/aws/vpc"
+    [prev]="{ label: 'TGW Association vs Propagation', route: '/aws/vpc/tgw-route-tables-need-both-association-and-propagation-for-isolation' }"
+    [next]="{ label: 'Flow Logs Aren’t Real-Time', route: '/aws/vpc/flow-logs-arent-real-time-aggregation-interval-plus-delivery-lag' }" />
+</div>

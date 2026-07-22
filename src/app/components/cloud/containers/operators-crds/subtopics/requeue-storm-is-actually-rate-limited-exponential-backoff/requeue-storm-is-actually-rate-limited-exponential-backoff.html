@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Operators & CRDs" topicRoute="/containers/operators-crds" subtopicLabel="The Requeue “Storm” Is Actually Rate-Limited Exponential Backoff" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">The Requeue "Storm" Is Actually Rate-Limited Exponential Backoff</h1>
+  <p class="page-subtitle">
+    The main page's own mistake entry calls repeated NotFound-as-error retries a "requeue storm" — controller-runtime's
+    default rate limiter self-limits this per object within seconds, growing to a ~1000s ceiling, not an unbounded flood.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic closes out this batch's look at three places where the main page's own worked example or
+      wording glosses over a real mechanism. Back to the Kubernetes Operators & CRDs overview, or review the
+      resourceVersion conflict risk or the CRD establishment race.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Kubernetes Operators & CRDs"
+    topicRoute="/containers/operators-crds"
+    [prev]="{ label: 'A CRD and Its Own CR Applied Together Can Race the Established Condition', route: '/containers/operators-crds/crd-and-cr-in-the-same-apply-race-the-established-condition' }"
+  />
+</div>

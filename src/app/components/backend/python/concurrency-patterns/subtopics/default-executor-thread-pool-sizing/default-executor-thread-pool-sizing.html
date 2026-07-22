@@ -1,0 +1,38 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Python Concurrency Patterns" topicRoute="/python/concurrency-patterns" subtopicLabel="Default Executor Sizing" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">The Default Executor’s Thread Pool Size Isn’t Unlimited</h1>
+  <p class="page-subtitle">
+    Every asyncio.to_thread() call on an event loop shares one lazily-created pool, capped at min(32, os.cpu_count()
+    + 4) — not a fresh thread per call.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Python 3.9+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's quick reference lists run_in_executor(None, fn) and asyncio.to_thread() as the standard
+      bridge for blocking sync code — this subtopic reveals the shared pool and its worker cap those two calls
+      quietly rely on. Together with the previous two subtopics, this completes the pattern: how a TaskGroup
+      failure surfaces, how a callable crosses a process boundary, and how many threads are actually available
+      when it crosses a thread boundary instead.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Python Concurrency Patterns"
+    topicRoute="/python/concurrency-patterns"
+    [prev]="{ label: 'ProcessPoolExecutor Can’t Pickle Closures or Lambdas', route: '/python/concurrency-patterns/processpool-requires-picklable-closures' }"
+  />
+</div>

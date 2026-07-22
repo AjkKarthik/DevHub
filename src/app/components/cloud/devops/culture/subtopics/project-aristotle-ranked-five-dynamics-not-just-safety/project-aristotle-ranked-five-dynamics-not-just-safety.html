@@ -1,0 +1,37 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DevOps Culture" topicRoute="/devops/culture" subtopicLabel="Project Aristotle's Full Ranking" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Project Aristotle Ranked Five Dynamics, Not Just Safety</h1>
+  <p class="page-subtitle">
+    The main page cites Project Aristotle for psychological safety alone — Google's own research page ranks
+    it first among five dynamics, "in order of importance," not as a standalone finding.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2016+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic completes the main page's own Project Aristotle citation with the full ranked framework
+      Google's own research produced. Back to the DevOps Culture overview, or continue to what the SRE
+      book's own definition adds to "blameless."
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DevOps Culture"
+    topicRoute="/devops/culture"
+    [prev]="{ label: 'DORA Metrics Evolved From Four Keys to Five', route: '/devops/culture/dora-metrics-evolved-from-four-keys-to-five' }"
+    [next]="{ label: 'The SRE Book’s Own Definition Sharpens “Blameless”', route: '/devops/culture/sre-books-own-definition-sharpens-blameless' }"
+  />
+</div>

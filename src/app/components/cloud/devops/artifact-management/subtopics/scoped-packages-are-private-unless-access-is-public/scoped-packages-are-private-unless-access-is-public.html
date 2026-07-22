@@ -1,0 +1,35 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Artifact Management" topicRoute="/devops/artifact-management" subtopicLabel="Scoped Packages Are Private Unless access Is public" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">Scoped Packages Are Private Unless access Is public</h1>
+  <p class="page-subtitle">
+    The main page's own package.json sets publishConfig.access: "public" without saying why — on a free-tier org,
+    a new scoped package's very first publish fails outright without it.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a package.json field the main page's own code tab includes without justification.
+      Back to why docker inspect's digest lookup must run after the push, or to the Artifact Management overview.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Artifact Management"
+    topicRoute="/devops/artifact-management"
+    [prev]="{ label: 'RepoDigests Is Empty Until a Registry Round Trip', route: '/devops/artifact-management/repodigests-is-empty-until-a-registry-round-trip' }"
+  />
+</div>

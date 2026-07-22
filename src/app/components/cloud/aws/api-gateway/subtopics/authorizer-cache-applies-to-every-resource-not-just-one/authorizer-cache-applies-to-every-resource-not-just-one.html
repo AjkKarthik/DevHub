@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Gateway" topicRoute="/aws/api-gateway" subtopicLabel="Authorizer Cache Applies to Every Resource" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">Authorizer Cache Applies to Every Resource, Not Just One</h1>
+  <p class="page-subtitle">The main page's own TOKEN-only examples never explain what a cached policy actually covers — or that AWS itself recommends REQUEST authorisers instead.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="API Gateway" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the caching-scope detail behind the main page's own authoriser TTL mistake entry. Next, the resource policy subtopic sharpens the main page's own "evaluated before authoriser" line into the actual two-phase flow AWS documents.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Gateway" topicRoute="/aws/api-gateway"
+    [next]="{ label: 'Resource Policy Has Two Evaluation Phases', route: '/aws/api-gateway/resource-policy-has-two-evaluation-phases-not-one' }" />
+</div>

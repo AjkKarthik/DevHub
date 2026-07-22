@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing with pytest" topicRoute="/python/pytest" subtopicLabel="pytest.raises() Matching" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">pytest.raises() Matches Subclasses Too</h1>
+  <p class="page-subtitle">
+    pytest.raises(SomeException) matches that type OR any subclass, exactly like a real except clause — a broad
+    exception class can pass even when the wrong specific exception was raised.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="pytest 7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      The main page's own theory covers pytest.raises() as a straightforward exception check without mentioning
+      subclass matching — this subtopic fills that gap and shows the documented fix for when exact type matters.
+      The final subtopic moves to a different mechanic entirely: what happens when two fixtures share a name.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing with pytest"
+    topicRoute="/python/pytest"
+    [prev]="{ label: 'autouse Fixtures Run Without Being Requested', route: '/python/pytest/autouse-fixtures-run-without-being-requested' }"
+    [next]="{ label: 'A Test File’s Fixture Overrides conftest.py by Name', route: '/python/pytest/a-test-file-fixture-overrides-conftest-by-name' }"
+  />
+</div>

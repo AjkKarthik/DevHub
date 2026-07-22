@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Continuous Delivery" topicRoute="/devops/continuous-delivery" subtopicLabel="The Service Selector Switch Isn’t Actually Instant" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">The Service Selector Switch Isn't Actually Instant</h1>
+  <p class="page-subtitle">
+    The main page's own Blue/Green code tab calls the traffic switch "instant, atomic" — Kubernetes's own docs
+    describe a node-by-node kube-proxy sync process that isn't quite either.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own Blue/Green code comment into the precise mechanism behind it.
+      Back to the Continuous Delivery overview, or continue to the awk idiom used in the main page's own Canary
+      code tab.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Continuous Delivery"
+    topicRoute="/devops/continuous-delivery"
+    [next]="{ label: 'awk’s BEGIN-exit Idiom for Comparing Floats', route: '/devops/continuous-delivery/awk-begin-exit-is-how-bash-compares-floats' }"
+  />
+</div>

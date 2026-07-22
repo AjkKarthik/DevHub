@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GORM" topicRoute="/go/gorm" subtopicLabel="Association Mode" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Association Mode Is Not Preload</h1>
+  <p class="page-subtitle">
+    The main page's own Associations example uses .Association(...).Append/.Count alongside Preload with no
+    distinction drawn — Preload reads, Association Mode manipulates one already-loaded record's own relationships.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="GORM v2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic names and separates two operations the main page's own code mixes together without
+      comment. Back to the GORM overview, or continue to Go Generics, where type parameters offer a different
+      way to write reusable repository code across models like these.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GORM"
+    topicRoute="/go/gorm"
+    [prev]="{ label: 'gorm.Expr Pushes Arithmetic to the Database', route: '/go/gorm/gormexpr-pushes-arithmetic-to-the-database' }"
+  />
+</div>

@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Pipelines" topicRoute="/devops/azure-pipelines" subtopicLabel="Compile-Time Expressions, Not Runtime" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">The Third Expression Syntax the Main Page Uses but Never Names</h1>
+  <p class="page-subtitle">
+    The main page's own quiz contrasts <code>$()</code> and <code>$[]</code> — but its own Templates code
+    tab uses a third, compile-time syntax (curly double braces) without ever explaining it.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="2019+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic completes the three-tier expression model the main page's own code only partially shows.
+      Back to the Azure Pipelines overview, or continue to how a custom <code>condition:</code> interacts with
+      the default success check, since the two ideas are closely related.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Azure Pipelines"
+    topicRoute="/devops/azure-pipelines"
+    [next]="{ label: 'A Custom condition: Overwrites the Default', route: '/devops/azure-pipelines/custom-condition-overwrites-not-adds-to-the-default' }"
+  />
+</div>

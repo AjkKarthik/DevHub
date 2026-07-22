@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="gRPC in Go" topicRoute="/go/grpc" subtopicLabel="Bidirectional Streaming" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Bidi Streaming: The Two Directions Are Independent</h1>
+  <p class="page-subtitle">
+    The main page names bidirectional streaming but never codes it — the two stream directions can happen in
+    any order, which is exactly why a correct client needs a separate goroutine for one of them.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Go 1.21+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic fills the one call type the main page's own code examples skip entirely. The next subtopic
+      covers a client-creation mechanic distinct from anything in the main page's own Dial-vs-NewClient
+      comparison: exactly when the connection is actually established.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="gRPC in Go"
+    topicRoute="/go/grpc"
+    [next]="{ label: 'NewClient Lazily Connects on First RPC', route: '/go/grpc/newclient-lazy-connects-on-first-rpc' }"
+  />
+</div>

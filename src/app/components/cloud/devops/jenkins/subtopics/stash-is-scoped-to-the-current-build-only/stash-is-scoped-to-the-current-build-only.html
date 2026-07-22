@@ -1,0 +1,36 @@
+<div class="devops-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Jenkins" topicRoute="/devops/jenkins" subtopicLabel="stash Is Scoped to the Current Build Only" />
+  <div class="page-header-icon devops-icon">⚙️</div>
+  <h1 class="page-title">stash Is Scoped to the Current Build Only</h1>
+  <p class="page-subtitle">
+    The main page's own QnA explains stash/unstash moves files between stages on different agents — but never
+    says a stash is deleted the moment its own pipeline run finishes, and cannot survive into a later build.
+  </p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2016+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="devops-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="devops-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic sharpens the main page's own stash/unstash QnA into a precise lifetime rule, and introduces
+      archiveArtifacts as the actual tool for cross-build reuse. Back to the Jenkins overview, or continue to
+      disableConcurrentBuilds, used in the main page's own first code tab without explanation.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Jenkins"
+    topicRoute="/devops/jenkins"
+    [next]="{ label: 'disableConcurrentBuilds Queues, Doesn’t Abort, by Default', route: '/devops/jenkins/disableconcurrentbuilds-queues-not-aborts-by-default' }"
+  />
+</div>

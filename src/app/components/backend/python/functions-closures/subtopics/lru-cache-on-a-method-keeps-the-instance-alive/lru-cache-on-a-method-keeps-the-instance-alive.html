@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functions & Closures" topicRoute="/python/functions-closures" subtopicLabel="lru_cache Memory Leak" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">lru_cache on a Method Keeps the Instance Alive</h1>
+  <p class="page-subtitle">
+    self becomes part of the cache key on a decorated instance method — Python's own docs confirm the cache keeps
+    that instance alive until the entry ages out or is cleared.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own functools.lru_cache coverage with an officially documented pitfall specific
+      to methods. The next subtopic moves to a different functools-adjacent nuance — what order stacked decorators
+      actually execute in, not just how they're applied.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functions & Closures"
+    topicRoute="/python/functions-closures"
+    [next]="{ label: 'Stacked Decorators Apply Bottom-Up but Run Top-Down', route: '/python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down' }"
+  />
+</div>

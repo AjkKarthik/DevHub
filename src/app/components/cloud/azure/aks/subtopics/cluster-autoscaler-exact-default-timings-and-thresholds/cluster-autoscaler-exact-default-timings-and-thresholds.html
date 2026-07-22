@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Kubernetes Service" topicRoute="/azure/aks" subtopicLabel="Cluster Autoscaler's Exact Defaults" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Cluster Autoscaler's Exact Default Timings and Thresholds</h1>
+  <p class="page-subtitle">The main page says "cool-down" with no number — here are the exact defaults (10s scan interval, 10-minute delays, 50% utilization threshold) that actually govern scale-down.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="AKS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the exact numbers behind the main page's own "cool-down" theory. Next, the max-surge subtopic covers node pool upgrade defaults the main page mentions by name but never gives a value for.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Kubernetes Service" topicRoute="/azure/aks"
+    [next]="{ label: 'max-surge Defaults to 1 Node, Not a Percentage', route: '/azure/aks/max-surge-defaults-to-1-node-not-a-percentage' }" />
+</div>

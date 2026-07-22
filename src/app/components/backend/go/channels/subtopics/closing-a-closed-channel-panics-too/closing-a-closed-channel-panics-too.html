@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Channels" topicRoute="/go/channels" subtopicLabel="Double-Close Panics" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">Closing a Closed Channel Panics Too</h1>
+  <p class="page-subtitle">
+    close(ch) on an already-closed channel panics with a distinct message — "close of closed channel" — making
+    "close exactly once" a hard requirement, with sync.Once and coordinator goroutines as the two real fixes.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic shows the exact bug and fix the main page's own mistake entry names but doesn't demonstrate.
+      The next subtopic covers a related but distinct question: what actually happens to values already sitting
+      in a buffered channel when close() is called.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Channels"
+    topicRoute="/go/channels"
+    [next]="{ label: 'Close Doesn’t Discard Buffered Values', route: '/go/channels/close-doesnt-discard-buffered-values' }"
+  />
+</div>

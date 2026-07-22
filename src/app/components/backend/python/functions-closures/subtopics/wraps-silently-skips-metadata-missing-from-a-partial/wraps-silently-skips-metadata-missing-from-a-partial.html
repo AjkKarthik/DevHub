@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functions & Closures" topicRoute="/python/functions-closures" subtopicLabel="wraps() on a partial" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">wraps() Silently Skips Metadata Missing From a partial</h1>
+  <p class="page-subtitle">
+    A functools.partial has no __name__ of its own — &#64;wraps doesn't crash on it, it just silently copies nothing
+    useful, leaving a "wrapper"-named function with no error to signal it.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this rounds out a set of functools/decorator internals that look
+      simpler than they are — lru_cache's hidden reference-keeping on methods, stacked decorators' reversed
+      execution order, and now wraps()'s silent-not-loud failure mode — each correcting a plausible but incomplete
+      mental model with the actual documented behavior.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functions & Closures"
+    topicRoute="/python/functions-closures"
+    [prev]="{ label: 'Stacked Decorators Apply Bottom-Up but Run Top-Down', route: '/python/functions-closures/stacked-decorators-apply-bottom-up-but-run-top-down' }"
+  />
+</div>

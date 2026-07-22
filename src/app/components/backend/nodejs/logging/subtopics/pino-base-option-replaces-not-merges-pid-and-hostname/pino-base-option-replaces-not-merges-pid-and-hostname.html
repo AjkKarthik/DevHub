@@ -1,0 +1,37 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Logging with Pino/Winston" topicRoute="/node/logging" subtopicLabel="base Option Behavior" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">base Option Replaces, Not Merges, pid and hostname</h1>
+  <p class="page-subtitle">
+    Pino's own docs confirm base has a single default value that gets entirely replaced once set — the main
+    page's own config silently drops both fields.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Node 8+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This finds a second silent gap in the main page's own Pino configuration. The final subtopic in this batch
+      turns to redact() again, but from a different angle — the specific category of leak it can never catch no
+      matter how correctly the paths are configured.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging with Pino/Winston"
+    topicRoute="/node/logging"
+    [prev]="{ label: 'Pino Redact Paths Must Match the Exact Log Object Shape', route: '/node/logging/pino-redact-paths-must-match-the-exact-log-object-shape' }"
+    [next]="{ label: 'redact() Never Touches the Log Message String', route: '/node/logging/pino-redact-never-touches-the-log-message-string' }"
+  />
+</div>

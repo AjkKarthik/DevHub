@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Database with Prisma" topicRoute="/node/prisma" subtopicLabel="Singleton in Dev Mode" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">PrismaClient Singleton Needs globalThis Caching in Dev</h1>
+  <p class="page-subtitle">
+    A plain module-level singleton is correct in production, but hot-module-reloading can re-evaluate the module
+    and quietly create a new connection pool on every save.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Prisma 2.0+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This batch traced three precise limits and mechanics underneath the main page's own patterns: how long an
+      interactive transaction is actually allowed to run, what a raw-query aggregate can silently return, and now
+      exactly when the main page's own singleton fix needs one more line to stay correct.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Database with Prisma"
+    topicRoute="/node/prisma"
+    [prev]="{ label: '$queryRaw Can Return BigInt', route: '/node/prisma/queryraw-can-return-bigint-json-stringify-throws' }"
+  />
+</div>

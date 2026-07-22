@@ -1,0 +1,36 @@
+<div class="go-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Go Generics" topicRoute="/go/generics" subtopicLabel="Zero Value of T" />
+  <div class="page-header-icon go-icon">Go</div>
+  <h1 class="page-title">The Zero Value of a Type Parameter</h1>
+  <p class="page-subtitle">
+    The main page's own Stack and Cache code write "var zero T" three times with no explanation — nil doesn't
+    compile for a plain type parameter, since T might be instantiated as a non-nilable type like int.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Go 1.18+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="go-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="go-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains a pattern the main page's own code relies on repeatedly without ever naming it.
+      The next subtopic covers a constraint-syntax capability the main page's own pure type-union examples
+      never show: combining a union with a required method in one constraint.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Go Generics"
+    topicRoute="/go/generics"
+    [next]="{ label: 'A Constraint Can Combine a Union and a Method', route: '/go/generics/constraint-can-combine-union-and-method' }"
+  />
+</div>

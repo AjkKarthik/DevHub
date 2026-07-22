@@ -1,0 +1,37 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Threading & Multiprocessing" topicRoute="/python/threading-multiprocessing" subtopicLabel="Silent Future Failures" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">An Unread Future Exception Is Silently Swallowed</h1>
+  <p class="page-subtitle">
+    A task's exception is stored on its Future — Python's own docs confirm it only surfaces via .result() or
+    .exception(), with no documented way for it to appear anywhere else.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This names the exact reason the main page's own submit()/as_completed() examples always call .result() — it
+      isn't just how you get the value, it's the only way a failure becomes visible. The next subtopic moves to
+      multiprocessing's fork/spawn distinction, the mechanism behind a Windows-specific gotcha the main page only
+      names the symptom of.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Threading & Multiprocessing"
+    topicRoute="/python/threading-multiprocessing"
+    [next]="{ label: 'fork vs. spawn Changes What a Child Process Inherits', route: '/python/threading-multiprocessing/fork-vs-spawn-changes-what-a-child-process-inherits' }"
+  />
+</div>

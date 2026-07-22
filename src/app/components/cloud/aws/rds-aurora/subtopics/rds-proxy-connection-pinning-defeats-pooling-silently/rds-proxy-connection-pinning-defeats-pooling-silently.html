@@ -1,0 +1,26 @@
+<div class="aws-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RDS & Aurora" topicRoute="/aws/rds-aurora" subtopicLabel="RDS Proxy Connection Pinning" />
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">RDS Proxy Connection Pinning Defeats Pooling Silently</h1>
+  <p class="page-subtitle">The main page's own "problem solved" framing has a real limit — specific operations pin a client connection out of the pool for the rest of its session.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="RDS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="aws-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="aws-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic adds the real limit to the main page's own "RDS Proxy solves the Lambda connection problem" framing — a genuinely useful operational detail for anyone running workloads that touch temp tables, prepared statements, or large batch queries. Next, the Aurora Global Database subtopic sharpens the main page's own blanket "RTO&lt;1min, RPO&lt;1s" claim into the two genuinely different failover mechanisms AWS actually provides.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RDS & Aurora" topicRoute="/aws/rds-aurora"
+    [next]="{ label: 'Switchover Guarantees Zero Data Loss, Failover Doesn’t', route: '/aws/rds-aurora/switchover-guarantees-zero-data-loss-unplanned-failover-doesnt' }" />
+</div>

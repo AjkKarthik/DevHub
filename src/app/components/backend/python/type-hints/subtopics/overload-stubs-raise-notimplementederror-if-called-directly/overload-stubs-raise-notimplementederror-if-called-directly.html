@@ -1,0 +1,36 @@
+<div class="py-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Type Hints & mypy" topicRoute="/python/type-hints" subtopicLabel="@overload Runtime Behavior" />
+  <div class="page-header-icon py-icon">🐍</div>
+  <h1 class="page-title">&#64;overload Stubs Raise NotImplementedError If Called Directly</h1>
+  <p class="page-subtitle">
+    Forgetting the real implementation after your &#64;overload stubs doesn't fail silently — Python's own typing
+    module replaces every stub with a dummy that raises NotImplementedError.
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Python 3.5+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="py-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="py-section">
+    <h2>Where this fits</h2>
+    <p>
+      This deepens the main page's own &#64;overload example with what actually happens at runtime if the real
+      implementation is missing. The next subtopic moves to Protocol — a restriction that applies regardless of
+      whether its methods have real bodies at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Type Hints & mypy"
+    topicRoute="/python/type-hints"
+    [next]="{ label: 'Protocol Classes Cannot Be Instantiated Directly', route: '/python/type-hints/protocol-classes-cannot-be-instantiated-directly' }"
+  />
+</div>

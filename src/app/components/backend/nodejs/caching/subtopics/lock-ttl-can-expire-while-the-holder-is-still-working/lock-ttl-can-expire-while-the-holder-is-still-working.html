@@ -1,0 +1,36 @@
+<div class="node-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching with Redis" topicRoute="/node/caching" subtopicLabel="Lock TTL vs Work Duration" />
+  <div class="page-header-icon node-icon">&#x2B21;</div>
+  <h1 class="page-title">Lock TTL Can Expire While the Holder Is Still Working</h1>
+  <p class="page-subtitle">
+    Redis's own docs are explicit — mutual exclusion only holds "as long as the client... terminates its work
+    within the lock validity time."
+  </p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Redis 2.6.12+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="node-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="node-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own mutex-lock pattern with the exact limitation Redis's own docs describe. The
+      next subtopic moves to a different mechanism entirely — what SCAN actually guarantees, versus what the main
+      page's "safe, non-blocking" framing might imply.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Caching with Redis"
+    topicRoute="/node/caching"
+    [next]="{ label: 'SCAN Does Not Guarantee a Consistent Snapshot', route: '/node/caching/scan-does-not-guarantee-a-consistent-snapshot' }"
+  />
+</div>

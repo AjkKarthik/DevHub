@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Helm" topicRoute="/containers/helm" subtopicLabel="history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">history-max Defaults to 10 — Old Revisions Are Pruned, Not Hidden</h1>
+  <p class="page-subtitle">
+    The main page's own theory says "helm history shows all revisions" — every upgrade silently deletes revision
+    Secrets beyond the default 10, and a pruned revision can never be rolled back to again.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered rollback's hook limits; this one covers rollback's own history window. Last:
+      why <code>--set</code> always beats a values file, no matter where it appears on the command line.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Helm"
+    topicRoute="/containers/helm"
+    [prev]="{ label: 'helm rollback Never Undoes a pre-upgrade Hook — Only pre-rollback Hooks Run', route: '/containers/helm/rollback-never-undoes-a-pre-upgrade-hook-only-pre-rollback-hooks-run' }"
+    [next]="{ label: 'set Always Beats -f, Regardless of Command-Line Order', route: '/containers/helm/set-always-beats-f-regardless-of-command-line-order' }"
+  />
+</div>

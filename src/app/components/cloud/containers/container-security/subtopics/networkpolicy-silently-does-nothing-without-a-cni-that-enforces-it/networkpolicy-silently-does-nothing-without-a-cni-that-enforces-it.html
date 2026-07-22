@@ -1,0 +1,36 @@
+<div class="k8s-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Container Security" topicRoute="/containers/container-security" subtopicLabel="A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It" />
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">A NetworkPolicy Silently Does Nothing Without a CNI That Enforces It</h1>
+  <p class="page-subtitle">
+    The main page's own fix presents applying a default-deny NetworkPolicy as complete — but the API server accepts
+    it unconditionally, and several common CNIs never enforce it at all, with zero warning.
+  </p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="k8s-section">
+    <h2>See it run</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="k8s-section">
+    <h2>Where this fits</h2>
+    <p>
+      The first subtopic covered volume write access; this one covers network enforcement. Last: which of the
+      main page's own hardening fields Pod Security Admission's "restricted" level doesn't actually check.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Container Security"
+    topicRoute="/containers/container-security"
+    [prev]="{ label: 'fsGroup Makes Non-Root Volume Writes Actually Work', route: '/containers/container-security/fsgroup-makes-non-root-volume-writes-work-and-recursive-chown-can-be-slow' }"
+    [next]="{ label: 'PSA restricted Never Checks readOnlyRootFilesystem At All', route: '/containers/container-security/psa-restricted-never-checks-readonlyrootfilesystem-at-all' }"
+  />
+</div>
