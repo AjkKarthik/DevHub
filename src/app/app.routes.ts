@@ -3203,7 +3203,12 @@ export const routes: Routes = [
       { path: 'az-resource-move-orphans-role-assignments-and-changes-the-id', loadComponent: () => import('./components/cloud/azure/fundamentals/subtopics/az-resource-move-orphans-role-assignments-and-changes-the-id/az-resource-move-orphans-role-assignments-and-changes-the-id').then(m => m.AzResourceMoveOrphansRoleAssignmentsAndChangesTheIdSubtopic) },
       { path: 'zonal-vs-zone-redundant-and-per-subscription-zone-mapping', loadComponent: () => import('./components/cloud/azure/fundamentals/subtopics/zonal-vs-zone-redundant-and-per-subscription-zone-mapping/zonal-vs-zone-redundant-and-per-subscription-zone-mapping').then(m => m.ZonalVsZoneRedundantAndPerSubscriptionZoneMappingSubtopic) },
     ] },
-    { path: 'arm',               loadComponent: () => import('./components/cloud/azure/arm/arm').then(m => m.AzureArm) },
+    { path: 'arm', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/arm/arm').then(m => m.AzureArm) },
+      { path: 'what-if-cant-resolve-reference-and-reports-noise-changes', loadComponent: () => import('./components/cloud/azure/arm/subtopics/what-if-cant-resolve-reference-and-reports-noise-changes/what-if-cant-resolve-reference-and-reports-noise-changes').then(m => m.WhatIfCantResolveReferenceAndReportsNoiseChangesSubtopic) },
+      { path: 'subscription-scope-deployments-need-nested-templates-for-normal-resources', loadComponent: () => import('./components/cloud/azure/arm/subtopics/subscription-scope-needs-nested-templates/subscription-scope-needs-nested-templates').then(m => m.SubscriptionScopeNeedsNestedTemplatesSubtopic) },
+      { path: 'copy-defaults-to-parallel-and-child-resources-need-promotion', loadComponent: () => import('./components/cloud/azure/arm/subtopics/copy-defaults-to-parallel-and-child-resources-need-promotion/copy-defaults-to-parallel-and-child-resources-need-promotion').then(m => m.CopyDefaultsToParallelAndChildResourcesNeedPromotionSubtopic) },
+    ] },
     { path: 'virtual-machines',  loadComponent: () => import('./components/cloud/azure/virtual-machines/virtual-machines').then(m => m.AzureVirtualMachines) },
     { path: 'app-service',       loadComponent: () => import('./components/cloud/azure/app-service/app-service').then(m => m.AzureAppService) },
     { path: 'functions',         loadComponent: () => import('./components/cloud/azure/functions/functions').then(m => m.AzureFunctions) },

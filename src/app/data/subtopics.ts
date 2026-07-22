@@ -2556,4 +2556,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'az resource move Orphans Role Assignments', route: '/azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id' },
     { label: 'Zonal vs. Zone-Redundant', route: '/azure/fundamentals/zonal-vs-zone-redundant-and-per-subscription-zone-mapping' },
   ],
+  'arm': [
+    { label: 'What-If Can\'t Resolve reference()', route: '/azure/arm/what-if-cant-resolve-reference-and-reports-noise-changes' },
+    { label: 'Subscription Scope Needs Nested Templates', route: '/azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources' },
+    { label: 'Copy Defaults to Parallel & Child Promotion', route: '/azure/arm/copy-defaults-to-parallel-and-child-resources-need-promotion' },
+  ],
 };

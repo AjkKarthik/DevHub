@@ -40,7 +40,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/arm" routerLinkActive="active"><span class="nl-text">Azure Resource Manager</span>@if(p.isDone('azure-arm')){<span class="nl-done">✓</span>}@if(d('azure-arm');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/arm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Azure Resource Manager</span>
+        @if (p.isDone('azure-arm')) {<span class="nl-done">✓</span>}
+        @if (d('azure-arm'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('arm')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('arm')"
+                  (click)="toggleSubtopics('arm', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('arm'); as armSubs) {
+        @if (isSubtopicsExpanded('arm')) {
+          <div class="nav-subtopics">
+            @for (s of armSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/bicep" routerLinkActive="active"><span class="nl-text">Azure Bicep Deep-dive</span>@if(p.isDone('azure-bicep')){<span class="nl-done">✓</span>}@if(d('azure-bicep');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

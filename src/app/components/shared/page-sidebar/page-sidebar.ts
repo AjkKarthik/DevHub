@@ -28568,6 +28568,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Resource dependencies can be inferred automatically from references, or declared explicitly via dependsOn.',
     ],
   },
+  'azure/arm/what-if-cant-resolve-reference-and-reports-noise-changes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'ARM overview', route: '/azure/arm' },
+      { label: 'Subscription Scope Needs Nested Templates', route: '/azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources' },
+    ],
+    tip: 'What-if can\'t resolve reference() expressions — those properties always show as "changing" even with zero real change — and it can report "noise" false-positive deletions for Azure-defaulted properties never set in the template.',
+    gotchas: [
+      'What-if silently stops expanding after 500 nested templates, 800 resource groups, or 5 minutes — the untested remainder is marked "Ignore," not flagged as unverified.',
+      'Neither limitation means what-if is untrustworthy generally — only these two specific, documented categories produce false positives.',
+    ],
+  },
+  'azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'What-If Can\'t Resolve reference()', route: '/azure/arm/what-if-cant-resolve-reference-and-reports-noise-changes' },
+      { label: 'Copy Defaults to Parallel & Child Promotion', route: '/azure/arm/copy-defaults-to-parallel-and-child-resources-need-promotion' },
+    ],
+    tip: 'Subscription-level templates use a different schema, and only a specific whitelist of resource types (resourceGroups, policyAssignments, roleAssignments, locks, budgets, tags) can go directly in the top-level resources array — ordinary resources need a nested, resource-group-scoped deployment.',
+    gotchas: [
+      'ARM also supports management-group and tenant deployment scopes, each with their own dedicated CLI commands and template requirements.',
+      'A nested deployment targeting a resource group created in the same template needs an explicit dependsOn — this dependency is never inferred automatically.',
+    ],
+  },
+  'azure/arm/copy-defaults-to-parallel-and-child-resources-need-promotion': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Subscription Scope Needs Nested Templates', route: '/azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources' },
+      { label: 'ARM overview', route: '/azure/arm' },
+    ],
+    tip: 'copy defaults to unordered PARALLEL creation (opt into "serial" + batchSize for staggered rollout), and it can never be attached directly to a nested child resource — the resource must first be promoted to a top-level resource.',
+    gotchas: [
+      'A copy loop\'s count can\'t exceed 800, regardless of any Azure subscription-level resource quota.',
+      'Promoting a child resource for copy requires the fully-qualified type and a "parent-name/child-name" format name to preserve the relationship.',
+    ],
+  },
   'azure/bicep': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
