@@ -3011,7 +3011,12 @@ export const routes: Routes = [
   ] },
   { path: 'linux', children: [
     { path: '', loadComponent: () => import('./components/cloud/linux/home/home').then(m => m.LinuxHome) },
-    { path: 'fundamentals',         loadComponent: () => import('./components/cloud/linux/fundamentals/fundamentals').then(m => m.LinuxFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/fundamentals/fundamentals').then(m => m.LinuxFundamentals) },
+      { path: 'systemd-targets-map-to-runlevels-but-not-one-to-one', loadComponent: () => import('./components/cloud/linux/fundamentals/subtopics/systemd-targets-map-to-runlevels-but-not-one-to-one/systemd-targets-map-to-runlevels-but-not-one-to-one').then(m => m.SystemdTargetsMapToRunlevelsButNotOneToOneSubtopic) },
+      { path: 'journald-logs-are-lost-on-reboot-unless-var-log-journal-exists', loadComponent: () => import('./components/cloud/linux/fundamentals/subtopics/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists').then(m => m.JournaldLogsAreLostOnRebootUnlessVarLogJournalExistsSubtopic) },
+      { path: 'a-sysctl-change-is-runtime-only-until-persisted-to-a-file', loadComponent: () => import('./components/cloud/linux/fundamentals/subtopics/a-sysctl-change-is-runtime-only-until-persisted-to-a-file/a-sysctl-change-is-runtime-only-until-persisted-to-a-file').then(m => m.ASysctlChangeIsRuntimeOnlyUntilPersistedToAFileSubtopic) },
+    ] },
     { path: 'file-system',          loadComponent: () => import('./components/cloud/linux/file-system/file-system').then(m => m.LinuxFileSystem) },
     { path: 'essential-commands',   loadComponent: () => import('./components/cloud/linux/essential-commands/essential-commands').then(m => m.LinuxEssentialCommands) },
     { path: 'file-permissions',     loadComponent: () => import('./components/cloud/linux/file-permissions/file-permissions').then(m => m.LinuxFilePermissions) },

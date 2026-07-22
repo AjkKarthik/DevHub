@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Linux Fundamentals" topicRoute="/linux/fundamentals" subtopicLabel="A sysctl Change Is Runtime-Only Until Persisted" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">A sysctl Change Is Runtime-Only Until It's Persisted to a Config File</h1>
+  <p class="page-subtitle">The main page's own quiz explains what /proc/sys/ is but never says a change there vanishes at the next reboot — and the persistence fix has its own silent "last file wins" trap.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, extending the main page's own /proc/sys/ coverage from what it is to what it takes for a change there to actually survive a reboot.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Linux Fundamentals" topicRoute="/linux/fundamentals"
+    [prev]="{ label: 'journald Logs Are Lost on Reboot by Default', route: '/linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists' }" />
+</div>

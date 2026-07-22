@@ -39450,6 +39450,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Case sensitivity in Linux paths (unlike Windows) means File.txt and file.txt are different files — a common cross-platform gotcha.',
     ],
   },
+  'linux/fundamentals/systemd-targets-map-to-runlevels-but-not-one-to-one': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'journald Logs Are Lost on Reboot by Default', route: '/linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists' },
+      { label: 'Linux Fundamentals overview', route: '/linux/fundamentals' },
+    ],
+    tip: 'Runlevels 2, 3, and 4 all resolve to the exact same systemd unit, multi-user.target — there is no dedicated target distinguishing them, even though they were three separate SysV states.',
+    gotchas: [
+      'runlevelN.target names are real unit files implemented as symlinks — confirmed directly via ls -l, not just documentation shorthand.',
+      'systemctl isolate only changes the CURRENT state; systemctl set-default changes the permanent, reboot-persistent default.',
+    ],
+  },
+  'linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'systemd Targets Map to Runlevels, But Not One-to-One', route: '/linux/fundamentals/systemd-targets-map-to-runlevels-but-not-one-to-one' },
+      { label: 'A sysctl Change Is Runtime-Only Until Persisted', route: '/linux/fundamentals/a-sysctl-change-is-runtime-only-until-persisted-to-a-file' },
+    ],
+    tip: 'journald\'s "auto" storage mode only persists logs across reboot if /var/log/journal already exists — without it, logs live only in RAM-backed /run/log/journal and vanish every reboot.',
+    gotchas: [
+      'journalctl -b -1 silently returns nothing if the previous boot\'s logs were never persisted — not a query error.',
+      'Fix: mkdir -p /var/log/journal + systemd-tmpfiles --create --prefix /var/log/journal — no service restart needed.',
+    ],
+  },
+  'linux/fundamentals/a-sysctl-change-is-runtime-only-until-persisted-to-a-file': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'journald Logs Are Lost on Reboot by Default', route: '/linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists' },
+      { label: 'Linux Fundamentals overview', route: '/linux/fundamentals' },
+    ],
+    tip: 'sysctl -w and a direct /proc/sys/ write only change the live kernel value — neither touches disk, so the change is gone at the next reboot unless it\'s also added to a sysctl config file.',
+    gotchas: [
+      'Multiple sysctl config files setting the same key: the file processed LAST silently wins, with no conflict warning.',
+      'sudo sysctl --system applies every configured file to the running kernel immediately — no reboot needed to verify persistence.',
+    ],
+  },
   'linux/essential-commands': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

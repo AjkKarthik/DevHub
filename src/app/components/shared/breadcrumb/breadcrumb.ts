@@ -2138,6 +2138,9 @@ const TERRAFORM_LABELS: Record<string, string> = {
 
 const LINUX_LABELS: Record<string, string> = {
   'fundamentals':          'Linux Fundamentals',
+  'fundamentals/systemd-targets-map-to-runlevels-but-not-one-to-one': 'systemd Targets Map to Runlevels, But Not One-to-One',
+  'fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists': 'journald Logs Are Lost on Reboot by Default',
+  'fundamentals/a-sysctl-change-is-runtime-only-until-persisted-to-a-file': 'A sysctl Change Is Runtime-Only Until Persisted',
   'file-system':           'File System & Hierarchy',
   'essential-commands':    'Essential Commands',
   'file-permissions':      'File Permissions & Ownership',
