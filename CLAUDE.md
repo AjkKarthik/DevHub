@@ -1815,21 +1815,21 @@ this same check before any other new hub's first subtopic set:
   Azure pages use `app-common-mistakes` AND `app-revision-card`. Cheatsheet reference has no PageComplete.
   Challenge.language: `'typescript'`. CodeTab.language: never `'json'` or `'bicep'` — use `'bash'` instead.
   AzureNavComponent at `shared/azure-nav/azure-nav.ts`.
-  Phase 10: 21 of 22 topics have subtopics (`/azure/fundamentals`, `/azure/arm`,
+  Phase 10: **COMPLETE — 22 of 22 topics have subtopics** (`/azure/fundamentals`, `/azure/arm`,
   `/azure/virtual-machines`, `/azure/app-service`, `/azure/functions`, `/azure/aks`,
   `/azure/virtual-network`, `/azure/load-balancer`, `/azure/storage`, `/azure/entra-id`,
   `/azure/rbac`, `/azure/sql-cosmos`, `/azure/monitor`, `/azure/devops-pipelines`,
   `/azure/cost-management`, `/azure/security-defender`, `/azure/key-vault`,
   `/azure/service-bus`, `/azure/container-apps`, `/azure/redis`, `/azure/api-management`,
-  2026-07-23) — see
+  `/azure/bicep`, finished 2026-07-23, 66 subtopic pages total) — see
   "Azure hub subtopic wiring" section above for the `AzureNavComponent` accordion structural fix
   and the `azure-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript
   hub's own bare `fundamentals` topic key). **Real gap caught on the `/azure/arm` batch**: adding
   a NEW topic's nav-link toggle to `AzureNavComponent` is a per-topic edit, not something the
   accordion structural fix from the pilot batch covers automatically — the ARM toggle was
   initially left unwired and only caught by a post-build browser check showing 1 open toggle
-  instead of the expected 2. Verify the toggle COUNT on the topic overview page (not just that
-  each subtopic page's own toggle opens) for every future Azure-hub batch.
+  instead of the expected 2. Verified the toggle COUNT on the topic overview page (not just that
+  each subtopic page's own toggle opens) for every Azure-hub batch through to completion.
 - **Linux hub**: 19 trackable topic pages + 2 reference pages (21 cards total). Feature-complete.
   Yellow theme `$accent: #fcc624`, tint `#fef9e7`, dark `#fde68a`. Search prefix `linux-`. Route: `/linux`.
   CSS classes: `.linux-page`, `.linux-icon`, `.linux-section`. Icon content: `🐧` at `font-size: 1.8rem`. `tech="javascript"`.

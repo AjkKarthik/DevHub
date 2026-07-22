@@ -4436,7 +4436,47 @@ off here with a date.
   explicitly checked the toggle COUNT (21) on the topic overview page per the standing lesson
   from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying
   correctly.)
-- [ ] `/azure/bicep` — Azure Bicep Deep-dive
+- [x] `/azure/bicep` — Azure Bicep Deep-dive (2026-07-23 — 3 subtopics:
+  forgetting-existing-turns-a-reference-into-a-redeploy,
+  modules-need-their-own-scope-property-for-a-different-target,
+  a-modules-static-name-can-cause-a-silent-output-collision; all three verified against
+  Microsoft's own documentation via WebFetch before writing — no genuine main-page inaccuracy
+  found this batch (all three angles are expansion gaps, not corrections): (1) confirmed via
+  Microsoft's own "Reference existing resource" doc that "the resource doesn't deploy again when
+  the existing keyword references it" — closing a gap where the main page's own symbolic-reference
+  QnA only ever covers resources the template itself creates, with no mention of the different,
+  very common scenario of reading a property off an already-live resource (an existing Key Vault,
+  an existing VNet); the risk being that the almost-identical resource syntax WITHOUT existing
+  doesn't fail — it silently puts that resource under this deployment's management, at risk of
+  resetting any property the block doesn't mention; (2) confirmed via Microsoft's own modules doc
+  the exact scope property syntax and default ("when you don't provide the scope property, the
+  module is deployed at the parent's target scope") — closing a gap where the main page's own
+  theory bullet claims module scope isolation exists ("a module can be deployed at a different
+  scope than its parent") but gives no syntax and describes its own example backwards from
+  Microsoft's actual worked pattern (a subscription-scoped file creating a resource group THEN
+  deploying a module INTO it via scope: newRG, not "creating a resource group FROM a module"); (3)
+  confirmed via the same modules doc a real, specific concurrency risk: "if you deploy a module
+  with a static name concurrently to the same scope, one deployment can interfere with the output
+  from the other deployment... one deployment might show the wrong output" — closing a gap where
+  the main page's own theory treats a module's name property as purely cosmetic ("sets the ARM
+  nested deployment name") despite all three of its own module examples using a static, reusable
+  name; covered both of Microsoft's own documented fixes (folding deployment().name into the name,
+  or omitting name entirely for an auto-generated GUID) and the dedicated no-module-name linter
+  rule the main page's own az bicep lint coverage never mentions. Gotcha sweep (apostrophe-after-
+  letter across `.ts` and `.html` files — including the six shared wiring files — backtick parity
+  — even counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention verified in every
+  `[prev]`/`[next]` bound attribute rather than backslash-escaping, `[prev]`/`[next]` route
+  cross-check) came back clean. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (402.52 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix this batch) cleanly
+  — no "Filename too long" errors. Confirmed bare `bicep` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). Browser-verified successfully on all three subtopic
+  pages — h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the
+  `AzureNavComponent` accordion (now the TWENTY-SECOND topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (22) on the topic overview page per the standing lesson from
+  the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.
+  **This completes Phase 10 subtopic rollout for the entire Azure hub — 22/22 topics, 66 subtopic
+  pages total.**)
 
 #### Linux — 19 topic pages
 
