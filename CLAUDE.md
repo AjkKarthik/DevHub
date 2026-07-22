@@ -1697,6 +1697,61 @@ this same check before any other new hub's first subtopic set:
    collapsed-by-default pattern (shows only a count badge, e.g. "⚠️Common Mistakes4›") and needs
    the same click-through treatment if verifying corrected mistake content by text search.
 
+### Linux hub subtopic wiring — first pilot; the 6th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/linux/fundamentals`, 2026-07-23) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`LinuxNavComponent` (`shared/linux-nav/linux-nav.ts`) had ZERO subtopics-accordion
+   support** — the same structural gap already hit and fixed on `GoNavComponent`,
+   `DevopsNavComponent`, `ContainersNavComponent`, `AwsNavComponent`, and `AzureNavComponent`
+   before their own pilots. Fixed identically: added `signal`, `Router`, `NavigationEnd`,
+   `filter` (rxjs), and `SUBTOPICS` (from `../../../data/subtopics`) to the imports, then the
+   same three methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and
+   constructor-level router subscription, matching `AzureNavComponent`'s own implementation
+   exactly. **This is now the SIXTH `*NavComponent`-based hub in a row missing this wiring at
+   pilot time — never assume any `*NavComponent` hub has it; confirm per hub, every time.**
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted
+   forms, per the standing collision-detection discipline). Hub-prefixed to
+   `linux-fundamentals` — matching this hub's own established progress/search key prefix
+   (`linux-`) — with the usual `// NOTE:` comment. All three `LinuxNavComponent` accordion
+   helper calls (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed
+   `'linux-fundamentals'` key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'linux/fundamentals'`, confirmed the base
+   entry — and its own `LINUX_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'linux/fundamentals/<slug>'`.
+4. **`LINUX_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are
+   bare too (`'fundamentals/<slug>'`).
+5. **`.linux-page`'s wrapper rule IS global**, confirmed present in `src/styles.scss`
+   (`max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem;` — padding already baked
+   in) — matching the HTML hub's own pattern, unlike most other recent hubs (SQL/TypeScript/
+   React/JavaScript/CSS/Go/DevOps/Containers/AWS/Azure/Node), which all needed the wrapper
+   rule manually redeclared per subtopic. Redeclaring it anyway in each subtopic `.scss` is
+   harmless and was done for consistency with the majority pattern.
+6. **No live playground** — Linux/bash content has no in-browser runtime, following the same
+   `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/Blazor/Go/DevOps/
+   Node.js/Containers/AWS/Azure) — every code tab across all three subtopics uses plain bash
+   command transcripts, matching the main page's own `codeTabs` style exactly.
+7. Theme: `.linux-page`/`.linux-icon`/`.linux-section` CSS classes. `$accent: #fcc624`,
+   `$tint: #fef9e7`, icon content `🐧` at `font-size: 1.8rem` (light tint fill, confirmed via
+   the real `styles.scss`), `tech="javascript"` in `app-page-meta` (Linux pages share the JS/TS
+   playground and run-it links, same as every other non-JS-runtime hub).
+8. **freedesktop.org's own systemd man pages 403'd on `WebFetch`** (`systemd.special.html`,
+   `journald.conf.html`) — `man7.org`'s mirror of the same man pages worked for `journald.conf`
+   and `sysctl`, and a `WebSearch` sweep of secondary sources (Oracle docs, RHEL/tecmint guides)
+   sufficiently corroborated the systemd-targets-to-runlevels mapping where the primary source
+   was unreachable. **For any future Linux-hub topic needing systemd/kernel primary-source
+   verification, try `man7.org` before `freedesktop.org` — the latter has now blocked `WebFetch`
+   on more than one occasion.**
+9. **Verified the accordion's actual click behavior in-browser, not just the toggle count** —
+   explicitly clicked `.nav-subtopics-toggle` twice (open then close) and confirmed the DOM
+   state changed each time, and separately navigated directly to a subtopic URL to confirm
+   auto-expand fired without a manual click — both real, executed checks rather than an
+   assumption that copying `AzureNavComponent`'s pattern was sufficient on its own.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -1837,6 +1892,11 @@ this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/linux/home/home.ts`. Progress: `linuxTotal=19` in progress.service.ts.
   Linux pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (security-hardening, cron) have no PageComplete.
   Challenge.language: `'typescript'`. `${VAR}` bash variables in template literals must be escaped as `\${VAR}`.
+  LinuxNavComponent at `shared/linux-nav/linux-nav.ts`.
+  Phase 10: 1 of 19 topics have subtopics (`/linux/fundamentals`, pilot batch, 2026-07-23) — see
+  "Linux hub subtopic wiring" section above for the `LinuxNavComponent` accordion structural fix
+  and the `linux-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript
+  hub's own bare `fundamentals` topic key).
 - **Redis hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
   Red theme `$accent: #dc382d`, `$tint: #fff0ef`, dark `#f87171`, dark bg `#3d0a0a`. Search prefix `redis-`. Route: `/redis`.
   CSS classes: `.redis-page`, `.redis-icon`, `.redis-section`. Icon content: `R`. `tech="javascript"`.

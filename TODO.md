@@ -4480,7 +4480,59 @@ off here with a date.
 
 #### Linux — 19 topic pages
 
-- [ ] `/linux/fundamentals` — Linux Fundamentals
+- [x] `/linux/fundamentals` — Linux Fundamentals (2026-07-23 — 3 subtopics:
+  systemd-targets-map-to-runlevels-but-not-one-to-one,
+  journald-logs-are-lost-on-reboot-unless-var-log-journal-exists,
+  a-sysctl-change-is-runtime-only-until-persisted-to-a-file; **first Phase 10 pilot batch for the
+  Linux hub** — confirmed via a dedicated Explore-agent investigation before writing (matching the
+  established per-hub pilot discipline): (1) `LinuxNavComponent` had zero subtopics-accordion
+  support (no `SUBTOPICS` import, no `expandedTopics` signal, no `subtopicsOf`/
+  `isSubtopicsExpanded`/`toggleSubtopics` methods, no router-subscription auto-expand) — the SIXTH
+  `*NavComponent`-based hub in a row missing this at pilot time (after Go, DevOps, Containers, AWS,
+  Azure) — fixed identically: added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and
+  `SUBTOPICS` imports, then the same three helper methods and constructor-level router subscription,
+  matching `AzureNavComponent`'s own exact implementation byte-for-byte (verified against the real
+  file rather than reconstructing from memory — an initial draft's `autoExpandForCurrentUrl()` used
+  a different, less precise URL-matching heuristic before being corrected to match the established
+  `subs.some(s => s.route === url)` pattern exactly); (2) confirmed a real `SUBTOPICS` map
+  bare-key collision: `fundamentals` was already claimed by the JavaScript hub's own
+  `/javascript/fundamentals` topic (checked both quoted and unquoted forms) — hub-prefixed to
+  `linux-fundamentals`, matching the hub's own `linux-` progress/search prefix, with the usual
+  `// NOTE:` comment; (3) confirmed `.linux-page`'s wrapper rule IS global in `src/styles.scss`
+  (with padding already baked in, `2rem 1.25rem 4rem`) — matching the HTML hub's own pattern, NOT
+  needing a manual redeclaration in each subtopic `.scss` the way most other hubs do (redeclared
+  anyway for consistency, which is harmless); (4) confirmed `SIDEBAR_MAP` keys are FULL-PATH
+  PREFIXED (`'linux/fundamentals'`, base entry already existed with its own `LINUX_DEFAULT`
+  constant) — subtopic composite keys follow suit: `'linux/fundamentals/<slug>'`; breadcrumb
+  `LINUX_LABELS` uses bare keys with bare composite subtopic keys (`'fundamentals/<slug>'`); no live
+  playground — Linux/bash content has no in-browser runtime, following the established
+  `<app-code-block>`-only pattern. All three subtopic angles verified against official documentation
+  via WebFetch/WebSearch before writing (man7.org for `journald.conf`/`sysctl`, corroborating
+  RHEL/Oracle/community sources for the systemd runlevel-target mapping since freedesktop.org's own
+  docs blocked the fetch with a 403): (1) confirmed the FULL runlevel-to-target mapping the main
+  page only partially gives (naming just two of seven), including the genuinely surprising fact that
+  runlevels 2, 3, and 4 all resolve to the identical `multi-user.target` — no distinct target exists
+  for each, despite being three separate SysV states; (2) confirmed via `journald.conf`'s own man
+  page that `Storage=auto` (the common effective distro default) only persists logs across reboot if
+  `/var/log/journal` already exists — closing a gap where the main page's own boot-process theory
+  recommends `journalctl -b` for a previous boot with no mention that the previous boot's logs may
+  already be gone; (3) confirmed via `sysctl`'s own man page and corroborating sources that a
+  `sysctl -w` or direct `/proc/sys/` write is runtime-only and never touches disk, closing a gap in
+  the main page's own quiz explanation of `/proc/sys/`, plus a "last file wins" trap in the
+  persistence mechanism itself when multiple `sysctl.d` config files set the same key. No genuine
+  main-page inaccuracy found this batch (all three angles are expansion gaps). Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files — including the six shared wiring files —
+  backtick parity — even counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention
+  verified in every `[prev]`/`[next]` bound attribute, `[prev]`/`[next]` route cross-check) came back
+  clean. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (409.03 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 15 files (9 new + 6 wiring, no main-page fix this batch) cleanly — no "Filename too long"
+  errors. Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct
+  (all 4 levels), prev/next cross-references correct, dark mode (`--bg: #0f172a`) applying
+  correctly, the topic overview page's single nav toggle (count 1, correct for this hub's first
+  pilot) confirmed to actually expand/collapse on click AND auto-expand on direct navigation to a
+  subtopic URL (both explicitly tested in-browser, not just assumed from the code), tailored sidebar
+  content confirmed rendering (not the DEFAULT fallback).)
 - [ ] `/linux/file-system` — File System & Hierarchy
 - [ ] `/linux/essential-commands` — Essential Commands
 - [ ] `/linux/file-permissions` — File Permissions & Ownership
