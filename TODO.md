@@ -4533,7 +4533,38 @@ off here with a date.
   pilot) confirmed to actually expand/collapse on click AND auto-expand on direct navigation to a
   subtopic URL (both explicitly tested in-browser, not just assumed from the code), tailored sidebar
   content confirmed rendering (not the DEFAULT fallback).)
-- [ ] `/linux/file-system` — File System & Hierarchy
+- [x] `/linux/file-system` — File System & Hierarchy (2026-07-23 — 3 subtopics:
+  tmp-cleared-on-reboot-is-only-half-the-story,
+  skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency,
+  usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app; all three verified against official
+  documentation (man7.org, systemd.io, FHS) via WebSearch/WebFetch before writing — no genuine
+  main-page inaccuracy found this batch (all three angles are expansion gaps): (1) confirmed via
+  systemd's own tmpfiles documentation that files in /tmp are also deleted after 10 days of
+  inactivity by a daily systemd-tmpfiles-clean.timer, entirely independent of any reboot — closing
+  a gap where the main page's own quickRef and Common Mistakes both frame "/tmp is cleared" as a
+  reboot-only event; (2) confirmed via systemd's own documented behavior (and a tracked systemd
+  GitHub issue) that an /etc/fstab entry for a missing device WITHOUT nofail makes systemd wait
+  ~90 seconds then drop the entire boot to emergency mode — closing a gap where the main page's own
+  fstab code example already uses nofail but never explains what it does or what happens without
+  it; (3) confirmed via the FHS itself the real structural difference between /usr/local (files
+  merged into a shared bin/lib tree by file type) and /opt (each app gets its own self-contained
+  subdirectory) — closing a gap where the main page mentions both directories separately but never
+  contrasts them, despite both being described as homes for "extra" software outside the package
+  manager. **A house-style inconsistency was self-caught during authoring**: an early draft of the
+  /usr/local-vs-/opt subtopic used backtick-wrapped inline code (`make uninstall`) inside a
+  single-quoted theory field — technically safe to build but inconsistent with every prior
+  subtopic's house style of plain text in these fields; caught and fixed before the build. Gotcha
+  sweep (apostrophe-after-letter across `.ts` and `.html` files — including the six shared wiring
+  files — backtick parity — even counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote
+  convention verified, `[prev]`/`[next]` route cross-check) came back clean. Build reported only
+  the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (414.43 kB over) with
+  zero actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6
+  wiring, no main-page fix this batch) cleanly — no "Filename too long" errors. Confirmed bare
+  `file-system` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms).
+  Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct (all 4
+  levels), prev/next cross-references correct, the `LinuxNavComponent` accordion (now the SECOND
+  topic in this hub with subtopics — explicitly checked the toggle COUNT (2) on the topic overview
+  page), dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/linux/essential-commands` — Essential Commands
 - [ ] `/linux/file-permissions` — File Permissions & Ownership
 - [ ] `/linux/users-groups` — Users & Groups
