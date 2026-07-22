@@ -4164,7 +4164,43 @@ off here with a date.
   `AzureNavComponent` accordion (now the FOURTEENTH topic in this hub with subtopics — explicitly
   checked the toggle COUNT (14) on the topic overview page per the standing lesson from the ARM
   batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/cost-management` — Azure Cost Management
+- [x] `/azure/cost-management` — Azure Cost Management (2026-07-22 — 3 subtopics:
+  spot-vm-eviction-notice-is-30-seconds-not-2-minutes,
+  reservations-apply-before-savings-plans-in-a-best-fit-model,
+  amortized-cost-view-doesnt-work-for-payg-reservations; all three verified against Microsoft's
+  own documentation via WebFetch before writing — **a second genuine main-page inaccuracy was
+  found and fixed in this batch**: the main page's own Spot VM QnA stated "a 2-minute eviction
+  notice" — confirmed via Microsoft's own Spot VM doc this is actually 30 seconds ("the Azure
+  infrastructure will evict Azure Spot Virtual Machines with 30-seconds notice"), and that 2-minute
+  figure is AWS Spot's own convention, not Azure's — a likely cross-cloud mix-up. Fixed the main
+  page's own QnA text accordingly, plus expanded on eviction policy (Deallocate vs Delete) and max
+  price behavior the main page never mentioned at all; (2) confirmed via Microsoft's own discount
+  application doc that "Since reservation benefits are more restrictive than savings plans, and
+  usually have greater discounts, Azure applies reservation benefits first," operating under a
+  greedy "best fit" model, plus a genuine 48-hour benefit-reconciliation window that can show
+  temporary >100% utilization — closing a gap where the main page says AHB "stacks independently"
+  with RIs but never addresses RI-vs-Savings-Plan order when both could apply; (3) confirmed via
+  Microsoft's own Cost Analysis doc that "Although you can buy a reservation with a pay-as-you-go
+  (MS-AZR-0003P) subscription, Cost Analysis doesn't support viewing amortized reservation costs.
+  If you try to view costs with the Amortized cost metric, you'll see the same results as Actual
+  Cost" — closing a gap where the main page's own Amortised-vs-Actual QnA recommends Amortised for
+  budgeting universally, with no exception noted for this specific, common billing arrangement.
+  Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even
+  counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check) came back
+  clean. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (364.57 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 16 files (15 new/wiring + the main-page fix) cleanly. Confirmed bare `cost-management` key
+  collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms). **Proactively applied
+  the dev-server chunk-staleness fix from the Monitor batch precedent** (forced a fresh save of
+  `cost-management.ts` via whitespace edit-and-revert) before verification, since the main-page fix
+  wasn't showing up in an initial preview_logs chunk-name search — this pre-empted the same false
+  alarm rather than rediscovering it. Browser-verified successfully on all three subtopic pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the corrected
+  "30-second eviction notice" text confirmed rendering live on the main page after clicking through
+  the QnA accordion, the `AzureNavComponent` accordion (now the FIFTEENTH topic in this hub with
+  subtopics — explicitly checked the toggle COUNT (15) on the topic overview page per the standing
+  lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying
+  correctly.)
 - [ ] `/azure/security-defender` — Azure Security & Defender for Cloud
 - [ ] `/azure/key-vault` — Azure Key Vault
 - [ ] `/azure/service-bus` — Azure Service Bus
