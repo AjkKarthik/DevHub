@@ -1656,6 +1656,28 @@ this same check before any other new hub's first subtopic set:
    EXPANDED on main-page content that was accurate but incomplete (a single lock example, a
    one-sentence mention of a CLI command, a flat "spread across 3 AZs" theory bullet) rather than
    correcting anything wrong.
+8. **A new class of false-positive gotcha, distinct from every prior source-code bug: the local
+   `ng serve` dev server's incremental/esbuild watcher can leave a lazy component chunk STALE
+   after a genuine source fix, even across a hard browser reload.** Hit for real on the
+   `/azure/load-balancer` batch: a `[prev]` route was found wrong (short physical-folder-name
+   string instead of the real registered long-form route), fixed via Edit, confirmed correct on
+   disk — but the live preview kept rendering the OLD wrong href even after
+   `window.location.reload(true)`. Root cause, confirmed via `preview_logs` (search for
+   `"Application bundle generation complete"`): several file-watcher-triggered rebuilds in a row
+   only relisted `main.js` in their "Lazy chunk files" summary, never the specific subtopic's own
+   chunk — meaning that chunk's last actual recompile predated the fix, so the browser was
+   correctly serving byte-for-byte what the dev server had (a stale chunk), not a caching problem
+   on the browser side at all. **Fix: force a fresh save of the affected file** (a trivial
+   whitespace edit, save, then revert, save again — two real file-write events) — confirmed via
+   `preview_logs` that this produces a NEW chunk hash/size for that exact component, and the next
+   browser reload then renders correctly. **Diagnostic habit worth keeping**: when a browser
+   check contradicts a source file you just verified correct via `Read`/`grep`, check
+   `preview_logs` for `"Application bundle generation complete"` and see whether the specific
+   component's own chunk name appears in the MOST RECENT build's file list before assuming the
+   source fix itself is wrong — the manual production build (`npx ng build
+   --configuration=production`) is unaffected by this and remains the authoritative correctness
+   check; this gotcha is specific to the live `ng serve` preview process used for interactive
+   browser verification only.
 
 ## Current state (update when it changes!)
 
@@ -1775,9 +1797,9 @@ this same check before any other new hub's first subtopic set:
   Azure pages use `app-common-mistakes` AND `app-revision-card`. Cheatsheet reference has no PageComplete.
   Challenge.language: `'typescript'`. CodeTab.language: never `'json'` or `'bicep'` — use `'bash'` instead.
   AzureNavComponent at `shared/azure-nav/azure-nav.ts`.
-  Phase 10: 7 of 22 topics have subtopics (`/azure/fundamentals`, `/azure/arm`,
+  Phase 10: 8 of 22 topics have subtopics (`/azure/fundamentals`, `/azure/arm`,
   `/azure/virtual-machines`, `/azure/app-service`, `/azure/functions`, `/azure/aks`,
-  `/azure/virtual-network`, 2026-07-22) — see
+  `/azure/virtual-network`, `/azure/load-balancer`, 2026-07-22) — see
   "Azure hub subtopic wiring" section above for the `AzureNavComponent` accordion structural fix
   and the `azure-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript
   hub's own bare `fundamentals` topic key). **Real gap caught on the `/azure/arm` batch**: adding

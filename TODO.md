@@ -3913,7 +3913,38 @@ off here with a date.
   topic in this hub with subtopics — explicitly checked the toggle COUNT (7) on the topic overview
   page per the standing lesson from the ARM batch), tailored (non-DEFAULT) sidebar content, dark
   mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/load-balancer` — Azure Load Balancer & Front Door
+- [x] `/azure/load-balancer` — Azure Load Balancer & Front Door (2026-07-22 — 3 subtopics:
+  default-outbound-access-was-retired-march-2026-need-explicit-method (short physical folder
+  `default-outbound-access-retired-march-2026`), default-snat-port-allocation-is-per-vm-not-per-ip,
+  front-door-health-probe-samplesize-and-successfulsamples-explained (short physical folder
+  `front-door-health-probe-samplesize-explained`); MAX_PATH check run before folder creation per
+  the standing recipe. Content built on the main page's own "~64K SNAT ports" figure (revealed as
+  a per-IP total governed by a tiered per-VM allocation table, not an even split), its outbound
+  connectivity code (revealed the default-outbound-access method it silently relied on was retired
+  effective March 2026, now requiring an explicit NAT Gateway/Standard LB/instance-level public IP),
+  and its Front Door health probe code sample (revealed the exact SampleSize/SuccessfulSamplesRequired
+  semantics the main page sets numeric values for without ever explaining what they mean). Caught and
+  fixed a real routing bug before committing: subtopic 2's own `[prev]` link initially referenced the
+  SHORT physical folder name for subtopic 1 instead of its actual registered long-form route — found
+  via a `grep -n "\[prev\]\|\[next\]" */*.html` cross-check across all three new files immediately
+  after writing them, fixed via Edit before wiring `app.routes.ts`. A live browser check post-fix
+  still showed the stale short-form link in the DOM even after a hard reload — traced to the local
+  `ng serve` dev server's incremental/esbuild watcher not having recompiled that specific lazy chunk
+  since before the fix (confirmed via `preview_logs`: several subsequent builds only relisted
+  `main.js`, not the subtopic's own chunk) — resolved by forcing a fresh save of the file (a trivial
+  whitespace edit-then-revert), which triggered a new chunk hash and a correct render on the next
+  reload. Not a source-code bug — a dev-server staleness gotcha specific to local live-preview
+  verification; the committed source was correct throughout and the production build never reflected
+  the stale state. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick
+  parity, bare `@word`/`{` in `.html` prose) came back clean. Build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (326.29 kB over) with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6 wiring) cleanly.
+  Confirmed bare `load-balancer` key collision-free in `SUBTOPICS` map (checked both quoted and
+  unquoted forms). Browser-verified successfully on all three pages after the dev-server staleness
+  was resolved — h1/breadcrumb pairs correct (all 4 levels), the `AzureNavComponent` accordion (now
+  the EIGHTH topic in this hub with subtopics — explicitly checked the toggle COUNT (8) on the topic
+  overview page per the standing lesson from the ARM batch), tailored (non-DEFAULT) sidebar content,
+  dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/storage` — Azure Blob & Storage
 - [ ] `/azure/entra-id` — Azure Active Directory & Entra ID
 - [ ] `/azure/rbac` — Azure RBAC
