@@ -3756,7 +3756,46 @@ off here with a date.
   with subtopics — explicitly checked the toggle COUNT (3) on the topic overview page, not just
   that each subtopic page's own toggle opens, per the standing lesson from the prior ARM batch),
   tailored (non-DEFAULT) sidebar content, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/app-service` — Azure App Service
+- [x] `/azure/app-service` — Azure App Service (2026-07-22 — 3 subtopics:
+  health-check-defaults-to-10-failures-and-never-removes-all-instances,
+  auto-heal-four-conditions-three-actions-main-page-never-mentions,
+  scm-basic-auth-is-a-separate-attack-surface-from-kudu; all three verified against Microsoft's
+  own documentation via WebFetch before writing — (1) confirmed via Microsoft's own Health Check
+  docs the exact default: "WEBSITE_HEALTHCHECK_MAXPINGFAILURES... The default value is 10," a
+  50%-max-removal safety valve ("no more than half of the instances will be excluded from the
+  load balancer at a time"), and a deliberate all-unhealthy protection ("If all instances of your
+  application are unhealthy, App Service doesn't remove instances from the load balancer... this
+  would effectively cause an outage") — plus a genuine connection to the main page's own slot-swap
+  QnA: "Health check configuration isn't slot-specific, so after a swap, the Health check
+  configuration of the swapped slot is applied to the destination slot, and vice-versa" — closing
+  a gap where the main page's own theory names "N consecutive checks" with no actual number;
+  (2) confirmed via Microsoft's own diagnostics docs (plus its own linked Auto-Heal announcement
+  post) a completely separate, unmentioned feature: "Auto-healing is a mitigation action... rules
+  based on request count, slow request, memory limit, and HTTP status code" with three action
+  types (Recycle Process, Log an Event, Custom Action) — explicitly framed as "temporarily
+  mitigate... until you find the root cause," operating at the worker-process level independent of
+  Health Check's load-balancer-level instance removal; (3) confirmed via Microsoft's own basic-auth
+  docs that SCM and FTP basic auth are independent toggles ("basicPublishingCredentialsPolicies/scm"
+  vs "/ftp") with a one-way dependency ("SCM basic authentication is required for enabling FTP
+  basic authentication") and a documented per-deployment-method fallback table (modern Azure CLI
+  and Azure Pipelines fall back to Microsoft Entra automatically; Local Git, FTP, and older GitHub
+  Actions integrations break outright) — closing a gap where the main page's own quickRef
+  introduces Kudu as a management dashboard with a live console but never once discusses its
+  authentication model. Caught and fixed a real stray-bracket syntax bug in the SCM Basic Auth
+  subtopic's theory array (an extra `]` left over from drafting) before the build step — the build
+  itself would have caught it too, but this was found first by a direct file re-read. Gotcha sweep
+  covered `.html` bound attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean
+  across all three files), bare `@word`/`{` in `.html` prose (none present), and backtick parity
+  (even counts, 4/4/4). Build reported only the pre-documented harmless "bundle initial exceeded
+  maximum budget" ERROR with zero actual TypeScript/template compile errors. Proactively kept two
+  of three physical folder names short from the start (233/225 chars shortened to 181/161) to stay
+  well clear of Windows MAX_PATH. `git add -A` staged all 9 files cleanly with no "Filename too
+  long" errors. Confirmed bare `app-service` key collision-free in `SUBTOPICS` map (checked both
+  quoted and unquoted forms). Browser-verified successfully on all three pages — h1/breadcrumb
+  pairs correct (all 4 levels), the `AzureNavComponent` accordion (now the FOURTH topic in this hub
+  with subtopics — explicitly checked the toggle COUNT (4) on the topic overview page per the
+  standing lesson from the ARM batch), tailored (non-DEFAULT) sidebar content, dark mode
+  (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/functions` — Azure Functions
 - [ ] `/azure/aks` — Azure Kubernetes Service
 - [ ] `/azure/virtual-network` — Azure Virtual Network
