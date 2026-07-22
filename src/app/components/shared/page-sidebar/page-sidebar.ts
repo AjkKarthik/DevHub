@@ -28615,6 +28615,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Bicep benefits automatically from any new ARM feature without needing a separate tooling update.',
     ],
   },
+  'azure/bicep/forgetting-existing-turns-a-reference-into-a-redeploy': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Modules Need Their Own scope Property', route: '/azure/bicep/modules-need-their-own-scope-property-for-a-different-target' },
+      { label: 'Bicep overview', route: '/azure/bicep' },
+    ],
+    tip: 'A resource block referencing something already live needs the existing keyword — without it, Bicep manages and redeploys that resource instead of just reading from it.',
+    gotchas: [
+      'Omitting existing doesn\'t fail loudly — it succeeds, having quietly taken over management of the live resource.',
+      'A wrong name/scope on an existing reference DOES fail immediately, with a NotFound error — the opposite failure mode.',
+    ],
+  },
+  'azure/bicep/modules-need-their-own-scope-property-for-a-different-target': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Forgetting existing Turns a Reference Into a Redeploy', route: '/azure/bicep/forgetting-existing-turns-a-reference-into-a-redeploy' },
+      { label: 'A Module’s Static name Can Cause a Silent Collision', route: '/azure/bicep/a-modules-static-name-can-cause-a-silent-output-collision' },
+    ],
+    tip: 'A module with no scope property deploys at the PARENT file\'s own target scope, not wherever it happens to sit in the file — an explicit scope property is required to target a different resource group, subscription, or management group.',
+    gotchas: [
+      'scope accepts either a symbolic name declared in the same file or a scope function (resourceGroup(), subscription(), managementGroup(), tenant()).',
+      'A subscription-scoped file creating a new resource group must still set scope: <rgSymbolicName> on any module deploying resources into it.',
+    ],
+  },
+  'azure/bicep/a-modules-static-name-can-cause-a-silent-output-collision': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Modules Need Their Own scope Property', route: '/azure/bicep/modules-need-their-own-scope-property-for-a-different-target' },
+      { label: 'Bicep overview', route: '/azure/bicep' },
+    ],
+    tip: 'A module\'s name property is the identity ARM tracks, not just a label — two concurrent deployments to the same scope sharing a static module name can read back each other\'s output.',
+    gotchas: [
+      'Fix: fold something unique-per-run into the name (e.g. deployment().name), or omit name entirely for an auto-generated GUID.',
+      'The no-module-name linter rule flags any module still using an explicit static name property.',
+    ],
+  },
   'azure/aks': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

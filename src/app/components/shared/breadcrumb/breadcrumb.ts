@@ -1827,6 +1827,9 @@ const AZURE_LABELS: Record<string, string> = {
   'api-management/rate-limit-by-key-counts-per-gateway-not-per-instance': 'rate-limit-by-key Counts Per Gateway',
   'api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart': 'Self-Hosted Gateway Fails Static',
   'bicep':              'Azure Bicep Deep-dive',
+  'bicep/forgetting-existing-turns-a-reference-into-a-redeploy': 'Forgetting existing Turns a Reference Into a Redeploy',
+  'bicep/modules-need-their-own-scope-property-for-a-different-target': 'Modules Need Their Own scope Property',
+  'bicep/a-modules-static-name-can-cause-a-silent-output-collision': 'A Module’s Static name Can Cause a Silent Collision',
   'cheatsheet':         'Azure Cheat Sheet',
 };
 

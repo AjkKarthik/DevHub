@@ -2659,4 +2659,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' },
     { label: 'Self-Hosted Gateway Fails Static', route: '/azure/api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart' },
   ],
+  bicep: [
+    { label: 'Forgetting existing Turns a Reference Into a Redeploy', route: '/azure/bicep/forgetting-existing-turns-a-reference-into-a-redeploy' },
+    { label: 'Modules Need Their Own scope Property', route: '/azure/bicep/modules-need-their-own-scope-property-for-a-different-target' },
+    { label: 'A Module’s Static name Can Cause a Silent Collision', route: '/azure/bicep/a-modules-static-name-can-cause-a-silent-output-collision' },
+  ],
 };

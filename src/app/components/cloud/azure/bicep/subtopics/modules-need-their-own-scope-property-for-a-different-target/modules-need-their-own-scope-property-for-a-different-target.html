@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Bicep Deep-dive" topicRoute="/azure/bicep" subtopicLabel="Modules Need Their Own scope Property" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">A Module Needs Its Own scope Property to Target a Different Resource Group Than Its Parent</h1>
+  <p class="page-subtitle">The main page confirms module scope isolation exists but never shows the syntax — Microsoft's own docs give the exact scope property, its default, and a worked example running the opposite direction from the main page's own description.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Bicep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own module scope coverage — the next subtopic moves from targeting a module's scope to a subtler risk in how modules are named.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Bicep Deep-dive" topicRoute="/azure/bicep"
+    [prev]="{ label: 'Forgetting existing Turns a Reference Into a Redeploy', route: '/azure/bicep/forgetting-existing-turns-a-reference-into-a-redeploy' }"
+    [next]="{ label: 'A Module’s Static name Can Cause a Silent Collision', route: '/azure/bicep/a-modules-static-name-can-cause-a-silent-output-collision' }" />
+</div>

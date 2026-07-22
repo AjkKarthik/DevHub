@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Bicep Deep-dive" topicRoute="/azure/bicep" subtopicLabel="Forgetting existing Turns a Reference Into a Redeploy" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Forgetting the existing Keyword Turns a Reference Into a Redeploy</h1>
+  <p class="page-subtitle">The main page's own symbolic-reference example only ever creates resources — Microsoft's own docs confirm a plain resource block referencing something already live silently manages it instead of just reading it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Bicep" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own resource-reference coverage — the next subtopic moves from referencing existing resources to targeting a different scope with a module.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Bicep Deep-dive" topicRoute="/azure/bicep"
+    [next]="{ label: 'Modules Need Their Own scope Property', route: '/azure/bicep/modules-need-their-own-scope-property-for-a-different-target' }" />
+</div>

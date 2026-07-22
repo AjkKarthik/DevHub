@@ -3323,7 +3323,12 @@ export const routes: Routes = [
       { path: 'rate-limit-by-key-counts-per-gateway-not-per-instance', loadComponent: () => import('./components/cloud/azure/api-management/subtopics/rate-limit-by-key-counts-per-gateway-not-per-instance/rate-limit-by-key-counts-per-gateway-not-per-instance').then(m => m.RateLimitByKeyCountsPerGatewayNotPerInstanceSubtopic) },
       { path: 'self-hosted-gateway-fails-static-but-needs-backup-to-restart', loadComponent: () => import('./components/cloud/azure/api-management/subtopics/self-hosted-gateway-fails-static-but-needs-backup-to-restart/self-hosted-gateway-fails-static-but-needs-backup-to-restart').then(m => m.SelfHostedGatewayFailsStaticButNeedsBackupToRestartSubtopic) },
     ] },
-    { path: 'bicep',             loadComponent: () => import('./components/cloud/azure/bicep/bicep').then(m => m.AzureBicep) },
+    { path: 'bicep', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/bicep/bicep').then(m => m.AzureBicep) },
+      { path: 'forgetting-existing-turns-a-reference-into-a-redeploy', loadComponent: () => import('./components/cloud/azure/bicep/subtopics/forgetting-existing-turns-a-reference-into-a-redeploy/forgetting-existing-turns-a-reference-into-a-redeploy').then(m => m.ForgettingExistingTurnsAReferenceIntoARedeploySubtopic) },
+      { path: 'modules-need-their-own-scope-property-for-a-different-target', loadComponent: () => import('./components/cloud/azure/bicep/subtopics/modules-need-their-own-scope-property-for-a-different-target/modules-need-their-own-scope-property-for-a-different-target').then(m => m.ModulesNeedTheirOwnScopePropertyForADifferentTargetSubtopic) },
+      { path: 'a-modules-static-name-can-cause-a-silent-output-collision', loadComponent: () => import('./components/cloud/azure/bicep/subtopics/a-modules-static-name-can-cause-a-silent-output-collision/a-modules-static-name-can-cause-a-silent-output-collision').then(m => m.AModulesStaticNameCanCauseASilentOutputCollisionSubtopic) },
+    ] },
     { path: 'cheatsheet',        loadComponent: () => import('./components/cloud/azure/cheatsheet/cheatsheet').then(m => m.AzureCheatsheet) },
   ] },
   { path: 'aws',           children: [
