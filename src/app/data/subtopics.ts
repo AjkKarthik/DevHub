@@ -2587,4 +2587,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' },
     { label: 'Security Admin Rules Bypass NSG Evaluation', route: '/azure/virtual-network/security-admin-rules-can-bypass-nsg-evaluation-entirely' },
   ],
+  'load-balancer': [
+    { label: 'Default Outbound Access Retired', route: '/azure/load-balancer/default-outbound-access-was-retired-march-2026-need-explicit-method' },
+    { label: 'Default SNAT Port Allocation Is Per-VM', route: '/azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip' },
+    { label: 'Front Door Health Probe SampleSize Explained', route: '/azure/load-balancer/front-door-health-probe-samplesize-and-successfulsamples-explained' },
+  ],
 };

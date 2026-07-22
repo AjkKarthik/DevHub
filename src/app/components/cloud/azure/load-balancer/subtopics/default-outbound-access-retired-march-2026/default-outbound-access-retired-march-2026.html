@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Load Balancer & Front Door" topicRoute="/azure/load-balancer" subtopicLabel="Default Outbound Access Retired" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Default Outbound Access Was Retired March 2026 — Need an Explicit Method</h1>
+  <p class="page-subtitle">The main page's own SNAT QnA covers exhaustion prevention but skips a more basic question — a VM with no explicit outbound method now has no outbound path at all.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="2026" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a real gap before the main page's own SNAT exhaustion advice even applies. Next, the SNAT port allocation subtopic gives the exact per-VM numbers behind the "~64K SNAT ports" figure.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Load Balancer & Front Door" topicRoute="/azure/load-balancer"
+    [next]="{ label: 'Default SNAT Port Allocation Is Per-VM', route: '/azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip' }" />
+</div>

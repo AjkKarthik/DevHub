@@ -28879,6 +28879,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Application Gateway is required specifically when routing decisions need to be based on URL path or hostname.',
     ],
   },
+  'azure/load-balancer/default-outbound-access-was-retired-march-2026-need-explicit-method': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancer overview', route: '/azure/load-balancer' },
+      { label: 'Default SNAT Port Allocation Is Per-VM', route: '/azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip' },
+    ],
+    tip: 'Default outbound access (the implicit, no-configuration fallback) was retired for new VNets as of March 31, 2026 — a VM with no NAT Gateway, no instance-level public IP, and no public LB outbound rule now has zero outbound internet path.',
+    gotchas: [
+      'An internal-only Standard Load Balancer never provides outbound connectivity by itself — it has no public frontend IP to source SNAT from.',
+      'NAT Gateway takes precedence over every other outbound method automatically when both are present.',
+    ],
+  },
+  'azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Default Outbound Access Retired', route: '/azure/load-balancer/default-outbound-access-was-retired-march-2026-need-explicit-method' },
+      { label: 'Front Door Health Probe SampleSize Explained', route: '/azure/load-balancer/front-door-health-probe-samplesize-and-successfulsamples-explained' },
+    ],
+    tip: 'Default SNAT allocation follows a fixed pool-size tier table (1024/512/256/128/64/32 ports per VM), not an even division of the 64K total — and it caps at 1,024 ports per VM no matter how many frontend IPs are added.',
+    gotchas: [
+      'Microsoft explicitly discourages default allocation for production — use NAT Gateway or manually-allocated outbound rules instead.',
+      'Manual "ports per instance" allocation follows a different formula (frontend IPs × 64K / backend instances) and isn\'t capped at 1,024.',
+    ],
+  },
+  'azure/load-balancer/front-door-health-probe-samplesize-and-successfulsamples-explained': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Default SNAT Port Allocation Is Per-VM', route: '/azure/load-balancer/default-snat-port-allocation-is-per-vm-not-per-ip' },
+      { label: 'Load Balancer overview', route: '/azure/load-balancer' },
+    ],
+    tip: 'Front Door judges origin health from a rolling window of the last SampleSize probes, requiring SuccessfulSamplesRequired of them to pass — not a single latest-probe pass/fail check.',
+    gotchas: [
+      'If every origin in a group fails simultaneously, Front Door keeps routing traffic in round-robin rather than failing every request.',
+      'Probe frequency adapts down when an edge location isn\'t receiving real client traffic — actual probe volume can be lower than the configured interval implies.',
+    ],
+  },
   'azure/api-management': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

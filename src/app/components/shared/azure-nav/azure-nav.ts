@@ -170,7 +170,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/load-balancer" routerLinkActive="active"><span class="nl-text">Load Balancer &amp; Front Door</span>@if(p.isDone('azure-load-balancer')){<span class="nl-done">✓</span>}@if(d('azure-load-balancer');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/load-balancer" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Load Balancer &amp; Front Door</span>
+        @if (p.isDone('azure-load-balancer')) {<span class="nl-done">✓</span>}
+        @if (d('azure-load-balancer'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('load-balancer')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('load-balancer')"
+                  (click)="toggleSubtopics('load-balancer', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('load-balancer'); as lbSubs) {
+        @if (isSubtopicsExpanded('load-balancer')) {
+          <div class="nav-subtopics">
+            @for (s of lbSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

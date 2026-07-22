@@ -3239,7 +3239,12 @@ export const routes: Routes = [
       { path: 'private-dns-registration-enabled-only-works-for-vms', loadComponent: () => import('./components/cloud/azure/virtual-network/subtopics/private-dns-registration-enabled-only-works-for-vms/private-dns-registration-enabled-only-works-for-vms').then(m => m.PrivateDnsRegistrationEnabledOnlyWorksForVmsSubtopic) },
       { path: 'security-admin-rules-can-bypass-nsg-evaluation-entirely', loadComponent: () => import('./components/cloud/azure/virtual-network/subtopics/security-admin-rules-can-bypass-nsg-evaluation-entirely/security-admin-rules-can-bypass-nsg-evaluation-entirely').then(m => m.SecurityAdminRulesCanBypassNsgEvaluationEntirelySubtopic) },
     ] },
-    { path: 'load-balancer',     loadComponent: () => import('./components/cloud/azure/load-balancer/load-balancer').then(m => m.AzureLoadBalancer) },
+    { path: 'load-balancer', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/load-balancer/load-balancer').then(m => m.AzureLoadBalancer) },
+      { path: 'default-outbound-access-was-retired-march-2026-need-explicit-method', loadComponent: () => import('./components/cloud/azure/load-balancer/subtopics/default-outbound-access-retired-march-2026/default-outbound-access-retired-march-2026').then(m => m.DefaultOutboundAccessRetiredMarch2026Subtopic) },
+      { path: 'default-snat-port-allocation-is-per-vm-not-per-ip', loadComponent: () => import('./components/cloud/azure/load-balancer/subtopics/default-snat-port-allocation-is-per-vm-not-per-ip/default-snat-port-allocation-is-per-vm-not-per-ip').then(m => m.DefaultSnatPortAllocationIsPerVmNotPerIpSubtopic) },
+      { path: 'front-door-health-probe-samplesize-and-successfulsamples-explained', loadComponent: () => import('./components/cloud/azure/load-balancer/subtopics/front-door-health-probe-samplesize-explained/front-door-health-probe-samplesize-explained').then(m => m.FrontDoorHealthProbeSamplesizeExplainedSubtopic) },
+    ] },
     { path: 'storage',           loadComponent: () => import('./components/cloud/azure/storage/storage').then(m => m.AzureStorage) },
     { path: 'entra-id',          loadComponent: () => import('./components/cloud/azure/entra-id/entra-id').then(m => m.AzureEntraId) },
     { path: 'rbac',              loadComponent: () => import('./components/cloud/azure/rbac/rbac').then(m => m.AzureRbac) },
