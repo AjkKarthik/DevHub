@@ -4394,7 +4394,48 @@ off here with a date.
   with subtopics — explicitly checked the toggle COUNT (20) on the topic overview page per the
   standing lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg:
   #0f172a`) applying correctly.)
-- [ ] `/azure/api-management` — Azure API Management
+- [x] `/azure/api-management` — Azure API Management (2026-07-23 — 3 subtopics:
+  cache-is-shared-per-region-only-and-fails-silently,
+  rate-limit-by-key-counts-per-gateway-not-per-instance,
+  self-hosted-gateway-fails-static-but-needs-backup-to-restart; all three verified against
+  Microsoft's own documentation via WebFetch before writing — no genuine main-page inaccuracy
+  found this batch (all three angles are expansion gaps, not corrections): (1) confirmed via
+  Microsoft's own caching how-to that "built-in cache is volatile and is shared by all units in
+  the same REGION in the same API Management instance" — closing a gap where the main page's own
+  cache-lookup/cache-store theory never scopes what "shared" means, and a multi-region Premium
+  deployment's own two regions never share a cached response at all; also confirmed cache failures
+  (internal or external) never raise an error — "the API call... doesn't raise an error, and the
+  cache operation completes successfully... a null value is returned" — meaning a genuine cache
+  miss and an unreachable cache are indistinguishable from the policy's own point of view; also
+  pinned down the main page's own vague "limited features" description of the Consumption tier to
+  one concrete fact — internal caching isn't available there at all; (2) confirmed via Microsoft's
+  own rate-limit-by-key policy reference that "this policy tracks calls independently at each
+  gateway where it is applied, including workspace gateways and regional gateways in a
+  multi-region deployment. It doesn't aggregate call data across the entire instance" — closing a
+  gap where the main page's own Common Mistake entry describes rate-limit-by-key as giving "each
+  subscriber their own independent quota" without ever mentioning that quota is ALSO independently
+  duplicated per gateway, meaning a subscriber's effective global rate scales with how many
+  gateways (regions, self-hosted clusters) their traffic reaches; also confirmed self-hosted
+  gateway rate counts "don't synchronize with other gateway resources... including the managed
+  gateway in the cloud" even when configured to sync locally among their own cluster nodes; (3)
+  confirmed via Microsoft's own self-hosted gateway overview that it's designed to "fail static"
+  and survive a connectivity outage to Azure IF ALREADY RUNNING, but that "stopped self-hosted
+  gateways won't be able to start" during the same outage unless configuration backup (a
+  persistent volume) was explicitly configured beforehand — closing a gap where the main page
+  names only WHERE the self-hosted gateway can run, never its dependency on the cloud control
+  plane or this specific stopped-vs-running distinction. Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files — including the six shared wiring files — backtick parity — even
+  counts, 4/4/4 — bare `@word` in `.html` prose, `[prev]`/`[next]` route cross-check) came back
+  clean. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (397.11 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 15 files (9 new + 6 wiring, no main-page fix this batch) cleanly — no "Filename too long"
+  errors. Confirmed bare `api-management` key collision-free in `SUBTOPICS` map (checked both
+  quoted and unquoted forms). Browser-verified successfully on all three subtopic pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the
+  `AzureNavComponent` accordion (now the TWENTY-FIRST topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (21) on the topic overview page per the standing lesson
+  from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying
+  correctly.)
 - [ ] `/azure/bicep` — Azure Bicep Deep-dive
 
 #### Linux — 19 topic pages
