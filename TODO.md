@@ -3717,7 +3717,45 @@ off here with a date.
   each page's own toggle open), tailored (non-DEFAULT) sidebar content, dark mode
   (`--bg: #0f172a`) applying correctly, and BOTH Fundamentals' and ARM's own toggles rendering
   correctly together on the topic overview page.)
-- [ ] `/azure/virtual-machines` — Azure Virtual Machines
+- [x] `/azure/virtual-machines` — Azure Virtual Machines (2026-07-22 — 3 subtopics:
+  standard-sku-public-ips-are-now-always-static-not-dynamic,
+  scheduled-events-covers-five-event-types-not-just-spot-eviction,
+  vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  public-IP docs that "the IP address is released when you stop, or delete the resource... Any
+  associated IP address is released if the allocation method is dynamic" and, genuinely
+  surprisingly, that "On September 30, 2025, Basic SKU public IPs were retired" — Standard SKU
+  (now the only option) is Static-only for IPv4, meaning the classic "IP changes after
+  deallocate/start" gotcha is now largely resolved for current deployments — closing a gap where
+  the main page's own deallocate/billing mistake entry never mentions the VM's public IP at all;
+  (2) confirmed via Microsoft's own Scheduled Events docs five distinct event types — "EventType:
+  Freeze | Reboot | Redeploy | Preempt | Terminate" — with documented minimum notice periods
+  ("Freeze: 15 minutes. Reboot: 15 minutes. Redeploy: 10 minutes. Preempt: 30 seconds. Terminate:
+  User Configurable, 5 to 15 minutes") and confirmation that user-initiated actions generate real
+  events too ("If you restart a VM, an event with the type Reboot is scheduled") — closing a gap
+  where the main page's only mention of this API scopes it entirely to Spot eviction's 30-second
+  notice; (3) confirmed via Microsoft's own VMSS orchestration-modes docs that Flexible mode uses
+  "Standard Azure IaaS VM (Microsoft.compute/virtualmachines)" resources manageable with "all of
+  the standard VM APIs," while Uniform-mode instances "lack compatibility with standard Azure IaaS
+  VM API commands, Azure Resource Manager tagging, RBAC, Azure Backup, or Azure Site Recovery" —
+  plus a genuinely surprising documented networking gotcha: Flexible mode's own feature-comparison
+  table lists "Default outbound connectivity: No, must have explicit outbound connectivity" versus
+  "Yes" for Uniform mode and Availability Sets — closing a gap where the main page's own
+  Flexible-vs-Uniform quiz explains WHAT each mode supports but never the architectural reason why
+  or this real operational consequence. Gotcha sweep covered `.html` bound attributes, `.ts`
+  single-quoted fields (apostrophe-after-letter grep clean across all three files), bare
+  `@word`/`{` in `.html` prose (none present), and backtick parity (even counts, 4/4/4). Build
+  reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with
+  zero actual TypeScript/template compile errors. Proactively kept all three physical folder names
+  under ~60 chars from the start (shortening two of the three before writing any files) to stay
+  well clear of Windows MAX_PATH, with full descriptive slugs kept in the route `path:` and every
+  other wiring touchpoint. `git add -A` staged all 9 files cleanly with no "Filename too long"
+  errors. Confirmed bare `virtual-machines` key collision-free in `SUBTOPICS` map (checked both
+  quoted and unquoted forms). Browser-verified successfully on all three pages — h1/breadcrumb
+  pairs correct (all 4 levels), the `AzureNavComponent` accordion (now the THIRD topic in this hub
+  with subtopics — explicitly checked the toggle COUNT (3) on the topic overview page, not just
+  that each subtopic page's own toggle opens, per the standing lesson from the prior ARM batch),
+  tailored (non-DEFAULT) sidebar content, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/app-service` — Azure App Service
 - [ ] `/azure/functions` — Azure Functions
 - [ ] `/azure/aks` — Azure Kubernetes Service
