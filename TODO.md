@@ -3983,7 +3983,38 @@ off here with a date.
   subtopics — explicitly checked the toggle COUNT (9) on the topic overview page per the standing
   lesson from the ARM batch), tailored (non-DEFAULT) sidebar content confirmed via direct DOM
   inspection, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/entra-id` — Azure Active Directory & Entra ID
+- [x] `/azure/entra-id` — Azure Active Directory & Entra ID (2026-07-22 — 3 subtopics:
+  client-credentials-scope-must-be-default-not-individual-permissions,
+  spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset,
+  pkce-is-required-for-spas-but-only-recommended-for-native-apps; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  client credentials flow doc that "the value passed for the scope parameter... should be the
+  resource identifier... suffixed with .default... All scopes included must be for a single
+  resource. Including scopes for multiple resources will result in an error," with the doc's own
+  example AADSTS70011 invalid_scope error for a non-.default value — closing a gap where the main
+  page's QnA phrases .default as one option among alternatives rather than the only valid scope
+  shape for this grant type; (2) confirmed via Microsoft's own refresh token doc that default
+  lifetimes are "24 hours for single-page applications... 90 days for all other scenarios," and
+  that the 24-hour SPA window "carries over" to every subsequent refresh rather than resetting —
+  closing a gap where the main page states "up to 90 days for confidential clients" with no
+  contrary figure for the SPA client type it separately covers via PKCE and Authorization Code
+  flow; bonus finding from the same doc that old refresh tokens are never auto-revoked ("Securely
+  delete the old refresh token after acquiring a new one"); (3) confirmed via Microsoft's own
+  third-party-cookie-blocking doc that "PKCE is required for SPAs on the Microsoft identity
+  platform. PKCE is recommended for native and confidential clients" — two different enforcement
+  words in the same sentence — closing a gap where the main page's "Use PKCE... for SPAs and
+  mobile apps" phrasing treats both client types as one uniform recommendation. Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even counts, 4/4/4 —
+  bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check) came back clean; full
+  descriptive slugs used directly as physical folder names (MAX_PATH check confirmed well under
+  the limit). Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR (337.62 kB over) with zero actual TypeScript/template compile errors. `git add -A`
+  staged all 15 files cleanly. Confirmed bare `entra-id` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). Browser-verified successfully on all three pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the
+  `AzureNavComponent` accordion (now the TENTH topic in this hub with subtopics — explicitly
+  checked the toggle COUNT (10) on the topic overview page per the standing lesson from the ARM
+  batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/rbac` — Azure RBAC
 - [ ] `/azure/sql-cosmos` — Azure SQL & Cosmos DB
 - [ ] `/azure/monitor` — Azure Monitor & App Insights
