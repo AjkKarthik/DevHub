@@ -1823,6 +1823,9 @@ const AZURE_LABELS: Record<string, string> = {
   'redis/default-eviction-policy-is-volatile-lru-not-noeviction': 'The Real Default Eviction Policy Is volatile-lru',
   'redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes': 'Enabling Entra ID Auth Reboots Every Node',
   'api-management':     'API Management',
+  'api-management/cache-is-shared-per-region-only-and-fails-silently': 'Cache Is Shared Per Region Only',
+  'api-management/rate-limit-by-key-counts-per-gateway-not-per-instance': 'rate-limit-by-key Counts Per Gateway',
+  'api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart': 'Self-Hosted Gateway Fails Static',
   'bicep':              'Azure Bicep Deep-dive',
   'cheatsheet':         'Azure Cheat Sheet',
 };

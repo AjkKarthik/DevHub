@@ -3317,7 +3317,12 @@ export const routes: Routes = [
       { path: 'default-eviction-policy-is-volatile-lru-not-noeviction', loadComponent: () => import('./components/cloud/azure/redis/subtopics/default-eviction-policy-is-volatile-lru-not-noeviction/default-eviction-policy-is-volatile-lru-not-noeviction').then(m => m.DefaultEvictionPolicyIsVolatileLruNotNoevictionSubtopic) },
       { path: 'enabling-entra-id-auth-reboots-every-node-up-to-30-minutes', loadComponent: () => import('./components/cloud/azure/redis/subtopics/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes').then(m => m.EnablingEntraIdAuthRebootsEveryNodeUpTo30MinutesSubtopic) },
     ] },
-    { path: 'api-management',    loadComponent: () => import('./components/cloud/azure/api-management/api-management').then(m => m.AzureApiManagement) },
+    { path: 'api-management', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/api-management/api-management').then(m => m.AzureApiManagement) },
+      { path: 'cache-is-shared-per-region-only-and-fails-silently', loadComponent: () => import('./components/cloud/azure/api-management/subtopics/cache-is-shared-per-region-only-and-fails-silently/cache-is-shared-per-region-only-and-fails-silently').then(m => m.CacheIsSharedPerRegionOnlyAndFailsSilentlySubtopic) },
+      { path: 'rate-limit-by-key-counts-per-gateway-not-per-instance', loadComponent: () => import('./components/cloud/azure/api-management/subtopics/rate-limit-by-key-counts-per-gateway-not-per-instance/rate-limit-by-key-counts-per-gateway-not-per-instance').then(m => m.RateLimitByKeyCountsPerGatewayNotPerInstanceSubtopic) },
+      { path: 'self-hosted-gateway-fails-static-but-needs-backup-to-restart', loadComponent: () => import('./components/cloud/azure/api-management/subtopics/self-hosted-gateway-fails-static-but-needs-backup-to-restart/self-hosted-gateway-fails-static-but-needs-backup-to-restart').then(m => m.SelfHostedGatewayFailsStaticButNeedsBackupToRestartSubtopic) },
+    ] },
     { path: 'bicep',             loadComponent: () => import('./components/cloud/azure/bicep/bicep').then(m => m.AzureBicep) },
     { path: 'cheatsheet',        loadComponent: () => import('./components/cloud/azure/cheatsheet/cheatsheet').then(m => m.AzureCheatsheet) },
   ] },

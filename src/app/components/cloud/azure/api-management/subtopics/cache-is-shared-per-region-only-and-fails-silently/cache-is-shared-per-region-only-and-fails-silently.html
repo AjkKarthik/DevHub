@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure API Management" topicRoute="/azure/api-management" subtopicLabel="Cache Is Shared Per Region Only — And Fails Silently" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">The Built-In Cache Is Shared Per Region Only — And Cache Failures Return null Silently</h1>
+  <p class="page-subtitle">The main page treats cache-lookup/cache-store as a simple win — Microsoft's own docs scope "shared" to a single region and confirm cache failures never raise an error in either cache type.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure API Management" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own caching and tier coverage — the next subtopic moves from caching to a similar per-scope surprise in rate limiting.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure API Management" topicRoute="/azure/api-management"
+    [next]="{ label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' }" />
+</div>

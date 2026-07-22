@@ -405,7 +405,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/api-management" routerLinkActive="active"><span class="nl-text">API Management</span>@if(p.isDone('azure-api-management')){<span class="nl-done">✓</span>}@if(d('azure-api-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/api-management" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">API Management</span>
+        @if (p.isDone('azure-api-management')) {<span class="nl-done">✓</span>}
+        @if (d('azure-api-management'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('api-management')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('api-management')"
+                  (click)="toggleSubtopics('api-management', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('api-management'); as apimSubs) {
+        @if (isSubtopicsExpanded('api-management')) {
+          <div class="nav-subtopics">
+            @for (s of apimSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

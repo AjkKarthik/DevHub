@@ -2654,4 +2654,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' },
     { label: 'Enabling Entra ID Auth Reboots Every Node', route: '/azure/redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes' },
   ],
+  'api-management': [
+    { label: 'Cache Is Shared Per Region Only', route: '/azure/api-management/cache-is-shared-per-region-only-and-fails-silently' },
+    { label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' },
+    { label: 'Self-Hosted Gateway Fails Static', route: '/azure/api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart' },
+  ],
 };

@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure API Management" topicRoute="/azure/api-management" subtopicLabel="rate-limit-by-key Counts Per Gateway" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">rate-limit-by-key Counts Independently Per Gateway — Multi-Region and Self-Hosted Included</h1>
+  <p class="page-subtitle">The main page's own fix for per-subscriber throttling never mentions that each gateway keeps its own separate counter — Microsoft's own docs confirm counts never aggregate across the instance.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure API Management" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own rate-limit-by-key Common Mistake — the next subtopic moves from per-gateway counters to a self-hosted gateway's behavior when it loses connectivity entirely.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure API Management" topicRoute="/azure/api-management"
+    [prev]="{ label: 'Cache Is Shared Per Region Only', route: '/azure/api-management/cache-is-shared-per-region-only-and-fails-silently' }"
+    [next]="{ label: 'Self-Hosted Gateway Fails Static', route: '/azure/api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart' }" />
+</div>

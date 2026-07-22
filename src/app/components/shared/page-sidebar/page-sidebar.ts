@@ -28927,6 +28927,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Policies execute at request/response time and add a small amount of latency per request compared to calling a backend directly.',
     ],
   },
+  'azure/api-management/cache-is-shared-per-region-only-and-fails-silently': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' },
+      { label: 'API Management overview', route: '/azure/api-management' },
+    ],
+    tip: 'The built-in cache is shared only by units in the SAME region — a multi-region Premium deployment maintains a fully separate cache per region. Cache failures also never raise an error in either cache type; a read just returns null.',
+    gotchas: [
+      'Internal caching isn\'t available at all on the Consumption tier — only an external Redis-compatible cache works there.',
+      'A cache-lookup miss from a genuinely empty cache and one from an unreachable cache look identical to the policy pipeline.',
+    ],
+  },
+  'azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Cache Is Shared Per Region Only', route: '/azure/api-management/cache-is-shared-per-region-only-and-fails-silently' },
+      { label: 'Self-Hosted Gateway Fails Static', route: '/azure/api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart' },
+    ],
+    tip: 'rate-limit-by-key tracks calls independently at EACH gateway — regional gateways in a multi-region deployment, workspace gateways, and self-hosted gateways never aggregate counts with each other.',
+    gotchas: [
+      'A subscriber\'s effective global rate limit scales with however many distinct gateways their traffic happens to reach.',
+      'A self-hosted gateway cluster can sync counters among its own nodes, but never with the cloud-managed gateway.',
+    ],
+  },
+  'azure/api-management/self-hosted-gateway-fails-static-but-needs-backup-to-restart': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'rate-limit-by-key Counts Per Gateway', route: '/azure/api-management/rate-limit-by-key-counts-per-gateway-not-per-instance' },
+      { label: 'API Management overview', route: '/azure/api-management' },
+    ],
+    tip: '"Fail static" only protects a self-hosted gateway that\'s already RUNNING when connectivity to Azure drops — a stopped instance can\'t restart during the outage unless configuration backup (a persistent volume) was explicitly configured.',
+    gotchas: [
+      'A routine pod restart (node patching, autoscaling) that overlaps with a connectivity outage can strand a gateway with no backup configured.',
+      'Reconnection and config catch-up are fully automatic once connectivity returns, regardless of the backup setting.',
+    ],
+  },
   'azure/service-bus': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
