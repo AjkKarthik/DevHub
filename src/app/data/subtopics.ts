@@ -2566,4 +2566,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Scheduled Events Covers 5 Event Types', route: '/azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction' },
     { label: 'VMSS Flexible: Real VMs, No Default Outbound', route: '/azure/virtual-machines/vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity' },
   ],
+  'app-service': [
+    { label: 'Health Check: 10 Failures, Never All Removed', route: '/azure/app-service/health-check-defaults-to-10-failures-and-never-removes-all-instances' },
+    { label: 'Auto-Heal: 4 Conditions, 3 Actions', route: '/azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions' },
+    { label: 'SCM Basic Auth Is a Separate Attack Surface', route: '/azure/app-service/scm-basic-auth-is-a-separate-attack-surface-from-kudu' },
+  ],
 };

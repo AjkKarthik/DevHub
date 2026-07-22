@@ -28663,6 +28663,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Free/Shared tiers run on shared infrastructure with no SLA — production workloads need Standard tier or above.',
     ],
   },
+  'azure/app-service/health-check-defaults-to-10-failures-and-never-removes-all-instances': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'App Service overview', route: '/azure/app-service' },
+      { label: 'Auto-Heal: 4 Conditions, 3 Actions', route: '/azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions' },
+    ],
+    tip: 'WEBSITE_HEALTHCHECK_MAXPINGFAILURES defaults to 10 consecutive failures, and WEBSITE_HEALTHCHECK_MAXUNHEALTHYWORKERPERCENT caps removal at 50% by default — and if ALL instances are unhealthy, App Service removes none to avoid a self-inflicted outage.',
+    gotchas: [
+      'Health check configuration is NOT slot-specific — after a swap, each slot keeps pinging whatever path was configured for that slot position, not the app content.',
+      'Health check only evaluates HTTP status code — it has no visibility into slow-but-successful responses or memory usage (that\'s what Auto-Heal is for).',
+    ],
+  },
+  'azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Health Check: 10 Failures, Never All Removed', route: '/azure/app-service/health-check-defaults-to-10-failures-and-never-removes-all-instances' },
+      { label: 'SCM Basic Auth Is a Separate Attack Surface', route: '/azure/app-service/scm-basic-auth-is-a-separate-attack-surface-from-kudu' },
+    ],
+    tip: 'Auto-Heal recycles the worker process in place based on internal conditions (Request Duration, Memory Limit, Request Count, Status Codes) — a separate, process-level mechanism from Health Check\'s load-balancer-level instance removal.',
+    gotchas: [
+      'Auto-Heal is explicitly a temporary mitigation — Microsoft\'s own guidance is to still find and fix the root cause, not rely on repeated auto-recycling.',
+      'The Log an Event action takes no disruptive action at all — useful for gathering frequency data before committing to an automatic Recycle Process rule.',
+    ],
+  },
+  'azure/app-service/scm-basic-auth-is-a-separate-attack-surface-from-kudu': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Auto-Heal: 4 Conditions, 3 Actions', route: '/azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions' },
+      { label: 'App Service overview', route: '/azure/app-service' },
+    ],
+    tip: 'SCM Basic Auth Publishing Credentials gates Kudu console/API access independently of the app\'s own authentication — and SCM basic auth must stay enabled for FTP basic auth to work at all.',
+    gotchas: [
+      'Disabling SCM basic auth affects deployment methods differently — modern Azure CLI and Azure Pipelines fall back to Microsoft Entra automatically, while Local Git and older GitHub Actions integrations break outright.',
+      'Disabling FTP basic auth alone does NOT affect Kudu/SCM access — they are independent toggles despite both being "deployment credentials."',
+    ],
+  },
   'azure/virtual-machines': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

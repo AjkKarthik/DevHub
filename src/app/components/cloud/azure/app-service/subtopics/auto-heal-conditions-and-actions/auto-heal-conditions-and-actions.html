@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure App Service" topicRoute="/azure/app-service" subtopicLabel="Auto-Heal: 4 Conditions, 3 Actions" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Auto-Heal: Four Conditions, Three Actions the Main Page Never Mentions</h1>
+  <p class="page-subtitle">The main page covers Health Check and Diagnostic Logs — but never Auto-Heal, a separate, process-level self-recovery feature that catches problems Health Check can't see.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="App Service" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic introduces a real, undocumented-on-the-main-page reliability feature. Next, the SCM Basic Auth subtopic covers a security angle to the Kudu tool the main page names but never discusses.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure App Service" topicRoute="/azure/app-service"
+    [prev]="{ label: 'Health Check: 10 Failures, Never All Removed', route: '/azure/app-service/health-check-defaults-to-10-failures-and-never-removes-all-instances' }"
+    [next]="{ label: 'SCM Basic Auth Is a Separate Attack Surface', route: '/azure/app-service/scm-basic-auth-is-a-separate-attack-surface-from-kudu' }" />
+</div>

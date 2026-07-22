@@ -3215,7 +3215,12 @@ export const routes: Routes = [
       { path: 'scheduled-events-covers-five-event-types-not-just-spot-eviction', loadComponent: () => import('./components/cloud/azure/virtual-machines/subtopics/scheduled-events-five-event-types/scheduled-events-five-event-types').then(m => m.ScheduledEventsFiveEventTypesSubtopic) },
       { path: 'vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity', loadComponent: () => import('./components/cloud/azure/virtual-machines/subtopics/vmss-flexible-real-vms-no-default-outbound/vmss-flexible-real-vms-no-default-outbound').then(m => m.VmssFlexibleRealVmsNoDefaultOutboundSubtopic) },
     ] },
-    { path: 'app-service',       loadComponent: () => import('./components/cloud/azure/app-service/app-service').then(m => m.AzureAppService) },
+    { path: 'app-service', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/app-service/app-service').then(m => m.AzureAppService) },
+      { path: 'health-check-defaults-to-10-failures-and-never-removes-all-instances', loadComponent: () => import('./components/cloud/azure/app-service/subtopics/health-check-10-failures-never-all-removed/health-check-10-failures-never-all-removed').then(m => m.HealthCheck10FailuresNeverAllRemovedSubtopic) },
+      { path: 'auto-heal-four-conditions-three-actions-main-page-never-mentions', loadComponent: () => import('./components/cloud/azure/app-service/subtopics/auto-heal-conditions-and-actions/auto-heal-conditions-and-actions').then(m => m.AutoHealConditionsAndActionsSubtopic) },
+      { path: 'scm-basic-auth-is-a-separate-attack-surface-from-kudu', loadComponent: () => import('./components/cloud/azure/app-service/subtopics/scm-basic-auth-is-a-separate-attack-surface-from-kudu/scm-basic-auth-is-a-separate-attack-surface-from-kudu').then(m => m.ScmBasicAuthIsASeparateAttackSurfaceFromKuduSubtopic) },
+    ] },
     { path: 'functions',         loadComponent: () => import('./components/cloud/azure/functions/functions').then(m => m.AzureFunctions) },
     { path: 'aks',               loadComponent: () => import('./components/cloud/azure/aks/aks').then(m => m.AzureAks) },
     { path: 'virtual-network',   loadComponent: () => import('./components/cloud/azure/virtual-network/virtual-network').then(m => m.AzureVirtualNetwork) },
