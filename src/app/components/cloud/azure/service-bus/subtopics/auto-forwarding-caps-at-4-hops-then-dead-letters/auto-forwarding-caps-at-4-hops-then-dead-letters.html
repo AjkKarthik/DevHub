@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Service Bus" topicRoute="/azure/service-bus" subtopicLabel="Auto-Forwarding Caps at 4 Hops" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Auto-Forwarding Chains Cap at 4 Hops — Then Silently Dead-Letter</h1>
+  <p class="page-subtitle">The main page describes forwarding chains as flexible routing with no length limit — a fifth hop doesn't error at setup, it dead-letters the message at runtime.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Service Bus" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in a real limit missing from the main page's own forwarding-chain coverage. Next, the prefetch subtopic covers a separate operational gotcha involving message locks the main page's own batch-processing coverage doesn't address.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Service Bus" topicRoute="/azure/service-bus"
+    [prev]="{ label: 'Duplicate Detection Is Off by Default', route: '/azure/service-bus/duplicate-detection-is-off-by-default-10-minute-window-when-on' }"
+    [next]="{ label: 'High Prefetch Count Expires Locks Early', route: '/azure/service-bus/high-prefetch-count-expires-locks-before-processing-even-starts' }" />
+</div>

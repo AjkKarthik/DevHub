@@ -28938,6 +28938,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Subscriptions can apply SQL-like filters to receive only a matching subset of messages from a topic.',
     ],
   },
+  'azure/service-bus/duplicate-detection-is-off-by-default-10-minute-window-when-on': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Auto-Forwarding Caps at 4 Hops', route: '/azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters' },
+      { label: 'Service Bus overview', route: '/azure/service-bus' },
+    ],
+    tip: 'Duplicate detection is off by default and, once enabled, defaults to a 10-minute window — not the 7-day maximum — and isn\'t available on Basic tier at all.',
+    gotchas: [
+      'On a partitioned entity, uniqueness is MessageId + PartitionKey together, not MessageId alone.',
+      'Scheduled and non-scheduled sends share the same duplicate-detection pool — a duplicate MessageId across either type gets dropped.',
+    ],
+  },
+  'azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Duplicate Detection Is Off by Default', route: '/azure/service-bus/duplicate-detection-is-off-by-default-10-minute-window-when-on' },
+      { label: 'High Prefetch Count Expires Locks Early', route: '/azure/service-bus/high-prefetch-count-expires-locks-before-processing-even-starts' },
+    ],
+    tip: 'Auto-forwarding chains cap at 4 hops — a 5th hop doesn\'t error at setup, it silently dead-letters the message at runtime.',
+    gotchas: [
+      'A full or disabled downstream entity backs messages up at the SOURCE\'s own DLQ, not the destination\'s.',
+      'A session-enabled entity can\'t be the SOURCE of auto-forwarding, though it can be a valid destination.',
+    ],
+  },
+  'azure/service-bus/high-prefetch-count-expires-locks-before-processing-even-starts': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Auto-Forwarding Caps at 4 Hops', route: '/azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters' },
+      { label: 'Service Bus overview', route: '/azure/service-bus' },
+    ],
+    tip: 'A prefetched message is locked the moment it enters the local cache — an oversized prefetchCount can expire locks before the receiver even reaches those messages, regardless of how fast processing itself is.',
+    gotchas: [
+      'Microsoft\'s own sizing guidance: roughly 20x the processing rate per second, tied to the same lock duration used for lock renewal.',
+      'For topologies with many competing receivers, a smaller prefetch count avoids starving other receivers of messages.',
+    ],
+  },
   'azure/sql-cosmos': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

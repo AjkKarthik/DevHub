@@ -2639,4 +2639,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Soft-Deleted Vaults Reserve Their Name', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' },
     { label: 'New Vaults Now Default to RBAC', route: '/azure/key-vault/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions' },
   ],
+  'service-bus': [
+    { label: 'Duplicate Detection Is Off by Default', route: '/azure/service-bus/duplicate-detection-is-off-by-default-10-minute-window-when-on' },
+    { label: 'Auto-Forwarding Caps at 4 Hops', route: '/azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters' },
+    { label: 'High Prefetch Count Expires Locks Early', route: '/azure/service-bus/high-prefetch-count-expires-locks-before-processing-even-starts' },
+  ],
 };

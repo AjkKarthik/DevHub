@@ -3299,7 +3299,12 @@ export const routes: Routes = [
       { path: 'soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings', loadComponent: () => import('./components/cloud/azure/key-vault/subtopics/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings').then(m => m.SoftDeletedVaultReservesItsNameAndLosesRbacBindingsSubtopic) },
       { path: 'new-vaults-now-default-to-rbac-but-only-on-newer-api-versions', loadComponent: () => import('./components/cloud/azure/key-vault/subtopics/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions').then(m => m.NewVaultsNowDefaultToRbacButOnlyOnNewerApiVersionsSubtopic) },
     ] },
-    { path: 'service-bus',       loadComponent: () => import('./components/cloud/azure/service-bus/service-bus').then(m => m.AzureServiceBus) },
+    { path: 'service-bus', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/service-bus/service-bus').then(m => m.AzureServiceBus) },
+      { path: 'duplicate-detection-is-off-by-default-10-minute-window-when-on', loadComponent: () => import('./components/cloud/azure/service-bus/subtopics/duplicate-detection-is-off-by-default-10-minute-window-when-on/duplicate-detection-is-off-by-default-10-minute-window-when-on').then(m => m.DuplicateDetectionIsOffByDefault10MinuteWindowWhenOnSubtopic) },
+      { path: 'auto-forwarding-caps-at-4-hops-then-dead-letters', loadComponent: () => import('./components/cloud/azure/service-bus/subtopics/auto-forwarding-caps-at-4-hops-then-dead-letters/auto-forwarding-caps-at-4-hops-then-dead-letters').then(m => m.AutoForwardingCapsAt4HopsThenDeadLettersSubtopic) },
+      { path: 'high-prefetch-count-expires-locks-before-processing-even-starts', loadComponent: () => import('./components/cloud/azure/service-bus/subtopics/high-prefetch-count-expires-locks-before-processing-even-starts/high-prefetch-count-expires-locks-before-processing-even-starts').then(m => m.HighPrefetchCountExpiresLocksBeforeProcessingEvenStartsSubtopic) },
+    ] },
     { path: 'container-apps',    loadComponent: () => import('./components/cloud/azure/container-apps/container-apps').then(m => m.AzureContainerApps) },
     { path: 'redis',             loadComponent: () => import('./components/cloud/azure/redis/redis').then(m => m.AzureRedis) },
     { path: 'api-management',    loadComponent: () => import('./components/cloud/azure/api-management/api-management').then(m => m.AzureApiManagement) },

@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Service Bus" topicRoute="/azure/service-bus" subtopicLabel="High Prefetch Count Expires Locks Early" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">A High Prefetch Count Can Expire Message Locks Before Processing Even Starts</h1>
+  <p class="page-subtitle">The main page covers lock renewal in depth but never mentions prefetch — a message is locked the moment it's cached, not when the application actually starts working on it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Service Bus" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the topic's three deep dives, connecting a client-side caching setting the main page never mentions to the same lock-duration figure it already documents for a different reason.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Service Bus" topicRoute="/azure/service-bus"
+    [prev]="{ label: 'Auto-Forwarding Caps at 4 Hops', route: '/azure/service-bus/auto-forwarding-caps-at-4-hops-then-dead-letters' }" />
+</div>
