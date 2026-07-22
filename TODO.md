@@ -4201,7 +4201,43 @@ off here with a date.
   subtopics — explicitly checked the toggle COUNT (15) on the topic overview page per the standing
   lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying
   correctly.)
-- [ ] `/azure/security-defender` — Azure Security & Defender for Cloud
+- [x] `/azure/security-defender` — Azure Security & Defender for Cloud (2026-07-22 — 3 subtopics:
+  mma-agent-fully-retired-defender-servers-now-agentless,
+  defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm,
+  jit-quick-enable-only-protects-one-port-not-the-full-set; all three verified against Microsoft's
+  own documentation via WebFetch before writing — **a third genuine main-page inaccuracy found and
+  fixed in this session**: the main page's own theory framed the MMA-to-AMA transition as ongoing
+  ("The newer AMA is replacing the legacy MMA") — confirmed via Microsoft's own AMA migration doc
+  the Log Analytics agent "was retired on August 31, 2024," is unsupported, and — very current as
+  of today's date — "after March 2, 2026, data upload from the Log Analytics agent can stop at any
+  time without further notice," a cutoff already in the past; also confirmed Defender for Servers
+  Plan 2 specifically moved to AGENTLESS scanning, not a like-for-like AMA swap. Fixed the main
+  page's own theory bullet accordingly; (2) confirmed via Microsoft's own CSPM reference that
+  "Defender for Cloud offers two CSPM plans: Foundational CSPM (free)... Defender CSPM (paid)"
+  adding "attack path analysis," agentless VM/container/Kubernetes scanning, risk prioritization,
+  DSPM, and EASM — closing a gap where the main page's own two-tier framing (free CSPM /
+  paid per-resource Defender plans) omits this separate, independently-billed CSPM-specific paid
+  tier entirely, including that full Defender for DevOps features specifically require it; (3)
+  confirmed via Microsoft's own JIT reference that enabling JIT from a VM's own Configuration blade
+  uses "Windows machines: RDP port: 3389... Linux machines: SSH port: 22" as fixed, MINIMAL
+  defaults — a single port — versus the fuller "22-SSH, 3389-RDP, 5985-WinRM, 5986-WinRM" set
+  Defender for Cloud's own dedicated JIT page recommends, closing a gap where the main page
+  describes the full four-port default with no mention that the enable path taken changes what's
+  actually covered. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick
+  parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route
+  cross-check) came back clean. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (370.13 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` staged all 16 files (15 new/wiring + the main-page fix) cleanly. Confirmed
+  bare `security-defender` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted
+  forms). **Proactively applied the dev-server chunk-staleness fix** (forced a fresh save of
+  `security-defender.ts` via whitespace edit-and-revert) before verification, per the established
+  Monitor/Cost-Management-batch precedent, rather than risking rediscovering the same false alarm.
+  Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct (all 4
+  levels), prev/next cross-references correct, the corrected MMA/AMA retirement text confirmed
+  rendering live on the main page, the `AzureNavComponent` accordion (now the SIXTEENTH topic in
+  this hub with subtopics — explicitly checked the toggle COUNT (16) on the topic overview page
+  per the standing lesson from the ARM batch), tailored sidebar content wired, dark mode
+  (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/key-vault` — Azure Key Vault
 - [ ] `/azure/service-bus` — Azure Service Bus
 - [ ] `/azure/container-apps` — Azure Container Apps
