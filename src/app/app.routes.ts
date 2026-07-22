@@ -3227,7 +3227,12 @@ export const routes: Routes = [
       { path: 'service-bus-max-delivery-count-defaults-to-10-not-5', loadComponent: () => import('./components/cloud/azure/functions/subtopics/service-bus-max-delivery-count-defaults-to-10-not-5/service-bus-max-delivery-count-defaults-to-10-not-5').then(m => m.ServiceBusMaxDeliveryCountDefaultsTo10Not5Subtopic) },
       { path: 'continueasnew-resets-history-and-discards-incomplete-tasks', loadComponent: () => import('./components/cloud/azure/functions/subtopics/continueasnew-resets-history-and-discards-incomplete-tasks/continueasnew-resets-history-and-discards-incomplete-tasks').then(m => m.ContinueasnewResetsHistoryAndDiscardsIncompleteTasksSubtopic) },
     ] },
-    { path: 'aks',               loadComponent: () => import('./components/cloud/azure/aks/aks').then(m => m.AzureAks) },
+    { path: 'aks', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/aks/aks').then(m => m.AzureAks) },
+      { path: 'cluster-autoscaler-exact-default-timings-and-thresholds', loadComponent: () => import('./components/cloud/azure/aks/subtopics/cluster-autoscaler-exact-default-timings-and-thresholds/cluster-autoscaler-exact-default-timings-and-thresholds').then(m => m.ClusterAutoscalerExactDefaultTimingsAndThresholdsSubtopic) },
+      { path: 'max-surge-defaults-to-1-node-not-a-percentage', loadComponent: () => import('./components/cloud/azure/aks/subtopics/max-surge-defaults-to-1-node-not-a-percentage/max-surge-defaults-to-1-node-not-a-percentage').then(m => m.MaxSurgeDefaultsTo1NodeNotAPercentageSubtopic) },
+      { path: 'control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes', loadComponent: () => import('./components/cloud/azure/aks/subtopics/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes').then(m => m.ControlPlaneCanBeUpTo3MinorVersionsAheadOfNodesSubtopic) },
+    ] },
     { path: 'virtual-network',   loadComponent: () => import('./components/cloud/azure/virtual-network/virtual-network').then(m => m.AzureVirtualNetwork) },
     { path: 'load-balancer',     loadComponent: () => import('./components/cloud/azure/load-balancer/load-balancer').then(m => m.AzureLoadBalancer) },
     { path: 'storage',           loadComponent: () => import('./components/cloud/azure/storage/storage').then(m => m.AzureStorage) },

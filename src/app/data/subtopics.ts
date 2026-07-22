@@ -2577,4 +2577,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Service Bus Max Delivery Count Defaults to 10', route: '/azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5' },
     { label: 'ContinueAsNew Resets History', route: '/azure/functions/continueasnew-resets-history-and-discards-incomplete-tasks' },
   ],
+  'aks': [
+    { label: 'Cluster Autoscaler\'s Exact Defaults', route: '/azure/aks/cluster-autoscaler-exact-default-timings-and-thresholds' },
+    { label: 'max-surge Defaults to 1 Node', route: '/azure/aks/max-surge-defaults-to-1-node-not-a-percentage' },
+    { label: 'Control Plane Can Be 3 Minor Versions Ahead', route: '/azure/aks/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes' },
+  ],
 };

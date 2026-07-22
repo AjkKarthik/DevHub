@@ -28627,6 +28627,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Different node pools let you run different VM types (general-purpose, GPU) within the same cluster.',
     ],
   },
+  'azure/aks/cluster-autoscaler-exact-default-timings-and-thresholds': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'AKS overview', route: '/azure/aks' },
+      { label: 'max-surge Defaults to 1 Node', route: '/azure/aks/max-surge-defaults-to-1-node-not-a-percentage' },
+    ],
+    tip: 'Cluster Autoscaler defaults: 10s scan-interval, 10-minute scale-down-unneeded-time AND scale-down-delay-after-add, 50% scale-down-utilization-threshold — a node needs all of these satisfied before removal.',
+    gotchas: [
+      'The autoscaler profile is cluster-wide — you can\'t set different scale-down aggressiveness per node pool.',
+      'max-total-unready-percentage (default 45%) halts ALL autoscaler operations if too many nodes go unready at once.',
+    ],
+  },
+  'azure/aks/max-surge-defaults-to-1-node-not-a-percentage': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Cluster Autoscaler\'s Exact Defaults', route: '/azure/aks/cluster-autoscaler-exact-default-timings-and-thresholds' },
+      { label: 'Control Plane Can Be 3 Minor Versions Ahead', route: '/azure/aks/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes' },
+    ],
+    tip: 'max-surge defaults to exactly ONE extra node (not a percentage) if omitted — Microsoft recommends 33% for production node pools, trading faster upgrades against subscription/IP quota needed for the surge.',
+    gotchas: [
+      'A percentage max-surge scales with pool size; a fixed integer does not — these produce genuinely different behavior as a pool grows.',
+      'Node surges require available subscription compute quota AND (on Azure CNI) subnet IP quota for every surged node simultaneously.',
+    ],
+  },
+  'azure/aks/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'max-surge Defaults to 1 Node', route: '/azure/aks/max-surge-defaults-to-1-node-not-a-percentage' },
+      { label: 'AKS overview', route: '/azure/aks' },
+    ],
+    tip: 'AKS allows the control plane to be up to 3 minor versions ahead of any node pool — but every upgrade (control plane or node pool) must still proceed one minor version at a time, no skipping.',
+    gotchas: [
+      'AKS can silently trigger a node pool upgrade alongside a control plane upgrade to restore compliance if the skew would otherwise be exceeded.',
+      'Control plane upgrades typically take 5-15 minutes; node pool upgrades take longer (draining and reimaging) — size maintenance windows accordingly if both are bundled.',
+    ],
+  },
   'azure/container-apps': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

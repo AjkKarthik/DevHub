@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Kubernetes Service" topicRoute="/azure/aks" subtopicLabel="max-surge Defaults to 1 Node" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">max-surge Defaults to 1 Node, Not a Percentage</h1>
+  <p class="page-subtitle">The main page's own CLI example passes --max-surge 1 without saying it's just the platform default — here's what that default actually is, and Microsoft's own production recommendation.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="AKS" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the missing default and production guidance behind the main page's own max-surge example. Next, the version-skew subtopic gives the exact number of minor versions node pools can lag behind the control plane.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Kubernetes Service" topicRoute="/azure/aks"
+    [prev]="{ label: 'Cluster Autoscaler’s Exact Defaults', route: '/azure/aks/cluster-autoscaler-exact-default-timings-and-thresholds' }"
+    [next]="{ label: 'Control Plane Can Be 3 Minor Versions Ahead', route: '/azure/aks/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes' }" />
+</div>
