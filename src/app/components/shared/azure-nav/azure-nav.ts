@@ -288,7 +288,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">App Services</p>
-      <a routerLink="/azure/monitor" routerLinkActive="active"><span class="nl-text">Monitor &amp; App Insights</span>@if(p.isDone('azure-monitor')){<span class="nl-done">✓</span>}@if(d('azure-monitor');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/monitor" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Monitor &amp; App Insights</span>
+        @if (p.isDone('azure-monitor')) {<span class="nl-done">✓</span>}
+        @if (d('azure-monitor'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('monitor')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('monitor')"
+                  (click)="toggleSubtopics('monitor', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('monitor'); as monSubs) {
+        @if (isSubtopicsExpanded('monitor')) {
+          <div class="nav-subtopics">
+            @for (s of monSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/devops-pipelines" routerLinkActive="active"><span class="nl-text">DevOps &amp; Pipelines</span>@if(p.isDone('azure-devops-pipelines')){<span class="nl-done">✓</span>}@if(d('azure-devops-pipelines');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/azure/service-bus" routerLinkActive="active"><span class="nl-text">Service Bus</span>@if(p.isDone('azure-service-bus')){<span class="nl-done">✓</span>}@if(d('azure-service-bus');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/azure/api-management" routerLinkActive="active"><span class="nl-text">API Management</span>@if(p.isDone('azure-api-management')){<span class="nl-done">✓</span>}@if(d('azure-api-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

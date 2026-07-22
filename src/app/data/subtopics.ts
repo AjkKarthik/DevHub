@@ -2614,4 +2614,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' },
     { label: 'Long-Term Retention Goes to 10 Years', route: '/azure/sql-cosmos/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr' },
   ],
+  'monitor': [
+    { label: 'Sampling Silently Skews count()', route: '/azure/monitor/sampling-silently-skews-count-use-sum-itemcount-instead' },
+    { label: 'Basic Logs Supports Full KQL', route: '/azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing' },
+    { label: 'Daily Cap Stops All Ingestion', route: '/azure/monitor/daily-cap-stops-all-ingestion-not-just-the-excess' },
+  ],
 };

@@ -29174,6 +29174,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choose based on whether the data is a simple numeric metric for fast alerting, or rich structured data benefiting from KQL flexibility.',
     ],
   },
+  'azure/monitor/sampling-silently-skews-count-use-sum-itemcount-instead': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Basic Logs Supports Full KQL', route: '/azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing' },
+      { label: 'Monitor overview', route: '/azure/monitor' },
+    ],
+    tip: 'Application Insights sampling is on by default — a stored row can represent multiple real events via itemCount, so summarize count() undercounts unless replaced with summarize sum(itemCount).',
+    gotchas: [
+      'Metrics aren\'t sampled — only log-based telemetry (requests, dependencies, exceptions, traces) needs the itemCount correction.',
+      'Check current sampling rate with RetainedPercentage = 100/avg(itemCount) before trusting a raw count().',
+    ],
+  },
+  'azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Sampling Silently Skews count()', route: '/azure/monitor/sampling-silently-skews-count-use-sum-itemcount-instead' },
+      { label: 'Daily Cap Stops All Ingestion', route: '/azure/monitor/daily-cap-stops-all-ingestion-not-just-the-excess' },
+    ],
+    tip: 'Basic Logs tables support full KQL — the real tradeoff versus Analytics is that query price isn\'t included, it\'s billed per GB scanned at query time.',
+    gotchas: [
+      'A table\'s plan can only be switched once a week — plan governance and automation around this limit.',
+      'Total retention for both plans can reach up to 12 years, not the 30-730 day figure often cited as a ceiling.',
+    ],
+  },
+  'azure/monitor/daily-cap-stops-all-ingestion-not-just-the-excess': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Basic Logs Supports Full KQL', route: '/azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing' },
+      { label: 'Monitor overview', route: '/azure/monitor' },
+    ],
+    tip: 'A triggered daily ingestion cap stops telemetry entirely, not just the excess — and it resets on the daily UTC boundary, not a rolling window from when it fired.',
+    gotchas: [
+      'An incident\'s own telemetry spike is exactly the scenario most likely to trip the cap and go dark.',
+      'Detecting a triggered cap requires a signal outside the capped data path — the Activity Log or a Usage-table query, not the affected telemetry itself.',
+    ],
+  },
   'azure/cost-management': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

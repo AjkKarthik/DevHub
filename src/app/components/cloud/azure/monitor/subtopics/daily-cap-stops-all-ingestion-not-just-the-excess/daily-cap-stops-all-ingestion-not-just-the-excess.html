@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Monitor" topicRoute="/azure/monitor" subtopicLabel="Daily Cap Stops All Ingestion" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">A Triggered Daily Cap Stops All Ingestion, Not Just the Excess</h1>
+  <p class="page-subtitle">The main page's own alert-fatigue advice never covers this: a daily cost cap doesn't throttle telemetry, it stops it entirely — often right when an incident spikes volume the most.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Monitor" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the topic's three deep dives, covering a cost control with a sharper failure mode than the sampling and gradual-throttling behavior the earlier subtopics address.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Monitor" topicRoute="/azure/monitor"
+    [prev]="{ label: 'Basic Logs Supports Full KQL', route: '/azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing' }" />
+</div>

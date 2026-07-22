@@ -3269,7 +3269,12 @@ export const routes: Routes = [
       { path: 'change-feed-all-versions-and-deletes-mode-captures-deletes-natively', loadComponent: () => import('./components/cloud/azure/sql-cosmos/subtopics/change-feed-all-versions-and-deletes-mode-captures-deletes-natively/change-feed-all-versions-and-deletes-mode-captures-deletes-natively').then(m => m.ChangeFeedAllVersionsAndDeletesModeCapturesDeletesNativelySubtopic) },
       { path: 'azure-sql-long-term-retention-goes-to-10-years-beyond-pitr', loadComponent: () => import('./components/cloud/azure/sql-cosmos/subtopics/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr').then(m => m.AzureSqlLongTermRetentionGoesTo10YearsBeyondPitrSubtopic) },
     ] },
-    { path: 'monitor',           loadComponent: () => import('./components/cloud/azure/monitor/monitor').then(m => m.AzureMonitor) },
+    { path: 'monitor', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/monitor/monitor').then(m => m.AzureMonitor) },
+      { path: 'sampling-silently-skews-count-use-sum-itemcount-instead', loadComponent: () => import('./components/cloud/azure/monitor/subtopics/sampling-silently-skews-count-use-sum-itemcount-instead/sampling-silently-skews-count-use-sum-itemcount-instead').then(m => m.SamplingSilentlySkewsCountUseSumItemcountInsteadSubtopic) },
+      { path: 'basic-logs-supports-full-kql-tradeoff-is-per-query-pricing', loadComponent: () => import('./components/cloud/azure/monitor/subtopics/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing').then(m => m.BasicLogsSupportsFullKqlTradeoffIsPerQueryPricingSubtopic) },
+      { path: 'daily-cap-stops-all-ingestion-not-just-the-excess', loadComponent: () => import('./components/cloud/azure/monitor/subtopics/daily-cap-stops-all-ingestion-not-just-the-excess/daily-cap-stops-all-ingestion-not-just-the-excess').then(m => m.DailyCapStopsAllIngestionNotJustTheExcessSubtopic) },
+    ] },
     { path: 'devops-pipelines',  loadComponent: () => import('./components/cloud/azure/devops-pipelines/devops-pipelines').then(m => m.AzureDevopsPipelines) },
     { path: 'cost-management',   loadComponent: () => import('./components/cloud/azure/cost-management/cost-management').then(m => m.AzureCostManagement) },
     { path: 'security-defender', loadComponent: () => import('./components/cloud/azure/security-defender/security-defender').then(m => m.AzureSecurityDefender) },
