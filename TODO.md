@@ -4089,7 +4089,48 @@ off here with a date.
   itself, the `AzureNavComponent` accordion (now the TWELFTH topic in this hub with subtopics —
   explicitly checked the toggle COUNT (12) on the topic overview page per the standing lesson from
   the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/monitor` — Azure Monitor & App Insights
+- [x] `/azure/monitor` — Azure Monitor & App Insights (2026-07-22 — 3 subtopics:
+  sampling-silently-skews-count-use-sum-itemcount-instead,
+  basic-logs-supports-full-kql-tradeoff-is-per-query-pricing,
+  daily-cap-stops-all-ingestion-not-just-the-excess; all three verified against Microsoft's own
+  documentation via WebFetch before writing — (1) confirmed via Microsoft's own OpenTelemetry
+  sampling doc that Application Insights sampling is on by default and each stored row carries an
+  itemCount field ("summarize RetainedPercentage = 100/avg(itemCount)... If you see that
+  RetainedPercentage for any type is less than 100, then that type of telemetry is being
+  sampled") — closing a gap where the main page builds three separate KQL examples around bare
+  count() with zero mention of sampling, meaning those exact queries silently undercount whenever
+  sampling is active; **a genuine main-page inaccuracy was found and fixed**: the main page's own
+  cost QnA stated Basic tier has "no query capability" — confirmed via Microsoft's own table
+  plans reference this is wrong ("Query capabilities: Full Kusto Query Language (KQL) on a single
+  table" for Basic Logs) — the real distinguishing factor is "Query price included: ❌" (per-GB
+  billed at query time) versus Analytics tier's included query pricing; fixed the main page's own
+  QnA text accordingly; (3) confirmed via the same sampling doc's daily-cap section that a
+  triggered cap "stops telemetry ingestion when it reaches the threshold" entirely (not a
+  throttle) and resets on the daily UTC boundary, with Microsoft's own docs warning "a sudden
+  increase in data volume can trigger the cap, creating a gap in telemetry until it resets the
+  next day" — closing a gap where the main page's own "avoid alert fatigue" QnA never covers this
+  failure mode, where the exact telemetry needed to detect an incident can vanish because of the
+  incident's own volume spike. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html`
+  files, backtick parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/
+  `[next]` route cross-check) came back clean. Build reported only the pre-documented harmless
+  "bundle initial exceeded maximum budget" ERROR (353.80 kB over) with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 16 files (15 new/wiring + the
+  main-page fix) cleanly. Confirmed bare `monitor` key collision-free in `SUBTOPICS` map (checked
+  both quoted and unquoted forms). **A live-preview-only false alarm during verification**: an
+  initial DOM-text search for the corrected QnA text came back empty on both subtopic and main
+  pages, appearing identical to the previously-documented dev-server chunk-staleness gotcha — a
+  forced re-save of `monitor.ts` was tried as the fix (matching that precedent) and did trigger a
+  fresh `monitor` chunk rebuild, but the search still failed afterward. Root cause turned out to
+  be unrelated to staleness: the QnA block renders as a nested, collapsed-by-default accordion
+  (list of questions collapsed under a "N questions" count, each individual question then
+  collapsed under its own toggle) — the answer text is genuinely absent from the DOM until BOTH
+  levels are clicked open, not a stale render. Confirmed by clicking through both accordion levels
+  via `javascript_tool`, after which the corrected text was found and the old inaccurate text was
+  absent. Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct
+  (all 4 levels), prev/next cross-references correct, the `AzureNavComponent` accordion (now the
+  THIRTEENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (13) on the
+  topic overview page per the standing lesson from the ARM batch), tailored sidebar content wired,
+  dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/devops-pipelines` — Azure DevOps & Pipelines
 - [ ] `/azure/cost-management` — Azure Cost Management
 - [ ] `/azure/security-defender` — Azure Security & Defender for Cloud

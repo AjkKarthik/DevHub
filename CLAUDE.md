@@ -1678,6 +1678,24 @@ this same check before any other new hub's first subtopic set:
    --configuration=production`) is unaffected by this and remains the authoritative correctness
    check; this gotcha is specific to the live `ng serve` preview process used for interactive
    browser verification only.
+9. **A distinct false alarm that looks identical to the chunk-staleness gotcha above but has a
+   completely different cause: `QnaBlockComponent` (and similarly-structured accordion
+   components) render as a NESTED, collapsed-by-default accordion — a question list collapsed
+   under a "N questions" count, then each individual question collapsed under its own toggle.**
+   Hit for real verifying a corrected QnA answer on `/azure/monitor` (the Basic Logs cost fix,
+   2026-07-22): a `document.body.textContent.includes(...)` check for the corrected text came back
+   empty, indistinguishable at first from a stale dev-server chunk — the standard fix (force a
+   fresh file save via a whitespace edit-and-revert) was tried and DID produce a fresh chunk
+   rebuild, but the search still failed afterward, which is what revealed this was a different
+   problem. The answer text is genuinely absent from the DOM until BOTH accordion levels are
+   clicked open — not a rendering bug, not staleness, just standard collapsed-by-default UI.
+   **Fix: before concluding a live-preview text check has failed, click through every accordion
+   level first** (`document.querySelector('.qna-toggle').click()` to expand the question list,
+   then locate and click the specific question's own row element to expand its answer) — only
+   treat a text-search failure as a real bug (stale chunk or otherwise) once the relevant content
+   has actually been expanded into the DOM. `CommonMistakesComponent` uses the same
+   collapsed-by-default pattern (shows only a count badge, e.g. "⚠️Common Mistakes4›") and needs
+   the same click-through treatment if verifying corrected mistake content by text search.
 
 ## Current state (update when it changes!)
 
@@ -1797,10 +1815,10 @@ this same check before any other new hub's first subtopic set:
   Azure pages use `app-common-mistakes` AND `app-revision-card`. Cheatsheet reference has no PageComplete.
   Challenge.language: `'typescript'`. CodeTab.language: never `'json'` or `'bicep'` — use `'bash'` instead.
   AzureNavComponent at `shared/azure-nav/azure-nav.ts`.
-  Phase 10: 12 of 22 topics have subtopics (`/azure/fundamentals`, `/azure/arm`,
+  Phase 10: 13 of 22 topics have subtopics (`/azure/fundamentals`, `/azure/arm`,
   `/azure/virtual-machines`, `/azure/app-service`, `/azure/functions`, `/azure/aks`,
   `/azure/virtual-network`, `/azure/load-balancer`, `/azure/storage`, `/azure/entra-id`,
-  `/azure/rbac`, `/azure/sql-cosmos`, 2026-07-22) — see
+  `/azure/rbac`, `/azure/sql-cosmos`, `/azure/monitor`, 2026-07-22) — see
   "Azure hub subtopic wiring" section above for the `AzureNavComponent` accordion structural fix
   and the `azure-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript
   hub's own bare `fundamentals` topic key). **Real gap caught on the `/azure/arm` batch**: adding
