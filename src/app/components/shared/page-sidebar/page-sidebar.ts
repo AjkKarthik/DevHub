@@ -29067,6 +29067,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Built-in roles cover most needs — custom roles add ongoing governance overhead and should be reserved for genuinely unique combinations.',
     ],
   },
+  'azure/rbac/role-assignment-propagation-isnt-one-number-10-min-to-24-hours': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' },
+      { label: 'RBAC overview', route: '/azure/rbac' },
+    ],
+    tip: 'General role assignment changes take ~10 minutes to propagate — not the 30 minutes often assumed — but group-based Managed Identity role assignments can take up to 24 hours due to a separate per-resource-URI cache.',
+    gotchas: [
+      'DataActions changes at management group scope have their own separate slow path — up to several hours, control-plane access at the same scope is unaffected.',
+      'For time-sensitive pipelines, assign roles directly to a Managed Identity\'s own principal ID rather than via group membership to stay on the faster path.',
+    ],
+  },
+  'azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Propagation Isn’t One Number', route: '/azure/rbac/role-assignment-propagation-isnt-one-number-10-min-to-24-hours' },
+      { label: 'IMDS Metadata:true and Blast Radius', route: '/azure/rbac/imds-metadata-true-header-and-unauthenticated-blast-radius' },
+    ],
+    tip: 'Azure auto-converted lingering Co-Administrator/Service Administrator assignments to Owner starting December 2025 — these carry a distinguishing description and a fixed createdBy GUID, filterable in an audit.',
+    gotchas: [
+      'The retirement preserved access rather than revoking it — cleanup of no-longer-needed auto-converted Owner assignments is a manual follow-up step.',
+      'Classic administrator roles are fully retired as of May 2026 — the Classic Administrators tab no longer exists in the portal.',
+    ],
+  },
+  'azure/rbac/imds-metadata-true-header-and-unauthenticated-blast-radius': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' },
+      { label: 'RBAC overview', route: '/azure/rbac' },
+    ],
+    tip: 'The IMDS Managed Identity token endpoint is unauthenticated to every process on the VM — any code running there, not just the intended app, can mint a token with the identity\'s full RBAC permissions.',
+    gotchas: [
+      'The Metadata: true header (and banning X-Forwarded-For) exists specifically to prevent SSRF-style unintended redirection, not as an arbitrary API convention.',
+      'IMDS is unsupported behind a proxy — even an auto-discovered one you\'re unaware of can silently break Managed Identity token acquisition.',
+    ],
+  },
   'azure/key-vault': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

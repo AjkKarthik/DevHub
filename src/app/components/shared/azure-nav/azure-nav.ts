@@ -238,7 +238,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/rbac" routerLinkActive="active"><span class="nl-text">Azure RBAC</span>@if(p.isDone('azure-rbac')){<span class="nl-done">✓</span>}@if(d('azure-rbac');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/rbac" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Azure RBAC</span>
+        @if (p.isDone('azure-rbac')) {<span class="nl-done">✓</span>}
+        @if (d('azure-rbac'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('azure-rbac')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('azure-rbac')"
+                  (click)="toggleSubtopics('azure-rbac', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('azure-rbac'); as rbacSubs) {
+        @if (isSubtopicsExpanded('azure-rbac')) {
+          <div class="nav-subtopics">
+            @for (s of rbacSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/key-vault" routerLinkActive="active"><span class="nl-text">Key Vault</span>@if(p.isDone('azure-key-vault')){<span class="nl-done">✓</span>}@if(d('azure-key-vault');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

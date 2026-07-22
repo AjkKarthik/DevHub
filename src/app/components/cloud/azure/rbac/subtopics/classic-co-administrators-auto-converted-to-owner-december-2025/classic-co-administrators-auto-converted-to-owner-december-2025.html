@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure RBAC" topicRoute="/azure/rbac" subtopicLabel="Classic Co-Administrators Auto-Converted to Owner" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Classic Co-Administrators Were Auto-Converted to Owner in December 2025</h1>
+  <p class="page-subtitle">The main page's own audit advice assumes every Owner assignment was deliberately granted — but a legacy-feature retirement recently created a whole new, identifiable class of them automatically.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Azure RBAC" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic extends the main page's own audit guidance with a recent, dated gap. Next, the IMDS subtopic examines a separate blast-radius consideration for the Managed Identity section of the same page.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure RBAC" topicRoute="/azure/rbac"
+    [prev]="{ label: 'Propagation Isn’t One Number', route: '/azure/rbac/role-assignment-propagation-isnt-one-number-10-min-to-24-hours' }"
+    [next]="{ label: 'IMDS Metadata:true and Unauthenticated Blast Radius', route: '/azure/rbac/imds-metadata-true-header-and-unauthenticated-blast-radius' }" />
+</div>

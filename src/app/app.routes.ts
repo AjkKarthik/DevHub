@@ -3257,7 +3257,12 @@ export const routes: Routes = [
       { path: 'spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset', loadComponent: () => import('./components/cloud/azure/entra-id/subtopics/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset').then(m => m.SpaRefreshTokensCapAt24HoursNot90DaysAndNeverResetSubtopic) },
       { path: 'pkce-is-required-for-spas-but-only-recommended-for-native-apps', loadComponent: () => import('./components/cloud/azure/entra-id/subtopics/pkce-is-required-for-spas-but-only-recommended-for-native-apps/pkce-is-required-for-spas-but-only-recommended-for-native-apps').then(m => m.PkceIsRequiredForSpasButOnlyRecommendedForNativeAppsSubtopic) },
     ] },
-    { path: 'rbac',              loadComponent: () => import('./components/cloud/azure/rbac/rbac').then(m => m.AzureRbac) },
+    { path: 'rbac', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/rbac/rbac').then(m => m.AzureRbac) },
+      { path: 'role-assignment-propagation-isnt-one-number-10-min-to-24-hours', loadComponent: () => import('./components/cloud/azure/rbac/subtopics/role-assignment-propagation-isnt-one-number-10-min-to-24-hours/role-assignment-propagation-isnt-one-number-10-min-to-24-hours').then(m => m.RoleAssignmentPropagationIsntOneNumber10MinTo24HoursSubtopic) },
+      { path: 'classic-co-administrators-auto-converted-to-owner-december-2025', loadComponent: () => import('./components/cloud/azure/rbac/subtopics/classic-co-administrators-auto-converted-to-owner-december-2025/classic-co-administrators-auto-converted-to-owner-december-2025').then(m => m.ClassicCoAdministratorsAutoConvertedToOwnerDecember2025Subtopic) },
+      { path: 'imds-metadata-true-header-and-unauthenticated-blast-radius', loadComponent: () => import('./components/cloud/azure/rbac/subtopics/imds-metadata-true-header-and-unauthenticated-blast-radius/imds-metadata-true-header-and-unauthenticated-blast-radius').then(m => m.ImdsMetadataTrueHeaderAndUnauthenticatedBlastRadiusSubtopic) },
+    ] },
     { path: 'sql-cosmos',        loadComponent: () => import('./components/cloud/azure/sql-cosmos/sql-cosmos').then(m => m.AzureSqlCosmos) },
     { path: 'monitor',           loadComponent: () => import('./components/cloud/azure/monitor/monitor').then(m => m.AzureMonitor) },
     { path: 'devops-pipelines',  loadComponent: () => import('./components/cloud/azure/devops-pipelines/devops-pipelines').then(m => m.AzureDevopsPipelines) },

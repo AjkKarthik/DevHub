@@ -2603,4 +2603,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SPA Refresh Tokens Cap at 24 Hours', route: '/azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset' },
     { label: 'PKCE Is Required for SPAs, Only Recommended for Native Apps', route: '/azure/entra-id/pkce-is-required-for-spas-but-only-recommended-for-native-apps' },
   ],
+  // NOTE: hub-prefixed — bare 'rbac' already used by the Containers/K8s hub's own /containers/rbac topic.
+  'azure-rbac': [
+    { label: 'Propagation Isn’t One Number', route: '/azure/rbac/role-assignment-propagation-isnt-one-number-10-min-to-24-hours' },
+    { label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' },
+    { label: 'IMDS Metadata:true and Unauthenticated Blast Radius', route: '/azure/rbac/imds-metadata-true-header-and-unauthenticated-blast-radius' },
+  ],
 };
