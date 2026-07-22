@@ -3796,7 +3796,47 @@ off here with a date.
   with subtopics — explicitly checked the toggle COUNT (4) on the topic overview page per the
   standing lesson from the ARM batch), tailored (non-DEFAULT) sidebar content, dark mode
   (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/functions` — Azure Functions
+- [x] `/azure/functions` — Azure Functions (2026-07-22 — 3 subtopics:
+  queue-and-service-bus-triggers-default-to-16-concurrent-not-one,
+  service-bus-max-delivery-count-defaults-to-10-not-5,
+  continueasnew-resets-history-and-discards-incomplete-tasks; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) **found and fixed a genuine
+  main-page inaccuracy**: the theory claimed "Queue/Service Bus functions default to one message
+  at a time per instance" — confirmed via Microsoft's own Storage Queue trigger docs ("By default,
+  the batch size is 16... the maximum number of concurrent messages being processed per function
+  on one virtual machine (VM) is 24") and Service Bus host.json reference ("maxConcurrentCalls |
+  16 |... When your hosting plan has more than one core per instance, the maximum number of calls
+  is effectively multiplied by the number of cores") that this was wrong — corrected the main
+  page's own theory bullet directly, per the established fix-genuine-inaccuracies precedent, then
+  expanded into a full subtopic; (2) confirmed via Microsoft's own Service Bus dead-letter docs
+  that "There's a limit on the number of attempts to deliver messages for Service Bus queues and
+  subscriptions. The default value is 10" (double Storage Queue's 5, which the main page's own
+  mistake entry already states precisely) — plus distinct dead-letter reason codes
+  (MaxDeliveryCountExceeded, TTLExpiredException, HeaderSizeExceeded, etc.) and a separate
+  "transfer dead-letter queue" for auto-forwarding failures landing on the SOURCE entity — closing
+  a gap where the main page names Service Bus dead-lettering but never gives its own number;
+  (3) confirmed via Microsoft's own eternal-orchestrations docs that "Without continue-as-new, an
+  orchestrator that loops forever would accumulate orchestration history with every scheduled
+  task, eventually causing performance problems" and that "continue-as-new" is a genuine reset
+  ("The same instance ID is kept, but the orchestrator function's history resets") with a real
+  gotcha: "The results of any incomplete tasks are discarded when an orchestration calls
+  continue-as-new" — plus per-language differences in external-event preservation — extending the
+  main page's own event-sourcing/replay QnA into what happens when that same history needs to stay
+  small forever. Gotcha sweep covered `.html` bound attributes, `.ts` single-quoted fields
+  (apostrophe-after-letter grep clean across all three subtopic files AND the edited main
+  `functions.ts` file), bare `@word`/`{` in `.html` prose (none present), and backtick parity
+  (even counts, 4/4/4). Build reported only the pre-documented harmless "bundle initial exceeded
+  maximum budget" ERROR with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 9 new files plus the main-page fix cleanly with no "Filename too long" errors. **Confirmed a
+  real `SUBTOPICS`-map collision**: bare `functions` was already claimed by the JavaScript hub —
+  hub-prefixed to `azure-functions` (matching this hub's own existing `azure-functions` progress/
+  search key, confirmed via the pre-existing nav markup before any edit), with all three
+  `AzureNavComponent` accordion helper calls using the prefixed key. Browser-verified successfully
+  on all three pages — h1/breadcrumb pairs correct (all 4 levels), the `AzureNavComponent`
+  accordion (now the FIFTH topic in this hub with subtopics — explicitly checked the toggle COUNT
+  (5) on the topic overview page per the standing lesson from the ARM batch), tailored
+  (non-DEFAULT) sidebar content, dark mode (`--bg: #0f172a`) applying correctly, and the main-page
+  concurrency-default fix rendering correctly.)
 - [ ] `/azure/aks` — Azure Kubernetes Service
 - [ ] `/azure/virtual-network` — Azure Virtual Network
 - [ ] `/azure/load-balancer` — Azure Load Balancer & Front Door
