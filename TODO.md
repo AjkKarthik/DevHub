@@ -4276,7 +4276,43 @@ off here with a date.
   `AzureNavComponent` accordion (now the SEVENTEENTH topic in this hub with subtopics — explicitly
   checked the toggle COUNT (17) on the topic overview page per the standing lesson from the ARM
   batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/service-bus` — Azure Service Bus
+- [x] `/azure/service-bus` — Azure Service Bus (2026-07-22 — 3 subtopics:
+  duplicate-detection-is-off-by-default-10-minute-window-when-on,
+  auto-forwarding-caps-at-4-hops-then-dead-letters,
+  high-prefetch-count-expires-locks-before-processing-even-starts; all three verified against
+  Microsoft's own documentation via WebFetch before writing: (1) confirmed via Microsoft's own
+  duplicate-detection doc that the feature is OFF by default (not available on Basic tier), and
+  when enabled defaults to a 10-minute window (min 20s, max 7 days) — closing a gap where the
+  main page's QnA mentions "MessageId deduplication" and a "10 seconds–7 days" window range with
+  no mention that the feature is opt-in or what the actual default window is when turned on; also
+  covered the partitioning interaction (uniqueness key becomes MessageId+PartitionKey) and
+  Microsoft's own guidance against combining dedup+batching+partitioning; (2) confirmed via
+  Microsoft's own auto-forwarding doc the explicit stated limit — "Don't create a chain that
+  exceeds four hops. Messages that exceed four hops are dead-lettered" — closing a gap where the
+  main page's QnA describes ForwardTo/ForwardDeadLetteredMessagesTo chaining scenarios (routing,
+  DLQ consolidation, fan-out) with no mention of any hop-count ceiling at all; also covered that
+  hop count increments per send-via transfer-queue use too, that a full/disabled destination fills
+  the SOURCE entity's own DLQ (not the destination's), and that session-enabled entities cannot be
+  the SOURCE of auto-forwarding but can be a valid destination; (3) confirmed via Microsoft's own
+  performance-improvements doc that a prefetched message's lock timer starts at cache-entry time,
+  not at actual-processing time ("When a message is prefetched, the service locks the prefetched
+  message"), plus Microsoft's own sizing formula (PrefetchCount ≈ 20× max processing rate/sec, or
+  lockDuration/3 × rate when combined with batch receives) — closing a gap where the main page's
+  theory covers message locks (default 60s, max 5 min) and batch receives
+  (`ReceiveMessagesAsync(maxMessages: 10)`) but never mentions `prefetchCount` as a distinct
+  setting at all, let alone its lock-timing interaction. No genuine main-page inaccuracy found
+  this batch (only expansion gaps, no incorrect claims). Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files, backtick parity — even counts, 4/4/4 — bare `@word`/`{` in
+  `.html` prose, `[prev]`/`[next]` route cross-check) came back clean. Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (380.76 kB over) with
+  zero actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new +
+  6 wiring, no main-page fix this batch) cleanly — no "Filename too long" errors. Confirmed bare
+  `service-bus` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms).
+  Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct (all 4
+  levels), prev/next cross-references correct, the `AzureNavComponent` accordion (now the
+  EIGHTEENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (18) on the
+  topic overview page per the standing lesson from the ARM batch), tailored sidebar content wired,
+  dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/container-apps` — Azure Container Apps
 - [ ] `/azure/redis` — Azure Cache for Redis
 - [ ] `/azure/api-management` — Azure API Management
