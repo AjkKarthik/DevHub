@@ -3251,7 +3251,12 @@ export const routes: Routes = [
       { path: 'stored-access-policies-dont-work-with-user-delegation-sas', loadComponent: () => import('./components/cloud/azure/storage/subtopics/stored-access-policies-dont-work-with-user-delegation-sas/stored-access-policies-dont-work-with-user-delegation-sas').then(m => m.StoredAccessPoliciesDontWorkWithUserDelegationSasSubtopic) },
       { path: 'lifecycle-baseblob-actions-dont-cover-versions-or-snapshots', loadComponent: () => import('./components/cloud/azure/storage/subtopics/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots').then(m => m.LifecycleBaseblobActionsDontCoverVersionsOrSnapshotsSubtopic) },
     ] },
-    { path: 'entra-id',          loadComponent: () => import('./components/cloud/azure/entra-id/entra-id').then(m => m.AzureEntraId) },
+    { path: 'entra-id', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/entra-id/entra-id').then(m => m.AzureEntraId) },
+      { path: 'client-credentials-scope-must-be-default-not-individual-permissions', loadComponent: () => import('./components/cloud/azure/entra-id/subtopics/client-credentials-scope-must-be-default-not-individual-permissions/client-credentials-scope-must-be-default-not-individual-permissions').then(m => m.ClientCredentialsScopeMustBeDefaultNotIndividualPermissionsSubtopic) },
+      { path: 'spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset', loadComponent: () => import('./components/cloud/azure/entra-id/subtopics/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset').then(m => m.SpaRefreshTokensCapAt24HoursNot90DaysAndNeverResetSubtopic) },
+      { path: 'pkce-is-required-for-spas-but-only-recommended-for-native-apps', loadComponent: () => import('./components/cloud/azure/entra-id/subtopics/pkce-is-required-for-spas-but-only-recommended-for-native-apps/pkce-is-required-for-spas-but-only-recommended-for-native-apps').then(m => m.PkceIsRequiredForSpasButOnlyRecommendedForNativeAppsSubtopic) },
+    ] },
     { path: 'rbac',              loadComponent: () => import('./components/cloud/azure/rbac/rbac').then(m => m.AzureRbac) },
     { path: 'sql-cosmos',        loadComponent: () => import('./components/cloud/azure/sql-cosmos/sql-cosmos').then(m => m.AzureSqlCosmos) },
     { path: 'monitor',           loadComponent: () => import('./components/cloud/azure/monitor/monitor').then(m => m.AzureMonitor) },

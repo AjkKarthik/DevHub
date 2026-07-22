@@ -2598,4 +2598,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Stored Access Policies Don’t Work With User Delegation SAS', route: '/azure/storage/stored-access-policies-dont-work-with-user-delegation-sas' },
     { label: 'Lifecycle baseBlob Actions Don’t Cover Versions', route: '/azure/storage/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots' },
   ],
+  'entra-id': [
+    { label: 'Client Credentials Scope Must Be .default', route: '/azure/entra-id/client-credentials-scope-must-be-default-not-individual-permissions' },
+    { label: 'SPA Refresh Tokens Cap at 24 Hours', route: '/azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset' },
+    { label: 'PKCE Is Required for SPAs, Only Recommended for Native Apps', route: '/azure/entra-id/pkce-is-required-for-spas-but-only-recommended-for-native-apps' },
+  ],
 };

@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Entra ID" topicRoute="/azure/entra-id" subtopicLabel="PKCE Is Required for SPAs, Only Recommended for Native Apps" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">PKCE Is Required for SPAs, But Only Recommended for Native Apps</h1>
+  <p class="page-subtitle">The main page treats PKCE as one uniform recommendation for SPAs and mobile apps — but the Microsoft identity platform enforces it only for the former.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Entra ID" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the topic's three deep dives, examining a second enforcement nuance for the same client type covered in the refresh token subtopic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Entra ID" topicRoute="/azure/entra-id"
+    [prev]="{ label: 'SPA Refresh Tokens Cap at 24 Hours', route: '/azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset' }" />
+</div>

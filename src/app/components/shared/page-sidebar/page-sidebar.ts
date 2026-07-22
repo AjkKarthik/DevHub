@@ -29019,6 +29019,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Test new policies in report-only mode before enforcing them broadly.',
     ],
   },
+  'azure/entra-id/client-credentials-scope-must-be-default-not-individual-permissions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'SPA Refresh Tokens Cap at 24 Hours', route: '/azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset' },
+      { label: 'Entra ID overview', route: '/azure/entra-id' },
+    ],
+    tip: 'The client_credentials grant only ever accepts <resource>/.default as its scope — there is no individual-permission scope alternative, and mixing resources in one request is explicitly rejected.',
+    gotchas: [
+      'A non-.default scope returns AADSTS70011 invalid_scope, per Microsoft\'s own documented error example.',
+      'Least privilege for this flow is enforced entirely by the app registration\'s configured Application permissions, not by the token request.',
+    ],
+  },
+  'azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Client Credentials Scope Must Be .default', route: '/azure/entra-id/client-credentials-scope-must-be-default-not-individual-permissions' },
+      { label: 'PKCE Required for SPAs', route: '/azure/entra-id/pkce-is-required-for-spas-but-only-recommended-for-native-apps' },
+    ],
+    tip: 'SPAs get a 24-hour refresh token lifetime, not the 90-day figure that applies to confidential clients — and that 24-hour window carries over to every subsequent refresh rather than resetting.',
+    gotchas: [
+      'Old refresh tokens are not automatically revoked when a new one is issued — the app must delete them itself (MSAL handles this automatically).',
+      'The 24-hour SPA cap is a deliberate tradeoff for XSS exposure in browser-accessible token storage, not an oversight.',
+    ],
+  },
+  'azure/entra-id/pkce-is-required-for-spas-but-only-recommended-for-native-apps': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'SPA Refresh Tokens Cap at 24 Hours', route: '/azure/entra-id/spa-refresh-tokens-cap-at-24-hours-not-90-days-and-never-reset' },
+      { label: 'Entra ID overview', route: '/azure/entra-id' },
+    ],
+    tip: 'PKCE is platform-enforced for SPAs but only recommended (not enforced) for native and confidential clients — using MSAL for your client type closes that gap by default.',
+    gotchas: [
+      'A native app can still complete the Authorization Code flow successfully without PKCE — the risk it protects against doesn\'t go away just because it\'s not enforced.',
+      'MSAL.js implements PKCE automatically for SPAs — there\'s no separate flag or setting to configure.',
+    ],
+  },
   'azure/rbac': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

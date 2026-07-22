@@ -218,7 +218,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Identity</p>
-      <a routerLink="/azure/entra-id" routerLinkActive="active"><span class="nl-text">Entra ID (AAD)</span>@if(p.isDone('azure-entra-id')){<span class="nl-done">✓</span>}@if(d('azure-entra-id');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/entra-id" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Entra ID (AAD)</span>
+        @if (p.isDone('azure-entra-id')) {<span class="nl-done">✓</span>}
+        @if (d('azure-entra-id'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('entra-id')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('entra-id')"
+                  (click)="toggleSubtopics('entra-id', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('entra-id'); as eidSubs) {
+        @if (isSubtopicsExpanded('entra-id')) {
+          <div class="nav-subtopics">
+            @for (s of eidSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/rbac" routerLinkActive="active"><span class="nl-text">Azure RBAC</span>@if(p.isDone('azure-rbac')){<span class="nl-done">✓</span>}@if(d('azure-rbac');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/azure/key-vault" routerLinkActive="active"><span class="nl-text">Key Vault</span>@if(p.isDone('azure-key-vault')){<span class="nl-done">✓</span>}@if(d('azure-key-vault');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
