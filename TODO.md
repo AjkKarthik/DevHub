@@ -3667,7 +3667,56 @@ off here with a date.
   topic's own toggle open, showing all 3 subtopic links), tailored (non-DEFAULT) sidebar content,
   dark mode (`--bg: #0f172a`) applying correctly, and the topic overview page's own nav
   unaffected (all 22 other topic links + home still present).)
-- [ ] `/azure/arm` — Azure Resource Manager
+- [x] `/azure/arm` — Azure Resource Manager (2026-07-22 — 3 subtopics:
+  what-if-cant-resolve-reference-and-reports-noise-changes,
+  subscription-scope-deployments-need-nested-templates-for-normal-resources,
+  copy-defaults-to-parallel-and-child-resources-need-promotion; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  what-if docs a genuine, documented accuracy gap: "The what-if operation can't resolve the
+  reference function. Every time you set a property to a template expression that includes the
+  reference function, what-if reports the property will change" — plus a second, separate
+  false-positive category: "Properties can be incorrectly reported as deleted when they aren't in
+  the template, but are automatically set during deployment as default values. This result is
+  considered 'noise' in the what-if response" — plus hard expansion limits (500 nested templates,
+  800 resource groups, 5 minutes) beyond which "the remaining resources' change type is set to
+  Ignore" — closing a gap where the main page's own theory calls what-if a preview of "exactly"
+  what will change, and its own mistake entry says to "always run what-if first" with no caveat;
+  (2) confirmed via Microsoft's own subscription-deployment docs that subscription-level templates
+  use a different schema (`subscriptionDeploymentTemplate.json`) and that "Not all resource types
+  can be deployed to the subscription level" — only a specific whitelist (resourceGroups,
+  policyAssignments, roleAssignments, locks, budgets, tags, etc.) is supported directly, while
+  ordinary resources (like the main page's own storage-account example) require a nested,
+  resource-group-scoped `Microsoft.Resources/deployments` resource with an explicit `dependsOn` —
+  closing a gap where the main page shows only resource-group-scoped `az deployment group create`
+  and never mentions subscription/management-group/tenant scopes exist at all; (3) confirmed via
+  Microsoft's own copy-loop docs that "By default, Resource Manager creates the resources in
+  parallel... The order in which they're created isn't guaranteed" (serial mode + batchSize must
+  be opted into explicitly), and that "You can't use a copy loop for a child resource... you must
+  instead create that resource as a top-level resource" with a fully-qualified type and
+  parent/child name format — closing a gap where the main page's own QnA describes the copy
+  element in one generic paragraph with no mention of ordering behavior or this absolute
+  restriction, despite listing "VM NICs" and "subnets" (commonly modeled as child resources) as
+  its own named use cases. Gotcha sweep covered `.html` bound attributes, `.ts` single-quoted
+  fields (apostrophe-after-letter grep clean across all three subtopic files AND the shared wiring
+  files touched — subtopics.ts, breadcrumb.ts, page-sidebar.ts, search.service.ts, azure-nav.ts),
+  bare `@word`/`{` in `.html` prose (none present), and backtick parity (even counts, 4/6/4).
+  Caught and fixed a real house-style inconsistency before committing: a SUBTOPICS-map `label:`
+  field (a `.ts` single-quoted string) had been written with the curly-apostrophe convention that
+  only applies to `.html` `[prev]`/`[next]` bound attributes — corrected to the standard `.ts`
+  field `\'` escape instead. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR with zero actual TypeScript/template compile errors. `git add -A`
+  staged all 9 files cleanly with no "Filename too long" errors (one folder shortened
+  proactively from 235 to 171 chars, per the established short-physical-folder recipe, before
+  writing any files). Confirmed bare `arm` key collision-free in `SUBTOPICS` map (checked both
+  quoted and unquoted forms). **Caught a real wiring gap before it shipped**: the ARM nav-link's
+  own accordion toggle was initially left unwired in `AzureNavComponent` (only the Fundamentals
+  toggle was added in the prior commit) — caught via a second post-build browser check showing
+  only 1 toggle present instead of 2, fixed in the same commit before pushing. Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), the
+  `AzureNavComponent` accordion (now the SECOND topic in this hub with subtopics — confirmed only
+  each page's own toggle open), tailored (non-DEFAULT) sidebar content, dark mode
+  (`--bg: #0f172a`) applying correctly, and BOTH Fundamentals' and ARM's own toggles rendering
+  correctly together on the topic overview page.)
 - [ ] `/azure/virtual-machines` — Azure Virtual Machines
 - [ ] `/azure/app-service` — Azure App Service
 - [ ] `/azure/functions` — Azure Functions
