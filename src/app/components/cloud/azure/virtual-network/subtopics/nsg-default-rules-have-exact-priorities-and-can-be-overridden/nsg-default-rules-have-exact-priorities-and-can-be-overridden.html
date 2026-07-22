@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Virtual Network" topicRoute="/azure/virtual-network" subtopicLabel="NSG Default Rules Have Exact Priorities" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">NSG Default Rules Have Exact Priorities, and Can Be Overridden</h1>
+  <p class="page-subtitle">The main page says default rules "cannot be deleted" — here are their exact priority numbers (65000/65001/65500), why any custom rule always wins, and a platform-IP NSG bypass.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure VNet" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the exact numbers behind the main page's own "cannot delete default rules" statement. Next, the Private DNS subtopic explains the registration-enabled flag the main page's own code sets without comment.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Virtual Network" topicRoute="/azure/virtual-network"
+    [next]="{ label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' }" />
+</div>

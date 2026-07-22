@@ -3233,7 +3233,12 @@ export const routes: Routes = [
       { path: 'max-surge-defaults-to-1-node-not-a-percentage', loadComponent: () => import('./components/cloud/azure/aks/subtopics/max-surge-defaults-to-1-node-not-a-percentage/max-surge-defaults-to-1-node-not-a-percentage').then(m => m.MaxSurgeDefaultsTo1NodeNotAPercentageSubtopic) },
       { path: 'control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes', loadComponent: () => import('./components/cloud/azure/aks/subtopics/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes').then(m => m.ControlPlaneCanBeUpTo3MinorVersionsAheadOfNodesSubtopic) },
     ] },
-    { path: 'virtual-network',   loadComponent: () => import('./components/cloud/azure/virtual-network/virtual-network').then(m => m.AzureVirtualNetwork) },
+    { path: 'virtual-network', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/virtual-network/virtual-network').then(m => m.AzureVirtualNetwork) },
+      { path: 'nsg-default-rules-have-exact-priorities-and-can-be-overridden', loadComponent: () => import('./components/cloud/azure/virtual-network/subtopics/nsg-default-rules-have-exact-priorities-and-can-be-overridden/nsg-default-rules-have-exact-priorities-and-can-be-overridden').then(m => m.NsgDefaultRulesHaveExactPrioritiesAndCanBeOverriddenSubtopic) },
+      { path: 'private-dns-registration-enabled-only-works-for-vms', loadComponent: () => import('./components/cloud/azure/virtual-network/subtopics/private-dns-registration-enabled-only-works-for-vms/private-dns-registration-enabled-only-works-for-vms').then(m => m.PrivateDnsRegistrationEnabledOnlyWorksForVmsSubtopic) },
+      { path: 'security-admin-rules-can-bypass-nsg-evaluation-entirely', loadComponent: () => import('./components/cloud/azure/virtual-network/subtopics/security-admin-rules-can-bypass-nsg-evaluation-entirely/security-admin-rules-can-bypass-nsg-evaluation-entirely').then(m => m.SecurityAdminRulesCanBypassNsgEvaluationEntirelySubtopic) },
+    ] },
     { path: 'load-balancer',     loadComponent: () => import('./components/cloud/azure/load-balancer/load-balancer').then(m => m.AzureLoadBalancer) },
     { path: 'storage',           loadComponent: () => import('./components/cloud/azure/storage/storage').then(m => m.AzureStorage) },
     { path: 'entra-id',          loadComponent: () => import('./components/cloud/azure/entra-id/entra-id').then(m => m.AzureEntraId) },

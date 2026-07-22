@@ -2582,4 +2582,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'max-surge Defaults to 1 Node', route: '/azure/aks/max-surge-defaults-to-1-node-not-a-percentage' },
     { label: 'Control Plane Can Be 3 Minor Versions Ahead', route: '/azure/aks/control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes' },
   ],
+  'virtual-network': [
+    { label: 'NSG Default Rules Have Exact Priorities', route: '/azure/virtual-network/nsg-default-rules-have-exact-priorities-and-can-be-overridden' },
+    { label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' },
+    { label: 'Security Admin Rules Bypass NSG Evaluation', route: '/azure/virtual-network/security-admin-rules-can-bypass-nsg-evaluation-entirely' },
+  ],
 };

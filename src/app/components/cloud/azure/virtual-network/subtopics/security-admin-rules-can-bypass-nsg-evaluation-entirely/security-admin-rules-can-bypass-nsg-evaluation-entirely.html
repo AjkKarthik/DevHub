@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Virtual Network" topicRoute="/azure/virtual-network" subtopicLabel="Security Admin Rules Bypass NSG Evaluation" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Security Admin Rules Can Bypass NSG Evaluation Entirely</h1>
+  <p class="page-subtitle">The main page treats NSGs as the final word on traffic filtering — Azure Virtual Network Manager's Security Admin Rules sit above them and can override an NSG's own allow or deny rule.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Azure VNet Manager" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic introduces a rule layer entirely absent from the main page's own NSG-centric theory, closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Virtual Network" topicRoute="/azure/virtual-network"
+    [prev]="{ label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' }" />
+</div>

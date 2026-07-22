@@ -28831,6 +28831,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Both subnet-level AND NIC-level NSGs must allow traffic if both are configured — the effective rule set is the intersection, not the union.',
     ],
   },
+  'azure/virtual-network/nsg-default-rules-have-exact-priorities-and-can-be-overridden': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Virtual Network overview', route: '/azure/virtual-network' },
+      { label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' },
+    ],
+    tip: 'Default NSG rules sit at priority 65000/65001/65500 — deliberately last, so any custom rule (100-4096) always overrides them. Platform IPs 168.63.129.16/169.254.169.254 bypass NSGs entirely unless explicitly targeted.',
+    gotchas: [
+      'az network nsg rule list only shows custom rules by default — pass --include-default to see the six built-in defaults.',
+      'You can\'t delete default rules, but a custom rule at any valid priority effectively overrides them for matching traffic.',
+    ],
+  },
+  'azure/virtual-network/private-dns-registration-enabled-only-works-for-vms': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'NSG Default Rules Have Exact Priorities', route: '/azure/virtual-network/nsg-default-rules-have-exact-priorities-and-can-be-overridden' },
+      { label: 'Security Admin Rules Bypass NSG Evaluation', route: '/azure/virtual-network/security-admin-rules-can-bypass-nsg-evaluation-entirely' },
+    ],
+    tip: 'Autoregistration only creates DNS records for VMs (primary NIC only) — it does nothing for private endpoints, load balancers, or other non-VM resources, and a VNet can have autoregistration enabled on only ONE linked zone at a time.',
+    gotchas: [
+      'A Storage/Key Vault/SQL private endpoint\'s own DNS record comes from the private endpoint provisioning process, completely independent of registration-enabled.',
+      'Autoregistration doesn\'t support reverse DNS (PTR) records.',
+    ],
+  },
+  'azure/virtual-network/security-admin-rules-can-bypass-nsg-evaluation-entirely': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'registration-enabled Only Works for VMs', route: '/azure/virtual-network/private-dns-registration-enabled-only-works-for-vms' },
+      { label: 'Virtual Network overview', route: '/azure/virtual-network' },
+    ],
+    tip: 'Azure Virtual Network Manager\'s Security Admin Rules always evaluate before NSGs — "Always allow" and "Deny" rule types terminate evaluation entirely, meaning they can override even a resource owner\'s own explicit NSG rule.',
+    gotchas: [
+      'An "Allow" admin rule lets evaluation continue to NSG rules afterward; "Always allow" and "Deny" skip NSG evaluation entirely.',
+      'A resource owner\'s own NSG tooling gives no visibility into whether a Security Admin Rule is affecting their traffic.',
+    ],
+  },
   'azure/load-balancer': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

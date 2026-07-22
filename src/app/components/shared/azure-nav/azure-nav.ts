@@ -150,7 +150,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Networking</p>
-      <a routerLink="/azure/virtual-network" routerLinkActive="active"><span class="nl-text">Virtual Network</span>@if(p.isDone('azure-virtual-network')){<span class="nl-done">✓</span>}@if(d('azure-virtual-network');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/virtual-network" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Virtual Network</span>
+        @if (p.isDone('azure-virtual-network')) {<span class="nl-done">✓</span>}
+        @if (d('azure-virtual-network'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('virtual-network')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('virtual-network')"
+                  (click)="toggleSubtopics('virtual-network', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('virtual-network'); as vnetSubs) {
+        @if (isSubtopicsExpanded('virtual-network')) {
+          <div class="nav-subtopics">
+            @for (s of vnetSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/load-balancer" routerLinkActive="active"><span class="nl-text">Load Balancer &amp; Front Door</span>@if(p.isDone('azure-load-balancer')){<span class="nl-done">✓</span>}@if(d('azure-load-balancer');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 
