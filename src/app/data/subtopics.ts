@@ -2609,4 +2609,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Classic Co-Administrators Auto-Converted to Owner', route: '/azure/rbac/classic-co-administrators-auto-converted-to-owner-december-2025' },
     { label: 'IMDS Metadata:true and Unauthenticated Blast Radius', route: '/azure/rbac/imds-metadata-true-header-and-unauthenticated-blast-radius' },
   ],
+  'sql-cosmos': [
+    { label: 'Logical Partition Caps at 20 GB', route: '/azure/sql-cosmos/cosmos-logical-partition-caps-at-20gb-not-50gb' },
+    { label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' },
+    { label: 'Long-Term Retention Goes to 10 Years', route: '/azure/sql-cosmos/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr' },
+  ],
 };

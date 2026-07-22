@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure SQL & Cosmos DB" topicRoute="/azure/sql-cosmos" subtopicLabel="Long-Term Retention Goes to 10 Years" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Azure SQL's Long-Term Retention Goes to 10 Years — Beyond PITR's 35-Day Ceiling</h1>
+  <p class="page-subtitle">The main page's PITR coverage implies a 35-day ceiling on how far back a restore can reach — a separate, must-configure-in-advance mechanism reaches up to 10 years.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure SQL" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic closes out the topic's three deep dives, extending the main page's own PITR/geo-replication coverage with a longer-retention mechanism it never mentions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure SQL & Cosmos DB" topicRoute="/azure/sql-cosmos"
+    [prev]="{ label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' }" />
+</div>

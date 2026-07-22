@@ -263,7 +263,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Databases</p>
-      <a routerLink="/azure/sql-cosmos" routerLinkActive="active"><span class="nl-text">SQL &amp; Cosmos DB</span>@if(p.isDone('azure-sql-cosmos')){<span class="nl-done">✓</span>}@if(d('azure-sql-cosmos');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/sql-cosmos" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">SQL &amp; Cosmos DB</span>
+        @if (p.isDone('azure-sql-cosmos')) {<span class="nl-done">✓</span>}
+        @if (d('azure-sql-cosmos'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('sql-cosmos')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sql-cosmos')"
+                  (click)="toggleSubtopics('sql-cosmos', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sql-cosmos'); as sqlcSubs) {
+        @if (isSubtopicsExpanded('sql-cosmos')) {
+          <div class="nav-subtopics">
+            @for (s of sqlcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/redis" routerLinkActive="active"><span class="nl-text">Cache for Redis</span>@if(p.isDone('azure-redis')){<span class="nl-done">✓</span>}@if(d('azure-redis');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

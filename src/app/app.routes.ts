@@ -3263,7 +3263,12 @@ export const routes: Routes = [
       { path: 'classic-co-administrators-auto-converted-to-owner-december-2025', loadComponent: () => import('./components/cloud/azure/rbac/subtopics/classic-co-administrators-auto-converted-to-owner-december-2025/classic-co-administrators-auto-converted-to-owner-december-2025').then(m => m.ClassicCoAdministratorsAutoConvertedToOwnerDecember2025Subtopic) },
       { path: 'imds-metadata-true-header-and-unauthenticated-blast-radius', loadComponent: () => import('./components/cloud/azure/rbac/subtopics/imds-metadata-true-header-and-unauthenticated-blast-radius/imds-metadata-true-header-and-unauthenticated-blast-radius').then(m => m.ImdsMetadataTrueHeaderAndUnauthenticatedBlastRadiusSubtopic) },
     ] },
-    { path: 'sql-cosmos',        loadComponent: () => import('./components/cloud/azure/sql-cosmos/sql-cosmos').then(m => m.AzureSqlCosmos) },
+    { path: 'sql-cosmos', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/sql-cosmos/sql-cosmos').then(m => m.AzureSqlCosmos) },
+      { path: 'cosmos-logical-partition-caps-at-20gb-not-50gb', loadComponent: () => import('./components/cloud/azure/sql-cosmos/subtopics/cosmos-logical-partition-caps-at-20gb-not-50gb/cosmos-logical-partition-caps-at-20gb-not-50gb').then(m => m.CosmosLogicalPartitionCapsAt20gbNot50gbSubtopic) },
+      { path: 'change-feed-all-versions-and-deletes-mode-captures-deletes-natively', loadComponent: () => import('./components/cloud/azure/sql-cosmos/subtopics/change-feed-all-versions-and-deletes-mode-captures-deletes-natively/change-feed-all-versions-and-deletes-mode-captures-deletes-natively').then(m => m.ChangeFeedAllVersionsAndDeletesModeCapturesDeletesNativelySubtopic) },
+      { path: 'azure-sql-long-term-retention-goes-to-10-years-beyond-pitr', loadComponent: () => import('./components/cloud/azure/sql-cosmos/subtopics/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr').then(m => m.AzureSqlLongTermRetentionGoesTo10YearsBeyondPitrSubtopic) },
+    ] },
     { path: 'monitor',           loadComponent: () => import('./components/cloud/azure/monitor/monitor').then(m => m.AzureMonitor) },
     { path: 'devops-pipelines',  loadComponent: () => import('./components/cloud/azure/devops-pipelines/devops-pipelines').then(m => m.AzureDevopsPipelines) },
     { path: 'cost-management',   loadComponent: () => import('./components/cloud/azure/cost-management/cost-management').then(m => m.AzureCostManagement) },

@@ -28949,6 +28949,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cost models differ significantly — Azure SQL is priced by compute tier, Cosmos DB by provisioned/consumed Request Units.',
     ],
   },
+  'azure/sql-cosmos/cosmos-logical-partition-caps-at-20gb-not-50gb': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' },
+      { label: 'SQL & Cosmos DB overview', route: '/azure/sql-cosmos' },
+    ],
+    tip: 'A logical partition (what your partition key value determines) is capped at 20 GB — 50 GB is a separate, internally-managed physical partition limit you don\'t control directly.',
+    gotchas: [
+      'Watch logical partition size specifically via Azure Monitor alerts, not physical partition size, which Cosmos DB manages transparently.',
+      'Hierarchical partition keys are the documented fix once a single key value is expected to exceed 20 GB.',
+    ],
+  },
+  'azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Logical Partition Caps at 20 GB', route: '/azure/sql-cosmos/cosmos-logical-partition-caps-at-20gb-not-50gb' },
+      { label: 'Long-Term Retention Goes to 10 Years', route: '/azure/sql-cosmos/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr' },
+    ],
+    tip: '"All versions and deletes" change feed mode captures real delete events natively — no soft-delete flag needed — but requires continuous backups and is bounded by that backup retention window.',
+    gotchas: [
+      'It can only start reading from "now" or a checkpoint — never from the beginning of the container, unlike the default Latest version mode.',
+      'NoSQL API accounts only, and incompatible with accounts that have ever used partition merge.',
+    ],
+  },
+  'azure/sql-cosmos/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Change Feed Now Captures Deletes Natively', route: '/azure/sql-cosmos/change-feed-all-versions-and-deletes-mode-captures-deletes-natively' },
+      { label: 'SQL & Cosmos DB overview', route: '/azure/sql-cosmos' },
+    ],
+    tip: 'Long-Term Retention reaches up to 10 years by reusing the same PITR full backups on a weekly/monthly/yearly policy — it must be configured in advance, not requested retroactively.',
+    gotchas: [
+      'The first LTR backup can take up to 7 days to appear after the policy is set — it is not immediate.',
+      'LTR backups outlive the server that created them and remain restorable even after the logical server is deleted.',
+    ],
+  },
   'azure/storage': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

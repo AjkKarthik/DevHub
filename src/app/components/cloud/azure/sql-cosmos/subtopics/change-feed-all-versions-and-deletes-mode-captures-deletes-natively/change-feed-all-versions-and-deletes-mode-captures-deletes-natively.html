@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure SQL & Cosmos DB" topicRoute="/azure/sql-cosmos" subtopicLabel="Change Feed Now Captures Deletes Natively" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Change Feed Can Now Capture Deletes Natively — No Soft-Delete Needed</h1>
+  <p class="page-subtitle">The main page describes the soft-delete workaround as the only option — a newer change feed mode captures real delete events directly, with its own real tradeoffs.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Cosmos DB" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic extends the main page's own Change Feed QnA with a newer capability. Next, the Long-Term Retention subtopic covers a parallel gap in the main page's Azure SQL backup coverage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure SQL & Cosmos DB" topicRoute="/azure/sql-cosmos"
+    [prev]="{ label: 'Logical Partition Caps at 20 GB', route: '/azure/sql-cosmos/cosmos-logical-partition-caps-at-20gb-not-50gb' }"
+    [next]="{ label: 'Long-Term Retention Goes to 10 Years', route: '/azure/sql-cosmos/azure-sql-long-term-retention-goes-to-10-years-beyond-pitr' }" />
+</div>
