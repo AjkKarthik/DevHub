@@ -4238,7 +4238,44 @@ off here with a date.
   this hub with subtopics — explicitly checked the toggle COUNT (16) on the topic overview page
   per the standing lesson from the ARM batch), tailored sidebar content wired, dark mode
   (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/key-vault` — Azure Key Vault
+- [x] `/azure/key-vault` — Azure Key Vault (2026-07-22 — 3 subtopics:
+  key-vault-reference-refresh-is-24-hours-not-minutes,
+  soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings,
+  new-vaults-now-default-to-rbac-but-only-on-newer-api-versions; all three verified against
+  Microsoft's own documentation via WebFetch before writing — **a fourth genuine main-page
+  inaccuracy found and fixed in this session**: the main page's own rotation QnA claimed App
+  Service picks up a rotated Key Vault Reference "usually within minutes" — confirmed via
+  Microsoft's own App Service doc the real default is "the app is automatically updated and
+  begins using the latest version within 24 hours... App Service caches the values of the Key
+  Vault references and refetches them every 24 hours," with a documented force-refresh API
+  endpoint and the fact that any app config change also triggers an immediate refetch as a side
+  effect. Fixed the main page's own QnA text accordingly; (2) confirmed via Microsoft's own
+  soft-delete doc that "you can't reuse the name of a key vault that was soft-deleted, until the
+  retention period expires," AND separately that "when a Key Vault is soft-deleted, services that
+  are integrated with the Key Vault are deleted. For example: Azure RBAC roles assignments and
+  Event Grid subscriptions. Recovering a soft-deleted Key Vault does not restore these services.
+  They must be recreated" — closing a gap where the main page's soft-delete coverage is entirely
+  object-level (secrets/keys/certs) with no mention of these two vault-level consequences; (3)
+  confirmed via Microsoft's own RBAC guide a very current, dated platform change — "Starting with
+  API version 2026-02-01, Azure RBAC is the default access control model for newly created key
+  vaults" — closing a gap where the main page's own "mistake" example treats access-policy-by-
+  default as a fixed, permanent behavior, when it now depends on which API version the underlying
+  tooling/IaC template actually targets. Gotcha sweep (apostrophe-after-letter across `.ts` and
+  `.html` files, backtick parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose,
+  `[prev]`/`[next]` route cross-check) came back clean. Build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (375.49 kB over) with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 16 files (15 new/wiring + the
+  main-page fix) cleanly. Confirmed bare `key-vault` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). **Live-preview dev server was found stopped mid-batch**
+  (a PostToolUse hook flagged no server running after an unrelated edit) — restarted via
+  `preview_start`, which triggered a full cold rebuild (~96 seconds, expected for this app's
+  size) rather than an incremental one; verification proceeded normally once the fresh build
+  completed. Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs
+  correct (all 4 levels), prev/next cross-references correct, the corrected 24-hour refresh text
+  confirmed rendering live on the main page after clicking through the QnA accordion, the
+  `AzureNavComponent` accordion (now the SEVENTEENTH topic in this hub with subtopics — explicitly
+  checked the toggle COUNT (17) on the topic overview page per the standing lesson from the ARM
+  batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/service-bus` — Azure Service Bus
 - [ ] `/azure/container-apps` — Azure Container Apps
 - [ ] `/azure/redis` — Azure Cache for Redis
