@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Storage" topicRoute="/azure/storage" subtopicLabel="User Delegation SAS Caps at 7 Days" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">User Delegation SAS Caps at 7 Days, No Matter What Expiry You Set</h1>
+  <p class="page-subtitle">The main page recommends User Delegation SAS as the most secure option — but its signing key only lives for 7 days, so a longer --expiry is silently truncated, not rejected.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Azure Storage" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the exact expiry constraint behind the main page's own "preferred for security" SAS recommendation. Next, the Stored Access Policy subtopic explains a second, related tradeoff this same SAS type carries.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Storage" topicRoute="/azure/storage"
+    [next]="{ label: 'Stored Access Policies Don’t Work With User Delegation SAS', route: '/azure/storage/stored-access-policies-dont-work-with-user-delegation-sas' }" />
+</div>

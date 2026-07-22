@@ -194,7 +194,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Storage</p>
-      <a routerLink="/azure/storage" routerLinkActive="active"><span class="nl-text">Blob &amp; Storage</span>@if(p.isDone('azure-storage')){<span class="nl-done">✓</span>}@if(d('azure-storage');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/storage" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Blob &amp; Storage</span>
+        @if (p.isDone('azure-storage')) {<span class="nl-done">✓</span>}
+        @if (d('azure-storage'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('azure-storage')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('azure-storage')"
+                  (click)="toggleSubtopics('azure-storage', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('azure-storage'); as stSubs) {
+        @if (isSubtopicsExpanded('azure-storage')) {
+          <div class="nav-subtopics">
+            @for (s of stSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

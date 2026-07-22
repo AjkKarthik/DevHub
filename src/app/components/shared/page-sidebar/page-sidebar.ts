@@ -28960,6 +28960,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The appropriate redundancy tier should reflect the actual business impact of data loss or unavailability, not a blanket default.',
     ],
   },
+  'azure/storage/user-delegation-sas-max-validity-is-7-days-not-your-expiry-param': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Stored Access Policies Don’t Work With User Delegation SAS', route: '/azure/storage/stored-access-policies-dont-work-with-user-delegation-sas' },
+      { label: 'Storage overview', route: '/azure/storage' },
+    ],
+    tip: 'A User Delegation SAS is signed by a user delegation key valid for a maximum of 7 days from the start time — a longer --expiry is silently truncated, not rejected at creation time.',
+    gotchas: [
+      'The SAS URL\'s own se= parameter keeps showing the requested (longer) expiry even after the token has stopped working.',
+      'Service SAS and Account SAS have no such cap since they\'re signed by the storage account key, not a temporary Entra ID-derived key.',
+    ],
+  },
+  'azure/storage/stored-access-policies-dont-work-with-user-delegation-sas': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'User Delegation SAS Caps at 7 Days', route: '/azure/storage/user-delegation-sas-max-validity-is-7-days-not-your-expiry-param' },
+      { label: 'Lifecycle baseBlob Actions Don’t Cover Versions', route: '/azure/storage/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots' },
+    ],
+    tip: 'Stored Access Policies only attach to a Service SAS — Microsoft\'s own docs state they "are not supported for the user delegation SAS or the account SAS," so the two "most secure" recommendations on the main page can\'t be combined.',
+    gotchas: [
+      'The only revocation lever for User Delegation SAS is az storage account revoke-delegation-keys, which invalidates every delegation key for the whole account at once.',
+      'Choosing per-token revocation (Service SAS + policy) means accepting account-key signing instead of Entra ID-based signing.',
+    ],
+  },
+  'azure/storage/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Stored Access Policies Don’t Work With User Delegation SAS', route: '/azure/storage/stored-access-policies-dont-work-with-user-delegation-sas' },
+      { label: 'Storage overview', route: '/azure/storage' },
+    ],
+    tip: 'A lifecycle rule\'s baseBlob actions never apply to blob versions or snapshots — those need their own separate version/snapshot action blocks, keyed on daysAfterCreationGreaterThan instead of daysAfterModificationGreaterThan.',
+    gotchas: [
+      'Enabling Blob Versioning after a baseBlob-only policy already exists silently opens a cost gap — old versions accumulate at full price with no automatic cleanup.',
+      'A version is immutable from creation, so there is no "last modified" trigger available for it — only a creation-time one.',
+    ],
+  },
   'azure/redis': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

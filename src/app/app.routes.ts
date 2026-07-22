@@ -3245,7 +3245,12 @@ export const routes: Routes = [
       { path: 'default-snat-port-allocation-is-per-vm-not-per-ip', loadComponent: () => import('./components/cloud/azure/load-balancer/subtopics/default-snat-port-allocation-is-per-vm-not-per-ip/default-snat-port-allocation-is-per-vm-not-per-ip').then(m => m.DefaultSnatPortAllocationIsPerVmNotPerIpSubtopic) },
       { path: 'front-door-health-probe-samplesize-and-successfulsamples-explained', loadComponent: () => import('./components/cloud/azure/load-balancer/subtopics/front-door-health-probe-samplesize-explained/front-door-health-probe-samplesize-explained').then(m => m.FrontDoorHealthProbeSamplesizeExplainedSubtopic) },
     ] },
-    { path: 'storage',           loadComponent: () => import('./components/cloud/azure/storage/storage').then(m => m.AzureStorage) },
+    { path: 'storage', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/storage/storage').then(m => m.AzureStorage) },
+      { path: 'user-delegation-sas-max-validity-is-7-days-not-your-expiry-param', loadComponent: () => import('./components/cloud/azure/storage/subtopics/user-delegation-sas-max-validity-is-7-days-not-your-expiry-param/user-delegation-sas-max-validity-is-7-days-not-your-expiry-param').then(m => m.UserDelegationSasMaxValidityIs7DaysNotYourExpiryParamSubtopic) },
+      { path: 'stored-access-policies-dont-work-with-user-delegation-sas', loadComponent: () => import('./components/cloud/azure/storage/subtopics/stored-access-policies-dont-work-with-user-delegation-sas/stored-access-policies-dont-work-with-user-delegation-sas').then(m => m.StoredAccessPoliciesDontWorkWithUserDelegationSasSubtopic) },
+      { path: 'lifecycle-baseblob-actions-dont-cover-versions-or-snapshots', loadComponent: () => import('./components/cloud/azure/storage/subtopics/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots/lifecycle-baseblob-actions-dont-cover-versions-or-snapshots').then(m => m.LifecycleBaseblobActionsDontCoverVersionsOrSnapshotsSubtopic) },
+    ] },
     { path: 'entra-id',          loadComponent: () => import('./components/cloud/azure/entra-id/entra-id').then(m => m.AzureEntraId) },
     { path: 'rbac',              loadComponent: () => import('./components/cloud/azure/rbac/rbac').then(m => m.AzureRbac) },
     { path: 'sql-cosmos',        loadComponent: () => import('./components/cloud/azure/sql-cosmos/sql-cosmos').then(m => m.AzureSqlCosmos) },
