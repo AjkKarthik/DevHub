@@ -4055,7 +4055,40 @@ off here with a date.
   with subtopics — explicitly checked the toggle COUNT (11) on the topic overview page per the
   standing lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`)
   applying correctly.)
-- [ ] `/azure/sql-cosmos` — Azure SQL & Cosmos DB
+- [x] `/azure/sql-cosmos` — Azure SQL & Cosmos DB (2026-07-22 — 3 subtopics:
+  cosmos-logical-partition-caps-at-20gb-not-50gb,
+  change-feed-all-versions-and-deletes-mode-captures-deletes-natively,
+  azure-sql-long-term-retention-goes-to-10-years-beyond-pitr; all three verified against
+  Microsoft's own documentation via WebFetch before writing — **a genuine main-page inaccuracy
+  was found and fixed**: the main page's own Cosmos DB Architecture theory bullet paired "up to
+  50 GB, ~10,000 RU/s" directly with "all items with the same partition key... same logical
+  partition" — conflating the LOGICAL partition limit (confirmed via Microsoft's own partitioning
+  doc: "Each logical partition can store up to 20 GB of data") with the PHYSICAL partition limit
+  (50 GB storage, 10,000 RU/s — "an internal system implementation, fully managed by Azure Cosmos
+  DB," not something a partition key choice controls). Fixed the main page's own theory bullet to
+  correctly separate the two; (2) confirmed via Microsoft's own change feed modes doc that "All
+  versions and deletes" mode "includes insert, update, and delete operations" natively — closing
+  a gap where the main page's own QnA describes the soft-delete-flag workaround as though it were
+  the only way to react to deletions, with real tradeoffs (requires continuous backups, bounded
+  retention window, NoSQL API only, can't replay from the beginning) that make it a deliberate
+  choice rather than a strict upgrade; (3) confirmed via Microsoft's own Long-Term Retention (LTR)
+  doc that Azure SQL backups reach "up to 10 years" via a policy built on the SAME underlying PITR
+  backups — closing a gap where the main page's own PITR bullet ("7–35 days") is the only backup
+  retention mechanism mentioned, implying a much lower practical ceiling than actually exists.
+  Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even
+  counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check) came
+  back clean; also caught and immediately fixed a copy-paste typo (a stray placeholder type name
+  on the `misconceptions` field) during authoring, before the build was ever run. Full descriptive
+  slugs used directly as physical folder names (MAX_PATH check confirmed well under the limit).
+  Build reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR
+  (348.75 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged all 16
+  files (15 new/wiring + the main-page fix) cleanly. Confirmed bare `sql-cosmos` key
+  collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), prev/next
+  cross-references correct, the corrected "20 GB" text confirmed rendering live on the main page
+  itself, the `AzureNavComponent` accordion (now the TWELFTH topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (12) on the topic overview page per the standing lesson from
+  the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/monitor` — Azure Monitor & App Insights
 - [ ] `/azure/devops-pipelines` — Azure DevOps & Pipelines
 - [ ] `/azure/cost-management` — Azure Cost Management
