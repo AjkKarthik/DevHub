@@ -3837,7 +3837,43 @@ off here with a date.
   (5) on the topic overview page per the standing lesson from the ARM batch), tailored
   (non-DEFAULT) sidebar content, dark mode (`--bg: #0f172a`) applying correctly, and the main-page
   concurrency-default fix rendering correctly.)
-- [ ] `/azure/aks` — Azure Kubernetes Service
+- [x] `/azure/aks` — Azure Kubernetes Service (2026-07-22 — 3 subtopics:
+  cluster-autoscaler-exact-default-timings-and-thresholds,
+  max-surge-defaults-to-1-node-not-a-percentage,
+  control-plane-can-be-up-to-3-minor-versions-ahead-of-nodes; all three verified against
+  Microsoft's own AKS documentation via WebFetch before writing — (1) confirmed via Microsoft's
+  own Cluster Autoscaler profile settings table exact defaults: "scan-interval... 10 seconds,"
+  "scale-down-unneeded-time... 10 minutes," "scale-down-delay-after-add... 10 minutes,"
+  "scale-down-utilization-threshold... 0.5," and "max-total-unready-percentage... 45%" — plus
+  confirmation the profile is cluster-wide, not per-pool ("You can't set an autoscaler profile per
+  node pool") — closing a gap where the main page's own theory says only "removes underutilised
+  nodes after a cool-down" with zero numbers; (2) confirmed via Microsoft's own node-pool rolling
+  upgrade docs that "AKS configures upgrades to surge with one extra node by default" (a fixed
+  integer, not a percentage) alongside "For production node pools, we recommend a max surge
+  setting of 33%" and the real quota cost ("Node surges require subscription quota for the
+  requested max surge count") — closing a gap where the main page's own CLI example passes
+  --max-surge 1 without ever stating this is just the unmodified default; (3) confirmed via
+  Microsoft's own AKS control-plane upgrade docs the platform-specific number: "The control plane
+  can be up to three minor versions ahead of node pools" (distinct from the generic "typically 2"
+  Kubernetes skew concept the main page's own QnA already cites correctly for open-source
+  Kubernetes), plus that AKS "might trigger a rolling node pool upgrade alongside a control plane
+  upgrade to keep the cluster compliant" if that skew would otherwise be exceeded — closing a gap
+  where the main page explains WHY control-plane-first ordering exists but never HOW FAR behind
+  node pools may lag. Caught and fixed two real apostrophe-escaping mistakes before the build: a
+  curly quote used in a `.ts` SUBTOPICS-map field (needed the standard `\'` escape instead) and a
+  stray backslash-apostrophe in an `.html` bound `[prev]` attribute (needed the curly-quote
+  convention instead) — both caught by direct review, not by the build. Gotcha sweep covered
+  `.html` bound attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean across
+  all three subtopic files AND the shared wiring files touched), bare `@word`/`{` in `.html` prose
+  (none present), and backtick parity (even counts, 4/4/4). Build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR with zero actual TypeScript/template
+  compile errors. `git add -A` staged all 9 files cleanly with no "Filename too long" errors.
+  Confirmed bare `aks` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted
+  forms). Browser-verified successfully on all three pages — h1/breadcrumb pairs correct (all 4
+  levels), the `AzureNavComponent` accordion (now the SIXTH topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (6) on the topic overview page per the standing lesson from
+  the ARM batch), tailored (non-DEFAULT) sidebar content, dark mode (`--bg: #0f172a`) applying
+  correctly.)
 - [ ] `/azure/virtual-network` — Azure Virtual Network
 - [ ] `/azure/load-balancer` — Azure Load Balancer & Front Door
 - [ ] `/azure/storage` — Azure Blob & Storage
