@@ -1815,12 +1815,12 @@ this same check before any other new hub's first subtopic set:
   Azure pages use `app-common-mistakes` AND `app-revision-card`. Cheatsheet reference has no PageComplete.
   Challenge.language: `'typescript'`. CodeTab.language: never `'json'` or `'bicep'` — use `'bash'` instead.
   AzureNavComponent at `shared/azure-nav/azure-nav.ts`.
-  Phase 10: 18 of 22 topics have subtopics (`/azure/fundamentals`, `/azure/arm`,
+  Phase 10: 19 of 22 topics have subtopics (`/azure/fundamentals`, `/azure/arm`,
   `/azure/virtual-machines`, `/azure/app-service`, `/azure/functions`, `/azure/aks`,
   `/azure/virtual-network`, `/azure/load-balancer`, `/azure/storage`, `/azure/entra-id`,
   `/azure/rbac`, `/azure/sql-cosmos`, `/azure/monitor`, `/azure/devops-pipelines`,
   `/azure/cost-management`, `/azure/security-defender`, `/azure/key-vault`,
-  `/azure/service-bus`, 2026-07-22) — see
+  `/azure/service-bus`, `/azure/container-apps`, 2026-07-23) — see
   "Azure hub subtopic wiring" section above for the `AzureNavComponent` accordion structural fix
   and the `azure-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript
   hub's own bare `fundamentals` topic key). **Real gap caught on the `/azure/arm` batch**: adding

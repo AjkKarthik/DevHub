@@ -4313,7 +4313,47 @@ off here with a date.
   EIGHTEENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (18) on the
   topic overview page per the standing lesson from the ARM batch), tailored sidebar content wired,
   dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/container-apps` — Azure Container Apps
+- [x] `/azure/container-apps` — Azure Container Apps (2026-07-23 — 3 subtopics:
+  scale-to-zero-has-a-hidden-5-minute-cooldown, no-scale-rule-means-an-implicit-http-rule-applies,
+  secret-updates-dont-auto-restart-active-revisions; all three verified against Microsoft's own
+  documentation via WebFetch before writing — **two genuine main-page inaccuracies found and fixed
+  in this batch**: (1) the theory's "Scaling limits" bullet claimed "The Consumption plan scales to
+  300 replicas by default" — confirmed via Microsoft's own scaling reference that the real default
+  max-replicas (when no scale rule is defined) is 10, with a documented configurable ceiling of
+  1,000 shared by both Consumption and Workload Profile environments; 300 traces to a historical
+  Azure portal slider cap, not any documented plan-level default. Fixed the bullet and built a
+  subtopic around the deeper, unstated gap: Microsoft's own docs confirm a container app with NO
+  scale rule at all silently receives an implicit default HTTP rule (min 0, max 10), and explicitly
+  warn that a non-HTTP worker with ingress disabled and no scale rule "scales to zero and has no way
+  of starting back up"; (2) the theory's secrets bullet claimed "Secrets are versioned — updating a
+  secret does not auto-restart the app; you must create a new revision" — confirmed via Microsoft's
+  own secrets doc that an updated secret never auto-restarts a running revision, but the doc lists
+  TWO valid responses ("Deploy a new revision" OR "Restart an existing revision"), not one mandatory
+  path, and that a plain Container Apps secret has no inherent version history of its own (only a
+  Key Vault-referenced secret does). Fixed the bullet and built a subtopic covering the one genuine
+  exception: Microsoft's own Key Vault reference doc confirms an UNVERSIONED reference auto-refreshes
+  and auto-restarts affected revisions within 30 minutes — a deliberately different, faster number
+  from App Service's own 24-hour Key Vault Reference refresh already documented in this hub's
+  `/azure/key-vault` batch, called out explicitly as a distinct figure for a distinct service; (3)
+  confirmed via Microsoft's own scale-behavior reference the exact defaults behind the main page's
+  unqualified "replicas drop to 0" claim — Polling interval 30s, Cool down period 300s, Scale down
+  stabilization window 300s — with the explicit note that "the cool down period only takes effect
+  when scaling in from the final replica to 0," closing a gap where the main page implies an
+  instantaneous transition with no timing information at all. Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files — including the six shared wiring files, not just the three new
+  subtopic files — backtick parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose,
+  `[prev]`/`[next]` route cross-check) came back clean. Build reported only the pre-documented
+  harmless "bundle initial exceeded maximum budget" ERROR (386.33 kB over) with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 16 files (9 new + 6 wiring + the
+  main-page fix) cleanly — no "Filename too long" errors. Confirmed bare `container-apps` key
+  collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified
+  successfully on all three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next
+  cross-references correct, BOTH corrected main-page claims confirmed rendering live (old "300
+  replicas by default" and "you must create a new revision" text absent, corrected "1,000" ceiling
+  and "restart the existing revision or deploy a new one" text present), the `AzureNavComponent`
+  accordion (now the NINETEENTH topic in this hub with subtopics — explicitly checked the toggle
+  COUNT (19) on the topic overview page per the standing lesson from the ARM batch), tailored
+  sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/redis` — Azure Cache for Redis
 - [ ] `/azure/api-management` — Azure API Management
 - [ ] `/azure/bicep` — Azure Bicep Deep-dive
