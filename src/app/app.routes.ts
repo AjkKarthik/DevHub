@@ -3221,7 +3221,12 @@ export const routes: Routes = [
       { path: 'auto-heal-four-conditions-three-actions-main-page-never-mentions', loadComponent: () => import('./components/cloud/azure/app-service/subtopics/auto-heal-conditions-and-actions/auto-heal-conditions-and-actions').then(m => m.AutoHealConditionsAndActionsSubtopic) },
       { path: 'scm-basic-auth-is-a-separate-attack-surface-from-kudu', loadComponent: () => import('./components/cloud/azure/app-service/subtopics/scm-basic-auth-is-a-separate-attack-surface-from-kudu/scm-basic-auth-is-a-separate-attack-surface-from-kudu').then(m => m.ScmBasicAuthIsASeparateAttackSurfaceFromKuduSubtopic) },
     ] },
-    { path: 'functions',         loadComponent: () => import('./components/cloud/azure/functions/functions').then(m => m.AzureFunctions) },
+    { path: 'functions', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/functions/functions').then(m => m.AzureFunctions) },
+      { path: 'queue-and-service-bus-triggers-default-to-16-concurrent-not-one', loadComponent: () => import('./components/cloud/azure/functions/subtopics/queue-and-service-bus-triggers-default-to-16-concurrent-not-one/queue-and-service-bus-triggers-default-to-16-concurrent-not-one').then(m => m.QueueAndServiceBusTriggersDefaultTo16ConcurrentNotOneSubtopic) },
+      { path: 'service-bus-max-delivery-count-defaults-to-10-not-5', loadComponent: () => import('./components/cloud/azure/functions/subtopics/service-bus-max-delivery-count-defaults-to-10-not-5/service-bus-max-delivery-count-defaults-to-10-not-5').then(m => m.ServiceBusMaxDeliveryCountDefaultsTo10Not5Subtopic) },
+      { path: 'continueasnew-resets-history-and-discards-incomplete-tasks', loadComponent: () => import('./components/cloud/azure/functions/subtopics/continueasnew-resets-history-and-discards-incomplete-tasks/continueasnew-resets-history-and-discards-incomplete-tasks').then(m => m.ContinueasnewResetsHistoryAndDiscardsIncompleteTasksSubtopic) },
+    ] },
     { path: 'aks',               loadComponent: () => import('./components/cloud/azure/aks/aks').then(m => m.AzureAks) },
     { path: 'virtual-network',   loadComponent: () => import('./components/cloud/azure/virtual-network/virtual-network').then(m => m.AzureVirtualNetwork) },
     { path: 'load-balancer',     loadComponent: () => import('./components/cloud/azure/load-balancer/load-balancer').then(m => m.AzureLoadBalancer) },

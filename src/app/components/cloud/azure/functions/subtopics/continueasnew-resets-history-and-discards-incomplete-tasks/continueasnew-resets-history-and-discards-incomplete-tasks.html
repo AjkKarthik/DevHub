@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Functions" topicRoute="/azure/functions" subtopicLabel="ContinueAsNew Resets History" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">ContinueAsNew Resets History, and Discards Incomplete Tasks</h1>
+  <p class="page-subtitle">The main page's own QnA explains replay-based recovery — here's what happens when that same history needs to stay small forever, and a real gotcha with pending tasks.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Durable Functions" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic extends the main page's own event-sourcing/replay QnA into the eternal-orchestration pattern, closing out this topic's three deep dives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Functions" topicRoute="/azure/functions"
+    [prev]="{ label: 'Service Bus Max Delivery Count Defaults to 10', route: '/azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5' }" />
+</div>

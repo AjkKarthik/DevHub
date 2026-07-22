@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Functions" topicRoute="/azure/functions" subtopicLabel="Service Bus Max Delivery Count Defaults to 10" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Service Bus Max Delivery Count Defaults to 10, Not 5</h1>
+  <p class="page-subtitle">The main page gives Storage Queue's exact retry default but never Service Bus's own number — here it is, plus the distinct dead-letter reasons and a separate transfer DLQ.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Service Bus" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills in the missing Service Bus number next to the main page's own Storage Queue default. Next, the ContinueAsNew subtopic extends the main page's own Durable Functions event-sourcing QnA into what happens when that history grows too large.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Functions" topicRoute="/azure/functions"
+    [prev]="{ label: 'Queue/Service Bus Default to 16 Concurrent', route: '/azure/functions/queue-and-service-bus-triggers-default-to-16-concurrent-not-one' }"
+    [next]="{ label: 'ContinueAsNew Resets History, Discards Tasks', route: '/azure/functions/continueasnew-resets-history-and-discards-incomplete-tasks' }" />
+</div>

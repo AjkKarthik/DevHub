@@ -70,7 +70,7 @@ export class AzureFunctions {
         'Mitigation strategies: use Premium plan pre-warmed instances; enable "always-ready instances" on Flex Consumption; use .NET AOT (Isolated worker process + AOT compilation) to reduce cold start to ~200ms; keep the function assembly small.',
         'Functions on Consumption/Flex scale out by adding instances — one instance can handle one concurrent invocation (for queue/Service Bus triggers). Scale is driven by the Azure Functions scale controller, which monitors trigger backlogs.',
         'KEDA (Kubernetes Event-Driven Autoscaling) is the open-source scaler behind Azure Functions on Container Apps and AKS. It watches trigger sources (queue depth, event hub consumer lag) and scales deployments to zero or out.',
-        'Concurrency: HTTP functions can handle multiple concurrent requests on one instance (configurable with FUNCTIONS_WORKER_PROCESS_COUNT and maxConcurrentRequests). Queue/Service Bus functions default to one message at a time per instance.',
+        'Concurrency: HTTP functions can handle multiple concurrent requests on one instance (configurable with FUNCTIONS_WORKER_PROCESS_COUNT and maxConcurrentRequests). Queue and Service Bus functions default to MANY concurrent messages per instance, not one — Storage Queue defaults to a batch size of 16 (up to 24 concurrent), and Service Bus defaults maxConcurrentCalls to 16 (multiplied by core count).',
       ]
     },
     {

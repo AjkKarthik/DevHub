@@ -105,7 +105,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/functions" routerLinkActive="active"><span class="nl-text">Azure Functions</span>@if(p.isDone('azure-functions')){<span class="nl-done">✓</span>}@if(d('azure-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/functions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Azure Functions</span>
+        @if (p.isDone('azure-functions')) {<span class="nl-done">✓</span>}
+        @if (d('azure-functions'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('azure-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('azure-functions')"
+                  (click)="toggleSubtopics('azure-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('azure-functions'); as fnSubs) {
+        @if (isSubtopicsExpanded('azure-functions')) {
+          <div class="nav-subtopics">
+            @for (s of fnSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/aks" routerLinkActive="active"><span class="nl-text">AKS</span>@if(p.isDone('azure-aks')){<span class="nl-done">✓</span>}@if(d('azure-aks');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/azure/container-apps" routerLinkActive="active"><span class="nl-text">Container Apps</span>@if(p.isDone('azure-container-apps')){<span class="nl-done">✓</span>}@if(d('azure-container-apps');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

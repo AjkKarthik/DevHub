@@ -28651,6 +28651,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A consistently high-traffic function may actually cost LESS on Premium once cold-start-avoidance is factored against per-execution Consumption costs.',
     ],
   },
+  'azure/functions/queue-and-service-bus-triggers-default-to-16-concurrent-not-one': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Functions overview', route: '/azure/functions' },
+      { label: 'Service Bus Max Delivery Count Defaults to 10', route: '/azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5' },
+    ],
+    tip: 'Storage Queue triggers default to a batch size of 16 (up to 24 concurrent per instance); Service Bus defaults maxConcurrentCalls to 16, multiplied by core count — neither defaults to "one message at a time."',
+    gotchas: [
+      'Setting batchSize/maxConcurrentCalls to 1 only serializes processing WITHIN one instance — multiple scaled-out instances can still run concurrently with each other.',
+      'Service Bus splits concurrency config by session mode: maxConcurrentCalls applies when sessions are disabled, maxConcurrentSessions (default 8) when enabled.',
+    ],
+  },
+  'azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Queue/Service Bus Default to 16 Concurrent', route: '/azure/functions/queue-and-service-bus-triggers-default-to-16-concurrent-not-one' },
+      { label: 'ContinueAsNew Resets History', route: '/azure/functions/continueasnew-resets-history-and-discards-incomplete-tasks' },
+    ],
+    tip: 'Service Bus MaxDeliveryCount defaults to 10 (double Storage Queue\'s 5) — and dead-lettering has several distinct reason codes (MaxDeliveryCountExceeded, TTLExpiredException, HeaderSizeExceeded), not just "failed processing."',
+    gotchas: [
+      'A separate transfer dead-letter queue (TDLQ) holds auto-forwarding failures on the SOURCE entity — monitoring only the destination\'s regular DLQ misses these.',
+      'MaxDeliveryCountExceeded behavior can\'t be disabled entirely — only tuned to a larger number.',
+    ],
+  },
+  'azure/functions/continueasnew-resets-history-and-discards-incomplete-tasks': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Service Bus Max Delivery Count Defaults to 10', route: '/azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5' },
+      { label: 'Functions overview', route: '/azure/functions' },
+    ],
+    tip: 'continue-as-new resets an orchestrator\'s replay history (keeping the same instance ID) to prevent unbounded growth in eternal orchestrations — but it discards the results of any still-pending timer or activity call.',
+    gotchas: [
+      'External event preservation across continue-as-new differs by language — C# preserves by default, Python needs save_events=True, JavaScript needs an explicit saveEvents flag.',
+      'A call to continue-as-new from a finally block does NOT restart the orchestration after an uncaught exception.',
+    ],
+  },
   'azure/app-service': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

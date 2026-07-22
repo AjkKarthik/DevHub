@@ -2571,4 +2571,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Auto-Heal: 4 Conditions, 3 Actions', route: '/azure/app-service/auto-heal-four-conditions-three-actions-main-page-never-mentions' },
     { label: 'SCM Basic Auth Is a Separate Attack Surface', route: '/azure/app-service/scm-basic-auth-is-a-separate-attack-surface-from-kudu' },
   ],
+  // NOTE: hub-prefixed — bare 'functions' is already claimed by the JavaScript hub.
+  'azure-functions': [
+    { label: 'Queue/Service Bus Default to 16 Concurrent', route: '/azure/functions/queue-and-service-bus-triggers-default-to-16-concurrent-not-one' },
+    { label: 'Service Bus Max Delivery Count Defaults to 10', route: '/azure/functions/service-bus-max-delivery-count-defaults-to-10-not-5' },
+    { label: 'ContinueAsNew Resets History', route: '/azure/functions/continueasnew-resets-history-and-discards-incomplete-tasks' },
+  ],
 };
