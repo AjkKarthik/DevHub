@@ -4015,7 +4015,46 @@ off here with a date.
   `AzureNavComponent` accordion (now the TENTH topic in this hub with subtopics — explicitly
   checked the toggle COUNT (10) on the topic overview page per the standing lesson from the ARM
   batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/rbac` — Azure RBAC
+- [x] `/azure/rbac` — Azure RBAC (2026-07-22 — 3 subtopics:
+  role-assignment-propagation-isnt-one-number-10-min-to-24-hours,
+  classic-co-administrators-auto-converted-to-owner-december-2025,
+  imds-metadata-true-header-and-unauthenticated-blast-radius; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  RBAC troubleshooting doc that general role assignment changes take "up to 10 minutes" (FASTER
+  than the main page's stated "up to 30 minutes"), but group-based Managed Identity role
+  assignments follow a completely separate, much slower path ("maintain a cache per resource URI
+  for around 24 hours... several hours for changes to a managed identity's group or role
+  membership to take effect"), and DataActions changes at management group scope have their own
+  separate "several hours" path — closing a gap where the main page states one flat ceiling for a
+  delay that actually has at least three distinct tiers; (2) confirmed via Microsoft's own classic
+  administrators doc — a genuinely CURRENT, dated finding — that "Starting in December 2025, Azure
+  automatically assigned the Owner role at subscription scope to users... still assigned the
+  Co-Administrator or Service Administrator role," fully retired "As of May 2026," with each
+  auto-converted assignment carrying a documented distinguishing description string and a fixed
+  createdBy GUID (0469d4cd-df37-4d93-8a61-f8c75b809164) — closing a gap where the main page's own
+  audit QnA (az role assignment list --all) doesn't account for this recently-introduced,
+  identifiable class of automatically-created Owner assignments; (3) confirmed via Microsoft's own
+  Instance Metadata Service doc that the Metadata: true header (and banning X-Forwarded-For) exists
+  specifically "to prevent unintended or unwanted redirection of requests" (an SSRF defense, not an
+  arbitrary convention), and that "IMDS is not a channel for sensitive data. The API is
+  unauthenticated and open to all processes on the VM" — closing a gap where the main page's own
+  Managed Identity codeTab uses the header without explanation and never extends its own
+  least-privilege discussion to the token-acquisition endpoint's actual blast radius. Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even counts, 4/4/4 —
+  bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check) came back clean; full
+  descriptive slugs used directly as physical folder names (MAX_PATH check confirmed well under the
+  limit). Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (343.38 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 15 files cleanly. **Real `SUBTOPICS` map bare-key collision found and resolved**: `rbac` was
+  already claimed by the Containers/K8s hub's own `/containers/rbac` topic (checked both quoted and
+  unquoted forms) — hub-prefixed to `azure-rbac`; all three `AzureNavComponent` accordion helper
+  calls updated to use the prefixed key; post-fix browser check confirmed `/containers/rbac` itself
+  was completely unaffected (still showed its own correct 22-toggle count). Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), prev/next
+  cross-references correct, the `AzureNavComponent` accordion (now the ELEVENTH topic in this hub
+  with subtopics — explicitly checked the toggle COUNT (11) on the topic overview page per the
+  standing lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`)
+  applying correctly.)
 - [ ] `/azure/sql-cosmos` — Azure SQL & Cosmos DB
 - [ ] `/azure/monitor` — Azure Monitor & App Insights
 - [ ] `/azure/devops-pipelines` — Azure DevOps & Pipelines
