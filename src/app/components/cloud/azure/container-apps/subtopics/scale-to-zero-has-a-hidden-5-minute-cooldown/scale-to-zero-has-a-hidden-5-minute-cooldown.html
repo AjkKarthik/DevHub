@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Container Apps" topicRoute="/azure/container-apps" subtopicLabel="Scale-to-Zero Has a Hidden 5-Minute Cooldown" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Scale-to-Zero Has a Hidden 5-Minute Cooldown, Not an Instant Drop</h1>
+  <p class="page-subtitle">The main page's own theory says replicas "drop to 0" with no traffic — Microsoft's own scale-behavior defaults show that final replica actually lingers for up to 300 seconds first.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Container Apps" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This is the first of three deep dives into gaps the main page's own theory leaves open — the next covers what happens when no scale rule is defined at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Container Apps" topicRoute="/azure/container-apps"
+    [next]="{ label: 'No Scale Rule Means an Implicit HTTP Rule Applies', route: '/azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies' }" />
+</div>

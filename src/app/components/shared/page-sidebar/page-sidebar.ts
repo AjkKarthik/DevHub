@@ -28974,6 +28974,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For topologies with many competing receivers, a smaller prefetch count avoids starving other receivers of messages.',
     ],
   },
+  'azure/container-apps/scale-to-zero-has-a-hidden-5-minute-cooldown': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'No Scale Rule Means an Implicit HTTP Rule Applies', route: '/azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies' },
+      { label: 'Container Apps overview', route: '/azure/container-apps' },
+    ],
+    tip: 'The final replica\'s trip to zero waits out a 300-second cool down period by default — it\'s not instant, and the cooldown resets on any new event.',
+    gotchas: [
+      'The 300-second cool down only gates the LAST replica reaching zero — scaling down from any higher count uses the separate scale-down stabilization window instead.',
+      'Bursty traffic that repeats faster than every 5 minutes can keep resetting the cooldown clock and prevent the app from ever actually reaching zero.',
+    ],
+  },
+  'azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Scale-to-Zero Has a Hidden 5-Minute Cooldown', route: '/azure/container-apps/scale-to-zero-has-a-hidden-5-minute-cooldown' },
+      { label: 'Secret Updates Don’t Auto-Restart Active Revisions', route: '/azure/container-apps/secret-updates-dont-auto-restart-active-revisions' },
+    ],
+    tip: 'No scale rule defined? Container Apps silently applies a default HTTP rule capped at 10 replicas, not 300 — the true configurable ceiling is 1,000.',
+    gotchas: [
+      'A non-HTTP worker with ingress disabled and no explicit scale rule can scale to zero via the implicit default and then have no way to start back up.',
+      'Fixing max-replicas alone doesn\'t solve the ingress-disabled trap — that needs an explicit min-replicas or a real trigger-based scale rule.',
+    ],
+  },
+  'azure/container-apps/secret-updates-dont-auto-restart-active-revisions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'No Scale Rule Means an Implicit HTTP Rule Applies', route: '/azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies' },
+      { label: 'Container Apps overview', route: '/azure/container-apps' },
+    ],
+    tip: 'Updating a secret never auto-restarts a running revision — restart it or deploy a new one; only an unversioned Key Vault reference auto-restarts on its own, within 30 minutes.',
+    gotchas: [
+      'Container Apps\' own Key Vault reference refresh is 30 minutes, a different (much faster) figure than App Service\'s 24-hour default covered elsewhere in this hub.',
+      'In multiple-revision mode, every OTHER active revision referencing the same secret needs its own restart too — updating the value doesn\'t discriminate between them.',
+    ],
+  },
   'azure/sql-cosmos': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

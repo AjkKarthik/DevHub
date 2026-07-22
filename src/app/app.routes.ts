@@ -3305,7 +3305,12 @@ export const routes: Routes = [
       { path: 'auto-forwarding-caps-at-4-hops-then-dead-letters', loadComponent: () => import('./components/cloud/azure/service-bus/subtopics/auto-forwarding-caps-at-4-hops-then-dead-letters/auto-forwarding-caps-at-4-hops-then-dead-letters').then(m => m.AutoForwardingCapsAt4HopsThenDeadLettersSubtopic) },
       { path: 'high-prefetch-count-expires-locks-before-processing-even-starts', loadComponent: () => import('./components/cloud/azure/service-bus/subtopics/high-prefetch-count-expires-locks-before-processing-even-starts/high-prefetch-count-expires-locks-before-processing-even-starts').then(m => m.HighPrefetchCountExpiresLocksBeforeProcessingEvenStartsSubtopic) },
     ] },
-    { path: 'container-apps',    loadComponent: () => import('./components/cloud/azure/container-apps/container-apps').then(m => m.AzureContainerApps) },
+    { path: 'container-apps', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/container-apps/container-apps').then(m => m.AzureContainerApps) },
+      { path: 'scale-to-zero-has-a-hidden-5-minute-cooldown', loadComponent: () => import('./components/cloud/azure/container-apps/subtopics/scale-to-zero-has-a-hidden-5-minute-cooldown/scale-to-zero-has-a-hidden-5-minute-cooldown').then(m => m.ScaleToZeroHasAHidden5MinuteCooldownSubtopic) },
+      { path: 'no-scale-rule-means-an-implicit-http-rule-applies', loadComponent: () => import('./components/cloud/azure/container-apps/subtopics/no-scale-rule-means-an-implicit-http-rule-applies/no-scale-rule-means-an-implicit-http-rule-applies').then(m => m.NoScaleRuleMeansAnImplicitHttpRuleAppliesSubtopic) },
+      { path: 'secret-updates-dont-auto-restart-active-revisions', loadComponent: () => import('./components/cloud/azure/container-apps/subtopics/secret-updates-dont-auto-restart-active-revisions/secret-updates-dont-auto-restart-active-revisions').then(m => m.SecretUpdatesDontAutoRestartActiveRevisionsSubtopic) },
+    ] },
     { path: 'redis',             loadComponent: () => import('./components/cloud/azure/redis/redis').then(m => m.AzureRedis) },
     { path: 'api-management',    loadComponent: () => import('./components/cloud/azure/api-management/api-management').then(m => m.AzureApiManagement) },
     { path: 'bicep',             loadComponent: () => import('./components/cloud/azure/bicep/bicep').then(m => m.AzureBicep) },
