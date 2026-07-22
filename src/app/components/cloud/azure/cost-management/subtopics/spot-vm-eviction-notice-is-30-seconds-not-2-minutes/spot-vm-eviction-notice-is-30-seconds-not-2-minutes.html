@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Cost Management" topicRoute="/azure/cost-management" subtopicLabel="Spot VM Eviction Is 30 Seconds, Not 2 Minutes" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Spot VM Eviction Notice Is 30 Seconds, Not 2 Minutes</h1>
+  <p class="page-subtitle">The main page originally stated a 2-minute eviction notice — Microsoft's own docs confirm it's 30 seconds, and delivery requires opting into Scheduled Events.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Cost Management" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic corrects a figure in the main page's own Spot VM QnA (the main page itself was updated to match). Next, the discount-order subtopic covers a related but distinct gap in the main page's own savings-mechanism coverage.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Cost Management" topicRoute="/azure/cost-management"
+    [next]="{ label: 'Reservations Apply Before Savings Plans', route: '/azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model' }" />
+</div>

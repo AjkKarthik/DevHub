@@ -2624,4 +2624,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' },
     { label: 'Fork PR Builds on Self-Hosted Agents', route: '/azure/devops-pipelines/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem' },
   ],
+  'cost-management': [
+    { label: 'Spot VM Eviction Is 30 Seconds, Not 2 Minutes', route: '/azure/cost-management/spot-vm-eviction-notice-is-30-seconds-not-2-minutes' },
+    { label: 'Reservations Apply Before Savings Plans', route: '/azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model' },
+    { label: 'Amortized Cost View Doesn’t Work for PAYG Reservations', route: '/azure/cost-management/amortized-cost-view-doesnt-work-for-payg-reservations' },
+  ],
 };

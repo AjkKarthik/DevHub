@@ -3281,7 +3281,12 @@ export const routes: Routes = [
       { path: 'unanswered-approvals-are-skipped-not-rejected-at-timeout', loadComponent: () => import('./components/cloud/azure/devops-pipelines/subtopics/unanswered-approvals-are-skipped-not-rejected-at-timeout/unanswered-approvals-are-skipped-not-rejected-at-timeout').then(m => m.UnansweredApprovalsAreSkippedNotRejectedAtTimeoutSubtopic) },
       { path: 'fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem', loadComponent: () => import('./components/cloud/azure/devops-pipelines/subtopics/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem').then(m => m.ForkPrBuildsOnSelfHostedAgentsRunUntrustedCodeOnPremSubtopic) },
     ] },
-    { path: 'cost-management',   loadComponent: () => import('./components/cloud/azure/cost-management/cost-management').then(m => m.AzureCostManagement) },
+    { path: 'cost-management', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/cost-management/cost-management').then(m => m.AzureCostManagement) },
+      { path: 'spot-vm-eviction-notice-is-30-seconds-not-2-minutes', loadComponent: () => import('./components/cloud/azure/cost-management/subtopics/spot-vm-eviction-notice-is-30-seconds-not-2-minutes/spot-vm-eviction-notice-is-30-seconds-not-2-minutes').then(m => m.SpotVmEvictionNoticeIs30SecondsNot2MinutesSubtopic) },
+      { path: 'reservations-apply-before-savings-plans-in-a-best-fit-model', loadComponent: () => import('./components/cloud/azure/cost-management/subtopics/reservations-apply-before-savings-plans-in-a-best-fit-model/reservations-apply-before-savings-plans-in-a-best-fit-model').then(m => m.ReservationsApplyBeforeSavingsPlansInABestFitModelSubtopic) },
+      { path: 'amortized-cost-view-doesnt-work-for-payg-reservations', loadComponent: () => import('./components/cloud/azure/cost-management/subtopics/amortized-cost-view-doesnt-work-for-payg-reservations/amortized-cost-view-doesnt-work-for-payg-reservations').then(m => m.AmortizedCostViewDoesntWorkForPaygReservationsSubtopic) },
+    ] },
     { path: 'security-defender', loadComponent: () => import('./components/cloud/azure/security-defender/security-defender').then(m => m.AzureSecurityDefender) },
     { path: 'key-vault',         loadComponent: () => import('./components/cloud/azure/key-vault/key-vault').then(m => m.AzureKeyVault) },
     { path: 'service-bus',       loadComponent: () => import('./components/cloud/azure/service-bus/service-bus').then(m => m.AzureServiceBus) },

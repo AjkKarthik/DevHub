@@ -29221,6 +29221,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Azure Advisor surfaces savings opportunities (underutilized VMs, orphaned disks) manual review would likely miss.',
     ],
   },
+  'azure/cost-management/spot-vm-eviction-notice-is-30-seconds-not-2-minutes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Reservations Apply Before Savings Plans', route: '/azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model' },
+      { label: 'Cost Management overview', route: '/azure/cost-management' },
+    ],
+    tip: 'Azure Spot VMs are evicted with 30-seconds notice, not 2 minutes — and the warning requires opting into Azure Scheduled Events to actually receive it.',
+    gotchas: [
+      'Eviction policy (Deallocate vs Delete) determines whether disk storage costs continue after eviction.',
+      'Setting max price to -1 removes price-based eviction entirely, leaving only capacity-based eviction to design around.',
+    ],
+  },
+  'azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Spot VM Eviction Is 30 Seconds', route: '/azure/cost-management/spot-vm-eviction-notice-is-30-seconds-not-2-minutes' },
+      { label: 'Amortized Cost View Gap', route: '/azure/cost-management/amortized-cost-view-doesnt-work-for-payg-reservations' },
+    ],
+    tip: 'When both an RI and a Savings Plan could cover the same usage, Azure automatically applies the reservation first — no configuration needed or possible.',
+    gotchas: [
+      'A Savings Plan utilization reading above 100% mid-window is expected — the billing system reconciles usage for up to 48 hours after the fact.',
+      'Between multiple Savings Plans, the 3-year term and more restrictively-scoped plan are consumed first.',
+    ],
+  },
+  'azure/cost-management/amortized-cost-view-doesnt-work-for-payg-reservations': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Reservations Apply Before Savings Plans', route: '/azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model' },
+      { label: 'Cost Management overview', route: '/azure/cost-management' },
+    ],
+    tip: 'Amortised cost view silently does nothing for Reserved Instances purchased under a pay-as-you-go subscription — it renders identically to Actual cost.',
+    gotchas: [
+      'This limitation doesn\'t apply to Enterprise Agreement or Microsoft Customer Agreement subscriptions.',
+      'A manual (total cost ÷ term months) calculation is the workaround for PAYG-purchased RIs.',
+    ],
+  },
   'azure/devops-pipelines': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

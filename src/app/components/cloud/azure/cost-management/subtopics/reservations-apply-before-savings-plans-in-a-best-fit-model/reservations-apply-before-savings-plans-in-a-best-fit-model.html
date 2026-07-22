@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Cost Management" topicRoute="/azure/cost-management" subtopicLabel="Reservations Apply Before Savings Plans" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Reservations Apply Before Savings Plans, in a Greedy "Best Fit" Model</h1>
+  <p class="page-subtitle">The main page never explains what happens when both an RI and a Savings Plan could apply to the same usage — the order is automatic, and understanding it explains some otherwise-confusing Cost Analysis numbers.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Cost Management" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic fills a gap in the main page's own RI/Savings Plan coverage. Next, the Amortized Cost subtopic covers a real exception in the main page's own Amortized-vs-Actual cost view recommendation.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Cost Management" topicRoute="/azure/cost-management"
+    [prev]="{ label: 'Spot VM Eviction Is 30 Seconds, Not 2 Minutes', route: '/azure/cost-management/spot-vm-eviction-notice-is-30-seconds-not-2-minutes' }"
+    [next]="{ label: 'Amortized Cost View Doesn’t Work for PAYG Reservations', route: '/azure/cost-management/amortized-cost-view-doesnt-work-for-payg-reservations' }" />
+</div>

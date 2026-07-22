@@ -334,7 +334,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Reference</p>
-      <a routerLink="/azure/cost-management" routerLinkActive="active"><span class="nl-text">Cost Management</span>@if(p.isDone('azure-cost-management')){<span class="nl-done">✓</span>}@if(d('azure-cost-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/cost-management" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Cost Management</span>
+        @if (p.isDone('azure-cost-management')) {<span class="nl-done">✓</span>}
+        @if (d('azure-cost-management'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('cost-management')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cost-management')"
+                  (click)="toggleSubtopics('cost-management', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cost-management'); as cmSubs) {
+        @if (isSubtopicsExpanded('cost-management')) {
+          <div class="nav-subtopics">
+            @for (s of cmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/security-defender" routerLinkActive="active"><span class="nl-text">Security &amp; Defender</span>@if(p.isDone('azure-security-defender')){<span class="nl-done">✓</span>}@if(d('azure-security-defender');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/azure/cheatsheet" routerLinkActive="active"><span class="nl-text">Azure Cheat Sheet</span></a>
     </div>
