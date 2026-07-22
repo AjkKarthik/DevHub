@@ -3945,7 +3945,44 @@ off here with a date.
   the EIGHTH topic in this hub with subtopics — explicitly checked the toggle COUNT (8) on the topic
   overview page per the standing lesson from the ARM batch), tailored (non-DEFAULT) sidebar content,
   dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/storage` — Azure Blob & Storage
+- [x] `/azure/storage` — Azure Blob & Storage (2026-07-22 — 3 subtopics:
+  user-delegation-sas-max-validity-is-7-days-not-your-expiry-param,
+  stored-access-policies-dont-work-with-user-delegation-sas,
+  lifecycle-baseblob-actions-dont-cover-versions-or-snapshots; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  "Use Azure CLI to create a user delegation SAS" doc that "the maximum interval over which the
+  user delegation key is valid is 7 days from the start date... a SAS with an expiry time of
+  greater than 7 days will still only be valid for 7 days" — a longer --expiry is silently
+  truncated, not rejected, closing a gap where the main page recommends User Delegation SAS as
+  "preferred for security" with zero mention of this cap; (2) confirmed via the same doc plus
+  Microsoft's own "Define a stored access policy" reference — both state the exact same
+  constraint independently ("A user delegation SAS does not support defining permissions with a
+  stored access policy" / "Stored access policies are not supported for the user delegation SAS
+  or the account SAS") — revealing the main page's own two "most secure" recommendations
+  (User Delegation SAS, Stored Access Policy revocation) are mutually exclusive, a tension it
+  never states; (3) confirmed via Microsoft's own "Configure a lifecycle management policy" doc
+  that BaseBlobAction, SnapshotAction, and BlobVersionAction are three separate, independently
+  configured parameters (shown in the official PowerShell reference example, all three used side
+  by side in one policy) — closing a gap where the main page's own lifecycle JSON codeTab defines
+  only a baseBlob action block while its own theory separately recommends enabling Versioning "for
+  critical data," a combination that silently leaves every old blob version accumulating at full
+  cost forever. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html` files, backtick
+  parity — even counts, 4/4/4 — bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route
+  cross-check across all three files) came back clean; full descriptive slugs used directly as
+  physical folder names (MAX_PATH check confirmed well under the 260-char limit, no shortening
+  needed). Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR (332.05 kB over) with zero actual TypeScript/template compile errors. `git add -A`
+  staged all 15 files cleanly. **Real `SUBTOPICS` map bare-key collision found and resolved**:
+  `storage` was already claimed by the Containers/K8s hub's own `/containers/storage` topic
+  (checked both quoted and unquoted forms) — hub-prefixed to `azure-storage`, matching this hub's
+  own established `azure-` progress/search prefix; all three `AzureNavComponent` accordion helper
+  calls updated to use the prefixed key. Browser-verified successfully on all three pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct on first try (no
+  short/long folder-vs-route mismatch this batch, since full descriptive slugs were used directly
+  as folder names), the `AzureNavComponent` accordion (now the NINTH topic in this hub with
+  subtopics — explicitly checked the toggle COUNT (9) on the topic overview page per the standing
+  lesson from the ARM batch), tailored (non-DEFAULT) sidebar content confirmed via direct DOM
+  inspection, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/entra-id` — Azure Active Directory & Entra ID
 - [ ] `/azure/rbac` — Azure RBAC
 - [ ] `/azure/sql-cosmos` — Azure SQL & Cosmos DB
