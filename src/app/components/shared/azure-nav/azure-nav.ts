@@ -258,7 +258,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/key-vault" routerLinkActive="active"><span class="nl-text">Key Vault</span>@if(p.isDone('azure-key-vault')){<span class="nl-done">✓</span>}@if(d('azure-key-vault');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/key-vault" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Key Vault</span>
+        @if (p.isDone('azure-key-vault')) {<span class="nl-done">✓</span>}
+        @if (d('azure-key-vault'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('key-vault')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('key-vault')"
+                  (click)="toggleSubtopics('key-vault', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('key-vault'); as kvSubs) {
+        @if (isSubtopicsExpanded('key-vault')) {
+          <div class="nav-subtopics">
+            @for (s of kvSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

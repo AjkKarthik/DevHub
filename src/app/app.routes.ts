@@ -3293,7 +3293,12 @@ export const routes: Routes = [
       { path: 'defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm', loadComponent: () => import('./components/cloud/azure/security-defender/subtopics/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm').then(m => m.DefenderCspmIsASeparatePaidPlanBeyondFoundationalCspmSubtopic) },
       { path: 'jit-quick-enable-only-protects-one-port-not-the-full-set', loadComponent: () => import('./components/cloud/azure/security-defender/subtopics/jit-quick-enable-only-protects-one-port-not-the-full-set/jit-quick-enable-only-protects-one-port-not-the-full-set').then(m => m.JitQuickEnableOnlyProtectsOnePortNotTheFullSetSubtopic) },
     ] },
-    { path: 'key-vault',         loadComponent: () => import('./components/cloud/azure/key-vault/key-vault').then(m => m.AzureKeyVault) },
+    { path: 'key-vault', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/key-vault/key-vault').then(m => m.AzureKeyVault) },
+      { path: 'key-vault-reference-refresh-is-24-hours-not-minutes', loadComponent: () => import('./components/cloud/azure/key-vault/subtopics/key-vault-reference-refresh-is-24-hours-not-minutes/key-vault-reference-refresh-is-24-hours-not-minutes').then(m => m.KeyVaultReferenceRefreshIs24HoursNotMinutesSubtopic) },
+      { path: 'soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings', loadComponent: () => import('./components/cloud/azure/key-vault/subtopics/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings').then(m => m.SoftDeletedVaultReservesItsNameAndLosesRbacBindingsSubtopic) },
+      { path: 'new-vaults-now-default-to-rbac-but-only-on-newer-api-versions', loadComponent: () => import('./components/cloud/azure/key-vault/subtopics/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions').then(m => m.NewVaultsNowDefaultToRbacButOnlyOnNewerApiVersionsSubtopic) },
+    ] },
     { path: 'service-bus',       loadComponent: () => import('./components/cloud/azure/service-bus/service-bus').then(m => m.AzureServiceBus) },
     { path: 'container-apps',    loadComponent: () => import('./components/cloud/azure/container-apps/container-apps').then(m => m.AzureContainerApps) },
     { path: 'redis',             loadComponent: () => import('./components/cloud/azure/redis/redis').then(m => m.AzureRedis) },

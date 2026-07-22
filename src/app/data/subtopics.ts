@@ -2634,4 +2634,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Defender CSPM Is a Separate Paid Plan', route: '/azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm' },
     { label: 'JIT Quick-Enable Only Protects One Port', route: '/azure/security-defender/jit-quick-enable-only-protects-one-port-not-the-full-set' },
   ],
+  'key-vault': [
+    { label: 'Reference Refresh Is 24 Hours, Not Minutes', route: '/azure/key-vault/key-vault-reference-refresh-is-24-hours-not-minutes' },
+    { label: 'Soft-Deleted Vaults Reserve Their Name', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' },
+    { label: 'New Vaults Now Default to RBAC', route: '/azure/key-vault/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions' },
+  ],
 };

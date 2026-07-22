@@ -29151,6 +29151,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'System-assigned identities are tied to one resource\'s lifecycle; user-assigned identities can be shared across resources and managed independently.',
     ],
   },
+  'azure/key-vault/key-vault-reference-refresh-is-24-hours-not-minutes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Soft-Deleted Vaults Reserve Their Name', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' },
+      { label: 'Key Vault overview', route: '/azure/key-vault' },
+    ],
+    tip: 'App Service caches Key Vault Reference values and refetches every 24 hours by default — a rotated secret is not picked up "within minutes" without an explicit trigger.',
+    gotchas: [
+      'An unrelated app setting change forces an immediate refetch as a side effect — a real config change causes an app restart.',
+      'For emergency rotation, force resolution via a POST to the app\'s configreferences/appsettings/refresh management API.',
+    ],
+  },
+  'azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Reference Refresh Is 24 Hours', route: '/azure/key-vault/key-vault-reference-refresh-is-24-hours-not-minutes' },
+      { label: 'New Vaults Now Default to RBAC', route: '/azure/key-vault/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions' },
+    ],
+    tip: 'A soft-deleted vault\'s name is reserved for the full retention period, and recovering the vault does NOT restore its RBAC role assignments or Event Grid subscriptions.',
+    gotchas: [
+      'A CI/CD pipeline that deletes-and-recreates a vault by design can hit a name-conflict error against its own prior soft-deleted vault.',
+      'Post-recovery, re-provision access exactly as if configuring a brand-new vault — recovery alone leaves apps with 403 errors.',
+    ],
+  },
+  'azure/key-vault/new-vaults-now-default-to-rbac-but-only-on-newer-api-versions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Soft-Deleted Vaults Reserve Their Name', route: '/azure/key-vault/soft-deleted-vault-reserves-its-name-and-loses-rbac-bindings' },
+      { label: 'Key Vault overview', route: '/azure/key-vault' },
+    ],
+    tip: 'Azure RBAC became the default for new Key Vaults starting API version 2026-02-01 — but tooling or templates pinned to an older API version still silently default to legacy access policies.',
+    gotchas: [
+      'Two teams running the identical az keyvault create command can get different permission models depending on their underlying API version.',
+      'Explicitly setting --enable-rbac-authorization true remains the only reliable way to guarantee RBAC regardless of tooling defaults.',
+    ],
+  },
   'azure/security-defender': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
