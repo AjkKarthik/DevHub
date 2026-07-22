@@ -2550,4 +2550,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Regional RI Size Flexibility', route: '/aws/cost-optimization/regional-ri-size-flexibility-uses-a-normalization-factor' },
     { label: 'Savings Plans Have No Exit', route: '/aws/cost-optimization/savings-plans-have-no-cancellation-or-resale-exit' },
   ],
+  // NOTE: hub-prefixed — bare 'fundamentals' is already claimed by the JavaScript hub.
+  'azure-fundamentals': [
+    { label: 'ReadOnly Locks Block More Than Deletes', route: '/azure/fundamentals/readonly-locks-block-more-than-deletes-control-plane-only' },
+    { label: 'az resource move Orphans Role Assignments', route: '/azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id' },
+    { label: 'Zonal vs. Zone-Redundant', route: '/azure/fundamentals/zonal-vs-zone-redundant-and-per-subscription-zone-mapping' },
+  ],
 };

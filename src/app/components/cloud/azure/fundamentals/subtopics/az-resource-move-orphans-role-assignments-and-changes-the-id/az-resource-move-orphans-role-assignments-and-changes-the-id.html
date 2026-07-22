@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Fundamentals" topicRoute="/azure/fundamentals" subtopicLabel="az resource move Orphans Role Assignments" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">az resource move Orphans Role Assignments and Changes the ID</h1>
+  <p class="page-subtitle">The main page's own QnA mentions "az resource move" in one sentence — here's the resource-ID change and the silent role-assignment loss that follows.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ARM" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic connects the main page's own resource-ID-parsing challenge to what actually happens to that ID during a move. Next, the Availability Zones subtopic sharpens another piece of main-page theory: the real difference between zonal and zone-redundant deployments.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Fundamentals" topicRoute="/azure/fundamentals"
+    [prev]="{ label: 'ReadOnly Locks Block More Than Deletes', route: '/azure/fundamentals/readonly-locks-block-more-than-deletes-control-plane-only' }"
+    [next]="{ label: 'Zonal vs. Zone-Redundant & Per-Subscription Mapping', route: '/azure/fundamentals/zonal-vs-zone-redundant-and-per-subscription-zone-mapping' }" />
+</div>

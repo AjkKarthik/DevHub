@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Fundamentals" topicRoute="/azure/fundamentals" subtopicLabel="ReadOnly Locks Block More Than Deletes" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">ReadOnly Locks Block More Than Deletes — Control Plane Only</h1>
+  <p class="page-subtitle">The main page's only lock example is CanNotDelete — here's the far more restrictive ReadOnly lock, and a documented list of surprising things both lock types block or fail to protect.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ARM" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This subtopic expands the main page's single CanNotDelete lock example into the full lock model. Next, the resource-move subtopic covers another az command the main page's own QnA mentions but never explains in depth.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Fundamentals" topicRoute="/azure/fundamentals"
+    [next]="{ label: 'az resource move Orphans Role Assignments', route: '/azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id' }" />
+</div>

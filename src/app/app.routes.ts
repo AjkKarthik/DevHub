@@ -3197,7 +3197,12 @@ export const routes: Routes = [
   ] },
   { path: 'azure',         children: [
     { path: '', loadComponent: () => import('./components/cloud/azure/home/home').then(m => m.AzureHome) },
-    { path: 'fundamentals',      loadComponent: () => import('./components/cloud/azure/fundamentals/fundamentals').then(m => m.AzureFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/fundamentals/fundamentals').then(m => m.AzureFundamentals) },
+      { path: 'readonly-locks-block-more-than-deletes-control-plane-only', loadComponent: () => import('./components/cloud/azure/fundamentals/subtopics/readonly-locks-block-more-than-deletes-control-plane-only/readonly-locks-block-more-than-deletes-control-plane-only').then(m => m.ReadonlyLocksBlockMoreThanDeletesControlPlaneOnlySubtopic) },
+      { path: 'az-resource-move-orphans-role-assignments-and-changes-the-id', loadComponent: () => import('./components/cloud/azure/fundamentals/subtopics/az-resource-move-orphans-role-assignments-and-changes-the-id/az-resource-move-orphans-role-assignments-and-changes-the-id').then(m => m.AzResourceMoveOrphansRoleAssignmentsAndChangesTheIdSubtopic) },
+      { path: 'zonal-vs-zone-redundant-and-per-subscription-zone-mapping', loadComponent: () => import('./components/cloud/azure/fundamentals/subtopics/zonal-vs-zone-redundant-and-per-subscription-zone-mapping/zonal-vs-zone-redundant-and-per-subscription-zone-mapping').then(m => m.ZonalVsZoneRedundantAndPerSubscriptionZoneMappingSubtopic) },
+    ] },
     { path: 'arm',               loadComponent: () => import('./components/cloud/azure/arm/arm').then(m => m.AzureArm) },
     { path: 'virtual-machines',  loadComponent: () => import('./components/cloud/azure/virtual-machines/virtual-machines').then(m => m.AzureVirtualMachines) },
     { path: 'app-service',       loadComponent: () => import('./components/cloud/azure/app-service/app-service').then(m => m.AzureAppService) },

@@ -1743,6 +1743,9 @@ const AWS_LABELS: Record<string, string> = {
 
 const AZURE_LABELS: Record<string, string> = {
   'fundamentals':       'Azure Fundamentals',
+  'fundamentals/readonly-locks-block-more-than-deletes-control-plane-only': 'ReadOnly Locks Block More Than Deletes',
+  'fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id': 'az resource move Orphans Role Assignments',
+  'fundamentals/zonal-vs-zone-redundant-and-per-subscription-zone-mapping': 'Zonal vs. Zone-Redundant',
   'arm':                'Azure Resource Manager',
   'virtual-machines':   'Virtual Machines',
   'app-service':        'App Service',

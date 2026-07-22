@@ -28520,6 +28520,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Zone redundancy handles datacenter failures cheaply; true regional-outage protection requires an actual multi-region deployment.',
     ],
   },
+  'azure/fundamentals/readonly-locks-block-more-than-deletes-control-plane-only': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals overview', route: '/azure/fundamentals' },
+      { label: 'az resource move Orphans Role Assignments', route: '/azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id' },
+    ],
+    tip: 'ReadOnly locks block every control-plane POST/PUT/DELETE request — including operationally harmless ones like restarting a VM or scaling an App Service plan, not just configuration edits.',
+    gotchas: [
+      'Neither CanNotDelete nor ReadOnly protects a storage account\'s own blob/queue/table/file data — locks are control-plane only, never data-plane.',
+      'Locks are inherited top-down and the most restrictive one wins — a ReadOnly lock on a resource group silently blocks VM restarts everywhere inside it.',
+    ],
+  },
+  'azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'ReadOnly Locks Block More Than Deletes', route: '/azure/fundamentals/readonly-locks-block-more-than-deletes-control-plane-only' },
+      { label: 'Zonal vs. Zone-Redundant', route: '/azure/fundamentals/zonal-vs-zone-redundant-and-per-subscription-zone-mapping' },
+    ],
+    tip: 'Moving a resource changes its resource ID — any role assignment scoped directly to that resource becomes orphaned and must be manually re-created against the new ID.',
+    gotchas: [
+      'The move locks BOTH the source and destination resource groups against create/delete/update for up to 4 hours while it completes.',
+      'Dependent resources (disks, NICs) must be included in the same move request as their parent — a partial move fails outright rather than succeeding with a broken resource.',
+    ],
+  },
+  'azure/fundamentals/zonal-vs-zone-redundant-and-per-subscription-zone-mapping': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'az resource move Orphans Role Assignments', route: '/azure/fundamentals/az-resource-move-orphans-role-assignments-and-changes-the-id' },
+      { label: 'Fundamentals overview', route: '/azure/fundamentals' },
+    ],
+    tip: 'Zonal resources get NO automatic failover if their zone fails — only zone-redundant resources are automatically replicated and failed over by Microsoft. A "nonzonal" resource is a third, unprotected option.',
+    gotchas: [
+      'Logical zone numbers ("Zone 1") map to different physical datacenters per subscription — two subscriptions\' "Zone 1" are not guaranteed to be the same datacenter.',
+      'A zonal deployment only gets multi-zone resilience if you deliberately deploy separate resources into every zone yourself — Azure does not do this automatically.',
+    ],
+  },
   'azure/arm': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
