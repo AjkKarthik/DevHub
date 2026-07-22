@@ -29115,6 +29115,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Basic tier node failure or maintenance causes a complete cache outage with data loss.',
     ],
   },
+  'azure/redis/theres-no-redis-contributor-data-role': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' },
+      { label: 'Cache for Redis overview', route: '/azure/redis' },
+    ],
+    tip: 'The real data access policies are Data Owner, Data Contributor, and Data Reader — assigned via Data Access Configuration, not a role picker. The similarly-named "Redis Cache Contributor" Azure RBAC role grants zero data access.',
+    gotchas: [
+      '"Redis Cache Contributor" is a control-plane-only role — it manages the cache resource but defines no dataActions at all.',
+      'A real deployment often needs BOTH an RBAC role (to manage the resource) and a Data Access Configuration entry (for an identity to read/write data).',
+    ],
+  },
+  'azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'There’s No “Redis Contributor” Data Role', route: '/azure/redis/theres-no-redis-contributor-data-role' },
+      { label: 'Enabling Entra ID Auth Reboots Every Node', route: '/azure/redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes' },
+    ],
+    tip: 'Every new Azure Cache for Redis instance defaults to volatile-lru, not noeviction — meaning a key with no TTL is completely exempt from eviction, not just at greater risk.',
+    gotchas: [
+      'Forgetting a TTL isn\'t "random" eviction under the real default — it\'s a guarantee that key is protected until every TTL\'d key around it is gone first.',
+      'For a pure caching workload with no permanently-protected keys, allkeys-lru avoids this trap entirely.',
+    ],
+  },
+  'azure/redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' },
+      { label: 'Cache for Redis overview', route: '/azure/redis' },
+    ],
+    tip: 'Enabling Entra ID auth (and granting the first data access policy) reboots every node and can take up to 30 minutes — plan it for a maintenance window, not a routine mid-day change.',
+    gotchas: [
+      'Disabling access keys terminates ALL existing connections, including ones already using Entra tokens.',
+      'A geo-replicated cache must be unlinked before disabling access keys, then relinked — a 3-step operation, not a single toggle.',
+    ],
+  },
   'azure/entra-id': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

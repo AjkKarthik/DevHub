@@ -3311,7 +3311,12 @@ export const routes: Routes = [
       { path: 'no-scale-rule-means-an-implicit-http-rule-applies', loadComponent: () => import('./components/cloud/azure/container-apps/subtopics/no-scale-rule-means-an-implicit-http-rule-applies/no-scale-rule-means-an-implicit-http-rule-applies').then(m => m.NoScaleRuleMeansAnImplicitHttpRuleAppliesSubtopic) },
       { path: 'secret-updates-dont-auto-restart-active-revisions', loadComponent: () => import('./components/cloud/azure/container-apps/subtopics/secret-updates-dont-auto-restart-active-revisions/secret-updates-dont-auto-restart-active-revisions').then(m => m.SecretUpdatesDontAutoRestartActiveRevisionsSubtopic) },
     ] },
-    { path: 'redis',             loadComponent: () => import('./components/cloud/azure/redis/redis').then(m => m.AzureRedis) },
+    { path: 'redis', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/redis/redis').then(m => m.AzureRedis) },
+      { path: 'theres-no-redis-contributor-data-role', loadComponent: () => import('./components/cloud/azure/redis/subtopics/theres-no-redis-contributor-data-role/theres-no-redis-contributor-data-role').then(m => m.TheresNoRedisContributorDataRoleSubtopic) },
+      { path: 'default-eviction-policy-is-volatile-lru-not-noeviction', loadComponent: () => import('./components/cloud/azure/redis/subtopics/default-eviction-policy-is-volatile-lru-not-noeviction/default-eviction-policy-is-volatile-lru-not-noeviction').then(m => m.DefaultEvictionPolicyIsVolatileLruNotNoevictionSubtopic) },
+      { path: 'enabling-entra-id-auth-reboots-every-node-up-to-30-minutes', loadComponent: () => import('./components/cloud/azure/redis/subtopics/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes').then(m => m.EnablingEntraIdAuthRebootsEveryNodeUpTo30MinutesSubtopic) },
+    ] },
     { path: 'api-management',    loadComponent: () => import('./components/cloud/azure/api-management/api-management').then(m => m.AzureApiManagement) },
     { path: 'bicep',             loadComponent: () => import('./components/cloud/azure/bicep/bicep').then(m => m.AzureBicep) },
     { path: 'cheatsheet',        loadComponent: () => import('./components/cloud/azure/cheatsheet/cheatsheet').then(m => m.AzureCheatsheet) },

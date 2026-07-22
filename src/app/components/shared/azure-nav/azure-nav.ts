@@ -321,7 +321,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/redis" routerLinkActive="active"><span class="nl-text">Cache for Redis</span>@if(p.isDone('azure-redis')){<span class="nl-done">✓</span>}@if(d('azure-redis');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/redis" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Cache for Redis</span>
+        @if (p.isDone('azure-redis')) {<span class="nl-done">✓</span>}
+        @if (d('azure-redis'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('redis')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('redis')"
+                  (click)="toggleSubtopics('redis', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('redis'); as redisSubs) {
+        @if (isSubtopicsExpanded('redis')) {
+          <div class="nav-subtopics">
+            @for (s of redisSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

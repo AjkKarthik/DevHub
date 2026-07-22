@@ -2649,4 +2649,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'No Scale Rule Means an Implicit HTTP Rule Applies', route: '/azure/container-apps/no-scale-rule-means-an-implicit-http-rule-applies' },
     { label: 'Secret Updates Don’t Auto-Restart Active Revisions', route: '/azure/container-apps/secret-updates-dont-auto-restart-active-revisions' },
   ],
+  redis: [
+    { label: 'There’s No “Redis Contributor” Data Role', route: '/azure/redis/theres-no-redis-contributor-data-role' },
+    { label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' },
+    { label: 'Enabling Entra ID Auth Reboots Every Node', route: '/azure/redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes' },
+  ],
 };

@@ -1,0 +1,26 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Cache for Redis" topicRoute="/azure/redis" subtopicLabel="Enabling Entra ID Auth Reboots Every Node" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Enabling Entra ID Auth Reboots Every Node — And Can Take Up to 30 Minutes</h1>
+  <p class="page-subtitle">The main page frames Entra ID authentication as a simple config switch — Microsoft's own docs confirm it (and disabling access keys) reboot the cache and drop every connection, Entra-based ones included.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Cache for Redis" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, connecting the main page's Security & Access and Geo-Replication sections through an operational gotcha neither one mentions on its own.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Cache for Redis" topicRoute="/azure/redis"
+    [prev]="{ label: 'The Real Default Eviction Policy Is volatile-lru', route: '/azure/redis/default-eviction-policy-is-volatile-lru-not-noeviction' }" />
+</div>

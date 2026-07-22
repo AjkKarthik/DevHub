@@ -1,0 +1,27 @@
+<div class="azure-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Azure Cache for Redis" topicRoute="/azure/redis" subtopicLabel="The Real Default Eviction Policy Is volatile-lru" />
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">The Real Default Eviction Policy Is volatile-lru — Keys Without a TTL Are Eviction-Exempt</h1>
+  <p class="page-subtitle">The main page never names the actual default — Microsoft's own docs confirm it's volatile-lru, which makes forgetting a TTL a much worse mistake than "random" eviction.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Azure Cache for Redis" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="azure-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="azure-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own #1 Common Mistake about missing TTLs — the next subtopic moves from memory pressure to an operational surprise in the security section the main page already covers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Azure Cache for Redis" topicRoute="/azure/redis"
+    [prev]="{ label: 'There’s No “Redis Contributor” Data Role', route: '/azure/redis/theres-no-redis-contributor-data-role' }"
+    [next]="{ label: 'Enabling Entra ID Auth Reboots Every Node', route: '/azure/redis/enabling-entra-id-auth-reboots-every-node-up-to-30-minutes' }" />
+</div>
