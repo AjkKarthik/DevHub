@@ -3209,7 +3209,12 @@ export const routes: Routes = [
       { path: 'subscription-scope-deployments-need-nested-templates-for-normal-resources', loadComponent: () => import('./components/cloud/azure/arm/subtopics/subscription-scope-needs-nested-templates/subscription-scope-needs-nested-templates').then(m => m.SubscriptionScopeNeedsNestedTemplatesSubtopic) },
       { path: 'copy-defaults-to-parallel-and-child-resources-need-promotion', loadComponent: () => import('./components/cloud/azure/arm/subtopics/copy-defaults-to-parallel-and-child-resources-need-promotion/copy-defaults-to-parallel-and-child-resources-need-promotion').then(m => m.CopyDefaultsToParallelAndChildResourcesNeedPromotionSubtopic) },
     ] },
-    { path: 'virtual-machines',  loadComponent: () => import('./components/cloud/azure/virtual-machines/virtual-machines').then(m => m.AzureVirtualMachines) },
+    { path: 'virtual-machines', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/virtual-machines/virtual-machines').then(m => m.AzureVirtualMachines) },
+      { path: 'standard-sku-public-ips-are-now-always-static-not-dynamic', loadComponent: () => import('./components/cloud/azure/virtual-machines/subtopics/standard-sku-public-ips-are-now-always-static-not-dynamic/standard-sku-public-ips-are-now-always-static-not-dynamic').then(m => m.StandardSkuPublicIpsAreNowAlwaysStaticNotDynamicSubtopic) },
+      { path: 'scheduled-events-covers-five-event-types-not-just-spot-eviction', loadComponent: () => import('./components/cloud/azure/virtual-machines/subtopics/scheduled-events-five-event-types/scheduled-events-five-event-types').then(m => m.ScheduledEventsFiveEventTypesSubtopic) },
+      { path: 'vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity', loadComponent: () => import('./components/cloud/azure/virtual-machines/subtopics/vmss-flexible-real-vms-no-default-outbound/vmss-flexible-real-vms-no-default-outbound').then(m => m.VmssFlexibleRealVmsNoDefaultOutboundSubtopic) },
+    ] },
     { path: 'app-service',       loadComponent: () => import('./components/cloud/azure/app-service/app-service').then(m => m.AzureAppService) },
     { path: 'functions',         loadComponent: () => import('./components/cloud/azure/functions/functions').then(m => m.AzureFunctions) },
     { path: 'aks',               loadComponent: () => import('./components/cloud/azure/aks/aks').then(m => m.AzureAks) },

@@ -65,7 +65,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Compute</p>
-      <a routerLink="/azure/virtual-machines" routerLinkActive="active"><span class="nl-text">Virtual Machines</span>@if(p.isDone('azure-virtual-machines')){<span class="nl-done">✓</span>}@if(d('azure-virtual-machines');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/virtual-machines" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Virtual Machines</span>
+        @if (p.isDone('azure-virtual-machines')) {<span class="nl-done">✓</span>}
+        @if (d('azure-virtual-machines'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('virtual-machines')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('virtual-machines')"
+                  (click)="toggleSubtopics('virtual-machines', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('virtual-machines'); as vmSubs) {
+        @if (isSubtopicsExpanded('virtual-machines')) {
+          <div class="nav-subtopics">
+            @for (s of vmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/app-service" routerLinkActive="active"><span class="nl-text">App Service</span>@if(p.isDone('azure-app-service')){<span class="nl-done">✓</span>}@if(d('azure-app-service');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/azure/functions" routerLinkActive="active"><span class="nl-text">Azure Functions</span>@if(p.isDone('azure-functions')){<span class="nl-done">✓</span>}@if(d('azure-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/azure/aks" routerLinkActive="active"><span class="nl-text">AKS</span>@if(p.isDone('azure-aks')){<span class="nl-done">✓</span>}@if(d('azure-aks');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

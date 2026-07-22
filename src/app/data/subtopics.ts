@@ -2561,4 +2561,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Subscription Scope Needs Nested Templates', route: '/azure/arm/subscription-scope-deployments-need-nested-templates-for-normal-resources' },
     { label: 'Copy Defaults to Parallel & Child Promotion', route: '/azure/arm/copy-defaults-to-parallel-and-child-resources-need-promotion' },
   ],
+  'virtual-machines': [
+    { label: 'Standard SKU Public IPs Are Now Static', route: '/azure/virtual-machines/standard-sku-public-ips-are-now-always-static-not-dynamic' },
+    { label: 'Scheduled Events Covers 5 Event Types', route: '/azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction' },
+    { label: 'VMSS Flexible: Real VMs, No Default Outbound', route: '/azure/virtual-machines/vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity' },
+  ],
 };

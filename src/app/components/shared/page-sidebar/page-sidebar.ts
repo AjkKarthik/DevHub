@@ -28675,6 +28675,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Rolling upgrades update a batch of instances at a time, reducing the risk that a bad image update takes down the whole fleet simultaneously.',
     ],
   },
+  'azure/virtual-machines/standard-sku-public-ips-are-now-always-static-not-dynamic': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'VM overview', route: '/azure/virtual-machines' },
+      { label: 'Scheduled Events Covers 5 Event Types', route: '/azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction' },
+    ],
+    tip: 'Since Basic SKU public IPs were retired September 30, 2025, Standard SKU (the only option now) is always Static allocation — the classic "IP changes on restart" surprise only applies to Dynamic allocation, which new IPs no longer use.',
+    gotchas: [
+      'A Static IP is released only when the IP resource itself is deleted, never on a VM stop/start cycle — always confirm allocation method with az network public-ip show rather than assuming.',
+      'Older resources predating the Basic SKU retirement may still carry Dynamic-allocation IPs — check before assuming Static behavior on legacy deployments.',
+    ],
+  },
+  'azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Standard SKU Public IPs Are Now Static', route: '/azure/virtual-machines/standard-sku-public-ips-are-now-always-static-not-dynamic' },
+      { label: 'VMSS Flexible: Real VMs, No Default Outbound', route: '/azure/virtual-machines/vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity' },
+    ],
+    tip: 'Scheduled Events reports five event types (Freeze, Reboot, Redeploy, Preempt, Terminate) — only Preempt (Spot eviction) gets 30 seconds notice; the other four give 10-15 minutes and apply to regular VMs too.',
+    gotchas: [
+      'User-initiated actions (a teammate running az vm restart) generate real Scheduled Events too, with EventSource: "User" — not just platform maintenance.',
+      'Approving an event early doesn\'t guarantee an immediate start — Azure may wait for all VMs on the same host to approve first.',
+    ],
+  },
+  'azure/virtual-machines/vmss-flexible-uses-real-vms-and-has-no-default-outbound-connectivity': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Scheduled Events Covers 5 Event Types', route: '/azure/virtual-machines/scheduled-events-covers-five-event-types-not-just-spot-eviction' },
+      { label: 'VM overview', route: '/azure/virtual-machines' },
+    ],
+    tip: 'Flexible-mode VMSS instances are genuine standalone Microsoft.Compute/virtualMachines resources (manageable with standard VM APIs) — but unlike Uniform mode, Flexible mode has NO default outbound internet connectivity; a NAT Gateway or LB outbound rule must be configured explicitly.',
+    gotchas: [
+      'Uniform-mode instances are NOT standard VM resources — no compatibility with standard VM APIs, RBAC, Azure Backup, or Site Recovery.',
+      'VM extensions must be targeted for standard VMs on Flexible mode, not the Uniform-orchestration-targeted extension packages.',
+    ],
+  },
   'azure/virtual-network': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [
