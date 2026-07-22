@@ -4131,7 +4131,39 @@ off here with a date.
   THIRTEENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (13) on the
   topic overview page per the standing lesson from the ARM batch), tailored sidebar content wired,
   dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/devops-pipelines` — Azure DevOps & Pipelines
+- [x] `/azure/devops-pipelines` — Azure DevOps & Pipelines (2026-07-22 — 3 subtopics:
+  new-orgs-get-zero-free-parallel-jobs-must-request-a-grant,
+  unanswered-approvals-are-skipped-not-rejected-at-timeout,
+  fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem; all three verified against
+  Microsoft's own documentation via WebSearch/WebFetch before writing — (1) confirmed via
+  Microsoft Q&A/blog research that new Azure DevOps organizations no longer receive the free
+  Microsoft-hosted parallel job grant automatically (temporarily disabled by default for new
+  orgs), and the only path is a manually-reviewed Parallelism Request form that can take several
+  business days or longer — closing a gap where the main page's quickRef states "Free tier: 1
+  parallel job, 1800 min/month" as though it applies out of the box; (2) confirmed via Microsoft's
+  own approvals doc that an unanswered environment approval times out to a stage "marked as
+  skipped," not rejected or failed, and that "the list of users who can review an Approval is
+  fixed at the time approvals & checks start running" — closing a gap where the main page frames
+  approvals as a simple approve/reject binary with no mention of the timeout outcome or the
+  approver-list snapshot behavior; (3) confirmed via Microsoft's own pipeline security doc
+  ("Avoid running builds from forks on self-hosted agents... external organizations can run
+  external code on machines within your corporate network") that fork PR builds are a real,
+  distinct security consideration from the main page's own service-connection hardening advice —
+  closing a gap where the main page's self-hosted agent coverage is purely about tool-cache
+  convenience with zero mention of what code actually executes there. Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files, backtick parity — even counts, 4/4/4 —
+  bare `@word`/`{` in `.html` prose, `[prev]`/`[next]` route cross-check, and a dedicated
+  unescaped-`${{`-before-brace check given a nested YAML template-expression example) came back
+  clean. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget"
+  ERROR (359.17 kB over) with zero actual TypeScript/template compile errors. `git add -A` staged
+  all 15 files cleanly. Confirmed bare `devops-pipelines` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). Browser-verified successfully on all three pages —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the nested
+  `${{ if eq }}` YAML template-expression code sample confirmed rendering correctly with no stray
+  backslash leak (verified by clicking through the collapsed code-block's second tab), the
+  `AzureNavComponent` accordion (now the FOURTEENTH topic in this hub with subtopics — explicitly
+  checked the toggle COUNT (14) on the topic overview page per the standing lesson from the ARM
+  batch), tailored sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/cost-management` — Azure Cost Management
 - [ ] `/azure/security-defender` — Azure Security & Defender for Cloud
 - [ ] `/azure/key-vault` — Azure Key Vault
