@@ -39510,6 +39510,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Inodes (not filenames) are the actual filesystem-level identity of a file — a file can have multiple names (hard links) pointing to one inode.',
     ],
   },
+  'linux/file-system/tmp-cleared-on-reboot-is-only-half-the-story': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Skip nofail in fstab and Boot Hangs, Then Emergency Mode', route: '/linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency' },
+      { label: 'File System overview', route: '/linux/file-system' },
+    ],
+    tip: 'Beyond the tmpfs-wipe-at-reboot behavior, systemd-tmpfiles separately deletes /tmp files untouched for 10 days on a DAILY timer — no reboot required.',
+    gotchas: [
+      'A long-uptime server can lose /tmp files with zero reboots, purely from the age-based cleanup.',
+      'Override the default age per-path via a local drop-in under /etc/tmpfiles.d/ if a file genuinely needs to live longer.',
+    ],
+  },
+  'linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: '/tmp Cleared on Reboot Is Only Half the Story', route: '/linux/file-system/tmp-cleared-on-reboot-is-only-half-the-story' },
+      { label: '/usr/local vs /opt: Shared Tree vs One Subdirectory Per App', route: '/linux/file-system/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app' },
+    ],
+    tip: 'An fstab entry for a missing device without nofail makes systemd wait ~90 seconds, then drop the ENTIRE boot to emergency mode — not just skip that one mount.',
+    gotchas: [
+      'Emergency mode often needs the root password to log in — a bad place to discover a boot problem on a headless server.',
+      'x-systemd.device-timeout= shortens the wait; x-systemd.automount defers the mount until first access so boot never waits at all.',
+    ],
+  },
+  'linux/file-system/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Skip nofail in fstab and Boot Hangs, Then Emergency Mode', route: '/linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency' },
+      { label: 'File System overview', route: '/linux/file-system' },
+    ],
+    tip: 'Per the FHS, /usr/local mirrors /usr\'s own shared bin/lib layout (files merged by TYPE); /opt gives each app its own self-contained subdirectory (files kept together by APPLICATION).',
+    gotchas: [
+      'Cleanly removing a /usr/local install needs make uninstall or checkinstall — there\'s no single folder representing just one app.',
+      '/opt is meant for pre-built, often vendor-distributed software; /usr/local is meant for the admin\'s own source-compiled builds.',
+    ],
+  },
   'linux/file-permissions': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

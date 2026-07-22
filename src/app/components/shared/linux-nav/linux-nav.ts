@@ -45,7 +45,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">File System</p>
-      <a routerLink="/linux/file-system" routerLinkActive="active"><span class="nl-text">File System &amp; Hierarchy</span>@if(p.isDone('linux-file-system')){<span class="nl-done">✓</span>}@if(d('linux-file-system');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/file-system" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">File System &amp; Hierarchy</span>
+        @if (p.isDone('linux-file-system')) {<span class="nl-done">✓</span>}
+        @if (d('linux-file-system'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('file-system')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('file-system')"
+                  (click)="toggleSubtopics('file-system', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('file-system'); as fsSubs) {
+        @if (isSubtopicsExpanded('file-system')) {
+          <div class="nav-subtopics">
+            @for (s of fsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/linux/essential-commands" routerLinkActive="active"><span class="nl-text">Essential Commands</span>@if(p.isDone('linux-essential-commands')){<span class="nl-done">✓</span>}@if(d('linux-essential-commands');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

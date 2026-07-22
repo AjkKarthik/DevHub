@@ -2671,4 +2671,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'journald Logs Are Lost on Reboot by Default', route: '/linux/fundamentals/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists' },
     { label: 'A sysctl Change Is Runtime-Only Until Persisted', route: '/linux/fundamentals/a-sysctl-change-is-runtime-only-until-persisted-to-a-file' },
   ],
+  'file-system': [
+    { label: '/tmp Cleared on Reboot Is Only Half the Story', route: '/linux/file-system/tmp-cleared-on-reboot-is-only-half-the-story' },
+    { label: 'Skip nofail in fstab and Boot Hangs, Then Emergency Mode', route: '/linux/file-system/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency' },
+    { label: '/usr/local vs /opt: Shared Tree vs One Subdirectory Per App', route: '/linux/file-system/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app' },
+  ],
 };

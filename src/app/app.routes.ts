@@ -3017,7 +3017,12 @@ export const routes: Routes = [
       { path: 'journald-logs-are-lost-on-reboot-unless-var-log-journal-exists', loadComponent: () => import('./components/cloud/linux/fundamentals/subtopics/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists/journald-logs-are-lost-on-reboot-unless-var-log-journal-exists').then(m => m.JournaldLogsAreLostOnRebootUnlessVarLogJournalExistsSubtopic) },
       { path: 'a-sysctl-change-is-runtime-only-until-persisted-to-a-file', loadComponent: () => import('./components/cloud/linux/fundamentals/subtopics/a-sysctl-change-is-runtime-only-until-persisted-to-a-file/a-sysctl-change-is-runtime-only-until-persisted-to-a-file').then(m => m.ASysctlChangeIsRuntimeOnlyUntilPersistedToAFileSubtopic) },
     ] },
-    { path: 'file-system',          loadComponent: () => import('./components/cloud/linux/file-system/file-system').then(m => m.LinuxFileSystem) },
+    { path: 'file-system', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/file-system/file-system').then(m => m.LinuxFileSystem) },
+      { path: 'tmp-cleared-on-reboot-is-only-half-the-story', loadComponent: () => import('./components/cloud/linux/file-system/subtopics/tmp-cleared-on-reboot-is-only-half-the-story/tmp-cleared-on-reboot-is-only-half-the-story').then(m => m.TmpClearedOnRebootIsOnlyHalfTheStorySubtopic) },
+      { path: 'skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency', loadComponent: () => import('./components/cloud/linux/file-system/subtopics/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency/skip-nofail-in-fstab-and-boot-hangs-then-drops-to-emergency').then(m => m.SkipNofailInFstabAndBootHangsThenDropsToEmergencySubtopic) },
+      { path: 'usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app', loadComponent: () => import('./components/cloud/linux/file-system/subtopics/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app/usr-local-vs-opt-shared-tree-vs-one-subdirectory-per-app').then(m => m.UsrLocalVsOptSharedTreeVsOneSubdirectoryPerAppSubtopic) },
+    ] },
     { path: 'essential-commands',   loadComponent: () => import('./components/cloud/linux/essential-commands/essential-commands').then(m => m.LinuxEssentialCommands) },
     { path: 'file-permissions',     loadComponent: () => import('./components/cloud/linux/file-permissions/file-permissions').then(m => m.LinuxFilePermissions) },
     { path: 'users-groups',         loadComponent: () => import('./components/cloud/linux/users-groups/users-groups').then(m => m.LinuxUsersGroups) },
