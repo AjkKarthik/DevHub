@@ -2619,4 +2619,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Basic Logs Supports Full KQL', route: '/azure/monitor/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing' },
     { label: 'Daily Cap Stops All Ingestion', route: '/azure/monitor/daily-cap-stops-all-ingestion-not-just-the-excess' },
   ],
+  'devops-pipelines': [
+    { label: 'New Orgs Get Zero Free Parallel Jobs', route: '/azure/devops-pipelines/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant' },
+    { label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' },
+    { label: 'Fork PR Builds on Self-Hosted Agents', route: '/azure/devops-pipelines/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem' },
+  ],
 };

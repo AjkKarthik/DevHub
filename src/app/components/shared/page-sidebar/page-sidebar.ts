@@ -29232,6 +29232,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'YAML has a steeper initial learning curve than the Classic editor, but the long-term maintainability benefit of pipeline-as-code is usually worth it.',
     ],
   },
+  'azure/devops-pipelines/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' },
+      { label: 'DevOps & Pipelines overview', route: '/azure/devops-pipelines' },
+    ],
+    tip: 'New Azure DevOps organizations no longer get a free Microsoft-hosted parallel job automatically — it must be requested via a form and is reviewed manually, sometimes taking days.',
+    gotchas: [
+      'Self-hosted agents entirely bypass the Microsoft-hosted parallelism grant process.',
+      'Purchasing a paid parallel job is available immediately, unlike the free grant request.',
+    ],
+  },
+  'azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'New Orgs Get Zero Free Parallel Jobs', route: '/azure/devops-pipelines/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant' },
+      { label: 'Fork PR Builds on Self-Hosted Agents', route: '/azure/devops-pipelines/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem' },
+    ],
+    tip: 'An unanswered approval times out to a stage marked Skipped, not Failed or Rejected — a condition like failed() will not catch it.',
+    gotchas: [
+      'The eligible-approver list is fixed when the check starts running — adding someone mid-wait doesn\'t let them approve that run.',
+      'A group approver only needs ONE member to approve, not unanimous consent.',
+    ],
+  },
+  'azure/devops-pipelines/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Unanswered Approvals Are Skipped, Not Rejected', route: '/azure/devops-pipelines/unanswered-approvals-are-skipped-not-rejected-at-timeout' },
+      { label: 'DevOps & Pipelines overview', route: '/azure/devops-pipelines' },
+    ],
+    tip: 'Fork PR builds run attacker-controlled YAML — on self-hosted agents, that code executes on your own infrastructure, and any state a self-hosted agent persists between jobs can leak to a later, trusted build.',
+    gotchas: [
+      'Fork builds don\'t get secrets by default — never enable "Make fork builds have the same permissions as regular builds."',
+      'Route fork PR builds to Microsoft-hosted agents specifically, even if trusted-branch builds use self-hosted ones.',
+    ],
+  },
 
   // ── Messaging: per-page entries ─────────────────────────────────────────────
   'messaging/messaging-fundamentals': {

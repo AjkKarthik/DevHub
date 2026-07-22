@@ -308,7 +308,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/devops-pipelines" routerLinkActive="active"><span class="nl-text">DevOps &amp; Pipelines</span>@if(p.isDone('azure-devops-pipelines')){<span class="nl-done">✓</span>}@if(d('azure-devops-pipelines');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/devops-pipelines" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">DevOps &amp; Pipelines</span>
+        @if (p.isDone('azure-devops-pipelines')) {<span class="nl-done">✓</span>}
+        @if (d('azure-devops-pipelines'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('devops-pipelines')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('devops-pipelines')"
+                  (click)="toggleSubtopics('devops-pipelines', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('devops-pipelines'); as dopSubs) {
+        @if (isSubtopicsExpanded('devops-pipelines')) {
+          <div class="nav-subtopics">
+            @for (s of dopSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/service-bus" routerLinkActive="active"><span class="nl-text">Service Bus</span>@if(p.isDone('azure-service-bus')){<span class="nl-done">✓</span>}@if(d('azure-service-bus');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/azure/api-management" routerLinkActive="active"><span class="nl-text">API Management</span>@if(p.isDone('azure-api-management')){<span class="nl-done">✓</span>}@if(d('azure-api-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

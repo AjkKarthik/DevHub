@@ -3275,7 +3275,12 @@ export const routes: Routes = [
       { path: 'basic-logs-supports-full-kql-tradeoff-is-per-query-pricing', loadComponent: () => import('./components/cloud/azure/monitor/subtopics/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing/basic-logs-supports-full-kql-tradeoff-is-per-query-pricing').then(m => m.BasicLogsSupportsFullKqlTradeoffIsPerQueryPricingSubtopic) },
       { path: 'daily-cap-stops-all-ingestion-not-just-the-excess', loadComponent: () => import('./components/cloud/azure/monitor/subtopics/daily-cap-stops-all-ingestion-not-just-the-excess/daily-cap-stops-all-ingestion-not-just-the-excess').then(m => m.DailyCapStopsAllIngestionNotJustTheExcessSubtopic) },
     ] },
-    { path: 'devops-pipelines',  loadComponent: () => import('./components/cloud/azure/devops-pipelines/devops-pipelines').then(m => m.AzureDevopsPipelines) },
+    { path: 'devops-pipelines', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/devops-pipelines/devops-pipelines').then(m => m.AzureDevopsPipelines) },
+      { path: 'new-orgs-get-zero-free-parallel-jobs-must-request-a-grant', loadComponent: () => import('./components/cloud/azure/devops-pipelines/subtopics/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant/new-orgs-get-zero-free-parallel-jobs-must-request-a-grant').then(m => m.NewOrgsGetZeroFreeParallelJobsMustRequestAGrantSubtopic) },
+      { path: 'unanswered-approvals-are-skipped-not-rejected-at-timeout', loadComponent: () => import('./components/cloud/azure/devops-pipelines/subtopics/unanswered-approvals-are-skipped-not-rejected-at-timeout/unanswered-approvals-are-skipped-not-rejected-at-timeout').then(m => m.UnansweredApprovalsAreSkippedNotRejectedAtTimeoutSubtopic) },
+      { path: 'fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem', loadComponent: () => import('./components/cloud/azure/devops-pipelines/subtopics/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem/fork-pr-builds-on-self-hosted-agents-run-untrusted-code-on-prem').then(m => m.ForkPrBuildsOnSelfHostedAgentsRunUntrustedCodeOnPremSubtopic) },
+    ] },
     { path: 'cost-management',   loadComponent: () => import('./components/cloud/azure/cost-management/cost-management').then(m => m.AzureCostManagement) },
     { path: 'security-defender', loadComponent: () => import('./components/cloud/azure/security-defender/security-defender').then(m => m.AzureSecurityDefender) },
     { path: 'key-vault',         loadComponent: () => import('./components/cloud/azure/key-vault/key-vault').then(m => m.AzureKeyVault) },
