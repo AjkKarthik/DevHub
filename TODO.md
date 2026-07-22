@@ -4354,7 +4354,46 @@ off here with a date.
   accordion (now the NINETEENTH topic in this hub with subtopics — explicitly checked the toggle
   COUNT (19) on the topic overview page per the standing lesson from the ARM batch), tailored
   sidebar content wired, dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/azure/redis` — Azure Cache for Redis
+- [x] `/azure/redis` — Azure Cache for Redis (2026-07-23 — 3 subtopics:
+  theres-no-redis-contributor-data-role, default-eviction-policy-is-volatile-lru-not-noeviction,
+  enabling-entra-id-auth-reboots-every-node-up-to-30-minutes; all three verified against
+  Microsoft's own documentation via WebFetch/WebSearch before writing — **a genuine main-page
+  inaccuracy found and fixed in this batch**: the theory's "Security & Access" bullet claimed
+  "The MI must be assigned the Redis Contributor data access role" — no such data access policy
+  exists. Confirmed via Microsoft's own Entra authentication guide the real policies are exactly
+  three — Data Owner, Data Contributor, Data Reader — assigned through the cache's own Data Access
+  Configuration blade, not a role picker. Fixed the bullet and built a subtopic around the
+  genuinely dangerous trap the wrong name creates: a REAL Azure built-in RBAC role named "Redis
+  Cache Contributor" exists (confirmed via its own published permissions) and is a pure
+  control-plane role — it manages the cache resource but defines no dataActions at all, so an
+  identity holding only that role can fully administer the cache and still be denied every single
+  Redis command; (2) confirmed via Microsoft's own "Default Redis server configuration" reference
+  table that every new cache actually defaults to maxmemory-policy volatile-lru, not noeviction —
+  a fact the main page's QnA never states outright despite listing all the policy options. Built a
+  subtopic tying this directly to the main page's own #1 Common Mistake (missing TTL): under the
+  REAL default, a key with no TTL isn't evicted "randomly and unpredictably" as the main page's
+  explanation states — it's completely exempt from eviction, since volatile-lru only ever
+  considers keys that already have an expiration set; (3) confirmed via the same Entra
+  authentication doc that enabling Entra ID auth (and separately, granting the first Data Access
+  Configuration entry) reboots every node in the cache and can take up to 30 minutes, and that
+  disabling access keys terminates ALL existing connections — Entra-token-based ones included —
+  plus that a geo-replicated cache requires an unlink/disable/relink sequence rather than a single
+  toggle, connecting two sections (Security & Access; Geo-Replication) the main page covers
+  separately but never links. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html`
+  files — including the six shared wiring files — backtick parity — even counts, 4/4/4 — bare
+  `@word` in `.html` prose, `[prev]`/`[next]` route cross-check) came back clean. Build reported
+  only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (391.63 kB over)
+  with zero actual TypeScript/template compile errors. `git add -A` staged all 16 files (9 new +
+  6 wiring + the main-page fix) cleanly — no "Filename too long" errors. Confirmed bare `redis`
+  key collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms — distinct from
+  the data-hub Redis's own top-level route, which is unaffected). Browser-verified successfully on
+  all three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next
+  cross-references correct, the corrected main-page text confirmed rendering live (old "Redis
+  Contributor data access role" text absent, corrected "Data Owner, Data Contributor, or Data
+  Reader" text present), the `AzureNavComponent` accordion (now the TWENTIETH topic in this hub
+  with subtopics — explicitly checked the toggle COUNT (20) on the topic overview page per the
+  standing lesson from the ARM batch), tailored sidebar content wired, dark mode (`--bg:
+  #0f172a`) applying correctly.)
 - [ ] `/azure/api-management` — Azure API Management
 - [ ] `/azure/bicep` — Azure Bicep Deep-dive
 
