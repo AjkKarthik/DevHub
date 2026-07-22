@@ -3874,7 +3874,45 @@ off here with a date.
   explicitly checked the toggle COUNT (6) on the topic overview page per the standing lesson from
   the ARM batch), tailored (non-DEFAULT) sidebar content, dark mode (`--bg: #0f172a`) applying
   correctly.)
-- [ ] `/azure/virtual-network` — Azure Virtual Network
+- [x] `/azure/virtual-network` — Azure Virtual Network (2026-07-22 — 3 subtopics:
+  nsg-default-rules-have-exact-priorities-and-can-be-overridden,
+  private-dns-registration-enabled-only-works-for-vms,
+  security-admin-rules-can-bypass-nsg-evaluation-entirely; all three verified against Microsoft's
+  own documentation via WebFetch before writing — (1) confirmed via Microsoft's own NSG overview
+  docs the exact default rule priorities ("AllowVNetInBound — Priority 65000,"
+  "AllowAzureLoadBalancerInBound — Priority 65001," "DenyAllInbound — Priority 65500," matching
+  outbound equivalents) and the explicit override statement ("You can't remove the default rules,
+  but you can override them by creating rules with higher priorities") — plus a bonus finding that
+  platform-critical IPs (168.63.129.16, 169.254.169.254) "aren't subject to the configured network
+  security groups unless targeted by service tags specific to each service" — closing a gap where
+  the main page states default rules "cannot be deleted" with no priority numbers or override
+  clarification; (2) confirmed via Microsoft's own Private DNS autoregistration docs that "The
+  Azure DNS private zones autoregistration feature manages DNS records for virtual machines" and
+  "Autoregistration works only for virtual machines. For all other resources like internal load
+  balancers, you can create DNS records manually," plus the real constraint that "A specific
+  virtual network can be linked to only one private DNS zone when automatic registration is
+  enabled" — closing a gap where the main page's own codeTab sets --registration-enabled false
+  with zero explanation of what the flag does or why false is correct for a Storage private
+  endpoint scenario specifically; (3) confirmed via the same NSG overview docs a rule layer the
+  main page never mentions at all: "Security admin rules... originate from Azure Virtual Network
+  Manager... always have a higher priority than network security group rules and thus are
+  evaluated first," with "'Always allow' and 'Deny' security admin rules... terminate traffic
+  evaluation after the security admin rule is processed" — meaning these can override even a
+  resource owner's own correctly-configured NSG rule, invisible to that owner's own NSG tooling.
+  Caught and fixed a duplicated-word typo ("Always always have") in one misconception field before
+  committing — found by direct review, not the build. Gotcha sweep covered `.html` bound
+  attributes, `.ts` single-quoted fields (apostrophe-after-letter grep clean across all three
+  files and the shared wiring files touched), bare `@word`/`{` in `.html` prose (none present),
+  and backtick parity (even counts, 6/4/4 — the 6-count file's extra pair is a safe backtick-code
+  mention inside a single-quoted field, confirmed harmless by a zero-error build). Build reported
+  only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 9 files cleanly with no "Filename
+  too long" errors. Confirmed bare `virtual-network` key collision-free in `SUBTOPICS` map
+  (checked both quoted and unquoted forms). Browser-verified successfully on all three pages —
+  h1/breadcrumb pairs correct (all 4 levels), the `AzureNavComponent` accordion (now the SEVENTH
+  topic in this hub with subtopics — explicitly checked the toggle COUNT (7) on the topic overview
+  page per the standing lesson from the ARM batch), tailored (non-DEFAULT) sidebar content, dark
+  mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/azure/load-balancer` — Azure Load Balancer & Front Door
 - [ ] `/azure/storage` — Azure Blob & Storage
 - [ ] `/azure/entra-id` — Azure Active Directory & Entra ID
