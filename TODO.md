@@ -4565,7 +4565,40 @@ off here with a date.
   levels), prev/next cross-references correct, the `LinuxNavComponent` accordion (now the SECOND
   topic in this hub with subtopics — explicitly checked the toggle COUNT (2) on the topic overview
   page), dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/linux/essential-commands` — Essential Commands
+- [x] `/linux/essential-commands` — Essential Commands (2026-07-23 — 3 subtopics:
+  xargs-without-print0-breaks-on-filenames-with-spaces,
+  awk-default-field-split-collapses-repeated-delimiters,
+  tar-already-strips-leading-slashes-unless-p-is-used; all three verified against official
+  documentation (man7.org for xargs, GNU Awk User's Guide for field splitting, GNU tar manual +
+  corroborating sources for absolute-path stripping) before writing — no genuine main-page
+  inaccuracy found this batch (all three angles are expansion gaps): (1) confirmed via xargs' own
+  man page that its default splitting is on "blanks... or newlines," making "filenames containing
+  blanks... incorrectly processed by xargs" — closing a gap where the main page's own QnA mentions
+  the find -print0 | xargs -0 fix in a single dependent clause without ever demonstrating the
+  failure it prevents, while its own theory section models the unsafe bare pattern
+  (find | xargs rm) without qualification; (2) confirmed via the GNU Awk User's Guide that the
+  DEFAULT field separator is deliberately special-cased ("two spaces in a row do not delimit an
+  empty field"), while an explicitly-specified single-character -F' ' loses that collapsing
+  behavior entirely — closing a gap where the main page's own theory presents -F as just "plug in
+  a different character," with no warning that -F' ' is NOT equivalent to the default; (3)
+  **corrected an assumption made partway through this batch's own research**: initially hypothesized
+  tar "bakes in" absolute paths by default (an intuitive-but-wrong guess), then verified via GNU
+  tar's own documented behavior that the opposite is true — "by default, absolute paths are
+  converted to relative paths when archiving," with a "Removing leading '/' from member names"
+  warning, specifically for safety; -P/--absolute-names is the actual (explicitly risky) flag that
+  restores absolute-path behavior. This closes a gap where the main page's own tar example archives
+  an absolute path with zero mention of what happens to it. Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files — including the six shared wiring files — backtick parity — even
+  counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention verified, `[prev]`/`[next]`
+  route cross-check) came back clean. Build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR (420.02 kB over) with zero actual TypeScript/template
+  compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix this batch)
+  cleanly — no "Filename too long" errors. Confirmed bare `essential-commands` key collision-free
+  in `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified successfully on all
+  three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references
+  correct, the `LinuxNavComponent` accordion (now the THIRD topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (3) on the topic overview page), dark mode (`--bg: #0f172a`)
+  applying correctly.)
 - [ ] `/linux/file-permissions` — File Permissions & Ownership
 - [ ] `/linux/users-groups` — Users & Groups
 - [ ] `/linux/process-management` — Process Management
