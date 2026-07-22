@@ -1615,6 +1615,48 @@ same check before any other new hub's first subtopic set:
    delimited `code:` fields are unaffected (backticks tolerate bare apostrophes fine) and don't
    need this check.
 
+### Azure hub subtopic wiring — first pilot; the 5th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/azure/fundamentals`, 2026-07-22) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`AzureNavComponent` (`shared/azure-nav/azure-nav.ts`) had ZERO subtopics-accordion
+   support** — the same structural gap already hit and fixed on `GoNavComponent`,
+   `DevopsNavComponent`, `ContainersNavComponent`, and `AwsNavComponent` before their own pilots.
+   Fixed identically: added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS`
+   (from `../../../data/subtopics`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, byte-for-byte the same pattern as the other four. **This is now the FIFTH
+   `*NavComponent`-based hub in a row missing this wiring at pilot time — never assume any
+   `*NavComponent` hub has it; confirm per hub, every time.**
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `azure-fundamentals` —
+   matching this hub's own established progress/search key prefix (`azure-`) — with the usual
+   `// NOTE:` comment. All three `AzureNavComponent` accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'azure-fundamentals'`
+   key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'azure/fundamentals'`, confirmed the base
+   entry — and its own `AZURE_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'azure/fundamentals/<slug>'`.
+4. **`AZURE_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+5. **No live playground** — Azure CLI/ARM content has no in-browser runtime, following the same
+   `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/Blazor/Go/DevOps/
+   Node.js/Containers/AWS) — every code tab across all three subtopics uses plain `az` CLI command
+   transcripts, matching the main page's own `codeTabs` style exactly.
+6. Theme: `.azure-page`/`.azure-icon`/`.azure-section` CSS classes, confirmed NOT global (absent
+   from `src/styles.scss`) — every subtopic `.scss` needs the full `.azure-page { max-width:
+   860px; margin: 0 auto; }` wrapper rule. `$accent: #0089d6`, `$tint: #e8f4fd`, icon content
+   `Az`, `tech="javascript"` in `app-page-meta` (Azure pages share the JS/TS playground and run-it
+   links, same as every other non-JS-runtime hub).
+7. No genuine main-page inaccuracy found in this pilot batch — all three subtopic angles
+   EXPANDED on main-page content that was accurate but incomplete (a single lock example, a
+   one-sentence mention of a CLI command, a flat "spread across 3 AZs" theory bullet) rather than
+   correcting anything wrong.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -1732,6 +1774,11 @@ same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/azure/home/home.ts`. Progress: `azureTotal=22` in progress.service.ts.
   Azure pages use `app-common-mistakes` AND `app-revision-card`. Cheatsheet reference has no PageComplete.
   Challenge.language: `'typescript'`. CodeTab.language: never `'json'` or `'bicep'` — use `'bash'` instead.
+  AzureNavComponent at `shared/azure-nav/azure-nav.ts`.
+  Phase 10: 1 of 22 topics have subtopics (`/azure/fundamentals`, pilot batch, 2026-07-22) — see
+  "Azure hub subtopic wiring" section above for the `AzureNavComponent` accordion structural fix
+  and the `azure-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript
+  hub's own bare `fundamentals` topic key).
 - **Linux hub**: 19 trackable topic pages + 2 reference pages (21 cards total). Feature-complete.
   Yellow theme `$accent: #fcc624`, tint `#fef9e7`, dark `#fde68a`. Search prefix `linux-`. Route: `/linux`.
   CSS classes: `.linux-page`, `.linux-icon`, `.linux-section`. Icon content: `🐧` at `font-size: 1.8rem`. `tech="javascript"`.

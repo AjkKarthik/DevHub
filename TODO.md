@@ -3615,7 +3615,58 @@ off here with a date.
 
 #### Azure — 22 topic pages
 
-- [ ] `/azure/fundamentals` — Azure Fundamentals
+- [x] `/azure/fundamentals` — Azure Fundamentals (2026-07-22 — 3 subtopics:
+  readonly-locks-block-more-than-deletes-control-plane-only,
+  az-resource-move-orphans-role-assignments-and-changes-the-id,
+  zonal-vs-zone-redundant-and-per-subscription-zone-mapping; all three verified against
+  Microsoft's own documentation via WebFetch before writing — (1) confirmed via Microsoft's own
+  resource-lock docs the real difference between the two lock levels: "CanNotDelete means
+  authorized users can read and modify a resource, but they can't delete it. ReadOnly means
+  authorized users can read a resource, but they can't delete or update it" — plus that locks
+  apply "only to control plane Azure operations and not to data plane operations," with a long
+  documented list of surprising blocked operations (VM restart, App Service Plan scaling,
+  storage account key listing) and an explicit statement that neither lock type "protect[s] its
+  data from being deleted or modified" for blob/queue/table/file content — closing a gap where
+  the main page's only lock example is a single CanNotDelete command with no mention ReadOnly
+  exists or what either type actually scopes to; (2) confirmed via Microsoft's own resource-move
+  docs that "When you move a resource, you change its resource ID" and that "If you move a
+  resource with an active Azure role assignment... the role assignment doesn't move and becomes
+  orphaned. You must create the role assignment again after the move," plus the 4-hour dual-lock
+  on both source and destination resource groups during the move — closing a gap where the main
+  page's own QnA mentions "az resource move" in exactly one sentence, with no warning despite its
+  own challenge being specifically about parsing the very resource-ID structure that changes;
+  (3) confirmed via Microsoft's own Availability Zones docs three genuinely distinct deployment
+  types — zone-redundant ("Microsoft manages spreading requests across zones... If an outage
+  occurs... Microsoft manages failover to another zone automatically"), zonal ("deployed to a
+  single availability zone that you select yourself... Microsoft doesn't manage the process for
+  you"), and nonzonal ("Azure might place nonzonal resources across any zones in the region. You
+  don't choose which resources go into which zones") — plus a genuinely surprising detail:
+  "different subscriptions might have a different mapping order... subscription A may have
+  physical zone 1 mapped to logical zone 2, while subscription B has physical zone 1 mapped to
+  logical zone 3" — closing a gap where the main page's "spread across 3 AZs" theory never
+  distinguishes who does the spreading (Microsoft vs. you) or mentions the nonzonal option at
+  all. Gotcha sweep covered `.html` bound attributes, `.ts` single-quoted fields
+  (apostrophe-after-letter grep clean across all three files), bare `@word`/`{` in `.html` prose
+  (none present), and backtick parity (even counts, 4/4/4). Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR with zero actual
+  TypeScript/template compile errors. `git add -A` staged all 9 files cleanly with no "Filename
+  too long" errors (longest path 218 chars, well under MAX_PATH). **THIS IS THE AZURE HUB'S FIRST
+  Phase 10 PILOT** — confirmed, per the now-standard check for every `*NavComponent`-based hub,
+  that `AzureNavComponent` had ZERO subtopics-accordion support (no `expandedTopics` signal, no
+  `subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` methods, no `SUBTOPICS` import) — fixed
+  identically to the Go/DevOps/Containers/AWS precedent (this is now the FIFTH `*NavComponent`
+  hub in a row missing this wiring at pilot time). Confirmed a real `SUBTOPICS`-map collision:
+  bare `fundamentals` was already claimed by the JavaScript hub — hub-prefixed to
+  `azure-fundamentals`, with all three `AzureNavComponent` accordion helper calls using the
+  prefixed key. Confirmed `.azure-page`'s wrapper rule is NOT global (absent from
+  `src/styles.scss`) — every subtopic `.scss` includes the full wrapper rule. Confirmed
+  `SIDEBAR_MAP` keys are full-path prefixed (`azure/fundamentals`, base entry already existed)
+  and `AZURE_LABELS` breadcrumb keys are bare, matching the generic hub pattern. Browser-verified
+  successfully on all three pages — h1/breadcrumb pairs correct (all 4 levels), the
+  `AzureNavComponent` accordion auto-expands correctly on direct navigation (confirmed only this
+  topic's own toggle open, showing all 3 subtopic links), tailored (non-DEFAULT) sidebar content,
+  dark mode (`--bg: #0f172a`) applying correctly, and the topic overview page's own nav
+  unaffected (all 22 other topic links + home still present).)
 - [ ] `/azure/arm` — Azure Resource Manager
 - [ ] `/azure/virtual-machines` — Azure Virtual Machines
 - [ ] `/azure/app-service` — Azure App Service
