@@ -354,7 +354,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/azure/security-defender" routerLinkActive="active"><span class="nl-text">Security &amp; Defender</span>@if(p.isDone('azure-security-defender')){<span class="nl-done">✓</span>}@if(d('azure-security-defender');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/azure/security-defender" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Security &amp; Defender</span>
+        @if (p.isDone('azure-security-defender')) {<span class="nl-done">✓</span>}
+        @if (d('azure-security-defender'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('security-defender')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('security-defender')"
+                  (click)="toggleSubtopics('security-defender', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('security-defender'); as secdefSubs) {
+        @if (isSubtopicsExpanded('security-defender')) {
+          <div class="nav-subtopics">
+            @for (s of secdefSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/azure/cheatsheet" routerLinkActive="active"><span class="nl-text">Azure Cheat Sheet</span></a>
     </div>
   `,

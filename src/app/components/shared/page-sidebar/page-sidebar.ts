@@ -29163,6 +29163,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Each recommendation carries relative risk weighting, not equal importance — prioritize accordingly.',
     ],
   },
+  'azure/security-defender/mma-agent-fully-retired-defender-servers-now-agentless': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Defender CSPM Is a Separate Paid Plan', route: '/azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm' },
+      { label: 'Security & Defender overview', route: '/azure/security-defender' },
+    ],
+    tip: 'The Log Analytics Agent (MMA) is fully retired (August 31, 2024) — Defender for Servers Plan 2 now uses agentless scanning, not a like-for-like AMA swap.',
+    gotchas: [
+      'MMA data upload can now stop at any time without further notice, past the documented cutoff.',
+      'Custom telemetry still needing an agent should move to Azure Monitor Agent via Data Collection Rules, not MMA.',
+    ],
+  },
+  'azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'MMA Is Fully Retired', route: '/azure/security-defender/mma-agent-fully-retired-defender-servers-now-agentless' },
+      { label: 'JIT Quick-Enable Only Protects One Port', route: '/azure/security-defender/jit-quick-enable-only-protects-one-port-not-the-full-set' },
+    ],
+    tip: 'Defender CSPM is a separate, paid plan beyond free Foundational CSPM — attack path analysis, agentless scanning, and DSPM/EASM all require it, independent of Defender for Servers/Containers.',
+    gotchas: [
+      'Enabling Defender for Servers or Containers does NOT also enable Defender CSPM — they\'re billed and enabled independently.',
+      'Full Defender for DevOps features (PR annotations, code-to-cloud mapping) require the paid CSPM plan, not just connecting a DevOps org.',
+    ],
+  },
+  'azure/security-defender/jit-quick-enable-only-protects-one-port-not-the-full-set': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Defender CSPM Is a Separate Paid Plan', route: '/azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm' },
+      { label: 'Security & Defender overview', route: '/azure/security-defender' },
+    ],
+    tip: 'Enabling JIT from a VM\'s own Configuration blade only protects RDP or SSH — WinRM ports and custom ports need Defender for Cloud\'s own JIT page to add.',
+    gotchas: [
+      'Both enable paths write to the same underlying JIT policy — the VM blade toggle just starts with a narrower default.',
+      'Custom application admin ports are never auto-included in either default set — they require an explicit "Add" step.',
+    ],
+  },
   'azure/monitor': {
     apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
     related: [

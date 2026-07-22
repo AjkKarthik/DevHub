@@ -3287,7 +3287,12 @@ export const routes: Routes = [
       { path: 'reservations-apply-before-savings-plans-in-a-best-fit-model', loadComponent: () => import('./components/cloud/azure/cost-management/subtopics/reservations-apply-before-savings-plans-in-a-best-fit-model/reservations-apply-before-savings-plans-in-a-best-fit-model').then(m => m.ReservationsApplyBeforeSavingsPlansInABestFitModelSubtopic) },
       { path: 'amortized-cost-view-doesnt-work-for-payg-reservations', loadComponent: () => import('./components/cloud/azure/cost-management/subtopics/amortized-cost-view-doesnt-work-for-payg-reservations/amortized-cost-view-doesnt-work-for-payg-reservations').then(m => m.AmortizedCostViewDoesntWorkForPaygReservationsSubtopic) },
     ] },
-    { path: 'security-defender', loadComponent: () => import('./components/cloud/azure/security-defender/security-defender').then(m => m.AzureSecurityDefender) },
+    { path: 'security-defender', children: [
+      { path: '', loadComponent: () => import('./components/cloud/azure/security-defender/security-defender').then(m => m.AzureSecurityDefender) },
+      { path: 'mma-agent-fully-retired-defender-servers-now-agentless', loadComponent: () => import('./components/cloud/azure/security-defender/subtopics/mma-agent-fully-retired-defender-servers-now-agentless/mma-agent-fully-retired-defender-servers-now-agentless').then(m => m.MmaAgentFullyRetiredDefenderServersNowAgentlessSubtopic) },
+      { path: 'defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm', loadComponent: () => import('./components/cloud/azure/security-defender/subtopics/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm').then(m => m.DefenderCspmIsASeparatePaidPlanBeyondFoundationalCspmSubtopic) },
+      { path: 'jit-quick-enable-only-protects-one-port-not-the-full-set', loadComponent: () => import('./components/cloud/azure/security-defender/subtopics/jit-quick-enable-only-protects-one-port-not-the-full-set/jit-quick-enable-only-protects-one-port-not-the-full-set').then(m => m.JitQuickEnableOnlyProtectsOnePortNotTheFullSetSubtopic) },
+    ] },
     { path: 'key-vault',         loadComponent: () => import('./components/cloud/azure/key-vault/key-vault').then(m => m.AzureKeyVault) },
     { path: 'service-bus',       loadComponent: () => import('./components/cloud/azure/service-bus/service-bus').then(m => m.AzureServiceBus) },
     { path: 'container-apps',    loadComponent: () => import('./components/cloud/azure/container-apps/container-apps').then(m => m.AzureContainerApps) },

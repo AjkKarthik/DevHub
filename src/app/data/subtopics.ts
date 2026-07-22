@@ -2629,4 +2629,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Reservations Apply Before Savings Plans', route: '/azure/cost-management/reservations-apply-before-savings-plans-in-a-best-fit-model' },
     { label: 'Amortized Cost View Doesn’t Work for PAYG Reservations', route: '/azure/cost-management/amortized-cost-view-doesnt-work-for-payg-reservations' },
   ],
+  'security-defender': [
+    { label: 'MMA Is Fully Retired, Defender Now Agentless', route: '/azure/security-defender/mma-agent-fully-retired-defender-servers-now-agentless' },
+    { label: 'Defender CSPM Is a Separate Paid Plan', route: '/azure/security-defender/defender-cspm-is-a-separate-paid-plan-beyond-foundational-cspm' },
+    { label: 'JIT Quick-Enable Only Protects One Port', route: '/azure/security-defender/jit-quick-enable-only-protects-one-port-not-the-full-set' },
+  ],
 };
