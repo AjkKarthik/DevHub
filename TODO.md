@@ -4680,7 +4680,49 @@ off here with a date.
   correct, the `LinuxNavComponent` accordion (now the FIFTH topic in this hub with subtopics —
   explicitly checked the toggle COUNT (5) on the topic overview page), dark mode (`--bg: #0f172a`)
   applying correctly.)
-- [ ] `/linux/process-management` — Process Management
+- [x] `/linux/process-management` — Process Management (2026-07-23 — 3 subtopics:
+  orphans-reparent-to-pid-1-which-may-not-reap-in-a-container,
+  kill-signals-one-process-use-negative-pid-for-the-group,
+  renice-is-a-one-way-ratchet-for-non-root-users; all three verified against official/authoritative
+  sources (container init/tini documentation, POSIX kill specification, documented renice/
+  setpriority behavior) via WebSearch before writing — no genuine main-page inaccuracy found this
+  batch (all three angles are expansion gaps): (1) confirmed that reaping is a responsibility the
+  process occupying PID 1 must actively implement, not an automatic kernel guarantee — "if PID 1
+  doesn't wait on child processes, those become zombies... consume slots in the kernel process table
+  which fills and prevents the creation of further processes" — closing a gap where the main page's
+  own theory states orphans "are reparented to PID 1 (systemd/init), which reaps them" as if this
+  always holds, when inside a container PID 1 is very often the application itself with no reaping
+  logic; covered the documented fix (Docker's --init flag using tini) and the subreaper alternative;
+  (2) confirmed via POSIX's own kill specification that "if a PID is negative (but not -1), the
+  signal is sent to all processes whose process group ID is equal to the absolute value of that
+  PID" — closing a gap where the main page's own graceful-shutdown pattern (kill -15 "$PID"; sleep
+  5; kill -9 "$PID") is written entirely around a single PID, with no acknowledgment that a
+  backgrounded pipeline is multiple processes and $! only ever captures one of them, silently
+  leaving other pipeline stages running; also covered the special, dangerous -1 process-group case;
+  (3) confirmed via documented renice/setpriority behavior that "unprivileged users may increase
+  nice levels but cannot decrease them without root permissions" — specifically a directional
+  restriction, not just a floor at 0 — closing a gap where the main page's own theory states "Only
+  root can lower niceness... below 0" in a way that reads as if any move that stays above 0 should
+  be fine for a non-root user, when in fact ANY decrease is blocked once already raised, confirmed
+  to apply at the setpriority() syscall level too, not just the renice command. **A real
+  self-caught bug this batch**: an early draft of the kill-negative-PID subtopic over-escaped double
+  quotes inside single-quoted `.ts` theory/exercise fields (writing `\\"$PID\\"` where plain
+  `"$PID"` was correct, since double quotes never need escaping inside a single-quoted TS string) —
+  caught by a targeted re-read before the build, not by the standard apostrophe sweep, which doesn't
+  check for this specific over-escaping pattern; fixed both instances and confirmed via `grep` that
+  none remained anywhere in the batch. Gotcha sweep (apostrophe-after-letter across `.ts` and `.html`
+  files — including the six shared wiring files — backtick parity — even counts, 4/4/4 — bare
+  `@word` in `.html` prose, curly-quote convention verified, `[prev]`/`[next]` route cross-check,
+  unescaped `${` check) came back clean. Build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR (436.68 kB over) with zero actual TypeScript/template
+  compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix this batch)
+  cleanly — no "Filename too long" errors. Confirmed bare `process-management` key collision-free in
+  `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified successfully on all
+  three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references
+  correct, explicitly confirmed no stray backslash artifacts remained on the rendered page from the
+  earlier escaping bug, the `LinuxNavComponent` accordion (now the SIXTH topic in this hub with
+  subtopics — explicitly checked the toggle COUNT (6) on the topic overview page), dark mode (`--bg:
+  #0f172a`) applying correctly.)
 - [ ] `/linux/system-monitoring` — System Monitoring
 - [ ] `/linux/networking` — Networking Commands
 - [ ] `/linux/firewall` — Firewall & iptables
