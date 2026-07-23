@@ -197,7 +197,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/linux/firewall" routerLinkActive="active"><span class="nl-text">Firewall &amp; iptables</span>@if(p.isDone('linux-firewall')){<span class="nl-done">✓</span>}@if(d('linux-firewall');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/firewall" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Firewall &amp; iptables</span>
+        @if (p.isDone('linux-firewall')) {<span class="nl-done">✓</span>}
+        @if (d('linux-firewall'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('firewall')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('firewall')"
+                  (click)="toggleSubtopics('firewall', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('firewall'); as fwSubs) {
+        @if (isSubtopicsExpanded('firewall')) {
+          <div class="nav-subtopics">
+            @for (s of fwSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/linux/ssh" routerLinkActive="active"><span class="nl-text">SSH &amp; Remote Access</span>@if(p.isDone('linux-ssh')){<span class="nl-done">✓</span>}@if(d('linux-ssh');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

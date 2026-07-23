@@ -39856,6 +39856,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'ufw (Uncomplicated Firewall) is a friendlier frontend over iptables/nftables — rules configured through one tool may not be visible or obvious when inspecting through the other.',
     ],
   },
+  'linux/firewall/ufw-limit-throttles-one-ip-not-distributed-brute-force': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out', route: '/linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out' },
+      { label: 'Firewall overview', route: '/linux/firewall' },
+    ],
+    tip: 'ufw limit blocks a single source IP after 6 connection attempts in 30 seconds — a fixed, non-customizable threshold, and useless against a distributed attack spread across many IPs that each stay under it.',
+    gotchas: [
+      'For distributed brute-force protection, use fail2ban (log-based, cross-IP) or disable SSH password auth entirely (key-only) instead of relying on ufw limit alone.',
+      'ufw limit provides no option to change the 6-connections/30-seconds threshold — a different value requires writing a raw iptables recent or hashlimit rule directly.',
+    ],
+  },
+  'linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ufw limit Throttles One IP — Not Distributed Brute Force', route: '/linux/firewall/ufw-limit-throttles-one-ip-not-distributed-brute-force' },
+      { label: 'ip_forward Alone Isn’t Enough for UFW Router Mode', route: '/linux/firewall/ip-forward-alone-is-not-enough-for-ufw-router-mode' },
+    ],
+    tip: 'iptables -F removes rules but never touches the chain\'s own default policy — if INPUT policy is already DROP, flushing over SSH removes the very ACCEPT rules letting your session through and can lock you out instantly.',
+    gotchas: [
+      'Safe reset order: set every policy to ACCEPT first (iptables -P INPUT ACCEPT, etc.), THEN flush — reversing that order is the exact cause of remote lockouts.',
+      'Recovering from a policy-DROP lockout generally requires out-of-band console access (VNC/serial), since the mechanism to fix it remotely is the one that just got cut off.',
+    ],
+  },
+  'linux/firewall/ip-forward-alone-is-not-enough-for-ufw-router-mode': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out', route: '/linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out' },
+      { label: 'Firewall overview', route: '/linux/firewall' },
+    ],
+    tip: 'echo 1 > /proc/sys/net/ipv4/ip_forward is temporary and never persists across reboots — and on a UFW-managed system, DEFAULT_FORWARD_POLICY="DROP" in /etc/default/ufw can still block forwarded traffic even after ip_forward is enabled.',
+    gotchas: [
+      'Persist ip_forward via UFW\'s own /etc/ufw/sysctl.conf (then ufw reload), not just a generic /etc/sysctl.conf entry, on a UFW-managed system.',
+      'Router/NAT setup needs THREE independent pieces correct at once: kernel ip_forward, the MASQUERADE/NAT rule, and UFW\'s own FORWARD chain policy.',
+    ],
+  },
   'linux/ssh': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

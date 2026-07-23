@@ -3059,7 +3059,12 @@ export const routes: Routes = [
       { path: 'traceroute-defaults-to-udp-which-firewalls-often-block', loadComponent: () => import('./components/cloud/linux/networking/subtopics/traceroute-defaults-to-udp-which-firewalls-often-block/traceroute-defaults-to-udp-which-firewalls-often-block').then(m => m.TracerouteDefaultsToUdpWhichFirewallsOftenBlockSubtopic) },
       { path: 'jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole', loadComponent: () => import('./components/cloud/linux/networking/subtopics/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole').then(m => m.JumboFramesMtuMismatchCreatesASilentPmtudBlackholeSubtopic) },
     ] },
-    { path: 'firewall',             loadComponent: () => import('./components/cloud/linux/firewall/firewall').then(m => m.LinuxFirewall) },
+    { path: 'firewall', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/firewall/firewall').then(m => m.LinuxFirewall) },
+      { path: 'ufw-limit-throttles-one-ip-not-distributed-brute-force', loadComponent: () => import('./components/cloud/linux/firewall/subtopics/ufw-limit-throttles-one-ip-not-distributed-brute-force/ufw-limit-throttles-one-ip-not-distributed-brute-force').then(m => m.UfwLimitThrottlesOneIpNotDistributedBruteForceSubtopic) },
+      { path: 'iptables-flush-does-not-reset-policy-can-lock-you-out', loadComponent: () => import('./components/cloud/linux/firewall/subtopics/iptables-flush-does-not-reset-policy-can-lock-you-out/iptables-flush-does-not-reset-policy-can-lock-you-out').then(m => m.IptablesFlushDoesNotResetPolicyCanLockYouOutSubtopic) },
+      { path: 'ip-forward-alone-is-not-enough-for-ufw-router-mode', loadComponent: () => import('./components/cloud/linux/firewall/subtopics/ip-forward-alone-is-not-enough-for-ufw-router-mode/ip-forward-alone-is-not-enough-for-ufw-router-mode').then(m => m.IpForwardAloneIsNotEnoughForUfwRouterModeSubtopic) },
+    ] },
     { path: 'ssh',                  loadComponent: () => import('./components/cloud/linux/ssh/ssh').then(m => m.LinuxSsh) },
     { path: 'bash-scripting',       loadComponent: () => import('./components/cloud/linux/bash-scripting/bash-scripting').then(m => m.LinuxBashScripting) },
     { path: 'bash-advanced',        loadComponent: () => import('./components/cloud/linux/bash-advanced/bash-advanced').then(m => m.LinuxBashAdvanced) },

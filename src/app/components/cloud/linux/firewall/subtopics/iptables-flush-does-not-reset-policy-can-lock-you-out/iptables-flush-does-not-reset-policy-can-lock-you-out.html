@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Firewall &amp; iptables" topicRoute="/linux/firewall" subtopicLabel="iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">iptables -F Doesn't Reset the Default Policy — a DROP Policy Can Lock You Out</h1>
+  <p class="page-subtitle">The main page calls -F "dangerous" without saying why. -F removes rules, never policy — on a hardened DROP-policy server, flushing over SSH can sever your own session instantly.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="iptables (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This explains the main page's bare "dangerous" warning precisely. Next: why enabling ip_forward alone isn't enough to make UFW actually forward traffic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Firewall &amp; iptables" topicRoute="/linux/firewall"
+    [prev]="{ label: 'ufw limit Throttles One IP — Not Distributed Brute Force', route: '/linux/firewall/ufw-limit-throttles-one-ip-not-distributed-brute-force' }"
+    [next]="{ label: 'ip_forward Alone Isn’t Enough for UFW Router Mode', route: '/linux/firewall/ip-forward-alone-is-not-enough-for-ufw-router-mode' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Firewall &amp; iptables" topicRoute="/linux/firewall" subtopicLabel="ufw limit Throttles One IP — Not Distributed Brute Force" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">ufw limit Throttles One IP — Not Distributed Brute Force</h1>
+  <p class="page-subtitle">The main page presents "6 connections in 30s" as if it were general brute-force protection — it's a per-source-IP counter, and a distributed attack spread across many IPs sails through completely unaffected.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="UFW (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This scopes the main page's own rate-limiting claim precisely. Next: why flushing iptables rules doesn't reset the default policy, and can lock you out instantly.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Firewall &amp; iptables" topicRoute="/linux/firewall"
+    [next]="{ label: 'iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out', route: '/linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out' }" />
+</div>
