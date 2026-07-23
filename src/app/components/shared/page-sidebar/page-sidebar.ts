@@ -40010,6 +40010,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A shebang line (#!/bin/bash) determines which interpreter runs the script — a missing or wrong shebang causes confusing "command not found" or unexpected syntax errors.',
     ],
   },
+  'linux/bash-scripting/exit-codes-wrap-around-at-256-return-256-means-success': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' },
+      { label: 'Bash Scripting overview', route: '/linux/bash-scripting' },
+    ],
+    tip: 'Exit statuses are unsigned 8-bit values (0-255) — return/exit takes any larger or negative number modulo 256, so return 256 silently computes to 0, the value that conventionally means success.',
+    gotchas: [
+      'Never return a computed count or numeric result directly as an exit code — report it via stdout (echo, captured with command substitution) and reserve return/exit strictly for pass/fail.',
+      'Negative exit codes wrap from the other direction — exit -1 becomes 255, exit -2 becomes 254.',
+    ],
+  },
+  'linux/bash-scripting/local-assignment-masks-set-e-command-failures': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Exit Codes Wrap Around at 256 — return 256 Means Success', route: '/linux/bash-scripting/exit-codes-wrap-around-at-256-return-256-means-success' },
+      { label: 'trap EXIT Overwrites, It Doesn’t Chain Multiple Handlers', route: '/linux/bash-scripting/trap-exit-overwrites-not-chains-multiple-handlers' },
+    ],
+    tip: 'local var=$(command) written on one line reports the local builtin\'s own exit status to set -e, not the command substitution\'s — a genuinely failing command inside it goes completely undetected. Split into local var; var=$(command).',
+    gotchas: [
+      'ShellCheck flags this exact pattern as SC2155 — running it against a script catches the masking before it ships.',
+      'The main page\'s own check_disk function already (correctly, if unintentionally) uses the safe two-statement form.',
+    ],
+  },
+  'linux/bash-scripting/trap-exit-overwrites-not-chains-multiple-handlers': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' },
+      { label: 'Bash Scripting overview', route: '/linux/bash-scripting' },
+    ],
+    tip: 'Calling trap ... EXIT a second time silently REPLACES the first handler, it never chains — a real risk once a script sources multiple library files that each register their own cleanup.',
+    gotchas: [
+      'trap -p EXIT shows only the currently active handler — a missing earlier cleanup function confirms it was silently overwritten.',
+      'Fix: one combined trap (\'cleanup_a; cleanup_b\' EXIT), or a helper that reads and appends to the existing trap instead of replacing it.',
+    ],
+  },
   'linux/bash-advanced': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

@@ -2716,4 +2716,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' },
     { label: 'ControlMaster Multiplexing Can Hit the Server’s MaxSessions Limit', route: '/linux/ssh/controlmaster-multiplexing-hits-the-maxsessions-limit' },
   ],
+  'bash-scripting': [
+    { label: 'Exit Codes Wrap Around at 256 — return 256 Means Success', route: '/linux/bash-scripting/exit-codes-wrap-around-at-256-return-256-means-success' },
+    { label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' },
+    { label: 'trap EXIT Overwrites, It Doesn’t Chain Multiple Handlers', route: '/linux/bash-scripting/trap-exit-overwrites-not-chains-multiple-handlers' },
+  ],
 };

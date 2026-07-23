@@ -3071,7 +3071,12 @@ export const routes: Routes = [
       { path: 'ssh-r-binds-to-remote-loopback-only-without-gatewayports', loadComponent: () => import('./components/cloud/linux/ssh/subtopics/ssh-r-binds-to-remote-loopback-only-without-gatewayports/ssh-r-binds-to-remote-loopback-only-without-gatewayports').then(m => m.SshRBindsToRemoteLoopbackOnlyWithoutGatewayportsSubtopic) },
       { path: 'controlmaster-multiplexing-hits-the-maxsessions-limit', loadComponent: () => import('./components/cloud/linux/ssh/subtopics/controlmaster-multiplexing-hits-the-maxsessions-limit/controlmaster-multiplexing-hits-the-maxsessions-limit').then(m => m.ControlmasterMultiplexingHitsTheMaxsessionsLimitSubtopic) },
     ] },
-    { path: 'bash-scripting',       loadComponent: () => import('./components/cloud/linux/bash-scripting/bash-scripting').then(m => m.LinuxBashScripting) },
+    { path: 'bash-scripting', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/bash-scripting/bash-scripting').then(m => m.LinuxBashScripting) },
+      { path: 'exit-codes-wrap-around-at-256-return-256-means-success', loadComponent: () => import('./components/cloud/linux/bash-scripting/subtopics/exit-codes-wrap-around-at-256-return-256-means-success/exit-codes-wrap-around-at-256-return-256-means-success').then(m => m.ExitCodesWrapAroundAt256Return256MeansSuccessSubtopic) },
+      { path: 'local-assignment-masks-set-e-command-failures', loadComponent: () => import('./components/cloud/linux/bash-scripting/subtopics/local-assignment-masks-set-e-command-failures/local-assignment-masks-set-e-command-failures').then(m => m.LocalAssignmentMasksSetECommandFailuresSubtopic) },
+      { path: 'trap-exit-overwrites-not-chains-multiple-handlers', loadComponent: () => import('./components/cloud/linux/bash-scripting/subtopics/trap-exit-overwrites-not-chains-multiple-handlers/trap-exit-overwrites-not-chains-multiple-handlers').then(m => m.TrapExitOverwritesNotChainsMultipleHandlersSubtopic) },
+    ] },
     { path: 'bash-advanced',        loadComponent: () => import('./components/cloud/linux/bash-advanced/bash-advanced').then(m => m.LinuxBashAdvanced) },
     { path: 'package-management',   loadComponent: () => import('./components/cloud/linux/package-management/package-management').then(m => m.LinuxPackageManagement) },
     { path: 'systemd',              loadComponent: () => import('./components/cloud/linux/systemd/systemd').then(m => m.LinuxSystemd) },

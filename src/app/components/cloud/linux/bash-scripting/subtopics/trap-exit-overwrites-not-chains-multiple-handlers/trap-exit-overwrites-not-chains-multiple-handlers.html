@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bash Scripting Basics" topicRoute="/linux/bash-scripting" subtopicLabel="trap EXIT Overwrites, It Doesn’t Chain Multiple Handlers" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">trap EXIT Overwrites, It Doesn't Chain Multiple Handlers</h1>
+  <p class="page-subtitle">The main page shows a single trap call as if registering a handler simply adds to what runs at exit — a second trap EXIT call silently discards the first, with no warning at all.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Bash (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, connecting the main page's own "resource leaks from incomplete script runs" warning to this specific silent cause.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bash Scripting Basics" topicRoute="/linux/bash-scripting"
+    [prev]="{ label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' }" />
+</div>
