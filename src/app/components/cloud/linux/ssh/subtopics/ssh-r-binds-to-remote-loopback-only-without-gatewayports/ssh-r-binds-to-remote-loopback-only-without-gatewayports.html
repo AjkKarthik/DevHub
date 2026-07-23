@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SSH &amp; Remote Access" topicRoute="/linux/ssh" subtopicLabel="ssh -R Binds to Remote Loopback Only, Without GatewayPorts" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">ssh -R Binds to Remote Loopback Only, Without GatewayPorts</h1>
+  <p class="page-subtitle">The main page's -R quiz explains the direction perfectly but never says which interface it binds to — by default, only the remote host itself can reach the forwarded port.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="OpenSSH (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This fills the interface-binding gap the main page's own -R quiz leaves open. Next: why connection multiplexing can silently hit the server's session limit.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SSH &amp; Remote Access" topicRoute="/linux/ssh"
+    [prev]="{ label: 'Agent Forwarding Exposes Signing, Not Your Key — ProxyJump Avoids It', route: '/linux/ssh/agent-forwarding-exposes-signing-proxyjump-avoids-it' }"
+    [next]="{ label: 'ControlMaster Multiplexing Can Hit the Server’s MaxSessions Limit', route: '/linux/ssh/controlmaster-multiplexing-hits-the-maxsessions-limit' }" />
+</div>

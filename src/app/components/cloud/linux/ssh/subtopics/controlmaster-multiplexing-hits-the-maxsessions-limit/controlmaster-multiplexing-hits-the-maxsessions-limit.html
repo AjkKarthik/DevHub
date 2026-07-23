@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SSH &amp; Remote Access" topicRoute="/linux/ssh" subtopicLabel="ControlMaster Multiplexing Can Hit the Server’s MaxSessions Limit" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">ControlMaster Multiplexing Can Hit the Server's MaxSessions Limit</h1>
+  <p class="page-subtitle">The main page calls multiplexing "very fast" with no mention of a ceiling — the server caps channels per shared connection at 10 by default, and parallel jobs can silently exceed it.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="OpenSSH (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, turning the main page's "very fast" multiplexing claim into a full picture of its actual capacity limits.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SSH &amp; Remote Access" topicRoute="/linux/ssh"
+    [prev]="{ label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' }" />
+</div>

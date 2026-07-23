@@ -2711,4 +2711,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'iptables -F Doesn’t Reset the Default Policy — a DROP Policy Can Lock You Out', route: '/linux/firewall/iptables-flush-does-not-reset-policy-can-lock-you-out' },
     { label: 'ip_forward Alone Isn’t Enough for UFW Router Mode', route: '/linux/firewall/ip-forward-alone-is-not-enough-for-ufw-router-mode' },
   ],
+  'ssh': [
+    { label: 'Agent Forwarding Exposes Signing, Not Your Key — ProxyJump Avoids It', route: '/linux/ssh/agent-forwarding-exposes-signing-proxyjump-avoids-it' },
+    { label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' },
+    { label: 'ControlMaster Multiplexing Can Hit the Server’s MaxSessions Limit', route: '/linux/ssh/controlmaster-multiplexing-hits-the-maxsessions-limit' },
+  ],
 };

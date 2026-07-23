@@ -3065,7 +3065,12 @@ export const routes: Routes = [
       { path: 'iptables-flush-does-not-reset-policy-can-lock-you-out', loadComponent: () => import('./components/cloud/linux/firewall/subtopics/iptables-flush-does-not-reset-policy-can-lock-you-out/iptables-flush-does-not-reset-policy-can-lock-you-out').then(m => m.IptablesFlushDoesNotResetPolicyCanLockYouOutSubtopic) },
       { path: 'ip-forward-alone-is-not-enough-for-ufw-router-mode', loadComponent: () => import('./components/cloud/linux/firewall/subtopics/ip-forward-alone-is-not-enough-for-ufw-router-mode/ip-forward-alone-is-not-enough-for-ufw-router-mode').then(m => m.IpForwardAloneIsNotEnoughForUfwRouterModeSubtopic) },
     ] },
-    { path: 'ssh',                  loadComponent: () => import('./components/cloud/linux/ssh/ssh').then(m => m.LinuxSsh) },
+    { path: 'ssh', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/ssh/ssh').then(m => m.LinuxSsh) },
+      { path: 'agent-forwarding-exposes-signing-proxyjump-avoids-it', loadComponent: () => import('./components/cloud/linux/ssh/subtopics/agent-forwarding-exposes-signing-proxyjump-avoids-it/agent-forwarding-exposes-signing-proxyjump-avoids-it').then(m => m.AgentForwardingExposesSigningProxyjumpAvoidsItSubtopic) },
+      { path: 'ssh-r-binds-to-remote-loopback-only-without-gatewayports', loadComponent: () => import('./components/cloud/linux/ssh/subtopics/ssh-r-binds-to-remote-loopback-only-without-gatewayports/ssh-r-binds-to-remote-loopback-only-without-gatewayports').then(m => m.SshRBindsToRemoteLoopbackOnlyWithoutGatewayportsSubtopic) },
+      { path: 'controlmaster-multiplexing-hits-the-maxsessions-limit', loadComponent: () => import('./components/cloud/linux/ssh/subtopics/controlmaster-multiplexing-hits-the-maxsessions-limit/controlmaster-multiplexing-hits-the-maxsessions-limit').then(m => m.ControlmasterMultiplexingHitsTheMaxsessionsLimitSubtopic) },
+    ] },
     { path: 'bash-scripting',       loadComponent: () => import('./components/cloud/linux/bash-scripting/bash-scripting').then(m => m.LinuxBashScripting) },
     { path: 'bash-advanced',        loadComponent: () => import('./components/cloud/linux/bash-advanced/bash-advanced').then(m => m.LinuxBashAdvanced) },
     { path: 'package-management',   loadComponent: () => import('./components/cloud/linux/package-management/package-management').then(m => m.LinuxPackageManagement) },

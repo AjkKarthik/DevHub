@@ -39904,6 +39904,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'SSH agent forwarding, while convenient, exposes your local key to whatever you SSH into next — a real risk if that intermediate host is compromised.',
     ],
   },
+  'linux/ssh/agent-forwarding-exposes-signing-proxyjump-avoids-it': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' },
+      { label: 'SSH overview', route: '/linux/ssh' },
+    ],
+    tip: 'ForwardAgent never leaks your private key file — it exposes a live signing socket on the remote host that anyone with access (most directly, root) can use to authenticate as you elsewhere. ProxyJump avoids this entirely.',
+    gotchas: [
+      'Since OpenSSH 7.3, ProxyJump tunnels the connection through a bastion at the client level — the bastion never needs to see an agent socket at all.',
+      'If ForwardAgent is genuinely unavoidable, ssh-add -x locks the agent with a separate passphrase, requiring it for every forwarded signing request.',
+    ],
+  },
+  'linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Agent Forwarding Exposes Signing, Not Your Key — ProxyJump Avoids It', route: '/linux/ssh/agent-forwarding-exposes-signing-proxyjump-avoids-it' },
+      { label: 'ControlMaster Multiplexing Can Hit the Server’s MaxSessions Limit', route: '/linux/ssh/controlmaster-multiplexing-hits-the-maxsessions-limit' },
+    ],
+    tip: 'ssh -R binds the forwarded port to the remote host\'s own loopback (127.0.0.1) by default — reachable only from that machine itself, not other machines on the network, until GatewayPorts is set.',
+    gotchas: [
+      'GatewayPorts clientspecified is the targeted option — it lets the CLIENT request the wildcard bind per connection (ssh -R 0.0.0.0:port:...) rather than exposing every future -R forward by server-wide default.',
+      'A successful curl against the forwarded port FROM the remote host itself proves nothing about reachability from other machines on that network.',
+    ],
+  },
+  'linux/ssh/controlmaster-multiplexing-hits-the-maxsessions-limit': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ssh -R Binds to Remote Loopback Only, Without GatewayPorts', route: '/linux/ssh/ssh-r-binds-to-remote-loopback-only-without-gatewayports' },
+      { label: 'SSH overview', route: '/linux/ssh' },
+    ],
+    tip: 'ControlMaster reuses one TCP connection for speed, but the server caps channels per connection via MaxSessions (default 10) — enough parallel scp/rsync jobs to the same host can hit that ceiling and fail outright.',
+    gotchas: [
+      '"channel N: open failed: administratively prohibited" during multiplexed parallel operations is the MaxSessions ceiling, not an auth or permissions problem.',
+      'An already-established master connection (kept alive by ControlPersist) keeps enforcing the OLD MaxSessions value even after the server config is raised and reloaded — delete the stale control socket to force a fresh master connection.',
+    ],
+  },
   'linux/systemd': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
