@@ -109,7 +109,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/linux/users-groups" routerLinkActive="active"><span class="nl-text">Users &amp; Groups</span>@if(p.isDone('linux-users-groups')){<span class="nl-done">✓</span>}@if(d('linux-users-groups');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/users-groups" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Users &amp; Groups</span>
+        @if (p.isDone('linux-users-groups')) {<span class="nl-done">✓</span>}
+        @if (d('linux-users-groups'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('users-groups')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('users-groups')"
+                  (click)="toggleSubtopics('users-groups', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('users-groups'); as ugSubs) {
+        @if (isSubtopicsExpanded('users-groups')) {
+          <div class="nav-subtopics">
+            @for (s of ugSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Users & Groups" topicRoute="/linux/users-groups" subtopicLabel="/etc/skel Populates New Homes Once, Not Retroactively" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">/etc/skel Populates New Home Directories Once — Editing It Never Touches Existing Users</h1>
+  <p class="page-subtitle">The main page mentions /etc/skel in a single clause about adduser — useradd's own docs confirm the copy happens once at creation time, with zero ongoing link to any home directory it populated.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, connecting the main page's own single passing mention of /etc/skel to the exact one-time-copy mechanism behind every useradd -m example the page shows.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Users & Groups" topicRoute="/linux/users-groups"
+    [prev]="{ label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' }" />
+</div>

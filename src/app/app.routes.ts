@@ -3035,7 +3035,12 @@ export const routes: Routes = [
       { path: 'acl-mask-caps-effective-permissions-and-auto-recalculates', loadComponent: () => import('./components/cloud/linux/file-permissions/subtopics/acl-mask-caps-effective-permissions-and-auto-recalculates/acl-mask-caps-effective-permissions-and-auto-recalculates').then(m => m.AclMaskCapsEffectivePermissionsAndAutoRecalculatesSubtopic) },
       { path: 'chmod-755-on-a-directory-does-not-clear-setgid', loadComponent: () => import('./components/cloud/linux/file-permissions/subtopics/chmod-755-on-a-directory-does-not-clear-setgid/chmod-755-on-a-directory-does-not-clear-setgid').then(m => m.Chmod755OnADirectoryDoesNotClearSetgidSubtopic) },
     ] },
-    { path: 'users-groups',         loadComponent: () => import('./components/cloud/linux/users-groups/users-groups').then(m => m.LinuxUsersGroups) },
+    { path: 'users-groups', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/users-groups/users-groups').then(m => m.LinuxUsersGroups) },
+      { path: 'userdel-without-r-leaves-orphaned-files-for-uid-reuse', loadComponent: () => import('./components/cloud/linux/users-groups/subtopics/userdel-without-r-leaves-orphaned-files-for-uid-reuse/userdel-without-r-leaves-orphaned-files-for-uid-reuse').then(m => m.UserdelWithoutRLeavesOrphanedFilesForUidReuseSubtopic) },
+      { path: 'nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation', loadComponent: () => import('./components/cloud/linux/users-groups/subtopics/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation').then(m => m.NopasswdGrantToASafeCommandCanBeAFullRootEscalationSubtopic) },
+      { path: 'etc-skel-populates-new-homes-once-not-retroactively', loadComponent: () => import('./components/cloud/linux/users-groups/subtopics/etc-skel-populates-new-homes-once-not-retroactively/etc-skel-populates-new-homes-once-not-retroactively').then(m => m.EtcSkelPopulatesNewHomesOnceNotRetroactivelySubtopic) },
+    ] },
     { path: 'process-management',   loadComponent: () => import('./components/cloud/linux/process-management/process-management').then(m => m.LinuxProcessManagement) },
     { path: 'system-monitoring',    loadComponent: () => import('./components/cloud/linux/system-monitoring/system-monitoring').then(m => m.LinuxSystemMonitoring) },
     { path: 'networking',           loadComponent: () => import('./components/cloud/linux/networking/networking').then(m => m.LinuxNetworking) },

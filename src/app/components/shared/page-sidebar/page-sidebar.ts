@@ -39642,6 +39642,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'UID 0 is always root, regardless of the username assigned to it — renaming the root account doesn\'t change its actual privilege level.',
     ],
   },
+  'linux/users-groups/userdel-without-r-leaves-orphaned-files-for-uid-reuse': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' },
+      { label: 'Users & Groups overview', route: '/linux/users-groups' },
+    ],
+    tip: 'Files left behind by userdel (without -r) are tagged only with a bare numeric UID — the next ordinary useradd call can silently assign that same freed UID to an unrelated new account.',
+    gotchas: [
+      'This applies to files anywhere on the system, not just the home directory — userdel -r never touches /tmp, /var, or shared directories.',
+      'Mitigation: find / -uid OLD_UID immediately at deletion time, before the number can be reused.',
+    ],
+  },
+  'linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'userdel Without -r Leaves Orphaned Files for UID Reuse', route: '/linux/users-groups/userdel-without-r-leaves-orphaned-files-for-uid-reuse' },
+      { label: '/etc/skel Populates New Homes Once, Not Retroactively', route: '/linux/users-groups/etc-skel-populates-new-homes-once-not-retroactively' },
+    ],
+    tip: 'Dozens of common commands (vim, less, awk, find, nano...) have a documented shell-escape — a NOPASSWD grant to one of them, even scoped to a single file, is functionally equivalent to full root. Check GTFOBins before adding any command to sudoers.',
+    gotchas: [
+      'Pinning the FULL command string (not just the binary) limits this for some commands, but not ones with their own interactive shell escape.',
+      'sudoedit is the safer alternative for editor grants — it never runs the editor itself as root.',
+    ],
+  },
+  'linux/users-groups/etc-skel-populates-new-homes-once-not-retroactively': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' },
+      { label: 'Users & Groups overview', route: '/linux/users-groups' },
+    ],
+    tip: '/etc/skel is copied into a new home directory ONCE, at useradd -m creation time — editing /etc/skel later has zero effect on any account that already exists.',
+    gotchas: [
+      'Produces a classic "works for new hires, not existing users" support pattern that looks broken but is expected behavior.',
+      'Retroactively applying a change to existing accounts needs a deliberate separate step — no automatic propagation exists.',
+    ],
+  },
   'linux/process-management': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

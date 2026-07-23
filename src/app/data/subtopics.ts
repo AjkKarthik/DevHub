@@ -2686,4 +2686,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ACL Mask Caps Effective Permissions', route: '/linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates' },
     { label: 'chmod 755 on a Directory Does NOT Clear setgid', route: '/linux/file-permissions/chmod-755-on-a-directory-does-not-clear-setgid' },
   ],
+  'users-groups': [
+    { label: 'userdel Without -r Leaves Orphaned Files for UID Reuse', route: '/linux/users-groups/userdel-without-r-leaves-orphaned-files-for-uid-reuse' },
+    { label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' },
+    { label: '/etc/skel Populates New Homes Once, Not Retroactively', route: '/linux/users-groups/etc-skel-populates-new-homes-once-not-retroactively' },
+  ],
 };
