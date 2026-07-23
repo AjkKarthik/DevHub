@@ -4806,7 +4806,41 @@ off here with a date.
   links, all three subtopic pages individually confirmed h1/breadcrumb (all 4 levels)/prev-next
   cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and the final page's body
   text explicitly checked for stray backslash/`undefined` artifacts (none found).
-- [ ] `/linux/firewall` — Firewall & iptables
+- [x] `/linux/firewall` — Firewall & iptables (2026-07-23) — 3 subtopics: (1) **ufw limit Throttles
+  One IP — Not Distributed Brute Force**, expanding the main page's bare threshold claim ("blocks IPs
+  with >6 connections in 30s") — verified via WebSearch that ufw limit generates iptables `recent`-
+  module rules tracked PER SOURCE IP with a fixed, non-customizable 6-connections/30-seconds
+  threshold, meaning a distributed attack spread across many IPs (each staying under the per-IP
+  limit) sails through completely unaffected; covered fail2ban and key-only SSH auth as the actual
+  distributed-attack defenses; (2) **iptables -F Doesn't Reset the Default Policy — a DROP Policy Can
+  Lock You Out**, expanding the main page's bare "WARNING: removes all rules" / "dangerous on remote
+  servers!" comments with the actual mechanism — verified via WebSearch that -F only removes
+  individual rules and never touches the chain's own default POLICY, so on a server whose INPUT
+  policy is already DROP (the main page's own recommended hardening pattern), flushing over SSH
+  removes the ESTABLISHED/RELATED and port-22 ACCEPT rules while the DROP policy stays in effect,
+  severing the very session running the command with no way back in except console access; covered
+  the safe reset order (policies to ACCEPT first, then flush); (3) **ip_forward Alone Isn't Enough
+  for UFW Router Mode**, expanding the main page's single-line `echo 1 > /proc/sys/net/ipv4/ip_forward`
+  mention with two real gaps verified via WebSearch — the raw proc-file write is non-persistent
+  (needs `/etc/ufw/sysctl.conf` specifically on a UFW system, not just generic `/etc/sysctl.conf`),
+  and UFW ships its own separate `DEFAULT_FORWARD_POLICY="DROP"` in `/etc/default/ufw` that can still
+  silently block forwarded traffic even after ip_forward and MASQUERADE are both correctly configured
+  — the classic "I followed the tutorial exactly and it still doesn't work" symptom. Gotcha sweep
+  (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-delimited
+  `code:` blocks, safe — backtick parity: 22/18/14, all even — bare `@word` in `.html` — none —
+  unescaped `${` — none — over-escaped double-quote — none — backslash-escaped apostrophe inside
+  `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout — `[prev]`/`[next]`
+  route cross-check confirmed consistent across all 3 files) came back clean with no fixes needed.
+  Confirmed bare `firewall` key collision-free in the `SUBTOPICS` map (checked both quoted and
+  unquoted forms) before adding. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (454.34 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` (scoped to the batch's own files) staged all 15 files (9 new + 6 wiring, no
+  main-page fix needed this batch — every subtopic angle was a genuine expansion gap). Browser-
+  verified successfully: topic-overview toggle count confirmed at 9 (the NINTH Linux-hub topic with
+  subtopics), the Firewall & iptables accordion expands to show all 3 correctly-labeled subtopic
+  links, all three subtopic pages individually confirmed h1/breadcrumb (all 4 levels)/prev-next
+  cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and the final page's body
+  text explicitly checked for stray backslash/`undefined` artifacts (none found).
 - [ ] `/linux/ssh` — SSH & Remote Access
 - [ ] `/linux/bash-scripting` — Bash Scripting Basics
 - [ ] `/linux/bash-advanced` — Advanced Bash Scripting
