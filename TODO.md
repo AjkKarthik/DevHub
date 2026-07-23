@@ -4767,7 +4767,45 @@ off here with a date.
   "iostat's" rendered correctly with no stray backslash), the `LinuxNavComponent` accordion (now the
   SEVENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (7) on the topic
   overview page), dark mode (`--bg: #0f172a`) applying correctly.)
-- [ ] `/linux/networking` — Networking Commands
+- [x] `/linux/networking` — Networking Commands (2026-07-23) — 3 subtopics: (1) **TIME_WAIT Is
+  Normal, Not a Bug — and It Can't Be Tuned**, expanding the main page's single line ("ss -o state
+  time-wait # TIME_WAIT connections (indicates fast open/close)") into the actual mechanism —
+  verified via WebSearch against the Linux kernel source that TIME_WAIT's duration is hardcoded as
+  `TCP_TIMEWAIT_LEN` at exactly 60 seconds in `include/net/tcp.h`, with NO sysctl to change it
+  (distinct from the unrelated, tunable `tcp_fin_timeout`, which governs FIN_WAIT_2); covered when a
+  high count actually matters (ephemeral port exhaustion under rapid outbound connection churn) and
+  the correct fix (`tcp_tw_reuse` + wider port range or connection pooling — never the removed,
+  NAT-breaking `tcp_tw_recycle`); (2) **Traceroute Defaults to UDP, Which Firewalls Often Block**,
+  expanding the main page's bare `-T`/`-I` flag mentions — verified via WebSearch that plain
+  traceroute sends UDP probes starting at destination port 33434, incrementing per hop, and that
+  firewalls/security groups routinely drop that pattern (or the ICMP replies) producing "* * *" rows
+  that look like path failures but aren't; explained why `-I` (ICMP) and `-T` (TCP SYN, port 80
+  default) actually work, and that `mtr` defaults to ICMP rather than UDP — a different default, not
+  a "smarter" tool; (3) **Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole**, expanding
+  the main page's one-line "ip link set eth0 mtu 9000 sets jumbo frames" — verified via WebSearch
+  that raising MTU always succeeds locally regardless of switch/peer-NIC support, and that Path MTU
+  Discovery depends entirely on the ICMP "Fragmentation Needed" (Type 3, Code 4) message reaching the
+  sender; when that message is blocked, oversized packets vanish with no error at all, producing the
+  distinctive "small transfers work, large transfers hang" symptom; covered `ping -M do -s SIZE` as
+  the direct diagnostic that bypasses the (possibly blocked) ICMP feedback loop entirely. **A stray
+  typo self-caught during authoring** (not a documented gotcha, just a direct typo): a leftover "2"
+  character before a closing `]` in the MTU subtopic's `theory` array (`      ]\n2    },`), caught by
+  a direct re-read of the file immediately after writing, fixed via Edit before the gotcha sweep or
+  build ran. Gotcha sweep (apostrophe-after-letter across all `.ts` files — every match confirmed
+  inside backtick-delimited `code:` blocks, safe — backtick parity: 8/4/26, all even — bare `@word` in
+  `.html` — none — unescaped `${` — none — over-escaped double-quote — none — backslash-escaped
+  apostrophe inside `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout)
+  came back clean with no fixes needed. Confirmed bare `networking` key collision-free in the
+  `SUBTOPICS` map (checked both quoted and unquoted forms) before adding — added as a bare key, no
+  hub-prefix needed. Build reported only the pre-documented harmless "bundle initial exceeded maximum
+  budget" ERROR (448.39 kB over) with zero actual TypeScript/template compile errors. `git add -A`
+  (scoped to the batch's own files) staged all 15 files (9 new + 6 wiring, no main-page fix needed
+  this batch — every subtopic angle was a genuine expansion gap, not a correction). Browser-verified
+  successfully: topic-overview toggle count confirmed at 8 (the EIGHTH Linux-hub topic with
+  subtopics), the Networking Commands accordion expands to show all 3 correctly-labeled subtopic
+  links, all three subtopic pages individually confirmed h1/breadcrumb (all 4 levels)/prev-next
+  cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and the final page's body
+  text explicitly checked for stray backslash/`undefined` artifacts (none found).
 - [ ] `/linux/firewall` — Firewall & iptables
 - [ ] `/linux/ssh` — SSH & Remote Access
 - [ ] `/linux/bash-scripting` — Bash Scripting Basics
