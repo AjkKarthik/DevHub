@@ -3029,7 +3029,12 @@ export const routes: Routes = [
       { path: 'awk-default-field-split-collapses-repeated-delimiters', loadComponent: () => import('./components/cloud/linux/essential-commands/subtopics/awk-default-field-split-collapses-repeated-delimiters/awk-default-field-split-collapses-repeated-delimiters').then(m => m.AwkDefaultFieldSplitCollapsesRepeatedDelimitersSubtopic) },
       { path: 'tar-already-strips-leading-slashes-unless-p-is-used', loadComponent: () => import('./components/cloud/linux/essential-commands/subtopics/tar-already-strips-leading-slashes-unless-p-is-used/tar-already-strips-leading-slashes-unless-p-is-used').then(m => m.TarAlreadyStripsLeadingSlashesUnlessPIsUsedSubtopic) },
     ] },
-    { path: 'file-permissions',     loadComponent: () => import('./components/cloud/linux/file-permissions/file-permissions').then(m => m.LinuxFilePermissions) },
+    { path: 'file-permissions', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/file-permissions/file-permissions').then(m => m.LinuxFilePermissions) },
+      { path: 'setuid-is-ignored-on-shell-scripts-not-just-risky', loadComponent: () => import('./components/cloud/linux/file-permissions/subtopics/setuid-is-ignored-on-shell-scripts-not-just-risky/setuid-is-ignored-on-shell-scripts-not-just-risky').then(m => m.SetuidIsIgnoredOnShellScriptsNotJustRiskySubtopic) },
+      { path: 'acl-mask-caps-effective-permissions-and-auto-recalculates', loadComponent: () => import('./components/cloud/linux/file-permissions/subtopics/acl-mask-caps-effective-permissions-and-auto-recalculates/acl-mask-caps-effective-permissions-and-auto-recalculates').then(m => m.AclMaskCapsEffectivePermissionsAndAutoRecalculatesSubtopic) },
+      { path: 'chmod-755-on-a-directory-does-not-clear-setgid', loadComponent: () => import('./components/cloud/linux/file-permissions/subtopics/chmod-755-on-a-directory-does-not-clear-setgid/chmod-755-on-a-directory-does-not-clear-setgid').then(m => m.Chmod755OnADirectoryDoesNotClearSetgidSubtopic) },
+    ] },
     { path: 'users-groups',         loadComponent: () => import('./components/cloud/linux/users-groups/users-groups').then(m => m.LinuxUsersGroups) },
     { path: 'process-management',   loadComponent: () => import('./components/cloud/linux/process-management/process-management').then(m => m.LinuxProcessManagement) },
     { path: 'system-monitoring',    loadComponent: () => import('./components/cloud/linux/system-monitoring/system-monitoring').then(m => m.LinuxSystemMonitoring) },

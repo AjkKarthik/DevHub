@@ -2681,4 +2681,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'awk’s Default Field Split Collapses Repeated Delimiters', route: '/linux/essential-commands/awk-default-field-split-collapses-repeated-delimiters' },
     { label: 'tar Already Strips Leading Slashes Unless -P Is Used', route: '/linux/essential-commands/tar-already-strips-leading-slashes-unless-p-is-used' },
   ],
+  'file-permissions': [
+    { label: 'setuid Is Ignored on Shell Scripts, Not Just Risky', route: '/linux/file-permissions/setuid-is-ignored-on-shell-scripts-not-just-risky' },
+    { label: 'ACL Mask Caps Effective Permissions', route: '/linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates' },
+    { label: 'chmod 755 on a Directory Does NOT Clear setgid', route: '/linux/file-permissions/chmod-755-on-a-directory-does-not-clear-setgid' },
+  ],
 };

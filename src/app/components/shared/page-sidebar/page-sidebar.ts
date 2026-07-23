@@ -39594,6 +39594,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Directory execute permission (not just read) is required to actually access files WITHIN that directory, a common confusion for people new to the permission model.',
     ],
   },
+  'linux/file-permissions/setuid-is-ignored-on-shell-scripts-not-just-risky': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ACL Mask Caps Effective Permissions', route: '/linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates' },
+      { label: 'File Permissions overview', route: '/linux/file-permissions' },
+    ],
+    tip: 'The Linux kernel simply ignores setuid/setgid on any file starting with a #!shebang line — ls -l can show the bit set while it has zero effect at runtime, a deliberate mitigation for a historical race condition.',
+    gotchas: [
+      'A setuid script fails silently — it runs with the CALLER\'s privileges, not the owner\'s, despite every visible permission indicator looking correct.',
+      'The documented fix is a minimal setuid wrapper BINARY that execs the script via a fixed, hardcoded path.',
+    ],
+  },
+  'linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'setuid Is Ignored on Shell Scripts, Not Just Risky', route: '/linux/file-permissions/setuid-is-ignored-on-shell-scripts-not-just-risky' },
+      { label: 'chmod 755 on a Directory Does NOT Clear setgid', route: '/linux/file-permissions/chmod-755-on-a-directory-does-not-clear-setgid' },
+    ],
+    tip: 'The ACL mask caps effective permissions for named users/groups and the owning group (never owner or other) — and recalculates itself automatically on every subsequent setfacl call unless -n is used.',
+    gotchas: [
+      'getfacl shows an "#effective:" annotation whenever the mask caps an entry below what it literally states.',
+      'An unrelated setfacl call adding a DIFFERENT user\'s entry can silently widen the mask and restore everyone else\'s full permissions.',
+    ],
+  },
+  'linux/file-permissions/chmod-755-on-a-directory-does-not-clear-setgid': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ACL Mask Caps Effective Permissions', route: '/linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates' },
+      { label: 'File Permissions overview', route: '/linux/file-permissions' },
+    ],
+    tip: 'GNU chmod preserves an existing setgid bit on a DIRECTORY when given a 3-digit octal mode — the same 3-digit mode DOES clear setgid on a FILE. Clearing it on a directory needs an explicit 4-digit mode (a leading 0) or chmod g-s.',
+    gotchas: [
+      'A recursive chmod -R 755 on a shared setgid directory does NOT undo its group-inheritance setup, contrary to "octal is absolute."',
+      'This special-casing is directory-specific — there\'s no equivalent for setuid, which has no meaning on a directory.',
+    ],
+  },
   'linux/users-groups': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

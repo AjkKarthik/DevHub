@@ -89,7 +89,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Users &amp; Permissions</p>
-      <a routerLink="/linux/file-permissions" routerLinkActive="active"><span class="nl-text">File Permissions &amp; Ownership</span>@if(p.isDone('linux-file-permissions')){<span class="nl-done">✓</span>}@if(d('linux-file-permissions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/file-permissions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">File Permissions &amp; Ownership</span>
+        @if (p.isDone('linux-file-permissions')) {<span class="nl-done">✓</span>}
+        @if (d('linux-file-permissions'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('file-permissions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('file-permissions')"
+                  (click)="toggleSubtopics('file-permissions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('file-permissions'); as fpSubs) {
+        @if (isSubtopicsExpanded('file-permissions')) {
+          <div class="nav-subtopics">
+            @for (s of fpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/linux/users-groups" routerLinkActive="active"><span class="nl-text">Users &amp; Groups</span>@if(p.isDone('linux-users-groups')){<span class="nl-done">✓</span>}@if(d('linux-users-groups');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

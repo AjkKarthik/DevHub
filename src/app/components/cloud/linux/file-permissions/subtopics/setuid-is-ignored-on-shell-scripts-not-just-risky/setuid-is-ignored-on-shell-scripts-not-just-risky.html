@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="File Permissions & Ownership" topicRoute="/linux/file-permissions" subtopicLabel="setuid Is Ignored on Shell Scripts, Not Just Risky" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">setuid Is Ignored on Shell Scripts — Not Just Risky, Silently Inert</h1>
+  <p class="page-subtitle">The main page frames setuid purely as a security risk to minimize — the Linux kernel actually ignores the bit entirely on scripts, a documented mitigation for a historical race condition.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own setuid coverage — the next subtopic moves from special permission bits to a similarly under-explained mechanism in POSIX ACLs.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="File Permissions & Ownership" topicRoute="/linux/file-permissions"
+    [next]="{ label: 'ACL Mask Caps Effective Permissions', route: '/linux/file-permissions/acl-mask-caps-effective-permissions-and-auto-recalculates' }" />
+</div>
