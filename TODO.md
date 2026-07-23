@@ -4723,7 +4723,50 @@ off here with a date.
   earlier escaping bug, the `LinuxNavComponent` accordion (now the SIXTH topic in this hub with
   subtopics — explicitly checked the toggle COUNT (6) on the topic overview page), dark mode (`--bg:
   #0f172a`) applying correctly.)
-- [ ] `/linux/system-monitoring` — System Monitoring
+- [x] `/linux/system-monitoring` — System Monitoring (2026-07-23 — 3 subtopics:
+  load-average-has-blind-spots-psi-is-the-modern-replacement,
+  oom-score-adj-negative-1000-can-hang-the-whole-system,
+  iostats-percent-util-is-misleading-on-nvme-ssds; all three verified against official/authoritative
+  sources (Linux kernel's own PSI documentation, direct analysis of OOM killer scoring behavior,
+  documented iostat %util computation and NVMe-specific saturation guidance) via WebFetch/WebSearch
+  before writing — no genuine main-page inaccuracy found this batch (all three angles are expansion
+  gaps): (1) confirmed via the kernel's own PSI documentation that /proc/pressure/{cpu,memory,io}
+  reports resource-specific stall pressure directly, addressing the exact conflation problem load
+  average has (counting both CPU-runnable AND uninterruptible-I/O-sleep processes as one number) —
+  closing a gap where the main page's own interviewFocus question ("How do you determine if a server
+  is CPU-bound, memory-bound, or I/O-bound?") is exactly what PSI answers directly, while the main
+  page's own documented approach requires cross-referencing load average, top's %wa, and iostat
+  indirectly; (2) confirmed that oom_score_adj = -1000 is a hard, absolute exemption ("the kernel
+  will skip it regardless of RSS... equivalent to disabling OOM-killing entirely") and that
+  protecting too many processes this way can leave the OOM killer "no candidate processes to
+  terminate," hanging the system instead of cleanly killing one — closing a gap where the main
+  page's own QnA frames -1000 purely as protection with no downside, and directly undermining the
+  main page's own dmesg-based OOM diagnostic advice in this specific failure case (no kill event
+  exists to find); (3) confirmed via documented analysis that iostat's %util "counts... any I/O in
+  flight at any moment," meaningless for NVMe's deep parallel queues, so "an NVMe drive can sit at
+  100% %util while operating at 5% of its real capacity" — closing a gap where the main page's own
+  70-80% saturation threshold is stated as a general rule with no device-type distinction; covered
+  the documented correct alternative (r_await/w_await and aqu-sz). **Two real escaping mistakes
+  self-caught and fixed this batch, continuing the pattern from the Process Management batch**: (a)
+  a `[next]` label in one `.html` file used backslash-escaping (`\\'s`) for an apostrophe instead of
+  the established typographic curly-quote convention (`’`) required for `.html` bound attributes —
+  the same mistake made earlier in this session's Bicep batch, caught by an expanded sweep pattern
+  specifically checking for backslash-escaped apostrophes inside `[prev]`/`[next]` attributes; (b)
+  confirmed via the same expanded sweep that no over-escaped double-quote issue (the Process
+  Management batch's bug) recurred in this batch's `.ts` files. Gotcha sweep (apostrophe-after-letter
+  across `.ts` and `.html` files — including the six shared wiring files — backtick parity — even
+  counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention verified via a dedicated
+  backslash-escape-inside-bound-attribute check, `[prev]`/`[next]` route cross-check, unescaped `${`
+  check, over-escaped-double-quote check) came back clean after both fixes. Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (442.52 kB over) with zero
+  actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no
+  main-page fix this batch) cleanly — no "Filename too long" errors. Confirmed bare
+  `system-monitoring` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted
+  forms). Browser-verified successfully on all three subtopic pages — h1/breadcrumb pairs correct
+  (all 4 levels), prev/next cross-references correct (explicitly confirmed the curly apostrophe in
+  "iostat's" rendered correctly with no stray backslash), the `LinuxNavComponent` accordion (now the
+  SEVENTH topic in this hub with subtopics — explicitly checked the toggle COUNT (7) on the topic
+  overview page), dark mode (`--bg: #0f172a`) applying correctly.)
 - [ ] `/linux/networking` — Networking Commands
 - [ ] `/linux/firewall` — Firewall & iptables
 - [ ] `/linux/ssh` — SSH & Remote Access

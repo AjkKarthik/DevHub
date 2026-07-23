@@ -1893,16 +1893,26 @@ this same check before any other new hub's first subtopic set:
   Linux pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (security-hardening, cron) have no PageComplete.
   Challenge.language: `'typescript'`. `${VAR}` bash variables in template literals must be escaped as `\${VAR}`.
   LinuxNavComponent at `shared/linux-nav/linux-nav.ts`.
-  Phase 10: 6 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
+  Phase 10: 7 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
   `/linux/essential-commands`, `/linux/file-permissions`, `/linux/users-groups`,
-  `/linux/process-management`, 2026-07-23) — see "Linux hub subtopic wiring" section above for
-  the `LinuxNavComponent` accordion structural fix and the `linux-fundamentals` SUBTOPICS-map
-  collision resolution (collided with the JavaScript hub's own bare `fundamentals` topic key).
+  `/linux/process-management`, `/linux/system-monitoring`, 2026-07-23) — see "Linux hub subtopic
+  wiring" section above for the `LinuxNavComponent` accordion structural fix and the
+  `linux-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript hub's
+  own bare `fundamentals` topic key).
   **New gotcha found on the `/linux/process-management` batch**: a single-quoted `.ts` string
   field never needs its double quotes escaped — writing `\"$PID\"` where plain `"$PID"` is
   correct produces a stray literal backslash in the rendered text. Caught by re-reading the file,
   not by the standard apostrophe sweep. Worth a manual check on any future subtopic whose prose
   quotes a shell command containing `"..."`.
+  **A second, related self-caught mistake on the very next batch (`/linux/system-monitoring`)**:
+  a `[next]` label used backslash-escaping (`\'s`) for a possessive apostrophe inside an `.html`
+  bound attribute — the SAME mistake already documented earlier in this session's Bicep batch as
+  requiring the typographic curly quote (`’`) instead. Recurring across two different hubs
+  confirms this is a genuine standing risk, not a one-off — the standard apostrophe sweep alone
+  doesn't reliably catch it, since a correctly-BACKSLASH-escaped apostrophe is syntactically
+  valid and produces no build error, it just renders wrong. **Always run a dedicated check
+  specifically for `\'` inside `[prev]=`/`[next]=` attribute values** (distinct from the general
+  apostrophe-after-letter sweep) before considering any subtopic batch's `.html` files clean.
 - **Redis hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
   Red theme `$accent: #dc382d`, `$tint: #fff0ef`, dark `#f87171`, dark bg `#3d0a0a`. Search prefix `redis-`. Route: `/redis`.
   CSS classes: `.redis-page`, `.redis-icon`, `.redis-section`. Icon content: `R`. `tech="javascript"`.
