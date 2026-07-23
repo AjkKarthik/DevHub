@@ -4643,7 +4643,43 @@ off here with a date.
   `LinuxNavComponent` accordion (now the FOURTH topic in this hub with subtopics — explicitly
   checked the toggle COUNT (4) on the topic overview page), dark mode (`--bg: #0f172a`) applying
   correctly.)
-- [ ] `/linux/users-groups` — Users & Groups
+- [x] `/linux/users-groups` — Users & Groups (2026-07-23 — 3 subtopics:
+  userdel-without-r-leaves-orphaned-files-for-uid-reuse,
+  nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation,
+  etc-skel-populates-new-homes-once-not-retroactively; all three verified against
+  official/authoritative sources (direct analysis of userdel's documented behavior for UID reuse,
+  current Linux privilege-escalation/GTFOBins research for the sudo NOPASSWD risk, useradd's own
+  man page for /etc/skel) via WebSearch/WebFetch before writing — no genuine main-page inaccuracy
+  found this batch (all three angles are expansion gaps): (1) confirmed that a numeric UID freed by
+  userdel (without -r) is silently reused by the next ordinary useradd call with no explicit --uid
+  — "the new user then silently inherits ownership of every orphaned file the old user left behind"
+  — closing a gap where the main page's own theory states the orphaning fact ("files remain
+  orphaned") but never connects it to what happens when that UID gets reassigned, and confirming
+  files OUTSIDE the home directory (which userdel -r never touches either) are just as exposed; (2)
+  confirmed via current privilege-escalation research that "a rule like (ALL) NOPASSWD: /usr/bin/vim
+  reads as harmless... until you check GTFOBins for vim, which can escape to a root shell" — with
+  dozens of common tools (find, nano, awk, less, man, and more) sharing this same documented escape
+  — closing a gap where the main page's own two NOPASSWD examples (systemctl restart nginx, apt)
+  are presented as narrowly-scoped without any check against what the granted command itself is
+  capable of once running as root; distinguished the two main-page examples specifically (systemctl
+  is safer due to full-string matching; apt is independently risky via its own hook-script
+  capability); (3) confirmed via useradd's own man page that /etc/skel's contents are copied to a
+  new home directory only once, "during initial home directory creation" — closing a gap where the
+  main page mentions /etc/skel in exactly one QnA clause with no explanation of what it is or that
+  editing it never retroactively reaches existing accounts, a common real-world "works for new
+  hires, not existing users" support trap. Gotcha sweep (apostrophe-after-letter across `.ts` and
+  `.html` files — including the six shared wiring files — backtick parity — even counts, 4/4/4 —
+  bare `@word` in `.html` prose, curly-quote convention verified, `[prev]`/`[next]` route
+  cross-check, unescaped `${` check specific to this hub's own documented bash-variable-in-
+  template-literal gotcha) came back clean. Build reported only the pre-documented harmless "bundle
+  initial exceeded maximum budget" ERROR (431.12 kB over) with zero actual TypeScript/template
+  compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix this batch)
+  cleanly — no "Filename too long" errors. Confirmed bare `users-groups` key collision-free in
+  `SUBTOPICS` map (checked both quoted and unquoted forms). Browser-verified successfully on all
+  three subtopic pages — h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references
+  correct, the `LinuxNavComponent` accordion (now the FIFTH topic in this hub with subtopics —
+  explicitly checked the toggle COUNT (5) on the topic overview page), dark mode (`--bg: #0f172a`)
+  applying correctly.)
 - [ ] `/linux/process-management` — Process Management
 - [ ] `/linux/system-monitoring` — System Monitoring
 - [ ] `/linux/networking` — Networking Commands
