@@ -4841,7 +4841,40 @@ off here with a date.
   links, all three subtopic pages individually confirmed h1/breadcrumb (all 4 levels)/prev-next
   cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and the final page's body
   text explicitly checked for stray backslash/`undefined` artifacts (none found).
-- [ ] `/linux/ssh` — SSH & Remote Access
+- [x] `/linux/ssh` — SSH & Remote Access (2026-07-23) — 3 subtopics: (1) **Agent Forwarding Exposes
+  Signing, Not Your Key — ProxyJump Avoids It**, expanding the main page's one-clause ForwardAgent
+  risk warning ("use carefully — anyone with root on the remote host can use your keys") — verified
+  via WebSearch that agent forwarding exposes a live SIGNING socket on the remote host (never the
+  private key bytes), letting anyone with access to that socket authenticate as the user for as long
+  as the session stays connected; covered ProxyJump (since OpenSSH 7.3) as the fix, since it tunnels
+  the connection at the client level without the jump host ever seeing an agent socket; (2) **ssh -R
+  Binds to Remote Loopback Only, Without GatewayPorts**, expanding the main page's own -R quiz
+  (correct on direction, silent on interface) — verified via WebSearch that a remote forward binds to
+  127.0.0.1 on the remote host by default, reachable only from that machine itself, and that
+  GatewayPorts yes/clientspecified in sshd_config is required to expose it to the wider network;
+  (3) **ControlMaster Multiplexing Can Hit the Server's MaxSessions Limit**, expanding the main
+  page's "very fast" multiplexing claim with no mention of a ceiling — verified via WebSearch that
+  sshd's MaxSessions (default 10) caps channels per shared connection, so enough parallel scp/rsync
+  jobs to the same host can fail with "administratively prohibited" rather than simply queuing;
+  covered the stale-master-connection gotcha (an already-open ControlPersist connection keeps
+  enforcing the OLD MaxSessions value even after the server config is raised and reloaded). Gotcha
+  sweep (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-
+  delimited `code:` blocks, safe — backtick parity: 22/20/22, all even — bare `@word` in `.html` —
+  none — unescaped `${` — none (explicitly checked the ControlMaster subtopic's `\${i}` bash loop
+  variable, correctly escaped) — over-escaped double-quote — none — backslash-escaped apostrophe
+  inside `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout — `[prev]`/
+  `[next]` route cross-check confirmed consistent across all 3 files) came back clean with no fixes
+  needed. Confirmed no `ssh` key collision in either the `SUBTOPICS` map or the `LINUX_LABELS`
+  breadcrumb map (both checked in both quoted and unquoted forms) before adding — added as a bare
+  key. Build reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR
+  (460.27 kB over) with zero actual TypeScript/template compile errors. `git add -A` (scoped to the
+  batch's own files) staged all 15 files (9 new + 6 wiring, no main-page fix needed this batch —
+  every subtopic angle was a genuine expansion gap). Browser-verified successfully: topic-overview
+  toggle count confirmed at 10 (the TENTH Linux-hub topic with subtopics), the SSH & Remote Access
+  accordion expands to show all 3 correctly-labeled subtopic links, all three subtopic pages
+  individually confirmed h1/breadcrumb (all 4 levels)/prev-next cross-references correct, dark mode
+  (`--bg: #0f172a`) applying correctly, and the final page's body text explicitly checked for stray
+  backslash/`undefined` artifacts (none found).
 - [ ] `/linux/bash-scripting` — Bash Scripting Basics
 - [ ] `/linux/bash-advanced` — Advanced Bash Scripting
 - [ ] `/linux/package-management` — Package Management
