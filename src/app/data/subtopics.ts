@@ -2691,4 +2691,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A NOPASSWD Grant Can Be a Full Root Escalation', route: '/linux/users-groups/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation' },
     { label: '/etc/skel Populates New Homes Once, Not Retroactively', route: '/linux/users-groups/etc-skel-populates-new-homes-once-not-retroactively' },
   ],
+  'process-management': [
+    { label: 'Orphans Reparent to PID 1, Which May Not Reap in a Container', route: '/linux/process-management/orphans-reparent-to-pid-1-which-may-not-reap-in-a-container' },
+    { label: 'kill Signals One Process — Use a Negative PID for the Group', route: '/linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group' },
+    { label: 'renice Is a One-Way Ratchet for Non-Root Users', route: '/linux/process-management/renice-is-a-one-way-ratchet-for-non-root-users' },
+  ],
 };

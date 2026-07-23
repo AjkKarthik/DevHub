@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Process Management" topicRoute="/linux/process-management" subtopicLabel="renice Is a One-Way Ratchet for Non-Root Users" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">renice Is a One-Way Ratchet for Non-Root Users — You Can Raise Niceness, But Never Lower It Back</h1>
+  <p class="page-subtitle">The main page frames the restriction as a floor at 0 — the real rule blocks any decrease at all, even one that stays well above zero, once a non-root user has already raised it.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, correcting an intuitive-but-incomplete reading of the main page's own niceness permission rule.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Process Management" topicRoute="/linux/process-management"
+    [prev]="{ label: 'kill Signals One Process — Use a Negative PID for the Group', route: '/linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group' }" />
+</div>

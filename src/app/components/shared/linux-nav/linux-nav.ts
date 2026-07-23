@@ -133,7 +133,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Process</p>
-      <a routerLink="/linux/process-management" routerLinkActive="active"><span class="nl-text">Process Management</span>@if(p.isDone('linux-process-management')){<span class="nl-done">✓</span>}@if(d('linux-process-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/process-management" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Process Management</span>
+        @if (p.isDone('linux-process-management')) {<span class="nl-done">✓</span>}
+        @if (d('linux-process-management'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('process-management')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('process-management')"
+                  (click)="toggleSubtopics('process-management', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('process-management'); as pmSubs) {
+        @if (isSubtopicsExpanded('process-management')) {
+          <div class="nav-subtopics">
+            @for (s of pmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/linux/system-monitoring" routerLinkActive="active"><span class="nl-text">System Monitoring</span>@if(p.isDone('linux-system-monitoring')){<span class="nl-done">✓</span>}@if(d('linux-system-monitoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

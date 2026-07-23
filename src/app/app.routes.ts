@@ -3041,7 +3041,12 @@ export const routes: Routes = [
       { path: 'nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation', loadComponent: () => import('./components/cloud/linux/users-groups/subtopics/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation/nopasswd-grant-to-a-safe-command-can-be-a-full-root-escalation').then(m => m.NopasswdGrantToASafeCommandCanBeAFullRootEscalationSubtopic) },
       { path: 'etc-skel-populates-new-homes-once-not-retroactively', loadComponent: () => import('./components/cloud/linux/users-groups/subtopics/etc-skel-populates-new-homes-once-not-retroactively/etc-skel-populates-new-homes-once-not-retroactively').then(m => m.EtcSkelPopulatesNewHomesOnceNotRetroactivelySubtopic) },
     ] },
-    { path: 'process-management',   loadComponent: () => import('./components/cloud/linux/process-management/process-management').then(m => m.LinuxProcessManagement) },
+    { path: 'process-management', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/process-management/process-management').then(m => m.LinuxProcessManagement) },
+      { path: 'orphans-reparent-to-pid-1-which-may-not-reap-in-a-container', loadComponent: () => import('./components/cloud/linux/process-management/subtopics/orphans-reparent-to-pid-1-which-may-not-reap-in-a-container/orphans-reparent-to-pid-1-which-may-not-reap-in-a-container').then(m => m.OrphansReparentToPid1WhichMayNotReapInAContainerSubtopic) },
+      { path: 'kill-signals-one-process-use-negative-pid-for-the-group', loadComponent: () => import('./components/cloud/linux/process-management/subtopics/kill-signals-one-process-use-negative-pid-for-the-group/kill-signals-one-process-use-negative-pid-for-the-group').then(m => m.KillSignalsOneProcessUseNegativePidForTheGroupSubtopic) },
+      { path: 'renice-is-a-one-way-ratchet-for-non-root-users', loadComponent: () => import('./components/cloud/linux/process-management/subtopics/renice-is-a-one-way-ratchet-for-non-root-users/renice-is-a-one-way-ratchet-for-non-root-users').then(m => m.ReniceIsAOneWayRatchetForNonRootUsersSubtopic) },
+    ] },
     { path: 'system-monitoring',    loadComponent: () => import('./components/cloud/linux/system-monitoring/system-monitoring').then(m => m.LinuxSystemMonitoring) },
     { path: 'networking',           loadComponent: () => import('./components/cloud/linux/networking/networking').then(m => m.LinuxNetworking) },
     { path: 'firewall',             loadComponent: () => import('./components/cloud/linux/firewall/firewall').then(m => m.LinuxFirewall) },

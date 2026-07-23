@@ -39690,6 +39690,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Zombie processes (a terminated child whose exit status hasn\'t been reaped by its parent) accumulate PIDs but consume no real resources beyond a process table entry.',
     ],
   },
+  'linux/process-management/orphans-reparent-to-pid-1-which-may-not-reap-in-a-container': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'kill Signals One Process — Use a Negative PID for the Group', route: '/linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group' },
+      { label: 'Process Management overview', route: '/linux/process-management' },
+    ],
+    tip: 'Reparenting to PID 1 only reaps zombies if whatever occupies PID 1 actually implements that — inside a container, PID 1 is often the app itself, with no reaping logic at all.',
+    gotchas: [
+      'Zombies accumulate silently until the process table fills, preventing new process creation entirely.',
+      'Fix: docker run --init (uses tini) or registering the app as a subreaper if it must stay PID 1.',
+    ],
+  },
+  'linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Orphans Reparent to PID 1, Which May Not Reap in a Container', route: '/linux/process-management/orphans-reparent-to-pid-1-which-may-not-reap-in-a-container' },
+      { label: 'renice Is a One-Way Ratchet for Non-Root Users', route: '/linux/process-management/renice-is-a-one-way-ratchet-for-non-root-users' },
+    ],
+    tip: 'A backgrounded pipeline is MULTIPLE processes, but $! only captures one of them — kill "$!" leaves other pipeline stages running. Use kill -- -"$PID" (negative) to signal the whole process group.',
+    gotchas: [
+      'kill -- -1 is a special, reserved value that broadcasts to nearly every process on the system — never a normal per-job target.',
+      'The signal must come first, or use -- before the negative number, or the number is misparsed as a signal.',
+    ],
+  },
+  'linux/process-management/renice-is-a-one-way-ratchet-for-non-root-users': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'kill Signals One Process — Use a Negative PID for the Group', route: '/linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group' },
+      { label: 'Process Management overview', route: '/linux/process-management' },
+    ],
+    tip: 'A non-root user can raise a process\'s niceness, but can never lower it again afterward — even to a value still well above 0. It\'s a one-way door, not just a floor at zero.',
+    gotchas: [
+      'The same restriction applies to the setpriority() syscall directly, not just the renice command.',
+      'Only root can undo an over-eager niceness increase made by a non-root user.',
+    ],
+  },
   'linux/system-monitoring': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
