@@ -2696,4 +2696,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'kill Signals One Process — Use a Negative PID for the Group', route: '/linux/process-management/kill-signals-one-process-use-negative-pid-for-the-group' },
     { label: 'renice Is a One-Way Ratchet for Non-Root Users', route: '/linux/process-management/renice-is-a-one-way-ratchet-for-non-root-users' },
   ],
+  'system-monitoring': [
+    { label: 'Load Average Has Blind Spots — PSI Is the Modern Replacement', route: '/linux/system-monitoring/load-average-has-blind-spots-psi-is-the-modern-replacement' },
+    { label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' },
+    { label: 'iostat’s %util Is Misleading on NVMe SSDs', route: '/linux/system-monitoring/iostats-percent-util-is-misleading-on-nvme-ssds' },
+  ],
 };

@@ -153,7 +153,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/linux/system-monitoring" routerLinkActive="active"><span class="nl-text">System Monitoring</span>@if(p.isDone('linux-system-monitoring')){<span class="nl-done">✓</span>}@if(d('linux-system-monitoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/system-monitoring" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">System Monitoring</span>
+        @if (p.isDone('linux-system-monitoring')) {<span class="nl-done">✓</span>}
+        @if (d('linux-system-monitoring'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('system-monitoring')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('system-monitoring')"
+                  (click)="toggleSubtopics('system-monitoring', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('system-monitoring'); as smSubs) {
+        @if (isSubtopicsExpanded('system-monitoring')) {
+          <div class="nav-subtopics">
+            @for (s of smSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

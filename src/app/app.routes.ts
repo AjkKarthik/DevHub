@@ -3047,7 +3047,12 @@ export const routes: Routes = [
       { path: 'kill-signals-one-process-use-negative-pid-for-the-group', loadComponent: () => import('./components/cloud/linux/process-management/subtopics/kill-signals-one-process-use-negative-pid-for-the-group/kill-signals-one-process-use-negative-pid-for-the-group').then(m => m.KillSignalsOneProcessUseNegativePidForTheGroupSubtopic) },
       { path: 'renice-is-a-one-way-ratchet-for-non-root-users', loadComponent: () => import('./components/cloud/linux/process-management/subtopics/renice-is-a-one-way-ratchet-for-non-root-users/renice-is-a-one-way-ratchet-for-non-root-users').then(m => m.ReniceIsAOneWayRatchetForNonRootUsersSubtopic) },
     ] },
-    { path: 'system-monitoring',    loadComponent: () => import('./components/cloud/linux/system-monitoring/system-monitoring').then(m => m.LinuxSystemMonitoring) },
+    { path: 'system-monitoring', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/system-monitoring/system-monitoring').then(m => m.LinuxSystemMonitoring) },
+      { path: 'load-average-has-blind-spots-psi-is-the-modern-replacement', loadComponent: () => import('./components/cloud/linux/system-monitoring/subtopics/load-average-has-blind-spots-psi-is-the-modern-replacement/load-average-has-blind-spots-psi-is-the-modern-replacement').then(m => m.LoadAverageHasBlindSpotsPsiIsTheModernReplacementSubtopic) },
+      { path: 'oom-score-adj-negative-1000-can-hang-the-whole-system', loadComponent: () => import('./components/cloud/linux/system-monitoring/subtopics/oom-score-adj-negative-1000-can-hang-the-whole-system/oom-score-adj-negative-1000-can-hang-the-whole-system').then(m => m.OomScoreAdjNegative1000CanHangTheWholeSystemSubtopic) },
+      { path: 'iostats-percent-util-is-misleading-on-nvme-ssds', loadComponent: () => import('./components/cloud/linux/system-monitoring/subtopics/iostats-percent-util-is-misleading-on-nvme-ssds/iostats-percent-util-is-misleading-on-nvme-ssds').then(m => m.IostatsPercentUtilIsMisleadingOnNvmeSsdsSubtopic) },
+    ] },
     { path: 'networking',           loadComponent: () => import('./components/cloud/linux/networking/networking').then(m => m.LinuxNetworking) },
     { path: 'firewall',             loadComponent: () => import('./components/cloud/linux/firewall/firewall').then(m => m.LinuxFirewall) },
     { path: 'ssh',                  loadComponent: () => import('./components/cloud/linux/ssh/ssh').then(m => m.LinuxSsh) },

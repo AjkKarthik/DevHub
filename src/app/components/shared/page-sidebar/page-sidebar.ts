@@ -39738,6 +39738,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Memory reported as "used" by free often includes disk cache, which the kernel will happily reclaim under pressure — it is not the same as memory unavailable to applications.',
     ],
   },
+  'linux/system-monitoring/load-average-has-blind-spots-psi-is-the-modern-replacement': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' },
+      { label: 'System Monitoring overview', route: '/linux/system-monitoring' },
+    ],
+    tip: 'Load average conflates CPU contention and I/O contention into one number — a process stuck on a hung NFS mount inflates it identically to a genuine CPU spike. PSI (/proc/pressure/cpu, memory, io) reports each resource\'s pressure separately.',
+    gotchas: [
+      'The "full" line in each PSI file has no load-average equivalent — it measures time the ENTIRE system was stalled on that specific resource.',
+      'PSI complements load average, it doesn\'t replace it — load average is still a useful quick trend check.',
+    ],
+  },
+  'linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Load Average Has Blind Spots — PSI Is the Modern Replacement', route: '/linux/system-monitoring/load-average-has-blind-spots-psi-is-the-modern-replacement' },
+      { label: 'iostat’s %util Is Misleading on NVMe SSDs', route: '/linux/system-monitoring/iostats-percent-util-is-misleading-on-nvme-ssds' },
+    ],
+    tip: 'oom_score_adj = -1000 makes a process fully exempt from the OOM killer, guaranteed. Protecting too many "critical" processes this way can leave the OOM killer with no candidate at all, hanging the whole system instead of killing one.',
+    gotchas: [
+      'A hang from this cause shows NO OOM-kill entry in dmesg — the standard diagnostic comes back empty because nothing was ever killable.',
+      'Safer: reserve true -1000 for one or two truly irreplaceable processes; use a strongly negative but non-absolute value (like -500) for everything else.',
+    ],
+  },
+  'linux/system-monitoring/iostats-percent-util-is-misleading-on-nvme-ssds': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' },
+      { label: 'System Monitoring overview', route: '/linux/system-monitoring' },
+    ],
+    tip: '%util measures "any request in flight," meaningless for NVMe\'s deep parallel queues — an NVMe drive can sit at 100% %util while running at 5% of its real capacity.',
+    gotchas: [
+      'Trust r_await/w_await (should stay under ~1ms) and aqu-sz (vs. the device\'s real queue depth) instead of %util for NVMe specifically.',
+      'The 70-80% %util saturation rule still applies reasonably well to spinning disks and shallow-queue SATA SSDs.',
+    ],
+  },
   'linux/performance-tuning': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

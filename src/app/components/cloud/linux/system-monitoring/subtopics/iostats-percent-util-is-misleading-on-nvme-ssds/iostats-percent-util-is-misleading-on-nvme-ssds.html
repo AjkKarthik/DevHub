@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="System Monitoring" topicRoute="/linux/system-monitoring" subtopicLabel="iostat’s %util Is Misleading on NVMe SSDs" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">iostat's %util Is Actively Misleading on NVMe — 100% Doesn't Mean Saturated</h1>
+  <p class="page-subtitle">The main page states a single 70-80% saturation threshold as if it applies uniformly — on NVMe's deep, parallel queues, a drive can sit at 100% %util while running at 5% of its real capacity.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, refining the main page's own iostat guidance for the specific device type most modern production servers actually use.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="System Monitoring" topicRoute="/linux/system-monitoring"
+    [prev]="{ label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' }" />
+</div>
