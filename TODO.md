@@ -4599,7 +4599,50 @@ off here with a date.
   correct, the `LinuxNavComponent` accordion (now the THIRD topic in this hub with subtopics —
   explicitly checked the toggle COUNT (3) on the topic overview page), dark mode (`--bg: #0f172a`)
   applying correctly.)
-- [ ] `/linux/file-permissions` — File Permissions & Ownership
+- [x] `/linux/file-permissions` — File Permissions & Ownership (2026-07-23 — 3 subtopics:
+  setuid-is-ignored-on-shell-scripts-not-just-risky,
+  acl-mask-caps-effective-permissions-and-auto-recalculates,
+  chmod-755-on-a-directory-does-not-clear-setgid; all three verified against official/authoritative
+  documentation (Unix security literature + LKML for the setuid-script kernel behavior, POSIX ACL
+  documentation for the mask, GNU chmod documentation for the directory special-case) via WebSearch
+  before writing — no genuine main-page inaccuracy found this batch (all three angles are expansion
+  gaps): (1) confirmed via longstanding documented Unix/Linux security guidance that "many Unix-like
+  systems, in particular Linux, simply ignore the setuid and setgid bits on scripts" — a deliberate
+  mitigation for a historical race condition between the kernel reading a shebang line and the
+  interpreter reopening the file — closing a gap where the main page's own setuid theory and every
+  one of its examples (passwd, chmod u+s mybinary) implicitly assumes a compiled binary, never
+  distinguishing what happens when the identical chmod u+s is applied to a script instead; (2)
+  confirmed via POSIX ACL documentation that the mask "limits the effective rights granted to all
+  groups and to named users" while "the file owner and others permissions are not affected," AND
+  that "unless otherwise specified, the mask permissions are recalculated on subsequent setfacl
+  calls" to the union of all entries — closing a gap where the main page's own ACL theory gives
+  "setfacl -m m:r- sets the effective mask" equal one-clause weight to a plain user-grant operation,
+  with no explanation that the mask caps other entries or that it silently widens again on any
+  unrelated setfacl call unless -n is used; (3) **corrected an assumption made partway through this
+  batch's own research, the second such self-correction this session** (after the tar leading-slash
+  finding in the Essential Commands batch): initially hypothesized a recursive chmod -R 755 would
+  strip an existing setgid bit from a directory (consistent with the main page's own "octal sets
+  exactly this" framing), then verified via GNU chmod's own documented behavior that the opposite is
+  true — "on directories, GNU chmod preserves setgid unless you clear it explicitly," an asymmetric
+  special case that does NOT apply to files (where a 3-digit mode does clear it). This closes a gap
+  where the main page's own theory states octal permissions as unconditionally absolute, with no
+  exception noted, and directly affects whether its own /shared chmod 2775 example's group
+  inheritance survives a later routine chmod -R 755 cleanup (it does). Gotcha sweep
+  (apostrophe-after-letter across `.ts` and `.html` files — including the six shared wiring files —
+  backtick parity — even counts, 4/4/4 — bare `@word` in `.html` prose, curly-quote convention
+  verified, `[prev]`/`[next]` route cross-check) came back clean. Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (425.55 kB over) with zero
+  actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no
+  main-page fix this batch) cleanly — no "Filename too long" errors. Confirmed bare
+  `file-permissions` key collision-free in `SUBTOPICS` map (checked both quoted and unquoted forms).
+  **Dev server was found stopped** at the start of this batch's verification step — restarted via
+  `preview_start`, which triggered a full cold rebuild; polled with a backgrounded curl-based wait
+  loop rather than a blocking sleep before proceeding, per the standing "no blocking sleep" tooling
+  constraint. Browser-verified successfully on all three subtopic pages once the server was ready —
+  h1/breadcrumb pairs correct (all 4 levels), prev/next cross-references correct, the
+  `LinuxNavComponent` accordion (now the FOURTH topic in this hub with subtopics — explicitly
+  checked the toggle COUNT (4) on the topic overview page), dark mode (`--bg: #0f172a`) applying
+  correctly.)
 - [ ] `/linux/users-groups` — Users & Groups
 - [ ] `/linux/process-management` — Process Management
 - [ ] `/linux/system-monitoring` — System Monitoring
