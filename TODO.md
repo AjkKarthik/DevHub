@@ -4875,7 +4875,50 @@ off here with a date.
   individually confirmed h1/breadcrumb (all 4 levels)/prev-next cross-references correct, dark mode
   (`--bg: #0f172a`) applying correctly, and the final page's body text explicitly checked for stray
   backslash/`undefined` artifacts (none found).
-- [ ] `/linux/bash-scripting` — Bash Scripting Basics
+- [x] `/linux/bash-scripting` — Bash Scripting Basics (2026-07-23) — 3 subtopics: (1) **Exit Codes
+  Wrap Around at 256 — return 256 Means Success**, expanding the main page's own bare "0-255" range
+  claim — verified via WebSearch that exit statuses are unsigned 8-bit values, so return/exit takes
+  any value modulo 256 with no error, meaning `return 256` computes to exactly 0 (success) and
+  negative values wrap the other direction (`exit -1` → 255); covered the real trap of a function
+  returning a computed count directly as its exit code, and the fix (report numeric results via
+  stdout, reserve return/exit for pass/fail only); (2) **local Assignment Masks set -e Command
+  Failures**, expanding the main page's own unconditional "set -e exits immediately on any command
+  failure" claim with a well-documented exception — verified via BashFAQ/105 and ShellCheck's own
+  SC2155 rule that `local var=$(command)` written as one statement reports the `local` BUILTIN's own
+  exit status to set -e, not the command substitution's, so a genuinely failing command inside it
+  goes completely undetected; covered the two-statement fix (`local var; var=$(command)`) and noted
+  the main page's own `check_disk` function already happens to use the safe form, uncredited;
+  (3) **trap EXIT Overwrites, It Doesn't Chain Multiple Handlers**, expanding the main page's single
+  `trap cleanup EXIT` example with the undocumented behavior when it's called more than once —
+  verified via WebSearch that each new `trap ... EXIT` call silently REPLACES the previous handler
+  rather than chaining, a real risk once a script sources multiple library files that each register
+  their own cleanup; covered both the explicit-combine fix and an add_trap-style append helper using
+  `trap -p EXIT`. **A real over-escaped-double-quote bug self-caught during the standing gotcha
+  sweep** (the exact class of mistake CLAUDE.md already documents from the Process Management batch):
+  the trap subtopic's theory quoted the main page's own text containing literal double quotes
+  (`trap "cleanup" EXIT`) inside an already single-quoted TS field — written as `\\"cleanup\\"`
+  (unnecessary double-escaping, since double quotes never need escaping inside a single-quoted TS
+  string), fixed to plain `"cleanup"` and confirmed rendering correctly with no stray backslashes in
+  the browser afterward. Gotcha sweep (apostrophe-after-letter across all `.ts` files — every match
+  confirmed inside backtick-delimited `code:` blocks, safe — backtick parity: 34/40/52, all even —
+  bare `@word` in `.html` — none — unescaped `${` — none (explicitly checked and fixed two
+  unnecessary-but-harmless `\$@` escapes in the exit-code subtopic, simplified to plain `$@` for
+  consistency; confirmed the legitimately-needed `\${ITEMS[@]}` and `\${existing}`/`\${new_cmd}`
+  escapes remained correct) — over-escaped double-quote — caught and fixed one real instance (above)
+  — backslash-escaped apostrophe inside `[prev]`/`[next]` bound attributes — none, curly `’` used
+  correctly throughout) came back clean after the fix. Confirmed bare `bash-scripting` key
+  collision-free in the `SUBTOPICS` map (checked both quoted and unquoted forms) before adding.
+  Build reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR
+  (465.91 kB over) with zero actual TypeScript/template compile errors. `git add -A` (scoped to the
+  batch's own files) staged all 15 files (9 new + 6 wiring, no main-page fix needed this batch —
+  every subtopic angle was a genuine expansion gap). Browser-verified successfully: topic-overview
+  toggle count confirmed at 11 (the ELEVENTH Linux-hub topic with subtopics — the hub's Phase 10
+  rollout crossed its halfway point at 10/19 with this batch's predecessor), the Bash Scripting
+  Basics accordion expands to show all 3 correctly-labeled subtopic links, all three subtopic pages
+  individually confirmed h1/breadcrumb (all 4 levels)/prev-next cross-references correct, dark mode
+  (`--bg: #0f172a`) applying correctly, the fixed over-escaped-quote text explicitly re-verified
+  rendering correctly in the browser, and the final page's body text explicitly checked for stray
+  backslash/`undefined` artifacts (none found).
 - [ ] `/linux/bash-advanced` — Advanced Bash Scripting
 - [ ] `/linux/package-management` — Package Management
 - [ ] `/linux/systemd` — systemd & Services

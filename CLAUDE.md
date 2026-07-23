@@ -1893,10 +1893,11 @@ this same check before any other new hub's first subtopic set:
   Linux pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (security-hardening, cron) have no PageComplete.
   Challenge.language: `'typescript'`. `${VAR}` bash variables in template literals must be escaped as `\${VAR}`.
   LinuxNavComponent at `shared/linux-nav/linux-nav.ts`.
-  Phase 10: 10 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
+  Phase 10: 11 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
   `/linux/essential-commands`, `/linux/file-permissions`, `/linux/users-groups`,
   `/linux/process-management`, `/linux/system-monitoring`, `/linux/networking`, `/linux/firewall`,
-  `/linux/ssh`, 2026-07-23) — see "Linux hub subtopic wiring" section above for the `LinuxNavComponent` accordion structural fix and the
+  `/linux/ssh`, `/linux/bash-scripting`, 2026-07-23) — see "Linux hub subtopic wiring" section above
+  for the `LinuxNavComponent` accordion structural fix and the
   `linux-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript hub's
   own bare `fundamentals` topic key).
   **New gotcha found on the `/linux/process-management` batch**: a single-quoted `.ts` string
