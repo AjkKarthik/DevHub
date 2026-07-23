@@ -2701,4 +2701,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'oom_score_adj = -1000 Can Hang the Whole System', route: '/linux/system-monitoring/oom-score-adj-negative-1000-can-hang-the-whole-system' },
     { label: 'iostat’s %util Is Misleading on NVMe SSDs', route: '/linux/system-monitoring/iostats-percent-util-is-misleading-on-nvme-ssds' },
   ],
+  'networking': [
+    { label: 'TIME_WAIT Is Normal, Not a Bug — and It Can’t Be Tuned', route: '/linux/networking/time-wait-is-normal-not-a-bug-and-cant-be-tuned' },
+    { label: 'Traceroute Defaults to UDP, Which Firewalls Often Block', route: '/linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block' },
+    { label: 'Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole', route: '/linux/networking/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole' },
+  ],
 };

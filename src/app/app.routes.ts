@@ -3053,7 +3053,12 @@ export const routes: Routes = [
       { path: 'oom-score-adj-negative-1000-can-hang-the-whole-system', loadComponent: () => import('./components/cloud/linux/system-monitoring/subtopics/oom-score-adj-negative-1000-can-hang-the-whole-system/oom-score-adj-negative-1000-can-hang-the-whole-system').then(m => m.OomScoreAdjNegative1000CanHangTheWholeSystemSubtopic) },
       { path: 'iostats-percent-util-is-misleading-on-nvme-ssds', loadComponent: () => import('./components/cloud/linux/system-monitoring/subtopics/iostats-percent-util-is-misleading-on-nvme-ssds/iostats-percent-util-is-misleading-on-nvme-ssds').then(m => m.IostatsPercentUtilIsMisleadingOnNvmeSsdsSubtopic) },
     ] },
-    { path: 'networking',           loadComponent: () => import('./components/cloud/linux/networking/networking').then(m => m.LinuxNetworking) },
+    { path: 'networking', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/networking/networking').then(m => m.LinuxNetworking) },
+      { path: 'time-wait-is-normal-not-a-bug-and-cant-be-tuned', loadComponent: () => import('./components/cloud/linux/networking/subtopics/time-wait-is-normal-not-a-bug-and-cant-be-tuned/time-wait-is-normal-not-a-bug-and-cant-be-tuned').then(m => m.TimeWaitIsNormalNotABugAndCantBeTunedSubtopic) },
+      { path: 'traceroute-defaults-to-udp-which-firewalls-often-block', loadComponent: () => import('./components/cloud/linux/networking/subtopics/traceroute-defaults-to-udp-which-firewalls-often-block/traceroute-defaults-to-udp-which-firewalls-often-block').then(m => m.TracerouteDefaultsToUdpWhichFirewallsOftenBlockSubtopic) },
+      { path: 'jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole', loadComponent: () => import('./components/cloud/linux/networking/subtopics/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole').then(m => m.JumboFramesMtuMismatchCreatesASilentPmtudBlackholeSubtopic) },
+    ] },
     { path: 'firewall',             loadComponent: () => import('./components/cloud/linux/firewall/firewall').then(m => m.LinuxFirewall) },
     { path: 'ssh',                  loadComponent: () => import('./components/cloud/linux/ssh/ssh').then(m => m.LinuxSsh) },
     { path: 'bash-scripting',       loadComponent: () => import('./components/cloud/linux/bash-scripting/bash-scripting').then(m => m.LinuxBashScripting) },

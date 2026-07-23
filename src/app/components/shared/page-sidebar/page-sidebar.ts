@@ -39808,6 +39808,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'DNS resolution order (files, then DNS, or vice versa) is controlled by /etc/nsswitch.conf — a misconfigured order causes confusing, inconsistent name resolution behavior.',
     ],
   },
+  'linux/networking/time-wait-is-normal-not-a-bug-and-cant-be-tuned': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Traceroute Defaults to UDP, Which Firewalls Often Block', route: '/linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block' },
+      { label: 'Networking overview', route: '/linux/networking' },
+    ],
+    tip: 'TIME_WAIT is the mandatory final step of a clean TCP close, hardcoded to 60 seconds in the Linux kernel (TCP_TIMEWAIT_LEN) — tcp_fin_timeout is a different, unrelated sysctl (it governs FIN_WAIT_2).',
+    gotchas: [
+      'A high TIME_WAIT count alone is not a problem — it only matters if the local ephemeral port range is actually being exhausted by rapid outbound connection churn to the same destination.',
+      'tcp_tw_recycle was removed from the kernel (4.12+) for breaking NAT\'d clients — tcp_tw_reuse is the safe alternative for outgoing connections.',
+    ],
+  },
+  'linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'TIME_WAIT Is Normal, Not a Bug — and It Can’t Be Tuned', route: '/linux/networking/time-wait-is-normal-not-a-bug-and-cant-be-tuned' },
+      { label: 'Jumbo Frames + MTU Mismatch Creates a Silent PMTUD Blackhole', route: '/linux/networking/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole' },
+    ],
+    tip: 'Plain traceroute sends UDP probes to ports 33434+ by default — a firewall dropping those (or the ICMP replies) produces "* * *" even though the path is fully reachable for real traffic. Try -I (ICMP) or -T (TCP SYN) instead.',
+    gotchas: [
+      'mtr defaults to ICMP probes, not UDP — a different default than plain traceroute, which is why the two tools can disagree on the same path.',
+      '-T probes port 80 by default — pair it with -p to test the actual port your application traffic uses (e.g. -p 443).',
+    ],
+  },
+  'linux/networking/jumbo-frames-mtu-mismatch-creates-a-silent-pmtud-blackhole': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Traceroute Defaults to UDP, Which Firewalls Often Block', route: '/linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block' },
+      { label: 'Networking overview', route: '/linux/networking' },
+    ],
+    tip: 'ip link set eth0 mtu 9000 always succeeds locally even if the switch or peer NIC doesn\'t match — PMTUD then silently fails for large packets if the ICMP "Fragmentation Needed" message is blocked anywhere on the path.',
+    gotchas: [
+      'Symptom is distinctive: small transfers (SSH, short curls) work fine while large transfers hang with no error at all — that asymmetry is the actual signature of a blackhole, not a routing failure.',
+      'ping -M do -s SIZE binary-searches the real MTU directly, without depending on the (possibly blocked) ICMP feedback loop.',
+    ],
+  },
   'linux/firewall': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

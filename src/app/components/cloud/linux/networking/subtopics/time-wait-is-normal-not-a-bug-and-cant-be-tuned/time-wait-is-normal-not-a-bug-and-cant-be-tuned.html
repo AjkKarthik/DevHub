@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Networking" topicRoute="/linux/networking" subtopicLabel="TIME_WAIT Is Normal, Not a Bug — and It Can’t Be Tuned" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">TIME_WAIT Is Normal, Not a Bug — and It Can't Be Tuned</h1>
+  <p class="page-subtitle">The main page mentions TIME_WAIT in a single line without explaining it — it's the mandatory final step of every clean TCP close, hardcoded to 60 seconds in the Linux kernel with no sysctl to change it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Linux 2.6+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's own brief TIME_WAIT mention. Next: why traceroute's default probe protocol is often silently blocked by firewalls.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Networking" topicRoute="/linux/networking"
+    [next]="{ label: 'Traceroute Defaults to UDP, Which Firewalls Often Block', route: '/linux/networking/traceroute-defaults-to-udp-which-firewalls-often-block' }" />
+</div>
