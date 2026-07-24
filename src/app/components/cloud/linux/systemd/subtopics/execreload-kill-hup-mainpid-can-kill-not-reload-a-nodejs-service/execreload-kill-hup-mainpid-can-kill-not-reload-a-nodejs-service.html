@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="systemd &amp; Services" topicRoute="/linux/systemd" subtopicLabel="ExecReload=kill -HUP $MAINPID Can Kill, Not Reload, a Node.js Service" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">ExecReload=kill -HUP $MAINPID Can Kill, Not Reload, a Node.js Service</h1>
+  <p class="page-subtitle">The main page's own unit-file example uses this exact line for a Node.js service — SIGHUP's default disposition is to terminate a process, and reload only stays graceful if the app's own code catches it.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="systemd (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own "reload sends SIGHUP" claim into an application-specific fact, not a universal one. Next: why StartLimitBurst can permanently lock a service in the failed state.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="systemd &amp; Services" topicRoute="/linux/systemd"
+    [next]="{ label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' }" />
+</div>

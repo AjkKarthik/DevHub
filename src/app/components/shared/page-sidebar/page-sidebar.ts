@@ -39952,6 +39952,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Unit dependency ordering (After=, Requires=) does not automatically mean a dependency is fully READY, only that it has started — a service depending on a database should still handle a not-yet-accepting-connections database gracefully.',
     ],
   },
+  'linux/systemd/execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' },
+      { label: 'systemd overview', route: '/linux/systemd' },
+    ],
+    tip: 'ExecReload= just runs whatever command you give it — SIGHUP is only "graceful" because nginx/apache\'s own code catches it; a process with no SIGHUP handler (like a plain Node.js server.js) is killed by SIGHUP\'s default disposition instead.',
+    gotchas: [
+      'Registering process.on(\'SIGHUP\', ...) in Node.js removes the default termination behavior entirely — with no handler at all, SIGHUP kills the process.',
+      'If there\'s no real in-process reload logic, omit ExecReload= entirely so systemctl reload fails honestly instead of silently killing the process.',
+    ],
+  },
+  'linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'ExecReload=kill -HUP $MAINPID Can Kill, Not Reload, a Node.js Service', route: '/linux/systemd/execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service' },
+      { label: 'systemctl edit Drop-Ins Need an Empty ExecStart= to Override It', route: '/linux/systemd/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it' },
+    ],
+    tip: 'StartLimitBurst/StartLimitIntervalSec are a circuit breaker — exceed the burst count within the interval and systemd stops retrying entirely, landing the unit in failed state even after Restart=on-failure would otherwise keep trying.',
+    gotchas: [
+      'Fixing the underlying bug does NOT clear a tripped start-limit counter — systemctl reset-failed is required before the service starts normally again.',
+      'Size StartLimitIntervalSec comfortably greater than RestartSec × StartLimitBurst, or the limit can trip faster (or slower) than intended.',
+    ],
+  },
+  'linux/systemd/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' },
+      { label: 'systemd overview', route: '/linux/systemd' },
+    ],
+    tip: 'Most drop-in settings simply override the original, but ExecStart= is treated as an appendable list — a new ExecStart= line in a drop-in ADDS to the original rather than replacing it, causing "more than one ExecStart=" errors.',
+    gotchas: [
+      'The fix is two lines: an empty ExecStart= first (clears every prior value), then the new ExecStart=/path/to/command on the next line.',
+      'systemctl cat <service> shows the fully-merged effective unit (original + all drop-ins) — useful for confirming a drop-in did what was intended before restarting.',
+    ],
+  },
   'linux/log-analysis': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

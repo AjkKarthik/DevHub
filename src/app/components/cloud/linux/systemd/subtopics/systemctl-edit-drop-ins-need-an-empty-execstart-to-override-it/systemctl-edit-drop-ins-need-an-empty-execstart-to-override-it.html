@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="systemd &amp; Services" topicRoute="/linux/systemd" subtopicLabel="systemctl edit Drop-Ins Need an Empty ExecStart= to Override It" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">systemctl edit Drop-Ins Need an Empty ExecStart= to Override It</h1>
+  <p class="page-subtitle">The main page's own QnA describes drop-ins as a uniform merge — ExecStart= is actually an appendable list, and a new line without an empty ExecStart= first produces "more than one ExecStart=" errors.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="systemd (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, refining the main page's own "merged with the original" description with the one directive where that's not quite true.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="systemd &amp; Services" topicRoute="/linux/systemd"
+    [prev]="{ label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' }" />
+</div>

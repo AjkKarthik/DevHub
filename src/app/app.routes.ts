@@ -3089,7 +3089,12 @@ export const routes: Routes = [
       { path: 'apt-mark-auto-manual-is-what-actually-drives-autoremove', loadComponent: () => import('./components/cloud/linux/package-management/subtopics/apt-mark-auto-manual-is-what-actually-drives-autoremove/apt-mark-auto-manual-is-what-actually-drives-autoremove').then(m => m.AptMarkAutoManualIsWhatActuallyDrivesAutoremoveSubtopic) },
       { path: 'dnf-history-undo-can-fail-when-the-old-version-left-the-repo', loadComponent: () => import('./components/cloud/linux/package-management/subtopics/dnf-history-undo-can-fail-when-the-old-version-left-the-repo/dnf-history-undo-can-fail-when-the-old-version-left-the-repo').then(m => m.DnfHistoryUndoCanFailWhenTheOldVersionLeftTheRepoSubtopic) },
     ] },
-    { path: 'systemd',              loadComponent: () => import('./components/cloud/linux/systemd/systemd').then(m => m.LinuxSystemd) },
+    { path: 'systemd', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/systemd/systemd').then(m => m.LinuxSystemd) },
+      { path: 'execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service', loadComponent: () => import('./components/cloud/linux/systemd/subtopics/execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service/execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service').then(m => m.ExecreloadKillHupMainpidCanKillNotReloadANodejsServiceSubtopic) },
+      { path: 'startlimitburst-locks-a-service-in-failed-state-until-reset-failed', loadComponent: () => import('./components/cloud/linux/systemd/subtopics/startlimitburst-locks-a-service-in-failed-state-until-reset-failed/startlimitburst-locks-a-service-in-failed-state-until-reset-failed').then(m => m.StartlimitburstLocksAServiceInFailedStateUntilResetFailedSubtopic) },
+      { path: 'systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it', loadComponent: () => import('./components/cloud/linux/systemd/subtopics/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it').then(m => m.SystemctlEditDropInsNeedAnEmptyExecstartToOverrideItSubtopic) },
+    ] },
     { path: 'disk-storage',         loadComponent: () => import('./components/cloud/linux/disk-storage/disk-storage').then(m => m.LinuxDiskStorage) },
     { path: 'environment-variables',loadComponent: () => import('./components/cloud/linux/environment-variables/environment-variables').then(m => m.LinuxEnvironmentVariables) },
     { path: 'log-analysis',         loadComponent: () => import('./components/cloud/linux/log-analysis/log-analysis').then(m => m.LinuxLogAnalysis) },

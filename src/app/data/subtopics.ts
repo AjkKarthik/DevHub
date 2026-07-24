@@ -2731,4 +2731,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'apt-mark auto/manual Is What Actually Drives autoremove', route: '/linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove' },
     { label: 'dnf history undo Can Fail When the Old Version Left the Repo', route: '/linux/package-management/dnf-history-undo-can-fail-when-the-old-version-left-the-repo' },
   ],
+  'systemd': [
+    { label: 'ExecReload=kill -HUP $MAINPID Can Kill, Not Reload, a Node.js Service', route: '/linux/systemd/execreload-kill-hup-mainpid-can-kill-not-reload-a-nodejs-service' },
+    { label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' },
+    { label: 'systemctl edit Drop-Ins Need an Empty ExecStart= to Override It', route: '/linux/systemd/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it' },
+  ],
 };
