@@ -5159,7 +5159,35 @@ off here with a date.
   h1/breadcrumb (all 4 levels)/prev-next correct, dark mode correct, and no stray backslash/undefined
   artifacts — including explicit confirmation the renamed, quote-free title rendered correctly
   everywhere it was referenced.
-- [ ] `/linux/performance-tuning` — Performance Tuning
+- [x] `/linux/performance-tuning` — Performance Tuning (2026-07-24) — 3 subtopics: (1) **I/O
+  Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule**, applying the main page's
+  own sysctl-persistence lesson (from its first mistake entry) to a setting it never applied that
+  lesson to — verified via WebSearch that sysfs writes reset on reboot exactly like /proc/sys/, and
+  that the actual persistence mechanism is a udev rule in /etc/udev/rules.d/, not a config-file
+  directory; (2) **discard in fstab Has a Real Penalty — fstrim.timer Is Preferred**, reversing the
+  main page's implied recommendation (discard as primary, fstrim as "manual" fallback) — verified
+  via WebSearch that continuous discard has a documented fsync-latency cost multiple distros
+  explicitly discourage, and that fstrim.timer (enabled by default on most distros) is the actually-
+  recommended approach; (3) **numactl --membind Is a Hard Constraint — --preferred Is the Safer
+  Default**, adding the failure mode the main page's own NUMA example never mentions — verified via
+  WebSearch that --membind can trigger an OOM-kill when its bound node is exhausted even while other
+  nodes sit nearly empty, while --preferred gracefully falls back instead. **Applied the newly-
+  established quote-free-title discipline from the log-analysis batch proactively this time** — no
+  subtopic title in this batch needed a rename, since all three were written quote-free from the
+  start, confirming the lesson generalized rather than needing to be re-learned. Gotcha sweep
+  (apostrophe-after-letter — all matches confirmed inside backtick-delimited code blocks — backtick
+  parity: 18/22/20, all even — bare @word — none — unescaped ${ — none — over-escaped double-quote —
+  none — backslash-escaped apostrophe in bound attributes — none — literal-double-quote-in-label
+  check — none) came back clean on the first pass. Confirmed bare `performance-tuning` key
+  collision-free in the SUBTOPICS map before adding. Build reported only the pre-documented harmless
+  "bundle initial exceeded maximum budget" ERROR (508.57 kB over) with zero actual TypeScript/
+  template compile errors. `git add -A` staged all 15 files (9 new + 6 wiring, no main-page fix
+  needed this batch). Proactively checked `preview_logs` for the three new component chunk names
+  before browser verification — confirmed all three compiled correctly on the first post-commit
+  rebuild, no stale-chunk incident. Browser-verified successfully: topic-overview toggle count
+  confirmed at 18 (the EIGHTEENTH Linux-hub topic with subtopics — only `/linux/vim` remains for
+  the entire hub), the accordion expands correctly, all three subtopic pages confirmed h1/breadcrumb
+  (all 4 levels)/prev-next correct, dark mode correct, and no stray backslash/undefined artifacts.
 - [ ] `/linux/vim` — Vim & Text Editors
 
 #### Terraform — 21 topic pages
