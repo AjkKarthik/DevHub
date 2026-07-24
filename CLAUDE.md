@@ -606,6 +606,25 @@ to the topic page, not its subtopics.
   single-quoted-string-valued bound attribute — grep any new subtopic's bound attributes for
   a bare `'` immediately preceded by a letter (a possessive/contraction pattern) before
   building, the same way `@word` and brace gotchas are grepped for.
+- **A new variant of the SAME delimiter-collision family, this time a literal DOUBLE quote
+  inside a `[prev]`/`[next]` label string — caught and fixed BEFORE it ever reached a build**
+  (`/linux/log-analysis`'s own first subtopic, 2026-07-24): a subtopic title quoting raw shell
+  syntax (`sort -t"` ...) contains a literal `"` character. Since a subtopic's own title gets
+  embedded verbatim as the `label:` value inside OTHER pages' `[prev]`/`[next]` bindings — and
+  those bindings are themselves wrapped in DOUBLE quotes at the HTML-attribute level
+  (`[prev]="{ label: '...', route: '...' }"`) — a bare `"` inside that label string prematurely
+  closes the OUTER double-quoted attribute the moment the HTML parser reaches it, breaking the
+  binding entirely (not merely mis-parsing an inner expression — the attribute itself
+  terminates early). This is distinct from the single-quote/apostrophe case above precisely
+  because it collides with the OUTER delimiter, not the inner one. **Fix: never use a literal
+  `"` character in a subtopic title/label at all — rephrase to avoid it entirely** (there is no
+  safe entity-escape or typographic-substitute equivalent to reach for here, unlike the
+  apostrophe case, since the outer attribute itself is what's at risk). **New standing sweep
+  step, add to the existing checklist**: `grep -rnE "label: '[^']*\""` against every new
+  subtopic's `.html` files — a hit means some OTHER page's `[prev]`/`[next]` will embed a raw
+  double-quote inside this page's own referenced title before it's ever written, so catch this
+  by inspecting a subtopic's own H1/eyebrow title text for a bare `"` BEFORE creating any
+  cross-page references to it, not just by sweeping the `.html` files after the fact.
 
 ### Non-Angular hubs (C#, SQL, Python, Go, etc.) — the "See it run" section has no live playground
 
@@ -1916,12 +1935,12 @@ this same check before any other new hub's first subtopic set:
   Linux pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (security-hardening, cron) have no PageComplete.
   Challenge.language: `'typescript'`. `${VAR}` bash variables in template literals must be escaped as `\${VAR}`.
   LinuxNavComponent at `shared/linux-nav/linux-nav.ts`.
-  Phase 10: 16 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
+  Phase 10: 17 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
   `/linux/essential-commands`, `/linux/file-permissions`, `/linux/users-groups`,
   `/linux/process-management`, `/linux/system-monitoring`, `/linux/networking`, `/linux/firewall`,
   `/linux/ssh`, `/linux/bash-scripting`, `/linux/bash-advanced`, `/linux/package-management`,
-  `/linux/systemd`, `/linux/disk-storage`, `/linux/environment-variables`, 2026-07-24) — see "Linux
-  hub subtopic wiring" section above for the `LinuxNavComponent` accordion structural fix and the
+  `/linux/systemd`, `/linux/disk-storage`, `/linux/environment-variables`, `/linux/log-analysis`,
+  2026-07-24) — see "Linux hub subtopic wiring" section above for the `LinuxNavComponent` accordion structural fix and the
   `linux-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript hub's
   own bare `fundamentals` topic key).
   **New gotcha found on the `/linux/process-management` batch**: a single-quoted `.ts` string

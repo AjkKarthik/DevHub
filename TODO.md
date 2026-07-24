@@ -5116,7 +5116,49 @@ off here with a date.
   subtopic pages confirmed h1/breadcrumb/prev-next correct, the entity-escaped subtitle rendering
   correctly as literal text, dark mode correct, the main-page fix's caveat comment explicitly
   confirmed rendering in the Code Examples tab, and no stray backslash/undefined artifacts.
-- [ ] `/linux/log-analysis` — Log Analysis
+- [x] `/linux/log-analysis` — Log Analysis (2026-07-24) — 3 subtopics: (1) **The Slowest-Responses
+  Sort Assumes request_time Is Already Logged**, expanding the main page's own "if $request_time is
+  logged" caveat on its own one-liner, which never explains how to actually verify the condition —
+  verified via WebSearch that nginx's default "combined" format genuinely has no $request_time field
+  at all, so the main page's own command silently sorts by User-Agent instead on a stock install,
+  with no error; covered nginx -T verification and the custom log_format fix; (2) **journalctl Only
+  Shows the Current Boot by Default**, narrowing the main page's own "shows all journal entries"
+  QnA claim — verified via WebSearch that plain journalctl scopes to the current boot only, and a
+  --since filter narrows WITHIN that scope rather than reaching into prior boots; covered
+  --list-boots and -b all/-b -N; (3) **logrotate's copytruncate Has a Real Data-Loss Race Window**,
+  adding the alternative rotation strategy the main page's own logrotate section never mentions
+  (only showing the signal/postrotate approach) — verified via WebSearch that logrotate's own man
+  page documents a genuine race window between the copy and truncate steps, with real-world testing
+  showing millions of lost lines under sustained write load. **A real risk caught and fixed BEFORE
+  it could propagate across sibling pages**: the first subtopic's initial title/h1 contained a
+  literal double-quote character (from the shell syntax `sort -t"`) — since subtopic titles get
+  embedded as the `label:` value inside OTHER pages' double-quoted `[prev]`/`[next]` Angular
+  attribute bindings, an un-escaped `"` there would have prematurely terminated the OUTER HTML
+  attribute the moment a sibling page referenced it, a new variant of the established delimiter-
+  collision gotcha family (previously documented for apostrophes and backslashes, not yet for a
+  literal double-quote inside a double-quoted attribute). Caught via reasoning through the wiring
+  BEFORE creating any [prev]/[next] references to it, fixed by renaming the title to a quote-free
+  phrasing ("...Assumes request_time Is Already Logged") — **added a new standing sweep step**:
+  `grep -rnE "label: '[^']*\""` against all `.html` files, now added to the standard gotcha checklist
+  going forward. **A second real bug caught by the standing over-escaped-double-quote sweep**: the
+  same subtopic's own theory text initially used `\\"..\\"` (backslash-escaped quotes) inside a
+  single-quoted TS field describing nginx's log format in prose — unnecessary escaping that would
+  have rendered literal backslash characters; fixed to plain quotes, matching the established
+  single-quoted-string-never-needs-quote-escaping rule. Gotcha sweep (apostrophe-after-letter — all
+  matches confirmed inside backtick-delimited code blocks — backtick parity: 18/8/18 [after the fix],
+  all even — bare @word — none — unescaped ${ — none — backslash-escaped apostrophe in bound
+  attributes — none — NEW literal-double-quote-in-label check — none after the fix) came back clean.
+  Confirmed bare `log-analysis` key collision-free in the SUBTOPICS map before adding. Build reported
+  only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR (502.11 kB over)
+  with zero actual TypeScript/template compile errors. `git add -A` staged all 15 files (9 new + 6
+  wiring, no main-page fix needed this batch). Proactively checked `preview_logs` for the three new
+  component chunk names before browser verification (now standing practice) — confirmed all three
+  compiled correctly on the first post-commit rebuild, no stale-chunk incident this time. Browser-
+  verified successfully: topic-overview toggle count confirmed at 17 (the SEVENTEENTH Linux-hub
+  topic with subtopics), the accordion expands correctly, all three subtopic pages confirmed
+  h1/breadcrumb (all 4 levels)/prev-next correct, dark mode correct, and no stray backslash/undefined
+  artifacts — including explicit confirmation the renamed, quote-free title rendered correctly
+  everywhere it was referenced.
 - [ ] `/linux/performance-tuning` — Performance Tuning
 - [ ] `/linux/vim` — Vim & Text Editors
 
