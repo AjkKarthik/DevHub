@@ -286,7 +286,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">System Admin</p>
-      <a routerLink="/linux/package-management" routerLinkActive="active"><span class="nl-text">Package Management</span>@if(p.isDone('linux-package-management')){<span class="nl-done">✓</span>}@if(d('linux-package-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/package-management" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Package Management</span>
+        @if (p.isDone('linux-package-management')) {<span class="nl-done">✓</span>}
+        @if (d('linux-package-management'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('package-management')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('package-management')"
+                  (click)="toggleSubtopics('package-management', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('package-management'); as pmgmtSubs) {
+        @if (isSubtopicsExpanded('package-management')) {
+          <div class="nav-subtopics">
+            @for (s of pmgmtSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/linux/systemd" routerLinkActive="active"><span class="nl-text">systemd &amp; Services</span>@if(p.isDone('linux-systemd')){<span class="nl-done">✓</span>}@if(d('linux-systemd');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/linux/disk-storage" routerLinkActive="active"><span class="nl-text">Disk &amp; Storage</span>@if(p.isDone('linux-disk-storage')){<span class="nl-done">✓</span>}@if(d('linux-disk-storage');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/linux/log-analysis" routerLinkActive="active"><span class="nl-text">Log Analysis</span>@if(p.isDone('linux-log-analysis')){<span class="nl-done">✓</span>}@if(d('linux-log-analysis');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

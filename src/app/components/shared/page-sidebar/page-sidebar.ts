@@ -39987,6 +39987,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A pinned/held package version prevents accidental upgrades but also prevents automatic security patches for that specific package — a deliberate tradeoff, not a default.',
     ],
   },
+  'linux/package-management/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'apt-mark auto/manual Is What Actually Drives autoremove', route: '/linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove' },
+      { label: 'Package Management overview', route: '/linux/package-management' },
+    ],
+    tip: 'apt-key trusts a key system-wide for every repo on the system — signed-by= (with a key under /etc/apt/keyrings/) scopes trust to just the one repository entry, closing the gap that got apt-key deprecated.',
+    gotchas: [
+      'apt-key is deprecated as of Debian 11 / Ubuntu 22.04 and scheduled for removal — apt itself now warns about it directly on apt update.',
+      'A compromised apt-key-trusted key can forge packages claiming to come from ANY repo on the system, not just the one it was meant for.',
+    ],
+  },
+  'linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'apt-key Is Deprecated — signed-by Keyrings Is the Modern Replacement', route: '/linux/package-management/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement' },
+      { label: 'dnf history undo Can Fail When the Old Version Left the Repo', route: '/linux/package-management/dnf-history-undo-can-fail-when-the-old-version-left-the-repo' },
+    ],
+    tip: 'Every package is flagged automatic or manual at install time in /var/lib/apt/extended_states — autoremove only ever removes automatic packages nothing manual depends on, regardless of how the package is actually being used today.',
+    gotchas: [
+      'A dependency you\'ve come to rely on directly needs apt-mark manual BEFORE its parent package is removed, or autoremove will silently take it too.',
+      'apt-get autoremove -s (or apt autoremove --dry-run) simulates the removal without actually removing anything — worth running on any unfamiliar system first.',
+    ],
+  },
+  'linux/package-management/dnf-history-undo-can-fail-when-the-old-version-left-the-repo': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'apt-mark auto/manual Is What Actually Drives autoremove', route: '/linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove' },
+      { label: 'Package Management overview', route: '/linux/package-management' },
+    ],
+    tip: 'dnf history undo needs the OLDER package version to reinstall it — repos typically keep only the latest version, so an undo on an old transaction can fail with "package X is not available" even though the history itself is intact.',
+    gotchas: [
+      'keepcache=True in /etc/dnf/dnf.conf keeps every downloaded RPM in /var/cache/dnf/ indefinitely, so a future undo doesn\'t depend on the remote repo still having the old version.',
+      'dnf list --showduplicates confirms what versions are still available before assuming an undo failure means something is broken.',
+    ],
+  },
   'linux/environment-variables': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

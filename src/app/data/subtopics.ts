@@ -2726,4 +2726,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' },
     { label: 'check_host Always Exits 0, Regardless of Up or Down', route: '/linux/bash-advanced/check-host-always-exits-0-regardless-of-up-or-down' },
   ],
+  'package-management': [
+    { label: 'apt-key Is Deprecated — signed-by Keyrings Is the Modern Replacement', route: '/linux/package-management/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement' },
+    { label: 'apt-mark auto/manual Is What Actually Drives autoremove', route: '/linux/package-management/apt-mark-auto-manual-is-what-actually-drives-autoremove' },
+    { label: 'dnf history undo Can Fail When the Old Version Left the Repo', route: '/linux/package-management/dnf-history-undo-can-fail-when-the-old-version-left-the-repo' },
+  ],
 };

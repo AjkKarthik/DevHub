@@ -3083,7 +3083,12 @@ export const routes: Routes = [
       { path: 'exec-tee-redirect-races-script-exit-truncating-the-log', loadComponent: () => import('./components/cloud/linux/bash-advanced/subtopics/exec-tee-redirect-races-script-exit-truncating-the-log/exec-tee-redirect-races-script-exit-truncating-the-log').then(m => m.ExecTeeRedirectRacesScriptExitTruncatingTheLogSubtopic) },
       { path: 'check-host-always-exits-0-regardless-of-up-or-down', loadComponent: () => import('./components/cloud/linux/bash-advanced/subtopics/check-host-always-exits-0-regardless-of-up-or-down/check-host-always-exits-0-regardless-of-up-or-down').then(m => m.CheckHostAlwaysExits0RegardlessOfUpOrDownSubtopic) },
     ] },
-    { path: 'package-management',   loadComponent: () => import('./components/cloud/linux/package-management/package-management').then(m => m.LinuxPackageManagement) },
+    { path: 'package-management', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/package-management/package-management').then(m => m.LinuxPackageManagement) },
+      { path: 'apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement', loadComponent: () => import('./components/cloud/linux/package-management/subtopics/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement/apt-key-is-deprecated-signed-by-keyrings-is-the-modern-replacement').then(m => m.AptKeyIsDeprecatedSignedByKeyringsIsTheModernReplacementSubtopic) },
+      { path: 'apt-mark-auto-manual-is-what-actually-drives-autoremove', loadComponent: () => import('./components/cloud/linux/package-management/subtopics/apt-mark-auto-manual-is-what-actually-drives-autoremove/apt-mark-auto-manual-is-what-actually-drives-autoremove').then(m => m.AptMarkAutoManualIsWhatActuallyDrivesAutoremoveSubtopic) },
+      { path: 'dnf-history-undo-can-fail-when-the-old-version-left-the-repo', loadComponent: () => import('./components/cloud/linux/package-management/subtopics/dnf-history-undo-can-fail-when-the-old-version-left-the-repo/dnf-history-undo-can-fail-when-the-old-version-left-the-repo').then(m => m.DnfHistoryUndoCanFailWhenTheOldVersionLeftTheRepoSubtopic) },
+    ] },
     { path: 'systemd',              loadComponent: () => import('./components/cloud/linux/systemd/systemd').then(m => m.LinuxSystemd) },
     { path: 'disk-storage',         loadComponent: () => import('./components/cloud/linux/disk-storage/disk-storage').then(m => m.LinuxDiskStorage) },
     { path: 'environment-variables',loadComponent: () => import('./components/cloud/linux/environment-variables/environment-variables').then(m => m.LinuxEnvironmentVariables) },
