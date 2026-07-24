@@ -3107,7 +3107,12 @@ export const routes: Routes = [
       { path: 'docker-inspect-reveals-every-e-secret-in-plaintext', loadComponent: () => import('./components/cloud/linux/environment-variables/subtopics/docker-inspect-reveals-every-e-secret-in-plaintext/docker-inspect-reveals-every-e-secret-in-plaintext').then(m => m.DockerInspectRevealsEveryESecretInPlaintextSubtopic) },
       { path: 'unset-removes-a-variable-var-only-empties-it', loadComponent: () => import('./components/cloud/linux/environment-variables/subtopics/unset-removes-a-variable-var-only-empties-it/unset-removes-a-variable-var-only-empties-it').then(m => m.UnsetRemovesAVariableVarOnlyEmptiesItSubtopic) },
     ] },
-    { path: 'log-analysis',         loadComponent: () => import('./components/cloud/linux/log-analysis/log-analysis').then(m => m.LinuxLogAnalysis) },
+    { path: 'log-analysis', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/log-analysis/log-analysis').then(m => m.LinuxLogAnalysis) },
+      { path: 'sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format', loadComponent: () => import('./components/cloud/linux/log-analysis/subtopics/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format').then(m => m.SortTK3RnSortsGarbageUnlessRequestTimeIsInTheLogFormatSubtopic) },
+      { path: 'journalctl-only-shows-the-current-boot-by-default', loadComponent: () => import('./components/cloud/linux/log-analysis/subtopics/journalctl-only-shows-the-current-boot-by-default/journalctl-only-shows-the-current-boot-by-default').then(m => m.JournalctlOnlyShowsTheCurrentBootByDefaultSubtopic) },
+      { path: 'logrotates-copytruncate-has-a-real-data-loss-race-window', loadComponent: () => import('./components/cloud/linux/log-analysis/subtopics/logrotates-copytruncate-has-a-real-data-loss-race-window/logrotates-copytruncate-has-a-real-data-loss-race-window').then(m => m.LogrotatesCopytruncateHasARealDataLossRaceWindowSubtopic) },
+    ] },
     { path: 'performance-tuning',   loadComponent: () => import('./components/cloud/linux/performance-tuning/performance-tuning').then(m => m.LinuxPerformanceTuning) },
     { path: 'vim',                  loadComponent: () => import('./components/cloud/linux/vim/vim').then(m => m.LinuxVim) },
     { path: 'security-hardening',   loadComponent: () => import('./components/cloud/linux/security-hardening/security-hardening').then(m => m.LinuxSecurityHardening) },

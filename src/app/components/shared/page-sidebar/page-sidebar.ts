@@ -40035,6 +40035,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'grep/awk/sed pipelines remain powerful for ad-hoc log analysis, but a centralized log aggregator becomes necessary once logs span more than a handful of hosts.',
     ],
   },
+  'linux/log-analysis/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' },
+      { label: 'Log Analysis overview', route: '/linux/log-analysis' },
+    ],
+    tip: 'nginx\'s default "combined" log format has no $request_time field at all — a quote-delimited-field sort against it silently sorts by User-Agent instead, with no error to indicate the mistake.',
+    gotchas: [
+      'nginx -T | grep log_format confirms whether $request_time is actually in the format currently in use before trusting any timing-based sort against the log.',
+      'Once added via a custom log_format, sort by the actual field position (often the last field) rather than assuming it still lines up with the default combined format.',
+    ],
+  },
+  'linux/log-analysis/journalctl-only-shows-the-current-boot-by-default': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'The Slowest-Responses Sort Assumes request_time Is Already Logged', route: '/linux/log-analysis/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format' },
+      { label: 'logrotate’s copytruncate Has a Real Data-Loss Race Window', route: '/linux/log-analysis/logrotates-copytruncate-has-a-real-data-loss-race-window' },
+    ],
+    tip: 'Plain journalctl -u service defaults to the CURRENT boot only — a --since filter narrows within that scope, it doesn\'t reach into prior boots. journalctl --list-boots then -b all or -b -N searches across reboots.',
+    gotchas: [
+      'An empty search result only confirms the event isn\'t in the current boot\'s journal — check --list-boots before concluding something "never happened."',
+      'Journal persistence across reboots depends on /var/log/journal/ existing and being writable — not universal across every system.',
+    ],
+  },
+  'linux/log-analysis/logrotates-copytruncate-has-a-real-data-loss-race-window': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' },
+      { label: 'Log Analysis overview', route: '/linux/log-analysis' },
+    ],
+    tip: 'copytruncate is a fallback for apps that can\'t reopen log files on a signal — it copies then truncates, and anything written in that small window is genuinely lost (documented in logrotate\'s own man page).',
+    gotchas: [
+      'Severity scales with write volume — a high-throughput log can lose real, meaningful amounts of data on every single rotation, not just a hypothetical edge case.',
+      'Whenever the app supports reopening on a signal, the rename + postrotate approach has no equivalent data-loss window at all — prefer it over copytruncate by default.',
+    ],
+  },
   'linux/security-hardening': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

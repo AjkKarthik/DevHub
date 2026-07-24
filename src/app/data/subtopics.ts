@@ -2746,4 +2746,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'docker inspect Reveals Every -e Secret in Plaintext', route: '/linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext' },
     { label: 'unset Removes a Variable — VAR= Only Empties It', route: '/linux/environment-variables/unset-removes-a-variable-var-only-empties-it' },
   ],
+  'log-analysis': [
+    { label: 'The Slowest-Responses Sort Assumes request_time Is Already Logged', route: '/linux/log-analysis/sort-t-k3-rn-sorts-garbage-unless-request-time-is-in-the-log-format' },
+    { label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' },
+    { label: 'logrotate’s copytruncate Has a Real Data-Loss Race Window', route: '/linux/log-analysis/logrotates-copytruncate-has-a-real-data-loss-race-window' },
+  ],
 };

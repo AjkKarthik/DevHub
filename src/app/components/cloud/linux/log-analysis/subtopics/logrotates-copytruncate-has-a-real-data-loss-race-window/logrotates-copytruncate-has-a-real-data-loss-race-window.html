@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Log Analysis" topicRoute="/linux/log-analysis" subtopicLabel="logrotate’s copytruncate Has a Real Data-Loss Race Window" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">logrotate's copytruncate Has a Real Data-Loss Race Window</h1>
+  <p class="page-subtitle">The main page only shows the signal-based postrotate approach — copytruncate exists for apps that can't reopen log files, but has a documented window where log lines are genuinely lost.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="logrotate (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives, adding the alternative rotation strategy and its real tradeoff the main page's own logrotate example never mentions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Log Analysis" topicRoute="/linux/log-analysis"
+    [prev]="{ label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' }" />
+</div>
