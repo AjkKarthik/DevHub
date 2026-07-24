@@ -3095,7 +3095,12 @@ export const routes: Routes = [
       { path: 'startlimitburst-locks-a-service-in-failed-state-until-reset-failed', loadComponent: () => import('./components/cloud/linux/systemd/subtopics/startlimitburst-locks-a-service-in-failed-state-until-reset-failed/startlimitburst-locks-a-service-in-failed-state-until-reset-failed').then(m => m.StartlimitburstLocksAServiceInFailedStateUntilResetFailedSubtopic) },
       { path: 'systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it', loadComponent: () => import('./components/cloud/linux/systemd/subtopics/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it').then(m => m.SystemctlEditDropInsNeedAnEmptyExecstartToOverrideItSubtopic) },
     ] },
-    { path: 'disk-storage',         loadComponent: () => import('./components/cloud/linux/disk-storage/disk-storage').then(m => m.LinuxDiskStorage) },
+    { path: 'disk-storage', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/disk-storage/disk-storage').then(m => m.LinuxDiskStorage) },
+      { path: 'deleted-but-open-files-hide-space-df-and-du-never-agree', loadComponent: () => import('./components/cloud/linux/disk-storage/subtopics/deleted-but-open-files-hide-space-df-and-du-never-agree/deleted-but-open-files-hide-space-df-and-du-never-agree').then(m => m.DeletedButOpenFilesHideSpaceDfAndDuNeverAgreeSubtopic) },
+      { path: 'xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path', loadComponent: () => import('./components/cloud/linux/disk-storage/subtopics/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path').then(m => m.XfsHasNoShrinkCommandBackupRecreateRestoreIsTheOnlyPathSubtopic) },
+      { path: 'growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart', loadComponent: () => import('./components/cloud/linux/disk-storage/subtopics/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart').then(m => m.GrowingACloudVmsLvmRootNeedsPvresizeNotJustGrowpartSubtopic) },
+    ] },
     { path: 'environment-variables',loadComponent: () => import('./components/cloud/linux/environment-variables/environment-variables').then(m => m.LinuxEnvironmentVariables) },
     { path: 'log-analysis',         loadComponent: () => import('./components/cloud/linux/log-analysis/log-analysis').then(m => m.LinuxLogAnalysis) },
     { path: 'performance-tuning',   loadComponent: () => import('./components/cloud/linux/performance-tuning/performance-tuning').then(m => m.LinuxPerformanceTuning) },

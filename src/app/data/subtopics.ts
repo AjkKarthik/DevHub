@@ -2736,4 +2736,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'StartLimitBurst Locks a Service in Failed State Until reset-failed', route: '/linux/systemd/startlimitburst-locks-a-service-in-failed-state-until-reset-failed' },
     { label: 'systemctl edit Drop-Ins Need an Empty ExecStart= to Override It', route: '/linux/systemd/systemctl-edit-drop-ins-need-an-empty-execstart-to-override-it' },
   ],
+  'disk-storage': [
+    { label: 'Deleted-but-Open Files Hide Space — df and du Never Agree', route: '/linux/disk-storage/deleted-but-open-files-hide-space-df-and-du-never-agree' },
+    { label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' },
+    { label: 'Growing a Cloud VM’s LVM Root Needs pvresize, Not Just growpart', route: '/linux/disk-storage/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart' },
+  ],
 };

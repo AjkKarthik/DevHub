@@ -326,7 +326,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/linux/disk-storage" routerLinkActive="active"><span class="nl-text">Disk &amp; Storage</span>@if(p.isDone('linux-disk-storage')){<span class="nl-done">✓</span>}@if(d('linux-disk-storage');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/disk-storage" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Disk &amp; Storage</span>
+        @if (p.isDone('linux-disk-storage')) {<span class="nl-done">✓</span>}
+        @if (d('linux-disk-storage'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('disk-storage')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('disk-storage')"
+                  (click)="toggleSubtopics('disk-storage', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('disk-storage'); as dsSubs) {
+        @if (isSubtopicsExpanded('disk-storage')) {
+          <div class="nav-subtopics">
+            @for (s of dsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/linux/log-analysis" routerLinkActive="active"><span class="nl-text">Log Analysis</span>@if(p.isDone('linux-log-analysis')){<span class="nl-done">✓</span>}@if(d('linux-log-analysis');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/linux/performance-tuning" routerLinkActive="active"><span class="nl-text">Performance Tuning</span>@if(p.isDone('linux-performance-tuning')){<span class="nl-done">✓</span>}@if(d('linux-performance-tuning');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Disk &amp; Storage" topicRoute="/linux/disk-storage" subtopicLabel="Deleted-but-Open Files Hide Space — df and du Never Agree" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">Deleted-but-Open Files Hide Space — df and du Never Agree</h1>
+  <p class="page-subtitle">The main page's own interview-focus list asks this exact question and never answers it — a deleted file a process still has open keeps its blocks allocated, invisible to du but fully counted by df.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Linux (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This directly answers the main page's own unanswered interview question. Next: why XFS filesystems have no shrink command at all, unlike ext4.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Disk &amp; Storage" topicRoute="/linux/disk-storage"
+    [next]="{ label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' }" />
+</div>

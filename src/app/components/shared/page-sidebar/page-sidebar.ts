@@ -39796,6 +39796,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'inode exhaustion (running out of inodes despite having free disk SPACE) is a distinct failure mode from running out of actual bytes — df -i checks this separately from df.',
     ],
   },
+  'linux/disk-storage/deleted-but-open-files-hide-space-df-and-du-never-agree': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' },
+      { label: 'Disk & Storage overview', route: '/linux/disk-storage' },
+    ],
+    tip: 'lsof +L1 lists open files with a link count of 0 — deleted, but still held open by a running process. A large SIZE on one of those rows is exactly the gap between what df and du report.',
+    gotchas: [
+      'Restarting the process holding the file open is the clean fix — its blocks are only released once every open file descriptor to it closes.',
+      'Truncating a still-existing log file in place (: > file, or truncate -s 0) reclaims space instantly without restarting anything, since the process keeps its same file descriptor.',
+    ],
+  },
+  'linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Deleted-but-Open Files Hide Space — df and du Never Agree', route: '/linux/disk-storage/deleted-but-open-files-hide-space-df-and-du-never-agree' },
+      { label: 'Growing a Cloud VM’s LVM Root Needs pvresize, Not Just growpart', route: '/linux/disk-storage/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart' },
+    ],
+    tip: 'There is no xfs_shrink or any command that shrinks XFS in place — the only supported path is xfsdump, recreate a smaller filesystem with mkfs.xfs, then xfsrestore.',
+    gotchas: [
+      'If a volume\'s size requirements might ever need to shrink (not just grow), that uncertainty alone is a real argument for ext4 over XFS, independent of XFS\'s other performance advantages.',
+      'The backup/recreate/restore cycle needs real downtime and somewhere to put the backup — plan for it before choosing XFS on a volume that might need to shrink.',
+    ],
+  },
+  'linux/disk-storage/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' },
+      { label: 'Disk & Storage overview', route: '/linux/disk-storage' },
+    ],
+    tip: 'growpart only grows the partition — many cloud images (especially RHEL-family) default to LVM root, so pvresize is required before lvextend and resize2fs/xfs_growfs can actually use the new space.',
+    gotchas: [
+      '"Bad magic number in super-block" from resize2fs right after growpart on a cloud VM is the classic symptom of a missed pvresize step on an LVM-root layout.',
+      'Always confirm the actual disk/partition/LVM layout with lsblk first, rather than assuming a fixed 2-step or 4-step sequence applies to every cloud image.',
+    ],
+  },
   'linux/networking': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [
