@@ -4967,7 +4967,44 @@ off here with a date.
   (all 4 levels)/prev-next cross-references correct, dark mode (`--bg: #0f172a`) applying correctly,
   and the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
   found).
-- [ ] `/linux/package-management` — Package Management
+- [x] `/linux/package-management` — Package Management (2026-07-24) — 3 subtopics: (1) **apt-key Is
+  Deprecated — signed-by Keyrings Is the Modern Replacement**, catching and fixing a genuine
+  inconsistency between two sections of the main page itself — the theory section originally taught
+  `curl -fsSL URL | apt-key add -` while the page's own QnA answer for adding a PPA/custom repo
+  already used the modern `signed-by=` + `/etc/apt/keyrings/` pattern; verified via WebSearch that
+  apt-key is deprecated as of Debian 11 / Ubuntu 22.04 specifically because it trusts a key
+  system-wide for every repo rather than scoping trust to the one repository it was meant for;
+  **fixed the main page's own theory bullet** to state the deprecation and point to the modern
+  approach, matching what the QnA already correctly demonstrated; (2) **apt-mark auto/manual Is What
+  Actually Drives autoremove**, expanding the main page's two bare mentions of autoremove ("removes
+  unused dependencies") into the actual mechanism — verified via WebSearch that every package is
+  flagged automatic or manual at install time in `/var/lib/apt/extended_states`, and autoremove only
+  removes automatic packages nothing manual depends on, regardless of whether something outside
+  apt's own dependency graph (a script, a cron job) has come to rely on it directly; covered the
+  `apt-mark manual` fix and the `--dry-run`/`-s` simulate flags; (3) **dnf history undo Can Fail When
+  the Old Version Left the Repo**, expanding the main page's flat "rolls back a specific transaction"
+  claim — verified via WebSearch that repos typically only host the latest version of each package,
+  so an undo needing an older version can fail with "package X is not available" even with the
+  transaction history fully intact; covered `keepcache=True` as the mitigation. Gotcha sweep
+  (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-delimited
+  `code:` blocks, safe — backtick parity: 14/16/20, all even — bare `@word` in `.html` — none —
+  unescaped `${` — none — over-escaped double-quote — none — backslash-escaped apostrophe inside
+  `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout — `[prev]`/`[next]`
+  route cross-check confirmed consistent across all 3 files) came back clean with no fixes needed.
+  Confirmed bare `package-management` key collision-free in the `SUBTOPICS` map (checked both quoted
+  and unquoted forms) before adding. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (477.98 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` (scoped to the batch's own files) staged all 16 files (9 new + 6 wiring + 1
+  main-page fix — the first main-page correction since the Firewall batch). Proactively checked
+  `preview_logs` for the three new component chunk names BEFORE attempting browser verification this
+  time (learning directly from the prior batch's stale-chunk incident) — confirmed all three compiled
+  correctly on the first post-commit rebuild, avoiding a repeat of that debugging cycle. Browser-
+  verified successfully: topic-overview toggle count confirmed at 13 (the THIRTEENTH Linux-hub topic
+  with subtopics), the Package Management accordion expands to show all 3 correctly-labeled subtopic
+  links, all three subtopic pages individually confirmed h1/breadcrumb (all 4 levels)/prev-next
+  cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, the main-page fix
+  explicitly confirmed rendering correctly in the browser, and the final page's body text explicitly
+  checked for stray backslash/`undefined` artifacts (none found).
 - [ ] `/linux/systemd` — systemd & Services
 - [ ] `/linux/disk-storage` — Disk & Storage
 - [ ] `/linux/environment-variables` — Environment Variables & Shell Config
