@@ -281,7 +281,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/linux/environment-variables" routerLinkActive="active"><span class="nl-text">Environment Variables</span>@if(p.isDone('linux-environment-variables')){<span class="nl-done">✓</span>}@if(d('linux-environment-variables');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/environment-variables" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Environment Variables</span>
+        @if (p.isDone('linux-environment-variables')) {<span class="nl-done">✓</span>}
+        @if (d('linux-environment-variables'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('environment-variables')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('environment-variables')"
+                  (click)="toggleSubtopics('environment-variables', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('environment-variables'); as evSubs) {
+        @if (isSubtopicsExpanded('environment-variables')) {
+          <div class="nav-subtopics">
+            @for (s of evSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

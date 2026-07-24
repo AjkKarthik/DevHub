@@ -40106,6 +40106,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Environment variables set in one shell session do not persist to a new session unless added to a shell startup file (.bashrc, .profile).',
     ],
   },
+  'linux/environment-variables/env-cat-env-xargs-breaks-on-values-containing-spaces': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'docker inspect Reveals Every -e Secret in Plaintext', route: '/linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext' },
+      { label: 'Environment Variables overview', route: '/linux/environment-variables' },
+    ],
+    tip: 'env $(cat .env | xargs) word-splits the file\'s content, silently corrupting any value with a space — set -a; source .env; set +a respects each line\'s own shell quoting correctly instead.',
+    gotchas: [
+      'This bug stays invisible for as long as every .env value happens to contain no whitespace — it doesn\'t show up until someone adds a multi-word value.',
+      'A quoted value in the .env file (KEY="two words") only survives correctly if the LOADING method itself respects quoting — xargs destroys it regardless of quoting.',
+    ],
+  },
+  'linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'env $(cat .env | xargs) Breaks on Values Containing Spaces', route: '/linux/environment-variables/env-cat-env-xargs-breaks-on-values-containing-spaces' },
+      { label: 'unset Removes a Variable — VAR= Only Empties It', route: '/linux/environment-variables/unset-removes-a-variable-var-only-empties-it' },
+    ],
+    tip: 'docker inspect <container> --format \'{{json .Config.Env}}\' shows every -e secret in plaintext to anyone with daemon access — a separate exposure path from baked-in image layers, present even on stopped containers.',
+    gotchas: [
+      'A Kubernetes Secret mounted as an env var has the equivalent exposure via kubectl describe pod — mount it as a volume/file instead to avoid this specific path.',
+      'Docker\'s own secrets mechanism (docker secret + --secret) mounts values as files under /run/secrets/, which never appear in Config.Env at all.',
+    ],
+  },
+  'linux/environment-variables/unset-removes-a-variable-var-only-empties-it': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'docker inspect Reveals Every -e Secret in Plaintext', route: '/linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext' },
+      { label: 'Environment Variables overview', route: '/linux/environment-variables' },
+    ],
+    tip: 'unset VAR and VAR= look identical to echo and [[ -z "$VAR" ]], but they are different states — only ${VAR+x} (POSIX) or [[ -v VAR ]] (bash 4.2+) can actually tell "never set" apart from "set to empty."',
+    gotchas: [
+      'A deliberately empty .env value (KEY=) meant to signal "explicitly disabled" gets silently overwritten by a default if the script only checks -z instead of -v.',
+      '[[ -v VAR ]] tests SET-NESS specifically, regardless of value — [[ ! -v VAR ]] reads naturally as "if VAR is not set."',
+    ],
+  },
   'linux/bash-scripting': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

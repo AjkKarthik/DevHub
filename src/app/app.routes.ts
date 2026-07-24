@@ -3101,7 +3101,12 @@ export const routes: Routes = [
       { path: 'xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path', loadComponent: () => import('./components/cloud/linux/disk-storage/subtopics/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path').then(m => m.XfsHasNoShrinkCommandBackupRecreateRestoreIsTheOnlyPathSubtopic) },
       { path: 'growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart', loadComponent: () => import('./components/cloud/linux/disk-storage/subtopics/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart').then(m => m.GrowingACloudVmsLvmRootNeedsPvresizeNotJustGrowpartSubtopic) },
     ] },
-    { path: 'environment-variables',loadComponent: () => import('./components/cloud/linux/environment-variables/environment-variables').then(m => m.LinuxEnvironmentVariables) },
+    { path: 'environment-variables', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/environment-variables/environment-variables').then(m => m.LinuxEnvironmentVariables) },
+      { path: 'env-cat-env-xargs-breaks-on-values-containing-spaces', loadComponent: () => import('./components/cloud/linux/environment-variables/subtopics/env-cat-env-xargs-breaks-on-values-containing-spaces/env-cat-env-xargs-breaks-on-values-containing-spaces').then(m => m.EnvCatEnvXargsBreaksOnValuesContainingSpacesSubtopic) },
+      { path: 'docker-inspect-reveals-every-e-secret-in-plaintext', loadComponent: () => import('./components/cloud/linux/environment-variables/subtopics/docker-inspect-reveals-every-e-secret-in-plaintext/docker-inspect-reveals-every-e-secret-in-plaintext').then(m => m.DockerInspectRevealsEveryESecretInPlaintextSubtopic) },
+      { path: 'unset-removes-a-variable-var-only-empties-it', loadComponent: () => import('./components/cloud/linux/environment-variables/subtopics/unset-removes-a-variable-var-only-empties-it/unset-removes-a-variable-var-only-empties-it').then(m => m.UnsetRemovesAVariableVarOnlyEmptiesItSubtopic) },
+    ] },
     { path: 'log-analysis',         loadComponent: () => import('./components/cloud/linux/log-analysis/log-analysis').then(m => m.LinuxLogAnalysis) },
     { path: 'performance-tuning',   loadComponent: () => import('./components/cloud/linux/performance-tuning/performance-tuning').then(m => m.LinuxPerformanceTuning) },
     { path: 'vim',                  loadComponent: () => import('./components/cloud/linux/vim/vim').then(m => m.LinuxVim) },

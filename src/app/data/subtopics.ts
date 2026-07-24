@@ -2741,4 +2741,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path', route: '/linux/disk-storage/xfs-has-no-shrink-command-backup-recreate-restore-is-the-only-path' },
     { label: 'Growing a Cloud VM’s LVM Root Needs pvresize, Not Just growpart', route: '/linux/disk-storage/growing-a-cloud-vms-lvm-root-needs-pvresize-not-just-growpart' },
   ],
+  'environment-variables': [
+    { label: 'env $(cat .env | xargs) Breaks on Values Containing Spaces', route: '/linux/environment-variables/env-cat-env-xargs-breaks-on-values-containing-spaces' },
+    { label: 'docker inspect Reveals Every -e Secret in Plaintext', route: '/linux/environment-variables/docker-inspect-reveals-every-e-secret-in-plaintext' },
+    { label: 'unset Removes a Variable — VAR= Only Empties It', route: '/linux/environment-variables/unset-removes-a-variable-var-only-empties-it' },
+  ],
 };
