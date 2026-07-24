@@ -5077,7 +5077,45 @@ off here with a date.
   levels)/prev-next cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and
   the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
   found).
-- [ ] `/linux/environment-variables` — Environment Variables & Shell Config
+- [x] `/linux/environment-variables` — Environment Variables & Shell Config (2026-07-24) — 3
+  subtopics: (1) **env $(cat .env | xargs) Breaks on Values Containing Spaces**, a genuine bug in
+  the main page's own second .env-loading code example — verified via WebSearch that command
+  substitution + xargs performs word splitting on the file's flattened content, silently corrupting
+  any value containing whitespace, while the main page's OWN first method (set -a; source .env;
+  set +a) has no such problem; **fixed the main page's own code example** with a caveat comment
+  directly in the shown code; (2) **docker inspect Reveals Every -e Secret in Plaintext**, expanding
+  the main page's own Docker/K8s secrets QnA (which only warns about baked-in image layers) with a
+  separate, equally direct runtime exposure — verified via WebSearch that docker inspect's
+  Config.Env shows every -e/--env-file value in plaintext to anyone with daemon access, even on
+  stopped containers, and that the same risk applies to Kubernetes Secrets mounted as env vars (not
+  just Docker); (3) **unset Removes a Variable — VAR= Only Empties It**, expanding the main page's
+  bare "unset NAME removes a variable" line with the contrast against VAR= (still defined, just
+  empty) — verified via WebSearch that ${VAR+x} (POSIX) or [[ -v VAR ]] (bash 4.2+) are the only
+  reliable ways to distinguish "never set" from "set to empty," since -z cannot. **A real
+  build-blocking gotcha self-caught during authoring, before it ever reached a build**: the unset
+  subtopic's own page-subtitle initially contained a bare `${VAR+x}` in prose text — caught via the
+  standing single-brace-in-prose sweep and HTML-entity-escaped (`&#36;&#123;VAR+x&#125;`) before
+  building, per the CLAUDE.md-documented gotcha for this exact pattern. **The dev-server stale-chunk
+  gotcha (documented from the Azure and Advanced Bash Scripting batches) recurred a third time**,
+  this time surfacing as a genuine NG2008 "Could not find template file" compiler ERROR (not a
+  silent redirect) for the env-cat-env-xargs subtopic specifically — confirmed via direct filesystem
+  check that the file genuinely existed on disk (ruling out a real authoring mistake), fixed with
+  the same established recipe (force a fresh file-write on app.routes.ts), and confirmed via direct
+  navigation that the route resolved correctly even while stale NG2008 log entries persisted in the
+  log buffer from before the fix — a reminder that a persisting log-search hit doesn't always mean
+  the underlying problem persists; the live page is the authoritative check. Gotcha sweep
+  (apostrophe-after-letter — all matches confirmed inside backtick-delimited code blocks — backtick
+  parity: 26/38/22, all even — bare @word — none — unescaped ${ in .html — none after the subtitle
+  fix — over-escaped double-quote — none — backslash-escaped apostrophe in bound attributes — none)
+  came back clean after the one fix. Confirmed bare `environment-variables` key collision-free in
+  the SUBTOPICS map before adding. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (496.16 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` staged all 16 files (9 new + 6 wiring + 1 main-page fix). Browser-verified
+  successfully after resolving the stale-chunk issue: topic-overview toggle count confirmed at 16
+  (the SIXTEENTH Linux-hub topic with subtopics), the accordion expands correctly, all three
+  subtopic pages confirmed h1/breadcrumb/prev-next correct, the entity-escaped subtitle rendering
+  correctly as literal text, dark mode correct, the main-page fix's caveat comment explicitly
+  confirmed rendering in the Code Examples tab, and no stray backslash/undefined artifacts.
 - [ ] `/linux/log-analysis` — Log Analysis
 - [ ] `/linux/performance-tuning` — Performance Tuning
 - [ ] `/linux/vim` — Vim & Text Editors

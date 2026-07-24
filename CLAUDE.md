@@ -1690,6 +1690,17 @@ this same check before any other new hub's first subtopic set:
    files" list now named all three new components, and the routes resolved correctly afterward. Not
    Azure-specific — treat this as a standing risk on any brand-new lazy route added during an active
    `ng serve` session, not a one-off.
+   **Recurred a THIRD time** (`/linux/environment-variables`'s own Phase 10 batch, 2026-07-24), this
+   time as a genuine NG2008 "Could not find template file" compiler ERROR in `preview_logs` for one
+   specific new subtopic — confirmed via a direct filesystem check (`ls` on the actual folder) that
+   the file genuinely existed on disk before assuming it was a real authoring mistake. Same fix
+   (fresh file-write on `app.routes.ts`) resolved it, but a NEW nuance surfaced this time: after the
+   fix, a repeated `preview_logs` search for the component name STILL returned the old NG2008 error
+   lines — the log buffer had not evicted the stale entries. Direct navigation to the actual route
+   confirmed it resolved correctly regardless. **Lesson: after applying this fix, verify via a live
+   `navigate` + `location.href` check, not by re-running the same `preview_logs` search and expecting
+   the error to disappear from the buffer** — a persisting log hit does not necessarily mean the
+   underlying problem persists.
 9. **A distinct false alarm that looks identical to the chunk-staleness gotcha above but has a
    completely different cause: `QnaBlockComponent` (and similarly-structured accordion
    components) render as a NESTED, collapsed-by-default accordion — a question list collapsed
@@ -1905,12 +1916,12 @@ this same check before any other new hub's first subtopic set:
   Linux pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (security-hardening, cron) have no PageComplete.
   Challenge.language: `'typescript'`. `${VAR}` bash variables in template literals must be escaped as `\${VAR}`.
   LinuxNavComponent at `shared/linux-nav/linux-nav.ts`.
-  Phase 10: 15 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
+  Phase 10: 16 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
   `/linux/essential-commands`, `/linux/file-permissions`, `/linux/users-groups`,
   `/linux/process-management`, `/linux/system-monitoring`, `/linux/networking`, `/linux/firewall`,
   `/linux/ssh`, `/linux/bash-scripting`, `/linux/bash-advanced`, `/linux/package-management`,
-  `/linux/systemd`, `/linux/disk-storage`, 2026-07-24) — see "Linux hub subtopic wiring" section
-  above for the `LinuxNavComponent` accordion structural fix and the
+  `/linux/systemd`, `/linux/disk-storage`, `/linux/environment-variables`, 2026-07-24) — see "Linux
+  hub subtopic wiring" section above for the `LinuxNavComponent` accordion structural fix and the
   `linux-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript hub's
   own bare `fundamentals` topic key).
   **New gotcha found on the `/linux/process-management` batch**: a single-quoted `.ts` string
