@@ -4919,7 +4919,54 @@ off here with a date.
   (`--bg: #0f172a`) applying correctly, the fixed over-escaped-quote text explicitly re-verified
   rendering correctly in the browser, and the final page's body text explicitly checked for stray
   backslash/`undefined` artifacts (none found).
-- [ ] `/linux/bash-advanced` — Advanced Bash Scripting
+- [x] `/linux/bash-advanced` — Advanced Bash Scripting (2026-07-24) — 3 subtopics: (1) **mapfile
+  Without -t Keeps the Trailing Newline in Every Element**, expanding the main page's own silent
+  habit of always writing `mapfile -t` without ever explaining what -t does — verified via WebSearch
+  that without -t, each array element keeps its line's trailing newline embedded in the string
+  value, causing doubled blank lines when printed and silent string-comparison failures; covered the
+  fix (always -t, exactly what the main page's own examples already do, just uncredited);
+  (2) **exec + tee Process Substitution Can Race the Script's Own Exit**, expanding the main page's
+  own `exec > >(tee log) 2>&1` example (presented with zero caveats) — verified via WebSearch that
+  the tee process substitution runs asynchronously and is never automatically waited for, so the
+  script can exit before tee finishes flushing, silently dropping the final log lines even though
+  terminal output showed them; covered the capture-PID-and-explicit-wait fix; (3) **check_host
+  Always Exits 0, Regardless of Up or Down**, a genuine, directly-derivable bug in the main page's
+  own `check_host` example function (both if/else branches end in `echo`, so the function's exit
+  status is always the near-universal success of echo, never reflecting the actual UP/DOWN result)
+  — no external verification needed since this is deducible straight from re-reading the main page's
+  own code; covered how this silently breaks `||`/`&&` logic built on top of it despite printing the
+  correct text, and the explicit-`return`-per-branch fix. **A real bug in the dev-server's own lazy
+  chunk registration hit and fixed during this batch's browser verification** — all three subtopic
+  pages initially redirected to home (`/`) on both hard navigation AND client-side routerLink clicks,
+  with zero console errors (silently caught by the app's own wildcard `{ path: '**', redirectTo: '' }`
+  route) — confirmed via `preview_logs` that the dev server's most recent build never actually
+  compiled lazy chunks for the three new subtopic components at all (a `grep` for "mapfile" against
+  the logs came back with zero matches), despite the production build passing cleanly and `app.routes.ts`
+  being syntactically correct. Fixed per the established CLAUDE.md-documented recipe: forced a fresh
+  file-write on `app.routes.ts` (append a blank line, then trim it back out — two real save events),
+  confirmed via `preview_logs` that the very next rebuild's "Lazy chunk files" list now correctly
+  showed all three new component chunks by name, and re-verified all three subtopic pages loaded
+  correctly afterward. Gotcha sweep (apostrophe-after-letter across all `.ts` files — every match
+  confirmed inside backtick-delimited `code:` blocks, safe — backtick parity: 28/22/28, all even —
+  bare `@word` in `.html` — none — unescaped `${` — none (all backtick-block occurrences correctly
+  escaped `\${`, all single-quoted-field occurrences in theory/exercise fields correctly left
+  unescaped, per the established single-quoted-string-never-needs-`${`-escaping rule) — over-escaped
+  double-quote — none — backslash-escaped apostrophe inside `[prev]`/`[next]` bound attributes —
+  none, curly `’` used correctly throughout — `[prev]`/`[next]` route cross-check confirmed
+  consistent across all 3 files) came back clean with no fixes needed. Confirmed bare `bash-advanced`
+  key collision-free in the `SUBTOPICS` map (checked both quoted and unquoted forms) before adding.
+  Build reported only the pre-documented harmless "bundle initial exceeded maximum budget" ERROR
+  (471.76 kB over) with zero actual TypeScript/template compile errors. `git add -A` (scoped to the
+  batch's own files) staged all 15 files (9 new + 6 wiring, no main-page CONTENT fix needed this
+  batch — the check_host example remains as-is on the main page since correcting it there would
+  contradict this subtopic's own "this is what the bug looks like" framing; every subtopic angle was
+  either a genuine expansion gap or a directly-derivable code issue). Browser-verified successfully
+  (after the chunk-staleness fix above): topic-overview toggle count confirmed at 12 (the TWELFTH
+  Linux-hub topic with subtopics), the Advanced Bash Scripting accordion expands to show all 3
+  correctly-labeled subtopic links, all three subtopic pages individually confirmed h1/breadcrumb
+  (all 4 levels)/prev-next cross-references correct, dark mode (`--bg: #0f172a`) applying correctly,
+  and the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
+  found).
 - [ ] `/linux/package-management` — Package Management
 - [ ] `/linux/systemd` — systemd & Services
 - [ ] `/linux/disk-storage` — Disk & Storage

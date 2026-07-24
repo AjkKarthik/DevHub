@@ -1678,6 +1678,18 @@ this same check before any other new hub's first subtopic set:
    --configuration=production`) is unaffected by this and remains the authoritative correctness
    check; this gotcha is specific to the live `ng serve` preview process used for interactive
    browser verification only.
+   **Confirmed recurring on a completely different hub** (`/linux/bash-advanced`'s three brand-new
+   Phase 10 subtopics, 2026-07-24) — this time manifesting as a full silent redirect to `/` (the
+   app's own `{ path: '**', redirectTo: '' }` wildcard route swallowing the unmatched route with
+   ZERO console error) rather than stale/wrong content, on BOTH a hard navigation AND a client-side
+   routerLink click — `preview_logs` confirmed the dev server had genuinely never compiled lazy
+   chunks for the three new components at all (grepping the logs for the component name came back
+   with zero matches), even though the production build passed and `app.routes.ts` was syntactically
+   correct. Same fix worked: force a fresh file-write on `app.routes.ts` itself (append a blank line,
+   then trim it back out), confirmed via `preview_logs` that the next rebuild's own "Lazy chunk
+   files" list now named all three new components, and the routes resolved correctly afterward. Not
+   Azure-specific — treat this as a standing risk on any brand-new lazy route added during an active
+   `ng serve` session, not a one-off.
 9. **A distinct false alarm that looks identical to the chunk-staleness gotcha above but has a
    completely different cause: `QnaBlockComponent` (and similarly-structured accordion
    components) render as a NESTED, collapsed-by-default accordion — a question list collapsed
@@ -1893,11 +1905,11 @@ this same check before any other new hub's first subtopic set:
   Linux pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (security-hardening, cron) have no PageComplete.
   Challenge.language: `'typescript'`. `${VAR}` bash variables in template literals must be escaped as `\${VAR}`.
   LinuxNavComponent at `shared/linux-nav/linux-nav.ts`.
-  Phase 10: 11 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
+  Phase 10: 12 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
   `/linux/essential-commands`, `/linux/file-permissions`, `/linux/users-groups`,
   `/linux/process-management`, `/linux/system-monitoring`, `/linux/networking`, `/linux/firewall`,
-  `/linux/ssh`, `/linux/bash-scripting`, 2026-07-23) — see "Linux hub subtopic wiring" section above
-  for the `LinuxNavComponent` accordion structural fix and the
+  `/linux/ssh`, `/linux/bash-scripting`, `/linux/bash-advanced`, 2026-07-23/24) — see "Linux hub
+  subtopic wiring" section above for the `LinuxNavComponent` accordion structural fix and the
   `linux-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript hub's
   own bare `fundamentals` topic key).
   **New gotcha found on the `/linux/process-management` batch**: a single-quoted `.ts` string
