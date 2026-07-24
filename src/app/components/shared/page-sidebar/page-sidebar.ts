@@ -39785,6 +39785,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Swap being used doesn\'t automatically mean a problem — a small amount of swapped-out, rarely-accessed memory can be entirely healthy; heavy, ongoing swap activity (thrashing) is the actual red flag.',
     ],
   },
+  'linux/performance-tuning/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred', route: '/linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred' },
+      { label: 'Performance Tuning overview', route: '/linux/performance-tuning' },
+    ],
+    tip: 'echo scheduler | tee /sys/block/sda/queue/scheduler only changes the running kernel — exactly like sysctl -w, it resets on reboot. A udev rule in /etc/udev/rules.d/ is the actual persistence mechanism.',
+    gotchas: [
+      'There is no sysctl.d-style config directory for I/O scheduler settings — the persistence mechanism is structurally different, not just a different file path.',
+      'udevadm test /sys/block/sda validates a new rule\'s logic without needing an actual reboot to find out whether it worked.',
+    ],
+  },
+  'linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'I/O Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule', route: '/linux/performance-tuning/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule' },
+      { label: 'numactl --membind Is a Hard Constraint — --preferred Is the Safer Default', route: '/linux/performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default' },
+    ],
+    tip: 'Continuous discard triggers TRIM synchronously on every delete, with a real documented fsync-latency cost — fstrim.timer (enabled by default on most distros) batches it into one weekly, scheduled run instead.',
+    gotchas: [
+      'systemctl status fstrim.timer confirms whether the periodic, recommended approach is already active before reaching for the discard mount option.',
+      'Continuous discard remains a legitimate choice for a specific, already-tested workload — just not the default the main page\'s own phrasing implies.',
+    ],
+  },
+  'linux/performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred', route: '/linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred' },
+      { label: 'Performance Tuning overview', route: '/linux/performance-tuning' },
+    ],
+    tip: '--membind is a hard constraint — if the bound node runs low on memory, the kernel does NOT fall back to other nodes, risking an OOM-kill even while other nodes sit nearly empty. --preferred falls back gracefully instead.',
+    gotchas: [
+      'numactl --hardware shows PER-NODE free memory — system-wide free -h can look healthy while a specific bound node is actually exhausted.',
+      '--preferred trades a small cross-node latency cost (only when the preferred node is under pressure) for a categorically safer failure mode — the right default for most production workloads.',
+    ],
+  },
   'linux/disk-storage': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

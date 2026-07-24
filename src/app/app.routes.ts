@@ -3113,7 +3113,12 @@ export const routes: Routes = [
       { path: 'journalctl-only-shows-the-current-boot-by-default', loadComponent: () => import('./components/cloud/linux/log-analysis/subtopics/journalctl-only-shows-the-current-boot-by-default/journalctl-only-shows-the-current-boot-by-default').then(m => m.JournalctlOnlyShowsTheCurrentBootByDefaultSubtopic) },
       { path: 'logrotates-copytruncate-has-a-real-data-loss-race-window', loadComponent: () => import('./components/cloud/linux/log-analysis/subtopics/logrotates-copytruncate-has-a-real-data-loss-race-window/logrotates-copytruncate-has-a-real-data-loss-race-window').then(m => m.LogrotatesCopytruncateHasARealDataLossRaceWindowSubtopic) },
     ] },
-    { path: 'performance-tuning',   loadComponent: () => import('./components/cloud/linux/performance-tuning/performance-tuning').then(m => m.LinuxPerformanceTuning) },
+    { path: 'performance-tuning', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/performance-tuning/performance-tuning').then(m => m.LinuxPerformanceTuning) },
+      { path: 'io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule', loadComponent: () => import('./components/cloud/linux/performance-tuning/subtopics/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule').then(m => m.IoSchedulerWritesToSysBlockAreNotPersistentUseAUdevRuleSubtopic) },
+      { path: 'discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred', loadComponent: () => import('./components/cloud/linux/performance-tuning/subtopics/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred').then(m => m.DiscardInFstabHasARealPenaltyFstrimTimerIsPreferredSubtopic) },
+      { path: 'numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default', loadComponent: () => import('./components/cloud/linux/performance-tuning/subtopics/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default').then(m => m.NumactlMembindIsAHardConstraintPreferredIsTheSaferDefaultSubtopic) },
+    ] },
     { path: 'vim',                  loadComponent: () => import('./components/cloud/linux/vim/vim').then(m => m.LinuxVim) },
     { path: 'security-hardening',   loadComponent: () => import('./components/cloud/linux/security-hardening/security-hardening').then(m => m.LinuxSecurityHardening) },
     { path: 'cron',                 loadComponent: () => import('./components/cloud/linux/cron/cron').then(m => m.LinuxCron) },

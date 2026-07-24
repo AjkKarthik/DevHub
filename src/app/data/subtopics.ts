@@ -2751,4 +2751,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'journalctl Only Shows the Current Boot by Default', route: '/linux/log-analysis/journalctl-only-shows-the-current-boot-by-default' },
     { label: 'logrotate’s copytruncate Has a Real Data-Loss Race Window', route: '/linux/log-analysis/logrotates-copytruncate-has-a-real-data-loss-race-window' },
   ],
+  'performance-tuning': [
+    { label: 'I/O Scheduler Writes to /sys/block Are Not Persistent — Use a udev Rule', route: '/linux/performance-tuning/io-scheduler-writes-to-sys-block-are-not-persistent-use-a-udev-rule' },
+    { label: 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred', route: '/linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred' },
+    { label: 'numactl --membind Is a Hard Constraint — --preferred Is the Safer Default', route: '/linux/performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default' },
+  ],
 };

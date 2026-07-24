@@ -385,7 +385,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/linux/performance-tuning" routerLinkActive="active"><span class="nl-text">Performance Tuning</span>@if(p.isDone('linux-performance-tuning')){<span class="nl-done">✓</span>}@if(d('linux-performance-tuning');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/performance-tuning" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Performance Tuning</span>
+        @if (p.isDone('linux-performance-tuning')) {<span class="nl-done">✓</span>}
+        @if (d('linux-performance-tuning'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('performance-tuning')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('performance-tuning')"
+                  (click)="toggleSubtopics('performance-tuning', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('performance-tuning'); as ptSubs) {
+        @if (isSubtopicsExpanded('performance-tuning')) {
+          <div class="nav-subtopics">
+            @for (s of ptSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
