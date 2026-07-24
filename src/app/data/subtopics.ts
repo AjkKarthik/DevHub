@@ -2721,4 +2721,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'local Assignment Masks set -e Command Failures', route: '/linux/bash-scripting/local-assignment-masks-set-e-command-failures' },
     { label: 'trap EXIT Overwrites, It Doesn’t Chain Multiple Handlers', route: '/linux/bash-scripting/trap-exit-overwrites-not-chains-multiple-handlers' },
   ],
+  'bash-advanced': [
+    { label: 'mapfile Without -t Keeps the Trailing Newline in Every Element', route: '/linux/bash-advanced/mapfile-without-t-keeps-the-trailing-newline-in-every-element' },
+    { label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' },
+    { label: 'check_host Always Exits 0, Regardless of Up or Down', route: '/linux/bash-advanced/check-host-always-exits-0-regardless-of-up-or-down' },
+  ],
 };

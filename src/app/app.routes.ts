@@ -3077,7 +3077,12 @@ export const routes: Routes = [
       { path: 'local-assignment-masks-set-e-command-failures', loadComponent: () => import('./components/cloud/linux/bash-scripting/subtopics/local-assignment-masks-set-e-command-failures/local-assignment-masks-set-e-command-failures').then(m => m.LocalAssignmentMasksSetECommandFailuresSubtopic) },
       { path: 'trap-exit-overwrites-not-chains-multiple-handlers', loadComponent: () => import('./components/cloud/linux/bash-scripting/subtopics/trap-exit-overwrites-not-chains-multiple-handlers/trap-exit-overwrites-not-chains-multiple-handlers').then(m => m.TrapExitOverwritesNotChainsMultipleHandlersSubtopic) },
     ] },
-    { path: 'bash-advanced',        loadComponent: () => import('./components/cloud/linux/bash-advanced/bash-advanced').then(m => m.LinuxBashAdvanced) },
+    { path: 'bash-advanced', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/bash-advanced/bash-advanced').then(m => m.LinuxBashAdvanced) },
+      { path: 'mapfile-without-t-keeps-the-trailing-newline-in-every-element', loadComponent: () => import('./components/cloud/linux/bash-advanced/subtopics/mapfile-without-t-keeps-the-trailing-newline-in-every-element/mapfile-without-t-keeps-the-trailing-newline-in-every-element').then(m => m.MapfileWithoutTKeepsTheTrailingNewlineInEveryElementSubtopic) },
+      { path: 'exec-tee-redirect-races-script-exit-truncating-the-log', loadComponent: () => import('./components/cloud/linux/bash-advanced/subtopics/exec-tee-redirect-races-script-exit-truncating-the-log/exec-tee-redirect-races-script-exit-truncating-the-log').then(m => m.ExecTeeRedirectRacesScriptExitTruncatingTheLogSubtopic) },
+      { path: 'check-host-always-exits-0-regardless-of-up-or-down', loadComponent: () => import('./components/cloud/linux/bash-advanced/subtopics/check-host-always-exits-0-regardless-of-up-or-down/check-host-always-exits-0-regardless-of-up-or-down').then(m => m.CheckHostAlwaysExits0RegardlessOfUpOrDownSubtopic) },
+    ] },
     { path: 'package-management',   loadComponent: () => import('./components/cloud/linux/package-management/package-management').then(m => m.LinuxPackageManagement) },
     { path: 'systemd',              loadComponent: () => import('./components/cloud/linux/systemd/systemd').then(m => m.LinuxSystemd) },
     { path: 'disk-storage',         loadComponent: () => import('./components/cloud/linux/disk-storage/disk-storage').then(m => m.LinuxDiskStorage) },

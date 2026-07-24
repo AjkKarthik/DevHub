@@ -40057,6 +40057,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'trap lets a script run cleanup code on exit (or specific signals) — essential for scripts that create temporary resources needing guaranteed cleanup even on failure.',
     ],
   },
+  'linux/bash-advanced/mapfile-without-t-keeps-the-trailing-newline-in-every-element': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' },
+      { label: 'Bash Advanced overview', route: '/linux/bash-advanced' },
+    ],
+    tip: 'mapfile without -t keeps each line\'s trailing newline embedded in the array element — mapfile -t strips it, which is why every main-page example uses -t even though the page never explains why.',
+    gotchas: [
+      'A string comparison against a mapfile-without-t element can silently fail even when the values "look identical" — the invisible embedded newline is the usual cause.',
+      'readarray is a synonym for mapfile — the same -t requirement applies to both.',
+    ],
+  },
+  'linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'mapfile Without -t Keeps the Trailing Newline in Every Element', route: '/linux/bash-advanced/mapfile-without-t-keeps-the-trailing-newline-in-every-element' },
+      { label: 'check_host Always Exits 0, Regardless of Up or Down', route: '/linux/bash-advanced/check-host-always-exits-0-regardless-of-up-or-down' },
+    ],
+    tip: 'exec > >(tee log) 2>&1 starts tee as an asynchronous process the script never waits for by default — the script can exit before tee finishes flushing, silently dropping the final log lines.',
+    gotchas: [
+      'Capture tee\'s PID with $! immediately after the exec line, close the redirected fds, then wait "$TEE_PID" before the script\'s own exit to close the race.',
+      'A missing final log line despite correct terminal output is the classic symptom — terminal display and the file write don\'t share identical flush timing.',
+    ],
+  },
+  'linux/bash-advanced/check-host-always-exits-0-regardless-of-up-or-down': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' },
+      { label: 'Bash Advanced overview', route: '/linux/bash-advanced' },
+    ],
+    tip: 'A function\'s exit status, without an explicit return, is whatever its LAST command returns — check_host\'s last command in both branches is echo, so it always exits 0 regardless of whether the host is up or down.',
+    gotchas: [
+      'This breaks || / && logic built on top of the function silently — the printed output looks correct, only exit-code-based control flow fails.',
+      'Always add an explicit return in any function whose caller might check its exit code, rather than relying on the last command\'s own exit status.',
+    ],
+  },
   'linux/cron': {
     apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
     related: [

@@ -261,7 +261,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/linux/bash-advanced" routerLinkActive="active"><span class="nl-text">Advanced Bash Scripting</span>@if(p.isDone('linux-bash-advanced')){<span class="nl-done">✓</span>}@if(d('linux-bash-advanced');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/bash-advanced" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Advanced Bash Scripting</span>
+        @if (p.isDone('linux-bash-advanced')) {<span class="nl-done">✓</span>}
+        @if (d('linux-bash-advanced'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('bash-advanced')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('bash-advanced')"
+                  (click)="toggleSubtopics('bash-advanced', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('bash-advanced'); as baSubs) {
+        @if (isSubtopicsExpanded('bash-advanced')) {
+          <div class="nav-subtopics">
+            @for (s of baSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/linux/environment-variables" routerLinkActive="active"><span class="nl-text">Environment Variables</span>@if(p.isDone('linux-environment-variables')){<span class="nl-done">✓</span>}@if(d('linux-environment-variables');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

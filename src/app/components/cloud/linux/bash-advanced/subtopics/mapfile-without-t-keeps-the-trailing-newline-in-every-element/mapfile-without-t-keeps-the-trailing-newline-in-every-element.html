@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Advanced Bash Scripting" topicRoute="/linux/bash-advanced" subtopicLabel="mapfile Without -t Keeps the Trailing Newline in Every Element" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">mapfile Without -t Keeps the Trailing Newline in Every Element</h1>
+  <p class="page-subtitle">The main page always writes mapfile -t without ever saying why — without it, every array element keeps its trailing newline, silently breaking string comparisons and doubling blank lines.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Bash 4+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This explains the -t flag the main page uses everywhere but never justifies. Next: a race condition in the main page's own exec + tee logging pattern.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Advanced Bash Scripting" topicRoute="/linux/bash-advanced"
+    [next]="{ label: 'exec + tee Process Substitution Can Race the Script’s Own Exit', route: '/linux/bash-advanced/exec-tee-redirect-races-script-exit-truncating-the-log' }" />
+</div>
