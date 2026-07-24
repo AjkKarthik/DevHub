@@ -5044,7 +5044,39 @@ off here with a date.
   rendering correctly with no ICU-parsing issues — dark mode (`--bg: #0f172a`) applying correctly,
   and the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
   found).
-- [ ] `/linux/disk-storage` — Disk & Storage
+- [x] `/linux/disk-storage` — Disk & Storage (2026-07-24) — 3 subtopics: (1) **Deleted-but-Open Files
+  Hide Space — df and du Never Agree**, directly answering the main page's own interviewFocus
+  question ("A server's disk is full but df -h shows free space — what do you check?") which no QnA
+  entry anywhere on the page actually answers — verified via WebSearch that rm only removes a
+  directory entry, and a process still holding the file open keeps its blocks fully allocated
+  (counted by df, invisible to du); covered lsof +L1 for diagnosis and both the restart and in-place-
+  truncate fixes; (2) **XFS Has No Shrink Command — Backup, Recreate, Restore Is the Only Path**,
+  expanding the main page's twice-repeated "can only be grown" mention with zero explanation of what
+  that means in practice — verified via WebSearch that there is genuinely no xfs_shrink or equivalent
+  command at all (not just a "less flexible" version of ext4's resize2fs), and the only supported
+  path is xfsdump/mkfs.xfs/xfsrestore; (3) **Growing a Cloud VM's LVM Root Needs pvresize, Not Just
+  growpart**, filling a real gap in the main page's own most practical QnA answer (a plain two-step
+  growpart + resize2fs/xfs_growfs procedure) — verified via WebSearch that many cloud images
+  (especially RHEL-family) default to LVM root, and growpart alone never reaches through to the LVM
+  Physical Volume, requiring an inserted pvresize step the main page's answer omits. Gotcha sweep
+  (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-delimited
+  `code:` blocks, safe — backtick parity: 12/22/4, all even — bare `@word` in `.html` — none —
+  unescaped `${` — none — over-escaped double-quote — none — backslash-escaped apostrophe inside
+  `[prev]`/`[next]` bound attributes — none, curly `’` used correctly throughout — `[prev]`/`[next]`
+  route cross-check confirmed consistent across all 3 files) came back clean with no fixes needed.
+  Confirmed bare `disk-storage` key collision-free in the `SUBTOPICS` map (checked both quoted and
+  unquoted forms) before adding. Build reported only the pre-documented harmless "bundle initial
+  exceeded maximum budget" ERROR (490.23 kB over) with zero actual TypeScript/template compile
+  errors. `git add -A` (scoped to the batch's own files) staged all 15 files (9 new + 6 wiring, no
+  main-page fix needed this batch — every subtopic angle was a genuine expansion gap). Proactively
+  checked `preview_logs` for the three new component chunk names before browser verification (now
+  standing practice) — confirmed all three compiled correctly on the first post-commit rebuild.
+  Browser-verified successfully: topic-overview toggle count confirmed at 15 (the FIFTEENTH
+  Linux-hub topic with subtopics), the Disk & Storage accordion expands to show all 3 correctly-
+  labeled subtopic links, all three subtopic pages individually confirmed h1/breadcrumb (all 4
+  levels)/prev-next cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, and
+  the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
+  found).
 - [ ] `/linux/environment-variables` — Environment Variables & Shell Config
 - [ ] `/linux/log-analysis` — Log Analysis
 - [ ] `/linux/performance-tuning` — Performance Tuning
