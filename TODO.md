@@ -5005,7 +5005,45 @@ off here with a date.
   cross-references correct, dark mode (`--bg: #0f172a`) applying correctly, the main-page fix
   explicitly confirmed rendering correctly in the browser, and the final page's body text explicitly
   checked for stray backslash/`undefined` artifacts (none found).
-- [ ] `/linux/systemd` — systemd & Services
+- [x] `/linux/systemd` — systemd & Services (2026-07-24) — 3 subtopics: (1) **ExecReload=kill -HUP
+  $MAINPID Can Kill, Not Reload, a Node.js Service**, expanding the main page's own claim that
+  "reload sends SIGHUP which causes nginx/apache to reload config and gracefully hand off
+  connections" as if universally true — verified via WebSearch (Node.js's own docs) that SIGHUP's
+  default disposition for any process without a registered handler is to TERMINATE it, and that
+  gracefulness on SIGHUP is entirely something nginx/apache's own code opts into, not a property of
+  the signal itself; applied this directly to the main page's own Node.js unit-file example (which
+  uses this exact `ExecReload=` line with a plain server.js), showing it would KILL rather than
+  reload the service; (2) **StartLimitBurst Locks a Service in Failed State Until reset-failed**,
+  expanding the main page's own unrelated unit-file example values (`StartLimitIntervalSec=60`,
+  `StartLimitBurst=3`) shown with zero explanation — verified via WebSearch that these form a crash-
+  loop circuit breaker, and that fixing the underlying bug does NOT clear a tripped start-limit
+  counter; `systemctl reset-failed` is required separately; covered the RestartSec × StartLimitBurst
+  sizing rule; (3) **systemctl edit Drop-Ins Need an Empty ExecStart= to Override It**, expanding
+  the main page's own QnA claim that drop-in settings are simply "merged with the original" —
+  verified via WebSearch that ExecStart= is treated as an appendable LIST rather than a replaceable
+  value, so a new ExecStart= line in a drop-in causes "more than one ExecStart= setting" errors
+  unless preceded by an empty `ExecStart=` line that clears the original first. Gotcha sweep
+  (apostrophe-after-letter across all `.ts` files — every match confirmed inside backtick-delimited
+  `code:` blocks, safe — backtick parity: 22/20/16, all even — bare `@word` in `.html` — none —
+  unescaped `${` — none (the literal `$MAINPID` text in titles/h1/subtitle across all 3 files
+  confirmed safe as bare `$` with no following brace) — over-escaped double-quote — none —
+  backslash-escaped apostrophe inside `[prev]`/`[next]` bound attributes — none, curly `’` used
+  correctly throughout — `[prev]`/`[next]` route cross-check confirmed consistent across all 3
+  files) came back clean with no fixes needed. Confirmed bare `systemd` key collision-free in the
+  `SUBTOPICS` map (checked both quoted and unquoted forms) before adding. Build reported only the
+  pre-documented harmless "bundle initial exceeded maximum budget" ERROR (484.10 kB over) with zero
+  actual TypeScript/template compile errors. `git add -A` (scoped to the batch's own files) staged
+  all 15 files (9 new + 6 wiring, no main-page fix needed this batch — every subtopic angle was a
+  genuine expansion gap, not a page correction). Proactively checked `preview_logs` for the three
+  new component chunk names before browser verification (now standing practice after the prior
+  batch's incident) — confirmed all three compiled correctly on the first post-commit rebuild.
+  Browser-verified successfully: topic-overview toggle count confirmed at 14 (the FOURTEENTH
+  Linux-hub topic with subtopics), the systemd & Services accordion expands to show all 3
+  correctly-labeled subtopic links, all three subtopic pages individually confirmed h1/breadcrumb
+  (all 4 levels)/prev-next cross-references correct — including the literal `$MAINPID` text
+  rendering correctly with no ICU-parsing issues — dark mode (`--bg: #0f172a`) applying correctly,
+  and the final page's body text explicitly checked for stray backslash/`undefined` artifacts (none
+  found).
 - [ ] `/linux/disk-storage` — Disk & Storage
 - [ ] `/linux/environment-variables` — Environment Variables & Shell Config
 - [ ] `/linux/log-analysis` — Log Analysis
