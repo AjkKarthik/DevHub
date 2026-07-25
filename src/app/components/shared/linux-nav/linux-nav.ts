@@ -40,7 +40,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/linux/vim" routerLinkActive="active"><span class="nl-text">Vim &amp; Text Editors</span>@if(p.isDone('linux-vim')){<span class="nl-done">✓</span>}@if(d('linux-vim');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/linux/vim" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Vim &amp; Text Editors</span>
+        @if (p.isDone('linux-vim')) {<span class="nl-done">✓</span>}
+        @if (d('linux-vim'); as v) {<span class="nl-dot" [class]="'nl-dot--' + v"></span>}
+        @if (subtopicsOf('vim')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('vim')"
+                  (click)="toggleSubtopics('vim', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('vim'); as vimSubs) {
+        @if (isSubtopicsExpanded('vim')) {
+          <div class="nav-subtopics">
+            @for (s of vimSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

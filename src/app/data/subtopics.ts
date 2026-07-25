@@ -2756,4 +2756,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred', route: '/linux/performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred' },
     { label: 'numactl --membind Is a Hard Constraint — --preferred Is the Safer Default', route: '/linux/performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default' },
   ],
+  'vim': [
+    { label: 'A Delete Silently Clobbers Your Yank — Paste From Register 0 Instead', route: '/linux/vim/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back' },
+    { label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' },
+    { label: 'vim -d Diff Mode Has Its Own Commands the Main Page Never Shows', route: '/linux/vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows' },
+  ],
 };

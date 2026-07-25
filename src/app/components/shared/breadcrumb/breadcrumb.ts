@@ -2210,6 +2210,9 @@ const LINUX_LABELS: Record<string, string> = {
   'performance-tuning/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred': 'discard in fstab Has a Real Penalty — fstrim.timer Is Preferred',
   'performance-tuning/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default': 'numactl --membind Is a Hard Constraint — --preferred Is the Safer Default',
   'vim':                   'Vim & Text Editors',
+  'vim/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back': 'A Delete Silently Clobbers Your Yank — Paste From Register 0 Instead',
+  'vim/smartcase-does-nothing-unless-ignorecase-is-also-set': 'smartcase Does Nothing Unless ignorecase Is Also Set',
+  'vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows': 'vim -d Diff Mode Has Its Own Commands the Main Page Never Shows',
   'security-hardening':    'Linux Security Hardening',
   'cron':                  'Cron & Scheduling',
 };

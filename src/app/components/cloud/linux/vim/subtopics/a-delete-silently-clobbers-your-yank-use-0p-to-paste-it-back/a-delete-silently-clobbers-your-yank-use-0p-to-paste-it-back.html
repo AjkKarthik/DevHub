@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vim &amp; Text Editors" topicRoute="/linux/vim" subtopicLabel="A Delete Silently Clobbers Your Yank — Paste From Register 0 Instead" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">A Delete Silently Clobbers Your Yank — Paste From Register 0 Instead</h1>
+  <p class="page-subtitle">The main page mentions "0p in passing with no explanation of the problem it solves — any delete after a yank silently overwrites what plain p will paste.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Vim (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own throwaway "0p mention into a full explanation. Next: why smartcase does nothing at all unless ignorecase is also set.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vim &amp; Text Editors" topicRoute="/linux/vim"
+    [next]="{ label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vim &amp; Text Editors" topicRoute="/linux/vim" subtopicLabel="vim -d Diff Mode Has Its Own Commands the Main Page Never Shows" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">vim -d Diff Mode Has Its Own Commands the Main Page Never Shows</h1>
+  <p class="page-subtitle">The main page's entire coverage of diff mode is one code comment — do, dp, ]c, and [c turn it into a real, keyboard-only merge workflow the page never mentions.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Vim (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the topic's three deep dives — and completes Phase 10 for the entire Linux &amp; Bash hub, expanding the main page's single-line diff-mode mention into a real workflow.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vim &amp; Text Editors" topicRoute="/linux/vim"
+    [prev]="{ label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' }" />
+</div>

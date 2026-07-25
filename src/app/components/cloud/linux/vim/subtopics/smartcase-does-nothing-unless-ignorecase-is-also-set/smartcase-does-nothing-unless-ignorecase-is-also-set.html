@@ -1,0 +1,27 @@
+<div class="linux-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vim &amp; Text Editors" topicRoute="/linux/vim" subtopicLabel="smartcase Does Nothing Unless ignorecase Is Also Set" />
+  <div class="page-header-icon linux-icon">🐧</div>
+  <h1 class="page-title">smartcase Does Nothing Unless ignorecase Is Also Set</h1>
+  <p class="page-subtitle">The main page shows both settings on one line as if independent — smartcase only modifies ignorecase's behavior, and is a silent no-op without it.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Vim (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="linux-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="linux-section">
+    <h2>Where this fits</h2>
+    <p>This clarifies the actual dependency between two settings the main page pairs together with no explanation. Next: the diff-mode commands the main page's own vim -d mention never covers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vim &amp; Text Editors" topicRoute="/linux/vim"
+    [prev]="{ label: 'A Delete Silently Clobbers Your Yank — Paste From Register 0 Instead', route: '/linux/vim/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back' }"
+    [next]="{ label: 'vim -d Diff Mode Has Its Own Commands the Main Page Never Shows', route: '/linux/vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows' }" />
+</div>

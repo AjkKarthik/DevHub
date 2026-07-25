@@ -40332,6 +40332,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       ':wq vs :q! — accidentally discarding intended changes (or the reverse, saving unintended ones) is a very common beginner mistake before muscle memory develops.',
     ],
   },
+  'linux/vim/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' },
+      { label: 'Vim overview', route: '/linux/vim' },
+    ],
+    tip: 'Plain p pastes from the unnamed register, which is overwritten by BOTH yanks and deletes — any delete after a yank silently corrupts what p will paste. Register 0 is yank-only and immune to this.',
+    gotchas: [
+      ':reg shows exactly what every register currently holds — a fast way to confirm whether the unnamed register or register 0 actually has the text you expect.',
+      'Build the habit of reaching for "0p by default whenever a yank needs to survive past any intervening edits, which is most of the time.',
+    ],
+  },
+  'linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'A Delete Silently Clobbers Your Yank — Paste From Register 0 Instead', route: '/linux/vim/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back' },
+      { label: 'vim -d Diff Mode Has Its Own Commands the Main Page Never Shows', route: '/linux/vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows' },
+    ],
+    tip: 'smartcase only modifies ignorecase\'s behavior — without ignorecase also set, smartcase is a silent no-op and every search stays plain case-sensitive, with no error to indicate why.',
+    gotchas: [
+      ':set ignorecase? and :set smartcase? query each option\'s current value directly inside vim — worth checking both before assuming a copied .vimrc snippet is actually working.',
+      'Both settings need to be present together for "case-insensitive unless uppercase" behavior — copying just one produces different, unintended behavior.',
+    ],
+  },
+  'linux/vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' },
+      { label: 'Vim overview', route: '/linux/vim' },
+    ],
+    tip: 'do (diff obtain) and dp (diff put) transfer a hunk between diff-mode windows with one keystroke — ]c and [c jump between hunks, turning vim -d into a real keyboard-only merge workflow.',
+    gotchas: [
+      'git mergetool commonly launches exactly this diff-mode setup — the same ]c/do/dp commands resolve merge conflicts, not just arbitrary file comparisons.',
+      'do pulls the OTHER window\'s version into the current one; dp pushes the current window\'s version to the other — easy to mix up which direction each one goes.',
+    ],
+  },
 
   // ── Terraform: per-page entries ─────────────────────────────────────────────
   'terraform/fundamentals': {

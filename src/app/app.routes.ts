@@ -3119,7 +3119,12 @@ export const routes: Routes = [
       { path: 'discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred', loadComponent: () => import('./components/cloud/linux/performance-tuning/subtopics/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred/discard-in-fstab-has-a-real-penalty-fstrim-timer-is-preferred').then(m => m.DiscardInFstabHasARealPenaltyFstrimTimerIsPreferredSubtopic) },
       { path: 'numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default', loadComponent: () => import('./components/cloud/linux/performance-tuning/subtopics/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default/numactl-membind-is-a-hard-constraint-preferred-is-the-safer-default').then(m => m.NumactlMembindIsAHardConstraintPreferredIsTheSaferDefaultSubtopic) },
     ] },
-    { path: 'vim',                  loadComponent: () => import('./components/cloud/linux/vim/vim').then(m => m.LinuxVim) },
+    { path: 'vim', children: [
+      { path: '', loadComponent: () => import('./components/cloud/linux/vim/vim').then(m => m.LinuxVim) },
+      { path: 'a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back', loadComponent: () => import('./components/cloud/linux/vim/subtopics/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back/a-delete-silently-clobbers-your-yank-use-0p-to-paste-it-back').then(m => m.ADeleteSilentlyClobbersYourYankUse0PToPasteItBackSubtopic) },
+      { path: 'smartcase-does-nothing-unless-ignorecase-is-also-set', loadComponent: () => import('./components/cloud/linux/vim/subtopics/smartcase-does-nothing-unless-ignorecase-is-also-set/smartcase-does-nothing-unless-ignorecase-is-also-set').then(m => m.SmartcaseDoesNothingUnlessIgnorecaseIsAlsoSetSubtopic) },
+      { path: 'vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows', loadComponent: () => import('./components/cloud/linux/vim/subtopics/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows').then(m => m.VimDDiffModeHasItsOwnCommandsTheMainPageNeverShowsSubtopic) },
+    ] },
     { path: 'security-hardening',   loadComponent: () => import('./components/cloud/linux/security-hardening/security-hardening').then(m => m.LinuxSecurityHardening) },
     { path: 'cron',                 loadComponent: () => import('./components/cloud/linux/cron/cron').then(m => m.LinuxCron) },
   ] },
