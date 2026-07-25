@@ -2112,6 +2112,9 @@ const NODE_LABELS: Record<string, string> = {
 
 const TERRAFORM_LABELS: Record<string, string> = {
   'fundamentals':      'Terraform Fundamentals',
+  'fundamentals/for-each-requires-a-map-or-set-not-a-bare-list': 'for_each Requires a Map or Set — Not a Bare List',
+  'fundamentals/depends-on-is-for-dependencies-terraform-cannot-see': 'depends_on Is for Dependencies Terraform Cannot See',
+  'fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource': 'moved Blocks, Not Manual Edits, Fix a Renamed Resource',
   'providers':         'Providers',
   'variables':         'Variables',
   'outputs':           'Outputs',

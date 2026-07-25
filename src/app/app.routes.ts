@@ -3266,7 +3266,12 @@ export const routes: Routes = [
   ] },
   { path: 'terraform', children: [
     { path: '', loadComponent: () => import('./components/cloud/terraform/home/home').then(m => m.TerraformHome) },
-    { path: 'fundamentals',    loadComponent: () => import('./components/cloud/terraform/fundamentals/fundamentals').then(m => m.TfFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/fundamentals/fundamentals').then(m => m.TfFundamentals) },
+      { path: 'for-each-requires-a-map-or-set-not-a-bare-list', loadComponent: () => import('./components/cloud/terraform/fundamentals/subtopics/for-each-requires-a-map-or-set-not-a-bare-list/for-each-requires-a-map-or-set-not-a-bare-list').then(m => m.ForEachRequiresAMapOrSetNotABareListSubtopic) },
+      { path: 'depends-on-is-for-dependencies-terraform-cannot-see', loadComponent: () => import('./components/cloud/terraform/fundamentals/subtopics/depends-on-is-for-dependencies-terraform-cannot-see/depends-on-is-for-dependencies-terraform-cannot-see').then(m => m.DependsOnIsForDependenciesTerraformCannotSeeSubtopic) },
+      { path: 'moved-blocks-not-manual-edits-fix-a-renamed-resource', loadComponent: () => import('./components/cloud/terraform/fundamentals/subtopics/moved-blocks-not-manual-edits-fix-a-renamed-resource/moved-blocks-not-manual-edits-fix-a-renamed-resource').then(m => m.MovedBlocksNotManualEditsFixARenamedResourceSubtopic) },
+    ] },
     { path: 'providers',       loadComponent: () => import('./components/cloud/terraform/providers/providers').then(m => m.TfProviders) },
     { path: 'variables',       loadComponent: () => import('./components/cloud/terraform/variables/variables').then(m => m.TfVariables) },
     { path: 'outputs',         loadComponent: () => import('./components/cloud/terraform/outputs/outputs').then(m => m.TfOutputs) },

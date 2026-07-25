@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Terraform Fundamentals" topicRoute="/terraform/fundamentals" subtopicLabel="depends_on Is for Dependencies Terraform Cannot See" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">depends_on Is for Dependencies Terraform Cannot See</h1>
+  <p class="page-subtitle">The main page states the depends_on rule in one line without ever showing a case where automatic detection actually fails — here's a concrete one: IAM permission propagation.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This expands the main page's one-line depends_on rule into an actual failure scenario. Next: why the main page's "never manually edit it" state-file advice needs a specific alternative for the common case of renaming a resource.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Terraform Fundamentals" topicRoute="/terraform/fundamentals"
+    [prev]="{ label: 'for_each Requires a Map or Set — Not a Bare List', route: '/terraform/fundamentals/for-each-requires-a-map-or-set-not-a-bare-list' }"
+    [next]="{ label: 'moved Blocks, Not Manual Edits, Fix a Renamed Resource', route: '/terraform/fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource' }" />
+</div>

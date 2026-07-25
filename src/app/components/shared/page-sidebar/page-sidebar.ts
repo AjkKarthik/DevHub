@@ -40382,6 +40382,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Terraform is idempotent by design — running apply repeatedly with no config changes should produce no changes, not repeated resource recreation.',
     ],
   },
+  'terraform/fundamentals/for-each-requires-a-map-or-set-not-a-bare-list': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Terraform Fundamentals',                     route: '/terraform/fundamentals' },
+      { label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' },
+    ],
+    tip: 'for_each accepts only a map or a set of strings — never a bare list. toset(var.my_list) is the standard fix, but it discards ordering and silently drops duplicate values.',
+    gotchas: [
+      'A plain list passed to for_each fails at plan time with a type-mismatch error, before any provider is contacted.',
+      'toset() collapses duplicate list entries with no warning — a genuine duplicate can silently under-provision resources.',
+    ],
+  },
+  'terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'for_each Requires a Map or Set — Not a Bare List', route: '/terraform/fundamentals/for-each-requires-a-map-or-set-not-a-bare-list' },
+      { label: 'moved Blocks, Not Manual Edits, Fix a Renamed Resource', route: '/terraform/fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource' },
+    ],
+    tip: 'Terraform\'s dependency graph is built purely from attribute references in the HCL — a runtime-only dependency (like IAM permission propagation before a boot script calls an API) is invisible to it unless declared explicitly with depends_on.',
+    gotchas: [
+      'Never add depends_on to a resource that already references its dependency through an attribute — the reference already establishes the order, and the redundant depends_on just adds noise.',
+      'Always comment a depends_on explaining WHY it is needed — nothing else documents the invisible relationship it is expressing.',
+    ],
+  },
+  'terraform/fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' },
+      { label: 'Terraform Fundamentals',                     route: '/terraform/fundamentals' },
+    ],
+    tip: 'A plain rename of a resource block (same arguments, new name) looks like a destroy-and-recreate to Terraform. A moved block declares the rename in version-controlled config; terraform state mv is the older, imperative, uncommitted equivalent.',
+    gotchas: [
+      'moved blocks only work within the SAME state file — moving a resource to a different state file still needs terraform state mv (or import/removed blocks).',
+      'Never hand-edit the state file\'s JSON to fix a resource address — the main page\'s own "never manually edit it" rule applies here too.',
+    ],
+  },
   'terraform/resources': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

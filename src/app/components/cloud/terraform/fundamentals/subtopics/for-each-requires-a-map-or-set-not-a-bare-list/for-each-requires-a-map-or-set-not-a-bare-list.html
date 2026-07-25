@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Terraform Fundamentals" topicRoute="/terraform/fundamentals" subtopicLabel="for_each Requires a Map or Set — Not a Bare List" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">for_each Requires a Map or Set — Not a Bare List</h1>
+  <p class="page-subtitle">The main page's own for_each fix example already uses a map — it never shows the type error you hit passing a plain list, or what toset() gives up to fix it.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This expands the main page's own count-vs-for_each mistake entry with the type constraint behind it. Next: why depends_on is sometimes needed even though Terraform builds its dependency graph automatically.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Terraform Fundamentals" topicRoute="/terraform/fundamentals"
+    [next]="{ label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' }" />
+</div>

@@ -2761,4 +2761,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'smartcase Does Nothing Unless ignorecase Is Also Set', route: '/linux/vim/smartcase-does-nothing-unless-ignorecase-is-also-set' },
     { label: 'vim -d Diff Mode Has Its Own Commands the Main Page Never Shows', route: '/linux/vim/vim-d-diff-mode-has-its-own-commands-the-main-page-never-shows' },
   ],
+  // NOTE: keyed 'tf-fundamentals', NOT bare 'fundamentals' — the JavaScript
+  // hub already claims the bare key with its own subtopics.
+  'tf-fundamentals': [
+    { label: 'for_each Requires a Map or Set — Not a Bare List', route: '/terraform/fundamentals/for-each-requires-a-map-or-set-not-a-bare-list' },
+    { label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' },
+    { label: 'moved Blocks, Not Manual Edits, Fix a Renamed Resource', route: '/terraform/fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource' },
+  ],
 };

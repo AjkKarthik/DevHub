@@ -2482,6 +2482,9 @@ export const SEARCH_INDEX: SearchEntry[] = [
 
   // ── Terraform ────────────────────────────────────────────────────────────
   { route: 'tf-fundamentals',      title: 'Terraform Fundamentals',       section: 'Terraform', difficulty: 'beginner',      keywords: 'terraform HCL init plan apply destroy providers resources outputs locals terraform.tfstate workflow' },
+  { route: 'tf-fundamentals/for-each-requires-a-map-or-set-not-a-bare-list', title: 'for_each Requires a Map or Set — Not a Bare List', section: 'Terraform', difficulty: 'beginner', keywords: 'terraform for_each toset list map set type error unique key duplicate' },
+  { route: 'tf-fundamentals/depends-on-is-for-dependencies-terraform-cannot-see', title: 'depends_on Is for Dependencies Terraform Cannot See', section: 'Terraform', difficulty: 'intermediate', keywords: 'terraform depends_on implicit explicit dependency graph iam propagation reference' },
+  { route: 'tf-fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource', title: 'moved Blocks, Not Manual Edits, Fix a Renamed Resource', section: 'Terraform', difficulty: 'intermediate', keywords: 'terraform moved block state mv rename resource refactor destroy recreate' },
   { route: 'tf-providers',         title: 'Providers',                    section: 'Terraform', difficulty: 'beginner',      keywords: 'terraform provider aws azurerm google kubernetes required_providers version constraints aliases' },
   { route: 'tf-variables',         title: 'Variables',                    section: 'Terraform', difficulty: 'beginner',      keywords: 'terraform input variable type string number bool list map object validation sensitive default tfvars' },
   { route: 'tf-outputs',           title: 'Outputs',                      section: 'Terraform', difficulty: 'beginner',      keywords: 'terraform output value sensitive description cross-module remote state data source reference' },
