@@ -5287,7 +5287,30 @@ off here with a date.
   expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4
   levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 2 of 21 topics
   complete.**
-- [ ] `/terraform/variables` — Variables & Locals
+- [x] `/terraform/variables` — Variables & Locals (2026-07-25) — 3 subtopics: (1) **nullable = false
+  Substitutes the Default for an Explicit null**, demonstrating in code a fact the main page's own
+  QnA already states precisely in words but never shows running — a plain default only fires on a
+  MISSING argument, not an explicitly-passed null (e.g. from a conditional), while nullable = false
+  catches the explicit-null case too; verified via WebSearch against HashiCorp's own docs; (2)
+  **optional() Lets Object Variables Evolve Without Breaking Callers**, expanding the main page's own
+  vpc_config example (which has zero optional attributes) with the tool needed to add a new attribute
+  to a module's object-typed interface without breaking existing callers — verified via WebSearch that
+  optional(type, default) is the Terraform 1.3+ mechanism, with a plain (non-optional) attribute
+  addition being a breaking change by contrast; (3) **A Sensitive Output Needs Its Own sensitive =
+  true**, extending the main page's own correct-but-incomplete point about sensitive variables (state
+  file exposure) to the separate opt-in an OUTPUT needs before it can surface a sensitive-derived
+  value at all — verified via HashiCorp Support docs that omitting it produces a hard "Output refers
+  to sensitive values" plan-time error, and that `terraform output -raw` is the sanctioned way to
+  retrieve the real value. Gotcha sweep (apostrophe-after-letter — all matches confirmed inside
+  backtick code blocks or plain HTML text nodes — backtick parity: 32/8/18, all even — bare `@word` —
+  none — unescaped `${` — none — over-escaped double-quote — none — literal-double-quote-in-label
+  check — none) came back clean. Confirmed bare `variables` key collision-free before adding — left
+  as a bare key. Build reported only the pre-documented harmless bundle-budget warning, zero compile
+  errors. `git add -A` staged all 15 files (9 new + 6 wiring). Browser-verified successfully on the
+  first attempt (no stale-chunk incident): topic-overview toggle count confirmed at 3, the Variables
+  accordion expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb
+  (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 3 of 21 topics
+  complete.**
 - [ ] `/terraform/outputs` — Outputs
 - [ ] `/terraform/resources` — Resources & Meta-Arguments
 - [ ] `/terraform/data-sources` — Data Sources
