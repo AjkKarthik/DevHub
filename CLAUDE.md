@@ -1794,6 +1794,67 @@ this same check before any other new hub's first subtopic set:
    auto-expand fired without a manual click — both real, executed checks rather than an
    assumption that copying `AzureNavComponent`'s pattern was sufficient on its own.
 
+### Terraform hub subtopic wiring — first pilot; the 7th `*NavComponent` in a row missing the
+subtopics-accordion structural fix, plus a copy-fidelity lesson on `autoExpandForCurrentUrl()`
+
+Confirmed via direct file inspection before the pilot (`/terraform/fundamentals`, 2026-07-25) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`TerraformNavComponent` (`shared/terraform-nav/terraform-nav.ts`) had ZERO subtopics-accordion
+   support** — the same structural gap already hit and fixed on `GoNavComponent`,
+   `DevopsNavComponent`, `ContainersNavComponent`, `AwsNavComponent`, `AzureNavComponent`, and
+   `LinuxNavComponent` before their own pilots. **This is now the SEVENTH `*NavComponent`-based hub
+   in a row missing this wiring at pilot time — never assume any `*NavComponent` hub has it; confirm
+   per hub, every time.**
+2. **A genuine copy-fidelity mistake caught before building, not after**: the first draft of
+   `autoExpandForCurrentUrl()` was written from memory as a substring-match heuristic (checking
+   whether the current URL `.includes()` a topic slug) instead of reading an existing working
+   implementation first. Directly reading `azure-nav.ts`'s own `autoExpandForCurrentUrl()` revealed
+   the actual established pattern is an EXACT match: iterate `Object.entries(SUBTOPICS)` and check
+   whether any subtopic's own `route` field equals the current URL exactly
+   (`subs.some(s => s.route === url)`) — not a substring/prefix heuristic at all. The invented
+   version would have been more fragile (prone to false-positive expansion on unrelated routes
+   sharing a substring) even though it might have happened to work for this specific pilot's slugs.
+   **Lesson: when replicating a structural fix across a 7th+ hub, read the most recent prior
+   implementation directly rather than reconstructing it from the pattern description in this
+   file — a description can omit details (like "exact match, not substring") that only show up in
+   the actual code.**
+3. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the JavaScript
+   hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms, per the
+   standing collision-detection discipline). Hub-prefixed to `tf-fundamentals` — matching this hub's
+   own established progress/search key prefix (`tf-`) — with the usual `// NOTE:` comment. All three
+   `TerraformNavComponent` accordion helper calls (`subtopicsOf`/`isSubtopicsExpanded`/
+   `toggleSubtopics`) use the prefixed `'tf-fundamentals'` key consistently.
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'terraform/fundamentals'`, confirmed the base
+   entry — and its own `TERRAFORM_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'terraform/fundamentals/<slug>'`.
+5. **`TERRAFORM_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'fundamentals/<slug>'`).
+6. **No live playground** — Terraform/HCL content has no in-browser runtime, following the same
+   `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/Blazor/Go/DevOps/
+   Node.js/Containers/AWS/Azure/Linux) — every code tab across all three subtopics uses plain HCL
+   configuration snippets with `language: 'bash'` (matching the main page's own `codeTabs` style,
+   which also uses `'bash'` for HCL — there is no dedicated `'hcl'` CodeTab language in this
+   codebase).
+7. Theme: `.tf-page`/`.tf-icon`/`.tf-section` CSS classes, confirmed NOT global (absent from
+   `src/styles.scss`) — every subtopic `.scss` needs the full `.tf-page { max-width: 860px; margin:
+   0 auto; }` wrapper rule. `$accent: #7b42bc`, `$tint: #f5f3ff`, icon content `TF`,
+   `tech="javascript"` in `app-page-meta` (Terraform pages share the JS/TS playground and run-it
+   links, same as every other non-JS-runtime hub).
+8. All three technical claims (for_each's map/set type requirement and what `toset()` gives up;
+   `depends_on` needed for IAM-propagation-style invisible dependencies; `moved` blocks vs
+   `terraform state mv` for renames) were verified via WebSearch against HashiCorp's own developer
+   docs and corroborating secondary sources before writing, per the standing "verify before
+   publishing" discipline for hubs with no in-browser runtime to test claims against directly.
+9. Browser verification confirmed the shared nav component change compiled correctly on the FIRST
+   attempt (no stale-chunk incident) — `terraform-nav.ts` was genuinely modified this batch (real
+   content change, not a no-op touch), unlike the Linux hub's own final `/linux/vim` batch where a
+   stale TEMPLATE compilation required a forced fresh file-write to resolve. Worth noting as a
+   contrast: a genuine file edit reliably triggers a correct recompile: the prior incident was
+   specifically about a component whose TEMPLATE went stale despite the underlying file being
+   untouched by that particular batch.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -2043,6 +2104,9 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/terraform/home/home.ts`. Progress: `tfTotal=21` in progress.service.ts.
   Terraform pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. TerraformNavComponent at `shared/terraform-nav/terraform-nav.ts`.
+  Phase 10: 1 of 21 topics have subtopics (`/terraform/fundamentals`, pilot batch, 2026-07-25) — see
+  "Terraform hub subtopic wiring" section below for the `TerraformNavComponent` accordion structural
+  fix and the `tf-fundamentals` SUBTOPICS-map collision resolution.
 - **Service Mesh hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
   Blue theme `$accent: #466bb0`, `$tint: #eef2fb`, dark `#93c5fd`. Search prefix `mesh-`. Route: `/service-mesh`.
   CSS classes: `.mesh-page`, `.mesh-icon`, `.mesh-section`. Icon content: `🕸️` at `font-size: 1.8rem`. `tech="javascript"`.

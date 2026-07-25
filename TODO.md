@@ -5229,7 +5229,41 @@ off here with a date.
 
 #### Terraform — 21 topic pages
 
-- [ ] `/terraform/fundamentals` — Terraform Fundamentals
+- [x] `/terraform/fundamentals` — Terraform Fundamentals (2026-07-25) — 3 subtopics: (1) **for_each
+  Requires a Map or Set — Not a Bare List**, expanding the main page's own count-vs-for_each mistake
+  entry (which already uses a working map example) with the far more common first attempt — passing
+  a plain list — and the resulting type-mismatch error; verified via WebSearch that for_each strictly
+  requires a map or set of strings, that toset() is the standard fix, and that toset() has its own
+  tradeoff of discarding order and silently dropping duplicates; (2) **depends_on Is for Dependencies
+  Terraform Cannot See**, expanding the main page's one-line depends_on rule (stated but never
+  demonstrated, since every main-page example already uses a working attribute reference) with a
+  concrete case where automatic detection fails — verified via WebSearch that Terraform's dependency
+  graph is built purely from attribute references, and that IAM permission propagation before a
+  boot-time API call is a standard example of an invisible runtime dependency needing an explicit,
+  commented depends_on; (3) **moved Blocks, Not Manual Edits, Fix a Renamed Resource**, giving the
+  main page's "never manually edit the state file" rule a concrete alternative for the single most
+  common situation that tempts a manual edit — verified via WebSearch that a plain rename looks like
+  a destroy+create to Terraform, that moved blocks (1.1+) are the current declarative/code-reviewable
+  fix, and that terraform state mv remains correct specifically for cross-state-file moves, which
+  moved blocks cannot express. Gotcha sweep (apostrophe-after-letter — all matches confirmed either
+  inside backtick-delimited code blocks or in plain HTML text nodes with no attribute risk — backtick
+  parity: 6/22/24, all even — bare `@word` — none — unescaped `${` — none — over-escaped double-quote
+  — none — backslash-escaped apostrophe in bound attributes — none (the initial broad grep match was
+  a false positive: none of the three subtopic titles contain apostrophes at all) — literal-double-
+  quote-in-label check — none) came back clean. Confirmed the bare `fundamentals` key collision
+  (belongs to the JavaScript hub) before adding — hub-prefixed to `tf-fundamentals`, matching the
+  hub's own `tf-` search/progress prefix. **`TerraformNavComponent` had zero subtopics-accordion
+  support** (same structural gap as Go/DevOps/Containers/AWS/Azure/Linux before their own pilots) —
+  fixed identically, but the first draft of `autoExpandForCurrentUrl()` used an invented substring-
+  match heuristic instead of the actual established pattern (exact `route` match against every
+  `SUBTOPICS` entry, from `AzureNavComponent`) — caught by re-reading `azure-nav.ts` directly before
+  building, not by a build failure, and corrected to match exactly. Build reported only the pre-
+  documented harmless bundle-budget warning, zero compile errors. `git add -A` staged all 15 files (9
+  new + 6 wiring). Browser-verified successfully on the first attempt (the shared nav component was
+  genuinely modified this batch, not a no-op touch, so no stale-chunk incident): topic-overview toggle
+  count confirmed at 1, the accordion expands correctly showing all 3 correctly-labeled links, a
+  subtopic page's h1/breadcrumb (all 4 levels)/theory/sidebar (tailored, not DEFAULT)/dark mode all
+  confirmed rendering correctly. **First Terraform-hub Phase 10 batch — 1 of 21 topics complete.**
 - [ ] `/terraform/providers` — Providers
 - [ ] `/terraform/variables` — Variables & Locals
 - [ ] `/terraform/outputs` — Outputs
