@@ -5311,7 +5311,28 @@ off here with a date.
   accordion expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb
   (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 3 of 21 topics
   complete.**
-- [ ] `/terraform/outputs` — Outputs
+- [x] `/terraform/outputs` — Outputs (2026-07-25) — 3 subtopics: (1) **precondition Blocks Catch a
+  Bad Output Value Before Export**, demonstrating a feature the main page's theory names in exactly
+  one bullet and never shows again — a precondition checking a resource's own status attribute (e.g.
+  `aws_db_instance.main.status == "available"`) catches a technically-known-but-not-actually-ready
+  value before it reaches downstream consumers; verified via WebSearch against HashiCorp's own custom
+  conditions docs; (2) **terraform_remote_state Grants Access to the Whole State File**, adding the
+  security caveat completely missing from the main page's own Remote State Outputs example — verified
+  via WebSearch that this data source reads the entire producing state file regardless of which output
+  is referenced, and that HashiCorp's current guidance recommends resource-specific data sources or
+  tfe_outputs (HCP Terraform/Enterprise) instead; (3) **output -json Reveals Sensitive Values the
+  Plain Command Redacts**, expanding a single clause buried in the main page's own QnA ("-json flag
+  includes them in the response") into a concrete CI-pipeline leak scenario — verified via WebSearch
+  that sensitive = true only redacts the plain terraform output display, never -json. Gotcha sweep
+  (apostrophe-after-letter — all matches confirmed inside backtick code blocks or plain HTML text
+  nodes — backtick parity: 26/14/10, all even — bare `@word` — none — unescaped `${` — none —
+  over-escaped double-quote — none — literal-double-quote-in-label check — none) came back clean.
+  Confirmed bare `outputs` key collision-free before adding — left as a bare key. Build reported only
+  the pre-documented harmless bundle-budget warning, zero compile errors. `git add -A` staged all 15
+  files (9 new + 6 wiring). Browser-verified successfully on the first attempt (no stale-chunk
+  incident): topic-overview toggle count confirmed at 4, the Outputs accordion expands correctly
+  showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all
+  confirmed rendering correctly. **Terraform hub Phase 10: 4 of 21 topics complete.**
 - [ ] `/terraform/resources` — Resources & Meta-Arguments
 - [ ] `/terraform/data-sources` — Data Sources
 - [ ] `/terraform/expressions` — Expressions & Dynamic Blocks
