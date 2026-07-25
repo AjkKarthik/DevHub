@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Data Sources" topicRoute="/terraform/data-sources" subtopicLabel="external Data Source: query and result Are Both String-Only Maps" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">external Data Source: query and result Are Both String-Only Maps</h1>
+  <p class="page-subtitle">The main page's QnA says the external data source "returns a JSON object" — that phrasing undersells a strict, string-only constraint that trips up almost everyone's first attempt.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the main page's own brief external-data-source description into its actual, stricter-than-JSON protocol. Next: why for_each, not count, is required when iterating a data source's own results.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Data Sources" topicRoute="/terraform/data-sources"
+    [next]="{ label: 'for_each, Not count, for Iterating a Data Source’s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' }" />
+</div>

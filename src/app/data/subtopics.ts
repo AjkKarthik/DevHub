@@ -2788,4 +2788,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'replace_triggered_by Forces Replacement From an Unrelated Resource', route: '/terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource' },
     { label: 'A Timeout Doesn’t Mean the Resource Wasn’t Created', route: '/terraform/resources/a-timeout-does-not-mean-the-resource-was-not-created' },
   ],
+  'data-sources': [
+    { label: 'external Data Source: query and result Are Both String-Only Maps', route: '/terraform/data-sources/external-data-source-query-and-result-are-both-string-only-maps' },
+    { label: 'for_each, Not count, for Iterating a Data Source’s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' },
+    { label: 'A Data Source Can Need depends_on Too', route: '/terraform/data-sources/a-data-source-can-need-depends-on-too-for-a-hidden-dependency' },
+  ],
 };

@@ -3296,7 +3296,12 @@ export const routes: Routes = [
       { path: 'replace-triggered-by-forces-replacement-from-an-unrelated-resource', loadComponent: () => import('./components/cloud/terraform/resources/subtopics/replace-triggered-by-forces-replacement-from-an-unrelated-resource/replace-triggered-by-forces-replacement-from-an-unrelated-resource').then(m => m.ReplaceTriggeredByForcesReplacementFromAnUnrelatedResourceSubtopic) },
       { path: 'a-timeout-does-not-mean-the-resource-was-not-created', loadComponent: () => import('./components/cloud/terraform/resources/subtopics/a-timeout-does-not-mean-the-resource-was-not-created/a-timeout-does-not-mean-the-resource-was-not-created').then(m => m.ATimeoutDoesNotMeanTheResourceWasNotCreatedSubtopic) },
     ] },
-    { path: 'data-sources',    loadComponent: () => import('./components/cloud/terraform/data-sources/data-sources').then(m => m.TfDataSources) },
+    { path: 'data-sources', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/data-sources/data-sources').then(m => m.TfDataSources) },
+      { path: 'external-data-source-query-and-result-are-both-string-only-maps', loadComponent: () => import('./components/cloud/terraform/data-sources/subtopics/external-data-source-query-and-result-are-both-string-only-maps/external-data-source-query-and-result-are-both-string-only-maps').then(m => m.ExternalDataSourceQueryAndResultAreBothStringOnlyMapsSubtopic) },
+      { path: 'for-each-not-count-for-iterating-a-data-sources-own-results', loadComponent: () => import('./components/cloud/terraform/data-sources/subtopics/for-each-not-count-for-iterating-a-data-sources-own-results/for-each-not-count-for-iterating-a-data-sources-own-results').then(m => m.ForEachNotCountForIteratingADataSourcesOwnResultsSubtopic) },
+      { path: 'a-data-source-can-need-depends-on-too-for-a-hidden-dependency', loadComponent: () => import('./components/cloud/terraform/data-sources/subtopics/a-data-source-can-need-depends-on-too-for-a-hidden-dependency/a-data-source-can-need-depends-on-too-for-a-hidden-dependency').then(m => m.ADataSourceCanNeedDependsOnTooForAHiddenDependencySubtopic) },
+    ] },
     { path: 'expressions',     loadComponent: () => import('./components/cloud/terraform/expressions/expressions').then(m => m.TfExpressions) },
     { path: 'functions',       loadComponent: () => import('./components/cloud/terraform/functions/functions').then(m => m.TfFunctions) },
     { path: 'state',           loadComponent: () => import('./components/cloud/terraform/state/state').then(m => m.TfState) },

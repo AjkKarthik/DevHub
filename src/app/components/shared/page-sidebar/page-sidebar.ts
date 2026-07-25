@@ -40474,6 +40474,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing data sources to reference resources that COULD be managed directly by Terraform (instead of importing them) creates unnecessary cross-configuration coupling.',
     ],
   },
+  'terraform/data-sources/external-data-source-query-and-result-are-both-string-only-maps': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Data Sources',                                          route: '/terraform/data-sources' },
+      { label: 'for_each, Not count, for Iterating a Data Source\'s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' },
+    ],
+    tip: 'The external data source protocol is stricter than general JSON — every value in both the query sent in and the result returned must be a string; a nested object or number needs to be JSON-encoded into a string and decoded with jsondecode() on the Terraform side.',
+    gotchas: [
+      'The query object\'s values also arrive as strings on the program\'s stdin, regardless of what type they appeared to be in the Terraform configuration.',
+    ],
+  },
+  'terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'external Data Source: query and result Are Both String-Only Maps', route: '/terraform/data-sources/external-data-source-query-and-result-are-both-string-only-maps' },
+      { label: 'A Data Source Can Need depends_on Too',                     route: '/terraform/data-sources/a-data-source-can-need-depends-on-too-for-a-hidden-dependency' },
+    ],
+    tip: 'Many data sources returning a list of results don\'t guarantee stable ordering across API calls — count ties resource identity to list position, so a reordered (but unchanged) result produces a spurious destroy/recreate diff. for_each, keyed on the actual values, does not.',
+    gotchas: [
+      'This is the same underlying count-vs-for_each instability the main page\'s own Resources topic covers for human-edited lists — just harder to notice, since the reordering comes from an external API.',
+    ],
+  },
+  'terraform/data-sources/a-data-source-can-need-depends-on-too-for-a-hidden-dependency': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'for_each, Not count, for Iterating a Data Source\'s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' },
+      { label: 'Data Sources',                                          route: '/terraform/data-sources' },
+    ],
+    tip: 'A data source with no attribute reference to a resource created in the same apply can be evaluated before that resource exists. depends_on on the data source itself fixes this, at the cost of deferring its evaluation to apply time.',
+    gotchas: [
+      'This mirrors the main page\'s own resource-level depends_on guidance — use it only when the dependency genuinely cannot be expressed through a reference, and comment why.',
+    ],
+  },
   'terraform/variables': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
