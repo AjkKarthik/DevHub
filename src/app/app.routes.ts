@@ -3278,7 +3278,12 @@ export const routes: Routes = [
       { path: 'module-provider-alias-needs-configuration-aliases-declared', loadComponent: () => import('./components/cloud/terraform/providers/subtopics/module-provider-alias-needs-configuration-aliases-declared/module-provider-alias-needs-configuration-aliases-declared').then(m => m.ModuleProviderAliasNeedsConfigurationAliasesDeclaredSubtopic) },
       { path: 'init-upgrade-upgrades-every-provider-not-just-one', loadComponent: () => import('./components/cloud/terraform/providers/subtopics/init-upgrade-upgrades-every-provider-not-just-one/init-upgrade-upgrades-every-provider-not-just-one').then(m => m.InitUpgradeUpgradesEveryProviderNotJustOneSubtopic) },
     ] },
-    { path: 'variables',       loadComponent: () => import('./components/cloud/terraform/variables/variables').then(m => m.TfVariables) },
+    { path: 'variables', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/variables/variables').then(m => m.TfVariables) },
+      { path: 'nullable-false-substitutes-default-even-for-explicit-null', loadComponent: () => import('./components/cloud/terraform/variables/subtopics/nullable-false-substitutes-default-even-for-explicit-null/nullable-false-substitutes-default-even-for-explicit-null').then(m => m.NullableFalseSubstitutesDefaultEvenForExplicitNullSubtopic) },
+      { path: 'optional-lets-object-variables-evolve-without-breaking-callers', loadComponent: () => import('./components/cloud/terraform/variables/subtopics/optional-lets-object-variables-evolve-without-breaking-callers/optional-lets-object-variables-evolve-without-breaking-callers').then(m => m.OptionalLetsObjectVariablesEvolveWithoutBreakingCallersSubtopic) },
+      { path: 'sensitive-output-needs-its-own-sensitive-true-declaration', loadComponent: () => import('./components/cloud/terraform/variables/subtopics/sensitive-output-needs-its-own-sensitive-true-declaration/sensitive-output-needs-its-own-sensitive-true-declaration').then(m => m.SensitiveOutputNeedsItsOwnSensitiveTrueDeclarationSubtopic) },
+    ] },
     { path: 'outputs',         loadComponent: () => import('./components/cloud/terraform/outputs/outputs').then(m => m.TfOutputs) },
     { path: 'resources',       loadComponent: () => import('./components/cloud/terraform/resources/resources').then(m => m.TfResources) },
     { path: 'data-sources',    loadComponent: () => import('./components/cloud/terraform/data-sources/data-sources').then(m => m.TfDataSources) },

@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Variables & Locals" topicRoute="/terraform/variables" subtopicLabel="A Sensitive Output Needs Its Own sensitive = true" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">A Sensitive Output Needs Its Own sensitive = true</h1>
+  <p class="page-subtitle">The main page correctly flags that sensitive = true doesn't encrypt the state file — but it never mentions that an output surfacing a sensitive value needs its own separate opt-in, or it fails to plan at all.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This extends the main page's own sensitive-variable limitation (display-only, not encryption) to the separate opt-in required on outputs that surface those values.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Variables & Locals" topicRoute="/terraform/variables"
+    [prev]="{ label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' }" />
+</div>

@@ -2773,4 +2773,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' },
     { label: 'init -upgrade Upgrades Every Provider, Not Just One', route: '/terraform/providers/init-upgrade-upgrades-every-provider-not-just-one' },
   ],
+  variables: [
+    { label: 'nullable = false Substitutes the Default for an Explicit null', route: '/terraform/variables/nullable-false-substitutes-default-even-for-explicit-null' },
+    { label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' },
+    { label: 'A Sensitive Output Needs Its Own sensitive = true', route: '/terraform/variables/sensitive-output-needs-its-own-sensitive-true-declaration' },
+  ],
 };

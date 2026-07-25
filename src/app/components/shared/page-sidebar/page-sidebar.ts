@@ -40453,6 +40453,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A variable with no default and no value supplied prompts interactively during apply — fine for local development, a blocking problem for unattended CI/CD pipelines.',
     ],
   },
+  'terraform/variables/nullable-false-substitutes-default-even-for-explicit-null': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Variables & Locals',                                              route: '/terraform/variables' },
+      { label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' },
+    ],
+    tip: 'A plain default only fills in a MISSING argument — an explicitly passed null bypasses it entirely. nullable = false is what catches an explicit null and substitutes the default instead.',
+    gotchas: [
+      'nullable = false without a default behaves differently again: it makes the variable strictly required and rejects null outright, rather than substituting anything.',
+    ],
+  },
+  'terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'nullable = false Substitutes the Default for an Explicit null', route: '/terraform/variables/nullable-false-substitutes-default-even-for-explicit-null' },
+      { label: 'A Sensitive Output Needs Its Own sensitive = true',             route: '/terraform/variables/sensitive-output-needs-its-own-sensitive-true-declaration' },
+    ],
+    tip: 'Every attribute in an object() type constraint is required by default. Wrapping a new attribute in optional(type, default) is what makes adding it to an existing module interface backward-compatible.',
+    gotchas: [
+      'optional(type) with no default resolves to null when omitted rather than erroring — only a plain (non-optional) attribute produces a type error when a caller omits it.',
+    ],
+  },
+  'terraform/variables/sensitive-output-needs-its-own-sensitive-true-declaration': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' },
+      { label: 'Variables & Locals',                                              route: '/terraform/variables' },
+    ],
+    tip: 'Sensitivity propagates from a sensitive variable to anything derived from it, but an output block must still explicitly opt in with its own sensitive = true — otherwise Terraform refuses to plan at all.',
+    gotchas: [
+      'terraform output -raw deliberately prints a sensitive output\'s real value — the sanctioned way for scripts/CI to consume it, not a bypass.',
+    ],
+  },
   'terraform/outputs': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
