@@ -5333,7 +5333,30 @@ off here with a date.
   incident): topic-overview toggle count confirmed at 4, the Outputs accordion expands correctly
   showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all
   confirmed rendering correctly. **Terraform hub Phase 10: 4 of 21 topics complete.**
-- [ ] `/terraform/resources` — Resources & Meta-Arguments
+- [x] `/terraform/resources` — Resources & Meta-Arguments (2026-07-25) — 3 subtopics: (1)
+  **prevent_destroy Is Bypassed by Removing the Whole Resource Block**, adding a second, entirely-
+  within-Terraform bypass to the main page's own correct-but-incomplete quiz explanation (which only
+  covers the manual-console-deletion bypass) — verified via WebSearch/HashiCorp docs that
+  prevent_destroy is checked only against the CURRENT config at plan time, never persisted to state,
+  so deleting the whole block removes the protection along with it; (2) **replace_triggered_by Forces
+  Replacement From an Unrelated Resource**, demonstrating a lifecycle meta-argument the main page
+  names in exactly one bullet and never shows — verified via HashiCorp's own docs (official
+  aws_appautoscaling_target example) that it ties one resource's replacement to another's planned
+  action, distinct from the ordering-only guarantee of a plain attribute reference, plus the
+  terraform_data workaround for plain values; (3) **A Timeout Doesn't Mean the Resource Wasn't
+  Created**, closing a real gap in the main page's own detailed timeouts QnA (which stops at "marked
+  tainted") — verified via WebSearch that a timed-out create can still succeed in the cloud provider
+  after Terraform gives up waiting, producing an "already exists" conflict on the next apply that
+  terraform import resolves. Gotcha sweep (apostrophe-after-letter — all matches confirmed inside
+  backtick code blocks or plain HTML text nodes — backtick parity: 12/10/8, all even — bare `@word` —
+  none — unescaped `${` — none — over-escaped double-quote — none — literal-double-quote-in-label
+  check — none) came back clean. Confirmed bare `resources` key collision-free before adding — left
+  as a bare key. Build reported only the pre-documented harmless bundle-budget warning, zero compile
+  errors. `git add -A` staged all 15 files (9 new + 6 wiring). Browser-verified successfully on the
+  first attempt (no stale-chunk incident): topic-overview toggle count confirmed at 5, the Resources
+  accordion expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb
+  (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 5 of 21 topics
+  complete.**
 - [ ] `/terraform/data-sources` — Data Sources
 - [ ] `/terraform/expressions` — Expressions & Dynamic Blocks
 - [ ] `/terraform/functions` — Built-in Functions
