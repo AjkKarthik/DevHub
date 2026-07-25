@@ -5188,7 +5188,44 @@ off here with a date.
   confirmed at 18 (the EIGHTEENTH Linux-hub topic with subtopics — only `/linux/vim` remains for
   the entire hub), the accordion expands correctly, all three subtopic pages confirmed h1/breadcrumb
   (all 4 levels)/prev-next correct, dark mode correct, and no stray backslash/undefined artifacts.
-- [ ] `/linux/vim` — Vim & Text Editors
+- [x] `/linux/vim` — Vim & Text Editors (2026-07-25) — 3 subtopics: (1) **A Delete Silently
+  Clobbers Your Yank — Paste From Register 0 Instead**, expanding the main page's brief mention of
+  yank/delete registers into the specific, commonly-hit trap where `dd`ing a line before pasting
+  destroys the previously-yanked text in the unnamed register — verified vim's own documented
+  register model (delete always overwrites `"`, yank always overwrites `"0`, so `"0p` recovers the
+  last yank regardless of intervening deletes); (2) **smartcase Does Nothing Unless ignorecase Is
+  Also Set**, expanding the main page's one-line `.vimrc` example (`set ignorecase smartcase`) that
+  presents both settings as independent — verified vim's own documented behavior that `smartcase` is
+  purely a modifier of `ignorecase` and is a silent no-op without it, with no error or warning; (3)
+  **vim -d Diff Mode Has Its Own Commands the Main Page Never Shows**, expanding the main page's
+  passing mention of `vim -d` into the actual diff-mode-specific commands (`]c`/`[c` to jump between
+  hunks, `do`/`dp` to obtain/put changes) needed to use it. All three subtopic titles were written
+  quote-free from the start per the standing discipline (no `"0p`-style raw quote characters used in
+  any title/label, avoiding the literal-double-quote-in-label collision). Gotcha sweep (apostrophe-
+  after-letter — all matches confirmed inside backtick-delimited code blocks — backtick parity: all
+  even — bare `@word` — none — unescaped `${` — none — over-escaped double-quote — none —
+  backslash-escaped apostrophe in bound attributes — none — literal-double-quote-in-label check —
+  none) came back clean. Confirmed bare `vim` key collision-free (both quoted and unquoted forms) in
+  the SUBTOPICS map before adding. Build reported only the pre-documented harmless bundle-budget
+  warning, zero compile errors. `git add -A` staged all 15 files (9 new + 6 wiring). **Hit a new,
+  previously-undocumented dev-server staleness variant during browser verification**: after a full
+  cold restart of the dev server (new session/serverId) and a confirmed-correct rebuild containing
+  the right data (verified via a raw `fetch('/main.js')` bundle-content check), the Vim nav link's
+  own toggle button still rendered as an empty `<!--container-->` placeholder in the live DOM —
+  while calling `subtopicsOf('vim')` directly on the live `LinuxNavComponent` instance via Angular's
+  `ng.getComponent()` dev-mode API returned the fully correct 3-entry array. This proved the running
+  component's own method and data were correct, but the compiled TEMPLATE'S `@if` block was not
+  reflecting it — a stale COMPONENT template compilation specifically, distinct from every previously
+  -documented stale-chunk variant (which were about a lazy-loaded ROUTE chunk, not the always-eager
+  shared nav component itself). **Fix: force a fresh file-write directly on
+  `linux-nav.ts`** (the component file itself, not `subtopics.ts` or `app.routes.ts` as in prior
+  incidents) — append and trim a trailing newline, confirmed via `preview_logs` a genuine new
+  `main.js` rebuild occurred, then a hard navigation showed the toggle button rendering correctly.
+  Browser-verified successfully: topic-overview toggle count confirmed at **19 — the FULL Linux hub,
+  every topic now has subtopics**, the accordion expands correctly showing all 3 correctly-labeled
+  links, a subtopic page's h1/breadcrumb (all 4 levels)/theory/code/try-it all confirmed rendering
+  correctly, dark mode correct. **This completes Phase 10 for the entire Linux & Bash hub — 19/19
+  topics, matching the AWS/Containers/Azure "COMPLETE" precedent.**
 
 #### Terraform — 21 topic pages
 

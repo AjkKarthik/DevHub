@@ -1935,15 +1935,26 @@ this same check before any other new hub's first subtopic set:
   Linux pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (security-hardening, cron) have no PageComplete.
   Challenge.language: `'typescript'`. `${VAR}` bash variables in template literals must be escaped as `\${VAR}`.
   LinuxNavComponent at `shared/linux-nav/linux-nav.ts`.
-  Phase 10: 18 of 19 topics have subtopics (`/linux/fundamentals`, `/linux/file-system`,
-  `/linux/essential-commands`, `/linux/file-permissions`, `/linux/users-groups`,
-  `/linux/process-management`, `/linux/system-monitoring`, `/linux/networking`, `/linux/firewall`,
-  `/linux/ssh`, `/linux/bash-scripting`, `/linux/bash-advanced`, `/linux/package-management`,
-  `/linux/systemd`, `/linux/disk-storage`, `/linux/environment-variables`, `/linux/log-analysis`,
-  `/linux/performance-tuning`, 2026-07-24) — only `/linux/vim` remains for the entire hub — see
-  "Linux hub subtopic wiring" section above for the `LinuxNavComponent` accordion structural fix and the
-  `linux-fundamentals` SUBTOPICS-map collision resolution (collided with the JavaScript hub's
-  own bare `fundamentals` topic key).
+  Phase 10: **COMPLETE — 19 of 19 topics have subtopics** (`/linux/fundamentals`,
+  `/linux/file-system`, `/linux/essential-commands`, `/linux/file-permissions`,
+  `/linux/users-groups`, `/linux/process-management`, `/linux/system-monitoring`,
+  `/linux/networking`, `/linux/firewall`, `/linux/ssh`, `/linux/bash-scripting`,
+  `/linux/bash-advanced`, `/linux/package-management`, `/linux/systemd`, `/linux/disk-storage`,
+  `/linux/environment-variables`, `/linux/log-analysis`, `/linux/performance-tuning`,
+  `/linux/vim`, finished 2026-07-25, 57 subtopic pages total) — see "Linux hub subtopic wiring"
+  section above for the `LinuxNavComponent` accordion structural fix and the `linux-fundamentals`
+  SUBTOPICS-map collision resolution (collided with the JavaScript hub's own bare `fundamentals`
+  topic key). **A new stale-template variant surfaced on the final `/linux/vim` batch**: after a
+  full dev-server restart with a confirmed-correct rebuild (verified via raw bundle-content
+  inspection), the nav toggle button still failed to render — `ng.getComponent()` calling
+  `subtopicsOf('vim')` directly on the live component returned correct data, proving the stale
+  artifact was the compiled TEMPLATE itself, not the data or the lazy route chunk (every prior
+  incident in this family was route-chunk staleness). Fix: force a fresh file-write directly on
+  the always-eager shared nav component file itself (`linux-nav.ts`), not just `subtopics.ts`/
+  `app.routes.ts` as in prior incidents — confirmed via `preview_logs` a genuine new `main.js`
+  rebuild, then the toggle rendered correctly. Worth trying this specific variant (touch the
+  shared nav component, not the data file) if a future hub's toggle button silently fails to
+  render despite everything else checking out.
   **New gotcha found on the `/linux/process-management` batch**: a single-quoted `.ts` string
   field never needs its double quotes escaped — writing `\"$PID\"` where plain `"$PID"` is
   correct produces a stray literal backslash in the rendered text. Caught by re-reading the file,
