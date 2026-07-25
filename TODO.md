@@ -5357,7 +5357,32 @@ off here with a date.
   accordion expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb
   (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 5 of 21 topics
   complete.**
-- [ ] `/terraform/data-sources` — Data Sources
+- [x] `/terraform/data-sources` — Data Sources (2026-07-25) — 3 subtopics: (1) **external Data
+  Source: query and result Are Both String-Only Maps**, sharpening the main page's own QnA phrasing
+  ("returns a JSON object") into the actual, stricter-than-JSON protocol — verified via the official
+  hashicorp/external provider docs that every value in both directions must be a string, with the
+  jsondecode()/JSON-encoding workaround for anything structured; (2) **for_each, Not count, for
+  Iterating a Data Source's Own Results**, adding a caveat to a pattern the main page's own Account &
+  Region example actually uses (count paired with a data source result index) without comment —
+  verified via WebSearch that many data sources don't guarantee stable list ordering across API
+  calls, making for_each the safer default; (3) **A Data Source Can Need depends_on Too**, extending
+  the main page's own quiz (which covers only the attribute-reference deferral case) to a hidden,
+  side-effect-only dependency with no attribute to reference at all — verified via WebSearch that
+  data sources support depends_on directly, with the same apply-time-deferral cost as the
+  attribute-reference case. **Caught and fixed a real over-escaped-double-quote bug during the
+  gotcha sweep** — `\"` inside a SINGLE-quoted TS field (not the usual backtick-delimited `code:`
+  field context where this escaping is correct) would have rendered a visible stray backslash;
+  fixed by removing the unnecessary escaping and rephrasing to avoid an awkward nested-quote read.
+  Gotcha sweep (apostrophe-after-letter — all matches confirmed inside backtick code blocks or plain
+  HTML text nodes — backtick parity: 8/10/10 after the fix, all even — bare `@word` — none —
+  unescaped `${` — none — literal-double-quote-in-label check — none) came back clean after the fix.
+  Confirmed bare `data-sources` key collision-free before adding — left as a bare key. Build reported
+  only the pre-documented harmless bundle-budget warning, zero compile errors. `git add -A` staged
+  all 15 files (9 new + 6 wiring). Browser-verified successfully on the first attempt (no stale-chunk
+  incident, and specifically confirmed no stray backslash rendered in the fixed subtopic's text):
+  topic-overview toggle count confirmed at 6, the Data Sources accordion expands correctly showing
+  all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed
+  rendering correctly. **Terraform hub Phase 10: 6 of 21 topics complete.**
 - [ ] `/terraform/expressions` — Expressions & Dynamic Blocks
 - [ ] `/terraform/functions` — Built-in Functions
 - [ ] `/terraform/state` — Terraform State

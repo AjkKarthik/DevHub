@@ -1854,6 +1854,18 @@ this same check before any other new hub's first subtopic set:
    contrast: a genuine file edit reliably triggers a correct recompile: the prior incident was
    specifically about a component whose TEMPLATE went stale despite the underlying file being
    untouched by that particular batch.
+10. **A real over-escaped-double-quote bug caught during the `/terraform/data-sources` batch's own
+    gotcha sweep, before it reached the build.** The standing rule ("backslash-escape a literal `"`
+    only inside a backtick-delimited `code:`/`content:` field, never inside a plain single-quoted
+    `'...'` field, since `"` needs no escaping there at all") had two real violations in the same
+    file: one in a `theory.points` entry quoting the main page's own QnA text, and one in an
+    `exercise.solution` field containing a nested backtick-wrapped JSON code span. Both used `\"`
+    where plain `"` was correct, which would have rendered a visible stray backslash in the actual
+    page text (not a build error — the sweep, not the build, is what has to catch this). Fixed by
+    removing the unnecessary escaping; also rephrased the first instance to avoid an awkward
+    nested-quote read in prose. Confirms this specific mistake (conflating the single-quoted-field
+    rule with the backtick-field rule) is a standing risk worth a dedicated look on any subtopic
+    batch whose prose quotes something containing its own double quotes.
 
 ## Current state (update when it changes!)
 
@@ -2104,11 +2116,15 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/terraform/home/home.ts`. Progress: `tfTotal=21` in progress.service.ts.
   Terraform pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. TerraformNavComponent at `shared/terraform-nav/terraform-nav.ts`.
-  Phase 10: 5 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
-  `/terraform/variables`, `/terraform/outputs`, `/terraform/resources`, 2026-07-25) — see "Terraform
-  hub subtopic wiring" section below for the `TerraformNavComponent` accordion structural fix and the
-  `tf-fundamentals` SUBTOPICS-map collision resolution (`providers`, `variables`, `outputs`, and
-  `resources` were all collision-free, left as bare keys).
+  Phase 10: 6 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
+  `/terraform/variables`, `/terraform/outputs`, `/terraform/resources`, `/terraform/data-sources`,
+  2026-07-25) — see "Terraform hub subtopic wiring" section below for the `TerraformNavComponent`
+  accordion structural fix and the `tf-fundamentals` SUBTOPICS-map collision resolution (`providers`,
+  `variables`, `outputs`, `resources`, and `data-sources` were all collision-free, left as bare keys).
+  **The `data-sources` batch caught a real over-escaped-double-quote bug** (`\"` inside a
+  single-quoted TS field, not the backtick-delimited `code:` context where that escaping is
+  correct) during the standing gotcha sweep, before it reached the build — see "Terraform hub
+  subtopic wiring" section below for the fix.
 - **Service Mesh hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
   Blue theme `$accent: #466bb0`, `$tint: #eef2fb`, dark `#93c5fd`. Search prefix `mesh-`. Route: `/service-mesh`.
   CSS classes: `.mesh-page`, `.mesh-icon`, `.mesh-section`. Icon content: `🕸️` at `font-size: 1.8rem`. `tech="javascript"`.
