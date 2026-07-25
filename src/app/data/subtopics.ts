@@ -2793,4 +2793,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'for_each, Not count, for Iterating a Data Source’s Own Results', route: '/terraform/data-sources/for-each-not-count-for-iterating-a-data-sources-own-results' },
     { label: 'A Data Source Can Need depends_on Too', route: '/terraform/data-sources/a-data-source-can-need-depends-on-too-for-a-hidden-dependency' },
   ],
+  expressions: [
+    { label: 'can() Is for Variable Validation — try() Is the Real Fallback Tool', route: '/terraform/expressions/can-is-for-variable-validation-try-is-the-real-fallback-tool' },
+    { label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' },
+    { label: 'A for Expression Map Errors on Duplicate Keys Unless Grouped', route: '/terraform/expressions/a-for-expression-map-errors-on-duplicate-keys-unless-grouped' },
+  ],
 };

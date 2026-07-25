@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Expressions & Dynamic Blocks" topicRoute="/terraform/expressions" subtopicLabel="can() Is for Variable Validation — try() Is the Real Fallback Tool" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">can() Is for Variable Validation — try() Is the Real Fallback Tool</h1>
+  <p class="page-subtitle">The main page shows can() as a general safe-access tool and never mentions try() at all — here's what each is actually meant for, and why scattering either one broadly hides real bugs.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This adds the try() half of the picture the main page's own can() example never mentions. Next: why nesting two dynamic blocks with default iterator names silently shadows the outer one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Expressions & Dynamic Blocks" topicRoute="/terraform/expressions"
+    [next]="{ label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' }" />
+</div>

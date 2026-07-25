@@ -3302,7 +3302,12 @@ export const routes: Routes = [
       { path: 'for-each-not-count-for-iterating-a-data-sources-own-results', loadComponent: () => import('./components/cloud/terraform/data-sources/subtopics/for-each-not-count-for-iterating-a-data-sources-own-results/for-each-not-count-for-iterating-a-data-sources-own-results').then(m => m.ForEachNotCountForIteratingADataSourcesOwnResultsSubtopic) },
       { path: 'a-data-source-can-need-depends-on-too-for-a-hidden-dependency', loadComponent: () => import('./components/cloud/terraform/data-sources/subtopics/a-data-source-can-need-depends-on-too-for-a-hidden-dependency/a-data-source-can-need-depends-on-too-for-a-hidden-dependency').then(m => m.ADataSourceCanNeedDependsOnTooForAHiddenDependencySubtopic) },
     ] },
-    { path: 'expressions',     loadComponent: () => import('./components/cloud/terraform/expressions/expressions').then(m => m.TfExpressions) },
+    { path: 'expressions', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/expressions/expressions').then(m => m.TfExpressions) },
+      { path: 'can-is-for-variable-validation-try-is-the-real-fallback-tool', loadComponent: () => import('./components/cloud/terraform/expressions/subtopics/can-is-for-variable-validation-try-is-the-real-fallback-tool/can-is-for-variable-validation-try-is-the-real-fallback-tool').then(m => m.CanIsForVariableValidationTryIsTheRealFallbackToolSubtopic) },
+      { path: 'nested-dynamic-blocks-shadow-the-outer-iterator-by-default', loadComponent: () => import('./components/cloud/terraform/expressions/subtopics/nested-dynamic-blocks-shadow-the-outer-iterator-by-default/nested-dynamic-blocks-shadow-the-outer-iterator-by-default').then(m => m.NestedDynamicBlocksShadowTheOuterIteratorByDefaultSubtopic) },
+      { path: 'a-for-expression-map-errors-on-duplicate-keys-unless-grouped', loadComponent: () => import('./components/cloud/terraform/expressions/subtopics/a-for-expression-map-errors-on-duplicate-keys-unless-grouped/a-for-expression-map-errors-on-duplicate-keys-unless-grouped').then(m => m.AForExpressionMapErrorsOnDuplicateKeysUnlessGroupedSubtopic) },
+    ] },
     { path: 'functions',       loadComponent: () => import('./components/cloud/terraform/functions/functions').then(m => m.TfFunctions) },
     { path: 'state',           loadComponent: () => import('./components/cloud/terraform/state/state').then(m => m.TfState) },
     { path: 'remote-backends', loadComponent: () => import('./components/cloud/terraform/remote-backends/remote-backends').then(m => m.TfRemoteBackends) },

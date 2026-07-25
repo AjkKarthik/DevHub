@@ -144,7 +144,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/terraform/expressions" routerLinkActive="active"><span class="nl-text">Expressions &amp; Dynamic Blocks</span>@if(p.isDone('tf-expressions')){<span class="nl-done">✓</span>}@if(d('tf-expressions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/expressions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Expressions &amp; Dynamic Blocks</span>
+        @if(p.isDone('tf-expressions')){<span class="nl-done">✓</span>}
+        @if(d('tf-expressions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('expressions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('expressions')"
+                  (click)="toggleSubtopics('expressions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('expressions'); as exprSubs) {
+        @if (isSubtopicsExpanded('expressions')) {
+          <div class="nav-subtopics">
+            @for (s of exprSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/terraform/functions" routerLinkActive="active"><span class="nl-text">Built-in Functions</span>@if(p.isDone('tf-functions')){<span class="nl-done">✓</span>}@if(d('tf-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

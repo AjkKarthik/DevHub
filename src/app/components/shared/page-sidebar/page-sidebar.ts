@@ -40609,6 +40609,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Conditional expressions (cond ? true_val : false_val) are common for toggling resource configuration based on a variable, but deeply nested conditionals hurt readability fast.',
     ],
   },
+  'terraform/expressions/can-is-for-variable-validation-try-is-the-real-fallback-tool': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Expressions & Dynamic Blocks',                              route: '/terraform/expressions' },
+      { label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' },
+    ],
+    tip: 'can() is intended for variable validation blocks (a simple pass/fail check) — try() is the real fallback-VALUE tool, and HashiCorp\'s own guidance is to confine it to a few dedicated locals rather than scattering it everywhere.',
+    gotchas: [
+      'Both functions swallow ANY error the wrapped expression produces — a genuine typo is silently treated the same as an "expected" missing value.',
+    ],
+  },
+  'terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'can() Is for Variable Validation — try() Is the Real Fallback Tool', route: '/terraform/expressions/can-is-for-variable-validation-try-is-the-real-fallback-tool' },
+      { label: 'A for Expression Map Errors on Duplicate Keys Unless Grouped',        route: '/terraform/expressions/a-for-expression-map-errors-on-duplicate-keys-unless-grouped' },
+    ],
+    tip: 'A dynamic block\'s default iteration variable name is its own label — nesting two dynamic blocks that land on the same default name means the inner one silently shadows the outer, with no error. The iterator argument gives each level its own explicit name.',
+    gotchas: [
+      'This produces wrong VALUES, not an error — easy to miss without deliberately checking the innermost content block\'s output.',
+    ],
+  },
+  'terraform/expressions/a-for-expression-map-errors-on-duplicate-keys-unless-grouped': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' },
+      { label: 'Expressions & Dynamic Blocks',                              route: '/terraform/expressions' },
+    ],
+    tip: 'A map-producing for expression ({ }) requires unique keys — a duplicate is a plan-time "Duplicate object key" error, not a silent overwrite. Appending ... after the value expression activates grouping mode, collecting matching values into a list instead.',
+    gotchas: [
+      '... is harmless even without duplicates present — it just produces single-element lists for every key, so it can be used proactively whenever duplicates are possible.',
+    ],
+  },
   'terraform/functions': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
