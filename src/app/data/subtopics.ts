@@ -2778,4 +2778,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'optional() Lets Object Variables Evolve Without Breaking Callers', route: '/terraform/variables/optional-lets-object-variables-evolve-without-breaking-callers' },
     { label: 'A Sensitive Output Needs Its Own sensitive = true', route: '/terraform/variables/sensitive-output-needs-its-own-sensitive-true-declaration' },
   ],
+  outputs: [
+    { label: 'precondition Blocks Catch a Bad Output Value Before Export', route: '/terraform/outputs/precondition-blocks-catch-a-bad-output-value-before-export' },
+    { label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' },
+    { label: 'output -json Reveals Sensitive Values the Plain Command Redacts', route: '/terraform/outputs/output-json-reveals-sensitive-values-the-plain-command-redacts' },
+  ],
 };

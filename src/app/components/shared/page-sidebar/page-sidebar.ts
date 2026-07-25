@@ -40498,6 +40498,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Module outputs must be explicitly re-exposed by the calling configuration if the ROOT module itself needs to surface them further.',
     ],
   },
+  'terraform/outputs/precondition-blocks-catch-a-bad-output-value-before-export': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Outputs',                                                    route: '/terraform/outputs' },
+      { label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' },
+    ],
+    tip: 'A resource attribute being known in state is not the same as the resource being operationally ready — a precondition block on an output checks readiness (e.g. status == "available") right at the export boundary, before a downstream consumer can hit a confusing, disconnected failure.',
+    gotchas: [
+      'A failed precondition halts the operation with the given error_message — it does not just warn while still exporting the value.',
+    ],
+  },
+  'terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'precondition Blocks Catch a Bad Output Value Before Export', route: '/terraform/outputs/precondition-blocks-catch-a-bad-output-value-before-export' },
+      { label: 'output -json Reveals Sensitive Values the Plain Command Redacts', route: '/terraform/outputs/output-json-reveals-sensitive-values-the-plain-command-redacts' },
+    ],
+    tip: 'terraform_remote_state reads the ENTIRE state file from the backend, not just the specific output referenced — HashiCorp\'s own current guidance recommends resource-specific data sources or tfe_outputs (HCP Terraform/Enterprise) instead.',
+    gotchas: [
+      'State files commonly contain resource attribute values well beyond what any output intentionally exposes — full read access to one is a much broader exposure than "just the outputs I reference."',
+    ],
+  },
+  'terraform/outputs/output-json-reveals-sensitive-values-the-plain-command-redacts': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' },
+      { label: 'Outputs',                                                    route: '/terraform/outputs' },
+    ],
+    tip: 'sensitive = true only redacts the PLAIN terraform output display — terraform output -json prints every output\'s real, unredacted value regardless of sensitivity, with the sensitive flag present only as metadata.',
+    gotchas: [
+      'A CI step piping -json output into a logged or archived file can leak a "correctly" sensitive-marked value in plain text — extract only what\'s needed via -raw into an environment variable instead.',
+    ],
+  },
   'terraform/expressions': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

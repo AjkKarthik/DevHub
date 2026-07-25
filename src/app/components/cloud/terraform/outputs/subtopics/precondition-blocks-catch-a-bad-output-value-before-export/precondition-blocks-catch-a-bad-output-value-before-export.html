@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Outputs" topicRoute="/terraform/outputs" subtopicLabel="precondition Blocks Catch a Bad Output Value Before Export" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">precondition Blocks Catch a Bad Output Value Before Export</h1>
+  <p class="page-subtitle">The main page mentions precondition in exactly one bullet and never shows it again — here's what it actually looks like and the readiness gap it closes.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform 1.2+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This demonstrates a feature the main page's theory only ever names. Next: why terraform_remote_state grants read access to a lot more than the specific outputs a consumer references.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Outputs" topicRoute="/terraform/outputs"
+    [next]="{ label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' }" />
+</div>

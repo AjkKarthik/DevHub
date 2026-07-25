@@ -3284,7 +3284,12 @@ export const routes: Routes = [
       { path: 'optional-lets-object-variables-evolve-without-breaking-callers', loadComponent: () => import('./components/cloud/terraform/variables/subtopics/optional-lets-object-variables-evolve-without-breaking-callers/optional-lets-object-variables-evolve-without-breaking-callers').then(m => m.OptionalLetsObjectVariablesEvolveWithoutBreakingCallersSubtopic) },
       { path: 'sensitive-output-needs-its-own-sensitive-true-declaration', loadComponent: () => import('./components/cloud/terraform/variables/subtopics/sensitive-output-needs-its-own-sensitive-true-declaration/sensitive-output-needs-its-own-sensitive-true-declaration').then(m => m.SensitiveOutputNeedsItsOwnSensitiveTrueDeclarationSubtopic) },
     ] },
-    { path: 'outputs',         loadComponent: () => import('./components/cloud/terraform/outputs/outputs').then(m => m.TfOutputs) },
+    { path: 'outputs', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/outputs/outputs').then(m => m.TfOutputs) },
+      { path: 'precondition-blocks-catch-a-bad-output-value-before-export', loadComponent: () => import('./components/cloud/terraform/outputs/subtopics/precondition-blocks-catch-a-bad-output-value-before-export/precondition-blocks-catch-a-bad-output-value-before-export').then(m => m.PreconditionBlocksCatchABadOutputValueBeforeExportSubtopic) },
+      { path: 'remote-state-grants-access-to-the-entire-state-not-just-outputs', loadComponent: () => import('./components/cloud/terraform/outputs/subtopics/remote-state-grants-access-to-the-entire-state-not-just-outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs').then(m => m.RemoteStateGrantsAccessToTheEntireStateNotJustOutputsSubtopic) },
+      { path: 'output-json-reveals-sensitive-values-the-plain-command-redacts', loadComponent: () => import('./components/cloud/terraform/outputs/subtopics/output-json-reveals-sensitive-values-the-plain-command-redacts/output-json-reveals-sensitive-values-the-plain-command-redacts').then(m => m.OutputJsonRevealsSensitiveValuesThePlainCommandRedactsSubtopic) },
+    ] },
     { path: 'resources',       loadComponent: () => import('./components/cloud/terraform/resources/resources').then(m => m.TfResources) },
     { path: 'data-sources',    loadComponent: () => import('./components/cloud/terraform/data-sources/data-sources').then(m => m.TfDataSources) },
     { path: 'expressions',     loadComponent: () => import('./components/cloud/terraform/expressions/expressions').then(m => m.TfExpressions) },
