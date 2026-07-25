@@ -5383,7 +5383,30 @@ off here with a date.
   topic-overview toggle count confirmed at 6, the Data Sources accordion expands correctly showing
   all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed
   rendering correctly. **Terraform hub Phase 10: 6 of 21 topics complete.**
-- [ ] `/terraform/expressions` — Expressions & Dynamic Blocks
+- [x] `/terraform/expressions` — Expressions & Dynamic Blocks (2026-07-25) — 3 subtopics: (1)
+  **can() Is for Variable Validation — try() Is the Real Fallback Tool**, adding the try() half of
+  the picture the main page's own can() example never mentions — verified via HashiCorp's own docs
+  that can() is intended for validation-block pass/fail checks while try() is the real fallback-VALUE
+  tool, with HashiCorp's own recommendation to confine try() to a few dedicated locals rather than
+  scattering it broadly, since both functions swallow genuine bugs the same way they swallow expected
+  failures; (2) **Nested Dynamic Blocks Shadow the Outer Iterator by Default**, covering the two-level
+  nesting case the main page's own single-level dynamic block example never demonstrates — verified
+  via WebSearch that the default iterator name is a dynamic block's own label, and nested blocks
+  sharing that default name silently shadow each other with no error, fixed via the iterator
+  argument; (3) **A for Expression Map Errors on Duplicate Keys Unless Grouped**, closing a gap the
+  main page's own duplicate-free for-expression examples never expose — verified via WebSearch/GitHub
+  discussion that a map-producing for expression is fail-fast on a duplicate key, and the trailing
+  `...` ellipsis activates grouping mode to collect matching values into a list instead. Gotcha sweep
+  (apostrophe-after-letter — all matches confirmed inside backtick code blocks or plain HTML text
+  nodes — backtick parity: 8/12/10, all even — bare `@word` — none — unescaped `${` — none —
+  over-escaped double-quote — none, specifically re-checked given the prior batch's real bug —
+  literal-double-quote-in-label check — none) came back clean. Confirmed bare `expressions` key
+  collision-free before adding — left as a bare key. Build reported only the pre-documented harmless
+  bundle-budget warning, zero compile errors. `git add -A` staged all 15 files (9 new + 6 wiring).
+  Browser-verified successfully on the first attempt (no stale-chunk incident): topic-overview toggle
+  count confirmed at 7, the Expressions accordion expands correctly showing all 3 correctly-labeled
+  links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly.
+  **Terraform hub Phase 10: 7 of 21 topics complete.**
 - [ ] `/terraform/functions` — Built-in Functions
 - [ ] `/terraform/state` — Terraform State
 - [ ] `/terraform/remote-backends` — Remote Backends
