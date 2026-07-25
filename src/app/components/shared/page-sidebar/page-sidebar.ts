@@ -40430,6 +40430,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Resource dependencies can be inferred automatically from references, or declared explicitly via depends_on when the relationship isn\'t visible through a direct attribute reference.',
     ],
   },
+  'terraform/resources/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Resources & Meta-Arguments',                                    route: '/terraform/resources' },
+      { label: 'replace_triggered_by Forces Replacement From an Unrelated Resource', route: '/terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource' },
+    ],
+    tip: 'prevent_destroy is checked only against the CURRENT .tf configuration at plan time, never persisted to state — deleting the whole resource block (not just the lifecycle setting) removes the protection along with it, with no error.',
+    gotchas: [
+      'The safe way to retire a protected resource is two separate applies: first flip prevent_destroy to false and apply that alone, THEN remove the block in a later change.',
+    ],
+  },
+  'terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'prevent_destroy Is Bypassed by Removing the Whole Resource Block', route: '/terraform/resources/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block' },
+      { label: 'A Timeout Doesn\'t Mean the Resource Wasn\'t Created',              route: '/terraform/resources/a-timeout-does-not-mean-the-resource-was-not-created' },
+    ],
+    tip: 'An ordinary attribute reference only creates an ORDERING dependency — replace_triggered_by is the specific lifecycle meta-argument needed to force one resource\'s replacement when a referenced resource\'s planned action changes.',
+    gotchas: [
+      'Only resource/attribute references are valid — a plain value (local, variable) needs to be wrapped in a terraform_data resource first.',
+    ],
+  },
+  'terraform/resources/a-timeout-does-not-mean-the-resource-was-not-created': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'replace_triggered_by Forces Replacement From an Unrelated Resource', route: '/terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource' },
+      { label: 'Resources & Meta-Arguments',                                    route: '/terraform/resources' },
+    ],
+    tip: 'A timeout means Terraform stopped WAITING for a response — the real cloud API call may still succeed afterward, leaving state with no record of it and the next apply hitting an "already exists" conflict.',
+    gotchas: [
+      'The documented recovery path is terraform import, not repeatedly retrying apply or deleting the real resource that may have finished provisioning correctly.',
+    ],
+  },
   'terraform/data-sources': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

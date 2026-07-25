@@ -104,7 +104,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Resources</p>
-      <a routerLink="/terraform/resources" routerLinkActive="active"><span class="nl-text">Resources &amp; Meta-Arguments</span>@if(p.isDone('tf-resources')){<span class="nl-done">✓</span>}@if(d('tf-resources');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/resources" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Resources &amp; Meta-Arguments</span>
+        @if(p.isDone('tf-resources')){<span class="nl-done">✓</span>}
+        @if(d('tf-resources');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('resources')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('resources')"
+                  (click)="toggleSubtopics('resources', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('resources'); as resSubs) {
+        @if (isSubtopicsExpanded('resources')) {
+          <div class="nav-subtopics">
+            @for (s of resSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/terraform/data-sources" routerLinkActive="active"><span class="nl-text">Data Sources</span>@if(p.isDone('tf-data-sources')){<span class="nl-done">✓</span>}@if(d('tf-data-sources');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/terraform/expressions" routerLinkActive="active"><span class="nl-text">Expressions &amp; Dynamic Blocks</span>@if(p.isDone('tf-expressions')){<span class="nl-done">✓</span>}@if(d('tf-expressions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/terraform/functions" routerLinkActive="active"><span class="nl-text">Built-in Functions</span>@if(p.isDone('tf-functions')){<span class="nl-done">✓</span>}@if(d('tf-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

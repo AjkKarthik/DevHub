@@ -3290,7 +3290,12 @@ export const routes: Routes = [
       { path: 'remote-state-grants-access-to-the-entire-state-not-just-outputs', loadComponent: () => import('./components/cloud/terraform/outputs/subtopics/remote-state-grants-access-to-the-entire-state-not-just-outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs').then(m => m.RemoteStateGrantsAccessToTheEntireStateNotJustOutputsSubtopic) },
       { path: 'output-json-reveals-sensitive-values-the-plain-command-redacts', loadComponent: () => import('./components/cloud/terraform/outputs/subtopics/output-json-reveals-sensitive-values-the-plain-command-redacts/output-json-reveals-sensitive-values-the-plain-command-redacts').then(m => m.OutputJsonRevealsSensitiveValuesThePlainCommandRedactsSubtopic) },
     ] },
-    { path: 'resources',       loadComponent: () => import('./components/cloud/terraform/resources/resources').then(m => m.TfResources) },
+    { path: 'resources', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/resources/resources').then(m => m.TfResources) },
+      { path: 'prevent-destroy-is-bypassed-by-removing-the-whole-resource-block', loadComponent: () => import('./components/cloud/terraform/resources/subtopics/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block').then(m => m.PreventDestroyIsBypassedByRemovingTheWholeResourceBlockSubtopic) },
+      { path: 'replace-triggered-by-forces-replacement-from-an-unrelated-resource', loadComponent: () => import('./components/cloud/terraform/resources/subtopics/replace-triggered-by-forces-replacement-from-an-unrelated-resource/replace-triggered-by-forces-replacement-from-an-unrelated-resource').then(m => m.ReplaceTriggeredByForcesReplacementFromAnUnrelatedResourceSubtopic) },
+      { path: 'a-timeout-does-not-mean-the-resource-was-not-created', loadComponent: () => import('./components/cloud/terraform/resources/subtopics/a-timeout-does-not-mean-the-resource-was-not-created/a-timeout-does-not-mean-the-resource-was-not-created').then(m => m.ATimeoutDoesNotMeanTheResourceWasNotCreatedSubtopic) },
+    ] },
     { path: 'data-sources',    loadComponent: () => import('./components/cloud/terraform/data-sources/data-sources').then(m => m.TfDataSources) },
     { path: 'expressions',     loadComponent: () => import('./components/cloud/terraform/expressions/expressions').then(m => m.TfExpressions) },
     { path: 'functions',       loadComponent: () => import('./components/cloud/terraform/functions/functions').then(m => m.TfFunctions) },

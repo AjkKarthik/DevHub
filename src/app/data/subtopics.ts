@@ -2783,4 +2783,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'terraform_remote_state Grants Access to the Whole State File', route: '/terraform/outputs/remote-state-grants-access-to-the-entire-state-not-just-outputs' },
     { label: 'output -json Reveals Sensitive Values the Plain Command Redacts', route: '/terraform/outputs/output-json-reveals-sensitive-values-the-plain-command-redacts' },
   ],
+  resources: [
+    { label: 'prevent_destroy Is Bypassed by Removing the Whole Resource Block', route: '/terraform/resources/prevent-destroy-is-bypassed-by-removing-the-whole-resource-block' },
+    { label: 'replace_triggered_by Forces Replacement From an Unrelated Resource', route: '/terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource' },
+    { label: 'A Timeout Doesn’t Mean the Resource Wasn’t Created', route: '/terraform/resources/a-timeout-does-not-mean-the-resource-was-not-created' },
+  ],
 };

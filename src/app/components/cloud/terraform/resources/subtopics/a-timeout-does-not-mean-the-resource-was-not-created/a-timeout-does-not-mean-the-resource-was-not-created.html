@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resources & Meta-Arguments" topicRoute="/terraform/resources" subtopicLabel="A Timeout Doesn’t Mean the Resource Wasn’t Created" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">A Timeout Doesn't Mean the Resource Wasn't Created</h1>
+  <p class="page-subtitle">The main page's own QnA explains timeouts thoroughly but stops at "marked tainted" — never covering what the next apply actually does with a resource that finished creating after Terraform gave up.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap in the main page's own detailed timeouts QnA — what the "already exists" failure on the next apply actually means, and how to recover with terraform import.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resources & Meta-Arguments" topicRoute="/terraform/resources"
+    [prev]="{ label: 'replace_triggered_by Forces Replacement From an Unrelated Resource', route: '/terraform/resources/replace-triggered-by-forces-replacement-from-an-unrelated-resource' }" />
+</div>
