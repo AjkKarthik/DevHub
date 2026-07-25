@@ -40698,6 +40698,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'terraform state mv is the correct way to rename/move a resource in configuration without Terraform destroying and recreating the underlying real infrastructure.',
     ],
   },
+  'terraform/state/force-unlock-verify-the-lock-holder-is-actually-stale-first': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Terraform State',                                     route: '/terraform/state' },
+      { label: 'The State serial Number Detects a Stale state push',   route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' },
+    ],
+    tip: 'The lock error\'s Who/Operation/Created fields are the actual data needed to verify staleness before force-unlock — check the specific CI run or ask the specific person, don\'t assume from elapsed time alone.',
+    gotchas: [
+      'force-unlock only releases the lock — it cannot verify the state file itself is consistent. Follow up with terraform state pull to sanity-check.',
+    ],
+  },
+  'terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'force-unlock: Verify the Lock Holder Is Actually Stale First',     route: '/terraform/state/force-unlock-verify-the-lock-holder-is-actually-stale-first' },
+      { label: 'Workspaces Share the Same Backend — Prefer Directories for Prod',  route: '/terraform/state/workspaces-share-the-same-backend-prefer-directories-for-prod' },
+    ],
+    tip: 'State push compares the pushed state\'s serial number against the destination\'s current serial by default, refusing a stale push — this is the mechanism behind the main page\'s own "use with caution" note. -force bypasses both the serial AND lineage checks.',
+    gotchas: [
+      'Locking prevents SIMULTANEOUS writes; the serial check catches a stale push happening at a completely different, later time — two separate mechanisms.',
+    ],
+  },
+  'terraform/state/workspaces-share-the-same-backend-prefer-directories-for-prod': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'The State serial Number Detects a Stale state push',   route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' },
+      { label: 'Terraform State',                                     route: '/terraform/state' },
+    ],
+    tip: 'CLI workspaces partition state within ONE shared backend and its access controls — dev and prod workspaces share the same credential boundary. Separate directories give each environment its own backend, credentials, and an obvious blast radius.',
+    gotchas: [
+      'HashiCorp\'s own guidance: workspaces fit short-lived, identical environments (per-PR previews) — not meaningfully different, long-lived ones like dev vs prod.',
+    ],
+  },
   'terraform/remote-backends': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

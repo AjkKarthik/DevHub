@@ -188,7 +188,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">State</p>
-      <a routerLink="/terraform/state" routerLinkActive="active"><span class="nl-text">Terraform State</span>@if(p.isDone('tf-state')){<span class="nl-done">✓</span>}@if(d('tf-state');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/state" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Terraform State</span>
+        @if(p.isDone('tf-state')){<span class="nl-done">✓</span>}
+        @if(d('tf-state');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('state')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('state')"
+                  (click)="toggleSubtopics('state', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('state'); as stateSubs) {
+        @if (isSubtopicsExpanded('state')) {
+          <div class="nav-subtopics">
+            @for (s of stateSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/terraform/remote-backends" routerLinkActive="active"><span class="nl-text">Remote Backends</span>@if(p.isDone('tf-remote-backends')){<span class="nl-done">✓</span>}@if(d('tf-remote-backends');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/terraform/workspaces" routerLinkActive="active"><span class="nl-text">Workspaces</span>@if(p.isDone('tf-workspaces')){<span class="nl-done">✓</span>}@if(d('tf-workspaces');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

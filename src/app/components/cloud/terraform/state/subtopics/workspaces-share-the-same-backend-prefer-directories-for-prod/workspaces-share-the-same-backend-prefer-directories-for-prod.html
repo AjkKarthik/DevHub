@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Terraform State" topicRoute="/terraform/state" subtopicLabel="Workspaces Share the Same Backend — Prefer Directories for Prod" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Workspaces Share the Same Backend — Prefer Directories for Prod</h1>
+  <p class="page-subtitle">The main page's QnA lists workspaces and separate directories as roughly equivalent isolation options — they differ sharply in access-control boundary, which matters most for prod.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This adds the access-control tradeoff missing from the main page's own "workspaces or separate directories" QnA phrasing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Terraform State" topicRoute="/terraform/state"
+    [prev]="{ label: 'The State serial Number Detects a Stale state push', route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' }" />
+</div>

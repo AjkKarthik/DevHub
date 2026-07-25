@@ -2805,4 +2805,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'flatten() Only Unwraps Nested Lists', route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' },
     { label: 'Mixing newbits in cidrsubnet() Can Overlap', route: '/terraform/functions/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it' },
   ],
+  state: [
+    { label: 'force-unlock: Verify the Lock Holder Is Actually Stale First', route: '/terraform/state/force-unlock-verify-the-lock-holder-is-actually-stale-first' },
+    { label: 'The State serial Number Detects a Stale state push', route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' },
+    { label: 'Workspaces Share the Same Backend — Prefer Directories for Prod', route: '/terraform/state/workspaces-share-the-same-backend-prefer-directories-for-prod' },
+  ],
 };

@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Terraform State" topicRoute="/terraform/state" subtopicLabel="force-unlock: Verify the Lock Holder Is Actually Stale First" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">force-unlock: Verify the Lock Holder Is Actually Stale First</h1>
+  <p class="page-subtitle">The main page states "verify no other apply is running" twice but never shows how — here's what the lock error's own fields actually let you check.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own stated rule into an actual verification procedure. Next: the state serial number mechanism that detects a stale terraform state push, beyond just backend locking.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Terraform State" topicRoute="/terraform/state"
+    [next]="{ label: 'The State serial Number Detects a Stale state push', route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' }" />
+</div>

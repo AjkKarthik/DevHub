@@ -3314,7 +3314,12 @@ export const routes: Routes = [
       { path: 'flatten-only-unwraps-nested-lists-not-lists-inside-maps', loadComponent: () => import('./components/cloud/terraform/functions/subtopics/flatten-only-unwraps-nested-lists-not-lists-inside-maps/flatten-only-unwraps-nested-lists-not-lists-inside-maps').then(m => m.FlattenOnlyUnwrapsNestedListsNotListsInsideMapsSubtopic) },
       { path: 'mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it', loadComponent: () => import('./components/cloud/terraform/functions/subtopics/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it').then(m => m.MixingNewbitsInCidrsubnetCanOverlapCidrsubnetsAvoidsItSubtopic) },
     ] },
-    { path: 'state',           loadComponent: () => import('./components/cloud/terraform/state/state').then(m => m.TfState) },
+    { path: 'state', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/state/state').then(m => m.TfState) },
+      { path: 'force-unlock-verify-the-lock-holder-is-actually-stale-first', loadComponent: () => import('./components/cloud/terraform/state/subtopics/force-unlock-verify-the-lock-holder-is-actually-stale-first/force-unlock-verify-the-lock-holder-is-actually-stale-first').then(m => m.ForceUnlockVerifyTheLockHolderIsActuallyStaleFirstSubtopic) },
+      { path: 'the-state-serial-number-is-what-detects-a-stale-state-push', loadComponent: () => import('./components/cloud/terraform/state/subtopics/the-state-serial-number-is-what-detects-a-stale-state-push/the-state-serial-number-is-what-detects-a-stale-state-push').then(m => m.TheStateSerialNumberIsWhatDetectsAStaleStatePushSubtopic) },
+      { path: 'workspaces-share-the-same-backend-prefer-directories-for-prod', loadComponent: () => import('./components/cloud/terraform/state/subtopics/workspaces-share-the-same-backend-prefer-directories-for-prod/workspaces-share-the-same-backend-prefer-directories-for-prod').then(m => m.WorkspacesShareTheSameBackendPreferDirectoriesForProdSubtopic) },
+    ] },
     { path: 'remote-backends', loadComponent: () => import('./components/cloud/terraform/remote-backends/remote-backends').then(m => m.TfRemoteBackends) },
     { path: 'workspaces',      loadComponent: () => import('./components/cloud/terraform/workspaces/workspaces').then(m => m.TfWorkspaces) },
     { path: 'modules',         loadComponent: () => import('./components/cloud/terraform/modules/modules').then(m => m.TfModules) },
