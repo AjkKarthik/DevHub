@@ -5429,7 +5429,31 @@ off here with a date.
   incident): topic-overview toggle count confirmed at 8, the Functions accordion expands correctly
   showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all
   confirmed rendering correctly. **Terraform hub Phase 10: 8 of 21 topics complete.**
-- [ ] `/terraform/state` — Terraform State
+- [x] `/terraform/state` — Terraform State (2026-07-25) — 3 subtopics: (1) **force-unlock: Verify
+  the Lock Holder Is Actually Stale First**, turning the main page's own repeated "verify no other
+  apply is running" rule into an actual procedure using the lock error's Who/Operation/Created
+  fields — verified via WebSearch that these fields are the real starting point for verification, and
+  that terraform state pull is the recommended follow-up sanity check even after a confirmed-stale
+  unlock; (2) **The State serial Number Detects a Stale state push**, naming the actual safety
+  mechanism behind the main page's own "use with caution" note on state push — verified via
+  HashiCorp's own docs and support articles that the serial (and a separate lineage) comparison is
+  what refuses a stale push by default, with -force bypassing both checks; (3) **Workspaces Share the
+  Same Backend — Prefer Directories for Prod**, adding the access-control tradeoff missing from the
+  main page's own QnA phrasing that lists workspaces and directories as equivalent — verified via
+  WebSearch/HashiCorp's own guidance that workspaces share one backend's access boundary while
+  separate directories give each environment its own, with workspaces recommended only for
+  short-lived, identical environments. Gotcha sweep (apostrophe-after-letter — all matches confirmed
+  inside backtick code blocks or plain HTML text nodes — backtick parity: 4/8/4, all even — bare
+  `@word` — none — unescaped `${` — none — over-escaped double-quote — none — literal-double-quote-
+  in-label check — none) came back clean. **Caught and fixed a stray invalid `protected: undefined,`
+  property accidentally left in a TheoryPoint object during authoring** — caught by direct file
+  re-read before the build, not by a build failure. Confirmed bare `state` key collision-free before
+  adding — left as a bare key. Build reported only the pre-documented harmless bundle-budget warning,
+  zero compile errors. `git add -A` staged all 15 files (9 new + 6 wiring). Browser-verified
+  successfully on the first attempt (no stale-chunk incident): topic-overview toggle count confirmed
+  at 9, the State accordion expands correctly showing all 3 correctly-labeled links, a subtopic
+  page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub
+  Phase 10: 9 of 21 topics complete.**
 - [ ] `/terraform/remote-backends` — Remote Backends
 - [ ] `/terraform/workspaces` — Workspaces
 - [ ] `/terraform/modules` — Modules

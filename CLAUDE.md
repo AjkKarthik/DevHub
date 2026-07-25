@@ -2116,17 +2116,21 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/terraform/home/home.ts`. Progress: `tfTotal=21` in progress.service.ts.
   Terraform pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. TerraformNavComponent at `shared/terraform-nav/terraform-nav.ts`.
-  Phase 10: 8 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
+  Phase 10: 9 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
   `/terraform/variables`, `/terraform/outputs`, `/terraform/resources`, `/terraform/data-sources`,
-  `/terraform/expressions`, `/terraform/functions`, 2026-07-25) — see "Terraform hub subtopic
-  wiring" section below for the `TerraformNavComponent` accordion structural fix and the
+  `/terraform/expressions`, `/terraform/functions`, `/terraform/state`, 2026-07-25) — see "Terraform
+  hub subtopic wiring" section below for the `TerraformNavComponent` accordion structural fix and the
   `tf-fundamentals` SUBTOPICS-map collision resolution (`providers`, `variables`, `outputs`,
-  `resources`, `data-sources`, and `expressions` were all collision-free, left as bare keys;
+  `resources`, `data-sources`, `expressions`, and `state` were all collision-free, left as bare keys;
   `functions` collided with the JavaScript hub's own bare key and was hub-prefixed to
   `tf-functions`). **The `data-sources` batch caught a real over-escaped-double-quote bug** (`\"`
   inside a single-quoted TS field, not the backtick-delimited `code:` context where that escaping is
-  correct) during the standing gotcha sweep, before it reached the build — see "Terraform hub
-  subtopic wiring" section below for the fix.
+  correct) during the standing gotcha sweep, before it reached the build. **The `state` batch caught
+  a stray invalid property accidentally left in a TheoryPoint object during authoring** (a leftover
+  `protected: undefined,` line — not a documented recurring gotcha, just a real authoring slip caught
+  by direct file re-read before the build, worth noting as a reminder to re-read generated theory
+  arrays rather than trusting them purely by construction) — see "Terraform hub subtopic wiring"
+  section below for both fixes.
 - **Service Mesh hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
   Blue theme `$accent: #466bb0`, `$tint: #eef2fb`, dark `#93c5fd`. Search prefix `mesh-`. Route: `/service-mesh`.
   CSS classes: `.mesh-page`, `.mesh-icon`, `.mesh-section`. Icon content: `🕸️` at `font-size: 1.8rem`. `tech="javascript"`.
