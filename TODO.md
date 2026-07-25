@@ -5407,7 +5407,28 @@ off here with a date.
   count confirmed at 7, the Expressions accordion expands correctly showing all 3 correctly-labeled
   links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly.
   **Terraform hub Phase 10: 7 of 21 topics complete.**
-- [ ] `/terraform/functions` — Built-in Functions
+- [x] `/terraform/functions` — Built-in Functions (2026-07-25) — 3 subtopics: (1) **merge() null
+  Overwrites, It Doesn't Skip, an Earlier Value**, adding a specific, well-documented case to the
+  main page's own general "b wins on duplicate keys" merge() rule — verified via a long-standing
+  HashiCorp GitHub issue that a later map's null value overwrites an earlier real value rather than
+  being skipped, with the practical risk of an optional-override map silently wiping a required
+  default; (2) **flatten() Only Unwraps Nested Lists**, narrowing the main page's own QnA claim that
+  flatten() "removes all levels of nesting" to its actual scope — verified via HashiCorp's own docs
+  that flatten() only collapses list-within-list nesting, leaving a list value inside a map or object
+  completely untouched; (3) **Mixing newbits in cidrsubnet() Can Overlap**, covering the mixed-subnet
+  -size case the main page's own consistent-newbits cidrsubnet() examples never exercise — verified
+  via WebSearch that independent cidrsubnet() calls have no awareness of each other and can silently
+  produce overlapping ranges, with cidrsubnets() (plural) as the coordinated, guaranteed-non-
+  overlapping alternative. **Hub-prefixed the SUBTOPICS key to `tf-functions`** — confirmed the bare
+  `functions` key already belongs to the JavaScript hub before adding. Gotcha sweep (apostrophe-
+  after-letter — all matches confirmed inside backtick code blocks or plain HTML text nodes —
+  backtick parity: 12/12/18, all even — bare `@word` — none — unescaped `${` — none — over-escaped
+  double-quote — none — literal-double-quote-in-label check — none) came back clean. Build reported
+  only the pre-documented harmless bundle-budget warning, zero compile errors. `git add -A` staged
+  all 15 files (9 new + 6 wiring). Browser-verified successfully on the first attempt (no stale-chunk
+  incident): topic-overview toggle count confirmed at 8, the Functions accordion expands correctly
+  showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4 levels)/theory all
+  confirmed rendering correctly. **Terraform hub Phase 10: 8 of 21 topics complete.**
 - [ ] `/terraform/state` — Terraform State
 - [ ] `/terraform/remote-backends` — Remote Backends
 - [ ] `/terraform/workspaces` — Workspaces
