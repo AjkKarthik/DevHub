@@ -5264,7 +5264,29 @@ off here with a date.
   count confirmed at 1, the accordion expands correctly showing all 3 correctly-labeled links, a
   subtopic page's h1/breadcrumb (all 4 levels)/theory/sidebar (tailored, not DEFAULT)/dark mode all
   confirmed rendering correctly. **First Terraform-hub Phase 10 batch — 1 of 21 topics complete.**
-- [ ] `/terraform/providers` — Providers
+- [x] `/terraform/providers` — Providers (2026-07-25) — 3 subtopics: (1) **The ~> Constraint's Upper
+  Bound Depends on Segment Count**, expanding a fact the main page's theory never actually shows (only
+  a quiz answer mentions the three-segment form) — verified via WebSearch that ~> locks everything
+  except the rightmost segment written, so ~> 5.0 allows any minor version but ~> 5.0.1 only allows
+  patch releases; (2) **Module Provider Alias Needs configuration_aliases Declared**, completing the
+  main page's own Multi-Account AWS example (which only shows the caller side of `providers = { aws =
+  aws.prod }`) with the module-side requirement — verified via HashiCorp's own docs and HashiCorp
+  Support that a module must declare `configuration_aliases` in its own required_providers to legally
+  accept an aliased provider; (3) **init -upgrade Upgrades Every Provider, Not Just One**, expanding
+  the main page's QnA warning about -upgrade's breaking-change risk with its actual scope — verified
+  via WebSearch that -upgrade re-selects ALL providers (and all installed modules) satisfying their
+  constraints, and that narrowing one provider's own constraint plus a plain `terraform init` is the
+  targeted alternative. Gotcha sweep (apostrophe-after-letter — all matches confirmed inside backtick
+  code blocks or plain HTML text nodes — backtick parity: 18/16/18, all even — bare `@word` — none —
+  unescaped `${` — none — over-escaped double-quote — none — backslash-escaped apostrophe in bound
+  attributes — none — literal-double-quote-in-label check — none) came back clean. Confirmed bare
+  `providers` key collision-free (both quoted and unquoted forms) before adding — left as a bare key.
+  Build reported only the pre-documented harmless bundle-budget warning, zero compile errors. `git
+  add -A` staged all 15 files (9 new + 6 wiring). Browser-verified successfully on the first attempt
+  (no stale-chunk incident): topic-overview toggle count confirmed at 2, the Providers accordion
+  expands correctly showing all 3 correctly-labeled links, a subtopic page's h1/breadcrumb (all 4
+  levels)/theory all confirmed rendering correctly. **Terraform hub Phase 10: 2 of 21 topics
+  complete.**
 - [ ] `/terraform/variables` — Variables & Locals
 - [ ] `/terraform/outputs` — Outputs
 - [ ] `/terraform/resources` — Resources & Meta-Arguments

@@ -2104,9 +2104,10 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/terraform/home/home.ts`. Progress: `tfTotal=21` in progress.service.ts.
   Terraform pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. TerraformNavComponent at `shared/terraform-nav/terraform-nav.ts`.
-  Phase 10: 1 of 21 topics have subtopics (`/terraform/fundamentals`, pilot batch, 2026-07-25) — see
-  "Terraform hub subtopic wiring" section below for the `TerraformNavComponent` accordion structural
-  fix and the `tf-fundamentals` SUBTOPICS-map collision resolution.
+  Phase 10: 2 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
+  2026-07-25) — see "Terraform hub subtopic wiring" section below for the `TerraformNavComponent`
+  accordion structural fix and the `tf-fundamentals` SUBTOPICS-map collision resolution (`providers`
+  itself was collision-free, left as a bare key).
 - **Service Mesh hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
   Blue theme `$accent: #466bb0`, `$tint: #eef2fb`, dark `#93c5fd`. Search prefix `mesh-`. Route: `/service-mesh`.
   CSS classes: `.mesh-page`, `.mesh-icon`, `.mesh-section`. Icon content: `🕸️` at `font-size: 1.8rem`. `tech="javascript"`.
