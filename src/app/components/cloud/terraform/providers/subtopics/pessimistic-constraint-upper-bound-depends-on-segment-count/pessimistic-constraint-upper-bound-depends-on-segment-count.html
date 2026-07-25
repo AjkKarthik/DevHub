@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Providers" topicRoute="/terraform/providers" subtopicLabel="The ~> Constraint's Upper Bound Depends on Segment Count" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">The ~&gt; Constraint's Upper Bound Depends on Segment Count</h1>
+  <p class="page-subtitle">The main page's theory only ever shows the two-segment form of ~> — the three-segment behavior is buried in a quiz answer and never actually explained or demonstrated.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This expands a fact the main page's own quiz states but never explains. Next: what actually happens when an aliased provider is passed into a child module.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Providers" topicRoute="/terraform/providers"
+    [next]="{ label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' }" />
+</div>

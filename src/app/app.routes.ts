@@ -3272,7 +3272,12 @@ export const routes: Routes = [
       { path: 'depends-on-is-for-dependencies-terraform-cannot-see', loadComponent: () => import('./components/cloud/terraform/fundamentals/subtopics/depends-on-is-for-dependencies-terraform-cannot-see/depends-on-is-for-dependencies-terraform-cannot-see').then(m => m.DependsOnIsForDependenciesTerraformCannotSeeSubtopic) },
       { path: 'moved-blocks-not-manual-edits-fix-a-renamed-resource', loadComponent: () => import('./components/cloud/terraform/fundamentals/subtopics/moved-blocks-not-manual-edits-fix-a-renamed-resource/moved-blocks-not-manual-edits-fix-a-renamed-resource').then(m => m.MovedBlocksNotManualEditsFixARenamedResourceSubtopic) },
     ] },
-    { path: 'providers',       loadComponent: () => import('./components/cloud/terraform/providers/providers').then(m => m.TfProviders) },
+    { path: 'providers', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/providers/providers').then(m => m.TfProviders) },
+      { path: 'pessimistic-constraint-upper-bound-depends-on-segment-count', loadComponent: () => import('./components/cloud/terraform/providers/subtopics/pessimistic-constraint-upper-bound-depends-on-segment-count/pessimistic-constraint-upper-bound-depends-on-segment-count').then(m => m.PessimisticConstraintUpperBoundDependsOnSegmentCountSubtopic) },
+      { path: 'module-provider-alias-needs-configuration-aliases-declared', loadComponent: () => import('./components/cloud/terraform/providers/subtopics/module-provider-alias-needs-configuration-aliases-declared/module-provider-alias-needs-configuration-aliases-declared').then(m => m.ModuleProviderAliasNeedsConfigurationAliasesDeclaredSubtopic) },
+      { path: 'init-upgrade-upgrades-every-provider-not-just-one', loadComponent: () => import('./components/cloud/terraform/providers/subtopics/init-upgrade-upgrades-every-provider-not-just-one/init-upgrade-upgrades-every-provider-not-just-one').then(m => m.InitUpgradeUpgradesEveryProviderNotJustOneSubtopic) },
+    ] },
     { path: 'variables',       loadComponent: () => import('./components/cloud/terraform/variables/variables').then(m => m.TfVariables) },
     { path: 'outputs',         loadComponent: () => import('./components/cloud/terraform/outputs/outputs').then(m => m.TfOutputs) },
     { path: 'resources',       loadComponent: () => import('./components/cloud/terraform/resources/resources').then(m => m.TfResources) },

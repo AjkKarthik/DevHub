@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Providers" topicRoute="/terraform/providers" subtopicLabel="Module Provider Alias Needs configuration_aliases Declared" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Module Provider Alias Needs configuration_aliases Declared</h1>
+  <p class="page-subtitle">The main page's multi-account example shows the caller side of passing an aliased provider into a module — it never shows what the module itself must declare to accept it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 0.13+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This completes the module side of the main page's own aliased-provider example. Next: why terraform init -upgrade touches every provider, not just the one you meant to bump.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Providers" topicRoute="/terraform/providers"
+    [prev]="{ label: 'The ~> Constraint’s Upper Bound Depends on Segment Count', route: '/terraform/providers/pessimistic-constraint-upper-bound-depends-on-segment-count' }"
+    [next]="{ label: 'init -upgrade Upgrades Every Provider, Not Just One', route: '/terraform/providers/init-upgrade-upgrades-every-provider-not-just-one' }" />
+</div>

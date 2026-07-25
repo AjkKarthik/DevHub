@@ -40,7 +40,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/terraform/providers" routerLinkActive="active"><span class="nl-text">Providers</span>@if(p.isDone('tf-providers')){<span class="nl-done">✓</span>}@if(d('tf-providers');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/providers" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Providers</span>
+        @if(p.isDone('tf-providers')){<span class="nl-done">✓</span>}
+        @if(d('tf-providers');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('providers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('providers')"
+                  (click)="toggleSubtopics('providers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('providers'); as provSubs) {
+        @if (isSubtopicsExpanded('providers')) {
+          <div class="nav-subtopics">
+            @for (s of provSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/terraform/variables" routerLinkActive="active"><span class="nl-text">Variables &amp; Locals</span>@if(p.isDone('tf-variables')){<span class="nl-done">✓</span>}@if(d('tf-variables');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/terraform/outputs" routerLinkActive="active"><span class="nl-text">Outputs</span>@if(p.isDone('tf-outputs')){<span class="nl-done">✓</span>}@if(d('tf-outputs');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

@@ -2768,4 +2768,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'depends_on Is for Dependencies Terraform Cannot See', route: '/terraform/fundamentals/depends-on-is-for-dependencies-terraform-cannot-see' },
     { label: 'moved Blocks, Not Manual Edits, Fix a Renamed Resource', route: '/terraform/fundamentals/moved-blocks-not-manual-edits-fix-a-renamed-resource' },
   ],
+  providers: [
+    { label: 'The ~> Constraint’s Upper Bound Depends on Segment Count', route: '/terraform/providers/pessimistic-constraint-upper-bound-depends-on-segment-count' },
+    { label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' },
+    { label: 'init -upgrade Upgrades Every Provider, Not Just One', route: '/terraform/providers/init-upgrade-upgrades-every-provider-not-just-one' },
+  ],
 };

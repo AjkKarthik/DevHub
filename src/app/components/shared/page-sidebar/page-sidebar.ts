@@ -40557,6 +40557,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Multiple provider configurations (aliases) let a single configuration manage resources across multiple regions or accounts within one apply.',
     ],
   },
+  'terraform/providers/pessimistic-constraint-upper-bound-depends-on-segment-count': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Providers',                                          route: '/terraform/providers' },
+      { label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' },
+    ],
+    tip: 'A ~> constraint locks everything except the RIGHTMOST segment you write — two segments (~> 5.0) locks the major version and lets minor move; three segments (~> 5.0.1) also locks the minor version, only letting patch move.',
+    gotchas: [
+      'Adding a patch digit to an existing constraint (going from ~> 5.0 to ~> 5.0.1) silently NARROWS the allowed range — it is not a strictly more precise refinement of the same range.',
+    ],
+  },
+  'terraform/providers/module-provider-alias-needs-configuration-aliases-declared': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'The ~> Constraint\'s Upper Bound Depends on Segment Count', route: '/terraform/providers/pessimistic-constraint-upper-bound-depends-on-segment-count' },
+      { label: 'init -upgrade Upgrades Every Provider, Not Just One',        route: '/terraform/providers/init-upgrade-upgrades-every-provider-not-just-one' },
+    ],
+    tip: 'Default (unaliased) provider inheritance into a module is automatic — but passing an ALIASED provider requires the module to explicitly declare configuration_aliases in its own required_providers block, or the module is not a valid, complete configuration.',
+    gotchas: [
+      'configuration_aliases only names which alias identifiers a module accepts — the actual region/credentials for each alias still live in the root module\'s own aliased provider blocks.',
+    ],
+  },
+  'terraform/providers/init-upgrade-upgrades-every-provider-not-just-one': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Module Provider Alias Needs configuration_aliases Declared', route: '/terraform/providers/module-provider-alias-needs-configuration-aliases-declared' },
+      { label: 'Providers',                                          route: '/terraform/providers' },
+    ],
+    tip: 'terraform init -upgrade is global — it re-selects EVERY provider (and every already-installed module) to its newest allowed version, not just the one you meant to bump. Narrowing that one provider\'s own constraint and running plain init is the targeted alternative.',
+    gotchas: [
+      'A blanket -upgrade can silently bump providers nobody intended to touch that day, each governed only by its own, possibly loose, version constraint.',
+    ],
+  },
   'terraform/provisioners': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
