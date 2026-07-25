@@ -40653,6 +40653,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Some functions (like timestamp()) return a different value on every evaluation, which can cause unexpected "changes" reported on every plan if used in a resource argument.',
     ],
   },
+  'terraform/functions/merge-null-overwrites-not-skips-an-earlier-non-null-value': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Built-in Functions',                          route: '/terraform/functions' },
+      { label: 'flatten() Only Unwraps Nested Lists',          route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' },
+    ],
+    tip: 'merge() treats a later map\'s null exactly like any other value — it OVERWRITES an earlier map\'s real value for that key rather than being skipped, which can silently wipe a required default when merging in optional overrides.',
+    gotchas: [
+      'Filter null-valued keys out before merging ({for k, v in map : k => v if v != null}) if an unset override should mean "use the default."',
+    ],
+  },
+  'terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'merge() null Overwrites, It Doesn\'t Skip, an Earlier Value',            route: '/terraform/functions/merge-null-overwrites-not-skips-an-earlier-non-null-value' },
+      { label: 'Mixing newbits in cidrsubnet() Can Overlap',   route: '/terraform/functions/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it' },
+    ],
+    tip: 'flatten() only unwraps directly-nested LIST-within-LIST structures — a list value sitting inside a map or object is left completely untouched. Extract the inner lists with a for expression first, then flatten the result.',
+    gotchas: [
+      'flatten() on a list of objects containing lists silently returns the input unchanged — no error, no warning.',
+    ],
+  },
+  'terraform/functions/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'flatten() Only Unwraps Nested Lists',          route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' },
+      { label: 'Built-in Functions',                          route: '/terraform/functions' },
+    ],
+    tip: 'Each cidrsubnet() call is independent, with no awareness of other calls against the same parent CIDR — mixing different newbits (subnet sizes) can silently overlap. cidrsubnets() (plural) computes multiple prefixes together, guaranteed non-overlapping.',
+    gotchas: [
+      'When every subnet is genuinely the same size, cidrsubnet() with sequential netnum indices remains correct and simpler — the overlap risk is specific to mixing sizes.',
+    ],
+  },
   'terraform/state': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

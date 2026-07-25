@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Built-in Functions" topicRoute="/terraform/functions" subtopicLabel="Mixing newbits in cidrsubnet() Can Overlap — cidrsubnets() Avoids It" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Mixing newbits in cidrsubnet() Can Overlap</h1>
+  <p class="page-subtitle">The main page's own cidrsubnet() examples always use one consistent newbits value — mixing different subnet sizes from the same parent CIDR can silently overlap, with no warning.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This covers the mixed-subnet-size case the main page's own single-newbits cidrsubnet() examples never exercise, and the cidrsubnets() function built specifically for it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Built-in Functions" topicRoute="/terraform/functions"
+    [prev]="{ label: 'flatten() Only Unwraps Nested Lists', route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' }" />
+</div>

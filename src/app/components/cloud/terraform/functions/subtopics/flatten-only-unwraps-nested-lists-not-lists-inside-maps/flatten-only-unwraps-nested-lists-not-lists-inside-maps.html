@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Built-in Functions" topicRoute="/terraform/functions" subtopicLabel="flatten() Only Unwraps Nested Lists" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">flatten() Only Unwraps Nested Lists</h1>
+  <p class="page-subtitle">The main page's QnA says flatten() "removes all levels of nesting" — true only for lists nested inside lists. A list tucked inside a map or object is left completely untouched.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This narrows the main page's own broader-sounding flatten() claim to its real scope. Next: why mixing different newbits values across cidrsubnet() calls on the same parent CIDR can quietly produce overlapping subnets.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Built-in Functions" topicRoute="/terraform/functions"
+    [prev]="{ label: 'merge() null Overwrites, It Doesn’t Skip, an Earlier Value', route: '/terraform/functions/merge-null-overwrites-not-skips-an-earlier-non-null-value' }"
+    [next]="{ label: 'Mixing newbits in cidrsubnet() Can Overlap — cidrsubnets() Avoids It', route: '/terraform/functions/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it' }" />
+</div>

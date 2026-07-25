@@ -3308,7 +3308,12 @@ export const routes: Routes = [
       { path: 'nested-dynamic-blocks-shadow-the-outer-iterator-by-default', loadComponent: () => import('./components/cloud/terraform/expressions/subtopics/nested-dynamic-blocks-shadow-the-outer-iterator-by-default/nested-dynamic-blocks-shadow-the-outer-iterator-by-default').then(m => m.NestedDynamicBlocksShadowTheOuterIteratorByDefaultSubtopic) },
       { path: 'a-for-expression-map-errors-on-duplicate-keys-unless-grouped', loadComponent: () => import('./components/cloud/terraform/expressions/subtopics/a-for-expression-map-errors-on-duplicate-keys-unless-grouped/a-for-expression-map-errors-on-duplicate-keys-unless-grouped').then(m => m.AForExpressionMapErrorsOnDuplicateKeysUnlessGroupedSubtopic) },
     ] },
-    { path: 'functions',       loadComponent: () => import('./components/cloud/terraform/functions/functions').then(m => m.TfFunctions) },
+    { path: 'functions', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/functions/functions').then(m => m.TfFunctions) },
+      { path: 'merge-null-overwrites-not-skips-an-earlier-non-null-value', loadComponent: () => import('./components/cloud/terraform/functions/subtopics/merge-null-overwrites-not-skips-an-earlier-non-null-value/merge-null-overwrites-not-skips-an-earlier-non-null-value').then(m => m.MergeNullOverwritesNotSkipsAnEarlierNonNullValueSubtopic) },
+      { path: 'flatten-only-unwraps-nested-lists-not-lists-inside-maps', loadComponent: () => import('./components/cloud/terraform/functions/subtopics/flatten-only-unwraps-nested-lists-not-lists-inside-maps/flatten-only-unwraps-nested-lists-not-lists-inside-maps').then(m => m.FlattenOnlyUnwrapsNestedListsNotListsInsideMapsSubtopic) },
+      { path: 'mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it', loadComponent: () => import('./components/cloud/terraform/functions/subtopics/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it').then(m => m.MixingNewbitsInCidrsubnetCanOverlapCidrsubnetsAvoidsItSubtopic) },
+    ] },
     { path: 'state',           loadComponent: () => import('./components/cloud/terraform/state/state').then(m => m.TfState) },
     { path: 'remote-backends', loadComponent: () => import('./components/cloud/terraform/remote-backends/remote-backends').then(m => m.TfRemoteBackends) },
     { path: 'workspaces',      loadComponent: () => import('./components/cloud/terraform/workspaces/workspaces').then(m => m.TfWorkspaces) },

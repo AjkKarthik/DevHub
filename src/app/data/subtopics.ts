@@ -2798,4 +2798,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Nested Dynamic Blocks Shadow the Outer Iterator by Default', route: '/terraform/expressions/nested-dynamic-blocks-shadow-the-outer-iterator-by-default' },
     { label: 'A for Expression Map Errors on Duplicate Keys Unless Grouped', route: '/terraform/expressions/a-for-expression-map-errors-on-duplicate-keys-unless-grouped' },
   ],
+  // NOTE: keyed 'tf-functions', NOT bare 'functions' — the JavaScript
+  // hub already claims the bare key with its own subtopics.
+  'tf-functions': [
+    { label: 'merge() null Overwrites, It Doesn’t Skip, an Earlier Value', route: '/terraform/functions/merge-null-overwrites-not-skips-an-earlier-non-null-value' },
+    { label: 'flatten() Only Unwraps Nested Lists', route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' },
+    { label: 'Mixing newbits in cidrsubnet() Can Overlap', route: '/terraform/functions/mixing-newbits-in-cidrsubnet-can-overlap-cidrsubnets-avoids-it' },
+  ],
 };

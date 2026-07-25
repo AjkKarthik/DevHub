@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Built-in Functions" topicRoute="/terraform/functions" subtopicLabel="merge() null Overwrites, It Doesn’t Skip, an Earlier Value" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">merge() null Overwrites, It Doesn't Skip, an Earlier Value</h1>
+  <p class="page-subtitle">The main page's own merge() mistake entry is entirely about key-priority order — it never shows what happens when the winning, later value happens to be null.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This adds a specific, well-documented case to the main page's own general merge() priority rule. Next: why flatten() only unwraps nested lists, leaving lists inside maps or objects untouched.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Built-in Functions" topicRoute="/terraform/functions"
+    [next]="{ label: 'flatten() Only Unwraps Nested Lists', route: '/terraform/functions/flatten-only-unwraps-nested-lists-not-lists-inside-maps' }" />
+</div>
