@@ -2870,4 +2870,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs', route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' },
     { label: 'TFC Health Assessments Are Read-Only — They Never Write to State', route: '/terraform/drift/tfc-health-assessments-are-read-only-they-never-write-to-state' },
   ],
+  // NOTE: 'refactoring' confirmed collision-free (quoted and unquoted) across the whole file.
+  refactoring: [
+    { label: 'moved Blocks Require the Same Resource Type on Both Sides', route: '/terraform/refactoring/moved-blocks-require-the-same-resource-type-on-both-sides' },
+    { label: 'removed Defaults to Actually Destroying the Resource', route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' },
+    { label: '-target Pulls In Dependencies Automatically, But Never Dependents', route: '/terraform/refactoring/target-pulls-in-dependencies-automatically-but-never-dependents' },
+  ],
 };

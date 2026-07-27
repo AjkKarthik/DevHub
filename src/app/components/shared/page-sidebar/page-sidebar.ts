@@ -41233,6 +41233,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Refactoring a widely-used shared module requires coordinating with every consumer, since a breaking interface change affects all of them simultaneously.',
     ],
   },
+  'terraform/refactoring/moved-blocks-require-the-same-resource-type-on-both-sides': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Refactoring & State Ops',                                          route: '/terraform/refactoring' },
+      { label: 'removed Defaults to Actually Destroying the Resource',              route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' },
+    ],
+    tip: 'moved requires from and to to reference the exact same resource type — it only remaps a state address, it never transforms one resource type\'s schema into another\'s. Migrating between different resource types needs a real destroy-and-recreate.',
+    gotchas: [
+      'The resource-type mismatch error surfaces at plan/apply time, not terraform validate — double-check both sides of a moved block reference the identical type string before relying on it.',
+    ],
+  },
+  'terraform/refactoring/removed-defaults-to-actually-destroying-the-resource': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'moved Blocks Require the Same Resource Type on Both Sides',               route: '/terraform/refactoring/moved-blocks-require-the-same-resource-type-on-both-sides' },
+      { label: '-target Pulls In Dependencies Automatically, But Never Dependents',        route: '/terraform/refactoring/target-pulls-in-dependencies-automatically-but-never-dependents' },
+    ],
+    tip: 'A plain removed {} block DESTROYS the real resource by default — the opposite of terraform state rm, which never destroys. Add lifecycle { destroy = false } explicitly to get state-rm-equivalent, state-only removal.',
+    gotchas: [
+      'Reaching for removed {} because you trust state rm\'s "never destroys" behavior is a real trap — that safety property is not inherited by default.',
+    ],
+  },
+  'terraform/refactoring/target-pulls-in-dependencies-automatically-but-never-dependents': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'removed Defaults to Actually Destroying the Resource',              route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' },
+      { label: 'Refactoring & State Ops',                                          route: '/terraform/refactoring' },
+    ],
+    tip: '-target automatically walks UP the dependency graph, including everything the target needs — but never walks DOWN to dependents. A dependent resource can be left silently out of sync until a full, untargeted apply catches up.',
+    gotchas: [
+      'A dependent resource missing from a -target plan doesn\'t mean it has no pending changes — it means -target never checked it at all.',
+    ],
+  },
   'terraform/opentofu': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

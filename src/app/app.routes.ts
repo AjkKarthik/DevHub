@@ -3380,7 +3380,12 @@ export const routes: Routes = [
       { path: 'ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs', loadComponent: () => import('./components/cloud/terraform/drift/subtopics/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs').then(m => m.IgnoreChangesDoesNotRefreshAStaleValueItJustStopsFutureDiffsSubtopic) },
       { path: 'tfc-health-assessments-are-read-only-they-never-write-to-state', loadComponent: () => import('./components/cloud/terraform/drift/subtopics/tfc-health-assessments-are-read-only-they-never-write-to-state/tfc-health-assessments-are-read-only-they-never-write-to-state').then(m => m.TfcHealthAssessmentsAreReadOnlyTheyNeverWriteToStateSubtopic) },
     ] },
-    { path: 'refactoring',     loadComponent: () => import('./components/cloud/terraform/refactoring/refactoring').then(m => m.TfRefactoring) },
+    { path: 'refactoring', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/refactoring/refactoring').then(m => m.TfRefactoring) },
+      { path: 'moved-blocks-require-the-same-resource-type-on-both-sides', loadComponent: () => import('./components/cloud/terraform/refactoring/subtopics/moved-blocks-require-the-same-resource-type-on-both-sides/moved-blocks-require-the-same-resource-type-on-both-sides').then(m => m.MovedBlocksRequireTheSameResourceTypeOnBothSidesSubtopic) },
+      { path: 'removed-defaults-to-actually-destroying-the-resource', loadComponent: () => import('./components/cloud/terraform/refactoring/subtopics/removed-defaults-to-actually-destroying-the-resource/removed-defaults-to-actually-destroying-the-resource').then(m => m.RemovedDefaultsToActuallyDestroyingTheResourceSubtopic) },
+      { path: 'target-pulls-in-dependencies-automatically-but-never-dependents', loadComponent: () => import('./components/cloud/terraform/refactoring/subtopics/target-pulls-in-dependencies-automatically-but-never-dependents/target-pulls-in-dependencies-automatically-but-never-dependents').then(m => m.TargetPullsInDependenciesAutomaticallyButNeverDependentsSubtopic) },
+    ] },
     { path: 'opentofu',        loadComponent: () => import('./components/cloud/terraform/opentofu/opentofu').then(m => m.TfOpenTofu) },
     { path: 'cheatsheet',      loadComponent: () => import('./components/cloud/terraform/cheatsheet/cheatsheet').then(m => m.TfCheatsheet) },
     { path: 'interview-prep',  loadComponent: () => import('./components/cloud/terraform/interview-prep/interview-prep').then(m => m.TfInterviewPrep) },

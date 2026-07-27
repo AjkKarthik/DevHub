@@ -416,7 +416,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/terraform/refactoring" routerLinkActive="active"><span class="nl-text">Refactoring &amp; State Ops</span>@if(p.isDone('tf-refactoring')){<span class="nl-done">✓</span>}@if(d('tf-refactoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/refactoring" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Refactoring &amp; State Ops</span>
+        @if(p.isDone('tf-refactoring')){<span class="nl-done">✓</span>}
+        @if(d('tf-refactoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('refactoring')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('refactoring')"
+                  (click)="toggleSubtopics('refactoring', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('refactoring'); as refactoringSubs) {
+        @if (isSubtopicsExpanded('refactoring')) {
+          <div class="nav-subtopics">
+            @for (s of refactoringSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/terraform/opentofu" routerLinkActive="active"><span class="nl-text">OpenTofu</span>@if(p.isDone('tf-opentofu')){<span class="nl-done">✓</span>}@if(d('tf-opentofu');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 
