@@ -5589,7 +5589,28 @@ off here with a date.
   confirmed rendering with its backslashes intact (4 backslash characters, exactly as authored) after
   expanding the code block's "View Code" toggle. **Terraform hub Phase 10: 14 of 21 topics
   complete.**
-- [ ] `/terraform/import` — Import & Generated Config
+- [x] `/terraform/import` — Import & Generated Config (2026-07-28) — 3 subtopics: (1) **for_each
+  Import Blocks Handle Bulk Import**, scaling the main page's own single-resource import block
+  example up to the many-resources case its "import incrementally" advice implicitly leaves as hand-
+  written — verified via WebSearch that Terraform 1.7+ supports for_each directly on the import
+  block, paired with a matching for_each on the resource itself; (2) **The Import ID Format Is
+  Resource-Specific, Not Universal**, filling in what the main page's "identify the resource ID" step
+  leaves unsaid — verified that every resource type defines its own ID format (simple name, instance
+  ID, or a composite value with a slash/colon/pipe delimiter), identical for both the CLI command and
+  the import block's own id argument, with the provider's Registry docs as the authoritative source;
+  (3) **Import Never Pulls in Dependents or Sensitive Values**, giving the main page's "import
+  incrementally, verify each plan" advice its actual reason — verified that import operates on
+  exactly one resource address (dependents need their own separate import) and that some sensitive
+  attributes are never returned by the provider API at all, silently absent from generated config
+  with a clean plan giving no indication of the gap. Gotcha sweep (backtick parity 16/6/6 all even —
+  bare `@word`, `${`, over-escaped double-quote, literal-double-quote-in-label, bare-brace-in-html
+  all none — apostrophes correctly split between backtick-block-safe and one properly `\'`-escaped
+  single-quoted label field) clean on the first pass. Confirmed bare `import` key collision-free
+  before adding — left as a bare key. Build reported only the pre-documented harmless bundle-budget
+  warning, zero compile errors. Browser-verified successfully on the first attempt (no stale-chunk
+  incident): toggle count confirmed at 15, Import accordion expands showing all 3 correctly-labeled
+  links, a subtopic page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified.
+  **Terraform hub Phase 10: 15 of 21 topics complete.**
 - [ ] `/terraform/cicd` — CI/CD Integration
 - [ ] `/terraform/testing` — Testing Terraform
 - [ ] `/terraform/security` — Security & Compliance
