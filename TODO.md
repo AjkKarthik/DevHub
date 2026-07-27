@@ -5646,7 +5646,37 @@ off here with a date.
   block/try-it/misconceptions/prev-next nav all verified via `get_page_text`, dark mode confirmed
   rendering the correct purple accent (`rgb(196, 181, 253)` icon text on `rgb(26, 18, 41)` bg).
   **Terraform hub Phase 10: 16 of 21 topics complete.**
-- [ ] `/terraform/testing` — Testing Terraform
+- [x] `/terraform/testing` — Testing Terraform Code (2026-07-28) — 3 subtopics: (1) **run.NAME.output
+  Lets Later Blocks Reference Earlier Run Blocks**, filling in the actual reference syntax behind the
+  main page's "state from a previous apply run carries into the next" bullet — verified via
+  HashiCorp's own docs that a later run block reads an earlier one's output with `run.<name>.<output>`,
+  and that this specific reference (not a blanket rule) is what forces two run blocks to run
+  sequentially rather than in parallel; (2) **mock_resource Values Apply to Every Instance, Not
+  Per-Instance**, sharpening the main page's own "overrides what a specific resource returns" phrasing
+  (easily misread as per-instance) — verified that mock_resource defaults apply uniformly to every
+  instance of a resource type (a for_each/count block gets identical mocked values across all
+  instances), and that `override_resource` is the actual mechanism for distinct per-instance values,
+  a tool the main page never mentions at all; (3) **Destroy Runs in Reverse Order — a Referenced Run's
+  State Is Already Gone**, giving the main page's "terraform test automatically destroys all
+  resources... after all run blocks complete" QnA its actual order and a genuinely confusing nuance —
+  verified that destroy proceeds in reverse of apply order, and that an earlier run block whose output
+  a later block referenced correctly shows zero resources destroyed during its OWN cleanup step (the
+  later, dependent block's destroy already tore down the shared state), which can look like a leak in
+  `terraform test -verbose` output without knowing this mechanic. Gotcha sweep (backtick parity 4/4/4
+  all even — apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, confirmed zero actual backslash characters in any `.html`
+  file via `grep -F -c`) clean on the first pass. Found a real `SUBTOPICS`-map bare-key collision —
+  `testing` was already claimed by Angular's own `/angular/testing` topic (confirmed via both quoted
+  and unquoted grep forms) — hub-prefixed to `tf-testing`, matching the pre-existing `go-testing`
+  precedent from the Go hub, with all consumers (nav accordion calls, search index composite routes)
+  using the prefixed key consistently; confirmed `search.ts`'s generic `tf-` prefix-strip rule handles
+  the composite `tf-testing/<slug>` route correctly with no special case needed. Build passed clean on
+  the first attempt (no repeat of the bundle-budget error, now with headroom under the bumped 8MB
+  threshold). Browser-verified successfully: toggle count and accordion links confirmed via direct DOM
+  query (toggle click + `nextElementSibling` inspection), a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via
+  `get_page_text`, dark mode confirmed rendering the correct purple accent.
+  **Terraform hub Phase 10: 17 of 21 topics complete.**
 - [ ] `/terraform/security` — Security & Compliance
 - [ ] `/terraform/drift` — Drift Detection
 - [ ] `/terraform/refactoring` — Refactoring Terraform
