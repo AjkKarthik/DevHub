@@ -5794,7 +5794,45 @@ off here with a date.
 
 #### Service Mesh — 19 topic pages
 
-- [ ] `/service-mesh/fundamentals` — Service Mesh Fundamentals
+- [x] `/service-mesh/fundamentals` — Service Mesh Fundamentals (2026-07-28) — **first Service Mesh
+  hub Phase 10 pilot batch.** 3 subtopics: (1) **Ambient Mode: ztunnel Is L4-Only — L7 Routing
+  Needs a Waypoint**, sharpening the main page's "optional" framing of waypoint proxies — verified
+  that ztunnel alone only handles L4 (mTLS, basic authorization) while VirtualService routing,
+  retries, and header rules are L7 and need a waypoint proxy deployed, or they silently have no
+  effect on traffic (a straight sidecar-to-ambient migration can lose L7 policy with zero error);
+  (2) **xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes**, giving the main
+  page's "Istiod pushes updates within seconds" QnA its missing failure mode — verified via
+  Envoy's own xDS protocol docs that updates are eventually consistent, an RDS update outracing
+  its CDS/EDS counterpart at a given proxy can briefly black-hole traffic (503, response_flags UH),
+  and the mitigation is the documented "make before break" ordering (new cluster added before
+  routes switch to it, old cluster removed only after); (3) **A VirtualService Subset Missing From
+  DestinationRule Returns 503**, extending the main page's own perfectly-in-sync canary example
+  with the most common real-world Istio misconfiguration — verified that a VirtualService
+  referencing a subset absent from its DestinationRule applies with zero validation error and only
+  fails at request time as a silent 503 (response_flags NR), diagnosable via Envoy access logs, not
+  kubectl/istioctl validation. **Structural investigation before writing**: `MeshNavComponent`
+  (`shared/mesh-nav/mesh-nav.ts`) had ZERO subtopics-accordion support — the same gap already hit
+  on 8 prior `*NavComponent` hubs (Go, DevOps, Containers, AWS, Azure, Linux, Terraform) — fixed
+  identically (signal/Router/NavigationEnd/filter imports, `SUBTOPICS` from `data/subtopics`, the
+  three accordion methods, constructor-level router subscription with exact-match auto-expand).
+  Confirmed a real `SUBTOPICS`-map bare-key collision — `fundamentals` was already claimed by the
+  JavaScript hub's own bare key (checked both quoted and unquoted forms) — hub-prefixed to
+  `mesh-fundamentals`, matching this hub's established `mesh-` search/progress prefix; the toggle
+  worked correctly on the FIRST browser check (no stale-chunk incident this time). Confirmed
+  `.mesh-page`'s wrapper rule is NOT global (absent from `src/styles.scss`) and every subtopic
+  `.scss` needs the full `max-width: 860px; margin: 0 auto;` redeclaration — verified in-browser
+  via `getComputedStyle` that the 860px cap is actually applied, not full-bleed. No live playground
+  — Istio/Envoy/Kubernetes YAML content has no in-browser runtime, following the established
+  non-Angular-hub pattern (`<app-code-block>` only). Gotcha sweep caught a real style-consistency
+  issue (not a build error): backtick-wrapped inline code (`` `kubectl` ``/`` `istioctl` ``) mixed
+  with `<code>` tags in the same `[innerHTML]`-bound sentence in one file — fixed by converting to
+  `<code>` tags for consistency, matching the same fix already made once in the Terraform hub's
+  own `cicd` batch. Build passed clean on the first attempt. Browser-verified successfully: toggle
+  expand/collapse and accordion links confirmed via direct DOM query, a subtopic page's full
+  breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/next nav (correctly
+  no prev on the first subtopic) all verified via `get_page_text`, dark mode confirmed rendering the
+  correct blue accent (`rgb(147, 197, 253)`), page wrapper width confirmed 860px via
+  `getComputedStyle`. **Service Mesh hub Phase 10: 1 of 19 topics complete.**
 - [ ] `/service-mesh/istio-architecture` — Istio Architecture
 - [ ] `/service-mesh/istio-install` — Istio Installation & Configuration
 - [ ] `/service-mesh/linkerd` — Linkerd

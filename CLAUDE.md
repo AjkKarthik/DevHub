@@ -1894,6 +1894,58 @@ this same check before any other new hub's first subtopic set:
     {}`, `removed {}`, `lifecycle {}`, etc.) — this is a real, recurring risk category for this hub
     specifically, distinct from the `@word` sweep already run on every batch.
 
+### Service Mesh hub subtopic wiring — first pilot; the 9th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/service-mesh/fundamentals`, 2026-07-28) —
+do this same check before any other new hub's first subtopic set:
+
+1. **`MeshNavComponent` (`shared/mesh-nav/mesh-nav.ts`) had ZERO subtopics-accordion support** —
+   the same structural gap already hit and fixed on `GoNavComponent`, `DevopsNavComponent`,
+   `ContainersNavComponent`, `AwsNavComponent`, `AzureNavComponent`, `LinuxNavComponent`, and
+   `TerraformNavComponent` before their own pilots. Fixed identically: added `signal`, `Router`,
+   `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from `../../../data/subtopics`) to the
+   imports, then the same three methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`)
+   and constructor-level router subscription, copied directly from `TerraformNavComponent`'s own
+   implementation (read directly, not reconstructed from memory, per the copy-fidelity lesson from
+   the Terraform hub's own pilot). **This is now the NINTH `*NavComponent`-based hub in a row
+   missing this wiring at pilot time — never assume any `*NavComponent` hub has it; confirm per
+   hub, every time.** Unlike several prior hubs, the toggle worked correctly on the FIRST browser
+   check this time — no stale-chunk dev-server incident.
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `mesh-fundamentals` —
+   matching this hub's own established progress/search key prefix (`mesh-`) — with the usual
+   `// NOTE:` comment. All three `MeshNavComponent` accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'mesh-fundamentals'`
+   key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'service-mesh/fundamentals'`, confirmed the
+   base entry — and its own `MESH_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'service-mesh/fundamentals/<slug>'`.
+4. **`MESH_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic pattern
+   every hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'fundamentals/<slug>'`).
+5. **No live playground** — Istio/Envoy/Kubernetes YAML content has no in-browser runtime,
+   following the same `<app-code-block>`-only pattern as every other non-JS-runtime hub (C#/SQL/
+   Blazor/Go/DevOps/Node.js/Containers/AWS/Azure/Linux/Terraform) — every code tab across all three
+   subtopics uses plain `kubectl`/Istio-CRD YAML transcripts, matching the main page's own
+   `codeTabs` style exactly.
+6. Theme: `.mesh-page`/`.mesh-icon`/`.mesh-section` CSS classes, confirmed NOT global (absent from
+   `src/styles.scss`) — every subtopic `.scss` needs the full `.mesh-page { max-width: 860px;
+   margin: 0 auto; }` wrapper rule; confirmed in-browser via `getComputedStyle` that the 860px cap
+   is actually applied on a live subtopic page, not full-bleed. `$accent: #466bb0`,
+   `$tint: #eef2fb`, icon content `🕸️`, `tech="javascript"` in `app-page-meta` (Service Mesh pages
+   share the JS/TS playground and run-it links, same as every other non-JS-runtime hub).
+7. **A real style-consistency issue caught by the gotcha sweep, not a build error**: one subtopic
+   file mixed backtick-wrapped inline code (`` `kubectl` ``/`` `istioctl` ``) with `<code>` tags in
+   the SAME `[innerHTML]`-bound `theory.points` sentence — since `points` renders via `[innerHTML]`,
+   the backticks render as literal backtick characters rather than styled code, producing visibly
+   inconsistent formatting within one sentence. Fixed by converting the backtick-wrapped mentions to
+   `<code>` tags, matching the identical fix already made once in the Terraform hub's own `cicd`
+   batch (see gotcha item there) — confirms this specific mixing mistake recurs across hubs and is
+   worth a dedicated look (comparing backtick usage against `<code>` usage within the same sentence)
+   on any future subtopic batch, not just a one-off.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -2178,6 +2230,9 @@ this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
+  Phase 10: 1 of 19 topics have subtopics (`/service-mesh/fundamentals`, pilot batch, 2026-07-28) —
+  see "Service Mesh hub subtopic wiring" section below for the `MeshNavComponent` accordion
+  structural fix and the `mesh-fundamentals` SUBTOPICS-map collision resolution.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.
