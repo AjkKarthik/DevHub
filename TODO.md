@@ -5677,7 +5677,39 @@ off here with a date.
   levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via
   `get_page_text`, dark mode confirmed rendering the correct purple accent.
   **Terraform hub Phase 10: 17 of 21 topics complete.**
-- [ ] `/terraform/security` — Security & Compliance
+- [x] `/terraform/security` — Security & Compliance (2026-07-28) — 3 subtopics: (1)
+  **Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access**, naming the
+  actual permission behind the main page's vague "overridable with permission" Sentinel bullet —
+  verified via HashiCorp's own docs that overriding a soft-mandatory failure requires the "Manage
+  Policy Overrides" permission (or, by default, "Manage Policies") at the org level, that
+  organization owners always retain override ability, and that ordinary workspace write access
+  (triggering plans/applies) does not include this ability at all — meaning soft-mandatory behaves
+  identically to hard-mandatory for most contributors; (2) **prevent_destroy Blocks terraform
+  destroy Too — But Not a Removed Block**, sharpening the main page's "guard against accidental
+  resource destruction" framing — verified that prevent_destroy blocks ANY destroy plan including
+  an explicit `terraform destroy` command (not just accidental config-driven destroys), that
+  `-target` does not bypass it, and that the only deliberate bypass is a two-step process (remove
+  the lifecycle rule, apply, then destroy) — plus the separate state-surgery bypass
+  (`terraform state rm`) that sidesteps planning entirely; (3) **OPA/conftest Enforcement Is a
+  CI-Pipeline Responsibility, Not Native**, correcting how the main page lists OPA/conftest
+  alongside Sentinel's enforcement levels as if equivalent — verified that only Sentinel is wired
+  natively into HCP Terraform/TFE's own run pipeline, while conftest is a standalone CLI with no
+  enforcement-level concept at all, so a failing check only blocks anything if the CI pipeline
+  explicitly gates a later job on it. Gotcha sweep (backtick parity 4/4/4/8 — the 8-count file
+  caught a real style inconsistency, not a build error: two backtick-wrapped inline-code mentions
+  mixed with `<code>` tags in the same `[innerHTML]`-bound sentence, where backticks render as
+  literal characters rather than styled code — fixed by converting to `<code>` tags for visual
+  consistency; apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, zero actual backslash characters confirmed in any `.html`
+  file) clean otherwise. Found a real `SUBTOPICS`-map bare-key collision — `security` was already
+  claimed by SQL's own `/sql/security` topic (confirmed via both quoted and unquoted grep forms) —
+  hub-prefixed to `tf-security`, with all consumers (nav accordion calls, search index composite
+  routes) using the prefixed key consistently. Build passed clean on the first attempt. Browser-
+  verified successfully: toggle count and accordion links confirmed via direct DOM query, a
+  subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text`, dark mode confirmed rendering the
+  correct purple accent.
+  **Terraform hub Phase 10: 18 of 21 topics complete.**
 - [ ] `/terraform/drift` — Drift Detection
 - [ ] `/terraform/refactoring` — Refactoring Terraform
 - [ ] `/terraform/opentofu` — OpenTofu
