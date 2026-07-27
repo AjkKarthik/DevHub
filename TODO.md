@@ -5733,7 +5733,36 @@ off here with a date.
   (correctly no prev on the first subtopic) all verified via `get_page_text`, dark mode confirmed
   rendering the correct purple accent.
   **Terraform hub Phase 10: 19 of 21 topics complete.**
-- [ ] `/terraform/refactoring` — Refactoring Terraform
+- [x] `/terraform/refactoring` — Refactoring & State Ops (2026-07-28) — 3 subtopics: (1) **moved
+  Blocks Require the Same Resource Type on Both Sides**, naming a hard constraint every main-page
+  moved {} example leaves invisible by never mixing resource types — verified that from/to must
+  reference the exact same resource type, producing an explicit "resource type mismatch" error
+  otherwise, since moved only remaps a state address and never transforms one resource type's
+  schema into another's; (2) **removed Defaults to Actually Destroying the Resource**, correcting
+  a genuinely dangerous reading the main page's own "declarative counterpart to terraform state rm"
+  framing invites — verified via HashiCorp's own removed-block docs ("By default, Terraform
+  removes the resource from state and destroys the actual resource") that a plain removed {} block
+  destroys real infrastructure by default, the OPPOSITE of state rm's never-destroy guarantee,
+  requiring an explicit lifecycle { destroy = false } to get state-rm-equivalent behavior; (3)
+  **-target Pulls In Dependencies Automatically, But Never Dependents**, expanding the main page's
+  "apply just one resource" framing of -target with its real, asymmetric scope — verified that
+  -target automatically walks up the dependency graph including everything the target needs, but
+  never walks down to resources that depend on it, which is the actual mechanism behind the main
+  page's own "state out of sync" warning. Gotcha sweep (backtick parity 4/4/4 all even —
+  apostrophe-after-letter, unescaped `${`, over-escaped `\"`, literal-double-quote-in-label all
+  none, zero actual backslash characters in any `.html` file) mostly clean, but **caught a REAL
+  build-breaking NG5002 error on the first build attempt** — bare `{}` braces in plain prose text
+  (page-subtitle and a "Where this fits" paragraph, describing `moved {}`/`removed {}` syntax by
+  name) across two of the three `.html` files, missed by the sweep's `bare @word`-focused grep since
+  this is the separate brace-escaping gotcha, not the `@word` one. Fixed with the standard
+  `&#123;`/`&#125;` HTML-entity escape, confirmed via browser re-check that the escaped braces
+  render as literal `{}` characters (not raw entity codes) once fixed. Found no `SUBTOPICS`-map
+  bare-key collision for `refactoring` — left as a bare key. Build passed clean after the brace fix.
+  Browser-verified successfully: toggle count and accordion links confirmed via direct DOM query, a
+  subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text` (including the fixed braces
+  rendering correctly), dark mode confirmed rendering the correct purple accent.
+  **Terraform hub Phase 10: 20 of 21 topics complete.**
 - [ ] `/terraform/opentofu` — OpenTofu
 
 #### Service Mesh — 19 topic pages

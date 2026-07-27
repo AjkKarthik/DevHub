@@ -1877,6 +1877,22 @@ this same check before any other new hub's first subtopic set:
     hitting it again) — this is a legitimate, expected maintenance edit as the site keeps growing,
     not a workaround for a real problem. Worth checking this budget again periodically as more hubs
     reach Phase 10 completion, rather than being surprised by a build failure mid-batch.
+12. **The `/terraform/refactoring` batch hit a real, build-breaking NG5002 error the standing
+    gotcha sweep did not catch** — bare `{}` characters in plain prose `.html` text (a page-subtitle
+    and a "Where this fits" paragraph, both naming `moved {}`/`removed {}` syntax directly), across
+    two of the three subtopic files. This is the pre-existing, already-documented single-brace-in-
+    prose gotcha (see the general single-`{`-in-prose entry earlier in this file, from the
+    TypeScript hub's `EventHandlers<T>` incident) — but it had never come up in the Terraform hub
+    before this batch, since no prior Terraform subtopic's prose needed to name a brace-delimited
+    HCL block syntax directly. The sweep's bare-`@word` grep does not catch this — it is a
+    completely separate trigger character. **Fix: the standard `&#123;`/`&#125;` HTML-entity
+    escape**, confirmed via a browser re-check that the escaped braces render as literal `{}`
+    characters (not raw entity codes) once fixed. **New standing sweep addition for any future
+    Terraform (or any HCL-block-syntax-naming) subtopic batch**: grep every new `.html` file for a
+    bare `{` in plain text content (not inside a bound attribute expression) whenever the subtopic's
+    own subject matter involves naming a brace-delimited block type by its literal syntax (`moved
+    {}`, `removed {}`, `lifecycle {}`, etc.) — this is a real, recurring risk category for this hub
+    specifically, distinct from the `@word` sweep already run on every batch.
 
 ## Current state (update when it changes!)
 
@@ -2127,22 +2143,23 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/terraform/home/home.ts`. Progress: `tfTotal=21` in progress.service.ts.
   Terraform pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. TerraformNavComponent at `shared/terraform-nav/terraform-nav.ts`.
-  Phase 10: 19 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
+  Phase 10: 20 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
   `/terraform/variables`, `/terraform/outputs`, `/terraform/resources`, `/terraform/data-sources`,
   `/terraform/expressions`, `/terraform/functions`, `/terraform/state`,
   `/terraform/remote-backends`, `/terraform/workspaces`, `/terraform/modules`,
   `/terraform/module-patterns`, `/terraform/provisioners`, `/terraform/import`, `/terraform/cicd`,
-  `/terraform/testing`, `/terraform/security`, `/terraform/drift`, 2026-07-28) — see "Terraform hub
-  subtopic wiring" section below for the `TerraformNavComponent` accordion structural fix and the
-  `tf-fundamentals` SUBTOPICS-map collision resolution (`providers`, `variables`, `outputs`,
-  `resources`, `data-sources`, `expressions`, `state`, `remote-backends`, `workspaces`,
-  `module-patterns`, `provisioners`, `import`, `cicd`, and `drift` were all collision-free, left as
-  bare keys; `modules` collided with the TypeScript hub's own bare key — Go already uses
-  `go-modules` — and was hub-prefixed to `tf-modules`; `functions` collided with the JavaScript
-  hub's own bare key and was hub-prefixed to `tf-functions`; `testing` collided with Angular's own
-  bare key — Go already uses `go-testing` — and was hub-prefixed to `tf-testing`; `security`
-  collided with SQL's own bare key and was hub-prefixed to `tf-security`). **The `data-sources`
-  batch caught a real over-escaped-double-quote bug** (`\"`
+  `/terraform/testing`, `/terraform/security`, `/terraform/drift`, `/terraform/refactoring`,
+  2026-07-28) — see "Terraform hub subtopic wiring" section below for the `TerraformNavComponent`
+  accordion structural fix and the `tf-fundamentals` SUBTOPICS-map collision resolution
+  (`providers`, `variables`, `outputs`, `resources`, `data-sources`, `expressions`, `state`,
+  `remote-backends`, `workspaces`, `module-patterns`, `provisioners`, `import`, `cicd`, `drift`,
+  and `refactoring` were all collision-free, left as bare keys; `modules` collided with the
+  TypeScript hub's own bare key — Go already uses `go-modules` — and was hub-prefixed to
+  `tf-modules`; `functions` collided with the JavaScript hub's own bare key and was hub-prefixed to
+  `tf-functions`; `testing` collided with Angular's own bare key — Go already uses `go-testing` —
+  and was hub-prefixed to `tf-testing`; `security` collided with SQL's own bare key and was
+  hub-prefixed to `tf-security`). **The `data-sources` batch caught a real
+  over-escaped-double-quote bug** (`\"`
   inside a single-quoted TS field, not the backtick-delimited `code:` context where that escaping is
   correct) during the standing gotcha sweep, before it reached the build. **The `state` batch caught
   a stray invalid property accidentally left in a TheoryPoint object during authoring** (a leftover
