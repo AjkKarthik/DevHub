@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Workspaces" topicRoute="/terraform/workspaces" subtopicLabel="The default Workspace’s State Path Is Asymmetric" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">The default Workspace's State Path Is Asymmetric</h1>
+  <p class="page-subtitle">The main page lists both state paths correctly side by side — which makes it easy to miss that the default workspace doesn't participate in the workspace-path scheme at all.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This turns the main page's own side-by-side path listing into its real operational consequence — and reinforces the same caution its quiz raises about leaving production on the default workspace.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Workspaces" topicRoute="/terraform/workspaces"
+    [prev]="{ label: 'terraform.workspace Cannot Parameterize the backend Block', route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' }" />
+</div>

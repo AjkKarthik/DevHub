@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Workspaces" topicRoute="/terraform/workspaces" subtopicLabel="workspace delete -force Orphans Resources — It Doesn’t Destroy Them" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">workspace delete -force Orphans Resources</h1>
+  <p class="page-subtitle">The main page says deleting a workspace requires it to be empty — the -force flag disables that guard, deleting the state while leaving every real resource running and untracked.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This expands a one-clause QnA limitation into the actual failure mode and its safe sequence. Next: why terraform.workspace cannot be used to parameterize the backend block itself.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Workspaces" topicRoute="/terraform/workspaces"
+    [next]="{ label: 'terraform.workspace Cannot Parameterize the backend Block', route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' }" />
+</div>

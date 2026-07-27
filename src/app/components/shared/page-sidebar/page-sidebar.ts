@@ -40787,6 +40787,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'terraform.workspace can be referenced in configuration to vary behavior per workspace, but overusing it for complex per-environment logic makes configuration harder to follow.',
     ],
   },
+  'terraform/workspaces/workspace-delete-force-orphans-resources-it-does-not-destroy': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Workspaces',                                                route: '/terraform/workspaces' },
+      { label: 'terraform.workspace Cannot Parameterize the backend Block',  route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' },
+    ],
+    tip: 'The empty-workspace check genuinely blocks deleting a workspace with live resources — but -force bypasses it, deleting the state while every real resource keeps running and billing, now untracked ("dangling").',
+    gotchas: [
+      'Safe sequence: select the workspace, terraform destroy, confirm terraform state list is empty, switch away, then delete — no -force needed at all.',
+    ],
+  },
+  'terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'workspace delete -force Orphans Resources',                  route: '/terraform/workspaces/workspace-delete-force-orphans-resources-it-does-not-destroy' },
+      { label: 'The default Workspace\'s State Path Is Asymmetric',           route: '/terraform/workspaces/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix' },
+    ],
+    tip: 'The backend block is resolved during init, before any expression evaluation exists — terraform.workspace is unavailable there for the same reason variables are. Separate per-workspace state paths happen automatically anyway.',
+    gotchas: [
+      'For a genuinely different bucket per environment, use partial configuration (-backend-config) — resolved by the CLI at init, outside the expression system.',
+    ],
+  },
+  'terraform/workspaces/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'terraform.workspace Cannot Parameterize the backend Block',  route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' },
+      { label: 'Workspaces',                                                route: '/terraform/workspaces' },
+    ],
+    tip: 'Named workspaces store state at <workspace_key_prefix>/<name>/<key> (prefix defaults to the literal "env:") — the default workspace uses the bare key with no prefix at all. There is no env:/default/ path.',
+    gotchas: [
+      'A bucket policy scoped to env:/* silently excludes the default workspace\'s state — often the oldest and most important one in a team that adopted workspaces later.',
+    ],
+  },
   'terraform/modules': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

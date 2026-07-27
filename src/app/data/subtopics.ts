@@ -2815,4 +2815,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'cloud and backend Blocks Are Mutually Exclusive', route: '/terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive' },
     { label: 'GCS Backend Supports a Customer-Managed KMS Key', route: '/terraform/remote-backends/gcs-backend-supports-a-customer-managed-kms-key' },
   ],
+  workspaces: [
+    { label: 'workspace delete -force Orphans Resources', route: '/terraform/workspaces/workspace-delete-force-orphans-resources-it-does-not-destroy' },
+    { label: 'terraform.workspace Cannot Parameterize the backend Block', route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' },
+    { label: 'The default Workspace’s State Path Is Asymmetric', route: '/terraform/workspaces/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix' },
+  ],
 };

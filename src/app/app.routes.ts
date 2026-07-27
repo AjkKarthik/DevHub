@@ -3326,7 +3326,12 @@ export const routes: Routes = [
       { path: 'cloud-block-and-backend-block-are-mutually-exclusive', loadComponent: () => import('./components/cloud/terraform/remote-backends/subtopics/cloud-block-and-backend-block-are-mutually-exclusive/cloud-block-and-backend-block-are-mutually-exclusive').then(m => m.CloudBlockAndBackendBlockAreMutuallyExclusiveSubtopic) },
       { path: 'gcs-backend-supports-a-customer-managed-kms-key', loadComponent: () => import('./components/cloud/terraform/remote-backends/subtopics/gcs-backend-supports-a-customer-managed-kms-key/gcs-backend-supports-a-customer-managed-kms-key').then(m => m.GcsBackendSupportsACustomerManagedKmsKeySubtopic) },
     ] },
-    { path: 'workspaces',      loadComponent: () => import('./components/cloud/terraform/workspaces/workspaces').then(m => m.TfWorkspaces) },
+    { path: 'workspaces', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/workspaces/workspaces').then(m => m.TfWorkspaces) },
+      { path: 'workspace-delete-force-orphans-resources-it-does-not-destroy', loadComponent: () => import('./components/cloud/terraform/workspaces/subtopics/workspace-delete-force-orphans-resources-it-does-not-destroy/workspace-delete-force-orphans-resources-it-does-not-destroy').then(m => m.WorkspaceDeleteForceOrphansResourcesItDoesNotDestroySubtopic) },
+      { path: 'terraform-workspace-cannot-parameterize-the-backend-block', loadComponent: () => import('./components/cloud/terraform/workspaces/subtopics/terraform-workspace-cannot-parameterize-the-backend-block/terraform-workspace-cannot-parameterize-the-backend-block').then(m => m.TerraformWorkspaceCannotParameterizeTheBackendBlockSubtopic) },
+      { path: 'the-default-workspace-key-path-is-asymmetric-workspace-key-prefix', loadComponent: () => import('./components/cloud/terraform/workspaces/subtopics/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix').then(m => m.TheDefaultWorkspaceKeyPathIsAsymmetricWorkspaceKeyPrefixSubtopic) },
+    ] },
     { path: 'modules',         loadComponent: () => import('./components/cloud/terraform/modules/modules').then(m => m.TfModules) },
     { path: 'module-patterns', loadComponent: () => import('./components/cloud/terraform/module-patterns/module-patterns').then(m => m.TfModulePatterns) },
     { path: 'provisioners',    loadComponent: () => import('./components/cloud/terraform/provisioners/provisioners').then(m => m.TfProvisioners) },
