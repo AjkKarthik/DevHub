@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenTofu" topicRoute="/terraform/opentofu" subtopicLabel="BSL Has a Four-Year Change Date That Converts to MPL Automatically" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">BSL Has a Four-Year Change Date That Converts to MPL Automatically</h1>
+  <p class="page-subtitle">The main page frames BSL 1.1 as a fixed restriction — it actually has a built-in four-year expiration, per release, that converts each version to the open-source MPL 2.0 automatically.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (BSL releases, Aug 2023+)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the "permanently closed-source" framing that "BSL 1.1 restricts use" can invite on its own. Next: why reading OpenTofu-encrypted state through terraform_remote_state needs its own explicit encryption config.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenTofu" topicRoute="/terraform/opentofu"
+    [prev]="{ label: 'Key Rotation Needs the fallback Method, Not Just a Swapped Key', route: '/terraform/opentofu/key-rotation-needs-the-fallback-method-not-just-a-swapped-key' }"
+    [next]="{ label: 'remote_state Data Source Needs Its Own Encryption Config Too', route: '/terraform/opentofu/remote-state-data-source-needs-its-own-encryption-config-too' }" />
+</div>

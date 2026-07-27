@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OpenTofu" topicRoute="/terraform/opentofu" subtopicLabel="Key Rotation Needs the fallback Method, Not Just a Swapped Key" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Key Rotation Needs the fallback Method, Not Just a Swapped Key</h1>
+  <p class="page-subtitle">The main page's encryption example shows one static key with no rotation story — swapping the key value alone fails immediately against already-encrypted state.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="OpenTofu 1.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's encryption feature its own missing operational lifecycle — how to actually rotate a key in production. Next: why the BSL license isn't permanently proprietary.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OpenTofu" topicRoute="/terraform/opentofu"
+    [next]="{ label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically', route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' }" />
+</div>

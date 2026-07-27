@@ -41277,6 +41277,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Most existing modules and providers work with both tools due to their shared HCL-based configuration language and provider protocol compatibility, but this compatibility isn\'t an absolute guarantee going forward.',
     ],
   },
+  'terraform/opentofu/key-rotation-needs-the-fallback-method-not-just-a-swapped-key': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'OpenTofu',                                                              route: '/terraform/opentofu' },
+      { label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically',     route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' },
+    ],
+    tip: 'Swapping an encryption key\'s value alone fails against already-encrypted state. Rotate safely with a three-phase fallback: new key primary + old key as fallback, force a write with apply -refresh-only, then remove the fallback.',
+    gotchas: [
+      'Writes always use the primary method only, never the fallback — a plain plan doesn\'t necessarily force re-encryption; use apply -refresh-only to guarantee it.',
+    ],
+  },
+  'terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Key Rotation Needs the fallback Method, Not Just a Swapped Key',      route: '/terraform/opentofu/key-rotation-needs-the-fallback-method-not-just-a-swapped-key' },
+      { label: 'remote_state Data Source Needs Its Own Encryption Config Too',        route: '/terraform/opentofu/remote-state-data-source-needs-its-own-encryption-config-too' },
+    ],
+    tip: 'BSL 1.1 is not permanently proprietary — each Terraform release automatically converts to the MPL 2.0 open-source license four years after ITS OWN release date, per release, not on one shared date for the whole project.',
+    gotchas: [
+      'The "Terraform is closed-source now" framing overstates it — the restriction on any given release has a fixed, known expiration built into the license itself.',
+    ],
+  },
+  'terraform/opentofu/remote-state-data-source-needs-its-own-encryption-config-too': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically', route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' },
+      { label: 'OpenTofu',                                                          route: '/terraform/opentofu' },
+    ],
+    tip: 'Encryption does not travel with a terraform_remote_state reference — a consuming project reading another project\'s encrypted state needs its own remote_state_data_source encryption config, or the read fails outright even if the source project\'s own encryption works fine.',
+    gotchas: [
+      'A remote_state read failure here points at the CONSUMING project\'s missing encryption config, not the source project\'s — the source\'s own plans/applies can be working perfectly.',
+    ],
+  },
 
   // ── Service Mesh: per-page entries ──────────────────────────────────────────
   'service-mesh/fundamentals': {

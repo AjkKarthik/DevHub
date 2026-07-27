@@ -2876,4 +2876,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'removed Defaults to Actually Destroying the Resource', route: '/terraform/refactoring/removed-defaults-to-actually-destroying-the-resource' },
     { label: '-target Pulls In Dependencies Automatically, But Never Dependents', route: '/terraform/refactoring/target-pulls-in-dependencies-automatically-but-never-dependents' },
   ],
+  // NOTE: 'opentofu' confirmed collision-free (quoted and unquoted) across the whole file.
+  opentofu: [
+    { label: 'Key Rotation Needs the fallback Method, Not Just a Swapped Key', route: '/terraform/opentofu/key-rotation-needs-the-fallback-method-not-just-a-swapped-key' },
+    { label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically', route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' },
+    { label: 'remote_state Data Source Needs Its Own Encryption Config Too', route: '/terraform/opentofu/remote-state-data-source-needs-its-own-encryption-config-too' },
+  ],
 };

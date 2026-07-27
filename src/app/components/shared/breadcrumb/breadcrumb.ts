@@ -2192,6 +2192,9 @@ const TERRAFORM_LABELS: Record<string, string> = {
   'refactoring/removed-defaults-to-actually-destroying-the-resource': 'removed Defaults to Actually Destroying the Resource',
   'refactoring/target-pulls-in-dependencies-automatically-but-never-dependents': '-target Pulls In Dependencies Automatically, But Never Dependents',
   'opentofu':          'OpenTofu',
+  'opentofu/key-rotation-needs-the-fallback-method-not-just-a-swapped-key': 'Key Rotation Needs the fallback Method, Not Just a Swapped Key',
+  'opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically': 'BSL Has a Four-Year Change Date That Converts to MPL Automatically',
+  'opentofu/remote-state-data-source-needs-its-own-encryption-config-too': 'remote_state Data Source Needs Its Own Encryption Config Too',
   'cheatsheet':        'Terraform Cheatsheet',
   'interview-prep':    'Terraform Interview Prep',
 };

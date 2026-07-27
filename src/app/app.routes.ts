@@ -3386,7 +3386,12 @@ export const routes: Routes = [
       { path: 'removed-defaults-to-actually-destroying-the-resource', loadComponent: () => import('./components/cloud/terraform/refactoring/subtopics/removed-defaults-to-actually-destroying-the-resource/removed-defaults-to-actually-destroying-the-resource').then(m => m.RemovedDefaultsToActuallyDestroyingTheResourceSubtopic) },
       { path: 'target-pulls-in-dependencies-automatically-but-never-dependents', loadComponent: () => import('./components/cloud/terraform/refactoring/subtopics/target-pulls-in-dependencies-automatically-but-never-dependents/target-pulls-in-dependencies-automatically-but-never-dependents').then(m => m.TargetPullsInDependenciesAutomaticallyButNeverDependentsSubtopic) },
     ] },
-    { path: 'opentofu',        loadComponent: () => import('./components/cloud/terraform/opentofu/opentofu').then(m => m.TfOpenTofu) },
+    { path: 'opentofu', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/opentofu/opentofu').then(m => m.TfOpenTofu) },
+      { path: 'key-rotation-needs-the-fallback-method-not-just-a-swapped-key', loadComponent: () => import('./components/cloud/terraform/opentofu/subtopics/key-rotation-needs-the-fallback-method-not-just-a-swapped-key/key-rotation-needs-the-fallback-method-not-just-a-swapped-key').then(m => m.KeyRotationNeedsTheFallbackMethodNotJustASwappedKeySubtopic) },
+      { path: 'bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically', loadComponent: () => import('./components/cloud/terraform/opentofu/subtopics/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically').then(m => m.BslHasAFourYearChangeDateThatConvertsToMplAutomaticallySubtopic) },
+      { path: 'remote-state-data-source-needs-its-own-encryption-config-too', loadComponent: () => import('./components/cloud/terraform/opentofu/subtopics/remote-state-data-source-needs-its-own-encryption-config-too/remote-state-data-source-needs-its-own-encryption-config-too').then(m => m.RemoteStateDataSourceNeedsItsOwnEncryptionConfigTooSubtopic) },
+    ] },
     { path: 'cheatsheet',      loadComponent: () => import('./components/cloud/terraform/cheatsheet/cheatsheet').then(m => m.TfCheatsheet) },
     { path: 'interview-prep',  loadComponent: () => import('./components/cloud/terraform/interview-prep/interview-prep').then(m => m.TfInterviewPrep) },
   ] },
