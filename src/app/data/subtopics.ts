@@ -2864,4 +2864,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block', route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' },
     { label: 'OPA/conftest Enforcement Is a CI-Pipeline Responsibility, Not Native', route: '/terraform/security/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native' },
   ],
+  // NOTE: 'drift' confirmed collision-free (quoted and unquoted) across the whole file.
+  drift: [
+    { label: '-refresh=false and -refresh-only Do Near-Opposite Things', route: '/terraform/drift/refresh-false-and-refresh-only-do-near-opposite-things' },
+    { label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs', route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' },
+    { label: 'TFC Health Assessments Are Read-Only — They Never Write to State', route: '/terraform/drift/tfc-health-assessments-are-read-only-they-never-write-to-state' },
+  ],
 };

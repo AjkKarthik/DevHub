@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Drift Detection" topicRoute="/terraform/drift" subtopicLabel="-refresh=false and -refresh-only Do Near-Opposite Things" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">-refresh=false and -refresh-only Do Near-Opposite Things</h1>
+  <p class="page-subtitle">The main page lists these two similarly-named flags side by side — one performs a refresh specifically to detect drift, the other skips refresh entirely and hides it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 0.15+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This flags the naming-collision risk in the main page's own quick reference before it causes a real mistake. Next: why ignore_changes doesn't fix stale state on its own.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Drift Detection" topicRoute="/terraform/drift"
+    [next]="{ label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs', route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' }" />
+</div>

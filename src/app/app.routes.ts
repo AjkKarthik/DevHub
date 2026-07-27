@@ -3374,7 +3374,12 @@ export const routes: Routes = [
       { path: 'prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block', loadComponent: () => import('./components/cloud/terraform/security/subtopics/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block').then(m => m.PreventDestroyBlocksTerraformDestroyTooButNotARemovedBlockSubtopic) },
       { path: 'opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native', loadComponent: () => import('./components/cloud/terraform/security/subtopics/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native').then(m => m.OpaConftestEnforcementIsACiPipelineResponsibilityNotNativeSubtopic) },
     ] },
-    { path: 'drift',           loadComponent: () => import('./components/cloud/terraform/drift/drift').then(m => m.TfDrift) },
+    { path: 'drift', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/drift/drift').then(m => m.TfDrift) },
+      { path: 'refresh-false-and-refresh-only-do-near-opposite-things', loadComponent: () => import('./components/cloud/terraform/drift/subtopics/refresh-false-and-refresh-only-do-near-opposite-things/refresh-false-and-refresh-only-do-near-opposite-things').then(m => m.RefreshFalseAndRefreshOnlyDoNearOppositeThingsSubtopic) },
+      { path: 'ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs', loadComponent: () => import('./components/cloud/terraform/drift/subtopics/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs').then(m => m.IgnoreChangesDoesNotRefreshAStaleValueItJustStopsFutureDiffsSubtopic) },
+      { path: 'tfc-health-assessments-are-read-only-they-never-write-to-state', loadComponent: () => import('./components/cloud/terraform/drift/subtopics/tfc-health-assessments-are-read-only-they-never-write-to-state/tfc-health-assessments-are-read-only-they-never-write-to-state').then(m => m.TfcHealthAssessmentsAreReadOnlyTheyNeverWriteToStateSubtopic) },
+    ] },
     { path: 'refactoring',     loadComponent: () => import('./components/cloud/terraform/refactoring/refactoring').then(m => m.TfRefactoring) },
     { path: 'opentofu',        loadComponent: () => import('./components/cloud/terraform/opentofu/opentofu').then(m => m.TfOpenTofu) },
     { path: 'cheatsheet',      loadComponent: () => import('./components/cloud/terraform/cheatsheet/cheatsheet').then(m => m.TfCheatsheet) },

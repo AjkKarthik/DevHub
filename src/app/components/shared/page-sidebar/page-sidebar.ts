@@ -41054,6 +41054,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Manual "emergency fixes" that bypass Terraform are a common, recurring source of ongoing drift — the emergency fix should be backported into configuration promptly, not left as a permanent exception.',
     ],
   },
+  'terraform/drift/refresh-false-and-refresh-only-do-near-opposite-things': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Drift Detection',                                                              route: '/terraform/drift' },
+      { label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs',    route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' },
+    ],
+    tip: '-refresh-only performs a full refresh specifically to detect drift; -refresh=false skips refresh entirely and trusts the existing state, hiding any drift from that plan. Despite the similar names, they are near-opposite tools.',
+    gotchas: [
+      'A -refresh=false plan reporting "no changes" only means state matches config — it says nothing about whether reality has drifted from state, since it never checked.',
+    ],
+  },
+  'terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: '-refresh=false and -refresh-only Do Near-Opposite Things',              route: '/terraform/drift/refresh-false-and-refresh-only-do-near-opposite-things' },
+      { label: 'TFC Health Assessments Are Read-Only — They Never Write to State',      route: '/terraform/drift/tfc-health-assessments-are-read-only-they-never-write-to-state' },
+    ],
+    tip: 'Adding ignore_changes only stops FUTURE plan diffs on that attribute — it never refreshes or captures the current real value into state. If drift already existed, run apply -refresh-only first, or the stale pre-drift value stays in state indefinitely.',
+    gotchas: [
+      'terraform show or any remote-state reader keeps returning the stale, pre-drift value for an ignored attribute until an explicit refresh actually updates state.',
+    ],
+  },
+  'terraform/drift/tfc-health-assessments-are-read-only-they-never-write-to-state': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs', route: '/terraform/drift/ignore-changes-does-not-refresh-a-stale-value-it-just-stops-future-diffs' },
+      { label: 'Drift Detection',                                                           route: '/terraform/drift' },
+    ],
+    tip: 'A Terraform Cloud health assessment only detects and reports drift on a schedule — it never applies changes or writes to state, unlike a manual apply -refresh-only. The same drift is reported again on every subsequent run until a human acts on it.',
+    gotchas: [
+      'Waiting for a health assessment alert to "clear itself" on the next scheduled run never works — nothing about the underlying state changes as a result of the assessment itself.',
+    ],
+  },
   'terraform/testing': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

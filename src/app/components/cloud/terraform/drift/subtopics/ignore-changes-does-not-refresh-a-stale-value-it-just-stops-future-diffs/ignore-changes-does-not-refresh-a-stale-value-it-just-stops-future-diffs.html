@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Drift Detection" topicRoute="/terraform/drift" subtopicLabel="ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">ignore_changes Does Not Refresh a Stale Value — It Just Stops Future Diffs</h1>
+  <p class="page-subtitle">The main page recommends ignore_changes to suppress drift noise — but it never captures the current real value into state; existing drift stays stale unless refreshed first.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This adds the missing prerequisite step to the main page's own Option 3 (ignore drift) response. Next: why Terraform Cloud's health assessments never write to state on their own, unlike a manual -refresh-only apply.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Drift Detection" topicRoute="/terraform/drift"
+    [prev]="{ label: '-refresh=false and -refresh-only Do Near-Opposite Things', route: '/terraform/drift/refresh-false-and-refresh-only-do-near-opposite-things' }"
+    [next]="{ label: 'TFC Health Assessments Are Read-Only — They Never Write to State', route: '/terraform/drift/tfc-health-assessments-are-read-only-they-never-write-to-state' }" />
+</div>
