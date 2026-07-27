@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CI/CD with Terraform" topicRoute="/terraform/cicd" subtopicLabel="The OIDC sub Claim Differs Between push and pull_request" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">The OIDC sub Claim Differs Between push and pull_request</h1>
+  <p class="page-subtitle">The main page frames OIDC as removing stored AWS keys — but the trust policy that secures the role assumption itself is a detail it never shows.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This closes the trust-policy gap the main page's OIDC section leaves open. Next: why a saved plan file must be treated as a secret, even with sensitive values redacted from CLI output.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CI/CD with Terraform" topicRoute="/terraform/cicd"
+    [prev]="{ label: 'A Saved Plan File Needs the Same Version and Can Go Stale', route: '/terraform/cicd/a-saved-plan-file-needs-the-same-version-and-can-go-stale' }"
+    [next]="{ label: 'A Saved Plan File Is Plaintext and Must Be Treated as a Secret', route: '/terraform/cicd/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret' }" />
+</div>

@@ -2842,4 +2842,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' },
     { label: 'Import Never Pulls in Dependents or Sensitive Values', route: '/terraform/import/import-never-pulls-in-dependents-or-sensitive-values' },
   ],
+  // NOTE: 'cicd' confirmed collision-free (quoted and unquoted) across the whole file.
+  cicd: [
+    { label: 'A Saved Plan File Needs the Same Version and Can Go Stale', route: '/terraform/cicd/a-saved-plan-file-needs-the-same-version-and-can-go-stale' },
+    { label: 'The OIDC sub Claim Differs Between push and pull_request', route: '/terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request' },
+    { label: 'A Saved Plan File Is Plaintext and Must Be Treated as a Secret', route: '/terraform/cicd/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret' },
+  ],
 };

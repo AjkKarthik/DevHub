@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CI/CD with Terraform" topicRoute="/terraform/cicd" subtopicLabel="A Saved Plan File Needs the Same Version and Can Go Stale" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">A Saved Plan File Needs the Same Version and Can Go Stale</h1>
+  <p class="page-subtitle">The main page's own plan-then-apply rule treats saving the plan file as sufficient — two operational preconditions can silently break that guarantee, and locking alone doesn't cover either.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This adds the two operational preconditions the main page's plan-then-apply rule assumes but never states. Next: why the OIDC trust policy's sub claim behaves differently for push and pull_request events.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CI/CD with Terraform" topicRoute="/terraform/cicd"
+    [next]="{ label: 'The OIDC sub Claim Differs Between push and pull_request', route: '/terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request' }" />
+</div>

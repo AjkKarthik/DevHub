@@ -3356,7 +3356,12 @@ export const routes: Routes = [
       { path: 'the-import-id-format-is-resource-specific-not-universal', loadComponent: () => import('./components/cloud/terraform/import/subtopics/the-import-id-format-is-resource-specific-not-universal/the-import-id-format-is-resource-specific-not-universal').then(m => m.TheImportIdFormatIsResourceSpecificNotUniversalSubtopic) },
       { path: 'import-never-pulls-in-dependents-or-sensitive-values', loadComponent: () => import('./components/cloud/terraform/import/subtopics/import-never-pulls-in-dependents-or-sensitive-values/import-never-pulls-in-dependents-or-sensitive-values').then(m => m.ImportNeverPullsInDependentsOrSensitiveValuesSubtopic) },
     ] },
-    { path: 'cicd',            loadComponent: () => import('./components/cloud/terraform/cicd/cicd').then(m => m.TfCicd) },
+    { path: 'cicd', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/cicd/cicd').then(m => m.TfCicd) },
+      { path: 'a-saved-plan-file-needs-the-same-version-and-can-go-stale', loadComponent: () => import('./components/cloud/terraform/cicd/subtopics/a-saved-plan-file-needs-the-same-version-and-can-go-stale/a-saved-plan-file-needs-the-same-version-and-can-go-stale').then(m => m.ASavedPlanFileNeedsTheSameVersionAndCanGoStaleSubtopic) },
+      { path: 'the-oidc-sub-claim-differs-between-push-and-pull-request', loadComponent: () => import('./components/cloud/terraform/cicd/subtopics/the-oidc-sub-claim-differs-between-push-and-pull-request/the-oidc-sub-claim-differs-between-push-and-pull-request').then(m => m.TheOidcSubClaimDiffersBetweenPushAndPullRequestSubtopic) },
+      { path: 'a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret', loadComponent: () => import('./components/cloud/terraform/cicd/subtopics/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret').then(m => m.ASavedPlanFileIsPlaintextAndMustBeTreatedAsASecretSubtopic) },
+    ] },
     { path: 'testing',         loadComponent: () => import('./components/cloud/terraform/testing/testing').then(m => m.TfTesting) },
     { path: 'security',        loadComponent: () => import('./components/cloud/terraform/security/security').then(m => m.TfSecurity) },
     { path: 'drift',           loadComponent: () => import('./components/cloud/terraform/drift/drift').then(m => m.TfDrift) },

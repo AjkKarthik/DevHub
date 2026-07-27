@@ -41088,6 +41088,40 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CI runners need the same remote state locking guarantees as local runs — concurrent pipeline runs against the same state without locking risk the same corruption as concurrent local applies.',
     ],
   },
+  'terraform/cicd/a-saved-plan-file-needs-the-same-version-and-can-go-stale': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'CI/CD with Terraform',                                        route: '/terraform/cicd' },
+      { label: 'The OIDC sub Claim Differs Between push and pull_request',     route: '/terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request' },
+    ],
+    tip: 'A saved plan file (-out) is tied to the exact Terraform version that created it and to state as it existed at plan time — pin the version identically across every pipeline stage, and keep the plan-to-apply window short so state does not drift underneath a stale plan.',
+    gotchas: [
+      'State locking prevents SIMULTANEOUS conflicting writes only — it does nothing to prevent a saved plan going stale from a SEQUENTIAL change that already completed cleanly before apply ran.',
+    ],
+  },
+  'terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'A Saved Plan File Needs the Same Version and Can Go Stale',          route: '/terraform/cicd/a-saved-plan-file-needs-the-same-version-and-can-go-stale' },
+      { label: 'A Saved Plan File Is Plaintext and Must Be Treated as a Secret',     route: '/terraform/cicd/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret' },
+    ],
+    tip: 'An OIDC token\'s sub claim shape differs by triggering event — a push to main looks like repo:org/repo:ref:refs/heads/main, a pull_request does not. Scope the IAM trust policy\'s sub condition to the exact ref an apply-capable role should run from, never just the repository name.',
+    gotchas: [
+      'A trust policy that only checks the repository name grants the same role-assumption ability to a pull_request run from a fork as to a push on the protected branch — a real, distinct risk from the stored-credential problem OIDC itself solves.',
+    ],
+  },
+  'terraform/cicd/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'The OIDC sub Claim Differs Between push and pull_request', route: '/terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request' },
+      { label: 'CI/CD with Terraform',                                    route: '/terraform/cicd' },
+      { label: 'Security & Compliance',                                   route: '/terraform/security' },
+    ],
+    tip: 'sensitive = true only redacts CLI display output — the saved plan file itself still contains every value in plain text, provable via terraform show -json. Treat the plan artifact as a secret: short retention, restricted access, never posted verbatim.',
+    gotchas: [
+      'Posting the CLI\'s own redacted STDOUT text on a PR is safe; posting the raw plan file\'s JSON output is not — that reveals every sensitive value in plain text into a permanent, widely-readable thread.',
+    ],
+  },
   'terraform/refactoring': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
