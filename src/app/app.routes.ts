@@ -3368,7 +3368,12 @@ export const routes: Routes = [
       { path: 'mock-resource-values-apply-to-every-instance-not-per-instance', loadComponent: () => import('./components/cloud/terraform/testing/subtopics/mock-resource-values-apply-to-every-instance-not-per-instance/mock-resource-values-apply-to-every-instance-not-per-instance').then(m => m.MockResourceValuesApplyToEveryInstanceNotPerInstanceSubtopic) },
       { path: 'destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone', loadComponent: () => import('./components/cloud/terraform/testing/subtopics/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone').then(m => m.DestroyRunsInReverseOrderAReferencedRunsStateIsAlreadyGoneSubtopic) },
     ] },
-    { path: 'security',        loadComponent: () => import('./components/cloud/terraform/security/security').then(m => m.TfSecurity) },
+    { path: 'security', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/security/security').then(m => m.TfSecurity) },
+      { path: 'soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access', loadComponent: () => import('./components/cloud/terraform/security/subtopics/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access').then(m => m.SoftMandatoryOverridesNeedASpecificTfcPermissionNotJustPlanAccessSubtopic) },
+      { path: 'prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block', loadComponent: () => import('./components/cloud/terraform/security/subtopics/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block').then(m => m.PreventDestroyBlocksTerraformDestroyTooButNotARemovedBlockSubtopic) },
+      { path: 'opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native', loadComponent: () => import('./components/cloud/terraform/security/subtopics/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native').then(m => m.OpaConftestEnforcementIsACiPipelineResponsibilityNotNativeSubtopic) },
+    ] },
     { path: 'drift',           loadComponent: () => import('./components/cloud/terraform/drift/drift').then(m => m.TfDrift) },
     { path: 'refactoring',     loadComponent: () => import('./components/cloud/terraform/refactoring/refactoring').then(m => m.TfRefactoring) },
     { path: 'opentofu',        loadComponent: () => import('./components/cloud/terraform/opentofu/opentofu').then(m => m.TfOpenTofu) },

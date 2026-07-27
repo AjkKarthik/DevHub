@@ -376,7 +376,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/terraform/security" routerLinkActive="active"><span class="nl-text">Security &amp; Compliance</span>@if(p.isDone('tf-security')){<span class="nl-done">✓</span>}@if(d('tf-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Security &amp; Compliance</span>
+        @if(p.isDone('tf-security')){<span class="nl-done">✓</span>}
+        @if(d('tf-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('tf-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tf-security')"
+                  (click)="toggleSubtopics('tf-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tf-security'); as securitySubs) {
+        @if (isSubtopicsExpanded('tf-security')) {
+          <div class="nav-subtopics">
+            @for (s of securitySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/terraform/drift" routerLinkActive="active"><span class="nl-text">Drift Detection</span>@if(p.isDone('tf-drift')){<span class="nl-done">✓</span>}@if(d('tf-drift');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/terraform/refactoring" routerLinkActive="active"><span class="nl-text">Refactoring &amp; State Ops</span>@if(p.isDone('tf-refactoring')){<span class="nl-done">✓</span>}@if(d('tf-refactoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/terraform/opentofu" routerLinkActive="active"><span class="nl-text">OpenTofu</span>@if(p.isDone('tf-opentofu')){<span class="nl-done">✓</span>}@if(d('tf-opentofu');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

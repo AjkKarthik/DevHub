@@ -2856,4 +2856,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'mock_resource Values Apply to Every Instance, Not Per-Instance', route: '/terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance' },
     { label: 'Destroy Runs in Reverse Order — a Referenced Run’s State Is Already Gone', route: '/terraform/testing/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone' },
   ],
+  // SQL keeps the bare 'security' key (claimed it first, see the
+  // quoted 'security': entry above). Terraform's own /terraform/security
+  // claims subtopics too — hub-prefixed to 'tf-security' below.
+  'tf-security': [
+    { label: 'Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access', route: '/terraform/security/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access' },
+    { label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block', route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' },
+    { label: 'OPA/conftest Enforcement Is a CI-Pipeline Responsibility, Not Native', route: '/terraform/security/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native' },
+  ],
 };

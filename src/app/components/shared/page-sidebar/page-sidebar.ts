@@ -41109,6 +41109,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'checkov/tfsec-style static analysis catches common misconfigurations (an S3 bucket without encryption, an overly permissive security group) before they are ever applied.',
     ],
   },
+  'terraform/security/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Security & Compliance',                                                    route: '/terraform/security' },
+      { label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block',    route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' },
+    ],
+    tip: 'Overriding a soft-mandatory Sentinel failure needs the "Manage Policy Overrides" (or default "Manage Policies") permission at the org level — ordinary workspace write access to trigger plans/applies does not include this.',
+    gotchas: [
+      'For a team member without override permission, a soft-mandatory failure blocks the run exactly like hard-mandatory — the escape hatch only exists for privileged users.',
+    ],
+  },
+  'terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access', route: '/terraform/security/soft-mandatory-overrides-need-a-specific-tfc-permission-not-just-plan-access' },
+      { label: 'OPA/conftest Enforcement Is a CI-Pipeline Responsibility, Not Native',           route: '/terraform/security/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native' },
+    ],
+    tip: 'prevent_destroy = true blocks ANY plan that would destroy the resource, including an explicit terraform destroy — not just accidental config-driven destroys. It is fully bypassed only by removing the resource\'s lifecycle block from configuration first, then applying.',
+    gotchas: [
+      '-target does not bypass prevent_destroy — it only narrows plan scope; the guard still evaluates and blocks the targeted resource\'s destroy the same as without -target.',
+    ],
+  },
+  'terraform/security/opa-conftest-enforcement-is-a-ci-pipeline-responsibility-not-native': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block', route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' },
+      { label: 'Security & Compliance',                                                 route: '/terraform/security' },
+    ],
+    tip: 'Unlike Sentinel (natively wired into HCP Terraform/TFE\'s own run pipeline), OPA/conftest is just a CLI command with no enforcement-level concept — whether a failed check blocks an apply depends entirely on how the CI pipeline is configured around it.',
+    gotchas: [
+      'A conftest check that CI runs but doesn\'t gate the apply job on is effectively advisory-only, regardless of the team\'s intent — conftest itself has no "hard-mandatory" mode.',
+    ],
+  },
   'terraform/cicd': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

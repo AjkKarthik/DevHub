@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security & Compliance" topicRoute="/terraform/security" subtopicLabel="Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Soft-Mandatory Overrides Need a Specific TFC Permission, Not Just Plan Access</h1>
+  <p class="page-subtitle">The main page says soft-mandatory is "overridable with permission" — but never says which permission, or who holds it by default.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform Cloud / Enterprise" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's Sentinel enforcement-level bullet its missing access-control detail. Next: what prevent_destroy actually protects against, and the one config change that fully bypasses it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security & Compliance" topicRoute="/terraform/security"
+    [next]="{ label: 'prevent_destroy Blocks terraform destroy Too — But Not a Removed Block', route: '/terraform/security/prevent-destroy-blocks-terraform-destroy-too-but-not-a-removed-block' }" />
+</div>
