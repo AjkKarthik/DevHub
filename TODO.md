@@ -5454,7 +5454,30 @@ off here with a date.
   at 9, the State accordion expands correctly showing all 3 correctly-labeled links, a subtopic
   page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly. **Terraform hub
   Phase 10: 9 of 21 topics complete.**
-- [ ] `/terraform/remote-backends` — Remote Backends
+- [x] `/terraform/remote-backends` — Remote Backends (2026-07-25) — 3 subtopics: (1) **S3 Backend No
+  Longer Needs DynamoDB**, updating a main-page assumption that was accurate for years but has since
+  changed — verified via WebSearch that AWS added S3 conditional writes (Aug 2024), Terraform 1.10
+  added `use_lockfile` built on them, and Terraform 1.11 deprecated (but did not remove)
+  `dynamodb_table`; the main page's theory, mistake entry, bootstrap example, challenge, and quiz all
+  still treat DynamoDB as mandatory; (2) **cloud and backend Blocks Are Mutually Exclusive**,
+  expanding the main page's single-sentence cloud-block QnA mention into its actual constraints —
+  verified via HashiCorp's own docs that including both is a hard configuration error, and that
+  execution mode is an HCP Terraform WORKSPACE property configured in the UI/API rather than a
+  setting in the cloud block's own HCL; (3) **GCS Backend Supports a Customer-Managed KMS Key**,
+  adding the option missing from the main page's "both support encryption at rest via their default
+  cloud storage encryption" treatment — verified via HashiCorp's own GCS backend docs that
+  `kms_encryption_key` accepts a Cloud KMS resource name, requires granting the GCS service agent the
+  CryptoKey Encrypter/Decrypter role, and needs no special handling on the terraform_remote_state
+  reader's side. Gotcha sweep (apostrophe-after-letter — all matches confirmed inside backtick code
+  blocks or plain HTML text nodes — backtick parity: 6/4/8, all even — bare `@word` — none —
+  unescaped `${` — none — over-escaped double-quote — none — literal-double-quote-in-label check —
+  none) came back clean on the first pass. Confirmed bare `remote-backends` key collision-free before
+  adding — left as a bare key. Build reported only the pre-documented harmless bundle-budget warning,
+  zero compile errors. `git add -A` staged all 15 files (9 new + 6 wiring). Browser-verified
+  successfully on the first attempt (no stale-chunk incident): topic-overview toggle count confirmed
+  at 10, the Remote Backends accordion expands correctly showing all 3 correctly-labeled links, a
+  subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly.
+  **Terraform hub Phase 10: 10 of 21 topics complete.**
 - [ ] `/terraform/workspaces` — Workspaces
 - [ ] `/terraform/modules` — Modules
 - [ ] `/terraform/module-patterns` — Module Patterns
