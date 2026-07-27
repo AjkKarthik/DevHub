@@ -2837,4 +2837,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Create-Time Failure Taints — Destroy-Time Failure Can Stick', route: '/terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick' },
     { label: 'on_failure = continue Only Silences It', route: '/terraform/provisioners/on-failure-continue-only-silences-it-never-retries-or-fixes' },
   ],
+  import: [
+    { label: 'for_each Import Blocks Handle Bulk Import', route: '/terraform/import/for-each-import-blocks-handle-bulk-import-not-one-at-a-time' },
+    { label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' },
+    { label: 'Import Never Pulls in Dependents or Sensitive Values', route: '/terraform/import/import-never-pulls-in-dependents-or-sensitive-values' },
+  ],
 };

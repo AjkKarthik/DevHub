@@ -316,7 +316,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/terraform/import" routerLinkActive="active"><span class="nl-text">Import &amp; Generated Config</span>@if(p.isDone('tf-import')){<span class="nl-done">✓</span>}@if(d('tf-import');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/import" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Import &amp; Generated Config</span>
+        @if(p.isDone('tf-import')){<span class="nl-done">✓</span>}
+        @if(d('tf-import');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('import')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('import')"
+                  (click)="toggleSubtopics('import', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('import'); as impSubs) {
+        @if (isSubtopicsExpanded('import')) {
+          <div class="nav-subtopics">
+            @for (s of impSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/terraform/cicd" routerLinkActive="active"><span class="nl-text">CI/CD with Terraform</span>@if(p.isDone('tf-cicd')){<span class="nl-done">✓</span>}@if(d('tf-cicd');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/terraform/testing" routerLinkActive="active"><span class="nl-text">Testing Terraform Code</span>@if(p.isDone('tf-testing')){<span class="nl-done">✓</span>}@if(d('tf-testing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/terraform/security" routerLinkActive="active"><span class="nl-text">Security &amp; Compliance</span>@if(p.isDone('tf-security')){<span class="nl-done">✓</span>}@if(d('tf-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

@@ -3350,7 +3350,12 @@ export const routes: Routes = [
       { path: 'create-time-failure-taints-destroy-time-failure-can-stick', loadComponent: () => import('./components/cloud/terraform/provisioners/subtopics/create-time-failure-taints-destroy-time-failure-can-stick/create-time-failure-taints-destroy-time-failure-can-stick').then(m => m.CreateTimeFailureTaintsDestroyTimeFailureCanStickSubtopic) },
       { path: 'on-failure-continue-only-silences-it-never-retries-or-fixes', loadComponent: () => import('./components/cloud/terraform/provisioners/subtopics/on-failure-continue-only-silences-it-never-retries-or-fixes/on-failure-continue-only-silences-it-never-retries-or-fixes').then(m => m.OnFailureContinueOnlySilencesItNeverRetriesOrFixesSubtopic) },
     ] },
-    { path: 'import',          loadComponent: () => import('./components/cloud/terraform/import/import').then(m => m.TfImport) },
+    { path: 'import', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/import/import').then(m => m.TfImport) },
+      { path: 'for-each-import-blocks-handle-bulk-import-not-one-at-a-time', loadComponent: () => import('./components/cloud/terraform/import/subtopics/for-each-import-blocks-handle-bulk-import-not-one-at-a-time/for-each-import-blocks-handle-bulk-import-not-one-at-a-time').then(m => m.ForEachImportBlocksHandleBulkImportNotOneAtATimeSubtopic) },
+      { path: 'the-import-id-format-is-resource-specific-not-universal', loadComponent: () => import('./components/cloud/terraform/import/subtopics/the-import-id-format-is-resource-specific-not-universal/the-import-id-format-is-resource-specific-not-universal').then(m => m.TheImportIdFormatIsResourceSpecificNotUniversalSubtopic) },
+      { path: 'import-never-pulls-in-dependents-or-sensitive-values', loadComponent: () => import('./components/cloud/terraform/import/subtopics/import-never-pulls-in-dependents-or-sensitive-values/import-never-pulls-in-dependents-or-sensitive-values').then(m => m.ImportNeverPullsInDependentsOrSensitiveValuesSubtopic) },
+    ] },
     { path: 'cicd',            loadComponent: () => import('./components/cloud/terraform/cicd/cicd').then(m => m.TfCicd) },
     { path: 'testing',         loadComponent: () => import('./components/cloud/terraform/testing/testing').then(m => m.TfTesting) },
     { path: 'security',        loadComponent: () => import('./components/cloud/terraform/security/security').then(m => m.TfSecurity) },

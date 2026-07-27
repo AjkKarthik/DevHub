@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Import & Generated Config" topicRoute="/terraform/import" subtopicLabel="Import Never Pulls in Dependents or Sensitive Values" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Import Never Pulls in Dependents or Sensitive Values</h1>
+  <p class="page-subtitle">The main page's bulk-import advice frames the risk as pacing, not scope — import operates on exactly one resource, and some values the provider API never returns at all.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's own "import incrementally" advice its actual reason — one resource per import, and a real gap generated config can't fill.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Import & Generated Config" topicRoute="/terraform/import"
+    [prev]="{ label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' }" />
+</div>

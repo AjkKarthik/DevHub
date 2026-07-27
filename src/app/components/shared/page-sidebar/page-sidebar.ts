@@ -41009,6 +41009,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Terraform 1.5+\'s import blocks (declarative, in-configuration import) improve on the imperative import CLI command by making the import itself reviewable in a plan.',
     ],
   },
+  'terraform/import/for-each-import-blocks-handle-bulk-import-not-one-at-a-time': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Import & Generated Config',                              route: '/terraform/import' },
+      { label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' },
+    ],
+    tip: 'Terraform 1.7+ supports for_each directly on the import block, generating one import operation per entry in a map from a single block — the resource being imported into must also be declared with a matching for_each.',
+    gotchas: [
+      'A newer capability than import blocks themselves (1.5+) — check the Terraform version in use before relying on it.',
+    ],
+  },
+  'terraform/import/the-import-id-format-is-resource-specific-not-universal': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'for_each Import Blocks Handle Bulk Import',              route: '/terraform/import/for-each-import-blocks-handle-bulk-import-not-one-at-a-time' },
+      { label: 'Import Never Pulls in Dependents or Sensitive Values',    route: '/terraform/import/import-never-pulls-in-dependents-or-sensitive-values' },
+    ],
+    tip: 'There is no universal import ID shape — each resource type defines its own, from a simple name to a composite value joined with a slash, colon, or pipe. The resource type\'s own Terraform Registry docs are the authoritative source.',
+    gotchas: [
+      'The same resource-specific format rule applies identically to both the legacy CLI command and the import block\'s own id argument.',
+    ],
+  },
+  'terraform/import/import-never-pulls-in-dependents-or-sensitive-values': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'The Import ID Format Is Resource-Specific, Not Universal', route: '/terraform/import/the-import-id-format-is-resource-specific-not-universal' },
+      { label: 'Import & Generated Config',                              route: '/terraform/import' },
+    ],
+    tip: 'Import operates on exactly one resource address — dependent resources (security groups, subnets, IAM roles) need their own separate import. Some sensitive attributes are never returned by the provider API at all, and are silently absent from generated config.',
+    gotchas: [
+      'A clean plan after generate-config-out does not guarantee every real attribute was captured — only that everything the API exposed matches.',
+    ],
+  },
   'terraform/drift': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
