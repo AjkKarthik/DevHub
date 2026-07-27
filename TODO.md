@@ -5536,7 +5536,31 @@ off here with a date.
   confirmed at 12, Modules accordion expands showing all 3 correctly-labeled links, and a subtopic
   page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified, with `//` rendering literally.
   **Terraform hub Phase 10: 12 of 21 topics complete.**
-- [ ] `/terraform/module-patterns` — Module Patterns
+- [x] `/terraform/module-patterns` — Module Patterns (2026-07-27) — 3 subtopics: (1) **count on a
+  Module Changes How Every Output Is Accessed**, completing the main page's own feature-flag advice
+  (`count = var.enable_monitoring ? 1 : 0`) with its knock-on effect — verified that adding count to a
+  module block turns every output reference into an indexed one (`module.name[0].output`), that
+  `count = 0` means no instance exists so an indexed reference fails outright rather than yielding
+  null, and that `one(module.name[*].output)` is the idiomatic zero-or-one accessor; (2) **terraform
+  test Defaults to apply, Not plan**, adding the cost/safety dimension missing from the main page's
+  one-bullet mention (listed right after "fast, no cloud calls" validate) — verified via HashiCorp's
+  own test docs and reference that a run block with no `command` attribute performs a real apply,
+  that `command = plan` is what makes it free and fast at the cost of only seeing plan-time-known
+  values, and the conventional `*_unit_test`/`*_integration_test` filename split; (3) **Module
+  depends_on Makes the Whole Module Conservative**, scaling up the Resources topic's own one-line
+  module-`depends_on` mention with its real cost — verified via HashiCorp's own docs and a detailed
+  write-up that module-level `depends_on` is specifically called out as most likely to produce large
+  swaths of "(known after apply)" values, with data sources inside the module deferred from plan to
+  apply time. Gotcha sweep (backtick parity 22/10/24 all even — bare `@word`, `${`, over-escaped
+  double-quote, literal-double-quote-in-label, bare-brace-in-html all none — apostrophes all inside
+  backtick code blocks) clean on the first pass. Confirmed bare `module-patterns` key collision-free
+  before adding — left as a bare key. Build reported only the pre-documented harmless bundle-budget
+  warning, zero compile errors. **The dev server died again mid-verification and was restarted** (new
+  serverId, ~70s cold build, a `claude-sonnet-5[1m]` safety-classifier hiccup on the first
+  `preview_start` retry resolved on the second attempt) — not a stale-chunk incident. After restart,
+  toggle count confirmed at 13, Module Patterns accordion expands showing all 3 correctly-labeled
+  links, and a subtopic page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified.
+  **Terraform hub Phase 10: 13 of 21 topics complete.**
 - [ ] `/terraform/provisioners` — Provisioners
 - [ ] `/terraform/import` — Import & Generated Config
 - [ ] `/terraform/cicd` — CI/CD Integration
