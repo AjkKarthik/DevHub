@@ -40964,6 +40964,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Configuration management tools (Ansible, cloud-init) or baked-in machine images are generally preferred over provisioners for actual instance configuration.',
     ],
   },
+  'terraform/provisioners/self-is-scoped-to-the-resource-the-provisioner-is-attached-to': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Provisioners',                                          route: '/terraform/provisioners' },
+      { label: 'Create-Time Failure Taints — Destroy-Time Failure Can Stick', route: '/terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick' },
+    ],
+    tip: 'self inside a provisioner/connection block always resolves to the resource that block is physically attached to — a null_resource\'s provisioner can never reach another resource\'s attributes through self, only through a full reference.',
+    gotchas: [
+      'A destroy-time provisioner needs the triggers map to carry a value forward — a live cross-resource reference is not reliable by the time destroy runs.',
+    ],
+  },
+  'terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'self Is Scoped to the Resource the Provisioner Is Attached To', route: '/terraform/provisioners/self-is-scoped-to-the-resource-the-provisioner-is-attached-to' },
+      { label: 'on_failure = continue Only Silences It',                route: '/terraform/provisioners/on-failure-continue-only-silences-it-never-retries-or-fixes' },
+    ],
+    tip: 'A failed create-time provisioner taints the resource for self-healing recreation on the next apply. A failed destroy-time provisioner leaves the resource stuck in state, failing the same way on every retry — and a tainted resource\'s destroy-time provisioner does not run at all.',
+    gotchas: [
+      'HashiCorp specifically recommends on_failure = continue as the default for destroy-time provisioners, unlike create-time ones.',
+    ],
+  },
+  'terraform/provisioners/on-failure-continue-only-silences-it-never-retries-or-fixes': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Create-Time Failure Taints — Destroy-Time Failure Can Stick', route: '/terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick' },
+      { label: 'Provisioners',                                          route: '/terraform/provisioners' },
+    ],
+    tip: 'on_failure = continue only stops Terraform treating a provisioner failure as an error — no retry, no fallback, no fix. apply reports success while the intended side effect silently never happened, with only a warning line marking it.',
+    gotchas: [
+      'Right default for genuinely optional side effects; wrong default for anything the rest of the configuration or system depends on actually being true.',
+    ],
+  },
   'terraform/import': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

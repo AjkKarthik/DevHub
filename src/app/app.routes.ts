@@ -3344,7 +3344,12 @@ export const routes: Routes = [
       { path: 'terraform-test-defaults-to-apply-not-plan', loadComponent: () => import('./components/cloud/terraform/module-patterns/subtopics/terraform-test-defaults-to-apply-not-plan/terraform-test-defaults-to-apply-not-plan').then(m => m.TerraformTestDefaultsToApplyNotPlanSubtopic) },
       { path: 'module-depends-on-makes-the-whole-module-conservative', loadComponent: () => import('./components/cloud/terraform/module-patterns/subtopics/module-depends-on-makes-the-whole-module-conservative/module-depends-on-makes-the-whole-module-conservative').then(m => m.ModuleDependsOnMakesTheWholeModuleConservativeSubtopic) },
     ] },
-    { path: 'provisioners',    loadComponent: () => import('./components/cloud/terraform/provisioners/provisioners').then(m => m.TfProvisioners) },
+    { path: 'provisioners', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/provisioners/provisioners').then(m => m.TfProvisioners) },
+      { path: 'self-is-scoped-to-the-resource-the-provisioner-is-attached-to', loadComponent: () => import('./components/cloud/terraform/provisioners/subtopics/self-is-scoped-to-the-resource-the-provisioner-is-attached-to/self-is-scoped-to-the-resource-the-provisioner-is-attached-to').then(m => m.SelfIsScopedToTheResourceTheProvisionerIsAttachedToSubtopic) },
+      { path: 'create-time-failure-taints-destroy-time-failure-can-stick', loadComponent: () => import('./components/cloud/terraform/provisioners/subtopics/create-time-failure-taints-destroy-time-failure-can-stick/create-time-failure-taints-destroy-time-failure-can-stick').then(m => m.CreateTimeFailureTaintsDestroyTimeFailureCanStickSubtopic) },
+      { path: 'on-failure-continue-only-silences-it-never-retries-or-fixes', loadComponent: () => import('./components/cloud/terraform/provisioners/subtopics/on-failure-continue-only-silences-it-never-retries-or-fixes/on-failure-continue-only-silences-it-never-retries-or-fixes').then(m => m.OnFailureContinueOnlySilencesItNeverRetriesOrFixesSubtopic) },
+    ] },
     { path: 'import',          loadComponent: () => import('./components/cloud/terraform/import/import').then(m => m.TfImport) },
     { path: 'cicd',            loadComponent: () => import('./components/cloud/terraform/cicd/cicd').then(m => m.TfCicd) },
     { path: 'testing',         loadComponent: () => import('./components/cloud/terraform/testing/testing').then(m => m.TfTesting) },

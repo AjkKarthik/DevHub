@@ -2832,4 +2832,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'terraform test Defaults to apply, Not plan', route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' },
     { label: 'Module depends_on Makes the Whole Module Conservative', route: '/terraform/module-patterns/module-depends-on-makes-the-whole-module-conservative' },
   ],
+  provisioners: [
+    { label: 'self Is Scoped to the Resource the Provisioner Is Attached To', route: '/terraform/provisioners/self-is-scoped-to-the-resource-the-provisioner-is-attached-to' },
+    { label: 'Create-Time Failure Taints — Destroy-Time Failure Can Stick', route: '/terraform/provisioners/create-time-failure-taints-destroy-time-failure-can-stick' },
+    { label: 'on_failure = continue Only Silences It', route: '/terraform/provisioners/on-failure-continue-only-silences-it-never-retries-or-fixes' },
+  ],
 };
