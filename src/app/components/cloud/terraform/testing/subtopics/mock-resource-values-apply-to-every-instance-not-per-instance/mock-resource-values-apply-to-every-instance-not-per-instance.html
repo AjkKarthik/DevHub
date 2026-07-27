@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Testing Terraform Code" topicRoute="/terraform/testing" subtopicLabel="mock_resource Values Apply to Every Instance, Not Per-Instance" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">mock_resource Values Apply to Every Instance, Not Per-Instance</h1>
+  <p class="page-subtitle">The main page's "overrides what a specific resource returns" phrasing can read as per-instance — mock_resource actually applies one shared set of values to an entire resource type.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 1.7+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This sharpens the main page's mock_resource description with its actual scope, and introduces override_resource as the per-instance tool it never mentions. Next: the precise order terraform test destroys resources in, and what "does nothing" during cleanup for an earlier run block actually means.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Testing Terraform Code" topicRoute="/terraform/testing"
+    [prev]="{ label: 'run.NAME.output Lets Later Blocks Reference Earlier Run Blocks', route: '/terraform/testing/run-name-output-lets-later-blocks-reference-earlier-run-blocks' }"
+    [next]="{ label: 'Destroy Runs in Reverse Order — a Referenced Run’s State Is Already Gone', route: '/terraform/testing/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone' }" />
+</div>

@@ -3362,7 +3362,12 @@ export const routes: Routes = [
       { path: 'the-oidc-sub-claim-differs-between-push-and-pull-request', loadComponent: () => import('./components/cloud/terraform/cicd/subtopics/the-oidc-sub-claim-differs-between-push-and-pull-request/the-oidc-sub-claim-differs-between-push-and-pull-request').then(m => m.TheOidcSubClaimDiffersBetweenPushAndPullRequestSubtopic) },
       { path: 'a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret', loadComponent: () => import('./components/cloud/terraform/cicd/subtopics/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret').then(m => m.ASavedPlanFileIsPlaintextAndMustBeTreatedAsASecretSubtopic) },
     ] },
-    { path: 'testing',         loadComponent: () => import('./components/cloud/terraform/testing/testing').then(m => m.TfTesting) },
+    { path: 'testing', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/testing/testing').then(m => m.TfTesting) },
+      { path: 'run-name-output-lets-later-blocks-reference-earlier-run-blocks', loadComponent: () => import('./components/cloud/terraform/testing/subtopics/run-name-output-lets-later-blocks-reference-earlier-run-blocks/run-name-output-lets-later-blocks-reference-earlier-run-blocks').then(m => m.RunNameOutputLetsLaterBlocksReferenceEarlierRunBlocksSubtopic) },
+      { path: 'mock-resource-values-apply-to-every-instance-not-per-instance', loadComponent: () => import('./components/cloud/terraform/testing/subtopics/mock-resource-values-apply-to-every-instance-not-per-instance/mock-resource-values-apply-to-every-instance-not-per-instance').then(m => m.MockResourceValuesApplyToEveryInstanceNotPerInstanceSubtopic) },
+      { path: 'destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone', loadComponent: () => import('./components/cloud/terraform/testing/subtopics/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone').then(m => m.DestroyRunsInReverseOrderAReferencedRunsStateIsAlreadyGoneSubtopic) },
+    ] },
     { path: 'security',        loadComponent: () => import('./components/cloud/terraform/security/security').then(m => m.TfSecurity) },
     { path: 'drift',           loadComponent: () => import('./components/cloud/terraform/drift/drift').then(m => m.TfDrift) },
     { path: 'refactoring',     loadComponent: () => import('./components/cloud/terraform/refactoring/refactoring').then(m => m.TfRefactoring) },

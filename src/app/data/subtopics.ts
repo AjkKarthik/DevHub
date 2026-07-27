@@ -2848,4 +2848,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The OIDC sub Claim Differs Between push and pull_request', route: '/terraform/cicd/the-oidc-sub-claim-differs-between-push-and-pull-request' },
     { label: 'A Saved Plan File Is Plaintext and Must Be Treated as a Secret', route: '/terraform/cicd/a-saved-plan-file-is-plaintext-and-must-be-treated-as-a-secret' },
   ],
+  // Angular keeps the bare 'testing' key (claimed it first, see the
+  // unquoted "testing:" entry above). Terraform's own /terraform/testing
+  // claims subtopics too — hub-prefixed to 'tf-testing' below.
+  'tf-testing': [
+    { label: 'run.NAME.output Lets Later Blocks Reference Earlier Run Blocks', route: '/terraform/testing/run-name-output-lets-later-blocks-reference-earlier-run-blocks' },
+    { label: 'mock_resource Values Apply to Every Instance, Not Per-Instance', route: '/terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance' },
+    { label: 'Destroy Runs in Reverse Order — a Referenced Run’s State Is Already Gone', route: '/terraform/testing/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone' },
+  ],
 };

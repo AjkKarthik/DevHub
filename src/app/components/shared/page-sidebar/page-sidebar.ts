@@ -41065,6 +41065,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Static analysis tools (tflint, checkov) catch style and security-policy issues before a plan even runs, complementing (not replacing) plan-based testing.',
     ],
   },
+  'terraform/testing/run-name-output-lets-later-blocks-reference-earlier-run-blocks': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Testing Terraform Code',                                            route: '/terraform/testing' },
+      { label: 'mock_resource Values Apply to Every Instance, Not Per-Instance',     route: '/terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance' },
+    ],
+    tip: 'A later run block reads an earlier one\'s output with run.<name>.<output> — e.g. run.create_vpc.vpc_id. This reference is what forces Terraform to run the two run blocks sequentially rather than in parallel.',
+    gotchas: [
+      'Independent run blocks (no shared run.<name>.<output> reference, no shared state file) CAN execute in parallel — the "run blocks execute sequentially" rule only applies to blocks actually connected by a reference.',
+    ],
+  },
+  'terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'run.NAME.output Lets Later Blocks Reference Earlier Run Blocks',            route: '/terraform/testing/run-name-output-lets-later-blocks-reference-earlier-run-blocks' },
+      { label: 'Destroy Runs in Reverse Order — a Referenced Run’s State Is Already Gone', route: '/terraform/testing/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone' },
+    ],
+    tip: 'mock_resource defaults apply to EVERY instance of that resource type uniformly — a for_each or count block gets identical mocked values on every instance. Use override_resource to target one specific instance with its own distinct values.',
+    gotchas: [
+      'An assertion expecting distinct values across multiple mocked instances (e.g. distinct AZs) will fail under a plain mock_resource block, since every instance shares the same defaults.',
+    ],
+  },
+  'terraform/testing/destroy-runs-in-reverse-order-a-referenced-runs-state-is-already-gone': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'mock_resource Values Apply to Every Instance, Not Per-Instance', route: '/terraform/testing/mock-resource-values-apply-to-every-instance-not-per-instance' },
+      { label: 'Testing Terraform Code',                                        route: '/terraform/testing' },
+    ],
+    tip: 'terraform test destroys run blocks in REVERSE of their apply order. A run block whose output a later block referenced can show zero resources destroyed during its own cleanup step — that state was already torn down as part of the later, dependent block\'s destroy.',
+    gotchas: [
+      'Seeing "nothing destroyed" for an earlier run block in terraform test -verbose output is expected, correct behavior when a later block depended on it — not a sign of a resource leak.',
+    ],
+  },
   'terraform/security': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
