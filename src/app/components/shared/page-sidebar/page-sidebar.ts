@@ -40743,6 +40743,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Backend configuration itself cannot use variables — it must be static or use partial configuration with a separate backend config file.',
     ],
   },
+  'terraform/remote-backends/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Remote Backends',                                    route: '/terraform/remote-backends' },
+      { label: 'cloud and backend Blocks Are Mutually Exclusive',     route: '/terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive' },
+    ],
+    tip: 'Terraform 1.10+ supports use_lockfile on the S3 backend — native locking via S3\'s own conditional-write support, no DynamoDB table needed. dynamodb_table is deprecated (1.11+) but still functional.',
+    gotchas: [
+      'Migrating an existing DynamoDB-locked backend to use_lockfile is a normal backend-config change: update the block, run terraform init -migrate-state.',
+    ],
+  },
+  'terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'S3 Backend No Longer Needs DynamoDB',                 route: '/terraform/remote-backends/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current' },
+      { label: 'GCS Backend Supports a Customer-Managed KMS Key',     route: '/terraform/remote-backends/gcs-backend-supports-a-customer-managed-kms-key' },
+    ],
+    tip: 'A configuration cannot contain both a cloud block and a backend block — hard error, not a style choice. Execution mode (remote vs local) is a property of the HCP Terraform workspace itself, not a setting in the cloud block\'s own HCL.',
+    gotchas: [
+      'Mixing HCP Terraform for one environment and a plain backend for another requires genuinely separate root configurations, not a conditional within one.',
+    ],
+  },
+  'terraform/remote-backends/gcs-backend-supports-a-customer-managed-kms-key': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'cloud and backend Blocks Are Mutually Exclusive',     route: '/terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive' },
+      { label: 'Remote Backends',                                    route: '/terraform/remote-backends' },
+    ],
+    tip: 'The gcs backend accepts kms_encryption_key directly, encrypting state with an account-controlled Cloud KMS key instead of Google\'s default — requires granting the GCS service agent the CryptoKey Encrypter/Decrypter role first.',
+    gotchas: [
+      'A reader\'s terraform_remote_state config needs no special handling to decrypt KMS-encrypted state — decryption happens automatically on GCS\'s own end.',
+    ],
+  },
   'terraform/workspaces': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [

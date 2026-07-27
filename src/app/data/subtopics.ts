@@ -2810,4 +2810,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The State serial Number Detects a Stale state push', route: '/terraform/state/the-state-serial-number-is-what-detects-a-stale-state-push' },
     { label: 'Workspaces Share the Same Backend — Prefer Directories for Prod', route: '/terraform/state/workspaces-share-the-same-backend-prefer-directories-for-prod' },
   ],
+  'remote-backends': [
+    { label: 'S3 Backend No Longer Needs DynamoDB', route: '/terraform/remote-backends/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current' },
+    { label: 'cloud and backend Blocks Are Mutually Exclusive', route: '/terraform/remote-backends/cloud-block-and-backend-block-are-mutually-exclusive' },
+    { label: 'GCS Backend Supports a Customer-Managed KMS Key', route: '/terraform/remote-backends/gcs-backend-supports-a-customer-managed-kms-key' },
+  ],
 };

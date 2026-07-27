@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Remote Backends" topicRoute="/terraform/remote-backends" subtopicLabel="cloud and backend Blocks Are Mutually Exclusive" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">cloud and backend Blocks Are Mutually Exclusive</h1>
+  <p class="page-subtitle">The main page's only mention of the cloud block is one QnA sentence — "instead of" turns out to be a hard constraint, and execution mode isn't configured in either block.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Terraform 1.1+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This expands the main page's own one-sentence cloud block mention into its actual constraints. Next: how the GCS backend supports a customer-managed KMS key beyond the main page's "default encryption."</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Remote Backends" topicRoute="/terraform/remote-backends"
+    [prev]="{ label: 'S3 Backend No Longer Needs DynamoDB — use_lockfile Is Current', route: '/terraform/remote-backends/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current' }"
+    [next]="{ label: 'GCS Backend Supports a Customer-Managed KMS Key', route: '/terraform/remote-backends/gcs-backend-supports-a-customer-managed-kms-key' }" />
+</div>

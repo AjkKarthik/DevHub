@@ -3320,7 +3320,12 @@ export const routes: Routes = [
       { path: 'the-state-serial-number-is-what-detects-a-stale-state-push', loadComponent: () => import('./components/cloud/terraform/state/subtopics/the-state-serial-number-is-what-detects-a-stale-state-push/the-state-serial-number-is-what-detects-a-stale-state-push').then(m => m.TheStateSerialNumberIsWhatDetectsAStaleStatePushSubtopic) },
       { path: 'workspaces-share-the-same-backend-prefer-directories-for-prod', loadComponent: () => import('./components/cloud/terraform/state/subtopics/workspaces-share-the-same-backend-prefer-directories-for-prod/workspaces-share-the-same-backend-prefer-directories-for-prod').then(m => m.WorkspacesShareTheSameBackendPreferDirectoriesForProdSubtopic) },
     ] },
-    { path: 'remote-backends', loadComponent: () => import('./components/cloud/terraform/remote-backends/remote-backends').then(m => m.TfRemoteBackends) },
+    { path: 'remote-backends', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/remote-backends/remote-backends').then(m => m.TfRemoteBackends) },
+      { path: 's3-backend-no-longer-needs-dynamodb-use-lockfile-is-current', loadComponent: () => import('./components/cloud/terraform/remote-backends/subtopics/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current/s3-backend-no-longer-needs-dynamodb-use-lockfile-is-current').then(m => m.S3BackendNoLongerNeedsDynamodbUseLockfileIsCurrentSubtopic) },
+      { path: 'cloud-block-and-backend-block-are-mutually-exclusive', loadComponent: () => import('./components/cloud/terraform/remote-backends/subtopics/cloud-block-and-backend-block-are-mutually-exclusive/cloud-block-and-backend-block-are-mutually-exclusive').then(m => m.CloudBlockAndBackendBlockAreMutuallyExclusiveSubtopic) },
+      { path: 'gcs-backend-supports-a-customer-managed-kms-key', loadComponent: () => import('./components/cloud/terraform/remote-backends/subtopics/gcs-backend-supports-a-customer-managed-kms-key/gcs-backend-supports-a-customer-managed-kms-key').then(m => m.GcsBackendSupportsACustomerManagedKmsKeySubtopic) },
+    ] },
     { path: 'workspaces',      loadComponent: () => import('./components/cloud/terraform/workspaces/workspaces').then(m => m.TfWorkspaces) },
     { path: 'modules',         loadComponent: () => import('./components/cloud/terraform/modules/modules').then(m => m.TfModules) },
     { path: 'module-patterns', loadComponent: () => import('./components/cloud/terraform/module-patterns/module-patterns').then(m => m.TfModulePatterns) },
