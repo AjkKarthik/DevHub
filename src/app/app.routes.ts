@@ -3338,7 +3338,12 @@ export const routes: Routes = [
       { path: 'remote-modules-are-cached-a-changed-ref-needs-init-upgrade', loadComponent: () => import('./components/cloud/terraform/modules/subtopics/remote-modules-are-cached-a-changed-ref-needs-init-upgrade/remote-modules-are-cached-a-changed-ref-needs-init-upgrade').then(m => m.RemoteModulesAreCachedAChangedRefNeedsInitUpgradeSubtopic) },
       { path: 'the-double-slash-marks-where-the-package-ends', loadComponent: () => import('./components/cloud/terraform/modules/subtopics/the-double-slash-marks-where-the-package-ends/the-double-slash-marks-where-the-package-ends').then(m => m.TheDoubleSlashMarksWhereThePackageEndsSubtopic) },
     ] },
-    { path: 'module-patterns', loadComponent: () => import('./components/cloud/terraform/module-patterns/module-patterns').then(m => m.TfModulePatterns) },
+    { path: 'module-patterns', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/module-patterns/module-patterns').then(m => m.TfModulePatterns) },
+      { path: 'count-on-a-module-changes-how-every-output-is-accessed', loadComponent: () => import('./components/cloud/terraform/module-patterns/subtopics/count-on-a-module-changes-how-every-output-is-accessed/count-on-a-module-changes-how-every-output-is-accessed').then(m => m.CountOnAModuleChangesHowEveryOutputIsAccessedSubtopic) },
+      { path: 'terraform-test-defaults-to-apply-not-plan', loadComponent: () => import('./components/cloud/terraform/module-patterns/subtopics/terraform-test-defaults-to-apply-not-plan/terraform-test-defaults-to-apply-not-plan').then(m => m.TerraformTestDefaultsToApplyNotPlanSubtopic) },
+      { path: 'module-depends-on-makes-the-whole-module-conservative', loadComponent: () => import('./components/cloud/terraform/module-patterns/subtopics/module-depends-on-makes-the-whole-module-conservative/module-depends-on-makes-the-whole-module-conservative').then(m => m.ModuleDependsOnMakesTheWholeModuleConservativeSubtopic) },
+    ] },
     { path: 'provisioners',    loadComponent: () => import('./components/cloud/terraform/provisioners/provisioners').then(m => m.TfProvisioners) },
     { path: 'import',          loadComponent: () => import('./components/cloud/terraform/import/import').then(m => m.TfImport) },
     { path: 'cicd',            loadComponent: () => import('./components/cloud/terraform/cicd/cicd').then(m => m.TfCicd) },

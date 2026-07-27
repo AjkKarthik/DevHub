@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Module Patterns" topicRoute="/terraform/module-patterns" subtopicLabel="Module depends_on Makes the Whole Module Conservative" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Module depends_on Makes the Whole Module Conservative</h1>
+  <p class="page-subtitle">The Resources topic shows module-level depends_on as a natural scaling-up of the resource-level form — it carries a distinctly larger cost across everything the module contains.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform 0.13+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This scales the Fundamentals topic's own depends_on lesson up to the module level, where the plan-precision cost is much larger and the reference-based alternative correspondingly more valuable.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Module Patterns" topicRoute="/terraform/module-patterns"
+    [prev]="{ label: 'terraform test Defaults to apply, Not plan', route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' }" />
+</div>

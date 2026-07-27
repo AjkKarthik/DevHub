@@ -2827,4 +2827,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Remote Modules Are Cached — a Changed ref Needs init -upgrade', route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' },
     { label: 'The Double Slash Marks Where the Package Ends', route: '/terraform/modules/the-double-slash-marks-where-the-package-ends' },
   ],
+  'module-patterns': [
+    { label: 'count on a Module Changes How Every Output Is Accessed', route: '/terraform/module-patterns/count-on-a-module-changes-how-every-output-is-accessed' },
+    { label: 'terraform test Defaults to apply, Not plan', route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' },
+    { label: 'Module depends_on Makes the Whole Module Conservative', route: '/terraform/module-patterns/module-depends-on-makes-the-whole-module-conservative' },
+  ],
 };

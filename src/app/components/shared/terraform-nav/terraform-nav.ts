@@ -272,7 +272,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/terraform/module-patterns" routerLinkActive="active"><span class="nl-text">Module Patterns</span>@if(p.isDone('tf-module-patterns')){<span class="nl-done">✓</span>}@if(d('tf-module-patterns');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/terraform/module-patterns" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Module Patterns</span>
+        @if(p.isDone('tf-module-patterns')){<span class="nl-done">✓</span>}
+        @if(d('tf-module-patterns');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('module-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('module-patterns')"
+                  (click)="toggleSubtopics('module-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('module-patterns'); as mpSubs) {
+        @if (isSubtopicsExpanded('module-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of mpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

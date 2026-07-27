@@ -40876,6 +40876,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Composing several small, focused modules is generally more maintainable than one large, all-purpose module trying to handle every possible use case.',
     ],
   },
+  'terraform/module-patterns/count-on-a-module-changes-how-every-output-is-accessed': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Module Patterns',                                       route: '/terraform/module-patterns' },
+      { label: 'terraform test Defaults to apply, Not plan',            route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' },
+    ],
+    tip: 'Adding count to a module block turns it into an indexed collection — every output reference must become module.name[0].output. With count = 0 there is no instance 0 at all, so a bare indexed reference fails rather than yielding null.',
+    gotchas: [
+      'one(module.name[*].output) is the idiomatic zero-or-one accessor — it collapses to the value or null with no index-out-of-range risk.',
+    ],
+  },
+  'terraform/module-patterns/terraform-test-defaults-to-apply-not-plan': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'count on a Module Changes How Every Output Is Accessed', route: '/terraform/module-patterns/count-on-a-module-changes-how-every-output-is-accessed' },
+      { label: 'Module depends_on Makes the Whole Module Conservative',  route: '/terraform/module-patterns/module-depends-on-makes-the-whole-module-conservative' },
+    ],
+    tip: 'A run block with no command attribute defaults to a real apply — provisioning live infrastructure, asserting, then destroying it. command = plan makes it fast and free, at the cost of only seeing plan-time-known values.',
+    gotchas: [
+      'Conventional split: *_unit_test.tftest.hcl uses command = plan; *_integration_test.tftest.hcl uses the default apply.',
+    ],
+  },
+  'terraform/module-patterns/module-depends-on-makes-the-whole-module-conservative': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'terraform test Defaults to apply, Not plan',            route: '/terraform/module-patterns/terraform-test-defaults-to-apply-not-plan' },
+      { label: 'Module Patterns',                                       route: '/terraform/module-patterns' },
+    ],
+    tip: 'depends_on on a module applies its conservatism to everything inside — HashiCorp names module depends_on as the case most likely to produce large swaths of "(known after apply)". Depend through a real reference instead wherever one exists.',
+    gotchas: [
+      'Data sources inside the module get deferred from plan to apply time, so anything computed from them becomes unknown at plan time too.',
+    ],
+  },
   'terraform/providers': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
