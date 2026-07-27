@@ -5478,7 +5478,35 @@ off here with a date.
   at 10, the Remote Backends accordion expands correctly showing all 3 correctly-labeled links, a
   subtopic page's h1/breadcrumb (all 4 levels)/theory all confirmed rendering correctly.
   **Terraform hub Phase 10: 10 of 21 topics complete.**
-- [ ] `/terraform/workspaces` — Workspaces
+- [x] `/terraform/workspaces` — Workspaces (2026-07-25) — 3 subtopics, deliberately chosen to avoid
+  overlapping the workspaces-vs-directories tradeoff already covered by the `/terraform/state` batch:
+  (1) **workspace delete -force Orphans Resources**, expanding a one-clause QnA limitation ("deleting
+  a workspace does not destroy the resources") into the actual failure mode — verified via
+  HashiCorp's own docs that the empty-workspace check is a real guard, `-force` bypasses it while
+  leaving infrastructure running and untracked ("dangling"), and the safe sequence is
+  destroy → confirm empty → switch away → delete, with `-force` having one legitimate hand-off use;
+  (2) **terraform.workspace Cannot Parameterize the backend Block**, naming the one place
+  terraform.workspace categorically fails despite working in every main-page example — verified that
+  the backend is resolved at init before any expression phase exists (same reason variables are
+  barred), plus the genuine chicken-and-egg ordering problem, with automatic per-workspace state
+  paths and partial configuration as the two real answers; (3) **The default Workspace's State Path
+  Is Asymmetric**, turning the main page's own side-by-side path listing into its operational
+  consequence — verified that named workspaces use `<workspace_key_prefix>/<name>/<key>` (prefix
+  defaulting to the literal `env:`, colon included) while `default` uses the bare key with no
+  `env:/default/` path at all, so a bucket policy scoped to `env:/*` silently excludes it.
+  Gotcha sweep (backtick parity: 18/12/20, all even — bare `@word` — none — over-escaped
+  double-quote — none — literal-double-quote-in-label — none — apostrophes all inside backtick code
+  blocks, curly `’` correctly used in every `[prev]`/`[next]` label). **Two deliberate `${...}`
+  instances verified as correct in two different escaping contexts**: `\${terraform.workspace}`
+  escaped inside a backtick `code:` field, and bare `${terraform.workspace}` / `${PR_NUMBER}`
+  unescaped inside single-quoted `prompt:` fields (safe — `${` has no meaning in a single-quoted JS
+  string, and `[innerHTML]` never evaluates it); browser-checked that both render literally with no
+  stray backslash. Confirmed bare `workspaces` key collision-free before adding — left as a bare key.
+  Build reported only the pre-documented harmless bundle-budget warning, zero compile errors.
+  Browser-verified on the first attempt (no stale-chunk incident): topic-overview toggle count
+  confirmed at 11, the Workspaces accordion expands showing all 3 correctly-labeled links, and a
+  subtopic page's h1/breadcrumb/theory confirmed rendering correctly.
+  **Terraform hub Phase 10: 11 of 21 topics complete.**
 - [ ] `/terraform/modules` — Modules
 - [ ] `/terraform/module-patterns` — Module Patterns
 - [ ] `/terraform/provisioners` — Provisioners
