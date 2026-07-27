@@ -5561,7 +5561,34 @@ off here with a date.
   toggle count confirmed at 13, Module Patterns accordion expands showing all 3 correctly-labeled
   links, and a subtopic page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified.
   **Terraform hub Phase 10: 13 of 21 topics complete.**
-- [ ] `/terraform/provisioners` — Provisioners
+- [x] `/terraform/provisioners` — Provisioners (2026-07-27) — 3 subtopics: (1) **self Is Scoped to
+  the Resource the Provisioner Is Attached To**, explaining a distinction the main page's own two
+  examples demonstrate (self.public_ip on aws_instance.web's own provisioner vs the full
+  aws_instance.web.id reference on null_resource.notify_slack's provisioner) without ever naming why
+  they differ — verified via WebSearch/GitHub issue that self resolves only to the resource the
+  provisioner block is attached to, and that a destroy-time provisioner needs the triggers map to
+  carry a value forward since a live cross-resource reference isn't reliable by destroy time; (2)
+  **Create-Time Failure Taints — Destroy-Time Failure Can Stick**, splitting the main page's single
+  generic failure rule into its two genuinely different outcomes — verified via HashiCorp's own docs
+  that a failed create-time provisioner taints the resource for self-healing recreation, while a
+  failed destroy-time provisioner leaves the resource stuck in state failing identically on retry,
+  and that a tainted resource's own destroy-time provisioner does not run at all; (3) **on_failure =
+  continue Only Silences It**, defining precisely what the main page's "use on_failure = continue to
+  override" actually changes — verified that it stops treating the failure as an error with zero
+  retry/fallback logic, and that apply reports success while the intended side effect silently never
+  happened. Gotcha sweep (backtick parity 18/6/6 all even — bare `@word`, literal-double-quote-in-
+  label, bare-brace-in-html all none — the one `\\"` hit in a backtick `code:` field confirmed
+  CORRECT, not the over-escaping bug: double-backslash renders a literal `\"` needed for the actual
+  HCL syntax being shown, verified by direct backslash-count check on the rendered page — apostrophes
+  all inside backtick code blocks) clean on the first pass. Confirmed bare `provisioners` key
+  collision-free before adding — left as a bare key. Build reported only the pre-documented harmless
+  bundle-budget warning, zero compile errors. Browser-verified successfully on the first attempt (no
+  stale-chunk incident, no dev-server restart needed this time): toggle count confirmed at 14,
+  Provisioners accordion expands showing all 3 correctly-labeled links, a subtopic page's
+  h1/breadcrumb (all 4 levels)/tailored sidebar verified, and the escaped `\"text\"` HCL syntax
+  confirmed rendering with its backslashes intact (4 backslash characters, exactly as authored) after
+  expanding the code block's "View Code" toggle. **Terraform hub Phase 10: 14 of 21 topics
+  complete.**
 - [ ] `/terraform/import` — Import & Generated Config
 - [ ] `/terraform/cicd` — CI/CD Integration
 - [ ] `/terraform/testing` — Testing Terraform
