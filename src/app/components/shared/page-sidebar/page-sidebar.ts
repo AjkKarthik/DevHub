@@ -41324,6 +41324,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Adopting a service mesh for a small number of services often adds more operational complexity than the cross-cutting benefits justify.',
     ],
   },
+  'service-mesh/fundamentals/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Service Mesh Fundamentals',                                          route: '/service-mesh/fundamentals' },
+      { label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' },
+    ],
+    tip: 'ztunnel alone only handles L4 (mTLS, basic authorization) — VirtualService routing, retries, and header-based rules are L7 and need a waypoint proxy deployed, or they silently have no effect on traffic.',
+    gotchas: [
+      'A sidecar-to-ambient migration without deploying waypoints keeps mTLS working but silently drops any L7 policy the workload depended on — no error is raised.',
+    ],
+  },
+  'service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ambient Mode: ztunnel Is L4-Only — L7 Routing Needs a Waypoint',           route: '/service-mesh/fundamentals/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint' },
+      { label: 'A VirtualService Subset Missing From DestinationRule Returns 503',        route: '/service-mesh/fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503' },
+    ],
+    tip: 'xDS is eventually consistent — an RDS update can outrace its corresponding CDS/EDS update at a given proxy, briefly black-holing traffic (503 UH) until the cluster/endpoint data catches up. Istiod\'s own pushes respect make-before-break ordering to minimize this.',
+    gotchas: [
+      'A brief 503 spike with response_flags UH exactly coinciding with a config change can be expected, self-resolving xDS propagation behavior — not necessarily a real fault.',
+    ],
+  },
+  'service-mesh/fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' },
+      { label: 'Service Mesh Fundamentals',                                          route: '/service-mesh/fundamentals' },
+    ],
+    tip: 'A VirtualService referencing a subset absent from its DestinationRule applies with no error — the mismatch only surfaces as a 503 (response_flags NR) when real traffic hits that path. Check Envoy access logs, not kubectl/istioctl validation.',
+    gotchas: [
+      'Renaming a DestinationRule subset without auditing every VirtualService that references the old name is a common, silent way to introduce this exact failure.',
+    ],
+  },
   'service-mesh/envoy': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

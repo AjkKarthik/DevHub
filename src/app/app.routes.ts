@@ -3663,7 +3663,12 @@ export const routes: Routes = [
   ] },
   { path: 'service-mesh',  children: [
     { path: '', loadComponent: () => import('./components/cloud/service-mesh/home/home').then(m => m.ServiceMeshHome) },
-    { path: 'fundamentals',       loadComponent: () => import('./components/cloud/service-mesh/fundamentals/fundamentals').then(m => m.MeshFundamentals) },
+    { path: 'fundamentals', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/fundamentals/fundamentals').then(m => m.MeshFundamentals) },
+      { path: 'ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint', loadComponent: () => import('./components/cloud/service-mesh/fundamentals/subtopics/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint').then(m => m.AmbientModeZtunnelIsL4OnlyL7RoutingNeedsAWaypointSubtopic) },
+      { path: 'xds-updates-need-make-before-break-ordering-or-traffic-black-holes', loadComponent: () => import('./components/cloud/service-mesh/fundamentals/subtopics/xds-updates-need-make-before-break-ordering-or-traffic-black-holes/xds-updates-need-make-before-break-ordering-or-traffic-black-holes').then(m => m.XdsUpdatesNeedMakeBeforeBreakOrderingOrTrafficBlackHolesSubtopic) },
+      { path: 'a-virtualservice-subset-missing-from-destinationrule-returns-503', loadComponent: () => import('./components/cloud/service-mesh/fundamentals/subtopics/a-virtualservice-subset-missing-from-destinationrule-returns-503/a-virtualservice-subset-missing-from-destinationrule-returns-503').then(m => m.AVirtualServiceSubsetMissingFromDestinationRuleReturns503Subtopic) },
+    ] },
     { path: 'istio-architecture', loadComponent: () => import('./components/cloud/service-mesh/istio-architecture/istio-architecture').then(m => m.MeshIstioArchitecture) },
     { path: 'istio-install',      loadComponent: () => import('./components/cloud/service-mesh/istio-install/istio-install').then(m => m.MeshIstioInstall) },
     { path: 'linkerd',            loadComponent: () => import('./components/cloud/service-mesh/linkerd/linkerd').then(m => m.MeshLinkerd) },

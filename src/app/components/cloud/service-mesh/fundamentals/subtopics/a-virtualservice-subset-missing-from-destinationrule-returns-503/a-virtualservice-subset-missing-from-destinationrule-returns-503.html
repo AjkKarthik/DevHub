@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Mesh Fundamentals" topicRoute="/service-mesh/fundamentals" subtopicLabel="A VirtualService Subset Missing From DestinationRule Returns 503" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">A VirtualService Subset Missing From DestinationRule Returns 503</h1>
+  <p class="page-subtitle">The main page's own canary example keeps VirtualService and DestinationRule perfectly in sync — it never shows what happens when a subset reference drifts, which fails silently until real traffic hits it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the main page's traffic-management example with the most common real-world failure mode it never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Mesh Fundamentals" topicRoute="/service-mesh/fundamentals"
+    [prev]="{ label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' }" />
+</div>

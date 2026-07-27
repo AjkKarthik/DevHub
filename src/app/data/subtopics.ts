@@ -2882,4 +2882,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'BSL Has a Four-Year Change Date That Converts to MPL Automatically', route: '/terraform/opentofu/bsl-has-a-four-year-change-date-that-converts-to-mpl-automatically' },
     { label: 'remote_state Data Source Needs Its Own Encryption Config Too', route: '/terraform/opentofu/remote-state-data-source-needs-its-own-encryption-config-too' },
   ],
+  // JavaScript keeps the bare 'fundamentals' key (claimed it first). Service
+  // Mesh's own /service-mesh/fundamentals claims subtopics too — hub-prefixed
+  // to 'mesh-fundamentals' below.
+  'mesh-fundamentals': [
+    { label: 'Ambient Mode: ztunnel Is L4-Only — L7 Routing Needs a Waypoint', route: '/service-mesh/fundamentals/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint' },
+    { label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' },
+    { label: 'A VirtualService Subset Missing From DestinationRule Returns 503', route: '/service-mesh/fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503' },
+  ],
 };

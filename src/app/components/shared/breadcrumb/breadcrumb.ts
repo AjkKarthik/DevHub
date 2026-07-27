@@ -2282,6 +2282,9 @@ const LINUX_LABELS: Record<string, string> = {
 
 const MESH_LABELS: Record<string, string> = {
   'fundamentals':       'Service Mesh Fundamentals',
+  'fundamentals/ambient-mode-ztunnel-is-l4-only-l7-routing-needs-a-waypoint': 'Ambient Mode: ztunnel Is L4-Only — L7 Routing Needs a Waypoint',
+  'fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes': 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes',
+  'fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503': 'A VirtualService Subset Missing From DestinationRule Returns 503',
   'istio-architecture': 'Istio Architecture',
   'istio-install':      'Istio Installation & Configuration',
   'linkerd':            'Linkerd',
