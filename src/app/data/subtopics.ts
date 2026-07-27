@@ -2820,4 +2820,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'terraform.workspace Cannot Parameterize the backend Block', route: '/terraform/workspaces/terraform-workspace-cannot-parameterize-the-backend-block' },
     { label: 'The default Workspace’s State Path Is Asymmetric', route: '/terraform/workspaces/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix' },
   ],
+  // NOTE: keyed 'tf-modules', NOT bare 'modules' — TypeScript's own
+  // /typescript/modules claimed the bare key first (Go uses 'go-modules').
+  'tf-modules': [
+    { label: 'version Is a Registry-Only Argument, Not a General Pin', route: '/terraform/modules/version-is-a-registry-only-argument-not-a-general-pin' },
+    { label: 'Remote Modules Are Cached — a Changed ref Needs init -upgrade', route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' },
+    { label: 'The Double Slash Marks Where the Package Ends', route: '/terraform/modules/the-double-slash-marks-where-the-package-ends' },
+  ],
 };

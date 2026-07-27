@@ -3332,7 +3332,12 @@ export const routes: Routes = [
       { path: 'terraform-workspace-cannot-parameterize-the-backend-block', loadComponent: () => import('./components/cloud/terraform/workspaces/subtopics/terraform-workspace-cannot-parameterize-the-backend-block/terraform-workspace-cannot-parameterize-the-backend-block').then(m => m.TerraformWorkspaceCannotParameterizeTheBackendBlockSubtopic) },
       { path: 'the-default-workspace-key-path-is-asymmetric-workspace-key-prefix', loadComponent: () => import('./components/cloud/terraform/workspaces/subtopics/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix/the-default-workspace-key-path-is-asymmetric-workspace-key-prefix').then(m => m.TheDefaultWorkspaceKeyPathIsAsymmetricWorkspaceKeyPrefixSubtopic) },
     ] },
-    { path: 'modules',         loadComponent: () => import('./components/cloud/terraform/modules/modules').then(m => m.TfModules) },
+    { path: 'modules', children: [
+      { path: '', loadComponent: () => import('./components/cloud/terraform/modules/modules').then(m => m.TfModules) },
+      { path: 'version-is-a-registry-only-argument-not-a-general-pin', loadComponent: () => import('./components/cloud/terraform/modules/subtopics/version-is-a-registry-only-argument-not-a-general-pin/version-is-a-registry-only-argument-not-a-general-pin').then(m => m.VersionIsARegistryOnlyArgumentNotAGeneralPinSubtopic) },
+      { path: 'remote-modules-are-cached-a-changed-ref-needs-init-upgrade', loadComponent: () => import('./components/cloud/terraform/modules/subtopics/remote-modules-are-cached-a-changed-ref-needs-init-upgrade/remote-modules-are-cached-a-changed-ref-needs-init-upgrade').then(m => m.RemoteModulesAreCachedAChangedRefNeedsInitUpgradeSubtopic) },
+      { path: 'the-double-slash-marks-where-the-package-ends', loadComponent: () => import('./components/cloud/terraform/modules/subtopics/the-double-slash-marks-where-the-package-ends/the-double-slash-marks-where-the-package-ends').then(m => m.TheDoubleSlashMarksWhereThePackageEndsSubtopic) },
+    ] },
     { path: 'module-patterns', loadComponent: () => import('./components/cloud/terraform/module-patterns/module-patterns').then(m => m.TfModulePatterns) },
     { path: 'provisioners',    loadComponent: () => import('./components/cloud/terraform/provisioners/provisioners').then(m => m.TfProvisioners) },
     { path: 'import',          loadComponent: () => import('./components/cloud/terraform/import/import').then(m => m.TfImport) },

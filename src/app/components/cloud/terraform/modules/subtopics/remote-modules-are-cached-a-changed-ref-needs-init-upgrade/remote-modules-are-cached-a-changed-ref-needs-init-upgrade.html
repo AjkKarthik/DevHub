@@ -1,0 +1,27 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Modules" topicRoute="/terraform/modules" subtopicLabel="Remote Modules Are Cached — a Changed ref Needs init -upgrade" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Remote Modules Are Cached</h1>
+  <p class="page-subtitle">The main page names both init and terraform get without mentioning the on-disk module cache that makes a plain re-run insufficient when a ref changes.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This explains the caching behavior behind the main page's own init/get advice. Next: what the double slash in a module source address actually marks.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Modules" topicRoute="/terraform/modules"
+    [prev]="{ label: 'version Is a Registry-Only Argument, Not a General Pin', route: '/terraform/modules/version-is-a-registry-only-argument-not-a-general-pin' }"
+    [next]="{ label: 'The Double Slash Marks Where the Package Ends', route: '/terraform/modules/the-double-slash-marks-where-the-package-ends' }" />
+</div>

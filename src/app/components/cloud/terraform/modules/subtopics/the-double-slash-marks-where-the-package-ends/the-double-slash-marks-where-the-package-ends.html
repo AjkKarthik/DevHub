@@ -1,0 +1,26 @@
+<div class="tf-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Modules" topicRoute="/terraform/modules" subtopicLabel="The Double Slash Marks Where the Package Ends" />
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">The Double Slash Marks Where the Package Ends</h1>
+  <p class="page-subtitle">The main page uses // in two module source examples and never explains it — it separates the package Terraform fetches from the subdirectory inside it where the module lives.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Terraform (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="tf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="tf-section">
+    <h2>Where this fits</h2>
+    <p>This explains a piece of syntax the main page's own examples use without comment — and the ordering rule that makes module monorepos work.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Modules" topicRoute="/terraform/modules"
+    [prev]="{ label: 'Remote Modules Are Cached — a Changed ref Needs init -upgrade', route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' }" />
+</div>

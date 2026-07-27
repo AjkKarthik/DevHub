@@ -40831,6 +40831,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Deeply nested module hierarchies (modules calling modules calling modules) can make understanding the actual resulting infrastructure harder to trace.',
     ],
   },
+  'terraform/modules/version-is-a-registry-only-argument-not-a-general-pin': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Modules',                                                route: '/terraform/modules' },
+      { label: 'Remote Modules Are Cached',                              route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' },
+    ],
+    tip: 'The version argument only works for registry sources — a registry is a versioned catalog a constraint can resolve against. Git sources pin via ?ref= in the source address; local paths have no version concept at all.',
+    gotchas: [
+      '.terraform.lock.hcl locks PROVIDER versions, not module versions — it is not a fallback pin for an unpinned module.',
+    ],
+  },
+  'terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'version Is a Registry-Only Argument, Not a General Pin',  route: '/terraform/modules/version-is-a-registry-only-argument-not-a-general-pin' },
+      { label: 'The Double Slash Marks Where the Package Ends',           route: '/terraform/modules/the-double-slash-marks-where-the-package-ends' },
+    ],
+    tip: 'Remote modules are downloaded once into .terraform/modules and read from that cache afterwards — a changed ?ref= is not guaranteed to take effect on a plain init. terraform init -upgrade forces a genuine re-fetch.',
+    gotchas: [
+      'A mutable branch ref makes this hardest to spot: the config text never changes when the module updates upstream, so nothing prompts a re-init.',
+    ],
+  },
+  'terraform/modules/the-double-slash-marks-where-the-package-ends': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Remote Modules Are Cached',                              route: '/terraform/modules/remote-modules-are-cached-a-changed-ref-needs-init-upgrade' },
+      { label: 'Modules',                                                route: '/terraform/modules' },
+    ],
+    tip: 'The // separates the PACKAGE Terraform fetches (the whole repo) from the SUBDIRECTORY inside it where the module lives — a single slash makes Terraform read the whole string as the repository address instead.',
+    gotchas: [
+      'Ordering is fixed: the subdirectory comes BEFORE query arguments like ?ref=, since those belong to the package address as a whole.',
+    ],
+  },
   'terraform/module-patterns': {
     apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
     related: [
