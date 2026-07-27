@@ -5710,7 +5710,29 @@ off here with a date.
   misconceptions/prev-next nav all verified via `get_page_text`, dark mode confirmed rendering the
   correct purple accent.
   **Terraform hub Phase 10: 18 of 21 topics complete.**
-- [ ] `/terraform/drift` — Drift Detection
+- [x] `/terraform/drift` — Drift Detection (2026-07-28) — 3 subtopics: (1) **-refresh=false and
+  -refresh-only Do Near-Opposite Things**, flagging a genuine naming-collision risk in the main
+  page's own quick reference (both flags share "refresh" and sit one line apart) — verified that
+  `-refresh-only` performs a full refresh specifically to detect drift while `-refresh=false` skips
+  refresh entirely and trusts stale state, and that mixing them up produces a false "no changes"
+  plan that only breaks later, at apply time; (2) **ignore_changes Does Not Refresh a Stale Value —
+  It Just Stops Future Diffs**, filling in what the main page's Option 3 drift response never
+  addresses — verified that adding `ignore_changes` never triggers a refresh or captures the
+  current real value into state, so pre-existing drift on that attribute stays permanently stale
+  in state (and any downstream reader of `terraform show`/remote state) unless `apply -refresh-only`
+  is run first; (3) **TFC Health Assessments Are Read-Only — They Never Write to State**, closing
+  out the main page's brief "Terraform Cloud drift detection" mention — verified that scheduled
+  health assessments only detect and report drift, never apply or write to state, so the same drift
+  is reported again on every subsequent scheduled run until a human manually remediates it. Gotcha
+  sweep (backtick parity 4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`,
+  over-escaped `\"`, literal-double-quote-in-label all none, zero actual backslash characters in
+  any `.html` file) clean on the first pass. Confirmed bare `drift` key collision-free before
+  adding — left as a bare key. Build passed clean on the first attempt. Browser-verified
+  successfully: toggle count and accordion links confirmed via direct DOM query, a subtopic page's
+  full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/next nav
+  (correctly no prev on the first subtopic) all verified via `get_page_text`, dark mode confirmed
+  rendering the correct purple accent.
+  **Terraform hub Phase 10: 19 of 21 topics complete.**
 - [ ] `/terraform/refactoring` — Refactoring Terraform
 - [ ] `/terraform/opentofu` — OpenTofu
 

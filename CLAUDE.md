@@ -2127,22 +2127,22 @@ this same check before any other new hub's first subtopic set:
   All 23 cards `available: true` in `cloud/terraform/home/home.ts`. Progress: `tfTotal=21` in progress.service.ts.
   Terraform pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. TerraformNavComponent at `shared/terraform-nav/terraform-nav.ts`.
-  Phase 10: 18 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
+  Phase 10: 19 of 21 topics have subtopics (`/terraform/fundamentals`, `/terraform/providers`,
   `/terraform/variables`, `/terraform/outputs`, `/terraform/resources`, `/terraform/data-sources`,
   `/terraform/expressions`, `/terraform/functions`, `/terraform/state`,
   `/terraform/remote-backends`, `/terraform/workspaces`, `/terraform/modules`,
   `/terraform/module-patterns`, `/terraform/provisioners`, `/terraform/import`, `/terraform/cicd`,
-  `/terraform/testing`, `/terraform/security`, 2026-07-28) — see "Terraform hub subtopic wiring"
-  section below for the `TerraformNavComponent` accordion structural fix and the `tf-fundamentals`
-  SUBTOPICS-map collision resolution (`providers`, `variables`, `outputs`, `resources`,
-  `data-sources`, `expressions`, `state`, `remote-backends`, `workspaces`, `module-patterns`,
-  `provisioners`, `import`, and `cicd` were all collision-free, left as bare keys; `modules`
-  collided with the TypeScript hub's own bare key — Go already uses `go-modules` — and was
-  hub-prefixed to `tf-modules`; `functions` collided with the JavaScript hub's own bare key and was
-  hub-prefixed to `tf-functions`; `testing` collided with Angular's own bare key — Go already uses
-  `go-testing` — and was hub-prefixed to `tf-testing`; `security` collided with SQL's own bare key
-  and was hub-prefixed to `tf-security`). **The `data-sources` batch caught a real
-  over-escaped-double-quote bug** (`\"`
+  `/terraform/testing`, `/terraform/security`, `/terraform/drift`, 2026-07-28) — see "Terraform hub
+  subtopic wiring" section below for the `TerraformNavComponent` accordion structural fix and the
+  `tf-fundamentals` SUBTOPICS-map collision resolution (`providers`, `variables`, `outputs`,
+  `resources`, `data-sources`, `expressions`, `state`, `remote-backends`, `workspaces`,
+  `module-patterns`, `provisioners`, `import`, `cicd`, and `drift` were all collision-free, left as
+  bare keys; `modules` collided with the TypeScript hub's own bare key — Go already uses
+  `go-modules` — and was hub-prefixed to `tf-modules`; `functions` collided with the JavaScript
+  hub's own bare key and was hub-prefixed to `tf-functions`; `testing` collided with Angular's own
+  bare key — Go already uses `go-testing` — and was hub-prefixed to `tf-testing`; `security`
+  collided with SQL's own bare key and was hub-prefixed to `tf-security`). **The `data-sources`
+  batch caught a real over-escaped-double-quote bug** (`\"`
   inside a single-quoted TS field, not the backtick-delimited `code:` context where that escaping is
   correct) during the standing gotcha sweep, before it reached the build. **The `state` batch caught
   a stray invalid property accidentally left in a TheoryPoint object during authoring** (a leftover
