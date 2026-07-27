@@ -5763,7 +5763,34 @@ off here with a date.
   misconceptions/prev-next nav all verified via `get_page_text` (including the fixed braces
   rendering correctly), dark mode confirmed rendering the correct purple accent.
   **Terraform hub Phase 10: 20 of 21 topics complete.**
-- [ ] `/terraform/opentofu` — OpenTofu
+- [x] `/terraform/opentofu` — OpenTofu (2026-07-28) — 3 subtopics: (1) **Key Rotation Needs the
+  fallback Method, Not Just a Swapped Key**, filling the operational gap in the main page's own
+  single-static-key encryption example — verified via OpenTofu's own encryption docs that a naive
+  key swap fails against already-encrypted state, and that safe rotation is a three-phase process
+  (new key primary + old key as `fallback`, force re-encryption via `apply -refresh-only`, then
+  remove the fallback), with writes always using the primary method only, never the fallback; (2)
+  **BSL Has a Four-Year Change Date That Converts to MPL Automatically**, correcting the
+  "permanently closed-source" reading the main page's "BSL 1.1 restricts use in competing
+  products" framing invites — verified that BSL 1.1 includes a Change Date clause converting each
+  Terraform release to MPL 2.0 automatically four years after ITS OWN release date, per release,
+  not on one shared date for the whole project; (3) **remote_state Data Source Needs Its Own
+  Encryption Config Too**, closing a real cross-project gap the main page's single-project
+  encryption example never addresses — verified that a consuming project reading another
+  project's encrypted state via `terraform_remote_state` does not inherit that encryption
+  automatically and needs its own `remote_state_data_source` block to decrypt it. Gotcha sweep
+  (backtick parity 2/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`,
+  over-escaped `\"`, literal-double-quote-in-label all none, zero actual backslash characters in
+  any `.html` file, and — per the new standing check added after the last batch's real bug — a
+  dedicated bare-brace-in-prose sweep confirmed the only `{` hits across all three `.html` files
+  were safely inside bound `[prev]=`/`[next]=` attributes, none in bare text) clean on the first
+  pass, avoiding a repeat of the Refactoring batch's NG5002 error. Found no `SUBTOPICS`-map
+  bare-key collision for `opentofu` — left as a bare key. Build passed clean on the first attempt.
+  Browser-verified successfully: toggle count and accordion links confirmed via direct DOM query, a
+  full hub-wide toggle-count check confirmed exactly 21 `.nav-subtopics-toggle` buttons now render
+  (one per topic, matching Phase 10 completion), a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via
+  `get_page_text`, dark mode confirmed rendering the correct purple accent.
+  **Terraform hub Phase 10: COMPLETE — 21 of 21 topics have subtopics (63 subtopic pages total).**
 
 #### Service Mesh — 19 topic pages
 
