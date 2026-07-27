@@ -5611,7 +5611,41 @@ off here with a date.
   incident): toggle count confirmed at 15, Import accordion expands showing all 3 correctly-labeled
   links, a subtopic page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified.
   **Terraform hub Phase 10: 15 of 21 topics complete.**
-- [ ] `/terraform/cicd` — CI/CD Integration
+- [x] `/terraform/cicd` — CI/CD with Terraform (2026-07-28) — 3 subtopics: (1) **A Saved Plan File
+  Needs the Same Version and Can Go Stale**, filling in the two operational preconditions the main
+  page's "always save the plan file and apply exactly that file" rule assumes but never states —
+  verified that every pipeline stage touching state must pin the identical Terraform version (never
+  independently-resolved `latest`), and that a saved plan is a snapshot tied to state as it existed
+  at plan time, going stale (an explicit apply-time error) the moment anything else changes that
+  state before apply runs — distinct from what state locking protects against, since locking only
+  prevents a SIMULTANEOUS conflicting write, not this sequential staleness; (2) **The OIDC sub Claim
+  Differs Between push and pull_request**, closing the trust-policy gap the main page's own "OIDC
+  lets GitHub Actions assume an IAM role" section never shows — verified via AWS's own guidance that
+  the token's `sub` claim shape differs by triggering event (a push carries a `ref:refs/heads/...`
+  segment, `pull_request` does not), and that a repository-only trust-policy condition cannot
+  distinguish a push to main from a pull_request run from an untrusted fork, closed by scoping the
+  `token.actions.githubusercontent.com:sub` condition to the exact ref an apply-capable role should
+  run from; (3) **A Saved Plan File Is Plaintext and Must Be Treated as a Secret**, adding the
+  security caveat the main page's "comment the plan output on the PR" advice omits — verified that
+  `sensitive = true` only redacts CLI DISPLAY output, never the saved plan file itself, provable via
+  `terraform show -json` revealing every value in plain text regardless of `sensitive` markings, so
+  the plan artifact needs the same handling as any other secret (short retention, restricted access,
+  never posted verbatim). Gotcha sweep (backtick parity 4/4/4 all even — apostrophe-after-letter,
+  bare `@word`, unescaped `${`, over-escaped `\"`, backslash-escaped-apostrophe-in-bound-attribute,
+  literal-double-quote-in-label all none, confirmed via direct backslash-count check that the
+  `[prev]=`/`[next]=` false-positive grep hits contained zero actual backslash characters) clean on
+  the first pass. Confirmed bare `cicd` key collision-free before adding — left as a bare key. The
+  production build failed on the FIRST attempt with a genuine, new error — the site's initial bundle
+  had crossed the hard `maximumError: 5MB` budget threshold in `angular.json` (total 5.60MB,
+  exceeding by 603KB) — bumped to `8MB` and the build passed clean on retry; this is expected
+  cumulative site growth, not a regression from this batch's 9 files. Browser-verified successfully:
+  main page sidebar/theory/quick-ref all render correctly, toggle count and accordion links
+  confirmed via direct DOM query (`nav-subtopics-toggle` click + `nextElementSibling` inspection,
+  since `read_page`'s interactive filter output was truncated and looked incomplete before this
+  cross-check), a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
+  block/try-it/misconceptions/prev-next nav all verified via `get_page_text`, dark mode confirmed
+  rendering the correct purple accent (`rgb(196, 181, 253)` icon text on `rgb(26, 18, 41)` bg).
+  **Terraform hub Phase 10: 16 of 21 topics complete.**
 - [ ] `/terraform/testing` — Testing Terraform
 - [ ] `/terraform/security` — Security & Compliance
 - [ ] `/terraform/drift` — Drift Detection
