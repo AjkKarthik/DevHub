@@ -5507,7 +5507,35 @@ off here with a date.
   confirmed at 11, the Workspaces accordion expands showing all 3 correctly-labeled links, and a
   subtopic page's h1/breadcrumb/theory confirmed rendering correctly.
   **Terraform hub Phase 10: 11 of 21 topics complete.**
-- [ ] `/terraform/modules` — Modules
+- [x] `/terraform/modules` — Modules (2026-07-27) — 3 subtopics, chosen to avoid overlapping the
+  `configuration_aliases` angle already covered by the `/terraform/providers` batch: (1) **version Is
+  a Registry-Only Argument, Not a General Pin**, sharpening a one-clause restriction the main page's
+  own "always pin with version" mistake entry can easily overwrite — verified via HashiCorp's own
+  module-block docs that `version` is valid only for registry sources (Terraform errors rather than
+  silently ignoring it elsewhere), that Git sources pin via `?ref=` with tags/SHAs being real pins
+  while branch refs only look like one, that local paths have no version concept, and that
+  `.terraform.lock.hcl` locks providers not modules; (2) **Remote Modules Are Cached**, explaining
+  the on-disk caching behind the main page's own init/`terraform get` advice — verified via multiple
+  long-standing hashicorp/terraform issues that remote modules land in `.terraform/modules` and a
+  plain `init` can reuse a stale copy after a `?ref=` change, with `init -upgrade` the reliable fix
+  (preferred over `get -update` in CI since it covers providers too), and that a mutable branch ref
+  makes the staleness hardest to notice since the config text never changes; (3) **The Double Slash
+  Marks Where the Package Ends**, explaining syntax the main page uses in two examples without
+  comment — verified that `//` separates the fetched PACKAGE from the SUBDIRECTORY within it, that a
+  single slash makes Terraform read the whole string as the repo address, that the subdirectory must
+  precede `?ref=` arguments, and that the whole package is fetched regardless of subdirectory.
+  **Real SUBTOPICS-map collision hit**: bare `modules` is already claimed by TypeScript's own
+  `/typescript/modules` (Go uses `go-modules`) — hub-prefixed to `tf-modules`, with all three nav
+  accordion helper calls using the prefixed key; browser-confirmed zero TypeScript-subtopic leakage
+  into the Terraform accordion. Gotcha sweep (backtick parity 24/22/22 all even — bare `@word`,
+  `${`, over-escaped double-quote, literal-double-quote-in-label, bare-brace-in-html all none —
+  apostrophes all inside backtick code blocks) clean on the first pass. Build reported only the
+  pre-documented harmless bundle-budget warning, zero compile errors (notably no TS1117, confirming
+  the prefix resolved the collision). **The dev server died mid-verification and was restarted**
+  (new serverId, ~70s cold build) — not a stale-chunk incident; after restart, toggle count
+  confirmed at 12, Modules accordion expands showing all 3 correctly-labeled links, and a subtopic
+  page's h1/breadcrumb (all 4 levels)/tailored sidebar all verified, with `//` rendering literally.
+  **Terraform hub Phase 10: 12 of 21 topics complete.**
 - [ ] `/terraform/module-patterns` — Module Patterns
 - [ ] `/terraform/provisioners` — Provisioners
 - [ ] `/terraform/import` — Import & Generated Config
