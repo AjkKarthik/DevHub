@@ -5908,7 +5908,34 @@ off here with a date.
   breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all
   verified via `get_page_text`, dark mode confirmed rendering the correct blue accent.
   **Service Mesh hub Phase 10: 4 of 19 topics complete.**
-- [ ] `/service-mesh/linkerd` — Linkerd
+- [x] `/service-mesh/linkerd` — Linkerd (2026-07-28) — 3 subtopics: (1) **TrafficSplit Cannot Be
+  Self-Referential — apex Needs Its Own Name**, catching and fixing a REAL inaccuracy in the main
+  page's own TrafficSplit example (both the "Traffic Split (Canary)" codeTab and the Challenge's
+  starterCode/solution set `spec.service: myapp`/`checkout` AND listed the identical name as one
+  of the backends) — verified directly against the SMI TrafficSplit specification's own text,
+  which explicitly names and prohibits this exact "self-referential" pattern; fixed the main page
+  to use distinct backend names (`myapp-stable`/`checkout-stable`) and wrote a subtopic explaining
+  the rule and the correct three-Service pattern; (2) **Circuit Breaking Exists — It Needs an
+  Explicit failure-accrual Annotation**, correcting the main page's "relies on EWMA instead"
+  framing, which reads as "no dedicated mechanism exists" — verified via Linkerd's own circuit-
+  breaking reference docs that Linkerd has genuine failure-accrual circuit breaking (automatic
+  endpoint ejection + recovery probing), just gated behind an explicit
+  `balancer.linkerd.io/failure-accrual` Service annotation rather than on by default, while EWMA
+  load balancing alone never ejects a failing endpoint; (3) **external-issuer Alone Leaves the
+  Self-Generated Trust Anchor in Place**, closing a gap in the main page's cert-manager fix —
+  verified that `--identity-external-issuer` only externalizes the issuer cert, while Linkerd's
+  own long-lived, unrotated trust anchor (root CA) remains self-generated unless
+  `--identity-trust-anchors-file` is ALSO provided at install time. Gotcha sweep (backtick parity
+  4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, zero actual backslash characters in any `.html` file)
+  clean on the first pass. Confirmed bare `linkerd` key collision-free before adding — left as a
+  bare key. Build passed clean on the first attempt, including the main-page TrafficSplit fix.
+  Browser-verified successfully: the corrected Challenge description renders the fixed
+  "checkout-stable" requirement text, toggle count and accordion links confirmed via direct DOM
+  query, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
+  block/try-it/misconceptions/next nav (correctly no prev on the first subtopic) all verified via
+  `get_page_text`, dark mode confirmed rendering the correct blue accent.
+  **Service Mesh hub Phase 10: 5 of 19 topics complete.**
 - [ ] `/service-mesh/traffic-management` — Traffic Management
 - [ ] `/service-mesh/resilience` — Resilience Patterns
 - [ ] `/service-mesh/load-balancing` — Load Balancing

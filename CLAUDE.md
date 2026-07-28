@@ -1945,6 +1945,20 @@ do this same check before any other new hub's first subtopic set:
    batch (see gotcha item there) — confirms this specific mixing mistake recurs across hubs and is
    worth a dedicated look (comparing backtick usage against `<code>` usage within the same sentence)
    on any future subtopic batch, not just a one-off.
+8. **The `/service-mesh/linkerd` batch found and fixed a genuine main-page inaccuracy**: the
+   original "Traffic Split (Canary)" `codeTab` and the Challenge's own `starterCode`/`solution`
+   ALL set `spec.service: myapp` (or `checkout`) and ALSO listed the identical name as one of
+   `spec.backends` — a self-referential TrafficSplit. Verified directly against the SMI
+   TrafficSplit specification's own text, which explicitly names and prohibits this exact pattern
+   ("TrafficSplits cannot be self-referential"), reasoning that a backend sharing the apex's name
+   becomes an ambiguous superset of multiple pod versions, making routing hard to reason about.
+   Fixed by renaming the stable backend to `myapp-stable`/`checkout-stable` in every occurrence
+   (codeTab, Challenge starterCode, Challenge solution, plus the Challenge's own hints/description
+   text) — confirmed via grep that no `service: myapp`/`service: checkout` self-reference remained
+   anywhere in the file before building. This follows the same "verify claims, fix real
+   inaccuracies found during subtopic authoring" precedent established across many prior hubs
+   (Blazor, Containers/K8s, AWS, Azure) — always check a main page's own code samples against the
+   authoritative spec for the technology being demonstrated, not just prose claims.
 
 ## Current state (update when it changes!)
 
@@ -2230,12 +2244,15 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 4 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 5 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
-  2026-07-28) — see "Service Mesh hub subtopic wiring" section below for the `MeshNavComponent`
-  accordion structural fix and the `mesh-fundamentals` SUBTOPICS-map collision resolution
-  (`istio-architecture`, `istio-install`, and `envoy` were all collision-free, left as bare
-  keys).
+  `/service-mesh/linkerd`, 2026-07-28) — see "Service Mesh hub subtopic wiring" section below for
+  the `MeshNavComponent` accordion structural fix and the `mesh-fundamentals` SUBTOPICS-map
+  collision resolution (`istio-architecture`, `istio-install`, `envoy`, and `linkerd` were all
+  collision-free, left as bare keys). **The `linkerd` batch found and fixed a real inaccuracy on
+  the main page itself** — a self-referential SMI TrafficSplit example (apex and one backend
+  sharing the same service name), explicitly prohibited by the SMI spec — see "Service Mesh hub
+  subtopic wiring" section below for details.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.
