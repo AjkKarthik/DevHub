@@ -6000,7 +6000,30 @@ off here with a date.
   the 860px `.mesh-page` wrapper cap confirmed via `getComputedStyle`, dark mode class applied
   without errors.
   **Service Mesh hub Phase 10: 7 of 19 topics complete.**
-- [ ] `/service-mesh/load-balancing` — Load Balancing
+- [x] `/service-mesh/load-balancing` — Load Balancing (2026-07-28) — 3 subtopics: (1)
+  **warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%**, correcting a genuine inaccuracy
+  in the main page's own quiz explanation (claimed "~0%") — verified via WebFetch against Envoy's
+  own SlowStartConfig spec that min_weight_percent defaults to 10%, and that the ramp shape
+  itself (aggression=1.0, "linearly increasing") was already correctly described; (2)
+  **consistentHash Defaults to Ring Hash With a 1024-Node Ring**, closing a gap where the main
+  page never named an algorithm behind consistentHash — verified DestinationRule's
+  ConsistentHashLB defaults to RING_HASH (with maglev also natively available, no EnvoyFilter
+  needed for either) with a 1024-node minimumRingSize, directly explaining the main page's
+  "~1/N remapping" claim and why its precision degrades as pod count grows large relative to
+  the ring; (3) **Active Health Checks Have No Native DestinationRule Field**, correcting a
+  genuine inaccuracy in the main page's theory AND QnA (both named a non-existent
+  `trafficPolicy.healthCheck` field) — verified against Istio's own API reference that
+  TrafficPolicy has exactly 8 fields, none named healthCheck, and active health checks are
+  reachable ONLY via an EnvoyFilter patching the cluster's raw `health_checks` field. Gotcha
+  sweep (backtick parity 4/6/4 all even, apostrophe-after-letter/bare `@word`/unescaped
+  `${`/over-escaped `\"` all clean) passed on the first pass. Confirmed a real `load-balancing`
+  bare-key collision with the AWS hub's own topic before adding — hub-prefixed to
+  `mesh-load-balancing`. Build passed clean on the first attempt. Browser-verified successfully:
+  toggle count (8, up from 7) and accordion links (all 3 subtopics) confirmed via direct DOM
+  query and click simulation, the corrected active-health-check theory bullet confirmed
+  rendering via `get_page_text` on the main page, a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
+  **Service Mesh hub Phase 10: 8 of 19 topics complete.**
 - [ ] `/service-mesh/mtls` — mTLS & Certificate Management
 - [ ] `/service-mesh/authorization` — Authorization Policy
 - [ ] `/service-mesh/metrics` — Metrics & Observability

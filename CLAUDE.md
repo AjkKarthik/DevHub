@@ -1993,6 +1993,28 @@ do this same check before any other new hub's first subtopic set:
     most recently-touched file in the batch. **Lesson: when this family of gotcha recurs, try a
     fresh write on the SPECIFIC file named in the error message first**, before touching
     `app.routes.ts` or a shared nav component — it is the more targeted and more reliable fix.
+11. **The `/service-mesh/load-balancing` batch found and fixed TWO more genuine main-page
+    inaccuracies, both involving a main page describing Envoy/Istio internals in slightly wrong
+    terms rather than being simply incomplete**: (a) the main page's theory AND its QnA both
+    stated active health checks are "configured via DestinationRule's `trafficPolicy.healthCheck`"
+    — verified directly against Istio's own DestinationRule API reference that `TrafficPolicy` has
+    exactly 8 fields (`loadBalancer`, `connectionPool`, `outlierDetection`, `tls`,
+    `portLevelSettings`, `tunnel`, `proxyProtocol`, `retryBudget`) and `healthCheck` is not one of
+    them — active health checks are reachable ONLY via an EnvoyFilter patching the generated
+    cluster's own `health_checks` field, with no Istio API wrapper at all; (b) the quiz explanation
+    for `warmupDurationSecs` claimed new pods ramp "from ~0% to their fair share" — verified via
+    WebFetch against Envoy's own `SlowStartConfig` proto spec that `min_weight_percent` defaults to
+    10%, not 0%, so a new pod receives real traffic from the very first moment it's eligible.
+    **Also confirmed a genuine collision** (`load-balancing` was already claimed by the AWS hub's
+    own topic) resolved by hub-prefixing to `mesh-load-balancing` — consistent with the
+    established pattern of checking both quoted and unquoted key forms before adding any new
+    hub-topic entry to the shared `SUBTOPICS` map. **Lesson for future WebFetch verification passes
+    on Istio/Envoy API surface claims**: when a main page names a specific nested field path
+    (`trafficPolicy.healthCheck`), verify the EXACT field list of the parent message via the
+    official API reference rather than just checking whether the general FEATURE (active health
+    checking) exists somewhere in Envoy — a real capability can still be mis-attributed to the
+    wrong config surface, which is a distinct and easy-to-miss category of inaccuracy from "this
+    feature doesn't exist at all."
 
 ## Current state (update when it changes!)
 
@@ -2278,20 +2300,23 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 7 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 8 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
-  2026-07-28) — see "Service Mesh hub
+  `/service-mesh/load-balancing`, 2026-07-28) — see "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
   `envoy`, `linkerd`, `traffic-management`, and `resilience` were all collision-free, left as bare
-  keys). **The `linkerd` batch found and fixed a real inaccuracy on the main page itself** — a
-  self-referential SMI TrafficSplit example (apex and one backend sharing the same service name),
-  explicitly prohibited by the SMI spec. **The `resilience` batch found and fixed THREE more real
-  inaccuracies** — a fault-injection/retries contradiction with the already-verified Traffic
-  Management subtopic, mislabeled "exponential" ejection-duration growth (actually linear), and a
-  wrong `minHealthPercent` default (claimed 50%, actually 0%) — see "Service Mesh hub subtopic
-  wiring" section below for details on both batches.
+  keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
+  `mesh-load-balancing`). **The `linkerd` batch found and fixed a real inaccuracy on the main page
+  itself** — a self-referential SMI TrafficSplit example (apex and one backend sharing the same
+  service name), explicitly prohibited by the SMI spec. **The `resilience` batch found and fixed
+  THREE more real inaccuracies** — a fault-injection/retries contradiction with the already-verified
+  Traffic Management subtopic, mislabeled "exponential" ejection-duration growth (actually linear),
+  and a wrong `minHealthPercent` default (claimed 50%, actually 0%). **The `load-balancing` batch
+  found and fixed TWO more** — a non-existent `trafficPolicy.healthCheck` field, and a
+  `warmupDurationSecs` quiz explanation claiming a "~0%" starting floor (actually 10%) — see
+  "Service Mesh hub subtopic wiring" section below for details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.
