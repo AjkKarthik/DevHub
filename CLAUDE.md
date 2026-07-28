@@ -2099,6 +2099,32 @@ do this same check before any other new hub's first subtopic set:
     initial compile time, confirmed via a `curl`-polling background Bash task rather than fixed
     `sleep` calls) — toggle count updated correctly (10→11) on the first browser check once the
     server was actually ready.
+15. **The `/service-mesh/tracing` batch found and fixed THREE separate issues on the main page,
+    including this hub's first FABRICATED CITATION**: (a) the QnA's "Prometheus Exemplars (RFC
+    4652)" attribution — RFC 4652 is a real, existing IETF document, but about a completely
+    unrelated topic; verified via WebSearch that Exemplars are actually specified by the
+    OpenMetrics spec, not any IETF RFC at all. This is a genuinely different failure mode from
+    every prior inaccuracy in this hub (wrong field, wrong default, backwards semantics) — the
+    described BEHAVIOR was accurate, only the claimed SOURCE was fabricated, which means
+    verifying "does this sound plausible" isn't enough; a citation needs its own dedicated check
+    of whether the cited source actually exists and says what it's claimed to. (b) "Istio 1.16+
+    supports OpenTelemetry as a first-class tracing provider" — verified by checking whether the
+    OpenTelemetry tracing-provider task page exists in Istio's own archived docs for each
+    version: 404 at v1.16, v1.18, v1.20, and v1.21, first appearing at v1.22 — corrected the
+    main page's version claim accordingly. **New verification technique documented**: checking
+    whether `istio.io/vX.YY/docs/...` resolves for a specific archived version is a fast, direct
+    way to bound when a documented feature was introduced, more reliable than trusting a
+    remembered/assumed version number. (c) The main page's own "Enable Tracing" code example
+    configured BOTH `meshConfig.defaultConfig.tracing.sampling` AND the Telemetry API's
+    `randomSamplingPercentage` simultaneously without ever stating which wins if they disagree —
+    verified via WebSearch that the Telemetry API always takes precedence, a real gap since the
+    main page's own example never surfaces this ambiguity (the two values happened to match in
+    the example, hiding the issue). Confirmed `tracing` collision-free in the SUBTOPICS map. No
+    stale-dev-server incident — toggle count updated correctly (11→12) on the first browser
+    check. Verifying the QnA fix required actually clicking into the specific collapsed QnA
+    question (not just the outer accordion toggle) before its text appeared in the DOM for a
+    `get_page_text`/text-search check — the outer "Interview Q&A" toggle alone only reveals the
+    question LIST, not each answer's own body text.
 
 ## Current state (update when it changes!)
 
@@ -2384,34 +2410,40 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 11 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 12 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
-  `/service-mesh/metrics`, 2026-07-28) — see "Service Mesh hub
+  `/service-mesh/metrics`, `/service-mesh/tracing`, 2026-07-28) — see "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
-  `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, and `metrics`
-  were all collision-free, left as bare keys; `load-balancing` collided with the AWS hub's own
-  topic and was hub-prefixed to `mesh-load-balancing`). **The `linkerd` batch found and fixed a
-  real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example (apex
-  and one backend sharing the same service name), explicitly prohibited by the SMI spec. **The
-  `resilience` batch found and fixed THREE more real inaccuracies** — a fault-injection/retries
-  contradiction with the already-verified Traffic Management subtopic, mislabeled "exponential"
-  ejection-duration growth (actually linear), and a wrong `minHealthPercent` default (claimed
-  50%, actually 0%). **The `load-balancing` batch found and fixed TWO more** — a non-existent
-  `trafficPolicy.healthCheck` field, and a `warmupDurationSecs` quiz explanation claiming a "~0%"
-  starting floor (actually 10%). **The `mtls` batch found and fixed a genuine self-contradicting
-  inaccuracy** (the page used both `cacerts` and the outdated `istio-ca-secret` for the SAME CA
-  secret in different spots) plus tightened an imprecise "probes bypass Envoy because they come
-  from the kubelet" claim to state the actual rewrite-to-port-15020 mechanism. **The
-  `authorization` batch found and fixed a genuine inaccuracy where the main page's own mistakes
-  block had DENY/ALLOW's empty-rules semantics exactly backwards**, directly contradicting the
-  same page's own (correct) QnA elsewhere. **The `metrics` batch found and fixed a genuine
-  inaccuracy where all four Grafana dashboard IDs were mismatched with their actual names**
-  (verified against grafana.com), plus tightened the Telemetry API's "additive and composable"
-  scope-hierarchy phrasing to state its actual complete-field-replacement behavior — see "Service
-  Mesh hub subtopic wiring" section below for details on all batches.
+  `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`, and
+  `tracing` were all collision-free, left as bare keys; `load-balancing` collided with the AWS
+  hub's own topic and was hub-prefixed to `mesh-load-balancing`). **The `linkerd` batch found and
+  fixed a real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example
+  (apex and one backend sharing the same service name), explicitly prohibited by the SMI spec.
+  **The `resilience` batch found and fixed THREE more real inaccuracies** — a fault-injection/
+  retries contradiction with the already-verified Traffic Management subtopic, mislabeled
+  "exponential" ejection-duration growth (actually linear), and a wrong `minHealthPercent`
+  default (claimed 50%, actually 0%). **The `load-balancing` batch found and fixed TWO more** —
+  a non-existent `trafficPolicy.healthCheck` field, and a `warmupDurationSecs` quiz explanation
+  claiming a "~0%" starting floor (actually 10%). **The `mtls` batch found and fixed a genuine
+  self-contradicting inaccuracy** (the page used both `cacerts` and the outdated
+  `istio-ca-secret` for the SAME CA secret in different spots) plus tightened an imprecise
+  "probes bypass Envoy because they come from the kubelet" claim to state the actual
+  rewrite-to-port-15020 mechanism. **The `authorization` batch found and fixed a genuine
+  inaccuracy where the main page's own mistakes block had DENY/ALLOW's empty-rules semantics
+  exactly backwards**, directly contradicting the same page's own (correct) QnA elsewhere. **The
+  `metrics` batch found and fixed a genuine inaccuracy where all four Grafana dashboard IDs were
+  mismatched with their actual names** (verified against grafana.com), plus tightened the
+  Telemetry API's "additive and composable" scope-hierarchy phrasing to state its actual
+  complete-field-replacement behavior. **The `tracing` batch found and fixed THREE issues,
+  including this hub's first fabricated citation** — a "Prometheus Exemplars (RFC 4652)"
+  attribution where RFC 4652 is real but entirely unrelated (the actual source is the OpenMetrics
+  spec), an incorrect "Istio 1.16+" OpenTelemetry provider version claim (corrected to 1.22+,
+  verified via archived-docs 404s), and a sampling-precedence ambiguity the main page's own
+  example walked straight into — see "Service Mesh hub subtopic wiring" section below for
+  details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

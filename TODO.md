@@ -6101,7 +6101,27 @@ off here with a date.
   text search, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
   block/try-it/misconceptions/prev-next nav all verified via `get_page_text`.
   **Service Mesh hub Phase 10: 11 of 19 topics complete.**
-- [ ] `/service-mesh/tracing` — Distributed Tracing
+- [x] `/service-mesh/tracing` — Distributed Tracing (2026-07-28) — 3 subtopics: (1)
+  **Telemetry API Sampling Wins Over meshConfig When Both Are Set**, closing a real gap the main
+  page's own "Enable Tracing" example walks straight into — it configures BOTH
+  meshConfig.defaultConfig.tracing.sampling AND the Telemetry API's randomSamplingPercentage at
+  once without ever saying which wins if they disagree; verified via WebSearch the Telemetry API
+  always takes precedence; (2) **OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+**,
+  correcting a genuine version inaccuracy — verified by checking whether the OpenTelemetry
+  tracing-provider docs page resolves for each archived Istio version (404 at v1.16/v1.18/v1.20/
+  v1.21, first appearing at v1.22); (3) **Exemplars Are Defined by OpenMetrics, Not an IETF
+  RFC**, correcting this hub's first FABRICATED CITATION — the main page's QnA attributed
+  Prometheus Exemplars to "RFC 4652," a real IETF document but about a completely unrelated
+  topic; verified via WebSearch the actual source is the OpenMetrics specification. Gotcha sweep
+  (backtick parity 2/8/20 all even, apostrophe-after-letter/bare `@word`/unescaped
+  `${`/over-escaped `\"` all clean) passed on the first pass. Confirmed `tracing` bare-key
+  collision-free before adding. Build passed clean on the first attempt. Browser-verified
+  successfully: toggle count (12, up from 11) and accordion links confirmed via direct DOM
+  query, the corrected version claim confirmed via main-content text search, the corrected QnA
+  citation confirmed by clicking into the SPECIFIC collapsed QnA question (not just the outer
+  accordion toggle) before checking its answer text — a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
+  **Service Mesh hub Phase 10: 12 of 19 topics complete.**
 - [ ] `/service-mesh/kiali` — Kiali Service Graph
 - [ ] `/service-mesh/gateway-api` — Kubernetes Gateway API
 - [ ] `/service-mesh/ingress-gateway` — Ingress Gateway
