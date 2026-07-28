@@ -41381,6 +41381,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Istio adds meaningful operational complexity — running and correctly configuring it is itself a significant undertaking, appropriate at genuine microservices scale.',
     ],
   },
+  'service-mesh/istio-architecture/cert-rotation-overlaps-old-and-new-certs-to-avoid-handshake-failures': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Istio Architecture',                                                              route: '/service-mesh/istio-architecture' },
+      { label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic',              route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' },
+    ],
+    tip: 'Certificate rotation is not an atomic swap — the old cert stays valid for an overlap window after the new one is issued, so peers mid-rotation relative to each other still complete TLS handshakes normally. The same overlap principle applies to root CA migration.',
+    gotchas: [
+      'Root CA rotation without an overlap period (removing the old CA before every workload has rotated) recreates the exact handshake-failure risk the leaf-cert overlap prevents, at mesh-wide scale.',
+    ],
+  },
+  'service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures',        route: '/service-mesh/istio-architecture/cert-rotation-overlaps-old-and-new-certs-to-avoid-handshake-failures' },
+      { label: 'Live Traffic Surviving an Istiod Outage Has a Cert TTL Time Limit',            route: '/service-mesh/istio-architecture/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit' },
+    ],
+    tip: 'Sidecar CRD egress scoping reduces a proxy\'s xDS config size for memory efficiency — it is not an access-control mechanism. Traffic to an unscoped destination is still allowed by default, and omitting the ingress block leaves inbound traffic completely unaffected.',
+    gotchas: [
+      'Use AuthorizationPolicy (or an egress Gateway), not Sidecar CRD scoping, when the actual goal is restricting which services can call a workload.',
+    ],
+  },
+  'service-mesh/istio-architecture/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic', route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' },
+      { label: 'Istio Architecture',                                                 route: '/service-mesh/istio-architecture' },
+    ],
+    tip: '"Live traffic continues" during an Istiod outage is only true for a bounded window — certificate rotation also requires Istiod, so once a workload\'s cert reaches its TTL (default 24h) without rotating, its mTLS traffic starts failing too.',
+    gotchas: [
+      'Treat a prolonged Istiod outage as time-sensitive well before the cert TTL boundary, not just a blocked-deployments inconvenience to fix "eventually."',
+    ],
+  },
   'service-mesh/istio-install': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

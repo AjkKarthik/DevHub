@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Istio Architecture" topicRoute="/service-mesh/istio-architecture" subtopicLabel="Live Traffic Surviving an Istiod Outage Has a Cert TTL Time Limit" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Live Traffic Surviving an Istiod Outage Has a Cert TTL Time Limit</h1>
+  <p class="page-subtitle">The main page says live traffic continues if Istiod goes down — true, but only for a bounded window tied to certificate rotation, which also requires Istiod.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the main page's Istiod-failure framing with the real deadline hiding behind "live traffic continues."</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Istio Architecture" topicRoute="/service-mesh/istio-architecture"
+    [prev]="{ label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic', route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' }" />
+</div>

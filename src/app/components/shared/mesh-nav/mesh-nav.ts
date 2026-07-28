@@ -46,7 +46,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Istio</p>
-      <a routerLink="/service-mesh/istio-architecture" routerLinkActive="active"><span class="nl-text">Istio Architecture</span>@if(p.isDone('mesh-istio-architecture')){<span class="nl-done">✓</span>}@if(d('mesh-istio-architecture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/istio-architecture" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Istio Architecture</span>
+        @if(p.isDone('mesh-istio-architecture')){<span class="nl-done">✓</span>}
+        @if(d('mesh-istio-architecture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('istio-architecture')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('istio-architecture')"
+                  (click)="toggleSubtopics('istio-architecture', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('istio-architecture'); as istioArchSubs) {
+        @if (isSubtopicsExpanded('istio-architecture')) {
+          <div class="nav-subtopics">
+            @for (s of istioArchSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/service-mesh/istio-install" routerLinkActive="active"><span class="nl-text">Istio Install &amp; Config</span>@if(p.isDone('mesh-istio-install')){<span class="nl-done">✓</span>}@if(d('mesh-istio-install');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/service-mesh/envoy" routerLinkActive="active"><span class="nl-text">Envoy Proxy Deep Dive</span>@if(p.isDone('mesh-envoy')){<span class="nl-done">✓</span>}@if(d('mesh-envoy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Istio Architecture" topicRoute="/service-mesh/istio-architecture" subtopicLabel="Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures</h1>
+  <p class="page-subtitle">The main page says rotation happens automatically at 80% of TTL — it never says the old cert stays valid alongside the new one, which is what actually prevents handshake failures mid-rotation.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's certificate rotation QnA its missing safety mechanism. Next: why scoping a Sidecar CRD's egress does not automatically restrict inbound traffic too.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Istio Architecture" topicRoute="/service-mesh/istio-architecture"
+    [next]="{ label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic', route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' }" />
+</div>

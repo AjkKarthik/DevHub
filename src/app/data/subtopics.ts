@@ -2890,4 +2890,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'xDS Updates Need Make-Before-Break Ordering, or Traffic Black-Holes', route: '/service-mesh/fundamentals/xds-updates-need-make-before-break-ordering-or-traffic-black-holes' },
     { label: 'A VirtualService Subset Missing From DestinationRule Returns 503', route: '/service-mesh/fundamentals/a-virtualservice-subset-missing-from-destinationrule-returns-503' },
   ],
+  // NOTE: 'istio-architecture' confirmed collision-free (quoted and unquoted) across the whole file.
+  'istio-architecture': [
+    { label: 'Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures', route: '/service-mesh/istio-architecture/cert-rotation-overlaps-old-and-new-certs-to-avoid-handshake-failures' },
+    { label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic', route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' },
+    { label: 'Live Traffic Surviving an Istiod Outage Has a Cert TTL Time Limit', route: '/service-mesh/istio-architecture/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit' },
+  ],
 };
