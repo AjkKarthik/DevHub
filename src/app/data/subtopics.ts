@@ -2896,4 +2896,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sidecar CRD Scoping Egress Does Not Block Unmatched Inbound Traffic', route: '/service-mesh/istio-architecture/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic' },
     { label: 'Live Traffic Surviving an Istiod Outage Has a Cert TTL Time Limit', route: '/service-mesh/istio-architecture/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit' },
   ],
+  // NOTE: 'istio-install' confirmed collision-free (quoted and unquoted) across the whole file.
+  'istio-install': [
+    { label: 'Both Injection Labels Present: istio-injection Silently Wins', route: '/service-mesh/istio-install/both-injection-labels-present-istio-injection-silently-wins' },
+    { label: 'uninstall --purge Does Not Reliably Remove Every Webhook', route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' },
+    { label: 'Revision Uninstall Checks Active Proxies, Not Namespace Labels', route: '/service-mesh/istio-install/revision-uninstall-checks-active-proxies-not-namespace-labels' },
+  ],
 };

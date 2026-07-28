@@ -3675,7 +3675,12 @@ export const routes: Routes = [
       { path: 'sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic', loadComponent: () => import('./components/cloud/service-mesh/istio-architecture/subtopics/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic/sidecar-crd-scoping-egress-does-not-block-unmatched-inbound-traffic').then(m => m.SidecarCrdScopingEgressDoesNotBlockUnmatchedInboundTrafficSubtopic) },
       { path: 'live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit', loadComponent: () => import('./components/cloud/service-mesh/istio-architecture/subtopics/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit/live-traffic-surviving-an-istiod-outage-has-a-cert-ttl-time-limit').then(m => m.LiveTrafficSurvivingAnIstiodOutageHasACertTtlTimeLimitSubtopic) },
     ] },
-    { path: 'istio-install',      loadComponent: () => import('./components/cloud/service-mesh/istio-install/istio-install').then(m => m.MeshIstioInstall) },
+    { path: 'istio-install', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/istio-install/istio-install').then(m => m.MeshIstioInstall) },
+      { path: 'both-injection-labels-present-istio-injection-silently-wins', loadComponent: () => import('./components/cloud/service-mesh/istio-install/subtopics/both-injection-labels-present-istio-injection-silently-wins/both-injection-labels-present-istio-injection-silently-wins').then(m => m.BothInjectionLabelsPresentIstioInjectionSilentlyWinsSubtopic) },
+      { path: 'uninstall-purge-does-not-reliably-remove-every-webhook', loadComponent: () => import('./components/cloud/service-mesh/istio-install/subtopics/uninstall-purge-does-not-reliably-remove-every-webhook/uninstall-purge-does-not-reliably-remove-every-webhook').then(m => m.UninstallPurgeDoesNotReliablyRemoveEveryWebhookSubtopic) },
+      { path: 'revision-uninstall-checks-active-proxies-not-namespace-labels', loadComponent: () => import('./components/cloud/service-mesh/istio-install/subtopics/revision-uninstall-checks-active-proxies-not-namespace-labels/revision-uninstall-checks-active-proxies-not-namespace-labels').then(m => m.RevisionUninstallChecksActiveProxiesNotNamespaceLabelsSubtopic) },
+    ] },
     { path: 'linkerd',            loadComponent: () => import('./components/cloud/service-mesh/linkerd/linkerd').then(m => m.MeshLinkerd) },
     { path: 'traffic-management', loadComponent: () => import('./components/cloud/service-mesh/traffic-management/traffic-management').then(m => m.MeshTrafficManagement) },
     { path: 'resilience',         loadComponent: () => import('./components/cloud/service-mesh/resilience/resilience').then(m => m.MeshResilience) },

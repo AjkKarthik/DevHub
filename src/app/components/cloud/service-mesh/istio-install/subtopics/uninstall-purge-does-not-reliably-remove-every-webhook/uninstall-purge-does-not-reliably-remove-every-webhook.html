@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Istio Installation &amp; Configuration" topicRoute="/service-mesh/istio-install" subtopicLabel="uninstall --purge Does Not Reliably Remove Every Webhook" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">uninstall --purge Does Not Reliably Remove Every Webhook</h1>
+  <p class="page-subtitle">The main page's uninstall steps end with --purge "to remove all Istio control plane resources" — a known gap means specific webhooks can survive, with cluster-wide blast radius.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This adds a missing verification step to the main page's own "safely uninstall Istio" QnA. Next: why istioctl uninstall --revision's safety check looks at active proxies, not namespace labels.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Istio Installation &amp; Configuration" topicRoute="/service-mesh/istio-install"
+    [prev]="{ label: 'Both Injection Labels Present: istio-injection Silently Wins', route: '/service-mesh/istio-install/both-injection-labels-present-istio-injection-silently-wins' }"
+    [next]="{ label: 'Revision Uninstall Checks Active Proxies, Not Namespace Labels', route: '/service-mesh/istio-install/revision-uninstall-checks-active-proxies-not-namespace-labels' }" />
+</div>

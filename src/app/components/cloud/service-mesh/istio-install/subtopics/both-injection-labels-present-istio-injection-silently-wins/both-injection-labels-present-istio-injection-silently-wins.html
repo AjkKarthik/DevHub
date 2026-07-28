@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Istio Installation &amp; Configuration" topicRoute="/service-mesh/istio-install" subtopicLabel="Both Injection Labels Present: istio-injection Silently Wins" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Both Injection Labels Present: istio-injection Silently Wins</h1>
+  <p class="page-subtitle">The main page's canary-upgrade example removes the old label and adds the new one in one command — it never says what breaks if you don't, which is exactly this.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Istio (revision-based installs)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's own command example the missing "why" behind its exact sequencing. Next: why istioctl uninstall --purge doesn't reliably remove every webhook, and the cluster-wide risk that leaves behind.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Istio Installation &amp; Configuration" topicRoute="/service-mesh/istio-install"
+    [next]="{ label: 'uninstall --purge Does Not Reliably Remove Every Webhook', route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' }" />
+</div>

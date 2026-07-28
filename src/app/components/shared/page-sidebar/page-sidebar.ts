@@ -41425,6 +41425,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Canary upgrades of the control plane itself (running two istiod revisions side by side) reduce the risk of a mesh-wide outage during an Istio version upgrade.',
     ],
   },
+  'service-mesh/istio-install/both-injection-labels-present-istio-injection-silently-wins': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Istio Installation & Configuration',                                    route: '/service-mesh/istio-install' },
+      { label: 'uninstall --purge Does Not Reliably Remove Every Webhook',               route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' },
+    ],
+    tip: 'If a namespace carries both istio-injection=enabled and istio.io/rev at once, istio-injection silently wins (backward compatibility) — istio.io/rev is ignored with no error. Remove the old label and add the new one in the same command to avoid the ambiguous dual-label state entirely.',
+    gotchas: [
+      'A revision migration that adds istio.io/rev without removing istio-injection first can leave pods injected from the OLD control plane, with no warning surfaced.',
+    ],
+  },
+  'service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Both Injection Labels Present: istio-injection Silently Wins',              route: '/service-mesh/istio-install/both-injection-labels-present-istio-injection-silently-wins' },
+      { label: 'Revision Uninstall Checks Active Proxies, Not Namespace Labels',            route: '/service-mesh/istio-install/revision-uninstall-checks-active-proxies-not-namespace-labels' },
+    ],
+    tip: 'istioctl uninstall --purge does not reliably remove every webhook (e.g. istiod-default-validator is a known gap). A leftover, cluster-scoped webhook pointing at a deleted istiod can reject operations in unrelated namespaces if its failurePolicy is Fail.',
+    gotchas: [
+      'Always verify with kubectl get mutatingwebhookconfigurations,validatingwebhookconfigurations | grep istio after uninstall, rather than trusting --purge\'s name alone.',
+    ],
+  },
+  'service-mesh/istio-install/revision-uninstall-checks-active-proxies-not-namespace-labels': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'uninstall --purge Does Not Reliably Remove Every Webhook', route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' },
+      { label: 'Istio Installation & Configuration',                      route: '/service-mesh/istio-install' },
+    ],
+    tip: 'istioctl uninstall --revision\'s safety check looks at live, currently-connected proxies — not namespace labels. A namespace still labeled for the old revision but with zero running pods at that exact moment produces no warning at all.',
+    gotchas: [
+      'Infrequently-running namespaces (nightly batch jobs, scaled-to-zero) are the highest-risk case for this gap — check namespace labels explicitly (kubectl get namespaces -l istio.io/rev=<old>) before uninstalling, not just live proxy status.',
+    ],
+  },
   'service-mesh/traffic-management': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
