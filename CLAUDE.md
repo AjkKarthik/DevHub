@@ -2178,6 +2178,34 @@ do this same check before any other new hub's first subtopic set:
     for other hubs (Node.js, Linux) too. Confirmed `gateway-api` collision-free in the SUBTOPICS
     map. No stale-dev-server incident — toggle count updated correctly (13→14) on the first
     browser check.
+18. **The `/service-mesh/ingress-gateway` batch found and fixed another genuine, repeated
+    overgeneralization — "TLS secrets MUST be in istio-system"** stated as an absolute rule
+    across the theory, mistakes block, and quiz. Verified via a GitHub issue quoting real Istio
+    behavior ("when one configures a gateway in namespace ns1, credentialName should reference a
+    secret in that same namespace ns1") that the actual constraint is namespace-RELATIVE — the
+    secret must match the GATEWAY WORKLOAD's own namespace, which only equals `istio-system`
+    because that's where the DEFAULT `istio-ingressgateway` happens to run. This directly
+    contradicted the SAME page's own "Dedicated Gateway per team" theory bullet, which describes
+    exactly the scenario (a gateway deployed in a non-default namespace) where the absolute
+    framing breaks. Fixed all four touchpoints (theory, mistakes block, quiz, mustKnow). **Two
+    further subtopics were mechanism deep-dives, not main-page corrections** — verified via
+    WebSearch/WebFetch and written as gap-closing elaborations: (a) SNI-based Envoy filter-chain
+    matching is the actual mechanism behind "gateway presents the correct cert per hostname,"
+    something the main page states as an outcome without ever explaining; (b) `REGISTRY_ONLY`
+    egress blocking works via a dedicated `BlackHoleCluster` Envoy cluster returning a local 502
+    from the CALLING service's own sidecar (confirmed via WebSearch quoting Istio's own blog on
+    monitoring blocked/passthrough traffic) — contrasted with the default `ALLOW_ANY` mode's
+    `PassthroughCluster`. **Hit the documented Windows MAX_PATH `git add` failure for real** on
+    the third subtopic's ~95-character slug (`registry-only-blocks-traffic-via-a-...`) — applied
+    the established fix exactly: renamed only the physical folder/file to a short name
+    (`registry-only-blackhole-502`), updated the component's own `templateUrl`/`styleUrl` and
+    `app.routes.ts`'s import path, while leaving the route's own `path:` (URL segment) and every
+    other wiring touchpoint (SUBTOPICS map, breadcrumb, sidebar, search index, nav labels) on the
+    original, fully descriptive slug — confirmed the route still resolves correctly by direct
+    navigation before committing. Confirmed `ingress-gateway` collision-free in the SUBTOPICS map.
+    No stale-dev-server incident — toggle count updated correctly (14→15) on the first browser
+    check (after the rename, a full rebuild + fresh navigate confirmed the renamed component's
+    route still resolves).
 
 ## Current state (update when it changes!)
 
@@ -2463,18 +2491,18 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 14 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 15 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
   `/service-mesh/metrics`, `/service-mesh/tracing`, `/service-mesh/kiali`,
-  `/service-mesh/gateway-api`, 2026-07-28) — see
+  `/service-mesh/gateway-api`, `/service-mesh/ingress-gateway`, 2026-07-28) — see
   "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
   `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`,
-  `tracing`, `kiali`, and `gateway-api` were all collision-free, left as bare keys;
-  `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
+  `tracing`, `kiali`, `gateway-api`, and `ingress-gateway` were all collision-free, left as bare
+  keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
   `mesh-load-balancing`). **The `linkerd` batch found and
   fixed a real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example
   (apex and one backend sharing the same service name), explicitly prohibited by the SMI spec.
@@ -2506,8 +2534,11 @@ do this same check before any other new hub's first subtopic set:
   meanings swapped. **The `gateway-api` batch found and fixed this hub's most-repeated single
   inaccuracy** — "oldest route wins" stated as the primary HTTPRoute conflict-resolution rule
   across the theory, mistakes block, AND quiz, when the real precedence checks match specificity
-  first and timestamp only as a last-resort tiebreaker — see "Service Mesh hub subtopic wiring"
-  section below for details on all batches.
+  first and timestamp only as a last-resort tiebreaker. **The `ingress-gateway` batch found and
+  fixed a genuine overgeneralization** — "TLS secrets MUST be in istio-system" stated as an
+  absolute rule, when the real constraint tracks the Gateway workload's own namespace (only
+  istio-system for the default gateway) — see "Service Mesh hub subtopic wiring" section below
+  for details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

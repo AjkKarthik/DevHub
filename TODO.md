@@ -6166,7 +6166,31 @@ off here with a date.
   subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
   misconceptions/prev-next nav all verified via `get_page_text`.
   **Service Mesh hub Phase 10: 14 of 19 topics complete.**
-- [ ] `/service-mesh/ingress-gateway` — Ingress Gateway
+- [x] `/service-mesh/ingress-gateway` — Ingress Gateway (2026-07-28) — 3 subtopics: (1) **TLS
+  Secret Must Match the Gateway's Own Namespace, Not Always istio-system**, correcting a genuine,
+  repeated overgeneralization — the main page stated "MUST be in istio-system" as an absolute
+  rule across the theory, mistakes block, and quiz, when the real constraint (verified via a
+  GitHub issue quoting real Istio behavior) tracks the Gateway WORKLOAD's own namespace, which
+  only equals istio-system for the default gateway — directly at odds with the page's own
+  "Dedicated Gateway per team" pattern; (2) **SNI Filter Chain Matching Is What Actually Selects
+  the Right Cert**, a mechanism deep-dive explaining the actual Envoy filter-chain-matching
+  behind the main page's "gateway presents the correct cert per hostname" claim; (3)
+  **REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes**, another
+  mechanism deep-dive verified via WebSearch against Istio's own blog on monitoring blocked
+  traffic — a dedicated BlackHoleCluster on the CALLER's own sidecar generates a local 502,
+  contrasted with ALLOW_ANY's PassthroughCluster. Gotcha sweep (backtick parity 4/18/10 all even,
+  apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"`/straight-double-quote-in-
+  label all clean) passed on the first pass. Confirmed `ingress-gateway` bare-key collision-free
+  before adding. **Hit the documented Windows MAX_PATH `git add` failure for real** on the third
+  subtopic's long slug — renamed only the physical folder/file to `registry-only-blackhole-502`
+  per the established fix, keeping the route's own URL and every other wiring touchpoint on the
+  original descriptive slug; confirmed the route still resolved correctly via direct navigation
+  after a full rebuild. Build passed clean. Browser-verified successfully: toggle count (15, up
+  from 14) and accordion links confirmed via direct DOM query, the corrected TLS-secret-namespace
+  text confirmed present (old text confirmed absent) via main-content text search, a subtopic
+  page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/
+  prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 15 of 19 topics complete.**
 - [ ] `/service-mesh/performance` — Service Mesh Performance
 - [ ] `/service-mesh/ambient-mesh` — Ambient Mesh
 - [ ] `/service-mesh/multi-cluster` — Multi-Cluster Mesh
