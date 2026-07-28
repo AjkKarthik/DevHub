@@ -110,7 +110,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Linkerd</p>
-      <a routerLink="/service-mesh/linkerd" routerLinkActive="active"><span class="nl-text">Linkerd</span>@if(p.isDone('mesh-linkerd')){<span class="nl-done">✓</span>}@if(d('mesh-linkerd');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/linkerd" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Linkerd</span>
+        @if(p.isDone('mesh-linkerd')){<span class="nl-done">✓</span>}
+        @if(d('mesh-linkerd');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('linkerd')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('linkerd')"
+                  (click)="toggleSubtopics('linkerd', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('linkerd'); as linkerdSubs) {
+        @if (isSubtopicsExpanded('linkerd')) {
+          <div class="nav-subtopics">
+            @for (s of linkerdSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

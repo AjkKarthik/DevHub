@@ -41616,6 +41616,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The lower resource footprint versus Istio is a real, measurable difference at scale, not just a marketing claim — worth benchmarking for genuinely resource-constrained clusters.',
     ],
   },
+  'service-mesh/linkerd/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Linkerd',                                                                    route: '/service-mesh/linkerd' },
+      { label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation',   route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' },
+    ],
+    tip: 'SMI TrafficSplit forbids a backend sharing the apex service\'s own name — the apex (spec.service) and every backend need distinct Kubernetes Service names, or the config is self-referential and hard to reason about.',
+    gotchas: [
+      'A correct canary setup needs THREE real Services (apex + stable + canary), not two — reusing the apex name for the "stable" backend is the exact mistake to avoid.',
+    ],
+  },
+  'service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'TrafficSplit Cannot Be Self-Referential — apex Needs Its Own Name',      route: '/service-mesh/linkerd/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name' },
+      { label: 'external-issuer Alone Leaves the Self-Generated Trust Anchor in Place',  route: '/service-mesh/linkerd/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place' },
+    ],
+    tip: 'Linkerd has real failure-accrual circuit breaking — it\'s just off by default. EWMA load balancing alone does not eject a failing endpoint; add balancer.linkerd.io/failure-accrual to a Service to actually enable ejection and recovery probing.',
+    gotchas: [
+      'Building custom application-level failure handling because "Linkerd has no circuit breaking" usually means the failure-accrual annotation was never checked first.',
+    ],
+  },
+  'service-mesh/linkerd/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation', route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' },
+      { label: 'Linkerd',                                                                   route: '/service-mesh/linkerd' },
+    ],
+    tip: '--identity-external-issuer only externalizes the issuer cert — Linkerd\'s trust anchor (root CA) stays self-generated with its original long TTL unless --identity-trust-anchors-file is ALSO provided at install time.',
+    gotchas: [
+      'A team that only sets --identity-external-issuer has genuinely improved issuer rotation, but the actual root of trust is still unmanaged — verify by inspecting the linkerd-identity-trust-roots secret directly.',
+    ],
+  },
   'service-mesh/kiali': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

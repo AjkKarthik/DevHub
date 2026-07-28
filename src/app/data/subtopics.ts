@@ -2908,4 +2908,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'INSERT_AFTER Targeting router Means the Filter Never Runs', route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' },
     { label: 'Delta xDS Isolates a NACK’d Resource — SotW Blocks the Whole Type', route: '/service-mesh/envoy/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type' },
   ],
+  // NOTE: 'linkerd' confirmed collision-free (quoted and unquoted) across the whole file.
+  linkerd: [
+    { label: 'TrafficSplit Cannot Be Self-Referential — apex Needs Its Own Name', route: '/service-mesh/linkerd/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name' },
+    { label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation', route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' },
+    { label: 'external-issuer Alone Leaves the Self-Generated Trust Anchor in Place', route: '/service-mesh/linkerd/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place' },
+  ],
 };

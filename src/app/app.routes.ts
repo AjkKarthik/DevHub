@@ -3681,7 +3681,12 @@ export const routes: Routes = [
       { path: 'uninstall-purge-does-not-reliably-remove-every-webhook', loadComponent: () => import('./components/cloud/service-mesh/istio-install/subtopics/uninstall-purge-does-not-reliably-remove-every-webhook/uninstall-purge-does-not-reliably-remove-every-webhook').then(m => m.UninstallPurgeDoesNotReliablyRemoveEveryWebhookSubtopic) },
       { path: 'revision-uninstall-checks-active-proxies-not-namespace-labels', loadComponent: () => import('./components/cloud/service-mesh/istio-install/subtopics/revision-uninstall-checks-active-proxies-not-namespace-labels/revision-uninstall-checks-active-proxies-not-namespace-labels').then(m => m.RevisionUninstallChecksActiveProxiesNotNamespaceLabelsSubtopic) },
     ] },
-    { path: 'linkerd',            loadComponent: () => import('./components/cloud/service-mesh/linkerd/linkerd').then(m => m.MeshLinkerd) },
+    { path: 'linkerd', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/linkerd/linkerd').then(m => m.MeshLinkerd) },
+      { path: 'trafficsplit-cannot-be-self-referential-apex-needs-its-own-name', loadComponent: () => import('./components/cloud/service-mesh/linkerd/subtopics/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name/trafficsplit-cannot-be-self-referential-apex-needs-its-own-name').then(m => m.TrafficsplitCannotBeSelfReferentialApexNeedsItsOwnNameSubtopic) },
+      { path: 'circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation', loadComponent: () => import('./components/cloud/service-mesh/linkerd/subtopics/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation').then(m => m.CircuitBreakingExistsButNeedsAnExplicitFailureAccrualAnnotationSubtopic) },
+      { path: 'external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place', loadComponent: () => import('./components/cloud/service-mesh/linkerd/subtopics/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place').then(m => m.ExternalIssuerAloneLeavesTheSelfGeneratedTrustAnchorInPlaceSubtopic) },
+    ] },
     { path: 'traffic-management', loadComponent: () => import('./components/cloud/service-mesh/traffic-management/traffic-management').then(m => m.MeshTrafficManagement) },
     { path: 'resilience',         loadComponent: () => import('./components/cloud/service-mesh/resilience/resilience').then(m => m.MeshResilience) },
     { path: 'load-balancing',     loadComponent: () => import('./components/cloud/service-mesh/load-balancing/load-balancing').then(m => m.MeshLoadBalancing) },

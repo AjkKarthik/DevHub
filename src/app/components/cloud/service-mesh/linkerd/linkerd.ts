@@ -135,7 +135,8 @@ linkerd viz dashboard &`,
     {
       label: 'Traffic Split (Canary)',
       language: 'bash',
-      code: `# Two services: myapp (stable v1) and myapp-canary (v2)
+      code: `# Three services: myapp (apex, the name clients call),
+# myapp-stable (v1), and myapp-canary (v2)
 # Create a TrafficSplit to route 10% to canary
 cat <<EOF | kubectl apply -f -
 apiVersion: split.smi-spec.io/v1alpha1
@@ -144,10 +145,11 @@ metadata:
   name: myapp-split
   namespace: production
 spec:
-  service: myapp          # The root service clients call
+  service: myapp          # The root/apex service clients call
   backends:
-  - service: myapp        # Stable backend
-    weight: 900m          # 90% (milliunits, total must = 1000m)
+  - service: myapp-stable # Stable backend -- distinct name from
+    weight: 900m          # the apex; SMI forbids a backend sharing
+                           # the apex's own name (self-referential)
   - service: myapp-canary # Canary backend
     weight: 100m          # 10%
 EOF
@@ -161,7 +163,7 @@ linkerd viz tap deploy/myapp-canary -n production
 # Shift to 50/50
 kubectl patch trafficsplit myapp-split -n production \\
   --type=merge \\
-  -p '{"spec":{"backends":[{"service":"myapp","weight":"500m"},{"service":"myapp-canary","weight":"500m"}]}}'`,
+  -p '{"spec":{"backends":[{"service":"myapp-stable","weight":"500m"},{"service":"myapp-canary","weight":"500m"}]}}'`,
     },
     {
       label: 'Authorization Policy',
@@ -303,7 +305,7 @@ spec:
 
 Requirements:
 - Start with 5% canary traffic to "checkout-v2"
-- Include the root service name "checkout"
+- Include the root/apex service name "checkout", with the stable backend named "checkout-stable" (distinct from the apex — SMI forbids a backend sharing the apex's own name)
 - Use milliunits (total must equal 1000m)
 - After validation, shift to 50% then to 100%
 
@@ -313,6 +315,7 @@ Return the initial TrafficSplit YAML and describe the rollout steps.`,
       'Total weights must sum to 1000m',
       'The spec.service is the root service that clients call',
       'backends list the actual services with weights',
+      'A backend name must never equal spec.service — SMI TrafficSplits cannot be self-referential',
     ],
     starterCode: `function getTrafficSplit(canaryPercent: number): string {
   const canaryWeight = canaryPercent * 10;  // convert % to milliunits
@@ -333,7 +336,7 @@ metadata:
 spec:
   service: checkout
   backends:
-  - service: checkout
+  - service: checkout-stable
     weight: \${stableWeight}m
   - service: checkout-v2
     weight: \${canaryWeight}m\`;
