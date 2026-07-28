@@ -2518,19 +2518,20 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 17 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 18 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
   `/service-mesh/metrics`, `/service-mesh/tracing`, `/service-mesh/kiali`,
   `/service-mesh/gateway-api`, `/service-mesh/ingress-gateway`, `/service-mesh/performance`,
-  `/service-mesh/ambient-mesh`, 2026-07-28) — see
+  `/service-mesh/ambient-mesh`, `/service-mesh/multi-cluster`, 2026-07-28) — see
   "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
   `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`,
-  `tracing`, `kiali`, `gateway-api`, `ingress-gateway`, and `ambient-mesh` were all collision-free,
-  left as bare keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
+  `tracing`, `kiali`, `gateway-api`, `ingress-gateway`, `ambient-mesh`, and `multi-cluster` were
+  all collision-free, left as bare keys; `load-balancing` collided with the AWS hub's own topic and
+  was hub-prefixed to
   `mesh-load-balancing`; `performance` collided with the Node.js hub's own topic and was
   hub-prefixed to `mesh-performance`). **The `linkerd` batch found and
   fixed a real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example
@@ -2587,8 +2588,25 @@ do this same check before any other new hub's first subtopic set:
   summary bullets) needs a `grep` for ALL occurrences of the wrong fact/version string across the
   whole file, not just fixing the first instance found — this batch's initial edit pass missed 3
   of 8 total occurrences, all caught only by reading the complete rendered page text in the
-  browser after building, not by re-reading the source file. — see "Service Mesh hub subtopic
-  wiring" section below for details on all batches.
+  browser after building, not by re-reading the source file. **The `multi-cluster` batch found and
+  fixed TWO more issues** — a fabricated "PILOT_PEERS"/`remotePilotAddress` mechanism for
+  multi-primary config exchange that directly contradicted the page's OWN correct "Service
+  discovery" bullet one line above it (verified via Istio's own multi-primary install docs that
+  each Istiod independently watches the other cluster's API server, with no Istiod-to-Istiod
+  protocol at all — `remotePilotAddress` is real but belongs to the different Primary-Remote
+  topology instead), and an inflated "Kiali 1.73+" version gate for multi-cluster service graphs
+  (verified via Kiali's own release blog that initial "Cluster Boxes" multi-cluster support shipped
+  in v1.29/1.30, years earlier, and that Kiali has since moved past its 1.x line to a v2.x series
+  entirely). **New style-consistency catch**: markdown-style backtick-wrapped inline code mentions
+  inside `[innerHTML]`-bound fields (`theory.points`, `misconceptions.thought`/`.reality`,
+  `try-it.prompt`/`.hint`) render as literal backtick characters, not styled `<code>` — found and
+  converted 9 occurrences to `<code>` tags across 2 files post-build via direct browser
+  inspection, while correctly leaving the `exercise.solution` field's own backticks alone (plain
+  interpolation inside a pre/code block, where raw backticks are the established correct
+  convention) — matches the identical mixing mistake already documented in the Terraform `cicd`
+  and Service Mesh `linkerd` batches, confirming it recurs and is worth a dedicated backtick-vs-
+  `<code>` check on any subtopic batch quoting a code identifier repeatedly. — see "Service Mesh
+  hub subtopic wiring" section below for details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

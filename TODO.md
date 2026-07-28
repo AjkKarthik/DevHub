@@ -6241,7 +6241,35 @@ off here with a date.
   levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via
   `get_page_text`, dark mode rendering confirmed via screenshot.
   **Service Mesh hub Phase 10: 17 of 19 topics complete.**
-- [ ] `/service-mesh/multi-cluster` — Multi-Cluster Mesh
+- [x] `/service-mesh/multi-cluster` — Multi-Cluster Mesh (2026-07-28) — 3 subtopics: (1)
+  **Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol**, correcting a
+  fabricated mechanism — the main page named a "PILOT_PEERS" bullet claiming Istiod instances
+  exchange config "via `remotePilotAddress` or via secret-based peer discovery," directly
+  contradicting the page's OWN correct "Service discovery" bullet one line above it; verified via
+  Istio's own multi-primary install docs that each Istiod independently watches the OTHER
+  cluster's Kubernetes API server via remote-secret credentials, with no Istiod-to-Istiod protocol
+  at all; (2) **remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary**, the natural
+  follow-up — `remotePilotAddress` IS a real Istio field, just scoped to the DIFFERENT
+  Primary-Remote topology (routes a remote cluster's sidecars to the primary's Istiod for xDS),
+  confirmed it plays no role in Multi-Primary's config exchange; (3) **Kiali Multi-Cluster Support
+  Predates 1.73 by Years**, correcting an inflated version gate — the main page claimed "Kiali
+  1.73+ supports multi-cluster service graphs," verified via Kiali's own release blog that initial
+  experimental "Cluster Boxes" multi-cluster support shipped at v1.29/1.30, refined gradually
+  since, with Kiali now on a v2.x release series entirely. **New style-consistency catch found
+  post-build via direct browser inspection**: markdown-style backtick-wrapped inline code mentions
+  inside `[innerHTML]`-bound fields (theory `points`, misconceptions, try-it `prompt`/`hint`)
+  render as literal backtick characters rather than styled `<code>` — converted 9 occurrences to
+  `<code>` tags across 2 files, correctly leaving the `exercise.solution` field's own backticks
+  alone (plain interpolation inside a pre/code block, where raw backticks are the established
+  correct convention). Gotcha sweep (backtick parity 2/2/10 all even; bare `@word`, double-quote-
+  in-label, bare `{` in prose, over-escaped `\"` all clean) passed. `multi-cluster` SUBTOPICS key
+  confirmed collision-free, left bare. Build passed clean both before and after the backtick
+  style fix. Browser-verified: nav accordion toggle opens with all 3 links, old wrong phrasing
+  ("PILOT_PEERS", "Kiali 1.73+ supports") confirmed absent while corrected text confirmed present
+  via direct DOM text search, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/
+  code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`, dark mode
+  rendering (styled `<code>` pills visible) confirmed via screenshot.
+  **Service Mesh hub Phase 10: 18 of 19 topics complete.**
 - [ ] `/service-mesh/consul` — Consul Service Mesh
 
 #### System Design — 24 topic pages
