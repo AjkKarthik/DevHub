@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authorization Policies" topicRoute="/service-mesh/authorization" subtopicLabel="Empty Rules Array vs. One Empty Rule Are Opposite Behaviors" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Empty Rules Array vs. One Empty Rule Are Opposite Behaviors</h1>
+  <p class="page-subtitle">The main page's own "mistakes" block had ALLOW and DENY's empty-rules behavior backwards — verified against Istio's own reference docs and corrected.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This directly grounds the main page's now-corrected mistakes-block entry in Istio's own documented semantics. Next: why AuthorizationPolicy — unlike PeerAuthentication — has no naming requirement for its mesh-wide scope.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Authorization Policies" topicRoute="/service-mesh/authorization"
+    [next]="{ label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication', route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' }" />
+</div>

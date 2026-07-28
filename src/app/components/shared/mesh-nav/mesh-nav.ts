@@ -218,7 +218,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/authorization" routerLinkActive="active"><span class="nl-text">Authorization Policies</span>@if(p.isDone('mesh-authorization')){<span class="nl-done">✓</span>}@if(d('mesh-authorization');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/authorization" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Authorization Policies</span>
+        @if(p.isDone('mesh-authorization')){<span class="nl-done">✓</span>}
+        @if(d('mesh-authorization');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('authorization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('authorization')"
+                  (click)="toggleSubtopics('authorization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('authorization'); as authzSubs) {
+        @if (isSubtopicsExpanded('authorization')) {
+          <div class="nav-subtopics">
+            @for (s of authzSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Authorization Policies" topicRoute="/service-mesh/authorization" subtopicLabel="CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW</h1>
+  <p class="page-subtitle">The main page's quickRef lists ALLOW, DENY, AUDIT — but a fourth action, CUSTOM, delegates decisions to an external system and runs even earlier than DENY.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the corrected empty-rules semantics and the naming-requirement contrast, this closes out the main page's authorization trio for this batch — the full, complete evaluation order is CUSTOM → DENY → ALLOW.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Authorization Policies" topicRoute="/service-mesh/authorization"
+    [prev]="{ label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication', route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' }" />
+</div>

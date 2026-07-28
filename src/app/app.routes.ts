@@ -3711,7 +3711,12 @@ export const routes: Routes = [
       { path: 'mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns', loadComponent: () => import('./components/cloud/service-mesh/mtls/subtopics/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns').then(m => m.MeshWidePeerAuthenticationMustBeNamedDefaultInTheRootNsSubtopic) },
       { path: 'the-ca-secret-is-named-cacerts-not-istio-ca-secret', loadComponent: () => import('./components/cloud/service-mesh/mtls/subtopics/the-ca-secret-is-named-cacerts-not-istio-ca-secret/the-ca-secret-is-named-cacerts-not-istio-ca-secret').then(m => m.TheCaSecretIsNamedCacertsNotIstioCaSecretSubtopic) },
     ] },
-    { path: 'authorization',      loadComponent: () => import('./components/cloud/service-mesh/authorization/authorization').then(m => m.MeshAuthorization) },
+    { path: 'authorization', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/authorization/authorization').then(m => m.MeshAuthorization) },
+      { path: 'empty-rules-array-vs-one-empty-rule-are-opposite-behaviors', loadComponent: () => import('./components/cloud/service-mesh/authorization/subtopics/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors').then(m => m.EmptyRulesArrayVsOneEmptyRuleAreOppositeBehaviorsSubtopic) },
+      { path: 'authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication', loadComponent: () => import('./components/cloud/service-mesh/authorization/subtopics/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication').then(m => m.AuthorizationPolicyHasNoNamingRequirementUnlikePeerAuthenticationSubtopic) },
+      { path: 'custom-is-a-fourth-action-evaluated-before-deny-and-allow', loadComponent: () => import('./components/cloud/service-mesh/authorization/subtopics/custom-is-a-fourth-action-evaluated-before-deny-and-allow/custom-is-a-fourth-action-evaluated-before-deny-and-allow').then(m => m.CustomIsAFourthActionEvaluatedBeforeDenyAndAllowSubtopic) },
+    ] },
     { path: 'metrics',            loadComponent: () => import('./components/cloud/service-mesh/metrics/metrics').then(m => m.MeshMetrics) },
     { path: 'tracing',            loadComponent: () => import('./components/cloud/service-mesh/tracing/tracing').then(m => m.MeshTracing) },
     { path: 'kiali',              loadComponent: () => import('./components/cloud/service-mesh/kiali/kiali').then(m => m.MeshKiali) },

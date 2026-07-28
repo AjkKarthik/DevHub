@@ -41679,6 +41679,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Authorization policies are evaluated per-namespace by default — a policy intended mesh-wide needs to be applied at the correct scope, or it silently only applies to one namespace.',
     ],
   },
+  'service-mesh/authorization/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Authorization Policies',                                                     route: '/service-mesh/authorization' },
+      { label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication',    route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' },
+    ],
+    tip: 'Empty rules under DENY match nothing (no effect); empty rules under ALLOW also match nothing, but that flips the workload to deny-by-default — making empty-rules ALLOW, not DENY, the correct deny-all idiom.',
+    gotchas: [
+      'rules: [] (empty array, never matches) and rules: [{}] (one empty rule, always matches) look almost identical but produce opposite results.',
+    ],
+  },
+  'service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Empty Rules Array vs. One Empty Rule Are Opposite Behaviors',  route: '/service-mesh/authorization/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors' },
+      { label: 'CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW',   route: '/service-mesh/authorization/custom-is-a-fourth-action-evaluated-before-deny-and-allow' },
+    ],
+    tip: 'Unlike PeerAuthentication\'s mesh-wide policy (which must be named exactly "default"), AuthorizationPolicy has no naming requirement at all — multiple mesh-wide resources with any names all apply cumulatively.',
+    gotchas: [
+      'The real risk here runs opposite to PeerAuthentication\'s: forgetting about old, differently-named mesh-wide policies that are still silently contributing to the effective decision.',
+    ],
+  },
+  'service-mesh/authorization/custom-is-a-fourth-action-evaluated-before-deny-and-allow': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication', route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' },
+      { label: 'Authorization Policies',                                                  route: '/service-mesh/authorization' },
+    ],
+    tip: 'CUSTOM delegates the authorization decision to an external extension provider and is evaluated even before DENY — the full precedence is CUSTOM → DENY → ALLOW, one stage more than ALLOW/DENY/AUDIT alone.',
+    gotchas: [
+      'A CUSTOM provider\'s "allow" result cannot bypass a separately-configured DENY policy — it still has to clear DENY/ALLOW afterward.',
+    ],
+  },
   'service-mesh/gateway-api': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

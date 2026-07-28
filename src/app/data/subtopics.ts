@@ -2936,4 +2936,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace', route: '/service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns' },
     { label: 'The CA Secret Is Named cacerts, Not istio-ca-secret', route: '/service-mesh/mtls/the-ca-secret-is-named-cacerts-not-istio-ca-secret' },
   ],
+  'authorization': [
+    { label: 'Empty Rules Array vs. One Empty Rule Are Opposite Behaviors', route: '/service-mesh/authorization/empty-rules-array-vs-one-empty-rule-are-opposite-behaviors' },
+    { label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication', route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' },
+    { label: 'CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW', route: '/service-mesh/authorization/custom-is-a-fourth-action-evaluated-before-deny-and-allow' },
+  ],
 };
