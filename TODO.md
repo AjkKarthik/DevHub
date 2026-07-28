@@ -6122,7 +6122,26 @@ off here with a date.
   accordion toggle) before checking its answer text — a subtopic page's full breadcrumb (4
   levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
   **Service Mesh hub Phase 10: 12 of 19 topics complete.**
-- [ ] `/service-mesh/kiali` — Kiali Service Graph
+- [x] `/service-mesh/kiali` — Kiali Service Graph (2026-07-28) — 3 subtopics: (1) **Envoy Config
+  Viewer Queries Istiod, Not Prometheus**, correcting an overgeneralization where the main
+  page's blanket "reads from Prometheus" claim was contradicted by its own QnA describing the
+  Envoy config viewer — verified via WebSearch this feature queries Istiod's debug endpoint
+  (/debug/config_dump?proxyID=...) directly, no Prometheus involved; (2) **KIA0201 Is Duplicate
+  DestinationRules, Not a Missing Subset**, correcting a genuine SELF-CONTRADICTING inaccuracy —
+  the quiz and mistakes block gave KIA0201 two different wrong meanings that didn't even agree
+  with each other, verified against Kiali's own validation docs that the real KIA0201 means
+  duplicate DestinationRules and the actual "subset not found" code is KIA1107; (3) **Animation
+  Dot Speed Is Response Time, Density Is RPS**, correcting a swapped claim — verified via
+  WebSearch that Kiali's traffic animation encodes response time via dot SPEED and RPS via dot
+  DENSITY, the opposite of what the main page said. Gotcha sweep (backtick parity 2/8/8 all
+  even, apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"` all clean) passed
+  on the first pass. Confirmed `kiali` bare-key collision-free before adding. Build passed clean
+  on the first attempt. Browser-verified successfully: toggle count (13, up from 12) and
+  accordion links confirmed via direct DOM query, the corrected KIA1107 text confirmed present
+  (and old wrong text confirmed absent) after clicking into the collapsed mistakes-block entries,
+  a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 13 of 19 topics complete.**
 - [ ] `/service-mesh/gateway-api` — Kubernetes Gateway API
 - [ ] `/service-mesh/ingress-gateway` — Ingress Gateway
 - [ ] `/service-mesh/performance` — Service Mesh Performance

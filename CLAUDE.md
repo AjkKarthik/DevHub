@@ -2125,6 +2125,26 @@ do this same check before any other new hub's first subtopic set:
     question (not just the outer accordion toggle) before its text appeared in the DOM for a
     `get_page_text`/text-search check — the outer "Interview Q&A" toggle alone only reveals the
     question LIST, not each answer's own body text.
+16. **The `/service-mesh/kiali` batch found and fixed THREE separate issues, including a
+    self-contradicting error code cited two different wrong ways on the same page**: (a) the
+    main page's blanket claim "It does NOT directly query Envoy — it reads from Prometheus" was
+    an overgeneralization contradicted by the SAME page's own QnA describing the "Envoy config
+    viewer" — verified via WebSearch that this specific feature queries Istiod's own debug
+    endpoint (`/debug/config_dump?proxyID=...`, port 15014) directly, with zero Prometheus
+    involvement; scoped the main-page claim to the service graph specifically. (b) The quiz
+    answered "KIA0201" for a VirtualService referencing a non-existent subset, while the
+    mistakes block showed KIA0201 with a DIFFERENT message text ("VirtualService has no route
+    for host") — verified via WebFetch against Kiali's own validation docs that NEITHER
+    description was correct: real KIA0201 means "more than one DestinationRule for the same
+    host/subset combination" (a duplicate-DestinationRule warning), and the actual "subset not
+    found" check is a different code entirely, KIA1107. This is the FIRST inaccuracy in this hub
+    where the main page contradicted ITSELF on the same fact in two different sections, not just
+    stated one wrong thing consistently. (c) The theory bullet claimed traffic-animation dot
+    "speed" is "proportional to RPS" — verified via WebSearch against Kiali's own documented
+    graph semantics that speed actually represents RESPONSE TIME (faster = quicker responses),
+    while DENSITY (how tightly packed the dots are) is what represents RPS — the two signals
+    were conflated. Confirmed `kiali` collision-free in the SUBTOPICS map. No stale-dev-server
+    incident — toggle count updated correctly (12→13) on the first browser check.
 
 ## Current state (update when it changes!)
 
@@ -2410,16 +2430,18 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 12 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 13 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
-  `/service-mesh/metrics`, `/service-mesh/tracing`, 2026-07-28) — see "Service Mesh hub
+  `/service-mesh/metrics`, `/service-mesh/tracing`, `/service-mesh/kiali`, 2026-07-28) — see
+  "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
-  `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`, and
-  `tracing` were all collision-free, left as bare keys; `load-balancing` collided with the AWS
-  hub's own topic and was hub-prefixed to `mesh-load-balancing`). **The `linkerd` batch found and
+  `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`,
+  `tracing`, and `kiali` were all collision-free, left as bare keys; `load-balancing` collided
+  with the AWS hub's own topic and was hub-prefixed to `mesh-load-balancing`). **The `linkerd`
+  batch found and
   fixed a real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example
   (apex and one backend sharing the same service name), explicitly prohibited by the SMI spec.
   **The `resilience` batch found and fixed THREE more real inaccuracies** — a fault-injection/
@@ -2442,8 +2464,13 @@ do this same check before any other new hub's first subtopic set:
   attribution where RFC 4652 is real but entirely unrelated (the actual source is the OpenMetrics
   spec), an incorrect "Istio 1.16+" OpenTelemetry provider version claim (corrected to 1.22+,
   verified via archived-docs 404s), and a sampling-precedence ambiguity the main page's own
-  example walked straight into — see "Service Mesh hub subtopic wiring" section below for
-  details on all batches.
+  example walked straight into. **The `kiali` batch found and fixed THREE more issues, including
+  this hub's first self-contradicting error code** — an overgeneralized "reads from Prometheus"
+  claim contradicted by the page's own Envoy Config Viewer description (actually queries Istiod's
+  debug endpoint), a KIA0201 code cited with two different WRONG meanings in two different
+  sections of the same page (the real code is KIA1107), and traffic-animation dot speed/density
+  meanings swapped — see "Service Mesh hub subtopic wiring" section below for details on all
+  batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.
