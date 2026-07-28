@@ -2073,6 +2073,32 @@ do this same check before any other new hub's first subtopic set:
     batch) extending naturally to cross-TOPIC contrasts within a hub, not just within-page
     self-consistency checks — the PeerAuthentication-naming subtopic from the PRIOR batch (`mtls`)
     directly informed the shape of this batch's naming-contrast subtopic.
+14. **The `/service-mesh/metrics` batch found and fixed a genuine, fully-verified inaccuracy where
+    EVERY ONE of the main page's four Grafana dashboard ID-to-name pairings was wrong** — the page
+    claimed "7636 (mesh), 7630 (service), 7645 (workload), 7639 (performance)." Verified directly
+    against grafana.com's own dashboard listings (fetched by exact ID/title for each), the correct
+    mapping is 7639=Mesh, 7636=Service, 7630=Workload, 7645=Control Plane, 11829=Performance — a
+    consistent off-by-one-style shift across all four, not an isolated typo. Fixed the main page to
+    list the correct mapping, including the fifth (Control Plane) dashboard the original never
+    mentioned at all. **Lesson reinforced**: a SPECIFIC numeric identifier in prose (a dashboard ID,
+    a port number) reads as more authoritative than a general claim, which paradoxically makes it
+    LESS likely to be double-checked before use — precision is not correctness, and specific
+    identifiers deserve their own dedicated verification pass against a primary source. **A second
+    fix, more about precision than pure inaccuracy**: the main page described the Telemetry API's
+    scope hierarchy as "additive and composable" — verified via WebFetch against Istio's own
+    Telemetry task guide that a narrower-scoped resource actually "completely overrides" (not
+    merges with) whichever specific field it touches from a broader scope, confirmed by Istio's own
+    worked example where a namespace-level custom-tags config causes a mesh-level tag to vanish
+    entirely rather than persist alongside the new one. Tightened the main page's phrasing
+    accordingly. **A third, purely gap-closing subtopic**: verified via Istio's own FAQ that
+    in-proxy telemetry (the current architecture, since Mixer's removal) has "no mechanism for
+    configuring custom buckets for histogram metrics" — a real precision ceiling for
+    `histogram_quantile()`-based SLO math the main page discusses extensively (burn-rate multipliers,
+    99.9% targets) without ever mentioning. Confirmed `metrics` collision-free in the SUBTOPICS map.
+    No stale-dev-server incident this batch (a fresh `ng serve` cold-start simply needed its normal
+    initial compile time, confirmed via a `curl`-polling background Bash task rather than fixed
+    `sleep` calls) — toggle count updated correctly (10→11) on the first browser check once the
+    server was actually ready.
 
 ## Current state (update when it changes!)
 
@@ -2358,18 +2384,18 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 10 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 11 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
-  2026-07-28) — see "Service Mesh hub
+  `/service-mesh/metrics`, 2026-07-28) — see "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
-  `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, and `authorization` were all
-  collision-free, left as bare keys; `load-balancing` collided with the AWS hub's own topic and
-  was hub-prefixed to `mesh-load-balancing`). **The `linkerd` batch found and fixed a real
-  inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example (apex and
-  one backend sharing the same service name), explicitly prohibited by the SMI spec. **The
+  `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, and `metrics`
+  were all collision-free, left as bare keys; `load-balancing` collided with the AWS hub's own
+  topic and was hub-prefixed to `mesh-load-balancing`). **The `linkerd` batch found and fixed a
+  real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example (apex
+  and one backend sharing the same service name), explicitly prohibited by the SMI spec. **The
   `resilience` batch found and fixed THREE more real inaccuracies** — a fault-injection/retries
   contradiction with the already-verified Traffic Management subtopic, mislabeled "exponential"
   ejection-duration growth (actually linear), and a wrong `minHealthPercent` default (claimed
@@ -2381,8 +2407,11 @@ do this same check before any other new hub's first subtopic set:
   from the kubelet" claim to state the actual rewrite-to-port-15020 mechanism. **The
   `authorization` batch found and fixed a genuine inaccuracy where the main page's own mistakes
   block had DENY/ALLOW's empty-rules semantics exactly backwards**, directly contradicting the
-  same page's own (correct) QnA elsewhere — see "Service Mesh hub subtopic wiring" section below
-  for details on all batches.
+  same page's own (correct) QnA elsewhere. **The `metrics` batch found and fixed a genuine
+  inaccuracy where all four Grafana dashboard IDs were mismatched with their actual names**
+  (verified against grafana.com), plus tightened the Telemetry API's "additive and composable"
+  scope-hierarchy phrasing to state its actual complete-field-replacement behavior — see "Service
+  Mesh hub subtopic wiring" section below for details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

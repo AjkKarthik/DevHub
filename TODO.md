@@ -6074,7 +6074,33 @@ off here with a date.
   click-through-then-text-search on the main page, a subtopic page's full breadcrumb (4
   levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
   **Service Mesh hub Phase 10: 10 of 19 topics complete — past the halfway mark.**
-- [ ] `/service-mesh/metrics` — Metrics & Observability
+- [x] `/service-mesh/metrics` — Metrics & Observability (2026-07-28) — 3 subtopics: (1)
+  **Grafana Dashboard IDs Were Mismatched With Their Actual Names**, correcting a genuine
+  inaccuracy where ALL FOUR of the main page's dashboard-ID-to-name pairings were wrong —
+  verified against grafana.com's own listings that the correct mapping is 7639=Mesh,
+  7636=Service, 7630=Workload, 7645=Control Plane, 11829=Performance (the main page never
+  mentioned Control Plane or the real Performance ID at all); (2) **Telemetry API Scope
+  Override Is Full Field Replacement, Not a Merge**, tightening the main page's "additive and
+  composable" phrasing — verified via WebFetch against Istio's own Telemetry task guide that a
+  narrower scope "completely overrides" (not merges with) a touched field, confirmed by Istio's
+  own worked example where a namespace-level tag config causes a mesh-level tag to vanish
+  entirely; (3) **Histogram Bucket Boundaries Are Fixed and Cannot Be Customized**, closing a
+  real gap — verified via Istio's own FAQ that in-proxy telemetry has no bucket-customization
+  mechanism at all (only the removed Mixer architecture supported this), a real precision
+  ceiling for the tight SLO/burn-rate math the main page discusses extensively. Gotcha sweep
+  (backtick parity 2/14/4 all even, apostrophe-after-letter/bare `@word`/unescaped
+  `${`/over-escaped `\"`/bare `{` in prose all clean) passed on the first pass. Confirmed
+  `metrics` bare-key collision-free before adding. Build passed clean on the first attempt.
+  Hit a genuinely new variant of the dev-server-timing gotcha: a FRESH `ng serve` cold-start
+  (server had been stopped between batches) needed its normal several-minute initial compile —
+  resolved correctly by polling with a `curl`-based background Bash task instead of guessing at
+  fixed `sleep` durations, and waiting for its completion notification rather than manually
+  re-checking. Browser-verified successfully once the server was actually ready: toggle count
+  (11, up from 10) and accordion links confirmed via direct DOM query, the corrected Grafana ID
+  text confirmed present (and the old wrong text confirmed absent) via a main-content-scoped
+  text search, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
+  block/try-it/misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 11 of 19 topics complete.**
 - [ ] `/service-mesh/tracing` — Distributed Tracing
 - [ ] `/service-mesh/kiali` — Kiali Service Graph
 - [ ] `/service-mesh/gateway-api` — Kubernetes Gateway API
