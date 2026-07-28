@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Ingress Gateway" topicRoute="/service-mesh/ingress-gateway" subtopicLabel="REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes</h1>
+  <p class="page-subtitle">The main page mentions REGISTRY_ONLY's effect but not its mechanism — a dedicated BlackHoleCluster on the CALLER's own sidecar generates the block, entirely before the request ever leaves the pod.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the corrected TLS secret namespace rule and the SNI filter-chain mechanism, this closes out the main page's ingress gateway trio for this batch — knowing WHERE a block happens changes where you'd actually debug it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Ingress Gateway" topicRoute="/service-mesh/ingress-gateway"
+    [prev]="{ label: 'SNI Filter Chain Matching Is What Actually Selects the Right Cert', route: '/service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert' }" />
+</div>

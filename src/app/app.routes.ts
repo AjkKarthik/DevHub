@@ -3741,7 +3741,12 @@ export const routes: Routes = [
       { path: 'referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1', loadComponent: () => import('./components/cloud/service-mesh/gateway-api/subtopics/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1').then(m => m.ReferenceGrantGraduatedToV1MainPageUsesTheOlderV1beta1Subtopic) },
       { path: 'check-the-gateways-own-programmed-condition-not-just-the-route', loadComponent: () => import('./components/cloud/service-mesh/gateway-api/subtopics/check-the-gateways-own-programmed-condition-not-just-the-route/check-the-gateways-own-programmed-condition-not-just-the-route').then(m => m.CheckTheGatewaysOwnProgrammedConditionNotJustTheRouteSubtopic) },
     ] },
-    { path: 'ingress-gateway',    loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/ingress-gateway').then(m => m.MeshIngressGateway) },
+    { path: 'ingress-gateway', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/ingress-gateway').then(m => m.MeshIngressGateway) },
+      { path: 'tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system', loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/subtopics/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system').then(m => m.TlsSecretMustMatchTheGatewaysOwnNamespaceNotAlwaysIstioSystemSubtopic) },
+      { path: 'sni-filter-chain-matching-is-what-actually-selects-the-right-cert', loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/subtopics/sni-filter-chain-matching-is-what-actually-selects-the-right-cert/sni-filter-chain-matching-is-what-actually-selects-the-right-cert').then(m => m.SniFilterChainMatchingIsWhatActuallySelectsTheRightCertSubtopic) },
+      { path: 'registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes', loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/subtopics/registry-only-blackhole-502/registry-only-blackhole-502').then(m => m.RegistryOnlyBlocksTrafficViaABlackHoleCluster502NotByRemovingRoutesSubtopic) },
+    ] },
     { path: 'performance',        loadComponent: () => import('./components/cloud/service-mesh/performance/performance').then(m => m.MeshPerformance) },
     { path: 'envoy', children: [
       { path: '', loadComponent: () => import('./components/cloud/service-mesh/envoy/envoy').then(m => m.MeshEnvoy) },

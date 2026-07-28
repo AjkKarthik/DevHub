@@ -2961,4 +2961,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1', route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' },
     { label: 'Check the Gateway’s Own Programmed Condition, Not Just the Route', route: '/service-mesh/gateway-api/check-the-gateways-own-programmed-condition-not-just-the-route' },
   ],
+  'ingress-gateway': [
+    { label: 'TLS Secret Must Match the Gateway’s Own Namespace, Not Always istio-system', route: '/service-mesh/ingress-gateway/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system' },
+    { label: 'SNI Filter Chain Matching Is What Actually Selects the Right Cert', route: '/service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert' },
+    { label: 'REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes', route: '/service-mesh/ingress-gateway/registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes' },
+  ],
 };

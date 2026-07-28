@@ -41768,6 +41768,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TLS termination at the ingress gateway versus passthrough to the backend service are meaningfully different configurations with different certificate-management implications.',
     ],
   },
+  'service-mesh/ingress-gateway/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ingress Gateway',                                                    route: '/service-mesh/ingress-gateway' },
+      { label: 'SNI Filter Chain Matching Is What Actually Selects the Right Cert',   route: '/service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert' },
+    ],
+    tip: 'TLS secrets must live in the SAME namespace as the Gateway workload — istio-system for the default gateway, but a dedicated gateway deployed elsewhere needs its secrets in THAT namespace instead.',
+    gotchas: [
+      'Granting every team broad Secret-write access to istio-system to satisfy a misunderstood "always istio-system" rule is an avoidable, real security over-grant.',
+    ],
+  },
+  'service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'TLS Secret Must Match the Gateway’s Own Namespace, Not Always istio-system',      route: '/service-mesh/ingress-gateway/tls-secret-must-match-the-gateways-own-namespace-not-always-istio-system' },
+      { label: 'REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes',  route: '/service-mesh/ingress-gateway/registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes' },
+    ],
+    tip: 'Multiple TLS certs on one gateway port work via SNI-based filter chain matching on the plaintext ClientHello — a wrong-cert symptom is a TLS-listener bug, not a VirtualService routing bug, since VirtualService runs entirely after this match happens.',
+    gotchas: [
+      'An overly broad or mistyped "hosts" value on a Gateway server entry becomes the literal SNI match criteria — it can silently steal traffic meant for a different hostname\'s filter chain.',
+    ],
+  },
+  'service-mesh/ingress-gateway/registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'SNI Filter Chain Matching Is What Actually Selects the Right Cert', route: '/service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert' },
+      { label: 'Ingress Gateway',                                                  route: '/service-mesh/ingress-gateway' },
+    ],
+    tip: 'REGISTRY_ONLY mode blocks unmatched egress via a BlackHoleCluster that returns a local 502 from the CALLER\'s own sidecar — the request never reaches the real destination, so checking the destination\'s logs is always a dead end.',
+    gotchas: [
+      'envoy_cluster_upstream_rq{cluster_name="BlackHoleCluster"} is a real, actionable metric for catching services that need a ServiceEntry they don\'t have yet.',
+    ],
+  },
   'service-mesh/multi-cluster': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
