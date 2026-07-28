@@ -6191,7 +6191,30 @@ off here with a date.
   page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/
   prev-next nav all verified via `get_page_text`.
   **Service Mesh hub Phase 10: 15 of 19 topics complete.**
-- [ ] `/service-mesh/performance` — Service Mesh Performance
+- [x] `/service-mesh/performance` — Service Mesh Performance (2026-07-28) — 3 subtopics: (1)
+  **useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance**, correcting a genuine
+  field mixup — the main page listed useRemoteAddress as an HTTP/2 multiplexing performance
+  lever, verified via WebSearch against Envoy's own docs that it actually controls
+  X-Forwarded-For vs. raw-connection-address trust for client identity, with Envoy's own
+  guidance recommending OPPOSITE values for edge vs. internal proxies; (2) **Envoy Has No JIT
+  Warmup — Only Optional WASM Filters Do**, correcting a fabricated mechanism — the main page
+  attributed pod warmup to "JIT-compiled filters," verified this doesn't exist for Envoy's
+  standard (natively-compiled C++) filter chain, only optional WASM filters involve any
+  JIT-like compilation; corrected to the real causes (cold connection pools, DNS caches,
+  incomplete xDS propagation); (3) **Memory Overhead Scales Per Service, Not Per 1000
+  Services**, correcting a purely self-contained ~1000x numeric contradiction found with NO
+  external research — the theory bullet's own formula predicted ~0.5MB for the page's own
+  500-service example, while the mistakes block AND QnA both independently said ~500-550MB for
+  the SAME scenario; reconciled to ~1MB per service. Gotcha sweep (backtick parity 12/6/4 all
+  even, apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"` all clean) passed
+  on the first pass. **Real SUBTOPICS collision hit**: bare `performance` was already claimed by
+  the Node.js hub — hub-prefixed to `mesh-performance`, matching the hub's own existing
+  progress/search key prefix. Build passed clean. Browser-verified successfully: toggle count
+  (16, up from 15) and accordion links confirmed via direct DOM query, all three corrections
+  confirmed present (old text confirmed absent) via main-content text search, a subtopic page's
+  full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next
+  nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 16 of 19 topics complete.**
 - [ ] `/service-mesh/ambient-mesh` — Ambient Mesh
 - [ ] `/service-mesh/multi-cluster` — Multi-Cluster Mesh
 - [ ] `/service-mesh/consul` — Consul Service Mesh

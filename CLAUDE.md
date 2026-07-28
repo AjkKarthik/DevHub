@@ -2206,6 +2206,33 @@ do this same check before any other new hub's first subtopic set:
     No stale-dev-server incident — toggle count updated correctly (14→15) on the first browser
     check (after the rename, a full rebuild + fresh navigate confirmed the renamed component's
     route still resolves).
+19. **The `/service-mesh/performance` batch found and fixed THREE genuine issues, including this
+    hub's second fabricated-mechanism claim and a purely self-contained numeric contradiction**:
+    (a) `useRemoteAddress: true` was listed as an "HTTP/2 multiplexing" performance lever —
+    verified via WebSearch against Envoy's own HTTP connection manager docs that this field
+    controls whether Envoy trusts the raw connection address or the X-Forwarded-For header for
+    CLIENT IDENTITY, entirely unrelated to HTTP/2 or connection overhead, with Envoy's own
+    guidance recommending OPPOSITE values for edge vs. internal proxies — the exact opposite of
+    treating it as a uniform performance knob; (b) "fresh Envoy instances spend 30-60s warming
+    up JIT-compiled filters" — verified via WebSearch that Envoy's standard (non-WASM) filter
+    chain is natively-compiled C++ with no runtime JIT step at all; only the OPTIONAL WASM
+    extensibility mechanism (V8/Wasmtime) involves anything JIT-like, and most sidecars never
+    load one — corrected to the real, verifiable warmup causes (cold connection pools, DNS
+    caches, incomplete xDS propagation); (c) the theory bullet's own memory formula ("~1MB per
+    1000 services") predicted a negligible ~0.5MB effect for the page's own 500-service worked
+    example, while the mistakes block AND QnA both independently stated ~500-550MB for that
+    SAME scenario — a ~1000x self-contradiction requiring ZERO external research to catch, only
+    arithmetic cross-checking the page's own formula against its own worked examples. Reconciled
+    to the internally-consistent ~1MB-PER-service coefficient (matching the more specific,
+    twice-repeated figures), which also retroactively makes the page's own Sidecar-CRD-scoping
+    recommendation numerically well-motivated instead of contradicting its own math. **Real
+    `SUBTOPICS` collision hit and resolved**: bare `performance` was already claimed by the
+    Node.js hub's own topic — hub-prefixed to `mesh-performance`, matching the existing
+    `mesh-performance` progress/search key already used by this hub's own main page (confirmed
+    via `route.startsWith('mesh-')` in `search.ts`'s `url()` already handling the composite
+    subtopic keys correctly with no special-casing needed, unlike the `k8s-architecture` case).
+    No stale-dev-server incident — toggle count updated correctly (15→16) on the first browser
+    check.
 
 ## Current state (update when it changes!)
 
@@ -2491,19 +2518,21 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 15 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 16 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
   `/service-mesh/metrics`, `/service-mesh/tracing`, `/service-mesh/kiali`,
-  `/service-mesh/gateway-api`, `/service-mesh/ingress-gateway`, 2026-07-28) — see
+  `/service-mesh/gateway-api`, `/service-mesh/ingress-gateway`, `/service-mesh/performance`,
+  2026-07-28) — see
   "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
   `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`,
   `tracing`, `kiali`, `gateway-api`, and `ingress-gateway` were all collision-free, left as bare
   keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
-  `mesh-load-balancing`). **The `linkerd` batch found and
+  `mesh-load-balancing`; `performance` collided with the Node.js hub's own topic and was
+  hub-prefixed to `mesh-performance`). **The `linkerd` batch found and
   fixed a real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example
   (apex and one backend sharing the same service name), explicitly prohibited by the SMI spec.
   **The `resilience` batch found and fixed THREE more real inaccuracies** — a fault-injection/
@@ -2537,8 +2566,12 @@ do this same check before any other new hub's first subtopic set:
   first and timestamp only as a last-resort tiebreaker. **The `ingress-gateway` batch found and
   fixed a genuine overgeneralization** — "TLS secrets MUST be in istio-system" stated as an
   absolute rule, when the real constraint tracks the Gateway workload's own namespace (only
-  istio-system for the default gateway) — see "Service Mesh hub subtopic wiring" section below
-  for details on all batches.
+  istio-system for the default gateway). **The `performance` batch found and fixed THREE more
+  issues** — a field mixup (useRemoteAddress conflated with HTTP/2 performance), a fabricated
+  mechanism ("JIT-compiled filters," which don't exist for standard Envoy sidecars), and a
+  purely self-contained ~1000x numeric contradiction between the page's own formula and its own
+  worked examples — see "Service Mesh hub subtopic wiring" section below for details on all
+  batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.
