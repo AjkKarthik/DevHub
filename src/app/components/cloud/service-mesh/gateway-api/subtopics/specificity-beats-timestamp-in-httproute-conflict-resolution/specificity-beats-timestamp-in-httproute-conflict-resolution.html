@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Gateway API" topicRoute="/service-mesh/gateway-api" subtopicLabel="Specificity Beats Timestamp in HTTPRoute Conflict Resolution" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Specificity Beats Timestamp in HTTPRoute Conflict Resolution</h1>
+  <p class="page-subtitle">The main page said "oldest route wins" across its theory, mistakes block, and quiz — verified against the Gateway API spec: match specificity is checked first, timestamp is only the final tiebreaker.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Gateway API (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects the main page's most-repeated inaccuracy in this batch. Next: ReferenceGrant recently graduated to a stable v1 API version — the main page's v1beta1 usage still works but isn't current.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kubernetes Gateway API" topicRoute="/service-mesh/gateway-api"
+    [next]="{ label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1', route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' }" />
+</div>

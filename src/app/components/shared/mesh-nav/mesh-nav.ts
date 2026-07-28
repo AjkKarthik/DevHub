@@ -306,7 +306,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Gateway API</p>
-      <a routerLink="/service-mesh/gateway-api" routerLinkActive="active"><span class="nl-text">Kubernetes Gateway API</span>@if(p.isDone('mesh-gateway-api')){<span class="nl-done">✓</span>}@if(d('mesh-gateway-api');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/gateway-api" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Kubernetes Gateway API</span>
+        @if(p.isDone('mesh-gateway-api')){<span class="nl-done">✓</span>}
+        @if(d('mesh-gateway-api');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('gateway-api')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gateway-api')"
+                  (click)="toggleSubtopics('gateway-api', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gateway-api'); as gwSubs) {
+        @if (isSubtopicsExpanded('gateway-api')) {
+          <div class="nav-subtopics">
+            @for (s of gwSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/service-mesh/ingress-gateway" routerLinkActive="active"><span class="nl-text">Ingress Gateway</span>@if(p.isDone('mesh-ingress-gateway')){<span class="nl-done">✓</span>}@if(d('mesh-ingress-gateway');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

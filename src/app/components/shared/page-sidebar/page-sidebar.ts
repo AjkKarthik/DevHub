@@ -41723,6 +41723,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Migrating from Ingress to Gateway API is a real migration effort, not a drop-in replacement, despite solving overlapping problems.',
     ],
   },
+  'service-mesh/gateway-api/specificity-beats-timestamp-in-httproute-conflict-resolution': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Gateway API',                                                     route: '/service-mesh/gateway-api' },
+      { label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1',       route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' },
+    ],
+    tip: 'HTTPRoute conflict resolution checks match specificity (method, header count, query param count, path) FIRST — creation timestamp only breaks ties between equally-specific rules, it is never the primary rule.',
+    gotchas: [
+      'A more specific route always wins over a less specific one, even if the less specific route was created first — deploy order is not a reliable precedence lever.',
+    ],
+  },
+  'service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Specificity Beats Timestamp in HTTPRoute Conflict Resolution',                route: '/service-mesh/gateway-api/specificity-beats-timestamp-in-httproute-conflict-resolution' },
+      { label: 'Check the Gateway’s Own Programmed Condition, Not Just the Route',            route: '/service-mesh/gateway-api/check-the-gateways-own-programmed-condition-not-just-the-route' },
+    ],
+    tip: 'ReferenceGrant recently graduated from v1beta1 to a stable v1 — existing v1beta1 manifests still work fine (identical schema), but new ones should use v1 to match Gateway/HTTPRoute/GatewayClass.',
+    gotchas: [
+      'Different resource kinds within the same API group can graduate to stable versions at different times — check each resource\'s own current version rather than assuming the whole group moves together.',
+    ],
+  },
+  'service-mesh/gateway-api/check-the-gateways-own-programmed-condition-not-just-the-route': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1', route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' },
+      { label: 'Kubernetes Gateway API',                                               route: '/service-mesh/gateway-api' },
+    ],
+    tip: 'When multiple HTTPRoutes attached to the same Gateway all fail at once, check the Gateway\'s own status.conditions for Programmed FIRST — a shared root cause there explains simultaneous failures far more often than coincidental per-route issues.',
+    gotchas: [
+      'Individual listeners on a Gateway carry their own separate conditions — one can be healthy while another on the same Gateway is not.',
+    ],
+  },
   'service-mesh/ingress-gateway': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

@@ -2956,4 +2956,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'KIA0201 Is Duplicate DestinationRules, Not a Missing Subset', route: '/service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset' },
     { label: 'Animation Dot Speed Is Response Time, Density Is RPS', route: '/service-mesh/kiali/animation-dot-speed-is-response-time-density-is-rps' },
   ],
+  'gateway-api': [
+    { label: 'Specificity Beats Timestamp in HTTPRoute Conflict Resolution', route: '/service-mesh/gateway-api/specificity-beats-timestamp-in-httproute-conflict-resolution' },
+    { label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1', route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' },
+    { label: 'Check the Gateway’s Own Programmed Condition, Not Just the Route', route: '/service-mesh/gateway-api/check-the-gateways-own-programmed-condition-not-just-the-route' },
+  ],
 };

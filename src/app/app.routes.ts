@@ -3735,7 +3735,12 @@ export const routes: Routes = [
       { path: 'kia0201-is-duplicate-destinationrules-not-missing-subset', loadComponent: () => import('./components/cloud/service-mesh/kiali/subtopics/kia0201-is-duplicate-destinationrules-not-missing-subset/kia0201-is-duplicate-destinationrules-not-missing-subset').then(m => m.Kia0201IsDuplicateDestinationRulesNotMissingSubsetSubtopic) },
       { path: 'animation-dot-speed-is-response-time-density-is-rps', loadComponent: () => import('./components/cloud/service-mesh/kiali/subtopics/animation-dot-speed-is-response-time-density-is-rps/animation-dot-speed-is-response-time-density-is-rps').then(m => m.AnimationDotSpeedIsResponseTimeDensityIsRpsSubtopic) },
     ] },
-    { path: 'gateway-api',        loadComponent: () => import('./components/cloud/service-mesh/gateway-api/gateway-api').then(m => m.MeshGatewayApi) },
+    { path: 'gateway-api', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/gateway-api/gateway-api').then(m => m.MeshGatewayApi) },
+      { path: 'specificity-beats-timestamp-in-httproute-conflict-resolution', loadComponent: () => import('./components/cloud/service-mesh/gateway-api/subtopics/specificity-beats-timestamp-in-httproute-conflict-resolution/specificity-beats-timestamp-in-httproute-conflict-resolution').then(m => m.SpecificityBeatsTimestampInHttpRouteConflictResolutionSubtopic) },
+      { path: 'referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1', loadComponent: () => import('./components/cloud/service-mesh/gateway-api/subtopics/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1').then(m => m.ReferenceGrantGraduatedToV1MainPageUsesTheOlderV1beta1Subtopic) },
+      { path: 'check-the-gateways-own-programmed-condition-not-just-the-route', loadComponent: () => import('./components/cloud/service-mesh/gateway-api/subtopics/check-the-gateways-own-programmed-condition-not-just-the-route/check-the-gateways-own-programmed-condition-not-just-the-route').then(m => m.CheckTheGatewaysOwnProgrammedConditionNotJustTheRouteSubtopic) },
+    ] },
     { path: 'ingress-gateway',    loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/ingress-gateway').then(m => m.MeshIngressGateway) },
     { path: 'performance',        loadComponent: () => import('./components/cloud/service-mesh/performance/performance').then(m => m.MeshPerformance) },
     { path: 'envoy', children: [

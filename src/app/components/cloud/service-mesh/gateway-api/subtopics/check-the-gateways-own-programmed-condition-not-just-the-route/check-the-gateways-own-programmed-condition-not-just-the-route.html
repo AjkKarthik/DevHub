@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kubernetes Gateway API" topicRoute="/service-mesh/gateway-api" subtopicLabel="Check the Gateway’s Own Programmed Condition, Not Just the Route" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Check the Gateway's Own Programmed Condition, Not Just the Route</h1>
+  <p class="page-subtitle">The main page's debugging guidance only ever checks HTTPRoute status — the Gateway resource itself has its own Programmed condition worth checking first.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Gateway API (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the corrected conflict-resolution precedence and the ReferenceGrant version note, this closes out the main page's Gateway API trio for this batch — a more efficient debugging order when multiple routes fail at once.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kubernetes Gateway API" topicRoute="/service-mesh/gateway-api"
+    [prev]="{ label: 'ReferenceGrant Graduated to v1 — the Main Page Used the Older v1beta1', route: '/service-mesh/gateway-api/referencegrant-graduated-to-v1-main-page-uses-the-older-v1beta1' }" />
+</div>
