@@ -2230,11 +2230,12 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 3 of 19 topics have subtopics (`/service-mesh/fundamentals`,
-  `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, 2026-07-28) — see
-  "Service Mesh hub subtopic wiring" section below for the `MeshNavComponent` accordion
-  structural fix and the `mesh-fundamentals` SUBTOPICS-map collision resolution
-  (`istio-architecture` and `istio-install` were both collision-free, left as bare keys).
+  Phase 10: 4 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
+  2026-07-28) — see "Service Mesh hub subtopic wiring" section below for the `MeshNavComponent`
+  accordion structural fix and the `mesh-fundamentals` SUBTOPICS-map collision resolution
+  (`istio-architecture`, `istio-install`, and `envoy` were all collision-free, left as bare
+  keys).
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

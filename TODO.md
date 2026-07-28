@@ -5882,6 +5882,32 @@ off here with a date.
   sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`,
   dark mode confirmed rendering the correct blue accent.
   **Service Mesh hub Phase 10: 3 of 19 topics complete.**
+- [x] `/service-mesh/envoy` — Envoy Proxy Deep Dive (2026-07-28) — 3 subtopics: (1) **WasmPlugin
+  phase Determines Order Relative to Built-in Filters**, giving the main page's bare phase enum
+  (AUTHN/AUTHZ/STATS/UNSPECIFIED) its actual ordering semantics — verified that an AUTHN-phase
+  plugin runs BEFORE Istio's own built-in jwt_authn filter, which is what makes a custom-auth-
+  producing-a-JWT-for-jwt_authn-to-validate pattern actually work, and that placing such a plugin
+  in AUTHZ instead breaks every request with a 401 since jwt_authn runs first and finds nothing;
+  (2) **INSERT_AFTER Targeting router Means the Filter Never Runs**, expanding a single flagged
+  clause buried in an unrelated main-page QnA answer into a full worked broken-vs-fixed example —
+  verified that router terminates the HTTP filter chain, so an EnvoyFilter using INSERT_AFTER
+  against it applies cleanly (no validation error) but is functionally dead code, while the main
+  page's own working Lua-header example already (silently) uses the correct INSERT_BEFORE pattern;
+  (3) **Delta xDS Isolates a NACK'd Resource — SotW Blocks the Whole Type**, connecting two facts
+  the main page states in separate, seemingly-unrelated bullets — verified that Delta xDS isolates
+  a NACK to the one bad resource, while SotW bundles an entire resource type into one push and
+  NACKs everything in that bundle if even one resource is invalid, meaning a single misconfigured
+  cluster under SotW can freeze dozens of unrelated, valid clusters mesh-wide. Gotcha sweep
+  (backtick parity 4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`,
+  over-escaped `\"`, literal-double-quote-in-label all none, zero actual backslash characters in
+  any `.html` file, with `[prev]`/`[next]` cross-references correctly using "NACKd" without the
+  apostrophe to avoid the bound-attribute delimiter collision while the page's own h1/title use
+  "NACK'd") clean on the first pass. Confirmed bare `envoy` key collision-free before adding —
+  left as a bare key. Build passed clean on the first attempt. Browser-verified successfully:
+  toggle count and accordion links confirmed via direct DOM query, a subtopic page's full
+  breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all
+  verified via `get_page_text`, dark mode confirmed rendering the correct blue accent.
+  **Service Mesh hub Phase 10: 4 of 19 topics complete.**
 - [ ] `/service-mesh/linkerd` — Linkerd
 - [ ] `/service-mesh/traffic-management` — Traffic Management
 - [ ] `/service-mesh/resilience` — Resilience Patterns
