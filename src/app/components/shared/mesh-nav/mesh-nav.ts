@@ -154,7 +154,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/resilience" routerLinkActive="active"><span class="nl-text">Retries, Timeouts &amp; Circuit Breaking</span>@if(p.isDone('mesh-resilience')){<span class="nl-done">✓</span>}@if(d('mesh-resilience');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/resilience" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Retries, Timeouts &amp; Circuit Breaking</span>
+        @if(p.isDone('mesh-resilience')){<span class="nl-done">✓</span>}
+        @if(d('mesh-resilience');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('resilience')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('resilience')"
+                  (click)="toggleSubtopics('resilience', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('resilience'); as resilienceSubs) {
+        @if (isSubtopicsExpanded('resilience')) {
+          <div class="nav-subtopics">
+            @for (s of resilienceSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/service-mesh/load-balancing" routerLinkActive="active"><span class="nl-text">Load Balancing Algorithms</span>@if(p.isDone('mesh-load-balancing')){<span class="nl-done">✓</span>}@if(d('mesh-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

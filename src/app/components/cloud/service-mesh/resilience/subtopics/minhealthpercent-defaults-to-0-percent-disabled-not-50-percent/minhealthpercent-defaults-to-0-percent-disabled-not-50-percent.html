@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Resilience Patterns" topicRoute="/service-mesh/resilience" subtopicLabel="minHealthPercent Defaults to 0% (Disabled), Not 50%" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">minHealthPercent Defaults to 0% (Disabled), Not 50%</h1>
+  <p class="page-subtitle">The main page's own QnA claimed a 50% default safety floor — verified against Istio's own docs and corrected: the real default is 0%, meaning this safety valve is off unless explicitly configured.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real inaccuracy found in the main page's own QnA during authoring. Next: why a service with no DestinationRule at all still has real circuit-breaker limits, courtesy of Envoy's own defaults.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Resilience Patterns" topicRoute="/service-mesh/resilience"
+    [prev]="{ label: 'consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work', route: '/service-mesh/resilience/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work' }"
+    [next]="{ label: 'A Service With No DestinationRule Still Has a 1024-Connection Cap', route: '/service-mesh/resilience/a-service-with-no-destinationrule-still-has-a-1024-connection-cap' }" />
+</div>

@@ -2920,4 +2920,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream', route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' },
     { label: 'Mirroring Is Fire-and-Forget — the Primary Response Never Waits', route: '/service-mesh/traffic-management/mirroring-is-fire-and-forget-the-primary-response-never-waits' },
   ],
+  'resilience': [
+    { label: 'consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work', route: '/service-mesh/resilience/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work' },
+    { label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%', route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' },
+    { label: 'A Service With No DestinationRule Still Has a 1024-Connection Cap', route: '/service-mesh/resilience/a-service-with-no-destinationrule-still-has-a-1024-connection-cap' },
+  ],
 };

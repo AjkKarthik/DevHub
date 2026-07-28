@@ -3693,7 +3693,12 @@ export const routes: Routes = [
       { path: 'retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream', loadComponent: () => import('./components/cloud/service-mesh/traffic-management/subtopics/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream').then(m => m.Retryon5xxCanAmplifyLoadIntoAnAlreadyOverloadedUpstreamSubtopic) },
       { path: 'mirroring-is-fire-and-forget-the-primary-response-never-waits', loadComponent: () => import('./components/cloud/service-mesh/traffic-management/subtopics/mirroring-is-fire-and-forget-the-primary-response-never-waits/mirroring-is-fire-and-forget-the-primary-response-never-waits').then(m => m.MirroringIsFireAndForgetThePrimaryResponseNeverWaitsSubtopic) },
     ] },
-    { path: 'resilience',         loadComponent: () => import('./components/cloud/service-mesh/resilience/resilience').then(m => m.MeshResilience) },
+    { path: 'resilience', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/resilience/resilience').then(m => m.MeshResilience) },
+      { path: 'consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work', loadComponent: () => import('./components/cloud/service-mesh/resilience/subtopics/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work').then(m => m.ConsecutivelocaloriginfailuresNeedsSplitexternallocaloriginerrorsToWorkSubtopic) },
+      { path: 'minhealthpercent-defaults-to-0-percent-disabled-not-50-percent', loadComponent: () => import('./components/cloud/service-mesh/resilience/subtopics/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent').then(m => m.MinhealthpercentDefaultsTo0PercentDisabledNot50PercentSubtopic) },
+      { path: 'a-service-with-no-destinationrule-still-has-a-1024-connection-cap', loadComponent: () => import('./components/cloud/service-mesh/resilience/subtopics/a-service-with-no-destinationrule-still-has-a-1024-connection-cap/a-service-with-no-destinationrule-still-has-a-1024-connection-cap').then(m => m.AServiceWithNoDestinationRuleStillHasA1024ConnectionCapSubtopic) },
+    ] },
     { path: 'load-balancing',     loadComponent: () => import('./components/cloud/service-mesh/load-balancing/load-balancing').then(m => m.MeshLoadBalancing) },
     { path: 'mtls',               loadComponent: () => import('./components/cloud/service-mesh/mtls/mtls').then(m => m.MeshMtls) },
     { path: 'authorization',      loadComponent: () => import('./components/cloud/service-mesh/authorization/authorization').then(m => m.MeshAuthorization) },

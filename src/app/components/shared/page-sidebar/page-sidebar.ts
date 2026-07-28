@@ -41558,6 +41558,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Circuit breaker thresholds configured mesh-wide as a blanket default may not fit every individual service\'s actual failure/recovery characteristics.',
     ],
   },
+  'service-mesh/resilience/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Resilience',                                                        route: '/service-mesh/resilience' },
+      { label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%',                route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' },
+    ],
+    tip: 'consecutiveLocalOriginFailures only counts connection-level failures Envoy itself detects (timeouts, refused connections) — by default those are lumped in with HTTP 5xx failures unless splitExternalLocalOriginErrors is explicitly set to true.',
+    gotchas: [
+      'Without splitExternalLocalOriginErrors: true, a service returning legitimate 5xx responses can trip what looks like a "local origin" threshold, or vice versa — the two failure categories stay merged.',
+    ],
+  },
+  'service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work', route: '/service-mesh/resilience/consecutivelocaloriginfailures-needs-splitexternallocaloriginerrors-to-work' },
+      { label: 'A Service With No DestinationRule Still Has a 1024-Connection Cap',            route: '/service-mesh/resilience/a-service-with-no-destinationrule-still-has-a-1024-connection-cap' },
+    ],
+    tip: 'A genuine inaccuracy on the main page (claiming a 50% default) was caught and fixed during this batch — minHealthPercent actually defaults to 0% (disabled), so the cascading-failure safety floor must be explicitly configured to take effect at all.',
+    gotchas: [
+      'Once minHealthPercent\'s threshold is crossed, outlier detection disables entirely — already-ejected hosts are restored to rotation too, not just "no new ejections."',
+    ],
+  },
+  'service-mesh/resilience/a-service-with-no-destinationrule-still-has-a-1024-connection-cap': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%', route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' },
+      { label: 'Resilience',                                          route: '/service-mesh/resilience' },
+    ],
+    tip: 'Envoy\'s own built-in defaults (maxConnections and max_pending_requests both 1024) apply even with zero DestinationRule configuration — a service is never truly "unprotected," just protected at a generic value that may not match its real capacity.',
+    gotchas: [
+      'A default of 1024 is likely far too high to meaningfully protect a small, lightly-provisioned service — the circuit breaker exists but provides little practical benefit until deliberately tuned.',
+    ],
+  },
   'service-mesh/mtls': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
