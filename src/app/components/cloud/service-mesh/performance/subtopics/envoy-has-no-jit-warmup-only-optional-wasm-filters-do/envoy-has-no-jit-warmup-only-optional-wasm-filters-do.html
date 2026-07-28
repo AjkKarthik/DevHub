@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Mesh Performance" topicRoute="/service-mesh/performance" subtopicLabel="Envoy Has No JIT Warmup — Only Optional WASM Filters Do" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Envoy Has No JIT Warmup — Only Optional WASM Filters Do</h1>
+  <p class="page-subtitle">The main page attributed Envoy's warmup behavior to "JIT-compiled filters" — a mechanism that doesn't exist for standard sidecars. The real causes are connection-pool coldness and xDS propagation delay.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a fabricated mechanism claim. Next: the main page's own memory-overhead formula contradicted itself by roughly 1000x between two different sections — reconciled to the correct per-service coefficient.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Mesh Performance" topicRoute="/service-mesh/performance"
+    [prev]="{ label: 'useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance', route: '/service-mesh/performance/useremoteaddress-is-about-client-ip-trust-not-http2-performance' }"
+    [next]="{ label: 'Memory Overhead Scales Per Service, Not Per 1000 Services', route: '/service-mesh/performance/memory-overhead-scales-per-service-not-per-1000-services' }" />
+</div>

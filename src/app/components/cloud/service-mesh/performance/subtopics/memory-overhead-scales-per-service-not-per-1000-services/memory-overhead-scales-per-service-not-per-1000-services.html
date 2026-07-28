@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Mesh Performance" topicRoute="/service-mesh/performance" subtopicLabel="Memory Overhead Scales Per Service, Not Per 1000 Services" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Memory Overhead Scales Per Service, Not Per 1000 Services</h1>
+  <p class="page-subtitle">The main page's own formula and its own worked examples disagreed by roughly 1000x — reconciled to a consistent ~1MB-per-service coefficient across the whole page.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>Together with the corrected useRemoteAddress framing and the removed "JIT warmup" fabrication, this closes out the main page's performance trio for this batch — internal consistency-checking as its own verification technique.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Mesh Performance" topicRoute="/service-mesh/performance"
+    [prev]="{ label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do', route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' }" />
+</div>

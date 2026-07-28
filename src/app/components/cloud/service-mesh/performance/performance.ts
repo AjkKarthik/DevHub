@@ -37,7 +37,7 @@ export class MeshPerformance {
       heading: 'Sidecar Overhead — Real Numbers',
       points: [
         'The Envoy sidecar adds latency per hop: typically 0.2-0.5ms for p50, 1-3ms for p99 in a well-configured mesh. This is additive across hops — 5 service hops = 5× the overhead.',
-        'Memory overhead: each Envoy proxy uses 50-80MB RAM base + ~1MB per 1000 services it knows about. In a large cluster (1000 services), each proxy can use 1GB+ RAM if not scoped.',
+        'Memory overhead: each Envoy proxy uses 50-80MB RAM base + roughly ~1MB PER SERVICE it knows about (not per 1000 — a 500-service cluster without Sidecar scoping adds ~500MB on top of the base, matching real-world reports). In a large cluster (1000+ services), each proxy can use 1GB+ RAM if not scoped.',
         'CPU overhead: 0.5-2% CPU per 1000 RPS through a sidecar under normal conditions. Spikes during high-frequency config pushes (xDS). Worker thread count (concurrency) affects CPU usage.',
         'Control plane cost: each pod injection adds one more subscriber to Istiod xDS streams. At 10,000 pods, Istiod processes 10,000 concurrent xDS connections. Scale Istiod horizontally for large clusters.',
         'Actual production overhead is often 5-10% CPU and 50-100MB RAM per pod — acceptable for most services. For CPU-sensitive workloads (high-frequency trading, ML inference), consider Ambient Mesh or selective injection.',
@@ -74,7 +74,7 @@ export class MeshPerformance {
         'Concurrency tuning: `meshConfig.defaultConfig.concurrency: 2` limits Envoy to 2 worker threads per sidecar. For low-traffic services, this reduces idle CPU significantly. For high-traffic services, match concurrency to available CPUs.',
         'Access log cost: Envoy access logs (~100 bytes per request) add I/O overhead and increase memory pressure for log buffering. Disable with `meshConfig.accessLogFile: ""` in production or use the Telemetry API to sample at 1%.',
         'Protocol detection: if Istio cannot auto-detect the protocol (HTTP vs TCP), it defaults to TCP with no L7 features. Name ports explicitly: `http-myport`, `grpc-myport`, `tcp-myport` — Istio infers protocol from the port name prefix.',
-        'Envoy warmup: at high concurrency, fresh Envoy instances spend 30-60s warming up JIT-compiled filters. Account for this in your pod startup time SLOs — `warmupDurationSecs` helps by ramping traffic slowly to new pods.',
+        'Envoy warmup: fresh Envoy instances need time to establish upstream connection pools, resolve DNS, and populate caches before they perform as well as a warm proxy — NOT "JIT compilation" (Envoy\'s standard filter chain is natively-compiled C++ with no runtime JIT step at all; only optional WASM filters involve any JIT-like compilation). Account for this in your pod startup time SLOs — `warmupDurationSecs` helps by ramping traffic slowly to new pods.',
       ],
     },
     {
@@ -82,7 +82,7 @@ export class MeshPerformance {
       points: [
         'Avoid wildcard hosts in VirtualService (`hosts: ["*"]`) — Istio applies the VirtualService to ALL services, increasing routing table size unnecessarily.',
         'DestinationRule TrafficPolicy changes invalidate EDS endpoints for that host — Istiod pushes a full EDS update to all clients. Batch DestinationRule changes to avoid cascading xDS storms.',
-        'HTTP/2 multiplexing: `meshConfig.defaultConfig.useRemoteAddress: true` and H2C (HTTP/2 cleartext) reduce connection overhead for high-RPS services. Istio enables H2C by default between sidecars.',
+        'HTTP/2 multiplexing: H2C (HTTP/2 cleartext) reduces connection overhead for high-RPS services by letting one TCP connection serve many concurrent streams. Istio enables H2C by default between sidecars. (`useRemoteAddress` is unrelated to HTTP/2 performance — it controls whether Envoy trusts the X-Forwarded-For header or the actual downstream connection address for client-identity purposes.)',
         'Connection pool sizing: too small → frequent connection creation overhead. Too large → wasted memory. For HTTP/2 services, `http.http2MaxRequests: 1000` allows high concurrency over fewer TCP connections.',
         'mTLS handshake cost: TLS handshakes are CPU-intensive. Session resumption (TLS session tickets) amortises this cost. Istio Envoy does session resumption by default within a connection pool.',
         'Outlier detection scan interval: `interval: 10s` is the default. Setting it lower (1s) for faster health detection increases CPU usage on Istiod and sidecars. Balance detection speed vs overhead.',
@@ -407,7 +407,7 @@ console.log(getOptimisedConfig());`,
   qna: QnaItem[] = [
     {
       q: 'What are the actual memory and CPU costs of the Istio sidecar in production?',
-      a: 'Typical production overhead per pod: <ul><li><strong>Memory</strong>: 50-80MB base + ~1MB per 1000 services in scope. Without Sidecar CRD in a 500-service cluster: 550MB per proxy. With Sidecar CRD scoped to 10 services: ~60MB.</li><li><strong>CPU</strong>: ~0.5-2% CPU per 1000 RPS at steady state. Spikes during xDS config pushes (adding a VirtualService triggers pushes to all proxies).</li></ul>Bottom line: in a well-scoped mesh (Sidecar CRD), the overhead is typically 50-100MB RAM and <5% CPU — acceptable for most services. The biggest surprise is memory in large clusters without Sidecar CRD scoping.',
+      a: 'Typical production overhead per pod: <ul><li><strong>Memory</strong>: 50-80MB base + roughly ~1MB PER SERVICE in scope (not per 1000). Without Sidecar CRD in a 500-service cluster: ~550MB per proxy. With Sidecar CRD scoped to 10 services: ~60MB.</li><li><strong>CPU</strong>: ~0.5-2% CPU per 1000 RPS at steady state. Spikes during xDS config pushes (adding a VirtualService triggers pushes to all proxies).</li></ul>Bottom line: in a well-scoped mesh (Sidecar CRD), the overhead is typically 50-100MB RAM and <5% CPU — acceptable for most services. The biggest surprise is memory in large clusters without Sidecar CRD scoping.',
     },
     {
       q: 'When should you consider Ambient Mesh instead of sidecar injection?',

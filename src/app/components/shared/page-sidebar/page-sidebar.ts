@@ -42026,6 +42026,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Ambient mesh\'s per-node proxy architecture specifically targets this overhead concern by eliminating the per-pod sidecar, a real architectural response to a genuine performance criticism of the sidecar model.',
     ],
   },
+  'service-mesh/performance/useremoteaddress-is-about-client-ip-trust-not-http2-performance': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Service Mesh Performance',                                        route: '/service-mesh/performance' },
+      { label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do',          route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' },
+    ],
+    tip: 'useRemoteAddress controls whether Envoy trusts the raw connection address or the X-Forwarded-For chain for client identity — it has nothing to do with HTTP/2 performance, and the correct value differs for edge vs. internal proxies.',
+    gotchas: [
+      'Setting it to true on internal sidecars overwrites the original client IP with each hop\'s own upstream address, corrupting log/access-control attribution for zero performance benefit.',
+    ],
+  },
+  'service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance', route: '/service-mesh/performance/useremoteaddress-is-about-client-ip-trust-not-http2-performance' },
+      { label: 'Memory Overhead Scales Per Service, Not Per 1000 Services',         route: '/service-mesh/performance/memory-overhead-scales-per-service-not-per-1000-services' },
+    ],
+    tip: 'Envoy\'s standard filter chain is natively-compiled C++ with no runtime JIT step — the real warmup effect on fresh pods comes from cold connection pools, DNS caches, and incomplete xDS propagation, not "JIT-compiled filters."',
+    gotchas: [
+      'Only optional WASM filters (via V8/Wasmtime) involve any JIT-like compilation — most Istio sidecars never load one.',
+    ],
+  },
+  'service-mesh/performance/memory-overhead-scales-per-service-not-per-1000-services': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do', route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' },
+      { label: 'Service Mesh Performance',                                route: '/service-mesh/performance' },
+    ],
+    tip: 'The main page\'s own formula and its own worked examples disagreed by roughly 1000x — reconciled to ~1MB per service (not per 1000), which also makes the Sidecar CRD scoping recommendation numerically well-motivated.',
+    gotchas: [
+      'Cross-checking a stated formula against a page\'s own separately-authored worked examples is a real, self-contained way to catch this kind of drift.',
+    ],
+  },
 
   // ── System Design: per-page entries ─────────────────────────────────────────
   'system-design/framework': {

@@ -350,7 +350,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
-      <a routerLink="/service-mesh/performance" routerLinkActive="active"><span class="nl-text">Service Mesh Performance</span>@if(p.isDone('mesh-performance')){<span class="nl-done">✓</span>}@if(d('mesh-performance');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Service Mesh Performance</span>
+        @if(p.isDone('mesh-performance')){<span class="nl-done">✓</span>}
+        @if(d('mesh-performance');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('mesh-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mesh-performance')"
+                  (click)="toggleSubtopics('mesh-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mesh-performance'); as perfSubs) {
+        @if (isSubtopicsExpanded('mesh-performance')) {
+          <div class="nav-subtopics">
+            @for (s of perfSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/service-mesh/consul" routerLinkActive="active"><span class="nl-text">Consul Connect</span>@if(p.isDone('mesh-consul')){<span class="nl-done">✓</span>}@if(d('mesh-consul');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

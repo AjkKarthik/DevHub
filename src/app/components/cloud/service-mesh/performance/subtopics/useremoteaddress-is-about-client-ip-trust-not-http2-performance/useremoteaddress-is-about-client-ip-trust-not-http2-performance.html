@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Mesh Performance" topicRoute="/service-mesh/performance" subtopicLabel="useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance</h1>
+  <p class="page-subtitle">The main page listed useRemoteAddress as an HTTP/2 performance lever — verified against Envoy's own docs: it's an unrelated client-IP-trust setting, and the correct value differs for edge vs. internal proxies.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real field mixup on the main page. Next: the main page's "JIT-compiled filters" warmup claim was fabricated — Envoy's standard filter chain has no runtime JIT step at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Mesh Performance" topicRoute="/service-mesh/performance"
+    [next]="{ label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do', route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' }" />
+</div>

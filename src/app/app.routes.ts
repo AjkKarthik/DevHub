@@ -3747,7 +3747,12 @@ export const routes: Routes = [
       { path: 'sni-filter-chain-matching-is-what-actually-selects-the-right-cert', loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/subtopics/sni-filter-chain-matching-is-what-actually-selects-the-right-cert/sni-filter-chain-matching-is-what-actually-selects-the-right-cert').then(m => m.SniFilterChainMatchingIsWhatActuallySelectsTheRightCertSubtopic) },
       { path: 'registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes', loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/subtopics/registry-only-blackhole-502/registry-only-blackhole-502').then(m => m.RegistryOnlyBlocksTrafficViaABlackHoleCluster502NotByRemovingRoutesSubtopic) },
     ] },
-    { path: 'performance',        loadComponent: () => import('./components/cloud/service-mesh/performance/performance').then(m => m.MeshPerformance) },
+    { path: 'performance', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/performance/performance').then(m => m.MeshPerformance) },
+      { path: 'useremoteaddress-is-about-client-ip-trust-not-http2-performance', loadComponent: () => import('./components/cloud/service-mesh/performance/subtopics/useremoteaddress-is-about-client-ip-trust-not-http2-performance/useremoteaddress-is-about-client-ip-trust-not-http2-performance').then(m => m.UseRemoteAddressIsAboutClientIpTrustNotHttp2PerformanceSubtopic) },
+      { path: 'envoy-has-no-jit-warmup-only-optional-wasm-filters-do', loadComponent: () => import('./components/cloud/service-mesh/performance/subtopics/envoy-has-no-jit-warmup-only-optional-wasm-filters-do/envoy-has-no-jit-warmup-only-optional-wasm-filters-do').then(m => m.EnvoyHasNoJitWarmupOnlyOptionalWasmFiltersDoSubtopic) },
+      { path: 'memory-overhead-scales-per-service-not-per-1000-services', loadComponent: () => import('./components/cloud/service-mesh/performance/subtopics/memory-overhead-scales-per-service-not-per-1000-services/memory-overhead-scales-per-service-not-per-1000-services').then(m => m.MemoryOverheadScalesPerServiceNotPer1000ServicesSubtopic) },
+    ] },
     { path: 'envoy', children: [
       { path: '', loadComponent: () => import('./components/cloud/service-mesh/envoy/envoy').then(m => m.MeshEnvoy) },
       { path: 'wasmplugin-phase-determines-order-relative-to-built-in-filters', loadComponent: () => import('./components/cloud/service-mesh/envoy/subtopics/wasmplugin-phase-determines-order-relative-to-built-in-filters/wasmplugin-phase-determines-order-relative-to-built-in-filters').then(m => m.WasmpluginPhaseDeterminesOrderRelativeToBuiltInFiltersSubtopic) },

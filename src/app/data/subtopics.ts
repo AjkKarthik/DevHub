@@ -2966,4 +2966,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SNI Filter Chain Matching Is What Actually Selects the Right Cert', route: '/service-mesh/ingress-gateway/sni-filter-chain-matching-is-what-actually-selects-the-right-cert' },
     { label: 'REGISTRY_ONLY Blocks Traffic via a BlackHoleCluster 502, Not by Removing Routes', route: '/service-mesh/ingress-gateway/registry-only-blocks-traffic-via-a-blackholecluster-502-not-by-removing-routes' },
   ],
+  // NOTE: 'performance' bare key already taken by the Node.js hub's own performance topic
+  'mesh-performance': [
+    { label: 'useRemoteAddress Is About Client IP Trust, Not HTTP/2 Performance', route: '/service-mesh/performance/useremoteaddress-is-about-client-ip-trust-not-http2-performance' },
+    { label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do', route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' },
+    { label: 'Memory Overhead Scales Per Service, Not Per 1000 Services', route: '/service-mesh/performance/memory-overhead-scales-per-service-not-per-1000-services' },
+  ],
 };
