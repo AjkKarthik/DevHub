@@ -2518,19 +2518,19 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 16 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 17 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
   `/service-mesh/metrics`, `/service-mesh/tracing`, `/service-mesh/kiali`,
   `/service-mesh/gateway-api`, `/service-mesh/ingress-gateway`, `/service-mesh/performance`,
-  2026-07-28) — see
+  `/service-mesh/ambient-mesh`, 2026-07-28) — see
   "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
   `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`,
-  `tracing`, `kiali`, `gateway-api`, and `ingress-gateway` were all collision-free, left as bare
-  keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
+  `tracing`, `kiali`, `gateway-api`, `ingress-gateway`, and `ambient-mesh` were all collision-free,
+  left as bare keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
   `mesh-load-balancing`; `performance` collided with the Node.js hub's own topic and was
   hub-prefixed to `mesh-performance`). **The `linkerd` batch found and
   fixed a real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example
@@ -2570,8 +2570,25 @@ do this same check before any other new hub's first subtopic set:
   issues** — a field mixup (useRemoteAddress conflated with HTTP/2 performance), a fabricated
   mechanism ("JIT-compiled filters," which don't exist for standard Envoy sidecars), and a
   purely self-contained ~1000x numeric contradiction between the page's own formula and its own
-  worked examples — see "Service Mesh hub subtopic wiring" section below for details on all
-  batches.
+  worked examples. **The `ambient-mesh` batch found and fixed EIGHT occurrences of three distinct
+  inaccuracies, several missed on the first editing pass and only caught during browser
+  verification** — a GA-version claim (Istio 1.22/May 2024 stated as "stable," when Istio's own
+  GA blog post confirms 1.24/November 2024 — 1.22 was still Beta) repeated across the theory,
+  `page-meta`'s `since=` attribute, a QnA answer, AND the revision `oneLiner` (the last three were
+  missed by the initial edit pass and only caught by reading the FULL rendered page text after the
+  first build, not by re-reading the source); eBPF framed as a co-equal default alongside iptables
+  with a fabricated "kernels < 5.10" figure, when Istio's own ambient CNI docs state iptables+GENEVE
+  is the sole default with no kernel floor and eBPF is a separate opt-in mode requiring kernel
+  4.20+ (theory, the "choose sidecar" bullet, and a QnA answer); and HBONE identity wrongly
+  attributed to an HTTP header rather than the underlying mTLS handshake itself (theory, the quiz
+  explanation, AND a revision `mustKnow` bullet — again the last one only caught via full-page
+  browser verification after the build). **Lesson reinforced**: a claim repeated in multiple
+  page sections (theory prose, `page-meta` attributes, QnA, quiz explanations, revision
+  summary bullets) needs a `grep` for ALL occurrences of the wrong fact/version string across the
+  whole file, not just fixing the first instance found — this batch's initial edit pass missed 3
+  of 8 total occurrences, all caught only by reading the complete rendered page text in the
+  browser after building, not by re-reading the source file. — see "Service Mesh hub subtopic
+  wiring" section below for details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

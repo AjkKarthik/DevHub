@@ -6215,7 +6215,32 @@ off here with a date.
   full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next
   nav all verified via `get_page_text`.
   **Service Mesh hub Phase 10: 16 of 19 topics complete.**
-- [ ] `/service-mesh/ambient-mesh` — Ambient Mesh
+- [x] `/service-mesh/ambient-mesh` — Ambient Mesh (2026-07-28) — 3 subtopics: (1) **Ambient Mesh
+  Reached GA at Istio 1.24, Not 1.22**, correcting a version claim — the main page stated
+  "stable in Istio 1.22 (May 2024)," verified via Istio's own GA blog post ("Reaches General
+  Availability in v1.24," Nov 2024) and a matching March-2024 CNCF post explicitly titled "beta
+  release" for the 1.22 era; (2) **Default Redirection Is iptables+GENEVE, Not eBPF**, correcting
+  an overstatement — the main page framed eBPF as a co-equal default alongside iptables-nft and
+  cited an unconfirmed "kernels < 5.10" figure, verified via Istio's own ambient CNI docs that
+  iptables+GENEVE is the sole default (no kernel floor) and eBPF is a separate opt-in mode
+  (`redirectMode: "ebpf"`) requiring kernel 4.20+; (3) **HBONE Identity Comes From the mTLS
+  Handshake, Not HTTP Headers**, correcting a mechanism claim — the main page said HBONE "adds
+  metadata (source workload identity) in HTTP headers," verified via Istio's own architecture
+  docs that HBONE is an HTTP/2 CONNECT tunnel running OVER an already-established mTLS
+  connection, with the mTLS handshake's SPIFFE certificates (not any header) conveying identity.
+  **Notable: the GA-version and HBONE-identity corrections each had to be applied in FOUR
+  separate spots** (theory bullet, `page-meta`'s `since=` attribute / a quiz explanation, a QnA
+  answer, and a revision-card bullet) — the initial edit pass caught only the theory bullet for
+  each, and the other 3 occurrences per claim were found only by reading the FULL rendered page
+  text in the browser after the first build, not by re-reading the source `.ts` file. Gotcha
+  sweep (backtick parity 2/6/2 all even; apostrophe-after-letter, bare `@word`, bare `{` in
+  prose, `[prev]`/`[next]` double-quote and backslash-apostrophe checks) all clean. `ambient-mesh`
+  SUBTOPICS key confirmed collision-free (checked both quoted/unquoted forms), left bare. Build
+  passed clean. Browser-verified: nav accordion toggle opens with all 3 links (confirmed via DOM
+  query), auto-expand-on-direct-navigation confirmed, a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via
+  `get_page_text`, dark mode rendering confirmed via screenshot.
+  **Service Mesh hub Phase 10: 17 of 19 topics complete.**
 - [ ] `/service-mesh/multi-cluster` — Multi-Cluster Mesh
 - [ ] `/service-mesh/consul` — Consul Service Mesh
 
