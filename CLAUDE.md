@@ -2145,6 +2145,39 @@ do this same check before any other new hub's first subtopic set:
     while DENSITY (how tightly packed the dots are) is what represents RPS — the two signals
     were conflated. Confirmed `kiali` collision-free in the SUBTOPICS map. No stale-dev-server
     incident — toggle count updated correctly (12→13) on the first browser check.
+17. **The `/service-mesh/gateway-api` batch found and fixed this hub's most-REPEATED single
+    inaccuracy — wrong in three separate sections of the same page**: the theory, the mistakes
+    block, and the quiz all described HTTPRoute conflict resolution as "creation timestamp —
+    older routes win," treated as the PRIMARY rule. Verified directly against the Gateway API
+    spec's own documented precedence: match SPECIFICITY is checked first — method match, then
+    largest number of header matches, then largest number of query param matches, then path
+    specificity (exact beats prefix, longer prefix beats shorter) — and creation timestamp is
+    only the tiebreaker when two rules are tied on EVERY specificity dimension, with alphabetical
+    `{namespace}/{name}` order as the final tiebreaker after that. The mistakes-block example was
+    especially wrong: it showed a MORE SPECIFIC route (`/api/v2`) LOSING to a LESS SPECIFIC one
+    (`/api`) purely because the less-specific route was created first — backwards from the real
+    spec. Fixed the theory bullet, the mistakes-block wrong/right/explanation, the quiz
+    question/options/explanation, AND the revision summary's mustKnow bullet — four separate
+    edits for one inaccuracy, the most main-page touchpoints any single correction in this hub
+    has needed so far. **Two additional gap-closing subtopics, both confirmed-correct rather than
+    corrections**: (a) verified Istio's GAMMA (mesh HTTPRoute) support version claim ("1.16+") was
+    actually ACCURATE this time (unlike the earlier OpenTelemetry version claim in the `tracing`
+    batch) — not every version claim worth checking turns out wrong, the discipline is to verify,
+    not to assume every claim is broken; (b) ReferenceGrant recently graduated from `v1beta1` to a
+    stable `v1` (confirmed via a Kubernetes blog post dated within the last few months) while
+    GatewayClass/Gateway/HTTPRoute graduated earlier — the main page's `v1beta1` ReferenceGrant
+    examples still work (identical schema) but are worth noting as dated; (c) the main page's
+    HTTPRoute-status debugging guidance never mentioned the GATEWAY resource's own separate
+    `Programmed` status condition, checking which FIRST is more efficient than debugging routes
+    one at a time when multiple routes sharing one Gateway fail simultaneously. **A real
+    apostrophe-escaping mistake caught and self-corrected during this batch**: an `[next]` label
+    in one subtopic's own `.html` file was initially written with a backslash-escaped apostrophe
+    (`Gateway\'s`) — the `.ts`-field convention — instead of the typographic curly quote (`'`)
+    the `.html` bound-attribute case actually requires; caught by direct review before the build,
+    consistent with this being a recurring, easy-to-make mixup documented earlier in this file
+    for other hubs (Node.js, Linux) too. Confirmed `gateway-api` collision-free in the SUBTOPICS
+    map. No stale-dev-server incident — toggle count updated correctly (13→14) on the first
+    browser check.
 
 ## Current state (update when it changes!)
 
@@ -2430,18 +2463,19 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 13 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 14 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
-  `/service-mesh/metrics`, `/service-mesh/tracing`, `/service-mesh/kiali`, 2026-07-28) — see
+  `/service-mesh/metrics`, `/service-mesh/tracing`, `/service-mesh/kiali`,
+  `/service-mesh/gateway-api`, 2026-07-28) — see
   "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
   `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`,
-  `tracing`, and `kiali` were all collision-free, left as bare keys; `load-balancing` collided
-  with the AWS hub's own topic and was hub-prefixed to `mesh-load-balancing`). **The `linkerd`
-  batch found and
+  `tracing`, `kiali`, and `gateway-api` were all collision-free, left as bare keys;
+  `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
+  `mesh-load-balancing`). **The `linkerd` batch found and
   fixed a real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example
   (apex and one backend sharing the same service name), explicitly prohibited by the SMI spec.
   **The `resilience` batch found and fixed THREE more real inaccuracies** — a fault-injection/
@@ -2469,8 +2503,11 @@ do this same check before any other new hub's first subtopic set:
   claim contradicted by the page's own Envoy Config Viewer description (actually queries Istiod's
   debug endpoint), a KIA0201 code cited with two different WRONG meanings in two different
   sections of the same page (the real code is KIA1107), and traffic-animation dot speed/density
-  meanings swapped — see "Service Mesh hub subtopic wiring" section below for details on all
-  batches.
+  meanings swapped. **The `gateway-api` batch found and fixed this hub's most-repeated single
+  inaccuracy** — "oldest route wins" stated as the primary HTTPRoute conflict-resolution rule
+  across the theory, mistakes block, AND quiz, when the real precedence checks match specificity
+  first and timestamp only as a last-resort tiebreaker — see "Service Mesh hub subtopic wiring"
+  section below for details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

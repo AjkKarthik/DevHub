@@ -6142,7 +6142,30 @@ off here with a date.
   a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
   misconceptions/prev-next nav all verified via `get_page_text`.
   **Service Mesh hub Phase 10: 13 of 19 topics complete.**
-- [ ] `/service-mesh/gateway-api` — Kubernetes Gateway API
+- [x] `/service-mesh/gateway-api` — Kubernetes Gateway API (2026-07-28) — 3 subtopics: (1)
+  **Specificity Beats Timestamp in HTTPRoute Conflict Resolution**, correcting this hub's
+  most-repeated single inaccuracy — the main page's theory, mistakes block, AND quiz all said
+  "oldest route wins" as the primary conflict-resolution rule, with the mistakes block showing a
+  MORE SPECIFIC route losing to a LESS SPECIFIC one purely by creation order; verified against
+  the Gateway API spec's own documented precedence (method match, header count, query param
+  count, path specificity — checked BEFORE timestamp, which is only the final tiebreaker) and
+  fixed in all four places (theory, mistakes, quiz, revision summary); (2) **ReferenceGrant
+  Graduated to v1 — the Main Page Used the Older v1beta1**, a gap-closing (not error-correcting)
+  subtopic noting ReferenceGrant's recent graduation while GatewayClass/Gateway/HTTPRoute
+  graduated earlier; (3) **Check the Gateway's Own Programmed Condition, Not Just the Route**,
+  closing a real debugging gap — the main page's status-checking guidance only ever covered
+  HTTPRoute status, never the Gateway resource's own separate Programmed condition. Also verified
+  (and confirmed ACCURATE, no fix needed) the main page's "Istio 1.16+" GAMMA support claim.
+  Gotcha sweep (backtick parity 6/4/4 all even, apostrophe-after-letter/bare `@word`/unescaped
+  `${`/over-escaped `\"`/straight-double-quote-in-label all clean) passed on the first pass —
+  caught and self-corrected one backslash-vs-curly-quote apostrophe mixup in a `[next]` label
+  before building. Confirmed `gateway-api` bare-key collision-free before adding. Build passed
+  clean on the first attempt. Browser-verified successfully: toggle count (14, up from 13) and
+  accordion links confirmed via direct DOM query, the corrected conflict-resolution text
+  confirmed present (and old wrong text confirmed absent) via main-content text search, a
+  subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 14 of 19 topics complete.**
 - [ ] `/service-mesh/ingress-gateway` — Ingress Gateway
 - [ ] `/service-mesh/performance` — Service Mesh Performance
 - [ ] `/service-mesh/ambient-mesh` — Ambient Mesh
