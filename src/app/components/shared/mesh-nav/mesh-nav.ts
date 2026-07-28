@@ -242,7 +242,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Observability</p>
-      <a routerLink="/service-mesh/metrics" routerLinkActive="active"><span class="nl-text">Metrics &amp; Telemetry</span>@if(p.isDone('mesh-metrics')){<span class="nl-done">✓</span>}@if(d('mesh-metrics');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/metrics" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Metrics &amp; Telemetry</span>
+        @if(p.isDone('mesh-metrics')){<span class="nl-done">✓</span>}
+        @if(d('mesh-metrics');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('metrics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('metrics')"
+                  (click)="toggleSubtopics('metrics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('metrics'); as metricsSubs) {
+        @if (isSubtopicsExpanded('metrics')) {
+          <div class="nav-subtopics">
+            @for (s of metricsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/service-mesh/tracing" routerLinkActive="active"><span class="nl-text">Distributed Tracing</span>@if(p.isDone('mesh-tracing')){<span class="nl-done">✓</span>}@if(d('mesh-tracing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/service-mesh/kiali" routerLinkActive="active"><span class="nl-text">Kiali &amp; Dashboards</span>@if(p.isDone('mesh-kiali')){<span class="nl-done">✓</span>}@if(d('mesh-kiali');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

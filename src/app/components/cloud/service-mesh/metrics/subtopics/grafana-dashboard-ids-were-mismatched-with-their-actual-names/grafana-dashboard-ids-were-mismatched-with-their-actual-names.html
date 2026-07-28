@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Metrics &amp; Telemetry" topicRoute="/service-mesh/metrics" subtopicLabel="Grafana Dashboard IDs Were Mismatched With Their Actual Names" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Grafana Dashboard IDs Were Mismatched With Their Actual Names</h1>
+  <p class="page-subtitle">The main page's four dashboard-ID-to-name pairings were all wrong — verified against grafana.com's own listings and corrected.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes out a concrete, verifiable inaccuracy on the main page. Next: why the Telemetry API's scope "override" is a complete field-level replacement, not a merge — a real surprise for anyone assuming typical override semantics.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Metrics &amp; Telemetry" topicRoute="/service-mesh/metrics"
+    [next]="{ label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge', route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' }" />
+</div>

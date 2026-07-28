@@ -63,7 +63,7 @@ export class MeshMetrics {
         'Drop metrics by type: disable HTTP metrics for a high-traffic health check path that would pollute RPS and error rate calculations. Use `match.metric: REQUEST_COUNT` with a path match.',
         'Override sampling rate for access logs: set `accessLogging.providers[0].name = envoy` and configure percentage-based sampling. Log 100% in staging, 1% in production for high-traffic services.',
         'Disable metrics for specific workloads: internal health check services with thousands of calls/second can pollute metric storage. Use `metrics[0].overrides[0].disabled: true` in the Telemetry resource.',
-        'The Telemetry API is additive and composable — mesh-level policies are overridden by namespace-level, which are overridden by workload-level. This mirrors AuthorizationPolicy scope hierarchy.',
+        'Scope precedence: mesh-level configuration is overridden by namespace-level, which is overridden by workload-level — but this is a COMPLETE field-level replacement, not a merge. A narrower-scoped Telemetry resource that sets one field does NOT inherit the rest of the broader resource\'s configuration for that same field.',
       ],
     },
     {
@@ -82,7 +82,7 @@ export class MeshMetrics {
       points: [
         'Istio provides official Grafana dashboards via the `istio/grafana` Helm chart or the `samples/addons/grafana.yaml` manifest. They are pre-built for the standard Istio metrics.',
         'Key dashboards: "Istio Mesh Dashboard" (global service graph), "Istio Service Dashboard" (per-service golden signals), "Istio Workload Dashboard" (per-pod metrics), "Istio Control Plane Dashboard" (Istiod health).',
-        'Import by ID from grafana.com: Istio official dashboards have IDs 7636 (mesh), 7630 (service), 7645 (workload), 7639 (performance). Use these with any Prometheus data source.',
+        'Import by ID from grafana.com: Istio official dashboards have IDs 7639 (mesh), 7636 (service), 7630 (workload), 7645 (control plane), 11829 (performance). Use these with any Prometheus data source.',
         'Custom dashboards: use `destination_service_name` and `source_workload` labels to build service topology views. Combine Prometheus metrics with Loki log data for correlated traces.',
         'SLO dashboards: track error budget burn rate using `(1 - success_rate) / (1 - slo_target)`. Alert when burn rate exceeds 2× for 1 hour or 14.4× for 5 minutes (Google SRE model).',
         'Flame graphs: Grafana supports Pyroscope integration for continuous profiling. Combine with Istio latency percentiles to correlate high p99 latency with specific code paths.',

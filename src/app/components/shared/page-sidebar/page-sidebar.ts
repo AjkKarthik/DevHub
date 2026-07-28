@@ -41838,6 +41838,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'High-cardinality labels on mesh metrics (like per-request unique IDs) can overwhelm a metrics backend not designed for that cardinality.',
     ],
   },
+  'service-mesh/metrics/grafana-dashboard-ids-were-mismatched-with-their-actual-names': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Metrics & Telemetry',                                                        route: '/service-mesh/metrics' },
+      { label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge',         route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' },
+    ],
+    tip: 'The correct official Istio Grafana dashboard IDs, verified against grafana.com: 7639 (mesh), 7636 (service), 7630 (workload), 7645 (control plane), 11829 (performance).',
+    gotchas: [
+      'A specific numeric ID reads as authoritative, making it less likely to be double-checked before use — importing the wrong dashboard by ID gives no error, just the wrong panels.',
+    ],
+  },
+  'service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Grafana Dashboard IDs Were Mismatched With Their Actual Names',   route: '/service-mesh/metrics/grafana-dashboard-ids-were-mismatched-with-their-actual-names' },
+      { label: 'Histogram Bucket Boundaries Are Fixed and Cannot Be Customized',  route: '/service-mesh/metrics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized' },
+    ],
+    tip: 'A namespace- or workload-level Telemetry resource completely REPLACES whichever specific field it touches from the broader scope — it does not merge with it, so unspecified parts of that same field must be re-declared explicitly.',
+    gotchas: [
+      'Only the touched field is replaced — other untouched fields and other metric matches still inherit normally from the broader scope.',
+    ],
+  },
+  'service-mesh/metrics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge', route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' },
+      { label: 'Metrics & Telemetry',                                                route: '/service-mesh/metrics' },
+    ],
+    tip: 'In-proxy telemetry has no mechanism to customize histogram bucket boundaries — every current Istio installation is stuck with the fixed defaults, which limits histogram_quantile() precision for tight SLOs near widely-spaced buckets.',
+    gotchas: [
+      'A reported p99 value between two fixed bucket boundaries (e.g. 10ms and 25ms) is a linear interpolation, not a genuinely measured latency.',
+    ],
+  },
   'service-mesh/tracing': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

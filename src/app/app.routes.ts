@@ -3717,7 +3717,12 @@ export const routes: Routes = [
       { path: 'authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication', loadComponent: () => import('./components/cloud/service-mesh/authorization/subtopics/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication').then(m => m.AuthorizationPolicyHasNoNamingRequirementUnlikePeerAuthenticationSubtopic) },
       { path: 'custom-is-a-fourth-action-evaluated-before-deny-and-allow', loadComponent: () => import('./components/cloud/service-mesh/authorization/subtopics/custom-is-a-fourth-action-evaluated-before-deny-and-allow/custom-is-a-fourth-action-evaluated-before-deny-and-allow').then(m => m.CustomIsAFourthActionEvaluatedBeforeDenyAndAllowSubtopic) },
     ] },
-    { path: 'metrics',            loadComponent: () => import('./components/cloud/service-mesh/metrics/metrics').then(m => m.MeshMetrics) },
+    { path: 'metrics', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/metrics/metrics').then(m => m.MeshMetrics) },
+      { path: 'grafana-dashboard-ids-were-mismatched-with-their-actual-names', loadComponent: () => import('./components/cloud/service-mesh/metrics/subtopics/grafana-dashboard-ids-were-mismatched-with-their-actual-names/grafana-dashboard-ids-were-mismatched-with-their-actual-names').then(m => m.GrafanaDashboardIdsWereMismatchedWithTheirActualNamesSubtopic) },
+      { path: 'telemetry-api-scope-override-is-full-field-replacement-not-merge', loadComponent: () => import('./components/cloud/service-mesh/metrics/subtopics/telemetry-api-scope-override-is-full-field-replacement-not-merge/telemetry-api-scope-override-is-full-field-replacement-not-merge').then(m => m.TelemetryApiScopeOverrideIsFullFieldReplacementNotMergeSubtopic) },
+      { path: 'histogram-bucket-boundaries-are-fixed-and-cannot-be-customized', loadComponent: () => import('./components/cloud/service-mesh/metrics/subtopics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized').then(m => m.HistogramBucketBoundariesAreFixedAndCannotBeCustomizedSubtopic) },
+    ] },
     { path: 'tracing',            loadComponent: () => import('./components/cloud/service-mesh/tracing/tracing').then(m => m.MeshTracing) },
     { path: 'kiali',              loadComponent: () => import('./components/cloud/service-mesh/kiali/kiali').then(m => m.MeshKiali) },
     { path: 'gateway-api',        loadComponent: () => import('./components/cloud/service-mesh/gateway-api/gateway-api').then(m => m.MeshGatewayApi) },

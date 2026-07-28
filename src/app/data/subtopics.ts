@@ -2941,4 +2941,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'AuthorizationPolicy Has No Naming Requirement, Unlike PeerAuthentication', route: '/service-mesh/authorization/authorizationpolicy-has-no-naming-requirement-unlike-peerauthentication' },
     { label: 'CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW', route: '/service-mesh/authorization/custom-is-a-fourth-action-evaluated-before-deny-and-allow' },
   ],
+  'metrics': [
+    { label: 'Grafana Dashboard IDs Were Mismatched With Their Actual Names', route: '/service-mesh/metrics/grafana-dashboard-ids-were-mismatched-with-their-actual-names' },
+    { label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge', route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' },
+    { label: 'Histogram Bucket Boundaries Are Fixed and Cannot Be Customized', route: '/service-mesh/metrics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized' },
+  ],
 };
