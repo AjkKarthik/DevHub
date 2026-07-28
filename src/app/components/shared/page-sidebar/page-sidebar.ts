@@ -41812,6 +41812,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Certificate trust must be shared across clusters (a common root CA) for cross-cluster mTLS to work — mismatched trust domains break cross-cluster communication silently.',
     ],
   },
+  'service-mesh/multi-cluster/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Cluster Mesh',                                                    route: '/service-mesh/multi-cluster' },
+      { label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary',        route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' },
+    ],
+    tip: 'Each Istiod in a multi-primary mesh independently watches the OTHER cluster\'s Kubernetes API server via remote-secret credentials — there is no Istiod-to-Istiod peer protocol, so one cluster\'s Istiod crashing does not stale the other cluster\'s view of it as long as its API server stays reachable.',
+    gotchas: [
+      'Assuming Istiod instances talk to each other directly (rather than each independently watching the other cluster\'s API server) leads to the wrong diagnosis when troubleshooting cross-cluster discovery issues.',
+      'A remote secret grants API-server access, not a link to the other cluster\'s Istiod — check API server reachability, not Istiod health, when cross-cluster discovery breaks.',
+    ],
+  },
+  'service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol', route: '/service-mesh/multi-cluster/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol' },
+      { label: 'Kiali Multi-Cluster Support Predates 1.73 by Years',                       route: '/service-mesh/multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years' },
+    ],
+    tip: '`remotePilotAddress` points a Primary-Remote REMOTE cluster\'s sidecars at the primary\'s Istiod for xDS — it has no role in Multi-Primary, where every cluster runs its own full Istiod and never needs to borrow another cluster\'s control plane.',
+    gotchas: [
+      'Seeing `remotePilotAddress` in a cluster\'s config is a reliable signal that cluster is a Primary-Remote "remote," not a Multi-Primary peer.',
+      'Setting `remotePilotAddress` to try to fix Multi-Primary cross-cluster discovery is the wrong lever — the actual mechanism is remote-secret-based API watching.',
+    ],
+  },
+  'service-mesh/multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary', route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' },
+      { label: 'Kiali Service Graph',                                            route: '/service-mesh/kiali' },
+    ],
+    tip: 'Kiali multi-cluster graph support goes back to its early 1.x line (v1.29/1.30\'s initial "Cluster Boxes" feature), refined gradually since — check your specific version\'s own release notes rather than relying on a remembered version-number gate, especially since Kiali has since moved to a v2.x release series.',
+    gotchas: [
+      'Assuming an older Kiali install has zero multi-cluster graph capability can trigger an unnecessary upgrade — check that version\'s own release notes first.',
+      'Kiali has moved past its 1.x line entirely to a v2.x series — a 1.x version-number gate is stale regardless of whether the specific number was ever accurate.',
+    ],
+  },
   'service-mesh/ambient-mesh': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

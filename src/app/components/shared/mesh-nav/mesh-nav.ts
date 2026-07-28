@@ -60,7 +60,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/multi-cluster" routerLinkActive="active"><span class="nl-text">Multi-cluster Mesh</span>@if(p.isDone('mesh-multi-cluster')){<span class="nl-done">✓</span>}@if(d('mesh-multi-cluster');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/multi-cluster" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Multi-cluster Mesh</span>
+        @if(p.isDone('mesh-multi-cluster')){<span class="nl-done">✓</span>}
+        @if(d('mesh-multi-cluster');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('multi-cluster')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('multi-cluster')"
+                  (click)="toggleSubtopics('multi-cluster', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('multi-cluster'); as mcSubs) {
+        @if (isSubtopicsExpanded('multi-cluster')) {
+          <div class="nav-subtopics">
+            @for (s of mcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

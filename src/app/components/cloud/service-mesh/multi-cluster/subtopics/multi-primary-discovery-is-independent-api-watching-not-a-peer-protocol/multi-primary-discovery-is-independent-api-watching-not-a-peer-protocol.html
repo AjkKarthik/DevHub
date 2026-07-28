@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Cluster Mesh" topicRoute="/service-mesh/multi-cluster" subtopicLabel="Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol</h1>
+  <p class="page-subtitle">The main page invented a "PILOT_PEERS" mechanism that contradicts its own correct discovery bullet — verified against Istio's own multi-primary install docs.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Istio (current)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a fabricated mechanism on the main page. Next: <code>remotePilotAddress</code> is a real Istio field — just scoped to the OTHER multi-cluster topology (Primary-Remote), not Multi-Primary.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Multi-Cluster Mesh" topicRoute="/service-mesh/multi-cluster"
+    [next]="{ label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary', route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' }" />
+</div>

@@ -3765,7 +3765,12 @@ export const routes: Routes = [
       { path: 'default-redirection-is-iptables-geneve-not-ebpf', loadComponent: () => import('./components/cloud/service-mesh/ambient-mesh/subtopics/default-redirection-is-iptables-geneve-not-ebpf/default-redirection-is-iptables-geneve-not-ebpf').then(m => m.DefaultRedirectionIsIptablesGeneveNotEbpfSubtopic) },
       { path: 'hbone-identity-comes-from-the-mtls-handshake-not-http-headers', loadComponent: () => import('./components/cloud/service-mesh/ambient-mesh/subtopics/hbone-identity-comes-from-the-mtls-handshake-not-http-headers/hbone-identity-comes-from-the-mtls-handshake-not-http-headers').then(m => m.HboneIdentityComesFromTheMtlsHandshakeNotHttpHeadersSubtopic) },
     ] },
-    { path: 'multi-cluster',      loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/multi-cluster').then(m => m.MeshMultiCluster) },
+    { path: 'multi-cluster', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/multi-cluster').then(m => m.MeshMultiCluster) },
+      { path: 'multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol', loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/subtopics/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol').then(m => m.MultiPrimaryDiscoveryIsIndependentApiWatchingNotAPeerProtocolSubtopic) },
+      { path: 'remotepilotaddress-belongs-to-primary-remote-not-multi-primary', loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/subtopics/remotepilotaddress-belongs-to-primary-remote-not-multi-primary/remotepilotaddress-belongs-to-primary-remote-not-multi-primary').then(m => m.RemotepilotaddressBelongsToPrimaryRemoteNotMultiPrimarySubtopic) },
+      { path: 'kiali-multi-cluster-support-predates-1-73-by-years', loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/subtopics/kiali-multi-cluster-support-predates-1-73-by-years/kiali-multi-cluster-support-predates-1-73-by-years').then(m => m.KialiMultiClusterSupportPredates173ByYearsSubtopic) },
+    ] },
     { path: 'consul',             loadComponent: () => import('./components/cloud/service-mesh/consul/consul').then(m => m.MeshConsul) },
     { path: 'cheatsheet',         loadComponent: () => import('./components/cloud/service-mesh/cheatsheet/cheatsheet').then(m => m.MeshCheatsheet) },
     { path: 'interview-prep',     loadComponent: () => import('./components/cloud/service-mesh/interview-prep/interview-prep').then(m => m.MeshInterviewPrep) },

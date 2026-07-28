@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Cluster Mesh" topicRoute="/service-mesh/multi-cluster" subtopicLabel="remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary</h1>
+  <p class="page-subtitle">A real Istio field, attached to the wrong topology on the main page — it routes a remote cluster's sidecars to the primary's Istiod, not a multi-primary peer link.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Istio (current)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the config-exchange mechanism correction. Next: the main page also cited an inflated Kiali version gate for multi-cluster service graphs.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Multi-Cluster Mesh" topicRoute="/service-mesh/multi-cluster"
+    [prev]="{ label: 'Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol', route: '/service-mesh/multi-cluster/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol' }"
+    [next]="{ label: 'Kiali Multi-Cluster Support Predates 1.73 by Years', route: '/service-mesh/multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years' }" />
+</div>

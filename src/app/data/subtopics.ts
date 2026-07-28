@@ -2977,4 +2977,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Default Redirection Is iptables+GENEVE, Not eBPF', route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' },
     { label: 'HBONE Identity Comes From the mTLS Handshake, Not HTTP Headers', route: '/service-mesh/ambient-mesh/hbone-identity-comes-from-the-mtls-handshake-not-http-headers' },
   ],
+  'multi-cluster': [
+    { label: 'Multi-Primary Discovery Is Independent API Watching, Not a Peer Protocol', route: '/service-mesh/multi-cluster/multi-primary-discovery-is-independent-api-watching-not-a-peer-protocol' },
+    { label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary', route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' },
+    { label: 'Kiali Multi-Cluster Support Predates 1.73 by Years', route: '/service-mesh/multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years' },
+  ],
 };
