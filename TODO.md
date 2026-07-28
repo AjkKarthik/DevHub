@@ -5833,7 +5833,30 @@ off here with a date.
   no prev on the first subtopic) all verified via `get_page_text`, dark mode confirmed rendering the
   correct blue accent (`rgb(147, 197, 253)`), page wrapper width confirmed 860px via
   `getComputedStyle`. **Service Mesh hub Phase 10: 1 of 19 topics complete.**
-- [ ] `/service-mesh/istio-architecture` — Istio Architecture
+- [x] `/service-mesh/istio-architecture` — Istio Architecture (2026-07-28) — 3 subtopics: (1)
+  **Cert Rotation Overlaps Old and New Certs to Avoid Handshake Failures**, filling in the safety
+  mechanism the main page's own cert-rotation QnA never names — verified that rotation is not an
+  atomic swap: the old cert stays valid for an overlap window after the new one is issued, so
+  peers mid-rotation relative to each other still complete TLS handshakes, and the same overlap
+  principle extends to root CA migration at mesh scale; (2) **Sidecar CRD Scoping Egress Does Not
+  Block Unmatched Inbound Traffic**, correcting a real security-relevant misreading the main page's
+  "restricts what a sidecar can see" framing invites — verified that Sidecar CRD egress scoping is
+  a proxy memory/config-size optimization, not access control: unmatched destinations are still
+  reachable by default, and omitting the ingress block leaves inbound traffic completely
+  untouched (AuthorizationPolicy is the actual access-control tool); (3) **Live Traffic Surviving
+  an Istiod Outage Has a Cert TTL Time Limit**, adding the unstated deadline behind the main
+  page's "live traffic continues" framing — verified that certificate rotation also requires
+  Istiod, so an outage has a bounded safety window (default 24h cert TTL) before live mTLS traffic
+  itself starts failing, not just new deployments being blocked. Gotcha sweep (backtick parity
+  4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, zero actual backslash characters in any `.html` file)
+  clean on the first pass. Confirmed bare `istio-architecture` key collision-free before adding —
+  left as a bare key. Build passed clean on the first attempt. Browser-verified successfully:
+  toggle count and accordion links confirmed via direct DOM query, a subtopic page's full
+  breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev nav
+  (correctly no next on the last subtopic) all verified via `get_page_text`, dark mode confirmed
+  rendering the correct blue accent.
+  **Service Mesh hub Phase 10: 2 of 19 topics complete.**
 - [ ] `/service-mesh/istio-install` — Istio Installation & Configuration
 - [ ] `/service-mesh/linkerd` — Linkerd
 - [ ] `/service-mesh/traffic-management` — Traffic Management
