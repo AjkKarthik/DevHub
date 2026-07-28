@@ -2914,4 +2914,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Circuit Breaking Exists — It Needs an Explicit failure-accrual Annotation', route: '/service-mesh/linkerd/circuit-breaking-exists-but-needs-an-explicit-failure-accrual-annotation' },
     { label: 'external-issuer Alone Leaves the Self-Generated Trust Anchor in Place', route: '/service-mesh/linkerd/external-issuer-alone-leaves-the-self-generated-trust-anchor-in-place' },
   ],
+  // NOTE: 'traffic-management' confirmed collision-free (quoted and unquoted) across the whole file.
+  'traffic-management': [
+    { label: 'Fault Injection and Retries Cannot Coexist on the Same Route', route: '/service-mesh/traffic-management/fault-injection-and-retries-cannot-coexist-on-the-same-route' },
+    { label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream', route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' },
+    { label: 'Mirroring Is Fire-and-Forget — the Primary Response Never Waits', route: '/service-mesh/traffic-management/mirroring-is-fire-and-forget-the-primary-response-never-waits' },
+  ],
 };

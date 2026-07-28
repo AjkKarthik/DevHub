@@ -41503,6 +41503,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mirroring (shadow traffic) sends a COPY of production traffic to a new version without affecting the real response — useful for validating a new version\'s behavior under real load before it serves any actual users.',
     ],
   },
+  'service-mesh/traffic-management/fault-injection-and-retries-cannot-coexist-on-the-same-route': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Traffic Management',                                                     route: '/service-mesh/traffic-management' },
+      { label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream',       route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' },
+    ],
+    tip: 'Istio silently disables retries/timeout on any route that also has fault injection configured — the two cannot coexist on the same route, so testing "does my retry policy recover from this?" needs a separate, header-matched route or VirtualService.',
+    gotchas: [
+      'Both blocks are accepted with no validation error — the retries field just quietly does nothing on a route where fault is also present.',
+    ],
+  },
+  'service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Fault Injection and Retries Cannot Coexist on the Same Route',   route: '/service-mesh/traffic-management/fault-injection-and-retries-cannot-coexist-on-the-same-route' },
+      { label: 'Mirroring Is Fire-and-Forget — the Primary Response Never Waits', route: '/service-mesh/traffic-management/mirroring-is-fire-and-forget-the-primary-response-never-waits' },
+    ],
+    tip: 'retryOn: 5xx retries a circuit breaker\'s own "upstream overflow" 503 too — sending MORE load at an upstream that just signaled it\'s overloaded. Use a maxRetries connection-pool budget, or scope retryOn away from blanket 5xx.',
+    gotchas: [
+      'This compounds across a multi-hop call chain — 3 retries at each of 3 layers can turn one failing request into up to 9 actual requests reaching the struggling service.',
+    ],
+  },
+  'service-mesh/traffic-management/mirroring-is-fire-and-forget-the-primary-response-never-waits': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream', route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' },
+      { label: 'Traffic Management',                                              route: '/service-mesh/traffic-management' },
+    ],
+    tip: 'Mirroring is genuinely fire-and-forget — the primary response never waits for the mirror in any capacity, even if the shadow is completely down. It still consumes real resources though; size the shadow deployment for the mirrored volume.',
+    gotchas: [
+      'A struggling shadow service can never show up as slower real-user latency — but it CAN fall over from under-provisioned capacity, which is a separate, real operational risk.',
+    ],
+  },
   'service-mesh/load-balancing': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

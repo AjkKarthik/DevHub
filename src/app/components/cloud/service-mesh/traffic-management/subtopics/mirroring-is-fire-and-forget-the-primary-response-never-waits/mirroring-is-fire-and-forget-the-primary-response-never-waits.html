@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Traffic Management" topicRoute="/service-mesh/traffic-management" subtopicLabel="Mirroring Is Fire-and-Forget — the Primary Response Never Waits" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Mirroring Is Fire-and-Forget — the Primary Response Never Waits</h1>
+  <p class="page-subtitle">The main page says mirroring is "asynchronous" without stating the actual guarantee — the primary response never waits on the mirror in any capacity, though the mirror still consumes real resources.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's "asynchronous" mirroring description its precise, verifiable guarantee — and the one thing it doesn't cover (resource cost).</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Traffic Management" topicRoute="/service-mesh/traffic-management"
+    [prev]="{ label: 'retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream', route: '/service-mesh/traffic-management/retryon-5xx-can-amplify-load-into-an-already-overloaded-upstream' }" />
+</div>

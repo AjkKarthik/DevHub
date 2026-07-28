@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Traffic Management" topicRoute="/service-mesh/traffic-management" subtopicLabel="retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">retryOn: 5xx Can Amplify Load Into an Already-Overloaded Upstream</h1>
+  <p class="page-subtitle">The main page lists retryOn: 5xx and separately explains circuit-breaker 503s in a different QnA — the two facts interact: retrying a circuit breaker's own 503 sends more load exactly when the upstream needs less.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This connects the main page's retryOn and connection-pool-circuit-breaker content into the single interaction they actually have. Next: why traffic mirroring genuinely never adds latency to the real response.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Traffic Management" topicRoute="/service-mesh/traffic-management"
+    [prev]="{ label: 'Fault Injection and Retries Cannot Coexist on the Same Route', route: '/service-mesh/traffic-management/fault-injection-and-retries-cannot-coexist-on-the-same-route' }"
+    [next]="{ label: 'Mirroring Is Fire-and-Forget — the Primary Response Never Waits', route: '/service-mesh/traffic-management/mirroring-is-fire-and-forget-the-primary-response-never-waits' }" />
+</div>
