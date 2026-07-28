@@ -2015,6 +2015,33 @@ do this same check before any other new hub's first subtopic set:
     checking) exists somewhere in Envoy — a real capability can still be mis-attributed to the
     wrong config surface, which is a distinct and easy-to-miss category of inaccuracy from "this
     feature doesn't exist at all."
+12. **The `/service-mesh/mtls` batch found and fixed a genuine SELF-CONTRADICTING inaccuracy
+    within the same main page** — one code example ("Custom CA via cert-manager") correctly used
+    `secretName: cacerts`, while a separate theory bullet ("Emergency cert rotation") named a
+    DIFFERENT secret, `istio-ca-secret`, and the quickRef list also used `istio-ca-secret`.
+    Verified via WebFetch/WebSearch against Istio's own tracked GitHub issue (#45685, closed via
+    PR #45291) that these were historically two SEPARATE secret names (`cacerts` for a
+    user-plugged custom CA, `istio-ca-secret` for Istiod's own auto-generated self-signed CA)
+    that were deliberately unified into a single `cacerts` secret for both cases — confirming the
+    main page's own inconsistency was a real, dateable drift (one spot updated to the modern name,
+    another left on the old one), not two different facts for two different scenarios. Fixed all
+    three occurrences (quickRef, theory bullet, and tightened the wording to explain the historical
+    unification rather than just silently swapping the name). **A second correction, more about
+    PRECISION than pure inaccuracy**: the main page's "Kubernetes probes bypass Istio's mTLS
+    because they come from the kubelet (not through Envoy)" phrasing was misleading — verified via
+    WebFetch against Istio's own app-health-check docs that probes would actually BE intercepted by
+    Envoy's iptables rules just like any other inbound traffic; what actually keeps them out is the
+    sidecar injector actively REWRITING the probe definition in the pod spec to target istio-agent's
+    dedicated status port (15020), which is deliberately excluded from interception — tightened the
+    theory bullet, the matching `mistakes` entry, and the quiz explanation to state the actual
+    mechanism instead of the vaguer "come from the kubelet" framing. **A third, purely-additive
+    subtopic** closed a real gap rather than a page error: the main page's "create in istio-system
+    namespace with no selector" guidance for a mesh-wide PeerAuthentication omits that the resource
+    must ALSO be named exactly `default` — verified via WebSearch against Istio's own Authentication
+    Policy docs; a differently-named policy meeting the other two conditions applies with no error
+    but is silently never picked up as the mesh baseline. Confirmed `mtls` collision-free in the
+    SUBTOPICS map (checked both quoted and unquoted forms) — left as a bare key. No stale-dev-server
+    incident this batch — the toggle count updated correctly (8→9) on the first browser check.
 
 ## Current state (update when it changes!)
 
@@ -2300,14 +2327,14 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 8 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 9 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
-  `/service-mesh/load-balancing`, 2026-07-28) — see "Service Mesh hub
+  `/service-mesh/load-balancing`, `/service-mesh/mtls`, 2026-07-28) — see "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
-  `envoy`, `linkerd`, `traffic-management`, and `resilience` were all collision-free, left as bare
-  keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
+  `envoy`, `linkerd`, `traffic-management`, `resilience`, and `mtls` were all collision-free, left
+  as bare keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
   `mesh-load-balancing`). **The `linkerd` batch found and fixed a real inaccuracy on the main page
   itself** — a self-referential SMI TrafficSplit example (apex and one backend sharing the same
   service name), explicitly prohibited by the SMI spec. **The `resilience` batch found and fixed
@@ -2315,8 +2342,12 @@ do this same check before any other new hub's first subtopic set:
   Traffic Management subtopic, mislabeled "exponential" ejection-duration growth (actually linear),
   and a wrong `minHealthPercent` default (claimed 50%, actually 0%). **The `load-balancing` batch
   found and fixed TWO more** — a non-existent `trafficPolicy.healthCheck` field, and a
-  `warmupDurationSecs` quiz explanation claiming a "~0%" starting floor (actually 10%) — see
-  "Service Mesh hub subtopic wiring" section below for details on all batches.
+  `warmupDurationSecs` quiz explanation claiming a "~0%" starting floor (actually 10%). **The `mtls`
+  batch found and fixed a genuine self-contradicting inaccuracy** (the page used both `cacerts` and
+  the outdated `istio-ca-secret` for the SAME CA secret in different spots) plus tightened an
+  imprecise "probes bypass Envoy because they come from the kubelet" claim to state the actual
+  rewrite-to-port-15020 mechanism — see "Service Mesh hub subtopic wiring" section below for
+  details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

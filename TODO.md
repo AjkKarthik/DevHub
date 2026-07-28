@@ -6024,7 +6024,33 @@ off here with a date.
   rendering via `get_page_text` on the main page, a subtopic page's full breadcrumb (4
   levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
   **Service Mesh hub Phase 10: 8 of 19 topics complete.**
-- [ ] `/service-mesh/mtls` — mTLS & Certificate Management
+- [x] `/service-mesh/mtls` — mTLS & Certificate Management (2026-07-28) — 3 subtopics: (1)
+  **Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted**, tightening the main page's
+  "probes bypass Envoy because they come from the kubelet" phrasing — verified via WebFetch
+  against Istio's own app-health-check docs that the sidecar injector actively REWRITES each
+  probe in the pod spec to target istio-agent's own status port 15020, which is what actually
+  keeps probe traffic out of Envoy's iptables interception and mTLS enforcement (not merely
+  "who sent it"); (2) **Mesh-Wide PeerAuthentication Must Be Named default in the Root
+  Namespace**, closing a gap in the main page's "create in istio-system with no selector"
+  guidance — verified via WebSearch against Istio's own Authentication Policy docs that the
+  resource must ALSO be named exactly "default," or it applies with no error but is silently
+  never picked up as the mesh baseline; (3) **The CA Secret Is Named cacerts, Not
+  istio-ca-secret**, correcting a genuine SELF-CONTRADICTING inaccuracy where the main page's
+  own "Custom CA via cert-manager" example correctly used cacerts while a separate "Emergency
+  cert rotation" bullet and the quickRef both used the outdated istio-ca-secret — verified via
+  WebFetch/WebSearch against Istio's own tracked GitHub issue (#45685, closed via PR #45291)
+  that these were historically two separate secret names, deliberately unified into one. Fixed
+  all three main-page occurrences plus tightened the matching mistakes-block entry and quiz
+  explanation to describe the actual probe-rewrite mechanism. Gotcha sweep (backtick parity
+  10/8/4 all even, apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"` all
+  clean) passed on the first pass. Confirmed `mtls` bare-key collision-free before adding. Build
+  passed clean on the first attempt. Browser-verified successfully: toggle count (9, up from 8,
+  no stale-chunk incident this batch) and accordion links confirmed via direct DOM query, the
+  corrected cacerts/istio-ca-secret text confirmed via a main-content-scoped text search (not
+  just page-wide, to avoid a false positive from the nav accordion's own subtopic link text), a
+  subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
+  misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: 9 of 19 topics complete.**
 - [ ] `/service-mesh/authorization` — Authorization Policy
 - [ ] `/service-mesh/metrics` — Metrics & Observability
 - [ ] `/service-mesh/tracing` — Distributed Tracing
