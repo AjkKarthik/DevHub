@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Ambient Mesh" topicRoute="/service-mesh/ambient-mesh" subtopicLabel="Ambient Mesh Reached GA at Istio 1.24, Not 1.22" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Ambient Mesh Reached GA at Istio 1.24, Not 1.22</h1>
+  <p class="page-subtitle">The main page's "stable since 1.22" claim was off by two minor versions and six months — verified against Istio's own GA announcement.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Istio 1.24+ (GA)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real version claim on the main page. Next: the main page framed eBPF as a co-equal default alongside iptables for traffic capture — verified the real default is iptables+GENEVE, with eBPF as an opt-in alternative.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Ambient Mesh" topicRoute="/service-mesh/ambient-mesh"
+    [next]="{ label: 'Default Redirection Is iptables+GENEVE, Not eBPF', route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' }" />
+</div>

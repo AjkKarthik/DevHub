@@ -2972,4 +2972,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Envoy Has No JIT Warmup — Only Optional WASM Filters Do', route: '/service-mesh/performance/envoy-has-no-jit-warmup-only-optional-wasm-filters-do' },
     { label: 'Memory Overhead Scales Per Service, Not Per 1000 Services', route: '/service-mesh/performance/memory-overhead-scales-per-service-not-per-1000-services' },
   ],
+  'ambient-mesh': [
+    { label: 'Ambient Mesh Reached GA at Istio 1.24, Not 1.22', route: '/service-mesh/ambient-mesh/ambient-mesh-reached-ga-at-istio-1-24-not-1-22' },
+    { label: 'Default Redirection Is iptables+GENEVE, Not eBPF', route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' },
+    { label: 'HBONE Identity Comes From the mTLS Handshake, Not HTTP Headers', route: '/service-mesh/ambient-mesh/hbone-identity-comes-from-the-mtls-handshake-not-http-headers' },
+  ],
 };

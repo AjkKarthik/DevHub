@@ -40,7 +40,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/ambient-mesh" routerLinkActive="active"><span class="nl-text">Ambient Mesh</span>@if(p.isDone('mesh-ambient-mesh')){<span class="nl-done">✓</span>}@if(d('mesh-ambient-mesh');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/ambient-mesh" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Ambient Mesh</span>
+        @if(p.isDone('mesh-ambient-mesh')){<span class="nl-done">✓</span>}
+        @if(d('mesh-ambient-mesh');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('ambient-mesh')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ambient-mesh')"
+                  (click)="toggleSubtopics('ambient-mesh', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ambient-mesh'); as ambSubs) {
+        @if (isSubtopicsExpanded('ambient-mesh')) {
+          <div class="nav-subtopics">
+            @for (s of ambSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/service-mesh/multi-cluster" routerLinkActive="active"><span class="nl-text">Multi-cluster Mesh</span>@if(p.isDone('mesh-multi-cluster')){<span class="nl-done">✓</span>}@if(d('mesh-multi-cluster');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

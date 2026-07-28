@@ -41823,6 +41823,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Not every mesh feature available in sidecar mode has full parity in ambient mode yet, given how recently ambient mesh was introduced relative to the sidecar model.',
     ],
   },
+  'service-mesh/ambient-mesh/ambient-mesh-reached-ga-at-istio-1-24-not-1-22': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ambient Mesh',                                             route: '/service-mesh/ambient-mesh' },
+      { label: 'Default Redirection Is iptables+GENEVE, Not eBPF',         route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' },
+    ],
+    tip: 'Istio\'s own dedicated GA blog post is the authoritative source for "when did X become stable" claims — a version number remembered from an earlier Beta-era announcement will understate how long the real stability guarantee has existed.',
+    gotchas: [
+      'Citing an earlier Beta-release version as the "stable since" date overstates how long a feature\'s official stability guarantees have actually applied.',
+      'Beta and GA carry different upgrade-compatibility and support commitments in Istio\'s own versioning process — treat them as distinct milestones, not interchangeable synonyms for "usable."',
+    ],
+  },
+  'service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ambient Mesh Reached GA at Istio 1.24, Not 1.22',                          route: '/service-mesh/ambient-mesh/ambient-mesh-reached-ga-at-istio-1-24-not-1-22' },
+      { label: 'HBONE Identity Comes From the mTLS Handshake, Not HTTP Headers',            route: '/service-mesh/ambient-mesh/hbone-identity-comes-from-the-mtls-handshake-not-http-headers' },
+    ],
+    tip: 'iptables+GENEVE is the DEFAULT ambient redirection mechanism with no special kernel floor — eBPF is a separate, explicitly opt-in mode (`values.cni.ambient.redirectMode: "ebpf"`) requiring kernel 4.20+.',
+    gotchas: [
+      'Ruling out Ambient Mesh entirely because of an older kernel is often premature — the default iptables+GENEVE path has no comparable kernel requirement; only the opt-in eBPF mode does.',
+      'Assuming eBPF is automatically active by default risks misattributing eBPF-specific debugging tools and failure modes to a cluster actually running the default iptables path.',
+    ],
+  },
+  'service-mesh/ambient-mesh/hbone-identity-comes-from-the-mtls-handshake-not-http-headers': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Default Redirection Is iptables+GENEVE, Not eBPF', route: '/service-mesh/ambient-mesh/default-redirection-is-iptables-geneve-not-ebpf' },
+      { label: 'Ambient Mesh',                                     route: '/service-mesh/ambient-mesh' },
+    ],
+    tip: 'HBONE\'s identity guarantee comes from the underlying mTLS handshake (verified SPIFFE certificates) — the HTTP/2 CONNECT request that follows only tunnels the original TCP stream, it does not itself carry or verify identity.',
+    gotchas: [
+      'Assuming identity travels in an HTTP header (rather than the TLS layer) understates HBONE\'s actual security guarantee — a header would be trivially forgeable application data, unlike a cryptographically-verified certificate.',
+      'The HTTP/2 CONNECT request happens AFTER the mTLS channel is already established — it is not the mechanism that authenticates the connection.',
+    ],
+  },
   'service-mesh/consul': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

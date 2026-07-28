@@ -3759,7 +3759,12 @@ export const routes: Routes = [
       { path: 'insert-after-targeting-router-means-the-filter-never-runs', loadComponent: () => import('./components/cloud/service-mesh/envoy/subtopics/insert-after-targeting-router-means-the-filter-never-runs/insert-after-targeting-router-means-the-filter-never-runs').then(m => m.InsertAfterTargetingRouterMeansTheFilterNeverRunsSubtopic) },
       { path: 'delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type', loadComponent: () => import('./components/cloud/service-mesh/envoy/subtopics/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type').then(m => m.DeltaXdsIsolatesANackdResourceSotwBlocksTheWholeTypeSubtopic) },
     ] },
-    { path: 'ambient-mesh',       loadComponent: () => import('./components/cloud/service-mesh/ambient-mesh/ambient-mesh').then(m => m.MeshAmbient) },
+    { path: 'ambient-mesh', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/ambient-mesh/ambient-mesh').then(m => m.MeshAmbient) },
+      { path: 'ambient-mesh-reached-ga-at-istio-1-24-not-1-22', loadComponent: () => import('./components/cloud/service-mesh/ambient-mesh/subtopics/ambient-mesh-reached-ga-at-istio-1-24-not-1-22/ambient-mesh-reached-ga-at-istio-1-24-not-1-22').then(m => m.AmbientMeshReachedGaAtIstio124Not122Subtopic) },
+      { path: 'default-redirection-is-iptables-geneve-not-ebpf', loadComponent: () => import('./components/cloud/service-mesh/ambient-mesh/subtopics/default-redirection-is-iptables-geneve-not-ebpf/default-redirection-is-iptables-geneve-not-ebpf').then(m => m.DefaultRedirectionIsIptablesGeneveNotEbpfSubtopic) },
+      { path: 'hbone-identity-comes-from-the-mtls-handshake-not-http-headers', loadComponent: () => import('./components/cloud/service-mesh/ambient-mesh/subtopics/hbone-identity-comes-from-the-mtls-handshake-not-http-headers/hbone-identity-comes-from-the-mtls-handshake-not-http-headers').then(m => m.HboneIdentityComesFromTheMtlsHandshakeNotHttpHeadersSubtopic) },
+    ] },
     { path: 'multi-cluster',      loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/multi-cluster').then(m => m.MeshMultiCluster) },
     { path: 'consul',             loadComponent: () => import('./components/cloud/service-mesh/consul/consul').then(m => m.MeshConsul) },
     { path: 'cheatsheet',         loadComponent: () => import('./components/cloud/service-mesh/cheatsheet/cheatsheet').then(m => m.MeshCheatsheet) },
