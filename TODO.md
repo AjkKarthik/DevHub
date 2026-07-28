@@ -5857,7 +5857,31 @@ off here with a date.
   (correctly no next on the last subtopic) all verified via `get_page_text`, dark mode confirmed
   rendering the correct blue accent.
   **Service Mesh hub Phase 10: 2 of 19 topics complete.**
-- [ ] `/service-mesh/istio-install` — Istio Installation & Configuration
+- [x] `/service-mesh/istio-install` — Istio Installation & Configuration (2026-07-28) — 3
+  subtopics: (1) **Both Injection Labels Present: istio-injection Silently Wins**, explaining the
+  "why" behind the main page's own canary-upgrade command that removes the old label and adds the
+  new one together — verified that when both istio-injection=enabled and istio.io/rev are present
+  on a namespace, istio-injection silently wins for backward compatibility, and a migration that
+  forgets to remove the old label first ends up injecting from the WRONG control plane with zero
+  error; (2) **uninstall --purge Does Not Reliably Remove Every Webhook**, adding a missing
+  verification step to the main page's own "safely uninstall Istio" QnA — verified a documented
+  gap (istiod-default-validator) where --purge leaves a webhook behind, and that a leftover
+  cluster-scoped webhook with failurePolicy: Fail can reject operations in namespaces that never
+  ran Istio at all; (3) **Revision Uninstall Checks Active Proxies, Not Namespace Labels**,
+  closing out the main page's canary-upgrade sequence with the check its own "after validating all
+  namespaces" step assumes but never specifies — verified that istioctl uninstall --revision's
+  safety check is proxy-based, not label-based, so an infrequently-running namespace (nightly
+  batch job, scaled to zero) with no active pods at uninstall time produces no warning even though
+  it's still labeled for the revision being removed. Gotcha sweep (backtick parity 4/4/4 all even
+  — apostrophe-after-letter, bare `@word`, unescaped `${`, over-escaped `\"`,
+  literal-double-quote-in-label all none, zero actual backslash characters in any `.html` file)
+  clean on the first pass. Confirmed bare `istio-install` key collision-free before adding — left
+  as a bare key. Build passed clean on the first attempt. Browser-verified successfully: toggle
+  count and accordion links confirmed via direct DOM query, a subtopic page's full breadcrumb (4
+  levels, including the correctly-escaped "&" in "Istio Installation & Configuration")/tailored
+  sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`,
+  dark mode confirmed rendering the correct blue accent.
+  **Service Mesh hub Phase 10: 3 of 19 topics complete.**
 - [ ] `/service-mesh/linkerd` — Linkerd
 - [ ] `/service-mesh/traffic-management` — Traffic Management
 - [ ] `/service-mesh/resilience` — Resilience Patterns
