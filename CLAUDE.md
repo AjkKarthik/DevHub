@@ -2042,6 +2042,37 @@ do this same check before any other new hub's first subtopic set:
     but is silently never picked up as the mesh baseline. Confirmed `mtls` collision-free in the
     SUBTOPICS map (checked both quoted and unquoted forms) — left as a bare key. No stale-dev-server
     incident this batch — the toggle count updated correctly (8→9) on the first browser check.
+13. **The `/service-mesh/authorization` batch found and fixed a genuine, high-value inaccuracy
+    where the main page's OWN "mistakes" block had DENY and ALLOW's empty-`rules` semantics
+    completely backwards** — it claimed an ALLOW policy with empty rules "does not deny all
+    traffic... is effectively meaningless" and recommended DENY with an explicit universal-match
+    rule as the correct deny-all pattern instead. Verified directly against Istio's own
+    AuthorizationPolicy reference: empty/unset rules under DENY "the match will never occur" (NO
+    effect, denies nothing), while empty/unset rules under ALLOW "is equivalent to setting a
+    default of deny for the target workloads" (the correct, documented deny-all idiom) — the
+    main page had these two exactly backwards, and this DIRECTLY CONTRADICTED the same page's own
+    QnA elsewhere ("Create a mesh-wide ALLOW policy... with... empty rules — this results in
+    default-deny"), which was already correct. Rewrote the mistakes entry to describe the
+    genuinely confusing, correctly-documented behavior instead. **A second, richer verification
+    surfaced a THIRD distinct state worth its own subtopic**: `rules: []` (empty array, never
+    matches) versus `rules: [{}]` (one empty rule object, "always matched" per Istio's own docs)
+    are OPPOSITE behaviors that look nearly identical in YAML — a real, documented trap distinct
+    from the DENY/ALLOW asymmetry itself. **A third subtopic contrasts directly against the mTLS
+    batch's own PeerAuthentication-naming-requirement subtopic**: verified via WebFetch that
+    AuthorizationPolicy has NO equivalent "must be named default" rule for its mesh-wide scope —
+    multiple differently-named mesh-wide AuthorizationPolicy resources all apply cumulatively,
+    the opposite risk profile from PeerAuthentication (where a misnamed policy is silently
+    ignored, here the risk is forgetting about old policies that are STILL silently active).
+    **A fourth verified fact closed a real quickRef gap**: AuthorizationPolicy's `action` field
+    has a documented FOURTH value, CUSTOM (delegates to an external extension provider), evaluated
+    even BEFORE DENY — full precedence is CUSTOM → DENY → ALLOW, one stage more than the main
+    page's three-action (ALLOW/DENY/AUDIT) description. Confirmed `authorization` collision-free
+    in the SUBTOPICS map. No stale-dev-server incident — toggle count updated correctly (9→10) on
+    the first browser check. **This batch is a strong example of the "verify claims against a
+    sibling subtopic already written this same hub" technique** (established in the `resilience`
+    batch) extending naturally to cross-TOPIC contrasts within a hub, not just within-page
+    self-consistency checks — the PeerAuthentication-naming subtopic from the PRIOR batch (`mtls`)
+    directly informed the shape of this batch's naming-contrast subtopic.
 
 ## Current state (update when it changes!)
 
@@ -2327,27 +2358,31 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 9 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 10 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
-  `/service-mesh/load-balancing`, `/service-mesh/mtls`, 2026-07-28) — see "Service Mesh hub
+  `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
+  2026-07-28) — see "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
-  `envoy`, `linkerd`, `traffic-management`, `resilience`, and `mtls` were all collision-free, left
-  as bare keys; `load-balancing` collided with the AWS hub's own topic and was hub-prefixed to
-  `mesh-load-balancing`). **The `linkerd` batch found and fixed a real inaccuracy on the main page
-  itself** — a self-referential SMI TrafficSplit example (apex and one backend sharing the same
-  service name), explicitly prohibited by the SMI spec. **The `resilience` batch found and fixed
-  THREE more real inaccuracies** — a fault-injection/retries contradiction with the already-verified
-  Traffic Management subtopic, mislabeled "exponential" ejection-duration growth (actually linear),
-  and a wrong `minHealthPercent` default (claimed 50%, actually 0%). **The `load-balancing` batch
-  found and fixed TWO more** — a non-existent `trafficPolicy.healthCheck` field, and a
-  `warmupDurationSecs` quiz explanation claiming a "~0%" starting floor (actually 10%). **The `mtls`
-  batch found and fixed a genuine self-contradicting inaccuracy** (the page used both `cacerts` and
-  the outdated `istio-ca-secret` for the SAME CA secret in different spots) plus tightened an
-  imprecise "probes bypass Envoy because they come from the kubelet" claim to state the actual
-  rewrite-to-port-15020 mechanism — see "Service Mesh hub subtopic wiring" section below for
-  details on all batches.
+  `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, and `authorization` were all
+  collision-free, left as bare keys; `load-balancing` collided with the AWS hub's own topic and
+  was hub-prefixed to `mesh-load-balancing`). **The `linkerd` batch found and fixed a real
+  inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example (apex and
+  one backend sharing the same service name), explicitly prohibited by the SMI spec. **The
+  `resilience` batch found and fixed THREE more real inaccuracies** — a fault-injection/retries
+  contradiction with the already-verified Traffic Management subtopic, mislabeled "exponential"
+  ejection-duration growth (actually linear), and a wrong `minHealthPercent` default (claimed
+  50%, actually 0%). **The `load-balancing` batch found and fixed TWO more** — a non-existent
+  `trafficPolicy.healthCheck` field, and a `warmupDurationSecs` quiz explanation claiming a "~0%"
+  starting floor (actually 10%). **The `mtls` batch found and fixed a genuine self-contradicting
+  inaccuracy** (the page used both `cacerts` and the outdated `istio-ca-secret` for the SAME CA
+  secret in different spots) plus tightened an imprecise "probes bypass Envoy because they come
+  from the kubelet" claim to state the actual rewrite-to-port-15020 mechanism. **The
+  `authorization` batch found and fixed a genuine inaccuracy where the main page's own mistakes
+  block had DENY/ALLOW's empty-rules semantics exactly backwards**, directly contradicting the
+  same page's own (correct) QnA elsewhere — see "Service Mesh hub subtopic wiring" section below
+  for details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.

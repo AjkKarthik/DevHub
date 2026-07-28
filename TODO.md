@@ -6051,7 +6051,29 @@ off here with a date.
   subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code block/try-it/
   misconceptions/prev-next nav all verified via `get_page_text`.
   **Service Mesh hub Phase 10: 9 of 19 topics complete.**
-- [ ] `/service-mesh/authorization` — Authorization Policy
+- [x] `/service-mesh/authorization` — Authorization Policy (2026-07-28) — 3 subtopics: (1)
+  **Empty Rules Array vs. One Empty Rule Are Opposite Behaviors**, correcting a genuine
+  inaccuracy in the main page's own "mistakes" block, which had DENY and ALLOW's empty-rules
+  semantics backwards (claimed empty-rules ALLOW is "meaningless" and recommended DENY instead)
+  — verified against Istio's own AuthorizationPolicy reference that empty rules under DENY have
+  NO effect while empty rules under ALLOW is the documented deny-all idiom, directly
+  contradicting the same page's own (correct) QnA elsewhere; also covers the distinct
+  rules: [] (never matches) vs. rules: [{}] (always matches) trap; (2) **AuthorizationPolicy
+  Has No Naming Requirement, Unlike PeerAuthentication**, a direct contrast against the mTLS
+  batch's own PeerAuthentication-naming subtopic — verified via WebFetch that AuthorizationPolicy
+  has no "must be named default" rule at all, and multiple differently-named mesh-wide policies
+  all apply cumulatively; (3) **CUSTOM Is a Fourth Action, Evaluated Before DENY and ALLOW**,
+  closing a real quickRef gap — verified Istio's action field has a documented fourth value,
+  CUSTOM (delegates to an external extension provider), evaluated even before DENY, with the
+  full precedence being CUSTOM → DENY → ALLOW. Gotcha sweep (backtick parity 4/4/6 all even,
+  apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped `\"` all clean) passed on the
+  first pass. Confirmed `authorization` bare-key collision-free before adding. Build passed
+  clean on the first attempt. Browser-verified successfully: toggle count (10, up from 9, no
+  stale-chunk incident) and accordion links confirmed via direct DOM query, the corrected
+  mistakes-block entry confirmed rendering (old title absent, new title present) via a
+  click-through-then-text-search on the main page, a subtopic page's full breadcrumb (4
+  levels)/tailored sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified.
+  **Service Mesh hub Phase 10: 10 of 19 topics complete — past the halfway mark.**
 - [ ] `/service-mesh/metrics` — Metrics & Observability
 - [ ] `/service-mesh/tracing` — Distributed Tracing
 - [ ] `/service-mesh/kiali` — Kiali Service Graph
