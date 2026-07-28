@@ -5936,7 +5936,34 @@ off here with a date.
   block/try-it/misconceptions/next nav (correctly no prev on the first subtopic) all verified via
   `get_page_text`, dark mode confirmed rendering the correct blue accent.
   **Service Mesh hub Phase 10: 5 of 19 topics complete.**
-- [ ] `/service-mesh/traffic-management` — Traffic Management
+- [x] `/service-mesh/traffic-management` — Traffic Management (2026-07-28) — 3 subtopics: (1)
+  **Fault Injection and Retries Cannot Coexist on the Same Route**, closing a real gap between the
+  main page's separately-covered "Timeouts and Retries" and "Fault Injection" sections — verified
+  that Istio silently disables retries/timeout on any route that also has fault injection
+  configured (no validation error, the retries field just goes inert), defeating the natural
+  "inject a fault, verify retries recover it" test unless split across a separate route/VirtualService
+  or injected via EnvoyFilter instead; (2) **retryOn: 5xx Can Amplify Load Into an
+  Already-Overloaded Upstream**, connecting the main page's retryOn listing with a DIFFERENT QnA's
+  circuit-breaker explanation that never reference each other — verified that retrying a
+  connection-pool circuit breaker's own "upstream overflow" 503 sends more load at the exact
+  upstream that signaled overload, compounding across a multi-hop call chain, mitigated via
+  DestinationRule's maxRetries budget or narrower retryOn scoping; (3) **Mirroring Is
+  Fire-and-Forget — the Primary Response Never Waits**, sharpening the main page's "asynchronously"
+  mirroring description into its precise, verifiable guarantee — confirmed the primary response
+  never waits on the mirror in ANY capacity (not just "usually fast"), while noting mirrored
+  traffic still consumes real resources worth sizing the shadow deployment for. Gotcha sweep
+  (backtick parity 4/4/4 all even — apostrophe-after-letter, bare `@word`, unescaped `${`,
+  over-escaped `\"`, literal-double-quote-in-label all none, zero actual backslash characters in
+  any `.html` file) clean on the first pass; one file's first codeTab was missing the standard
+  `cat <<EOF | kubectl apply -f -` opener present in every sibling example, caught by direct
+  re-read and fixed before building for stylistic consistency. Confirmed bare
+  `traffic-management` key collision-free before adding — left as a bare key. Build passed clean
+  on the first attempt. Browser-verified successfully: toggle count and accordion links confirmed
+  via direct DOM query, a subtopic page's full breadcrumb (4 levels)/tailored
+  sidebar/theory/code block/try-it/misconceptions/next nav (correctly no prev on the first
+  subtopic) all verified via `get_page_text`, dark mode confirmed rendering the correct blue
+  accent.
+  **Service Mesh hub Phase 10: 6 of 19 topics complete.**
 - [ ] `/service-mesh/resilience` — Resilience Patterns
 - [ ] `/service-mesh/load-balancing` — Load Balancing
 - [ ] `/service-mesh/mtls` — mTLS & Certificate Management
