@@ -2902,4 +2902,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'uninstall --purge Does Not Reliably Remove Every Webhook', route: '/service-mesh/istio-install/uninstall-purge-does-not-reliably-remove-every-webhook' },
     { label: 'Revision Uninstall Checks Active Proxies, Not Namespace Labels', route: '/service-mesh/istio-install/revision-uninstall-checks-active-proxies-not-namespace-labels' },
   ],
+  // NOTE: 'envoy' confirmed collision-free (quoted and unquoted) across the whole file.
+  envoy: [
+    { label: 'WasmPlugin phase Determines Order Relative to Built-in Filters', route: '/service-mesh/envoy/wasmplugin-phase-determines-order-relative-to-built-in-filters' },
+    { label: 'INSERT_AFTER Targeting router Means the Filter Never Runs', route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' },
+    { label: 'Delta xDS Isolates a NACK’d Resource — SotW Blocks the Whole Type', route: '/service-mesh/envoy/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type' },
+  ],
 };

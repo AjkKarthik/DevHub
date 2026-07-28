@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Envoy Proxy Deep Dive" topicRoute="/service-mesh/envoy" subtopicLabel="WasmPlugin phase Determines Order Relative to Built-in Filters" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">WasmPlugin phase Determines Order Relative to Built-in Filters</h1>
+  <p class="page-subtitle">The main page lists WasmPlugin's phase values (AUTHN/AUTHZ/STATS) without saying what they order against — an AUTHN-phase plugin runs before Istio's own jwt_authn filter.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio (WasmPlugin CRD)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This gives the main page's phase enum its actual ordering semantics. Next: why an EnvoyFilter using INSERT_AFTER targeting the router filter never actually runs.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Envoy Proxy Deep Dive" topicRoute="/service-mesh/envoy"
+    [next]="{ label: 'INSERT_AFTER Targeting router Means the Filter Never Runs', route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' }" />
+</div>

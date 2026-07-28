@@ -41369,6 +41369,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A misconfigured Envoy filter chain can silently drop or mis-route traffic — Envoy\'s admin interface (/config_dump) is essential for debugging what configuration is actually active.',
     ],
   },
+  'service-mesh/envoy/wasmplugin-phase-determines-order-relative-to-built-in-filters': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Envoy Proxy Deep Dive',                                              route: '/service-mesh/envoy' },
+      { label: 'INSERT_AFTER Targeting router Means the Filter Never Runs',          route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' },
+    ],
+    tip: 'A WasmPlugin\'s phase determines its position relative to Istio\'s own built-in security filters — AUTHN-phase plugins run BEFORE jwt_authn, which is what lets a plugin produce a JWT for Istio\'s own filter to then validate.',
+    gotchas: [
+      'A custom auth plugin placed in AUTHZ instead of AUTHN runs too late — jwt_authn rejects every request before the plugin ever gets a chance to run.',
+    ],
+  },
+  'service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'WasmPlugin phase Determines Order Relative to Built-in Filters',              route: '/service-mesh/envoy/wasmplugin-phase-determines-order-relative-to-built-in-filters' },
+      { label: 'Delta xDS Isolates a NACK’d Resource — SotW Blocks the Whole Type',            route: '/service-mesh/envoy/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type' },
+    ],
+    tip: 'router terminates the HTTP filter chain — an EnvoyFilter using INSERT_AFTER to target router applies cleanly but the inserted filter never actually runs. Use INSERT_BEFORE instead.',
+    gotchas: [
+      'config_dump/proxy-config showing the filter present only confirms the patch applied — it does not confirm the filter chain ever reaches that position during real requests.',
+    ],
+  },
+  'service-mesh/envoy/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'INSERT_AFTER Targeting router Means the Filter Never Runs', route: '/service-mesh/envoy/insert-after-targeting-router-means-the-filter-never-runs' },
+      { label: 'Envoy Proxy Deep Dive',                                    route: '/service-mesh/envoy' },
+    ],
+    tip: 'Delta xDS isn\'t just a bandwidth optimization — it isolates a NACK to the one bad resource. Under SotW, one invalid resource in a type-wide bundle (e.g. one bad cluster among 50) NACKs the entire push, freezing every OTHER valid resource of that type too.',
+    gotchas: [
+      'A STALE proxy under SotW can mean dozens of unrelated, valid resources are stuck behind one unrelated mistake — not just the specific resource that\'s actually broken.',
+    ],
+  },
   'service-mesh/istio-architecture': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

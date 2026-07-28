@@ -86,7 +86,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/envoy" routerLinkActive="active"><span class="nl-text">Envoy Proxy Deep Dive</span>@if(p.isDone('mesh-envoy')){<span class="nl-done">✓</span>}@if(d('mesh-envoy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/envoy" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Envoy Proxy Deep Dive</span>
+        @if(p.isDone('mesh-envoy')){<span class="nl-done">✓</span>}
+        @if(d('mesh-envoy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('envoy')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('envoy')"
+                  (click)="toggleSubtopics('envoy', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('envoy'); as envoySubs) {
+        @if (isSubtopicsExpanded('envoy')) {
+          <div class="nav-subtopics">
+            @for (s of envoySubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

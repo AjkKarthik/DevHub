@@ -3693,7 +3693,12 @@ export const routes: Routes = [
     { path: 'gateway-api',        loadComponent: () => import('./components/cloud/service-mesh/gateway-api/gateway-api').then(m => m.MeshGatewayApi) },
     { path: 'ingress-gateway',    loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/ingress-gateway').then(m => m.MeshIngressGateway) },
     { path: 'performance',        loadComponent: () => import('./components/cloud/service-mesh/performance/performance').then(m => m.MeshPerformance) },
-    { path: 'envoy',              loadComponent: () => import('./components/cloud/service-mesh/envoy/envoy').then(m => m.MeshEnvoy) },
+    { path: 'envoy', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/envoy/envoy').then(m => m.MeshEnvoy) },
+      { path: 'wasmplugin-phase-determines-order-relative-to-built-in-filters', loadComponent: () => import('./components/cloud/service-mesh/envoy/subtopics/wasmplugin-phase-determines-order-relative-to-built-in-filters/wasmplugin-phase-determines-order-relative-to-built-in-filters').then(m => m.WasmpluginPhaseDeterminesOrderRelativeToBuiltInFiltersSubtopic) },
+      { path: 'insert-after-targeting-router-means-the-filter-never-runs', loadComponent: () => import('./components/cloud/service-mesh/envoy/subtopics/insert-after-targeting-router-means-the-filter-never-runs/insert-after-targeting-router-means-the-filter-never-runs').then(m => m.InsertAfterTargetingRouterMeansTheFilterNeverRunsSubtopic) },
+      { path: 'delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type', loadComponent: () => import('./components/cloud/service-mesh/envoy/subtopics/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type/delta-xds-isolates-a-nackd-resource-sotw-blocks-the-whole-type').then(m => m.DeltaXdsIsolatesANackdResourceSotwBlocksTheWholeTypeSubtopic) },
+    ] },
     { path: 'ambient-mesh',       loadComponent: () => import('./components/cloud/service-mesh/ambient-mesh/ambient-mesh').then(m => m.MeshAmbient) },
     { path: 'multi-cluster',      loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/multi-cluster').then(m => m.MeshMultiCluster) },
     { path: 'consul',             loadComponent: () => import('./components/cloud/service-mesh/consul/consul').then(m => m.MeshConsul) },
