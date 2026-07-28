@@ -5964,7 +5964,42 @@ off here with a date.
   subtopic) all verified via `get_page_text`, dark mode confirmed rendering the correct blue
   accent.
   **Service Mesh hub Phase 10: 6 of 19 topics complete.**
-- [ ] `/service-mesh/resilience` — Resilience Patterns
+- [x] `/service-mesh/resilience` — Resilience Patterns (2026-07-28) — 3 subtopics: (1)
+  **consecutiveLocalOriginFailures Needs splitExternalLocalOriginErrors to Work**, closing a gap in
+  the main page's outlierDetection quickRef entry — verified via WebSearch against Envoy's own
+  outlier-detection docs that local-origin (connection-level) failures are lumped in with HTTP 5xx
+  failures unless `splitExternalLocalOriginErrors: true` is explicitly set alongside
+  `consecutiveLocalOriginFailures`; (2) **minHealthPercent Defaults to 0% (Disabled), Not 50%**,
+  correcting a genuine inaccuracy in the main page's own QnA (claimed a 50% default) — verified via
+  WebFetch against Istio's own DestinationRule reference docs that the real default is 0% ("not
+  typically applicable in k8s environments with few pods per service"), and that crossing the
+  threshold disables outlier detection ENTIRELY (restoring already-ejected hosts too), not just
+  halting new ejections; (3) **A Service With No DestinationRule Still Has a 1024-Connection Cap**,
+  closing the gap that every circuit-breaker example on the main page shows an explicit
+  DestinationRule — verified Envoy's own built-in defaults (maxConnections and
+  max_pending_requests both 1024) apply even with zero configuration, so a service is never truly
+  "unprotected," just protected at a generic, un-tuned value. Two more main-page fixes made during
+  authoring, found by re-reading the page against already-verified facts from a sibling page: a
+  theory bullet claiming fault injection and retries combine on the same route directly
+  contradicted the already-published Traffic Management subtopic's verified fact that Istio
+  disables retries/timeout on any route with fault injection configured (fixed to state the
+  correct behavior); and an ejection-duration bullet calling the growth "exponential" while its own
+  accompanying formula is linear, verified via WebFetch against Envoy's docs ("multiplied by the
+  number of times the host has been ejected") and fixed to "linearly." Gotcha sweep (backtick
+  parity 4/4/4 all even, apostrophe-after-letter/bare `@word`/unescaped `${`/over-escaped
+  `\"`/backslash-escaped-apostrophe-in-label all clean) passed on the first pass. Confirmed bare
+  `resilience` key collision-free before adding — left as a bare key. Build passed clean on the
+  first attempt; hit the documented stale-dev-server-artifact gotcha during browser verification
+  (an NG2008 "Could not find template file" error persisted in `preview_logs` for several minutes
+  after the file was confirmed present and correct on disk) — resolved with a fresh save
+  specifically on the affected subtopic's own `.ts` file (append/trim a trailing newline), a new,
+  more targeted variant of the fix than touching the shared nav component. Browser-verified
+  successfully: toggle count (7, up from 6) and accordion links (all 3 subtopics) confirmed via
+  direct DOM query and click simulation, a subtopic page's full breadcrumb (4 levels)/tailored
+  sidebar/theory/code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`,
+  the 860px `.mesh-page` wrapper cap confirmed via `getComputedStyle`, dark mode class applied
+  without errors.
+  **Service Mesh hub Phase 10: 7 of 19 topics complete.**
 - [ ] `/service-mesh/load-balancing` — Load Balancing
 - [ ] `/service-mesh/mtls` — mTLS & Certificate Management
 - [ ] `/service-mesh/authorization` — Authorization Policy
@@ -5974,7 +6009,6 @@ off here with a date.
 - [ ] `/service-mesh/gateway-api` — Kubernetes Gateway API
 - [ ] `/service-mesh/ingress-gateway` — Ingress Gateway
 - [ ] `/service-mesh/performance` — Service Mesh Performance
-- [ ] `/service-mesh/envoy` — Envoy Proxy Deep Dive
 - [ ] `/service-mesh/ambient-mesh` — Ambient Mesh
 - [ ] `/service-mesh/multi-cluster` — Multi-Cluster Mesh
 - [ ] `/service-mesh/consul` — Consul Service Mesh

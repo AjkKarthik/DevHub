@@ -1959,6 +1959,40 @@ do this same check before any other new hub's first subtopic set:
    inaccuracies found during subtopic authoring" precedent established across many prior hubs
    (Blazor, Containers/K8s, AWS, Azure) — always check a main page's own code samples against the
    authoritative spec for the technology being demonstrated, not just prose claims.
+9. **The `/service-mesh/resilience` batch found and fixed THREE separate genuine main-page
+   inaccuracies, including one caught purely by cross-referencing a sibling page's own already-
+   verified content**: (a) a theory bullet claiming fault injection and retries combine on the same
+   route ("the retry fires against the fault-injected route... test retry end-to-end") directly
+   CONTRADICTED the already-published, already-verified Traffic Management subtopic fact that Istio
+   silently disables retries/timeout on any route with fault injection configured — caught while
+   reading this page during normal batch prep, not by any tool; (b) outlier detection ejection
+   duration was called "exponential" while the page's own accompanying formula
+   (`baseEjectionTime × ejection count`) is actually LINEAR — verified via WebFetch against Envoy's
+   own outlier-detection docs ("multiplied by the number of times the host has been ejected in a
+   row"); (c) a QnA claimed `minHealthPercent` defaults to 50%, verified via WebFetch against
+   Istio's own DestinationRule reference docs to actually default to 0% (disabled, "not typically
+   applicable in k8s environments with few pods per service") — fixed to state the correct default
+   AND the more precise "outlier detection disabled entirely, ALL hosts restored to rotation"
+   behavior (not merely "stops ejecting new hosts"). **Lesson for any hub with 5+ completed
+   topics**: cross-reference a NEW main page's claims against ALREADY-VERIFIED facts from sibling
+   pages in the same hub, not just against external docs — internal contradictions are a real,
+   catchable signal of a stale/wrong claim, and are cheaper to catch (compare against something you
+   already verified this session) than an external doc lookup.
+10. **A new confirmed variant of the stale-dev-server-artifact family, this time triggered by
+    writing a subtopic's `.ts`/`.html`/`.scss` files across MULTIPLE separate tool calls rather
+    than all at once**: the file-watcher's very first "Could not find template file" NG2008 error
+    for the batch's third subtopic was expected (the `.ts` was written before its `.html`
+    existed) — but the SAME error kept reappearing on every subsequent rebuild for several
+    minutes after both files were confirmed present and correct on disk (`ls` directly confirmed
+    it), even after a fresh `mesh-nav.ts` file-write (a real, substantive edit made earlier in
+    this same batch) triggered its own successful rebuild. The fix that actually worked was a
+    fresh save specifically on the AFFECTED SUBTOPIC's OWN `.ts` file (append a newline, then
+    trim it back out) — not the shared nav component, not the routes file, not the data file —
+    confirming the specific stale artifact is scoped to whichever file the watcher's cached
+    dependency graph considers the "owner" of the broken resolution, which is not always the
+    most recently-touched file in the batch. **Lesson: when this family of gotcha recurs, try a
+    fresh write on the SPECIFIC file named in the error message first**, before touching
+    `app.routes.ts` or a shared nav component — it is the more targeted and more reliable fix.
 
 ## Current state (update when it changes!)
 
@@ -2244,15 +2278,20 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 6 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: 7 of 19 topics have subtopics (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
-  `/service-mesh/linkerd`, `/service-mesh/traffic-management`, 2026-07-28) — see "Service Mesh hub
+  `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
+  2026-07-28) — see "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
-  `envoy`, `linkerd`, and `traffic-management` were all collision-free, left as bare keys). **The
-  `linkerd` batch found and fixed a real inaccuracy on the main page itself** — a self-referential
-  SMI TrafficSplit example (apex and one backend sharing the same service name), explicitly
-  prohibited by the SMI spec — see "Service Mesh hub subtopic wiring" section below for details.
+  `envoy`, `linkerd`, `traffic-management`, and `resilience` were all collision-free, left as bare
+  keys). **The `linkerd` batch found and fixed a real inaccuracy on the main page itself** — a
+  self-referential SMI TrafficSplit example (apex and one backend sharing the same service name),
+  explicitly prohibited by the SMI spec. **The `resilience` batch found and fixed THREE more real
+  inaccuracies** — a fault-injection/retries contradiction with the already-verified Traffic
+  Management subtopic, mislabeled "exponential" ejection-duration growth (actually linear), and a
+  wrong `minHealthPercent` default (claimed 50%, actually 0%) — see "Service Mesh hub subtopic
+  wiring" section below for details on both batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.
   CSS classes: `.sysdesign-page`, `.sysdesign-icon`, `.sysdesign-section`. Icon content: `🏗️` at `font-size: 1.8rem`. `tech="javascript"`.
