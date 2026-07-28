@@ -3729,7 +3729,12 @@ export const routes: Routes = [
       { path: 'opentelemetry-provider-needs-istio-1-22-not-1-16', loadComponent: () => import('./components/cloud/service-mesh/tracing/subtopics/opentelemetry-provider-needs-istio-1-22-not-1-16/opentelemetry-provider-needs-istio-1-22-not-1-16').then(m => m.OpenTelemetryProviderNeedsIstio122Not116Subtopic) },
       { path: 'exemplars-are-defined-by-openmetrics-not-an-ietf-rfc', loadComponent: () => import('./components/cloud/service-mesh/tracing/subtopics/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc').then(m => m.ExemplarsAreDefinedByOpenMetricsNotAnIetfRfcSubtopic) },
     ] },
-    { path: 'kiali',              loadComponent: () => import('./components/cloud/service-mesh/kiali/kiali').then(m => m.MeshKiali) },
+    { path: 'kiali', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/kiali/kiali').then(m => m.MeshKiali) },
+      { path: 'envoy-config-viewer-queries-istiod-not-prometheus', loadComponent: () => import('./components/cloud/service-mesh/kiali/subtopics/envoy-config-viewer-queries-istiod-not-prometheus/envoy-config-viewer-queries-istiod-not-prometheus').then(m => m.EnvoyConfigViewerQueriesIstiodNotPrometheusSubtopic) },
+      { path: 'kia0201-is-duplicate-destinationrules-not-missing-subset', loadComponent: () => import('./components/cloud/service-mesh/kiali/subtopics/kia0201-is-duplicate-destinationrules-not-missing-subset/kia0201-is-duplicate-destinationrules-not-missing-subset').then(m => m.Kia0201IsDuplicateDestinationRulesNotMissingSubsetSubtopic) },
+      { path: 'animation-dot-speed-is-response-time-density-is-rps', loadComponent: () => import('./components/cloud/service-mesh/kiali/subtopics/animation-dot-speed-is-response-time-density-is-rps/animation-dot-speed-is-response-time-density-is-rps').then(m => m.AnimationDotSpeedIsResponseTimeDensityIsRpsSubtopic) },
+    ] },
     { path: 'gateway-api',        loadComponent: () => import('./components/cloud/service-mesh/gateway-api/gateway-api').then(m => m.MeshGatewayApi) },
     { path: 'ingress-gateway',    loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/ingress-gateway').then(m => m.MeshIngressGateway) },
     { path: 'performance',        loadComponent: () => import('./components/cloud/service-mesh/performance/performance').then(m => m.MeshPerformance) },

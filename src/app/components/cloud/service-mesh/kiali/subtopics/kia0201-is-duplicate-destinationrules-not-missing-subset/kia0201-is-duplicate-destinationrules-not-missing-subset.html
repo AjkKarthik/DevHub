@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Kiali Service Graph" topicRoute="/service-mesh/kiali" subtopicLabel="KIA0201 Is Duplicate DestinationRules, Not a Missing Subset" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">KIA0201 Is Duplicate DestinationRules, Not a Missing Subset</h1>
+  <p class="page-subtitle">The main page's quiz and mistakes block gave KIA0201 two DIFFERENT wrong meanings — verified against Kiali's own docs: the real "subset not found" code is KIA1107.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Kiali (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real, self-contradicting inaccuracy on the main page. Next: the traffic-animation dots' speed and density meanings were swapped on the main page — verified and corrected.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Kiali Service Graph" topicRoute="/service-mesh/kiali"
+    [prev]="{ label: 'Envoy Config Viewer Queries Istiod, Not Prometheus', route: '/service-mesh/kiali/envoy-config-viewer-queries-istiod-not-prometheus' }"
+    [next]="{ label: 'Animation Dot Speed Is Response Time, Density Is RPS', route: '/service-mesh/kiali/animation-dot-speed-is-response-time-density-is-rps' }" />
+</div>

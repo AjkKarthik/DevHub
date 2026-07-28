@@ -282,7 +282,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/kiali" routerLinkActive="active"><span class="nl-text">Kiali &amp; Dashboards</span>@if(p.isDone('mesh-kiali')){<span class="nl-done">✓</span>}@if(d('mesh-kiali');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/kiali" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Kiali &amp; Dashboards</span>
+        @if(p.isDone('mesh-kiali')){<span class="nl-done">✓</span>}
+        @if(d('mesh-kiali');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('kiali')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('kiali')"
+                  (click)="toggleSubtopics('kiali', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('kiali'); as kialiSubs) {
+        @if (isSubtopicsExpanded('kiali')) {
+          <div class="nav-subtopics">
+            @for (s of kialiSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

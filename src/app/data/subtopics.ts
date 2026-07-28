@@ -2951,4 +2951,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+', route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' },
     { label: 'Exemplars Are Defined by OpenMetrics, Not an IETF RFC', route: '/service-mesh/tracing/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc' },
   ],
+  'kiali': [
+    { label: 'Envoy Config Viewer Queries Istiod, Not Prometheus', route: '/service-mesh/kiali/envoy-config-viewer-queries-istiod-not-prometheus' },
+    { label: 'KIA0201 Is Duplicate DestinationRules, Not a Missing Subset', route: '/service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset' },
+    { label: 'Animation Dot Speed Is Response Time, Density Is RPS', route: '/service-mesh/kiali/animation-dot-speed-is-response-time-density-is-rps' },
+  ],
 };

@@ -41826,6 +41826,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The visual graph is a useful diagnostic tool, not a substitute for actual metrics-based alerting — nobody watches a topology graph 24/7 the way an alert fires.',
     ],
   },
+  'service-mesh/kiali/envoy-config-viewer-queries-istiod-not-prometheus': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Kiali & Dashboards',                                            route: '/service-mesh/kiali' },
+      { label: 'KIA0201 Is Duplicate DestinationRules, Not a Missing Subset',    route: '/service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset' },
+    ],
+    tip: 'Kiali\'s service graph reads from Prometheus, but the Envoy Config Viewer is a separate feature entirely — it queries Istiod\'s debug endpoint directly, so a Prometheus outage doesn\'t break it.',
+    gotchas: [
+      'Different Kiali features have independent data-source dependencies — know which one (Prometheus vs. Istiod) a specific feature relies on before assuming a single outage explains every symptom.',
+    ],
+  },
+  'service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Envoy Config Viewer Queries Istiod, Not Prometheus',            route: '/service-mesh/kiali/envoy-config-viewer-queries-istiod-not-prometheus' },
+      { label: 'Animation Dot Speed Is Response Time, Density Is RPS',          route: '/service-mesh/kiali/animation-dot-speed-is-response-time-density-is-rps' },
+    ],
+    tip: 'KIA0201 means "more than one DestinationRule for the same host/subset combination" — the real code for a VirtualService referencing a non-existent subset is KIA1107.',
+    gotchas: [
+      'A CI/CD check filtering Kiali validation output for the wrong code silently fails to catch the real problem, with no indication anything is wrong until it causes an incident.',
+    ],
+  },
+  'service-mesh/kiali/animation-dot-speed-is-response-time-density-is-rps': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'KIA0201 Is Duplicate DestinationRules, Not a Missing Subset',  route: '/service-mesh/kiali/kia0201-is-duplicate-destinationrules-not-missing-subset' },
+      { label: 'Kiali & Dashboards',                                          route: '/service-mesh/kiali' },
+    ],
+    tip: 'Traffic animation dot SPEED represents response time (faster = quicker responses), while dot DENSITY represents request rate — the two are easy to conflate but encode different signals.',
+    gotchas: [
+      'A dense-but-slow edge (high RPS AND high latency together) is the highest-priority edge to investigate during an incident — the corrected mental model makes this pattern visible at a glance.',
+    ],
+  },
   'service-mesh/metrics': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
