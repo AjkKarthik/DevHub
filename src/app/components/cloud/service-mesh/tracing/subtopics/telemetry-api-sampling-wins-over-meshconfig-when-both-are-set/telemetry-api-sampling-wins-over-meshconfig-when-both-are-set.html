@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/service-mesh/tracing" subtopicLabel="Telemetry API Sampling Wins Over meshConfig When Both Are Set" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Telemetry API Sampling Wins Over meshConfig When Both Are Set</h1>
+  <p class="page-subtitle">The main page's own example configures both sampling mechanisms at once without saying which wins if they disagree — the Telemetry API always takes precedence.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio 1.12+ (Telemetry API)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap left by the main page's own dual-configuration example. Next: the main page's version claim for OpenTelemetry provider support was off — verified and corrected.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/service-mesh/tracing"
+    [next]="{ label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+', route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' }" />
+</div>

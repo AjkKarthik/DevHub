@@ -2946,4 +2946,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Telemetry API Scope Override Is Full Field Replacement, Not a Merge', route: '/service-mesh/metrics/telemetry-api-scope-override-is-full-field-replacement-not-merge' },
     { label: 'Histogram Bucket Boundaries Are Fixed and Cannot Be Customized', route: '/service-mesh/metrics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized' },
   ],
+  'tracing': [
+    { label: 'Telemetry API Sampling Wins Over meshConfig When Both Are Set', route: '/service-mesh/tracing/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set' },
+    { label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+', route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' },
+    { label: 'Exemplars Are Defined by OpenMetrics, Not an IETF RFC', route: '/service-mesh/tracing/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc' },
+  ],
 };

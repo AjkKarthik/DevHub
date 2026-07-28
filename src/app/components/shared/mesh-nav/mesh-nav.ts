@@ -262,7 +262,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/tracing" routerLinkActive="active"><span class="nl-text">Distributed Tracing</span>@if(p.isDone('mesh-tracing')){<span class="nl-done">✓</span>}@if(d('mesh-tracing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/tracing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Distributed Tracing</span>
+        @if(p.isDone('mesh-tracing')){<span class="nl-done">✓</span>}
+        @if(d('mesh-tracing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('tracing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tracing')"
+                  (click)="toggleSubtopics('tracing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('tracing'); as tracingSubs) {
+        @if (isSubtopicsExpanded('tracing')) {
+          <div class="nav-subtopics">
+            @for (s of tracingSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/service-mesh/kiali" routerLinkActive="active"><span class="nl-text">Kiali &amp; Dashboards</span>@if(p.isDone('mesh-kiali')){<span class="nl-done">✓</span>}@if(d('mesh-kiali');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

@@ -3723,7 +3723,12 @@ export const routes: Routes = [
       { path: 'telemetry-api-scope-override-is-full-field-replacement-not-merge', loadComponent: () => import('./components/cloud/service-mesh/metrics/subtopics/telemetry-api-scope-override-is-full-field-replacement-not-merge/telemetry-api-scope-override-is-full-field-replacement-not-merge').then(m => m.TelemetryApiScopeOverrideIsFullFieldReplacementNotMergeSubtopic) },
       { path: 'histogram-bucket-boundaries-are-fixed-and-cannot-be-customized', loadComponent: () => import('./components/cloud/service-mesh/metrics/subtopics/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized/histogram-bucket-boundaries-are-fixed-and-cannot-be-customized').then(m => m.HistogramBucketBoundariesAreFixedAndCannotBeCustomizedSubtopic) },
     ] },
-    { path: 'tracing',            loadComponent: () => import('./components/cloud/service-mesh/tracing/tracing').then(m => m.MeshTracing) },
+    { path: 'tracing', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/tracing/tracing').then(m => m.MeshTracing) },
+      { path: 'telemetry-api-sampling-wins-over-meshconfig-when-both-are-set', loadComponent: () => import('./components/cloud/service-mesh/tracing/subtopics/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set').then(m => m.TelemetryApiSamplingWinsOverMeshConfigWhenBothAreSetSubtopic) },
+      { path: 'opentelemetry-provider-needs-istio-1-22-not-1-16', loadComponent: () => import('./components/cloud/service-mesh/tracing/subtopics/opentelemetry-provider-needs-istio-1-22-not-1-16/opentelemetry-provider-needs-istio-1-22-not-1-16').then(m => m.OpenTelemetryProviderNeedsIstio122Not116Subtopic) },
+      { path: 'exemplars-are-defined-by-openmetrics-not-an-ietf-rfc', loadComponent: () => import('./components/cloud/service-mesh/tracing/subtopics/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc').then(m => m.ExemplarsAreDefinedByOpenMetricsNotAnIetfRfcSubtopic) },
+    ] },
     { path: 'kiali',              loadComponent: () => import('./components/cloud/service-mesh/kiali/kiali').then(m => m.MeshKiali) },
     { path: 'gateway-api',        loadComponent: () => import('./components/cloud/service-mesh/gateway-api/gateway-api').then(m => m.MeshGatewayApi) },
     { path: 'ingress-gateway',    loadComponent: () => import('./components/cloud/service-mesh/ingress-gateway/ingress-gateway').then(m => m.MeshIngressGateway) },

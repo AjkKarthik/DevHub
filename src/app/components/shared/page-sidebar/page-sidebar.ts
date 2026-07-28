@@ -41883,6 +41883,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A trace missing a hop usually means that specific service forgot to propagate the trace context headers, not that the mesh itself failed to instrument it.',
     ],
   },
+  'service-mesh/tracing/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Tracing',                                          route: '/service-mesh/tracing' },
+      { label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+',          route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' },
+    ],
+    tip: 'When both meshConfig.defaultConfig.tracing.sampling and a Telemetry resource\'s randomSamplingPercentage are configured, the Telemetry API value always wins — the mesh-config value becomes silently irrelevant wherever the Telemetry resource applies.',
+    gotchas: [
+      'Editing meshConfig.defaultConfig.tracing.sampling has no effect if a competing Telemetry resource already governs that scope — no error, just silence.',
+    ],
+  },
+  'service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Telemetry API Sampling Wins Over meshConfig When Both Are Set', route: '/service-mesh/tracing/telemetry-api-sampling-wins-over-meshconfig-when-both-are-set' },
+      { label: 'Exemplars Are Defined by OpenMetrics, Not an IETF RFC',         route: '/service-mesh/tracing/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc' },
+    ],
+    tip: 'The OpenTelemetry extension provider (meshConfig.extensionProviders[0].opentelemetry) is documented starting at Istio 1.22, not 1.16 — confirm the running control plane version before planning a migration around it.',
+    gotchas: [
+      'On an unsupported older version, the failure mode can be silent (no error, just no data reaching the collector) rather than an obvious validation rejection.',
+    ],
+  },
+  'service-mesh/tracing/exemplars-are-defined-by-openmetrics-not-an-ietf-rfc': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'OpenTelemetry Provider Needs Istio 1.22+, Not 1.16+', route: '/service-mesh/tracing/opentelemetry-provider-needs-istio-1-22-not-1-16' },
+      { label: 'Distributed Tracing',                                 route: '/service-mesh/tracing' },
+    ],
+    tip: 'Prometheus Exemplars are defined by the OpenMetrics specification, not any IETF RFC — a fabricated "RFC 4652" citation was caught and corrected on the main page during this batch.',
+    gotchas: [
+      'OpenMetrics caps a histogram bucket at one exemplar and limits total exemplar label length to 128 UTF-8 characters — exemplars are a lightweight pointer, not a full event-logging channel.',
+    ],
+  },
   'service-mesh/performance': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
