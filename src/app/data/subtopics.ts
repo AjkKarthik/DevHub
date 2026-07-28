@@ -2931,4 +2931,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring', route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' },
     { label: 'Active Health Checks Have No Native DestinationRule Field', route: '/service-mesh/load-balancing/active-health-checks-have-no-native-destinationrule-field' },
   ],
+  'mtls': [
+    { label: 'Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted', route: '/service-mesh/mtls/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted' },
+    { label: 'Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace', route: '/service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns' },
+    { label: 'The CA Secret Is Named cacerts, Not istio-ca-secret', route: '/service-mesh/mtls/the-ca-secret-is-named-cacerts-not-istio-ca-secret' },
+  ],
 };

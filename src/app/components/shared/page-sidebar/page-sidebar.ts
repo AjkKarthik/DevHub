@@ -41635,6 +41635,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Certificate issuance and rotation is handled automatically by the mesh\'s control plane, removing a significant manual operational burden — but also meaning certificate-related outages trace back to the control plane, not individual services.',
     ],
   },
+  'service-mesh/mtls/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'mTLS & Certificate Management',                                          route: '/service-mesh/mtls' },
+      { label: 'Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace', route: '/service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns' },
+    ],
+    tip: 'The sidecar injector rewrites HTTP/gRPC probes to target istio-agent\'s own port 15020 instead of the app\'s real port — that\'s what actually keeps probe traffic out of Envoy\'s mTLS-enforcing inbound listener, not just "coming from the kubelet."',
+    gotchas: [
+      'Disabling sidecar.istio.io/rewriteAppHTTPProbers removes this protection — probes then genuinely fail their TLS handshake under STRICT mode.',
+    ],
+  },
+  'service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Probe Traffic Is Rewritten to Port 15020, Not Simply Exempted',  route: '/service-mesh/mtls/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted' },
+      { label: 'The CA Secret Is Named cacerts, Not istio-ca-secret',            route: '/service-mesh/mtls/the-ca-secret-is-named-cacerts-not-istio-ca-secret' },
+    ],
+    tip: 'A mesh-wide PeerAuthentication needs no selector, must live in the root namespace, AND must be named exactly "default" — a differently-named policy meeting the other two conditions applies with no error but is never picked up as the mesh baseline.',
+    gotchas: [
+      'The same "must be named default" rule applies at the namespace level too, for a namespace\'s own baseline policy.',
+    ],
+  },
+  'service-mesh/mtls/the-ca-secret-is-named-cacerts-not-istio-ca-secret': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Mesh-Wide PeerAuthentication Must Be Named default in the Root Namespace', route: '/service-mesh/mtls/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns' },
+      { label: 'mTLS & Certificate Management',                                          route: '/service-mesh/mtls' },
+    ],
+    tip: 'Modern Istio unified two historically separate secret names (cacerts for a custom CA, istio-ca-secret for the auto-generated one) into a single cacerts secret for both cases — an istio-generated key distinguishes them internally now.',
+    gotchas: [
+      'Deleting a secret named istio-ca-secret on a current Istio installation silently does nothing — the running control plane is watching for cacerts specifically.',
+    ],
+  },
   'service-mesh/authorization': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

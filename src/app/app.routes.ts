@@ -3705,7 +3705,12 @@ export const routes: Routes = [
       { path: 'consistenthash-defaults-to-ring-hash-with-a-1024-node-ring', loadComponent: () => import('./components/cloud/service-mesh/load-balancing/subtopics/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring').then(m => m.ConsistentHashDefaultsToRingHashWithA1024NodeRingSubtopic) },
       { path: 'active-health-checks-have-no-native-destinationrule-field', loadComponent: () => import('./components/cloud/service-mesh/load-balancing/subtopics/active-health-checks-have-no-native-destinationrule-field/active-health-checks-have-no-native-destinationrule-field').then(m => m.ActiveHealthChecksHaveNoNativeDestinationRuleFieldSubtopic) },
     ] },
-    { path: 'mtls',               loadComponent: () => import('./components/cloud/service-mesh/mtls/mtls').then(m => m.MeshMtls) },
+    { path: 'mtls', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/mtls/mtls').then(m => m.MeshMtls) },
+      { path: 'probe-traffic-is-rewritten-to-port-15020-not-simply-exempted', loadComponent: () => import('./components/cloud/service-mesh/mtls/subtopics/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted/probe-traffic-is-rewritten-to-port-15020-not-simply-exempted').then(m => m.ProbeTrafficIsRewrittenToPort15020NotSimplyExemptedSubtopic) },
+      { path: 'mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns', loadComponent: () => import('./components/cloud/service-mesh/mtls/subtopics/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns/mesh-wide-peerauthentication-must-be-named-default-in-the-root-ns').then(m => m.MeshWidePeerAuthenticationMustBeNamedDefaultInTheRootNsSubtopic) },
+      { path: 'the-ca-secret-is-named-cacerts-not-istio-ca-secret', loadComponent: () => import('./components/cloud/service-mesh/mtls/subtopics/the-ca-secret-is-named-cacerts-not-istio-ca-secret/the-ca-secret-is-named-cacerts-not-istio-ca-secret').then(m => m.TheCaSecretIsNamedCacertsNotIstioCaSecretSubtopic) },
+    ] },
     { path: 'authorization',      loadComponent: () => import('./components/cloud/service-mesh/authorization/authorization').then(m => m.MeshAuthorization) },
     { path: 'metrics',            loadComponent: () => import('./components/cloud/service-mesh/metrics/metrics').then(m => m.MeshMetrics) },
     { path: 'tracing',            loadComponent: () => import('./components/cloud/service-mesh/tracing/tracing').then(m => m.MeshTracing) },
