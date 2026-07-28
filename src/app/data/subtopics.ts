@@ -2925,4 +2925,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'minHealthPercent Defaults to 0% (Disabled), Not 50%', route: '/service-mesh/resilience/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent' },
     { label: 'A Service With No DestinationRule Still Has a 1024-Connection Cap', route: '/service-mesh/resilience/a-service-with-no-destinationrule-still-has-a-1024-connection-cap' },
   ],
+  // NOTE: 'load-balancing' bare key already taken by the AWS hub's own load-balancing topic
+  'mesh-load-balancing': [
+    { label: 'warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%', route: '/service-mesh/load-balancing/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent' },
+    { label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring', route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' },
+    { label: 'Active Health Checks Have No Native DestinationRule Field', route: '/service-mesh/load-balancing/active-health-checks-have-no-native-destinationrule-field' },
+  ],
 };

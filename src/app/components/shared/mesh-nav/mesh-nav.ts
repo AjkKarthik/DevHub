@@ -174,7 +174,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/load-balancing" routerLinkActive="active"><span class="nl-text">Load Balancing Algorithms</span>@if(p.isDone('mesh-load-balancing')){<span class="nl-done">✓</span>}@if(d('mesh-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/load-balancing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Load Balancing Algorithms</span>
+        @if(p.isDone('mesh-load-balancing')){<span class="nl-done">✓</span>}
+        @if(d('mesh-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('mesh-load-balancing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mesh-load-balancing')"
+                  (click)="toggleSubtopics('mesh-load-balancing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mesh-load-balancing'); as lbSubs) {
+        @if (isSubtopicsExpanded('mesh-load-balancing')) {
+          <div class="nav-subtopics">
+            @for (s of lbSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

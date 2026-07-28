@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Load Balancing Algorithms" topicRoute="/service-mesh/load-balancing" subtopicLabel="warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%</h1>
+  <p class="page-subtitle">The main page's own quiz explanation claimed the ramp starts at ~0% — verified against Envoy's own spec and corrected: the real default floor is 10%.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Istio / Envoy (all versions)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a real inaccuracy found in the main page's own quiz explanation during authoring. Next: why consistentHash defaults to ring hash with a 1024-node ring, explaining the "~1/N remapping" claim's precision.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Load Balancing Algorithms" topicRoute="/service-mesh/load-balancing"
+    [next]="{ label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring', route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' }" />
+</div>

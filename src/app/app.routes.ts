@@ -3699,7 +3699,12 @@ export const routes: Routes = [
       { path: 'minhealthpercent-defaults-to-0-percent-disabled-not-50-percent', loadComponent: () => import('./components/cloud/service-mesh/resilience/subtopics/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent/minhealthpercent-defaults-to-0-percent-disabled-not-50-percent').then(m => m.MinhealthpercentDefaultsTo0PercentDisabledNot50PercentSubtopic) },
       { path: 'a-service-with-no-destinationrule-still-has-a-1024-connection-cap', loadComponent: () => import('./components/cloud/service-mesh/resilience/subtopics/a-service-with-no-destinationrule-still-has-a-1024-connection-cap/a-service-with-no-destinationrule-still-has-a-1024-connection-cap').then(m => m.AServiceWithNoDestinationRuleStillHasA1024ConnectionCapSubtopic) },
     ] },
-    { path: 'load-balancing',     loadComponent: () => import('./components/cloud/service-mesh/load-balancing/load-balancing').then(m => m.MeshLoadBalancing) },
+    { path: 'load-balancing', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/load-balancing/load-balancing').then(m => m.MeshLoadBalancing) },
+      { path: 'warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent', loadComponent: () => import('./components/cloud/service-mesh/load-balancing/subtopics/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent').then(m => m.WarmupDurationSecsStartsNewPodsAt10PercentNot0PercentSubtopic) },
+      { path: 'consistenthash-defaults-to-ring-hash-with-a-1024-node-ring', loadComponent: () => import('./components/cloud/service-mesh/load-balancing/subtopics/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring').then(m => m.ConsistentHashDefaultsToRingHashWithA1024NodeRingSubtopic) },
+      { path: 'active-health-checks-have-no-native-destinationrule-field', loadComponent: () => import('./components/cloud/service-mesh/load-balancing/subtopics/active-health-checks-have-no-native-destinationrule-field/active-health-checks-have-no-native-destinationrule-field').then(m => m.ActiveHealthChecksHaveNoNativeDestinationRuleFieldSubtopic) },
+    ] },
     { path: 'mtls',               loadComponent: () => import('./components/cloud/service-mesh/mtls/mtls').then(m => m.MeshMtls) },
     { path: 'authorization',      loadComponent: () => import('./components/cloud/service-mesh/authorization/authorization').then(m => m.MeshAuthorization) },
     { path: 'metrics',            loadComponent: () => import('./components/cloud/service-mesh/metrics/metrics').then(m => m.MeshMetrics) },

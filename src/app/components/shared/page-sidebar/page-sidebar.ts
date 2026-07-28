@@ -41591,6 +41591,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A default of 1024 is likely far too high to meaningfully protect a small, lightly-provisioned service — the circuit breaker exists but provides little practical benefit until deliberately tuned.',
     ],
   },
+  'service-mesh/load-balancing/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing',                                                    route: '/service-mesh/load-balancing' },
+      { label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring',         route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' },
+    ],
+    tip: 'Envoy\'s slow-start floor (min_weight_percent) defaults to 10%, not 0% — a new pod under warmupDurationSecs receives real traffic immediately, giving monitoring an early signal rather than waiting for the ramp to finish.',
+    gotchas: [
+      'Istio\'s DestinationRule only exposes the ramp WINDOW (warmupDurationSecs) — Envoy\'s own aggression parameter (ramp shape) and the 10% floor itself are only reachable via EnvoyFilter.',
+    ],
+  },
+  'service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'warmupDurationSecs Starts New Pods at 10% Traffic, Not 0%',          route: '/service-mesh/load-balancing/warmupdurationsecs-starts-new-pods-at-10-percent-not-0-percent' },
+      { label: 'Active Health Checks Have No Native DestinationRule Field',          route: '/service-mesh/load-balancing/active-health-checks-have-no-native-destinationrule-field' },
+    ],
+    tip: 'consistentHash defaults to RING_HASH with a 1024-node ring when neither ringHash nor maglev is explicitly set — the ring size is exactly why the "~1/N remapping" claim holds at small scale but degrades as pod count grows.',
+    gotchas: [
+      'Maglev is a fully native DestinationRule field (no EnvoyFilter needed) — both ringHash and maglev are directly configurable sub-fields of consistentHash.',
+    ],
+  },
+  'service-mesh/load-balancing/active-health-checks-have-no-native-destinationrule-field': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'consistentHash Defaults to Ring Hash With a 1024-Node Ring',         route: '/service-mesh/load-balancing/consistenthash-defaults-to-ring-hash-with-a-1024-node-ring' },
+      { label: 'Load Balancing',                                                    route: '/service-mesh/load-balancing' },
+    ],
+    tip: 'trafficPolicy has exactly 8 fields (loadBalancer, connectionPool, outlierDetection, tls, portLevelSettings, tunnel, proxyProtocol, retryBudget) — healthCheck is not one of them. Active health checks require an EnvoyFilter patching the cluster\'s own health_checks field.',
+    gotchas: [
+      'outlierDetection is the only native, DestinationRule-configurable health signal — and it is exclusively passive (observes real traffic), never sends its own probes.',
+    ],
+  },
   'service-mesh/mtls': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [
