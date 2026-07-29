@@ -2846,7 +2846,12 @@ export const routes: Routes = [
       { path: 'anycast-failover-takes-bgp-convergence-time-not-instant', loadComponent: () => import('./components/architecture/system-design/cdn/subtopics/anycast-failover-takes-bgp-convergence-time-not-instant/anycast-failover-takes-bgp-convergence-time-not-instant').then(m => m.AnycastFailoverTakesBgpConvergenceTimeNotInstantSubtopic) },
       { path: 'raw-vary-cookie-fragments-the-cache-normalize-it-instead', loadComponent: () => import('./components/architecture/system-design/cdn/subtopics/raw-vary-cookie-fragments-the-cache-normalize-it-instead/raw-vary-cookie-fragments-the-cache-normalize-it-instead').then(m => m.RawVaryCookieFragmentsTheCacheNormalizeItInsteadSubtopic) },
     ] },
-    { path: 'sharding', loadComponent: () => import('./components/architecture/system-design/sharding/sharding').then(m => m.SysdesignSharding) },
+    { path: 'sharding', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/sharding/sharding').then(m => m.SysdesignSharding) },
+      { path: 'the-64tb-100k-tps-figures-are-rds-limits-not-postgresql-itself', loadComponent: () => import('./components/architecture/system-design/sharding/subtopics/the-64tb-100k-tps-figures-are-rds-limits-not-postgresql-itself/the-64tb-100k-tps-figures-are-rds-limits-not-postgresql-itself').then(m => m.The64tb100kTpsFiguresAreRdsLimitsNotPostgresqlItselfSubtopic) },
+      { path: 'naive-double-write-resharding-is-risky-vitess-uses-cdc-instead', loadComponent: () => import('./components/architecture/system-design/sharding/subtopics/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead').then(m => m.NaiveDoubleWriteReshardingIsRiskyVitessUsesCdcInsteadSubtopic) },
+      { path: 'why-basic-consistent-hashing-still-needs-virtual-nodes', loadComponent: () => import('./components/architecture/system-design/sharding/subtopics/why-basic-consistent-hashing-still-needs-virtual-nodes/why-basic-consistent-hashing-still-needs-virtual-nodes').then(m => m.WhyBasicConsistentHashingStillNeedsVirtualNodesSubtopic) },
+    ] },
     { path: 'sql-vs-nosql', loadComponent: () => import('./components/architecture/system-design/sql-vs-nosql/sql-vs-nosql').then(m => m.SysdesignSqlVsNosql) },
     { path: 'replication', loadComponent: () => import('./components/architecture/system-design/replication/replication').then(m => m.SysdesignReplication) },
     { path: 'indexes', loadComponent: () => import('./components/architecture/system-design/indexes/indexes').then(m => m.SysdesignIndexes) },

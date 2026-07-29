@@ -26,7 +26,7 @@ const theory: TheoryPoint[] = [
   {
     heading: 'Why shard?',
     points: [
-      'Vertical scaling has a ceiling. A single PostgreSQL instance tops out around 100k TPS and 64 TB.',
+      'Vertical scaling has a practical ceiling, though the commonly-quoted numbers here are often misattributed: ~100k TPS is a reasonable rule of thumb for a real mixed-read/write OLTP workload on a single node, not a hard software limit — single-node Postgres has been benchmarked past 3 million TPS on read-heavy, in-memory workloads. Likewise, "64 TB" is AWS RDS\'s managed-storage ceiling for PostgreSQL, not a PostgreSQL software limit — self-hosted Postgres has no such cap (the actual PG-specific limit is 32 TB per single TABLE, not per instance).',
       'Sharding splits data horizontally — each shard handles a fraction of total load.',
       'When to shard: when read replicas are at capacity, vertical scaling is cost-prohibitive, or dataset exceeds single-node storage.',
     ],

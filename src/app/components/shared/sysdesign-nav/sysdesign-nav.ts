@@ -184,7 +184,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/sharding" routerLinkActive="active"><span class="nl-text">Database Sharding</span>@if(p.isDone('sysdesign-sharding')){<span class="nl-done">✓</span>}@if(d('sysdesign-sharding');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/sharding" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Database Sharding</span>
+        @if(p.isDone('sysdesign-sharding')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-sharding');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('sharding')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sharding')"
+                  (click)="toggleSubtopics('sharding', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sharding'); as shardSubs) {
+        @if (isSubtopicsExpanded('sharding')) {
+          <div class="nav-subtopics">
+            @for (s of shardSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -42535,6 +42535,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Resharding (changing the shard key or count after the fact) is a genuinely difficult, high-risk operation on a live production system — getting the initial design right matters enormously.',
     ],
   },
+  'system-design/sharding/the-64tb-100k-tps-figures-are-rds-limits-not-postgresql-itself': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Database Sharding (overview)', route: '/system-design/sharding' },
+      { label: 'Capacity Estimation',           route: '/system-design/capacity-estimation' },
+    ],
+    tip: 'Before repeating a specific "X tops out at N" figure, check whether N describes the software itself, a specific managed-hosting product, or a workload-specific benchmark result — these are three different kinds of ceiling.',
+    gotchas: [
+      'AWS RDS\'s 64 TiB storage ceiling is a product limit, not a PostgreSQL software limit — the actual PostgreSQL-specific limit is 32 TB per single table, a different figure describing a different scope.',
+    ],
+  },
+  'system-design/sharding/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Database Sharding (overview)', route: '/system-design/sharding' },
+      { label: 'Replication Strategies',        route: '/system-design/replication' },
+    ],
+    tip: 'When a migration plan says "double-write," ask whether that means naive application-level dual writes (risky) or CDC/binlog-based replication (what production tools like Vitess actually use) — the two have very different failure modes.',
+    gotchas: [
+      'A failure between two independent application writes leaves shards silently disagreeing, with no built-in mechanism to detect or repair the drift — logging the error afterward does not fix the inconsistency.',
+    ],
+  },
+  'system-design/sharding/why-basic-consistent-hashing-still-needs-virtual-nodes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Database Sharding (overview)', route: '/system-design/sharding' },
+      { label: 'Load Balancing (power of two choices)', route: '/system-design/load-balancing' },
+    ],
+    tip: 'A good hash function distributes individual KEYS evenly — it does not by itself guarantee even node SHARES with only one ring position per node. Virtual nodes fix the share, not the key distribution.',
+    gotchas: [
+      'Basic (single-position) consistent hashing can show ~30% load variance across nodes; virtual nodes (commonly ~200 per physical node) cut that to under 1%.',
+    ],
+  },
   'system-design/distributed-transactions': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

@@ -3030,4 +3030,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Anycast Failover Takes BGP Convergence Time, Not Instant', route: '/system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant' },
     { label: 'Raw Vary: Cookie Fragments the Cache — Normalize It Instead', route: '/system-design/cdn/raw-vary-cookie-fragments-the-cache-normalize-it-instead' },
   ],
+  'sharding': [
+    { label: 'The 64 TB / 100k TPS Figures Are RDS Limits, Not PostgreSQL Itself', route: '/system-design/sharding/the-64tb-100k-tps-figures-are-rds-limits-not-postgresql-itself' },
+    { label: 'Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead', route: '/system-design/sharding/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead' },
+    { label: 'Why Basic Consistent Hashing Still Needs Virtual Nodes', route: '/system-design/sharding/why-basic-consistent-hashing-still-needs-virtual-nodes' },
+  ],
 };
