@@ -2657,8 +2657,8 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 23 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
-  capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
+  Phase 10: **COMPLETE — 24 of 24 topics have subtopics** (`/system-design/framework`,
+  `/system-design/capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
   `/system-design/replication`, `/system-design/indexes`,
@@ -2667,7 +2667,7 @@ do this same check before any other new hub's first subtopic set:
   `/system-design/disaster-recovery`, `/system-design/url-shortener`,
   `/system-design/social-feed`, `/system-design/chat-application`,
   `/system-design/search-engine`, `/system-design/payment-system`,
-  `/system-design/video-streaming`, 2026-07-29) —
+  `/system-design/video-streaming`, `/system-design/ai-ml-system-design`, finished 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -3078,6 +3078,35 @@ do this same check before any other new hub's first subtopic set:
   querySelectorAll match was sufficient here — still worth checking the actual count before
   assuming which pattern applies); 860px wrapper confirmed via `getComputedStyle`. **This leaves
   only `/system-design/ai-ml-system-design` as the 24th and final Phase 10 topic remaining.**
+  **The `ai-ml-system-design` batch — the FINAL topic — found and fixed THREE more genuine
+  issues, all self-contained (zero external research needed)**: the RAG pipeline's generation
+  step called `openai.chat.completions.create({ model: 'claude-sonnet-4-6', ... })` — an
+  Anthropic model identifier passed to the OpenAI SDK client, which would fail at runtime since
+  OpenAI's API has no model by that name — corrected to a real OpenAI model (`gpt-4o`), with a
+  gap-closing subtopic explaining the general "provider SDKs aren't interchangeable" lesson and
+  contrasting it against the page's OWN correct example of a deliberate compatibility layer
+  (vLLM's OpenAI-compatible proxy for an open-weight Llama model). The Challenge's own hint
+  stated "LLM 2-4s" while the solution's actual figures give P50=1500ms — below the hint's 2s
+  floor — and P99=3500ms — inside the range, which is exactly what made the mismatch easy to
+  miss (only the lower bound disagreed); corrected the hint to derive its numbers directly from
+  the solution ("LLM 1.5-3.5s (P50-P99)"). The theory section stated naive LLM serving as "~1
+  request/sec" while the SAME page's own code sample states "~15 tokens/sec" for the identical
+  no-batching baseline — reconciled via the page's own ~400-output-token figure (stated in the
+  Challenge's latencyBudget): 15 tokens/sec ÷ 400 tokens/response ≈ 0.037 requests/sec, roughly
+  27x lower than the theory section's original claim; corrected the theory to state throughput
+  in tokens/sec, matching both the code sample and the rest of the page's own vLLM comparison
+  chain (naive → continuous batching → prefix caching, all already in tokens/sec). No
+  `SUBTOPICS` collision for `ai-ml-system-design` (checked both forms, confirmed collision-free,
+  left bare). Build passed clean. Browser-verified: nav accordion opens with all 3 labels
+  (this topic sits at the END of its own nav group, requiring the accordion markup to be added
+  after the LAST `<a>` in the group rather than before a following sibling link, unlike every
+  other topic in this batch's own Real-World Systems group); all three main-page fixes confirmed
+  rendering (the RAG codeTab fix needed the individual "RAG Pipeline" tab button — re-queried
+  after an initial stale reference, matching the established pattern; the Challenge hint fix
+  needed the "Show hints" toggle, not Reveal Solution, since hints render in a separate
+  always-visible-once-expanded list distinct from the solution block); 860px wrapper confirmed
+  via `getComputedStyle`. **This completes the System Design hub's Phase 10 rollout — all 24
+  topics now have deep-dive subtopic pages, 72 subtopic pages total across the hub.**
   **The `search-engine` batch found and fixed TWO more genuine issues, one purely self-contained
   arithmetic and one requiring external verification, plus a gap-closing addition**: the
   Challenge solution's own worked example stated "500M docs, 30 primary shards -- each ~33M

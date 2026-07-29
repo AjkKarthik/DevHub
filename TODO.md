@@ -6722,7 +6722,20 @@ off here with a date.
   that returns concatenated tab text; Challenge fixes needed Reveal Solution + View Code); 860px
   wrapper confirmed via `getComputedStyle`. **System Design hub Phase 10: 23 of 24 topics
   complete — only `/system-design/ai-ml-system-design` remains.**
-- [ ] `/system-design/ai-ml-system-design` — Design: AI/ML Systems
+- [x] `/system-design/ai-ml-system-design` — Design: AI/ML Systems (2026-07-29) — 3 subtopics: (1)
+  **RAG Pipeline Used the OpenAI SDK With a Claude Model Name**, a self-contained code bug — the
+  generation step called `openai.chat.completions.create()` with `model: 'claude-sonnet-4-6'`
+  (an Anthropic model ID on the OpenAI client), which fails at runtime; fixed to `gpt-4o`; (2)
+  **Challenge Hint Said "LLM 2-4s", Solution's Own P50 Was 1.5s** — the hint's stated range
+  didn't contain the solution's own P50 (1500ms, below the 2s floor); fixed the hint to derive
+  its numbers directly from the solution ("LLM 1.5-3.5s (P50-P99)"); (3) **Naive Serving: "1
+  Request/Sec" vs "15 Tokens/Sec" Don't Reconcile** — theory said ~1 req/sec, the code sample
+  said ~15 tokens/sec for the same baseline; reconciled via the page's own ~400-token response
+  figure, these disagree by ~27x; fixed theory to state tokens/sec, matching the code sample.
+  `ai-ml-system-design` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
+  rendering; 860px wrapper confirmed via `getComputedStyle`. **System Design hub Phase 10:
+  COMPLETE — 24 of 24 topics done, 72 subtopic pages total.**
 
 #### Architecture Patterns — 22 topic pages
 
