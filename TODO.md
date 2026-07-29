@@ -6497,7 +6497,22 @@ off here with a date.
   around 100k TPS and 64 TB") confirmed absent and corrected text ("AWS RDS", "3 million TPS")
   confirmed present via direct DOM text search; 860px wrapper max-width confirmed via
   `getComputedStyle`. **System Design hub Phase 10: 9 of 24 topics complete.**
-- [ ] `/system-design/sql-vs-nosql` — SQL vs NoSQL
+- [x] `/system-design/sql-vs-nosql` — SQL vs NoSQL (2026-07-29) — 3 subtopics: (1) **Isolation as
+  Taught Describes Serializable, Not the Default**, correcting two of the page's ACID quiz
+  explanations — verified that "transactions execute as if serial" describes the Serializable
+  isolation level specifically, and neither PostgreSQL (Read Committed) nor MySQL/InnoDB
+  (Repeatable Read) defaults to it; (2) **MongoDB Sharded-Cluster Transactions Arrived in 4.2, Not
+  4.0**, correcting the QnA's "since v4.0" claim — verified via MongoDB's own release history that
+  4.0 covered replica sets only, sharded-cluster transaction support shipped a year later in 4.2;
+  (3) **DynamoDB Scales Automatically, But One Partition Still Has a Ceiling**, tightening the
+  theory section's "scales to any throughput" to match the page's own more precise QnA, which
+  already names the real per-partition ceiling (~10 GB, ~3,000 RCU / ~1,000 WCU). `sql-vs-nosql`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified: nav accordion
+  auto-expand confirmed all 3 links on direct subtopic-URL navigation with the toggle showing its
+  open state; old wrong phrasing confirmed absent and corrected text confirmed present via direct
+  DOM text search (after expanding the collapsed QnA question for the MongoDB fix); 860px wrapper
+  max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 10 of 24 topics
+  complete.**
 - [ ] `/system-design/replication` — Replication Strategies
 - [ ] `/system-design/indexes` — Indexes & Query Optimisation
 - [ ] `/system-design/distributed-transactions` — Distributed Transactions

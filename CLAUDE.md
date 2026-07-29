@@ -2657,10 +2657,11 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 9 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 10 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
-  `/system-design/cdn`, `/system-design/sharding`, 2026-07-29) —
+  `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
+  2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2780,6 +2781,21 @@ do this same check before any other new hub's first subtopic set:
   which many virtual positions per physical node (a statistical averaging effect) reduce to under
   1%. No `SUBTOPICS` collision for `sharding` (checked both forms, confirmed collision-free, left
   bare). Build passed clean throughout.
+  **The `sql-vs-nosql` batch found and fixed THREE precision issues, all verified against
+  authoritative sources**: two of the page's own ACID quiz explanations defined "Isolation" in
+  absolute terms ("transactions execute as if they were serial") — verified this describes the
+  Serializable isolation level specifically, and that neither PostgreSQL (defaults to Read
+  Committed) nor MySQL/InnoDB (defaults to Repeatable Read) runs at Serializable by default;
+  the QnA's "MongoDB supports multi-document ACID transactions since v4.0" omitted that this
+  applied to replica sets only — sharded-cluster transaction support did not ship until 4.2, a
+  year later (verified against MongoDB's own release history); and the theory section's "DynamoDB
+  automatically scales to any throughput" was tightened to match the SAME page's own more precise
+  QnA, which already names the real per-partition ceiling (~10 GB, ~3,000 RCU / ~1,000 WCU per
+  AWS's own documented constraints) that no amount of table-level provisioning raises for a single
+  hot partition key. All three corrections were internal-consistency-style fixes (the page
+  contradicted or under-qualified itself across different sections) combined with external
+  verification, not corrections of an isolated wrong fact. No `SUBTOPICS` collision for
+  `sql-vs-nosql` (checked both forms, confirmed collision-free, left bare). Build passed clean.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
