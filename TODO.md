@@ -6527,7 +6527,21 @@ off here with a date.
   confirmed absent and corrected text confirmed present via direct DOM text search; 860px wrapper
   max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 11 of 24 topics
   complete.**
-- [ ] `/system-design/indexes` — Indexes & Query Optimisation
+- [x] `/system-design/indexes` — Indexes & Query Optimisation (2026-07-29) — 3 subtopics: (1)
+  **MySQL InnoDB Auto-Creates the FK Index — It Doesn't Just Warn**, correcting the mistake block's
+  "MySQL warns about this" claim — verified via MySQL's own docs that InnoDB auto-creates the
+  missing FK index; (2) **REINDEX CONCURRENTLY Avoids Write Locks, But Isn't Fully Lock-Free**,
+  tightening the QnA's "without locking the table" claim — verified it holds a SHARE UPDATE
+  EXCLUSIVE lock blocking other schema changes, though correctly not blocking reads/writes; (3)
+  **The Full Rule Is Equality-Sort-Range, Not Just Equality-Then-Range**, a gap-closing addition
+  expanding the composite-index ordering rule with the ESR rule's middle SORT-column slot.
+  **Real SUBTOPICS collision**: bare `indexes` already claimed by the SQL hub's own topic —
+  hub-prefixed to `sysdesign-indexes`. Build passed clean. Browser-verified: nav accordion
+  auto-expand confirmed all 3 links on direct subtopic-URL navigation with the toggle showing its
+  open state; old wrong phrasing confirmed absent and corrected text confirmed present via direct
+  DOM text search (after expanding the collapsed Common Mistakes and QnA sections); 860px wrapper
+  max-width confirmed via `getComputedStyle`; SQL hub's own `/sql/indexes` page confirmed
+  unaffected. **System Design hub Phase 10: 12 of 24 topics complete — halfway point passed.**
 - [ ] `/system-design/distributed-transactions` — Distributed Transactions
 - [ ] `/system-design/high-availability` — High Availability
 - [ ] `/system-design/fault-tolerance` — Fault Tolerance

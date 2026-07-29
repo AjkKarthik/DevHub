@@ -2657,11 +2657,11 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 11 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 12 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
-  `/system-design/replication`, 2026-07-29) —
+  `/system-design/replication`, `/system-design/indexes`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2810,6 +2810,20 @@ do this same check before any other new hub's first subtopic set:
   parameter at all, a genuinely different (simpler) model from Cassandra's continuous tunable
   knob. No `SUBTOPICS` collision for `replication` (checked both forms, confirmed collision-free,
   left bare). Build passed clean.
+  **The `indexes` batch found and fixed THREE precision issues, one requiring a real hub-prefixed
+  SUBTOPICS collision resolution**: the "Missing index on foreign key columns" mistake said "MySQL
+  warns about this" — verified via MySQL's own docs that InnoDB does not merely warn, it
+  automatically CREATES the missing FK index; the index-bloat QnA's "REINDEX CONCURRENTLY rebuilds
+  the index without locking the table" was tightened — verified against PostgreSQL's own docs that
+  it takes a SHARE UPDATE EXCLUSIVE lock (not zero locking) that blocks other schema changes,
+  though it correctly does not block reads/writes; and a gap-closing subtopic expanded the
+  composite-index column-order rule ("equality first, range last") with the fuller, widely-used
+  ESR (Equality, Sort, Range) rule, which gives pure ORDER BY columns their own middle slot the
+  page's two-part phrasing never addressed. **Real SUBTOPICS collision**: bare `indexes` was
+  already claimed by the SQL hub's own `/sql/indexes` topic — hub-prefixed to `sysdesign-indexes`,
+  matching this hub's own existing progress/search key prefix (already `sysdesign-`-prefixed
+  before this batch, so no separate mismatch to reconcile) — confirmed via browser check that
+  `/sql/indexes` itself rendered unaffected. Build passed clean.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
