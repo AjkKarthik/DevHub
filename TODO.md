@@ -6627,7 +6627,21 @@ off here with a date.
   old wrong phrasing confirmed absent and corrected text confirmed present via direct DOM text
   search (after Reveal Solution + View Code); 860px wrapper max-width confirmed via
   `getComputedStyle`. **System Design hub Phase 10: 17 of 24 topics complete.**
-- [ ] `/system-design/url-shortener` — Design: URL Shortener
+- [x] `/system-design/url-shortener` — Design: URL Shortener (2026-07-29) — 3 subtopics: (1)
+  **The Collision-Probability Formula Is Near-Certain, Not Negligible**, fixing a pure-arithmetic
+  error — the page's own birthday-paradox formula, evaluated with its own numbers, gives ~100%
+  collision probability, not "negligible"; (2) **The Quiz Answer Was the Mistakes Block's Own
+  Anti-Pattern**, reconciling a real contradiction — the quiz's "best" answer (auto-increment +
+  Base62) is the exact enumerable technique the page's own mistakes block warns against; fixed
+  with a counter-obfuscation approach; (3) **The Read-QPS Comment Didn't Match Its Own Formula**,
+  fixing a ~5x arithmetic mismatch — the Challenge solution's formula divides by RETENTION_YEARS
+  but its own comment silently dropped that term, propagating into readQps and the DB-replica
+  estimate. `url-shortener` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-
+  verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL navigation with
+  the toggle showing its open state; old wrong phrasing confirmed absent and corrected text
+  confirmed present via direct DOM text search (after Reveal Solution + View Code); 860px wrapper
+  max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 18 of 24 topics
+  complete.**
 - [ ] `/system-design/social-feed` — Design: Social Feed
 - [ ] `/system-design/chat-application` — Design: Chat Application
 - [ ] `/system-design/search-engine` — Design: Search Engine

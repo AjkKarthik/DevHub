@@ -2657,14 +2657,14 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 17 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 18 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
   `/system-design/replication`, `/system-design/indexes`,
   `/system-design/distributed-transactions`, `/system-design/high-availability`,
   `/system-design/fault-tolerance`, `/system-design/distributed-tracing`,
-  `/system-design/disaster-recovery`, 2026-07-29) —
+  `/system-design/disaster-recovery`, `/system-design/url-shortener`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2945,6 +2945,24 @@ do this same check before any other new hub's first subtopic set:
   collision-free, left bare). Self-caught and fixed an over-escaped `\\'` inside a backtick-
   delimited `code:` field before build (removed the unnecessary escaping — backticks never need
   apostrophe-escaping). Build passed clean.
+  **The `url-shortener` batch found and fixed THREE genuine issues, requiring only internal
+  cross-checks and pure arithmetic — no external research needed**: the "Predictable sequential
+  codes" mistake fix included a birthday-paradox collision formula and concluded "≈ negligible" —
+  evaluated with the page's own stated numbers (n=100M, m=62^7), the formula's exponent is ~-1420,
+  making the collision probability ~100%, the opposite conclusion; fixed the comment and reframed
+  it as the reason the page's own retry-on-collision loop is essential, not optional. The extended
+  quiz marked "auto-increment + Base62" as the single best short-code approach with an explanation
+  that never mentioned enumeration risk — directly contradicting the page's own "Predictable
+  sequential codes (security)" mistake block, which warns against exactly this technique for
+  exactly that reason; reconciled with a counter-obfuscation (XOR mask) fix that keeps
+  collision-freedom while closing the enumeration hole. The Challenge solution's own
+  `totalClicksPerDay` formula divides by RETENTION_YEARS, but the comment directly below it
+  ("50M × 100 / 365 = 13.7M") silently dropped that division term, and the following `readQps`
+  line used the comment's mismatched 13.7M instead of what the formula actually evaluates to
+  (~2.74M) — a ~5x error that propagated into the DB-read-replica estimate too; fixed the comment,
+  `readQps`, the downstream DB-reads line, and the matching Challenge hint (which had made the
+  same "spread over lifetime" mistake even more severely). No `SUBTOPICS` collision for
+  `url-shortener` (checked both forms, confirmed collision-free, left bare). Build passed clean.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
