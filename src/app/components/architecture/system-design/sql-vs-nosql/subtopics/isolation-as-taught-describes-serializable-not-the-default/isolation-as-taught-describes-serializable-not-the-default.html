@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SQL vs NoSQL" topicRoute="/system-design/sql-vs-nosql" subtopicLabel="'Isolation' as Taught Describes Serializable, Not the Default" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">"Isolation" as Taught Describes Serializable, Not the Default</h1>
+  <p class="page-subtitle">The ACID quiz explanations defined Isolation as "transactions execute as if serial" — verified that this describes the Serializable isolation level specifically, which neither PostgreSQL nor MySQL defaults to.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This tightens the ACID quiz's Isolation definition. Next: the QnA's MongoDB transaction version claim is missing a real sharded-cluster caveat.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SQL vs NoSQL" topicRoute="/system-design/sql-vs-nosql"
+    [next]="{ label: 'MongoDB Sharded-Cluster Transactions Arrived in 4.2, Not 4.0', route: '/system-design/sql-vs-nosql/mongodb-sharded-cluster-transactions-arrived-in-42-not-40' }" />
+</div>

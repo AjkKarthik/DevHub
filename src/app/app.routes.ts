@@ -2852,7 +2852,12 @@ export const routes: Routes = [
       { path: 'naive-double-write-resharding-is-risky-vitess-uses-cdc-instead', loadComponent: () => import('./components/architecture/system-design/sharding/subtopics/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead').then(m => m.NaiveDoubleWriteReshardingIsRiskyVitessUsesCdcInsteadSubtopic) },
       { path: 'why-basic-consistent-hashing-still-needs-virtual-nodes', loadComponent: () => import('./components/architecture/system-design/sharding/subtopics/why-basic-consistent-hashing-still-needs-virtual-nodes/why-basic-consistent-hashing-still-needs-virtual-nodes').then(m => m.WhyBasicConsistentHashingStillNeedsVirtualNodesSubtopic) },
     ] },
-    { path: 'sql-vs-nosql', loadComponent: () => import('./components/architecture/system-design/sql-vs-nosql/sql-vs-nosql').then(m => m.SysdesignSqlVsNosql) },
+    { path: 'sql-vs-nosql', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/sql-vs-nosql/sql-vs-nosql').then(m => m.SysdesignSqlVsNosql) },
+      { path: 'isolation-as-taught-describes-serializable-not-the-default', loadComponent: () => import('./components/architecture/system-design/sql-vs-nosql/subtopics/isolation-as-taught-describes-serializable-not-the-default/isolation-as-taught-describes-serializable-not-the-default').then(m => m.IsolationAsTaughtDescribesSerializableNotTheDefaultSubtopic) },
+      { path: 'mongodb-sharded-cluster-transactions-arrived-in-42-not-40', loadComponent: () => import('./components/architecture/system-design/sql-vs-nosql/subtopics/mongodb-sharded-cluster-transactions-arrived-in-42-not-40/mongodb-sharded-cluster-transactions-arrived-in-42-not-40').then(m => m.MongodbShardedClusterTransactionsArrivedIn42Not40Subtopic) },
+      { path: 'dynamodb-scales-automatically-but-one-partition-still-has-a-ceiling', loadComponent: () => import('./components/architecture/system-design/sql-vs-nosql/subtopics/dynamodb-scales-automatically-but-one-partition-still-has-a-ceiling/dynamodb-scales-automatically-but-one-partition-still-has-a-ceiling').then(m => m.DynamodbScalesAutomaticallyButOnePartitionStillHasACeilingSubtopic) },
+    ] },
     { path: 'replication', loadComponent: () => import('./components/architecture/system-design/replication/replication').then(m => m.SysdesignReplication) },
     { path: 'indexes', loadComponent: () => import('./components/architecture/system-design/indexes/indexes').then(m => m.SysdesignIndexes) },
     { path: 'distributed-transactions', loadComponent: () => import('./components/architecture/system-design/distributed-transactions/distributed-transactions').then(m => m.SysdesignDistributedTransactions) },

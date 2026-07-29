@@ -3035,4 +3035,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead', route: '/system-design/sharding/naive-double-write-resharding-is-risky-vitess-uses-cdc-instead' },
     { label: 'Why Basic Consistent Hashing Still Needs Virtual Nodes', route: '/system-design/sharding/why-basic-consistent-hashing-still-needs-virtual-nodes' },
   ],
+  'sql-vs-nosql': [
+    { label: 'Isolation as Taught Describes Serializable, Not the Default', route: '/system-design/sql-vs-nosql/isolation-as-taught-describes-serializable-not-the-default' },
+    { label: 'MongoDB Sharded-Cluster Transactions Arrived in 4.2, Not 4.0', route: '/system-design/sql-vs-nosql/mongodb-sharded-cluster-transactions-arrived-in-42-not-40' },
+    { label: 'DynamoDB Scales Automatically, But One Partition Still Has a Ceiling', route: '/system-design/sql-vs-nosql/dynamodb-scales-automatically-but-one-partition-still-has-a-ceiling' },
+  ],
 };

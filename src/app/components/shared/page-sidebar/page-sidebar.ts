@@ -42324,6 +42324,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'NoSQL\'s "schema flexibility" shifts data consistency responsibility to the APPLICATION layer — a real tradeoff, not a free lunch.',
     ],
   },
+  'system-design/sql-vs-nosql/isolation-as-taught-describes-serializable-not-the-default': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SQL vs NoSQL (overview)', route: '/system-design/sql-vs-nosql' },
+      { label: 'CAP Theorem',              route: '/system-design/cap-theorem' },
+    ],
+    tip: '"ACID-compliant" tells you a database CAN provide strong isolation — it does not tell you which isolation level is actually configured for a given transaction. Check the default before assuming the strongest guarantee applies.',
+    gotchas: [
+      'PostgreSQL defaults to Read Committed; MySQL/InnoDB defaults to Repeatable Read — neither is Serializable, the level "transactions execute as if serial" actually describes.',
+    ],
+  },
+  'system-design/sql-vs-nosql/mongodb-sharded-cluster-transactions-arrived-in-42-not-40': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SQL vs NoSQL (overview)', route: '/system-design/sql-vs-nosql' },
+      { label: 'Database Sharding',        route: '/system-design/sharding' },
+    ],
+    tip: 'A "supported since version X" claim can depend on deployment topology — always check whether it applies to your specific shape (replica set vs. sharded cluster), not just the version number.',
+    gotchas: [
+      'MongoDB 4.0 added multi-document transactions on a single replica set only. Sharded-cluster transaction support did not ship until 4.2, a year later.',
+    ],
+  },
+  'system-design/sql-vs-nosql/dynamodb-scales-automatically-but-one-partition-still-has-a-ceiling': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SQL vs NoSQL (overview)', route: '/system-design/sql-vs-nosql' },
+      { label: 'Database Sharding',        route: '/system-design/sharding' },
+    ],
+    tip: 'Low table-wide utilization in CloudWatch does not rule out a hot-partition problem — check per-key traffic distribution, not just the aggregate, before assuming more provisioned capacity will fix throttling.',
+    gotchas: [
+      'A single DynamoDB partition is capped at roughly 10 GB storage and 3,000 RCU / 1,000 WCU — no amount of table-level provisioning raises that ceiling for one hot key.',
+    ],
+  },
   'system-design/scaling': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

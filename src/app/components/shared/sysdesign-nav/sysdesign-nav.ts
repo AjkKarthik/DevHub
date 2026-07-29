@@ -208,7 +208,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Data</p>
-      <a routerLink="/system-design/sql-vs-nosql" routerLinkActive="active"><span class="nl-text">SQL vs NoSQL</span>@if(p.isDone('sysdesign-sql-vs-nosql')){<span class="nl-done">✓</span>}@if(d('sysdesign-sql-vs-nosql');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/sql-vs-nosql" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">SQL vs NoSQL</span>
+        @if(p.isDone('sysdesign-sql-vs-nosql')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-sql-vs-nosql');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('sql-vs-nosql')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sql-vs-nosql')"
+                  (click)="toggleSubtopics('sql-vs-nosql', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sql-vs-nosql'); as sqlSubs) {
+        @if (isSubtopicsExpanded('sql-vs-nosql')) {
+          <div class="nav-subtopics">
+            @for (s of sqlSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/replication" routerLinkActive="active"><span class="nl-text">Replication Strategies</span>@if(p.isDone('sysdesign-replication')){<span class="nl-done">✓</span>}@if(d('sysdesign-replication');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/indexes" routerLinkActive="active"><span class="nl-text">Indexes &amp; Query Optimisation</span>@if(p.isDone('sysdesign-indexes')){<span class="nl-done">✓</span>}@if(d('sysdesign-indexes');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/distributed-transactions" routerLinkActive="active"><span class="nl-text">Distributed Transactions</span>@if(p.isDone('sysdesign-distributed-transactions')){<span class="nl-done">✓</span>}@if(d('sysdesign-distributed-transactions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
