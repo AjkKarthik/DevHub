@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design Netflix / YouTube" topicRoute="/system-design/video-streaming" subtopicLabel="Compute Formula Used 4 Resolutions, Ladder Lists 6" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Compute Formula Used 4 Resolutions, Ladder Lists 6</h1>
+  <p class="page-subtitle">The Challenge's compute estimate multiplied by "4 resolutions," while its own resolution ladder one line above lists six levels — fixing the multiplier scales compute demand, fleet size, and cost all up by 1.5x.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the CDN capacity figure, the cost-estimate units, and the compute formula all corrected, the video streaming design's numbers now hold together consistently. Next up in Real-World Systems, and the final topic in the System Design hub's Phase 10 rollout: AI/ML System Design, where the core challenges — model serving, training pipelines, feature stores — look very different from the media-delivery patterns this page covers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design Netflix / YouTube" topicRoute="/system-design/video-streaming"
+    [prev]="{ label: 'A “300 PB/Month” Figure That Was Actually Per Day', route: '/system-design/video-streaming/pb-per-month-was-actually-per-day' }" />
+</div>

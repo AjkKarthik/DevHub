@@ -3101,4 +3101,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sorting IDs Doesn’t Guarantee Lock Order Without ORDER BY', route: '/system-design/payment-system/for-update-needs-order-by' },
     { label: 'The Transfer Solution Used the Race Condition Its Own Quiz Warns About', route: '/system-design/payment-system/transfer-idempotency-check-then-act' },
   ],
+  'video-streaming': [
+    { label: 'Stale CDN Capacity Figure, Already Corrected on a Sibling Page', route: '/system-design/video-streaming/stale-cdn-capacity-figure' },
+    { label: 'A “300 PB/Month” Figure That Was Actually Per Day', route: '/system-design/video-streaming/pb-per-month-was-actually-per-day' },
+    { label: 'Compute Formula Used 4 Resolutions, Ladder Lists 6', route: '/system-design/video-streaming/resolution-count-mismatch' },
+  ],
 };

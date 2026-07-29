@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design Netflix / YouTube" topicRoute="/system-design/video-streaming" subtopicLabel="A “300 PB/Month” Figure That Was Actually Per Day" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">A "300 PB/Month" Figure That Was Actually Per Day</h1>
+  <p class="page-subtitle">The Challenge's cost estimate multiplied three per-day quantities and labeled the result "per month" — the real monthly figure is roughly 30x larger, ~9,000 PB and ~$90M, not 300 PB and $3M.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the CDN capacity figure and the cost estimate's units both corrected, the last issue is in the same Challenge solution's compute formula — a resolution count that doesn't match the page's own stated resolution ladder.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design Netflix / YouTube" topicRoute="/system-design/video-streaming"
+    [prev]="{ label: 'Stale CDN Capacity Figure, Already Corrected on a Sibling Page', route: '/system-design/video-streaming/stale-cdn-capacity-figure' }"
+    [next]="{ label: 'Compute Formula Used 4 Resolutions, Ladder Lists 6', route: '/system-design/video-streaming/resolution-count-mismatch' }" />
+</div>

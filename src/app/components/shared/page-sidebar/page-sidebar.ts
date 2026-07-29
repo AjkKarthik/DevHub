@@ -43183,6 +43183,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Video encoding/transcoding (converting an uploaded video into multiple quality/format variants) is a genuinely CPU-intensive asynchronous pipeline, distinct from the actual streaming/delivery path.',
     ],
   },
+  'system-design/video-streaming/stale-cdn-capacity-figure': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design Netflix / YouTube (overview)', route: '/system-design/video-streaming' },
+      { label: 'CDN', route: '/system-design/cdn' },
+    ],
+    tip: 'When a new page cites a specific real-world figure (provider capacity, pricing, a default value), check whether a sibling page in the same hub already researched the identical fact before doing fresh research.',
+    gotchas: [
+      'A "provisioned capacity" ceiling and "typical traffic served" are different claims — carry over a verified fact\'s important caveats, not just its headline number.',
+    ],
+  },
+  'system-design/video-streaming/pb-per-month-was-actually-per-day': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Stale CDN Capacity Figure, Already Corrected on a Sibling Page', route: '/system-design/video-streaming/stale-cdn-capacity-figure' },
+      { label: 'Compute Formula Used 4 Resolutions, Ladder Lists 6', route: '/system-design/video-streaming/resolution-count-mismatch' },
+    ],
+    tip: 'Multiplying together several "per day" quantities produces a per-day result — an explicit ×30 (or similar) step is needed to actually convert that into a monthly figure.',
+    gotchas: [
+      'Internal consistency between a volume figure and its matching cost figure (volume × price = cost) doesn\'t catch an error in which TIME PERIOD both numbers actually represent.',
+    ],
+  },
+  'system-design/video-streaming/resolution-count-mismatch': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A “300 PB/Month” Figure That Was Actually Per Day', route: '/system-design/video-streaming/pb-per-month-was-actually-per-day' },
+      { label: 'Design Netflix / YouTube (overview)', route: '/system-design/video-streaming' },
+    ],
+    tip: 'When a resolution ladder or similar list is named explicitly, count its items and compare that count against any multiplier used in a nearby calculation — the two should always match.',
+    gotchas: [
+      'An error in an early compute-demand figure propagates proportionally into every downstream number derived from it (fleet size, hourly cost) — check whether those need the same correction.',
+    ],
+  },
   'system-design/ai-ml-system-design': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

@@ -2930,7 +2930,12 @@ export const routes: Routes = [
       { path: 'for-update-needs-order-by', loadComponent: () => import('./components/architecture/system-design/payment-system/subtopics/for-update-needs-order-by/for-update-needs-order-by').then(m => m.SortingIdsDoesntGuaranteeLockOrderWithoutOrderBySubtopic) },
       { path: 'transfer-idempotency-check-then-act', loadComponent: () => import('./components/architecture/system-design/payment-system/subtopics/transfer-idempotency-check-then-act/transfer-idempotency-check-then-act').then(m => m.TransferSolutionUsedTheRaceConditionItsOwnQuizWarnsAboutSubtopic) },
     ] },
-    { path: 'video-streaming', loadComponent: () => import('./components/architecture/system-design/video-streaming/video-streaming').then(m => m.SysdesignVideoStreaming) },
+    { path: 'video-streaming', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/video-streaming/video-streaming').then(m => m.SysdesignVideoStreaming) },
+      { path: 'stale-cdn-capacity-figure', loadComponent: () => import('./components/architecture/system-design/video-streaming/subtopics/stale-cdn-capacity-figure/stale-cdn-capacity-figure').then(m => m.StaleCdnCapacityFigureSubtopic) },
+      { path: 'pb-per-month-was-actually-per-day', loadComponent: () => import('./components/architecture/system-design/video-streaming/subtopics/pb-per-month-was-actually-per-day/pb-per-month-was-actually-per-day').then(m => m.PbPerMonthWasActuallyPerDaySubtopic) },
+      { path: 'resolution-count-mismatch', loadComponent: () => import('./components/architecture/system-design/video-streaming/subtopics/resolution-count-mismatch/resolution-count-mismatch').then(m => m.ComputeFormulaUsed4ResolutionsLadderLists6Subtopic) },
+    ] },
     { path: 'ai-ml-system-design', loadComponent: () => import('./components/architecture/system-design/ai-ml-system-design/ai-ml-system-design').then(m => m.SysdesignAiMl) },
     { path: 'cheatsheet', loadComponent: () => import('./components/architecture/system-design/cheatsheet/cheatsheet').then(m => m.SysdesignCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/architecture/system-design/interview-prep/interview-prep').then(m => m.SysdesignInterviewPrep) },
