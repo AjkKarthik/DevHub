@@ -60,7 +60,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/cap-theorem" routerLinkActive="active"><span class="nl-text">CAP &amp; PACELC Theorems</span>@if(p.isDone('sysdesign-cap-theorem')){<span class="nl-done">✓</span>}@if(d('sysdesign-cap-theorem');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/cap-theorem" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">CAP &amp; PACELC Theorems</span>
+        @if(p.isDone('sysdesign-cap-theorem')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-cap-theorem');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('cap-theorem')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cap-theorem')"
+                  (click)="toggleSubtopics('cap-theorem', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cap-theorem'); as capSubs) {
+        @if (isSubtopicsExpanded('cap-theorem')) {
+          <div class="nav-subtopics">
+            @for (s of capSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/networking" routerLinkActive="active"><span class="nl-text">Networking Fundamentals</span>@if(p.isDone('sysdesign-networking')){<span class="nl-done">✓</span>}@if(d('sysdesign-networking');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

@@ -2997,4 +2997,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms', route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' },
     { label: 'Decimal Vendor GB vs. Binary OS GiB Diverge by ~7%', route: '/system-design/capacity-estimation/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent' },
   ],
+  'cap-theorem': [
+    { label: 'The Quorum Quiz Had a Second Technically-Correct Answer', route: '/system-design/cap-theorem/the-quorum-quiz-had-a-second-technically-correct-answer' },
+    { label: 'Sequential Consistency Orders ALL Operations, Not Just Writes', route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' },
+    { label: 'Brewer Conjectured CAP in 2000 — Gilbert & Lynch Proved It in 2002', route: '/system-design/cap-theorem/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002' },
+  ],
 };

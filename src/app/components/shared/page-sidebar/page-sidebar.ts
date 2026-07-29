@@ -42276,6 +42276,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'PACELC extends CAP by also addressing the tradeoff when there is NO partition (latency vs. consistency), a distinction CAP alone doesn\'t cover.',
     ],
   },
+  'system-design/cap-theorem/the-quorum-quiz-had-a-second-technically-correct-answer': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'CAP & PACELC Theorems',                                              route: '/system-design/cap-theorem' },
+      { label: 'Sequential Consistency Orders ALL Operations, Not Just Writes',       route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' },
+    ],
+    tip: 'W + R > N is a threshold, not a single specific pair — for N=3, both W=2/R=2 and W=3/R=3 satisfy it. Any quiz built around a numeric formula needs every "wrong" option checked against that same formula, not just chosen because it looks different.',
+    gotchas: [
+      'Checking a quiz\'s own internal logic (applying its stated rule to every option) is a distinct, useful verification skill from checking prose claims against external sources.',
+      'A labeled-correct answer being accurate doesn\'t guarantee every labeled-wrong option is actually wrong — both need independent verification.',
+    ],
+  },
+  'system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Quorum Quiz Had a Second Technically-Correct Answer',              route: '/system-design/cap-theorem/the-quorum-quiz-had-a-second-technically-correct-answer' },
+      { label: 'Brewer Conjectured CAP in 2000 — Gilbert & Lynch Proved It in 2002',    route: '/system-design/cap-theorem/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002' },
+    ],
+    tip: 'Sequential consistency requires ALL processes to agree on the SAME total order of ALL operations (reads and writes) — not real-time order (that\'s linearizability), and not just "writes in order" (that undersells the model).',
+    gotchas: [
+      'The property that makes sequential consistency stronger than causal consistency is "same order for EVERYONE," not merely "writes appear in order" for each observer individually.',
+      'Two unrelated (non-causal) writes CAN be seen in different orders by different observers under causal consistency, but NOT under sequential consistency — everyone must agree.',
+    ],
+  },
+  'system-design/cap-theorem/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sequential Consistency Orders ALL Operations, Not Just Writes', route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' },
+      { label: 'CAP & PACELC Theorems',                                        route: '/system-design/cap-theorem' },
+    ],
+    tip: 'Brewer conjectured CAP informally at PODC 2000; Gilbert and Lynch proved it formally in 2002, specifically for asynchronous networks and atomic (linearizable) consistency — the actual scope of "the CAP theorem."',
+    gotchas: [
+      'Modern critiques of CAP usually target its narrow formal scope (asynchronous networks, linearizable consistency specifically), not the theorem itself being wrong.',
+      'Naming both Brewer (conjecture, 2000) and Gilbert & Lynch (proof, 2002) is a level of precision that differentiates a strong interview answer from a surface-level "pick 2 of 3."',
+    ],
+  },
   'system-design/sql-vs-nosql': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

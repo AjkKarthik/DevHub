@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CAP & PACELC Theorems" topicRoute="/system-design/cap-theorem" subtopicLabel="The Quorum Quiz Had a Second Technically-Correct Answer" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Quorum Quiz Had a Second Technically-Correct Answer</h1>
+  <p class="page-subtitle">The main page's own quiz named one correct answer, but a "wrong" option satisfied the very formula the quiz was testing — catchable with zero external research.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a self-contained quiz-design flaw. Next: the main page's own definition of sequential consistency left out the property that actually distinguishes it from causal consistency.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CAP & PACELC Theorems" topicRoute="/system-design/cap-theorem"
+    [next]="{ label: 'Sequential Consistency Orders ALL Operations, Not Just Writes', route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' }" />
+</div>

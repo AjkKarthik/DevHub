@@ -2810,7 +2810,12 @@ export const routes: Routes = [
       { path: 'redis-get-latency-is-network-rtt-not-an-extra-1ms', loadComponent: () => import('./components/architecture/system-design/capacity-estimation/subtopics/redis-get-latency-is-network-rtt-not-an-extra-1ms/redis-get-latency-is-network-rtt-not-an-extra-1ms').then(m => m.RedisGetLatencyIsNetworkRttNotAnExtra1msSubtopic) },
       { path: 'decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent', loadComponent: () => import('./components/architecture/system-design/capacity-estimation/subtopics/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent').then(m => m.DecimalVendorGbVsBinaryOsGibDivergeBy7PercentSubtopic) },
     ] },
-    { path: 'cap-theorem', loadComponent: () => import('./components/architecture/system-design/cap-theorem/cap-theorem').then(m => m.SysdesignCapTheorem) },
+    { path: 'cap-theorem', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/cap-theorem/cap-theorem').then(m => m.SysdesignCapTheorem) },
+      { path: 'the-quorum-quiz-had-a-second-technically-correct-answer', loadComponent: () => import('./components/architecture/system-design/cap-theorem/subtopics/the-quorum-quiz-had-a-second-technically-correct-answer/the-quorum-quiz-had-a-second-technically-correct-answer').then(m => m.TheQuorumQuizHadASecondTechnicallyCorrectAnswerSubtopic) },
+      { path: 'sequential-consistency-orders-all-ops-not-just-writes', loadComponent: () => import('./components/architecture/system-design/cap-theorem/subtopics/sequential-consistency-orders-all-ops-not-just-writes/sequential-consistency-orders-all-ops-not-just-writes').then(m => m.SequentialConsistencyOrdersAllOpsNotJustWritesSubtopic) },
+      { path: 'brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002', loadComponent: () => import('./components/architecture/system-design/cap-theorem/subtopics/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002').then(m => m.BrewerConjecturedCapIn2000GilbertLynchProvedItIn2002Subtopic) },
+    ] },
     { path: 'networking', loadComponent: () => import('./components/architecture/system-design/networking/networking').then(m => m.SysdesignNetworking) },
     { path: 'scaling', loadComponent: () => import('./components/architecture/system-design/scaling/scaling').then(m => m.SysdesignScaling) },
     { path: 'load-balancing', loadComponent: () => import('./components/architecture/system-design/load-balancing/load-balancing').then(m => m.SysdesignLoadBalancing) },
