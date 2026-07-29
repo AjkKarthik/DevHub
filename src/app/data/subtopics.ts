@@ -3002,4 +3002,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Sequential Consistency Orders ALL Operations, Not Just Writes', route: '/system-design/cap-theorem/sequential-consistency-orders-all-ops-not-just-writes' },
     { label: 'Brewer Conjectured CAP in 2000 — Gilbert & Lynch Proved It in 2002', route: '/system-design/cap-theorem/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002' },
   ],
+  // NOTE: bare 'networking' key already taken by the Linux hub's own networking topic
+  'sysdesign-networking': [
+    { label: 'EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes', route: '/system-design/networking/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes' },
+    { label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports', route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' },
+    { label: 'Stale-While-Revalidate Exists to Stop Cache Stampedes', route: '/system-design/networking/stale-while-revalidate-exists-to-stop-cache-stampedes' },
+  ],
 };

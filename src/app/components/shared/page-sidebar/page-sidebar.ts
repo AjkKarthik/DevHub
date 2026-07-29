@@ -42453,6 +42453,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TCP connection setup (and TLS handshake on top of it) has real latency cost — connection pooling and keep-alive avoid paying this cost on every single request.',
     ],
   },
+  'system-design/networking/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Networking Fundamentals',                                       route: '/system-design/networking' },
+      { label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports',            route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' },
+    ],
+    tip: 'EDNS0 lets DNS resolvers negotiate a UDP buffer well past the legacy 512-byte limit (commonly ~1232 bytes today) — most DNSSEC-signed and multi-record responses fit over UDP without needing TCP fallback at all.',
+    gotchas: [
+      'TCP fallback still exists for zone transfers and truly oversized/truncated responses — the correction is about the threshold NUMBER, not whether TCP fallback exists at all.',
+      'Assuming near-constant TCP fallback above 512 bytes overestimates real DNS resolution latency and TCP listener load in a capacity plan.',
+    ],
+  },
+  'system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes',        route: '/system-design/networking/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes' },
+      { label: 'Stale-While-Revalidate Exists to Stop Cache Stampedes',           route: '/system-design/networking/stale-while-revalidate-exists-to-stop-cache-stampedes' },
+    ],
+    tip: 'TCP closes via a 4-way handshake, and the active closer lingers in TIME_WAIT for ~2×MSL (commonly ~60s) — a service opening a fresh connection per request to the same destination can exhaust its ~28,000 ephemeral ports under sustained load.',
+    gotchas: [
+      'This is a real, recurring production failure mode, not protocol trivia — it\'s the concrete reason "use a connection pool" is standard advice for HTTP clients and database drivers.',
+      'The fix is connection reuse/pooling, NOT shortening TIME_WAIT itself, which risks the stale-packet problem TIME_WAIT exists to prevent.',
+    ],
+  },
+  'system-design/networking/stale-while-revalidate-exists-to-stop-cache-stampedes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports', route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' },
+      { label: 'Networking Fundamentals',                             route: '/system-design/networking' },
+    ],
+    tip: 'stale-while-revalidate exists to prevent a cache stampede (thundering herd) — when a popular object\'s TTL expires, it serves the stale copy to everyone immediately while ONE background request refreshes it, instead of every concurrent request hitting origin at once.',
+    gotchas: [
+      'Request coalescing and jittered TTLs are complementary stampede-prevention techniques, not substitutes for stale-while-revalidate — a robust CDN strategy often combines more than one.',
+      'Without stampede protection, a popular object\'s synchronized TTL expiry can spike origin load far beyond its normal cached baseline, exactly when the cache was supposed to be protecting it.',
+    ],
+  },
   'system-design/indexes': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

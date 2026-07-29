@@ -80,7 +80,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/networking" routerLinkActive="active"><span class="nl-text">Networking Fundamentals</span>@if(p.isDone('sysdesign-networking')){<span class="nl-done">✓</span>}@if(d('sysdesign-networking');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/networking" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Networking Fundamentals</span>
+        @if(p.isDone('sysdesign-networking')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-networking');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('sysdesign-networking')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sysdesign-networking')"
+                  (click)="toggleSubtopics('sysdesign-networking', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sysdesign-networking'); as netSubs) {
+        @if (isSubtopicsExpanded('sysdesign-networking')) {
+          <div class="nav-subtopics">
+            @for (s of netSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

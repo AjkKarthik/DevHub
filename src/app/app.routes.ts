@@ -2816,7 +2816,12 @@ export const routes: Routes = [
       { path: 'sequential-consistency-orders-all-ops-not-just-writes', loadComponent: () => import('./components/architecture/system-design/cap-theorem/subtopics/sequential-consistency-orders-all-ops-not-just-writes/sequential-consistency-orders-all-ops-not-just-writes').then(m => m.SequentialConsistencyOrdersAllOpsNotJustWritesSubtopic) },
       { path: 'brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002', loadComponent: () => import('./components/architecture/system-design/cap-theorem/subtopics/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002/brewer-conjectured-cap-in-2000-gilbert-lynch-proved-it-in-2002').then(m => m.BrewerConjecturedCapIn2000GilbertLynchProvedItIn2002Subtopic) },
     ] },
-    { path: 'networking', loadComponent: () => import('./components/architecture/system-design/networking/networking').then(m => m.SysdesignNetworking) },
+    { path: 'networking', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/networking/networking').then(m => m.SysdesignNetworking) },
+      { path: 'ednso-raises-dns-udp-limit-past-the-legacy-512-bytes', loadComponent: () => import('./components/architecture/system-design/networking/subtopics/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes').then(m => m.Edns0RaisesDnsUdpLimitPastTheLegacy512BytesSubtopic) },
+      { path: 'tcp-teardown-time-wait-can-exhaust-ephemeral-ports', loadComponent: () => import('./components/architecture/system-design/networking/subtopics/tcp-teardown-time-wait-can-exhaust-ephemeral-ports/tcp-teardown-time-wait-can-exhaust-ephemeral-ports').then(m => m.TcpTeardownTimeWaitCanExhaustEphemeralPortsSubtopic) },
+      { path: 'stale-while-revalidate-exists-to-stop-cache-stampedes', loadComponent: () => import('./components/architecture/system-design/networking/subtopics/stale-while-revalidate-exists-to-stop-cache-stampedes/stale-while-revalidate-exists-to-stop-cache-stampedes').then(m => m.StaleWhileRevalidateExistsToStopCacheStampedesSubtopic) },
+    ] },
     { path: 'scaling', loadComponent: () => import('./components/architecture/system-design/scaling/scaling').then(m => m.SysdesignScaling) },
     { path: 'load-balancing', loadComponent: () => import('./components/architecture/system-design/load-balancing/load-balancing').then(m => m.SysdesignLoadBalancing) },
     { path: 'caching', loadComponent: () => import('./components/architecture/system-design/caching/caching').then(m => m.SysdesignCaching) },

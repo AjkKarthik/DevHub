@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Networking Fundamentals" topicRoute="/system-design/networking" subtopicLabel="TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports</h1>
+  <p class="page-subtitle">The main page covers TCP's 3-way handshake in detail but says nothing about connection teardown — the 4-way close and TIME_WAIT can exhaust ephemeral ports under high churn.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the main page's TCP coverage. Next: the main page names "stale-while-revalidate" as a Cache-Control directive without explaining the cache-stampede problem it actually solves.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Networking Fundamentals" topicRoute="/system-design/networking"
+    [prev]="{ label: 'EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes', route: '/system-design/networking/ednso-raises-dns-udp-limit-past-the-legacy-512-bytes' }"
+    [next]="{ label: 'Stale-While-Revalidate Exists to Stop Cache Stampedes', route: '/system-design/networking/stale-while-revalidate-exists-to-stop-cache-stampedes' }" />
+</div>

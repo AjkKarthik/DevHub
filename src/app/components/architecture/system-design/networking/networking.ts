@@ -246,7 +246,7 @@ const quiz: QuizQuestion[] = [
     q: 'Which protocol is used by DNS queries by default?',
     options: ['TCP', 'UDP', 'HTTP', 'QUIC'],
     answer: 1,
-    explanation: 'DNS uses UDP port 53 by default for speed. It falls back to TCP for responses > 512 bytes or for zone transfers. DNS over HTTPS (DoH) and DNS over TLS (DoT) are encrypted alternatives.',
+    explanation: 'DNS uses UDP port 53 by default for speed. The original spec fell back to TCP above 512 bytes, but modern DNS negotiates a much larger UDP buffer via EDNS0 (commonly ~1232 bytes today, per the 2020 DNS Flag Day) — TCP is now mainly used for zone transfers and truncated/oversized responses. DNS over HTTPS (DoH) and DNS over TLS (DoT) are encrypted alternatives.',
   },
   {
     q: 'What is the key advantage of HTTP/3 over HTTP/2?',

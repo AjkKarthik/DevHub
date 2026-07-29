@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Networking Fundamentals" topicRoute="/system-design/networking" subtopicLabel="Stale-While-Revalidate Exists to Stop Cache Stampedes" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Stale-While-Revalidate Exists to Stop Cache Stampedes</h1>
+  <p class="page-subtitle">The main page names this Cache-Control directive without explaining why — it exists to prevent a thundering herd of simultaneous origin requests when a popular cached object's TTL expires.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final addition in this batch — together, these three subtopics tighten a DNS threshold, close a gap in TCP's connection lifecycle, and explain the "why" behind a CDN header the main page only names.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Networking Fundamentals" topicRoute="/system-design/networking"
+    [prev]="{ label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports', route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' }" />
+</div>
