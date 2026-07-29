@@ -3045,4 +3045,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Quorum (W+R greater than N) Guarantees Overlap, Not True Linearizability', route: '/system-design/replication/quorum-w-plus-r-over-n-guarantees-overlap-not-linearizability' },
     { label: 'DynamoDB Isn’t Tunable Like Cassandra — It’s a Binary Choice', route: '/system-design/replication/dynamodb-isnt-tunable-like-cassandra-its-a-binary-choice' },
   ],
+  // NOTE: bare 'indexes' key already taken by the SQL hub's own indexes topic
+  'sysdesign-indexes': [
+    { label: 'MySQL InnoDB Auto-Creates the FK Index — It Doesn’t Just Warn', route: '/system-design/indexes/mysql-innodb-auto-creates-the-fk-index-it-doesnt-just-warn' },
+    { label: 'REINDEX CONCURRENTLY Avoids Write Locks, But Isn’t Fully Lock-Free', route: '/system-design/indexes/reindex-concurrently-avoids-write-locks-but-isnt-fully-lock-free' },
+    { label: 'The Full Rule Is Equality-Sort-Range, Not Just Equality-Then-Range', route: '/system-design/indexes/the-full-rule-is-equality-sort-range-not-just-equality-then-range' },
+  ],
 };

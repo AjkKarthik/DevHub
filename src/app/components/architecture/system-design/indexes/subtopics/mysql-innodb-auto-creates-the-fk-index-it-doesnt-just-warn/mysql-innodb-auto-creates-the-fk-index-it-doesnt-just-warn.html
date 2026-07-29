@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Indexes & Query Optimisation" topicRoute="/system-design/indexes" subtopicLabel="MySQL InnoDB Auto-Creates the FK Index — It Doesn't Just Warn" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">MySQL InnoDB Auto-Creates the FK Index — It Doesn't Just Warn</h1>
+  <p class="page-subtitle">The page said "MySQL warns" about a missing FK index — verified against MySQL's own docs that InnoDB actually auto-creates the index, no warning or manual action needed.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a "warns" claim that understated MySQL's real behavior. Next: the QnA's "REINDEX CONCURRENTLY... without locking the table" claim needs the same precision.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Indexes & Query Optimisation" topicRoute="/system-design/indexes"
+    [next]="{ label: 'REINDEX CONCURRENTLY Avoids Write Locks, But Isn’t Fully Lock-Free', route: '/system-design/indexes/reindex-concurrently-avoids-write-locks-but-isnt-fully-lock-free' }" />
+</div>

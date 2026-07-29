@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Indexes & Query Optimisation" topicRoute="/system-design/indexes" subtopicLabel="The Full Rule Is Equality-Sort-Range, Not Just Equality-Then-Range" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Full Rule Is Equality-Sort-Range, Not Just Equality-Then-Range</h1>
+  <p class="page-subtitle">The page's composite-index column-order rule never places ORDER BY columns — closed the gap with the widely-used ESR (Equality, Sort, Range) rule, which gives sort its own middle slot.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes a real gap in the composite-index ordering rule. Next topic: Distributed Transactions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Indexes & Query Optimisation" topicRoute="/system-design/indexes"
+    [prev]="{ label: 'REINDEX CONCURRENTLY Avoids Write Locks, But Isn’t Fully Lock-Free', route: '/system-design/indexes/reindex-concurrently-avoids-write-locks-but-isnt-fully-lock-free' }" />
+</div>

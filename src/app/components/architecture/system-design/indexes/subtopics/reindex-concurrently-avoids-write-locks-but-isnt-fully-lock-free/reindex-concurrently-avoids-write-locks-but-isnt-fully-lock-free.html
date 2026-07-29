@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Indexes & Query Optimisation" topicRoute="/system-design/indexes" subtopicLabel="REINDEX CONCURRENTLY Avoids Write Locks, But Isn't Fully Lock-Free" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">REINDEX CONCURRENTLY Avoids Write Locks, But Isn't Fully Lock-Free</h1>
+  <p class="page-subtitle">The QnA said REINDEX CONCURRENTLY rebuilds "without locking the table" — verified against PostgreSQL's own docs that it still holds a SHARE UPDATE EXCLUSIVE lock blocking other schema changes.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This tightens a "without locking" claim to state precisely what is and isn't blocked. Next: the composite index rule is missing the SORT column's place in the order.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Indexes & Query Optimisation" topicRoute="/system-design/indexes"
+    [prev]="{ label: 'MySQL InnoDB Auto-Creates the FK Index — It Doesn’t Just Warn', route: '/system-design/indexes/mysql-innodb-auto-creates-the-fk-index-it-doesnt-just-warn' }"
+    [next]="{ label: 'The Full Rule Is Equality-Sort-Range, Not Just Equality-Then-Range', route: '/system-design/indexes/the-full-rule-is-equality-sort-range-not-just-equality-then-range' }" />
+</div>

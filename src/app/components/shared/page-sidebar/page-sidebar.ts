@@ -42740,6 +42740,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A covered query (the index alone contains every field the query needs) avoids touching the actual table data at all, a significant performance win worth designing for on hot query paths.',
     ],
   },
+  'system-design/indexes/mysql-innodb-auto-creates-the-fk-index-it-doesnt-just-warn': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Indexes & Query Optimisation (overview)', route: '/system-design/indexes' },
+      { label: 'SQL vs NoSQL',                              route: '/system-design/sql-vs-nosql' },
+    ],
+    tip: 'When standardizing a checklist across MySQL and PostgreSQL, don\'t assume "index your FK columns" needs the same manual action on both — MySQL/InnoDB already does it for you in the common case.',
+    gotchas: [
+      'MySQL can later silently DROP an auto-created FK index if a different index is added that also satisfies the constraint — expected behavior, not a bug.',
+    ],
+  },
+  'system-design/indexes/reindex-concurrently-avoids-write-locks-but-isnt-fully-lock-free': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Indexes & Query Optimisation (overview)', route: '/system-design/indexes' },
+      { label: 'Replication Strategies',                    route: '/system-design/replication' },
+    ],
+    tip: '"Non-blocking" for one maintenance operation does not automatically mean safe to run alongside ANY other maintenance operation on the same table — check exactly which lock is (and isn\'t) held.',
+    gotchas: [
+      'REINDEX CONCURRENTLY holds a SHARE UPDATE EXCLUSIVE lock — it does not block reads/writes, but it does block other schema-modifying operations on the same table.',
+    ],
+  },
+  'system-design/indexes/the-full-rule-is-equality-sort-range-not-just-equality-then-range': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Indexes & Query Optimisation (overview)', route: '/system-design/indexes' },
+      { label: 'Caching Strategies',                        route: '/system-design/caching' },
+    ],
+    tip: 'A column used only in ORDER BY (no range predicate) is a SORT column under the ESR rule — it belongs right after the equality columns, not lumped in with "range last."',
+    gotchas: [
+      'When a query\'s sort column and range column are the SAME column, the simple "equality first, range last" rule and the full ESR rule agree — the gap only shows up when they differ.',
+    ],
+  },
   'system-design/distributed-tracing': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
