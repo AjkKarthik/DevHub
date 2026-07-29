@@ -2906,7 +2906,12 @@ export const routes: Routes = [
       { path: 'quiz-answer-was-the-mistakes-blocks-own-anti-pattern', loadComponent: () => import('./components/architecture/system-design/url-shortener/subtopics/quiz-answer-was-the-mistakes-blocks-own-anti-pattern/quiz-answer-was-the-mistakes-blocks-own-anti-pattern').then(m => m.QuizAnswerWasTheMistakesBlocksOwnAntiPatternSubtopic) },
       { path: 'read-qps-comment-didnt-match-its-own-formula', loadComponent: () => import('./components/architecture/system-design/url-shortener/subtopics/read-qps-comment-didnt-match-its-own-formula/read-qps-comment-didnt-match-its-own-formula').then(m => m.ReadQpsCommentDidntMatchItsOwnFormulaSubtopic) },
     ] },
-    { path: 'social-feed', loadComponent: () => import('./components/architecture/system-design/social-feed/social-feed').then(m => m.SysdesignSocialFeed) },
+    { path: 'social-feed', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/social-feed/social-feed').then(m => m.SysdesignSocialFeed) },
+      { path: 'redis-zset-memory-estimate-ignored-skiplist-overhead', loadComponent: () => import('./components/architecture/system-design/social-feed/subtopics/redis-zset-memory-estimate-ignored-skiplist-overhead/redis-zset-memory-estimate-ignored-skiplist-overhead').then(m => m.RedisZsetMemoryEstimateIgnoredSkiplistOverheadSubtopic) },
+      { path: 'active-user-count-mismatch-500m-vs-100m-dau', loadComponent: () => import('./components/architecture/system-design/social-feed/subtopics/active-user-count-mismatch-500m-vs-100m-dau/active-user-count-mismatch-500m-vs-100m-dau').then(m => m.ActiveUserCountMismatch500mVs100mDauSubtopic) },
+      { path: 'feed-read-code-still-joined-what-denorm-was-for', loadComponent: () => import('./components/architecture/system-design/social-feed/subtopics/feed-read-code-still-joined-what-denorm-was-for/feed-read-code-still-joined-what-denorm-was-for').then(m => m.FeedReadCodeStillJoinedWhatDenormWasForSubtopic) },
+    ] },
     { path: 'chat-application', loadComponent: () => import('./components/architecture/system-design/chat-application/chat-application').then(m => m.SysdesignChatApplication) },
     { path: 'search-engine', loadComponent: () => import('./components/architecture/system-design/search-engine/search-engine').then(m => m.SysdesignSearchEngine) },
     { path: 'payment-system', loadComponent: () => import('./components/architecture/system-design/payment-system/payment-system').then(m => m.SysdesignPaymentSystem) },

@@ -43017,6 +43017,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Feed ranking (not just chronological order) adds significant complexity beyond the basic fan-out mechanism, often intentionally out of scope for a first-pass interview answer.',
     ],
   },
+  'system-design/social-feed/redis-zset-memory-estimate-ignored-skiplist-overhead': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a Social Feed (overview)', route: '/system-design/social-feed' },
+      { label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' },
+    ],
+    tip: 'For any Redis (or similar) data-structure capacity estimate, check whether the structure carries PER-ENTRY overhead beyond the raw payload size before multiplying count × bytes — for a sorted set past the listpack threshold, that overhead can be 15-20x the payload itself.',
+    gotchas: [
+      'Redis ZSETs switch from compact listpack encoding to full skiplist+hashtable encoding once a set exceeds a configurable threshold (128 entries by default) — a feed trimmed to 1,000 entries is well past it.',
+    ],
+  },
+  'system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Redis ZSET Memory Estimate Ignored Skiplist Overhead', route: '/system-design/social-feed/redis-zset-memory-estimate-ignored-skiplist-overhead' },
+      { label: 'Feed Read Code Still Joined What Denormalization Was For', route: '/system-design/social-feed/feed-read-code-still-joined-what-denorm-was-for' },
+    ],
+    tip: 'Registered users and daily active users are different populations for capacity purposes — only DAU generates read/write traffic, so any QPS estimate should be built on DAU, not total registered accounts.',
+    gotchas: [
+      'Using the larger "registered users" figure for a read/write QPS estimate produces an inflated number that looks conservative but leads to real, unnecessary over-provisioning.',
+    ],
+  },
+  'system-design/social-feed/feed-read-code-still-joined-what-denorm-was-for': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' },
+      { label: 'Design a Social Feed (overview)', route: '/system-design/social-feed' },
+    ],
+    tip: 'When a page argues for denormalizing a field to avoid a JOIN on the hot path, check every code sample on that same page actually uses the denormalized column instead of quietly re-joining — the prose and the code need to be checked against each other.',
+    gotchas: [
+      'A stray JOIN on a read path that already has denormalized columns pays both the write-time sync cost AND the read-time join cost — worse than picking one approach consistently.',
+    ],
+  },
   'system-design/search-engine': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Social Feed" topicRoute="/system-design/social-feed" subtopicLabel="The Redis ZSET Memory Estimate Ignored Skiplist Overhead" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Redis ZSET Memory Estimate Ignored Skiplist Overhead</h1>
+  <p class="page-subtitle">The page's "8 bytes per entry" Redis feed memory estimate counted only the post ID payload — verified that real ZSET entries at this size cost roughly 130 bytes each due to skiplist + hashtable overhead, ~16x more than stated.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This fixes a real data-structure-overhead gap in the capacity estimate. Next: the page's own two sections disagree on how many users actually generate feed reads.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Social Feed" topicRoute="/system-design/social-feed"
+    [next]="{ label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' }" />
+</div>

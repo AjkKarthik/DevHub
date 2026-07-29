@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Social Feed" topicRoute="/system-design/social-feed" subtopicLabel="Feed Read Code Still Joined What Denormalization Was For" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Feed Read Code Still Joined What Denormalization Was For</h1>
+  <p class="page-subtitle">The page argues for denormalizing author data onto posts to keep feed reads fast, then its own "Feed Read" code sample JOINs against users anyway — undoing the exact optimization it just recommended.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the storage estimate, the read-QPS figure, and the read-path query itself all corrected, the feed system's capacity plan and its hot-path code now agree with each other. Next up in Real-World Systems: designing a chat application, where the read/write shape and consistency requirements look very different from a feed.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Social Feed" topicRoute="/system-design/social-feed"
+    [prev]="{ label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' }" />
+</div>

@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Social Feed" topicRoute="/system-design/social-feed" subtopicLabel="Active-User Count Mismatch: 500M vs. 100M DAU" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Active-User Count Mismatch: 500M vs. 100M DAU</h1>
+  <p class="page-subtitle">The page's "Scale & Storage" read-QPS estimate used "500M active" users, while its own Challenge description states the real split: 500M registered, only 100M daily active — a 5x overcount that inflated the read-QPS figure.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With storage and read-QPS both corrected, one more issue remains in the page's own read-path code sample — a query that still joins two tables the page's own denormalization advice says shouldn't need joining.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Social Feed" topicRoute="/system-design/social-feed"
+    [prev]="{ label: 'The Redis ZSET Memory Estimate Ignored Skiplist Overhead', route: '/system-design/social-feed/redis-zset-memory-estimate-ignored-skiplist-overhead' }"
+    [next]="{ label: 'Feed Read Code Still Joined What Denormalization Was For', route: '/system-design/social-feed/feed-read-code-still-joined-what-denorm-was-for' }" />
+</div>

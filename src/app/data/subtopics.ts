@@ -3081,4 +3081,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Quiz Answer Was the Mistakes Block’s Own Anti-Pattern', route: '/system-design/url-shortener/quiz-answer-was-the-mistakes-blocks-own-anti-pattern' },
     { label: 'The Read-QPS Comment Didn’t Match Its Own Formula', route: '/system-design/url-shortener/read-qps-comment-didnt-match-its-own-formula' },
   ],
+  'social-feed': [
+    { label: 'The Redis ZSET Memory Estimate Ignored Skiplist Overhead', route: '/system-design/social-feed/redis-zset-memory-estimate-ignored-skiplist-overhead' },
+    { label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' },
+    { label: 'Feed Read Code Still Joined What Denormalization Was For', route: '/system-design/social-feed/feed-read-code-still-joined-what-denorm-was-for' },
+  ],
 };
