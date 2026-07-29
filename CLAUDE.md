@@ -2518,20 +2518,21 @@ do this same check before any other new hub's first subtopic set:
   All 21 cards `available: true` in `cloud/service-mesh/home/home.ts`. Progress: `meshTotal=19` in progress.service.ts.
   Service Mesh pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. MeshNavComponent at `shared/mesh-nav/mesh-nav.ts`.
-  Phase 10: 18 of 19 topics have subtopics (`/service-mesh/fundamentals`,
+  Phase 10: **COMPLETE — 19 of 19 topics have subtopics** (`/service-mesh/fundamentals`,
   `/service-mesh/istio-architecture`, `/service-mesh/istio-install`, `/service-mesh/envoy`,
   `/service-mesh/linkerd`, `/service-mesh/traffic-management`, `/service-mesh/resilience`,
   `/service-mesh/load-balancing`, `/service-mesh/mtls`, `/service-mesh/authorization`,
   `/service-mesh/metrics`, `/service-mesh/tracing`, `/service-mesh/kiali`,
   `/service-mesh/gateway-api`, `/service-mesh/ingress-gateway`, `/service-mesh/performance`,
-  `/service-mesh/ambient-mesh`, `/service-mesh/multi-cluster`, 2026-07-28) — see
+  `/service-mesh/ambient-mesh`, `/service-mesh/multi-cluster`, `/service-mesh/consul`,
+  finished 2026-07-29, 57 subtopic pages total) — see
   "Service Mesh hub
   subtopic wiring" section below for the `MeshNavComponent` accordion structural fix and the
   `mesh-fundamentals` SUBTOPICS-map collision resolution (`istio-architecture`, `istio-install`,
   `envoy`, `linkerd`, `traffic-management`, `resilience`, `mtls`, `authorization`, `metrics`,
-  `tracing`, `kiali`, `gateway-api`, `ingress-gateway`, `ambient-mesh`, and `multi-cluster` were
-  all collision-free, left as bare keys; `load-balancing` collided with the AWS hub's own topic and
-  was hub-prefixed to
+  `tracing`, `kiali`, `gateway-api`, `ingress-gateway`, `ambient-mesh`, `multi-cluster`, and
+  `consul` were all collision-free, left as bare keys; `load-balancing` collided with the AWS
+  hub's own topic and was hub-prefixed to
   `mesh-load-balancing`; `performance` collided with the Node.js hub's own topic and was
   hub-prefixed to `mesh-performance`). **The `linkerd` batch found and
   fixed a real inaccuracy on the main page itself** — a self-referential SMI TrafficSplit example
@@ -2605,7 +2606,49 @@ do this same check before any other new hub's first subtopic set:
   interpolation inside a pre/code block, where raw backticks are the established correct
   convention) — matches the identical mixing mistake already documented in the Terraform `cicd`
   and Service Mesh `linkerd` batches, confirming it recurs and is worth a dedicated backtick-vs-
-  `<code>` check on any subtopic batch quoting a code identifier repeatedly. — see "Service Mesh
+  `<code>` check on any subtopic batch quoting a code identifier repeatedly. **The `consul` batch
+  (the hub's 19th and FINAL topic) found and fixed THREE more issues, plus a genuine, previously
+  undocumented [innerHTML]-parsing bug**: a self-contradiction on whether Consul uses SPIFFE
+  identity (one theory bullet said "not SPIFFE SVIDs... a key difference from Istio," a LATER
+  bullet on the same page said Consul certs are "SPIFFE-compatible in format" — verified via
+  Consul's own built-in-CA docs that Consul's per-service mTLS certs genuinely use `spiffe://` URI
+  SANs, so the format is the same and only the issuing CA differs); an imprecise "rotates at 60% of
+  TTL" claim (verified via Consul's own leaf-certificate docs that the real behavior is a jittered
+  60%-90% window, not a single fixed point); and a wrong cluster-peering DNS template
+  `<svc>.svc.peer.consul` with no segment for the peer's own name at all (verified via Consul's own
+  DNS reference: the real format is `<service>.service.<peer-name>.peer.<domain>`, confirmed via a
+  concrete example `_redis._tcp.service.phx1.peer.consul`). **The new bug, distinct from every
+  prior gotcha in this file**: writing angle-bracket PLACEHOLDER tokens like `<svc>` or
+  `<peer-name>` (meant to represent "insert a real value here," not literal HTML) directly inside an
+  `[innerHTML]`-bound field (`exercise.prompt`, `misconceptions.thought`/`.reality`) gets parsed by
+  the browser as an actual (unknown) HTML element — the placeholder text silently vanishes from the
+  rendered page instead of displaying as visible text. This is the SAME root mechanism as the
+  established "literal HTML tag names disappear inside `[innerHTML]` fields" gotcha, but triggered
+  by a PLACEHOLDER convention (angle-bracket "fill in this part" tokens borrowed from API-reference
+  writing) rather than an actual HTML tag name — worth checking for on any subtopic whose prose
+  describes a URL/config TEMPLATE using angle-bracket placeholders. Fixed with the same
+  `&lt;`/`&gt;` entity-escape-plus-`<code>`-wrap treatment already established for literal tag
+  names; the `exercise.solution` field (plain interpolation) needed NO escaping for the identical
+  angle brackets, confirming the fix is per-field-binding-type, not per-content. **A related,
+  inverse mistake caught in the SAME sweep**: `<code>` tags were mistakenly added inside a
+  `solution` field (which uses plain interpolation, not `[innerHTML]`) — plain interpolation never
+  parses tags at all, so the literal, un-rendered text "`<code>`...`</code>`" would have appeared
+  as visible clutter; removed them, leaving raw text, per the established `solution`-field
+  convention. **A session/tooling artifact hit during this batch's browser verification, worth
+  documenting since it could recur**: the Browser pane's `computer` screenshot tool began failing
+  ("Browser pane is not displayed, so the page is not compositing frames") partway through
+  verification, and synthetic click dispatch (`element.click()` / manually-constructed
+  `MouseEvent` dispatch) on the nested per-topic nav-accordion toggle buttons stopped reliably
+  triggering their Angular `(click)` handler — confirmed this was NOT a regression from this
+  batch's own code by reproducing the identical failure on an already-shipped, previously-verified
+  toggle (`mtls`, `performance`) from an earlier batch. **Working fallback verification technique**:
+  call the component method directly via Angular's own debug API —
+  `window.ng.getComponent(document.querySelector('app-mesh-nav')).toggleSubtopics('consul',
+  {stopPropagation(){}, preventDefault(){}})` — then re-check `isSubtopicsExpanded('consul')` and
+  query `.nav-subtopic-link` elements; this confirmed the underlying signal/template logic was 100%
+  correct even though the click SIMULATION itself couldn't be exercised in this session. Auto-
+  expand-on-direct-navigation (landing directly on a subtopic URL, no click needed at all) also
+  independently confirmed the same rendering path works correctly. — see "Service Mesh
   hub subtopic wiring" section below for details on all batches.
 - **System Design hub**: 24 trackable topic pages + 2 reference (26 cards total). Feature-complete.
   Slate theme `$accent: #0f172a`, `$tint: #f1f5f9`, dark `#94a3b8`. Search prefix `sysdesign-`. Route: `/system-design`.

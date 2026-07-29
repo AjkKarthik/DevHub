@@ -6270,7 +6270,46 @@ off here with a date.
   code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`, dark mode
   rendering (styled `<code>` pills visible) confirmed via screenshot.
   **Service Mesh hub Phase 10: 18 of 19 topics complete.**
-- [ ] `/service-mesh/consul` — Consul Service Mesh
+- [x] `/service-mesh/consul` — Consul Service Mesh (2026-07-29) — 3 subtopics: (1) **Consul Certs
+  Are Genuinely SPIFFE-Format, Not a Separate Identity Model**, correcting a genuine
+  self-contradiction — one theory bullet said Consul identity is "not SPIFFE SVIDs... a key
+  difference from Istio," a LATER bullet on the same page said Consul certs are "SPIFFE-compatible
+  in format" — verified via Consul's own built-in CA docs that Consul's per-service mTLS certs
+  genuinely use `spiffe://` URI SANs (e.g. `spiffe://<cluster-id>.consul/ns/default/dc/dc1/svc/web`),
+  so the FORMAT is identical to Istio's and only the issuing CA differs; (2) **Leaf Cert Rotation
+  Is a 60–90% Window, Not a Fixed 60%**, correcting an imprecise claim — verified via Consul's own
+  leaf-certificate docs that refresh happens somewhere in a jittered 60%–90% window of elapsed
+  lifetime (deliberately spread out to avoid synchronized CA load), not at a single fixed 60%
+  instant; (3) **Peered Service DNS Names Include the Peer's Own Name as a Segment**, correcting a
+  wrong DNS template — the main page's `<svc>.svc.peer.consul` had no place for the peer's own name
+  at all, verified via Consul's own DNS reference the real format is
+  `<service>.service.<peer-name>.peer.<domain>` (concrete example: `_redis._tcp.service.phx1.peer.consul`).
+  **A genuine, previously-undocumented bug caught during the gotcha sweep**: angle-bracket
+  PLACEHOLDER tokens like `<svc>`/`<peer-name>` (meant as "insert a value here," not real HTML)
+  written directly inside `[innerHTML]`-bound fields (`exercise.prompt`, `misconceptions.thought`/
+  `.reality`) get parsed as actual unknown HTML elements and silently vanish from the rendered
+  page — same root cause as the established literal-tag-name gotcha, but triggered by a
+  placeholder convention instead; fixed with the standard `&lt;`/`&gt;` entity-escape plus
+  `<code>` wrap. A related INVERSE mistake was also caught and fixed in the same sweep: `<code>`
+  tags mistakenly added inside a `solution` field (plain interpolation, not `[innerHTML]`) would
+  have rendered as literal, visible "`<code>`" text — removed, left as raw text per the
+  established `solution`-field convention. Gotcha sweep (backtick parity 2/2/12 all even after
+  fixes; bare `@word`, double-quote-in-label, over-escaped `\"` all clean) passed. `consul`
+  SUBTOPICS key confirmed collision-free, left bare. Build passed clean both before and after the
+  angle-bracket fix. **Browser verification note**: the Browser pane's screenshot tool became
+  unavailable mid-verification ("not displayed, so the page is not compositing frames"), and
+  synthetic click dispatch on the nav-accordion toggle stopped reliably reaching its Angular
+  `(click)` handler — confirmed this was a session/tooling artifact, not a regression, by
+  reproducing the identical failure on an already-shipped, previously-verified toggle (`mtls`)
+  from an earlier batch. Verified correctness instead via Angular's own debug API
+  (`window.ng.getComponent(...).toggleSubtopics('consul', ...)` followed by
+  `isSubtopicsExpanded('consul')` and a `.nav-subtopic-link` DOM query — all confirmed correct) and
+  via auto-expand-on-direct-navigation (landing directly on a subtopic URL correctly shows all 3
+  links with no click needed at all). Old wrong phrasing ("not SPIFFE SVIDs", "at 60% of TTL",
+  "svc.peer.consul` DNS names") confirmed absent and corrected text confirmed present via direct
+  DOM text search; a subtopic page's full breadcrumb (4 levels)/tailored sidebar/theory/code
+  block/try-it/misconceptions/prev-next nav all verified via `get_page_text`.
+  **Service Mesh hub Phase 10: COMPLETE — 19 of 19 topics, 57 subtopic pages total.**
 
 #### System Design — 24 topic pages
 
