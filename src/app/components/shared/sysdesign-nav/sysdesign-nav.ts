@@ -164,7 +164,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/cdn" routerLinkActive="active"><span class="nl-text">Content Delivery Networks</span>@if(p.isDone('sysdesign-cdn')){<span class="nl-done">✓</span>}@if(d('sysdesign-cdn');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/cdn" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Content Delivery Networks</span>
+        @if(p.isDone('sysdesign-cdn')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-cdn');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('cdn')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cdn')"
+                  (click)="toggleSubtopics('cdn', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cdn'); as cdnSubs) {
+        @if (isSubtopicsExpanded('cdn')) {
+          <div class="nav-subtopics">
+            @for (s of cdnSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/sharding" routerLinkActive="active"><span class="nl-text">Database Sharding</span>@if(p.isDone('sysdesign-sharding')){<span class="nl-done">✓</span>}@if(d('sysdesign-sharding');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

@@ -3025,4 +3025,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Multi-Level Cache Example Never Invalidates L1', route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' },
     { label: 'The PER Code Is Missing XFetch’s Recompute-Cost Signal', route: '/system-design/caching/the-per-code-is-missing-xfetchs-recompute-cost-signal' },
   ],
+  'cdn': [
+    { label: 'Cloudflare’s 100+ Tbps Figure Was Stale, Now 500+', route: '/system-design/cdn/cloudflares-100-tbps-figure-is-stale-network-passed-500' },
+    { label: 'Anycast Failover Takes BGP Convergence Time, Not Instant', route: '/system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant' },
+    { label: 'Raw Vary: Cookie Fragments the Cache — Normalize It Instead', route: '/system-design/cdn/raw-vary-cookie-fragments-the-cache-normalize-it-instead' },
+  ],
 };

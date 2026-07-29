@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Content Delivery Networks" topicRoute="/system-design/cdn" subtopicLabel="Raw Vary: Cookie Fragments the Cache — Normalize It Instead" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Raw Vary: Cookie Fragments the Cache — Normalize It Instead</h1>
+  <p class="page-subtitle">The QnA's "vary by a user segment cookie" advice is fine — but varying on the raw <code>Cookie</code> header, which usually contains a unique session ID per user, is a well-documented cache-hit-rate killer.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes the gap in the QnA's Vary-by-cookie personalization advice — a real, well-documented CDN operational trap. Next topic: Database Sharding.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Content Delivery Networks" topicRoute="/system-design/cdn"
+    [prev]="{ label: 'Anycast Failover Takes BGP Convergence Time, Not Instant', route: '/system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant' }" />
+</div>

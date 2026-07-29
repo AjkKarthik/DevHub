@@ -42479,6 +42479,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A CDN doesn\'t eliminate the need for origin capacity planning — a cache miss (or an uncacheable request) still hits the origin, which must handle that residual load.',
     ],
   },
+  'system-design/cdn/cloudflares-100-tbps-figure-is-stale-network-passed-500': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Delivery Networks (overview)', route: '/system-design/cdn' },
+      { label: 'Anycast Failover Timing',              route: '/system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant' },
+    ],
+    tip: 'Treat a specific vendor bandwidth/capacity figure quoted in an interview answer as something to verify, not memorize — these numbers grow fast, and a stale figure understates a CDN\'s actual current scale.',
+    gotchas: [
+      '"Network capacity" (provisioned) and "traffic served" (actual) are different numbers — a vendor\'s headline figure is almost always the former, the ceiling, not the typical load.',
+    ],
+  },
+  'system-design/cdn/anycast-failover-takes-bgp-convergence-time-not-instant': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Delivery Networks (overview)', route: '/system-design/cdn' },
+      { label: 'Load Balancing (VRRP failover timing)', route: '/system-design/load-balancing' },
+    ],
+    tip: '"Automatic failover" answers the WHO (no human intervenes); it never answers the HOW LONG — always follow up an anycast/BGP failover claim with the actual convergence-time window.',
+    gotchas: [
+      'BFD is an optional, explicitly-configured protocol that shrinks BGP failure detection to ~100-150ms — it is not automatically part of every anycast deployment.',
+    ],
+  },
+  'system-design/cdn/raw-vary-cookie-fragments-the-cache-normalize-it-instead': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Content Delivery Networks (overview)', route: '/system-design/cdn' },
+      { label: 'Caching Strategies',                    route: '/system-design/caching' },
+    ],
+    tip: 'Never Vary on the raw Cookie header for broadly-cacheable content — extract the one small signal that actually changes the response into its own normalized, bounded header instead.',
+    gotchas: [
+      'A cache key\'s cardinality determines whether a cache actually caches anything — Vary: Cookie on a unique per-user session ID drives effective hit rate toward zero.',
+    ],
+  },
   'system-design/replication': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

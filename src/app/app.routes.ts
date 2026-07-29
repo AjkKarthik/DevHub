@@ -2840,7 +2840,12 @@ export const routes: Routes = [
       { path: 'the-multi-level-cache-example-never-invalidates-l1', loadComponent: () => import('./components/architecture/system-design/caching/subtopics/the-multi-level-cache-example-never-invalidates-l1/the-multi-level-cache-example-never-invalidates-l1').then(m => m.TheMultiLevelCacheExampleNeverInvalidatesL1Subtopic) },
       { path: 'the-per-code-is-missing-xfetchs-recompute-cost-signal', loadComponent: () => import('./components/architecture/system-design/caching/subtopics/the-per-code-is-missing-xfetchs-recompute-cost-signal/the-per-code-is-missing-xfetchs-recompute-cost-signal').then(m => m.ThePerCodeIsMissingXfetchsRecomputeCostSignalSubtopic) },
     ] },
-    { path: 'cdn', loadComponent: () => import('./components/architecture/system-design/cdn/cdn').then(m => m.SysdesignCdn) },
+    { path: 'cdn', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/cdn/cdn').then(m => m.SysdesignCdn) },
+      { path: 'cloudflares-100-tbps-figure-is-stale-network-passed-500', loadComponent: () => import('./components/architecture/system-design/cdn/subtopics/cloudflares-100-tbps-figure-is-stale-network-passed-500/cloudflares-100-tbps-figure-is-stale-network-passed-500').then(m => m.Cloudflares100TbpsFigureIsStaleNetworkPassed500Subtopic) },
+      { path: 'anycast-failover-takes-bgp-convergence-time-not-instant', loadComponent: () => import('./components/architecture/system-design/cdn/subtopics/anycast-failover-takes-bgp-convergence-time-not-instant/anycast-failover-takes-bgp-convergence-time-not-instant').then(m => m.AnycastFailoverTakesBgpConvergenceTimeNotInstantSubtopic) },
+      { path: 'raw-vary-cookie-fragments-the-cache-normalize-it-instead', loadComponent: () => import('./components/architecture/system-design/cdn/subtopics/raw-vary-cookie-fragments-the-cache-normalize-it-instead/raw-vary-cookie-fragments-the-cache-normalize-it-instead').then(m => m.RawVaryCookieFragmentsTheCacheNormalizeItInsteadSubtopic) },
+    ] },
     { path: 'sharding', loadComponent: () => import('./components/architecture/system-design/sharding/sharding').then(m => m.SysdesignSharding) },
     { path: 'sql-vs-nosql', loadComponent: () => import('./components/architecture/system-design/sql-vs-nosql/sql-vs-nosql').then(m => m.SysdesignSqlVsNosql) },
     { path: 'replication', loadComponent: () => import('./components/architecture/system-design/replication/replication').then(m => m.SysdesignReplication) },
