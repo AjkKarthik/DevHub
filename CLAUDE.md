@@ -2657,10 +2657,10 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 8 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 9 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
-  `/system-design/cdn`, 2026-07-29) —
+  `/system-design/cdn`, `/system-design/sharding`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2762,6 +2762,24 @@ do this same check before any other new hub's first subtopic set:
   no-safe-escape, rephrase-to-avoid-it family already documented for this exact collision type)
   and an over-escaped-backslash-apostrophe inside a backtick-delimited `code:` field (`\\'`
   rendered a visible stray backslash; removed the escaping — backticks never need it).
+  **The `sharding` batch found and fixed a genuine misattributed-figures inaccuracy, plus two
+  gap-closing additions**: the page's "Why shard?" opener stated "a single PostgreSQL instance
+  tops out around 100k TPS and 64 TB" as if both were inherent PostgreSQL software limits —
+  verified that 64 TB is specifically AWS RDS's managed-storage ceiling for PostgreSQL (self-
+  hosted Postgres has no such cap; the real PG-specific limit is 32 TB per single TABLE, a
+  different figure describing a different scope), and that single-node Postgres has been
+  benchmarked past 3 million TPS on read-heavy, in-memory workloads — corrected the page to state
+  each figure's real scope instead of presenting them as hard software ceilings; a gap-closing
+  subtopic expanded the page's one-line "double-write to old + new shard" resharding description
+  with the well-documented "dual-write problem" (a failure between two independent application
+  writes leaves shards silently inconsistent) and verified that Vitess's own resharding tool
+  (VReplication/VStreamer) actually uses binlog-based CDC, not naive application dual writes — a
+  direct contrast with the very tool the page names elsewhere; and a second gap-closing subtopic
+  quantified WHY virtual nodes are needed (a claim the page's Quick Reference names but never
+  explains) — basic single-position consistent hashing measures ~30% load variance across nodes,
+  which many virtual positions per physical node (a statistical averaging effect) reduce to under
+  1%. No `SUBTOPICS` collision for `sharding` (checked both forms, confirmed collision-free, left
+  bare). Build passed clean throughout.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

@@ -6481,7 +6481,22 @@ off here with a date.
   absent and corrected text ("500 Tbps") confirmed present via DOM text search (after expanding
   the collapsed QnA question); 860px wrapper max-width confirmed via `getComputedStyle`.
   **System Design hub Phase 10: 8 of 24 topics complete.**
-- [ ] `/system-design/sharding` — Database Sharding
+- [x] `/system-design/sharding` — Database Sharding (2026-07-29) — 3 subtopics: (1) **The 64 TB /
+  100k TPS Figures Are RDS Limits, Not PostgreSQL Itself**, correcting the page's "Why shard?"
+  opener — verified that 64 TB is AWS RDS's managed-storage ceiling (not a PostgreSQL software
+  limit; self-hosted Postgres has no such cap, and the real PG-specific limit is 32 TB per single
+  table) and that single-node Postgres has been benchmarked past 3 million TPS on read-heavy
+  workloads; (2) **Naive Double-Write Resharding Is Risky — Vitess Uses CDC Instead**, a gap-
+  closing addition expanding the page's "double-write to old + new shard" resharding description
+  with the well-documented dual-write problem and verifying Vitess's own VReplication/VStreamer
+  actually uses binlog-based CDC, not application dual writes; (3) **Why Basic Consistent Hashing
+  Still Needs Virtual Nodes**, a gap-closing addition quantifying why virtual nodes matter — ~30%
+  load variance without them, under 1% with. `sharding` SUBTOPICS key collision-free, left bare.
+  Build passed clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct
+  subtopic-URL navigation with the toggle showing its open state; old wrong phrasing ("tops out
+  around 100k TPS and 64 TB") confirmed absent and corrected text ("AWS RDS", "3 million TPS")
+  confirmed present via direct DOM text search; 860px wrapper max-width confirmed via
+  `getComputedStyle`. **System Design hub Phase 10: 9 of 24 topics complete.**
 - [ ] `/system-design/sql-vs-nosql` — SQL vs NoSQL
 - [ ] `/system-design/replication` — Replication Strategies
 - [ ] `/system-design/indexes` — Indexes & Query Optimisation
