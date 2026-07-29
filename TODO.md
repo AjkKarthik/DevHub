@@ -6460,7 +6460,27 @@ off here with a date.
   confirmed all 3 links on direct subtopic-URL navigation; old wrong phrasing ("Default Redis
   eviction") confirmed absent and corrected text confirmed present via direct DOM text search;
   860px wrapper max-width confirmed via `getComputedStyle`.
-- [ ] `/system-design/cdn` — Content Delivery Networks
+- [x] `/system-design/cdn` — Content Delivery Networks (2026-07-29) — 3 subtopics: (1)
+  **Cloudflare's 100+ Tbps Figure Was Stale, Now 500+**, correcting the page's DDoS QnA answer —
+  verified via Cloudflare's own 2026 blog post that the network has since crossed 500 Tbps of
+  provisioned external capacity, with the caveat (also stated by Cloudflare) that this is
+  provisioned capacity/ceiling, not typical traffic served; (2) **Anycast Failover Takes BGP
+  Convergence Time, Not Instant**, a gap-closing addition expanding the anycast quiz's true-but-
+  incomplete "automatic failover" claim with the actual convergence window (5-15s typical, up to
+  30-90s with default timers; ~100-150ms with BFD explicitly configured); (3) **Raw Vary: Cookie
+  Fragments the Cache — Normalize It Instead**, a gap-closing addition expanding the QnA's
+  "vary by a user segment cookie" personalization advice with the well-documented cache-
+  fragmentation trap of varying on the raw Cookie header (usually a unique session ID per user,
+  driving hit rate toward zero) and the standard normalize-to-a-bounded-header fix. Self-caught
+  and fixed two authoring mistakes before build: a literal double-quote inside a double-quoted
+  `subtopicLabel` attribute (rephrased to avoid it — no safe escape exists for that collision),
+  and an over-escaped `\\'` inside a backtick-delimited `code:` field (backticks never need
+  apostrophe-escaping; removed it). `cdn` SUBTOPICS key collision-free, left bare. Build passed
+  clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing ("100+ Tbps") confirmed
+  absent and corrected text ("500 Tbps") confirmed present via DOM text search (after expanding
+  the collapsed QnA question); 860px wrapper max-width confirmed via `getComputedStyle`.
+  **System Design hub Phase 10: 8 of 24 topics complete.**
 - [ ] `/system-design/sharding` — Database Sharding
 - [ ] `/system-design/sql-vs-nosql` — SQL vs NoSQL
 - [ ] `/system-design/replication` — Replication Strategies

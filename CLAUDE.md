@@ -2657,10 +2657,10 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 7 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 8 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
-  2026-07-29) —
+  `/system-design/cdn`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2743,6 +2743,25 @@ do this same check before any other new hub's first subtopic set:
   at all, silently relying on an unstated 30-second staleness window; and a gap-closing subtopic
   on the "Probabilistic Early Expiration" code, which names the real XFetch algorithm but omits
   its `delta` (recompute-cost) term, verified against the actual published formula.
+  **The `cdn` batch found and fixed a genuine stale headline number, plus two gap-closing
+  additions**: the page's DDoS QnA cited "Cloudflare: 100+ Tbps" — verified via Cloudflare's own
+  2026 blog post that the network has since crossed 500 Tbps of provisioned external capacity
+  (with the important caveat, also stated by Cloudflare itself, that this is provisioned capacity
+  — the ceiling — not typical traffic served, which is only a fraction of the total); a gap-closing
+  subtopic expanded the anycast quiz's true-but-incomplete "automatic failover" claim with the
+  actual BGP convergence window (commonly 5-15s, up to 30-90s with default timers; ~100-150ms if
+  BFD is explicitly configured) — a real, bounded outage window the quiz explanation never
+  mentions; and a second gap-closing subtopic expanded the QnA's "vary by a user segment cookie"
+  personalization advice with the well-documented cache-fragmentation trap of varying on the RAW
+  Cookie header instead (which typically contains a unique session ID per user, driving effective
+  cache hit rate toward zero) and the standard fix (normalize the signal to its own small, bounded
+  header before varying on it). No `SUBTOPICS` collision for `cdn` (checked both forms,
+  confirmed collision-free, left bare). Self-caught and fixed a literal-double-quote-inside-a-
+  double-quoted-attribute mistake before build (the eyebrow `subtopicLabel` originally quoted
+  "100+ Tbps" with straight double quotes, prematurely closing the outer attribute — the same
+  no-safe-escape, rephrase-to-avoid-it family already documented for this exact collision type)
+  and an over-escaped-backslash-apostrophe inside a backtick-delimited `code:` field (`\\'`
+  rendered a visible stray backslash; removed the escaping — backticks never need it).
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
