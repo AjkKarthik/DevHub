@@ -2657,9 +2657,9 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 5 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 6 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
-  `/system-design/scaling`, 2026-07-29) —
+  `/system-design/scaling`, `/system-design/load-balancing`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2722,6 +2722,16 @@ do this same check before any other new hub's first subtopic set:
   main-page fix during browser verification (forced a fresh file-write to trigger recompilation —
   the production build itself was correct throughout, confirming this is a preview-tooling
   artifact, not a real defect).
+  **The `load-balancing` batch found and fixed TWO more real inaccuracies, plus a gap-closing
+  addition**: the page's QnA cited "typically 30-60 seconds" for connection draining while
+  explicitly naming AWS ALB — verified via AWS's own docs that ALB's actual default deregistration
+  delay is 300 seconds (5 minutes), with 30-60s being a common manually-tuned value, not the
+  default; the page's SPOF mistake fix claimed a keepalived/VRRP secondary claims the VIP "in < 2
+  seconds" — verified via VRRP's own failure-detection formula ((advert_int × 3) + skew_time) that
+  the default 1-second advert_int produces a ~3-second window instead; and a gap-closing subtopic
+  explains the theoretical result (Mitzenmacher) behind the page's one-line "power of two
+  choices... near-optimal" claim — an exponential improvement in max load over pure random
+  placement, with diminishing (constant-factor only) returns beyond 2 choices.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

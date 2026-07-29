@@ -6422,7 +6422,26 @@ off here with a date.
   accordion auto-expand confirmed all 3 links on direct subtopic-URL navigation; old wrong phrasing
   confirmed absent and "896 vCPU" confirmed present via direct DOM text search; 860px wrapper
   max-width confirmed via `getComputedStyle`.
-- [ ] `/system-design/load-balancing` — Load Balancing
+- [x] `/system-design/load-balancing` — Load Balancing (2026-07-29) — 3 subtopics: (1) **ALB's
+  Default Deregistration Delay Is 300 Seconds, Not 60**, correcting the page's QnA, which cited
+  "typically 30-60 seconds" for connection draining while explicitly naming AWS ALB — verified via
+  AWS's own docs that ALB's real default deregistration delay is 300 seconds (5 minutes), with
+  30-60s being a common manually-tuned value, not the default; (2) **VRRP Failover Takes About 3
+  Seconds by Default, Not Under 2**, correcting the page's SPOF fix, which claimed a
+  keepalived/VRRP secondary claims the VIP "in < 2 seconds" — verified via VRRP's own
+  failure-detection formula ((advert_int × 3) + skew_time) that the default 1-second advert_int
+  produces a ~3-second window; (3) **Why Power of Two Choices Beats Picking One Random Server**, a
+  gap-closing addition explaining the theoretical result (Mitzenmacher) behind the page's one-line
+  "near-optimal" claim — an exponential improvement over pure random placement, with only
+  constant-factor gains beyond 2 choices. Gotcha sweep caught and fixed a straight apostrophe
+  inside a `[prev]` bound attribute (should be the typographic curly quote); backtick parity
+  4/2/2 all even (the 4 in the first file split correctly between a `code:` block and a
+  `solution:` field, both safe). `sysdesign-load-balancing` SUBTOPICS key used — bare
+  `load-balancing` already claimed by the AWS hub's own topic. Build passed clean. Browser-verified
+  (after clicking into the collapsed "Common Mistakes" accordion to reach the relevant text): old
+  wrong phrasing ("< 2 seconds") confirmed absent, "~3 seconds" confirmed present; nav accordion
+  auto-expand confirmed all 3 links on direct subtopic-URL navigation; 860px wrapper max-width
+  confirmed via `getComputedStyle`.
 - [ ] `/system-design/caching` — Caching Strategies
 - [ ] `/system-design/cdn` — Content Delivery Networks
 - [ ] `/system-design/sharding` — Database Sharding
