@@ -2657,12 +2657,13 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 13 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 14 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
   `/system-design/replication`, `/system-design/indexes`,
-  `/system-design/distributed-transactions`, 2026-07-29) —
+  `/system-design/distributed-transactions`, `/system-design/high-availability`,
+  2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2852,6 +2853,36 @@ do this same check before any other new hub's first subtopic set:
   content changes — treated as a flaky/transient esbuild artifact, not a real defect, since the
   file's actual content was independently verified clean via direct byte inspection around the
   reported line before retrying. Build passed clean on retry.
+  **The `high-availability` batch found and fixed THREE issues, plus hit a real Windows MAX_PATH
+  `git add` failure needing the established fix**: the "AWS RDS Multi-AZ: automatic failover in
+  60-120 seconds" mistake fix remained accurate for the traditional Multi-AZ INSTANCE deployment,
+  but a gap-closing subtopic added the newer Multi-AZ DB CLUSTER option AWS also offers — under
+  35-second failover with readable standbys, verified against AWS's own docs; the error-budget
+  QnA's "0.1% of requests... OR about 8.7 hours of downtime" was tightened — verified against
+  Google's own SRE book that request-based and time-based availability are genuinely different
+  measurement methodologies (the book explicitly prefers request-based) that only coincide under a
+  simplifying assumption real systems with partial degradation routinely break; and the
+  active-active quickRef/theory's "failover is instant" phrasing was tightened to name the real,
+  configurable health-check detection window (interval × unhealthy-threshold, commonly 10-150s)
+  that still has to elapse before a dead node stops receiving traffic. No `SUBTOPICS` collision for
+  `high-availability` (checked both forms, confirmed collision-free, left bare). **Hit the
+  documented Windows MAX_PATH `git add` gotcha for real** on the RDS subtopic's 72-character slug
+  (appearing twice in the path, folder + filename) — fixed per the established recipe: renamed the
+  physical folder/files to a short `rds-multi-az-db-clusters` name, updated only the component's
+  own `templateUrl`/`styleUrl` and `app.routes.ts`'s `loadComponent` import path, while leaving the
+  route's own `path:` (URL segment) and every other wiring touchpoint (SUBTOPICS map, breadcrumb,
+  sidebar, search index) on the original, fully descriptive slug — confirmed via direct browser
+  navigation that the long descriptive URL still resolves correctly after the rename. Also caught,
+  before build, a bare single backslash-before-newline inside a multi-line bash `codeTabs` sample —
+  a genuinely new gotcha, not previously documented in this file: a raw `\` immediately followed by
+  a literal newline INSIDE a backtick template literal is parsed by JavaScript as a LineContinuation
+  escape and silently vanishes (removing the intended line break entirely), unlike the codebase's
+  established convention (confirmed correct via re-reading the pre-existing, human-authored CDN main
+  page's own bash examples) of using an ESCAPED `\\` before the newline specifically so a literal
+  single backslash character survives into the rendered output. **New standing sweep addition**: any
+  future codeTabs bash/shell sample using trailing-backslash line continuation must use `\\`, not a
+  bare `\`, before the newline — grep for a bare, non-escaped `\` at end-of-line in any new bash code
+  sample before building. Build passed clean.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

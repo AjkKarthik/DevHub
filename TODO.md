@@ -6561,7 +6561,25 @@ off here with a date.
   navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
   corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
   via `getComputedStyle`. **System Design hub Phase 10: 13 of 24 topics complete.**
-- [ ] `/system-design/high-availability` — High Availability
+- [x] `/system-design/high-availability` — High Availability (2026-07-29) — 3 subtopics: (1) **RDS
+  Multi-AZ DB Clusters Fail Over in Under 35 Seconds**, a gap-closing addition — the page's "60-120
+  seconds" figure is correct for the traditional Multi-AZ instance deployment, but AWS also offers
+  a newer Multi-AZ DB Cluster option (under 35s failover, readable standbys) the page never
+  mentioned; (2) **Request-Based and Time-Based Error Budgets Aren't the Same Thing**, correcting
+  the error-budget QnA's "0.1% of requests... OR 8.7 hours downtime" phrasing — verified against
+  Google's SRE book that these are genuinely different methodologies; (3) **Active-Active's Instant
+  Failover Still Waits on Health-Check Detection**, tightening the "failover is instant" quickRef/
+  theory phrasing with the real detection window (interval × unhealthy-threshold). Hit the
+  documented Windows MAX_PATH `git add` failure on the RDS subtopic's long slug — fixed via the
+  established short-folder-name recipe, route URL unchanged. Also caught (before build) a new
+  gotcha: a bare `\` before a newline inside a bash `codeTabs` sample is parsed as a JS
+  LineContinuation and silently erases the line break — fixed with `\\`, matching the codebase's
+  existing convention. `high-availability` SUBTOPICS key collision-free, left bare. Build passed
+  clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
+  corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
+  via `getComputedStyle`; renamed route confirmed resolving correctly at its full descriptive URL.
+  **System Design hub Phase 10: 14 of 24 topics complete.**
 - [ ] `/system-design/fault-tolerance` — Fault Tolerance
 - [ ] `/system-design/distributed-tracing` — Distributed Tracing
 - [ ] `/system-design/disaster-recovery` — Disaster Recovery
