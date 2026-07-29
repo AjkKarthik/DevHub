@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Distributed Tracing" topicRoute="/system-design/distributed-tracing" subtopicLabel="Tempo's No-Indexing Claim Needs a TraceQL Caveat" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Tempo's "No Indexing" Claim Needs a TraceQL Caveat</h1>
+  <p class="page-subtitle">The QnA says Tempo has "no indexing" — true for storage, but it never mentions TraceQL, the query language that makes real attribute-based search possible without a traditional index.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap in the backend-comparison QnA. Next topic: Disaster Recovery.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Distributed Tracing" topicRoute="/system-design/distributed-tracing"
+    [prev]="{ label: 'Jaeger No Longer Needs the OTel Collector for Basic Setups', route: '/system-design/distributed-tracing/jaeger-no-longer-needs-the-otel-collector' }" />
+</div>

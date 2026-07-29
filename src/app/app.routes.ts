@@ -2888,7 +2888,12 @@ export const routes: Routes = [
       { path: 'fraud-timeout-breaks-the-pages-own-2-3x-rule', loadComponent: () => import('./components/architecture/system-design/fault-tolerance/subtopics/fraud-timeout-breaks-the-pages-own-2-3x-rule/fraud-timeout-breaks-the-pages-own-2-3x-rule').then(m => m.FraudTimeoutBreaksThePagesOwn23xRuleSubtopic) },
       { path: 'put-is-idempotent-by-definition-no-key-needed', loadComponent: () => import('./components/architecture/system-design/fault-tolerance/subtopics/put-is-idempotent-by-definition-no-key-needed/put-is-idempotent-by-definition-no-key-needed').then(m => m.PutIsIdempotentByDefinitionNoKeyNeededSubtopic) },
     ] },
-    { path: 'distributed-tracing', loadComponent: () => import('./components/architecture/system-design/distributed-tracing/distributed-tracing').then(m => m.SysdesignDistributedTracing) },
+    { path: 'distributed-tracing', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/distributed-tracing/distributed-tracing').then(m => m.SysdesignDistributedTracing) },
+      { path: 'tail-sampling-example-was-actually-head-based', loadComponent: () => import('./components/architecture/system-design/distributed-tracing/subtopics/tail-sampling-example-was-actually-head-based/tail-sampling-example-was-actually-head-based').then(m => m.TailSamplingExampleWasActuallyHeadBasedSubtopic) },
+      { path: 'jaeger-no-longer-needs-the-otel-collector', loadComponent: () => import('./components/architecture/system-design/distributed-tracing/subtopics/jaeger-no-longer-needs-the-otel-collector/jaeger-no-longer-needs-the-otel-collector').then(m => m.JaegerNoLongerNeedsTheOtelCollectorSubtopic) },
+      { path: 'tempos-no-indexing-claim-needs-a-traceql-caveat', loadComponent: () => import('./components/architecture/system-design/distributed-tracing/subtopics/tempos-no-indexing-claim-needs-a-traceql-caveat/tempos-no-indexing-claim-needs-a-traceql-caveat').then(m => m.TemposNoIndexingClaimNeedsATraceqlCaveatSubtopic) },
+    ] },
     { path: 'disaster-recovery', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/disaster-recovery').then(m => m.SysdesignDisasterRecovery) },
     { path: 'url-shortener', loadComponent: () => import('./components/architecture/system-design/url-shortener/url-shortener').then(m => m.SysdesignUrlShortener) },
     { path: 'social-feed', loadComponent: () => import('./components/architecture/system-design/social-feed/social-feed').then(m => m.SysdesignSocialFeed) },

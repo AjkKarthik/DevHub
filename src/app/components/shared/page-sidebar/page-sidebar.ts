@@ -42883,6 +42883,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Sampling (recording only a percentage of traces) is often necessary at scale, but sampling out the rare slow/erroring requests defeats the entire purpose of tracing them.',
     ],
   },
+  'system-design/distributed-tracing/tail-sampling-example-was-actually-head-based': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Tracing (overview)', route: '/system-design/distributed-tracing' },
+      { label: 'Fault Tolerance Patterns',         route: '/system-design/fault-tolerance' },
+    ],
+    tip: 'Head-based sampling decides at trace start (fast, no outcome visibility); tail-based sampling buffers the full trace and decides at the end (can guarantee errors/slow traces are kept) — they run in different components and are configured differently.',
+    gotchas: [
+      'TraceIdRatioBased/ParentBasedSampler is a head-based sampler regardless of how low its probability is set — it cannot by itself guarantee errors are kept.',
+    ],
+  },
+  'system-design/distributed-tracing/jaeger-no-longer-needs-the-otel-collector': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Tracing (overview)', route: '/system-design/distributed-tracing' },
+      { label: 'High Availability Design',         route: '/system-design/high-availability' },
+    ],
+    tip: 'For a single-backend setup with no need for Collector-side processing (fan-out, tail sampling), point the OTel SDK\'s exporter directly at Jaeger\'s own OTLP endpoint instead of deploying a Collector.',
+    gotchas: [
+      'Jaeger\'s native OTLP receiver has been available since v1.35 (2022) — this is a stable, long-standing capability, not a new or experimental one.',
+    ],
+  },
+  'system-design/distributed-tracing/tempos-no-indexing-claim-needs-a-traceql-caveat': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Tracing (overview)', route: '/system-design/distributed-tracing' },
+      { label: 'Caching Strategies',               route: '/system-design/caching' },
+    ],
+    tip: 'Tempo\'s "no indexing" describes its storage architecture, not a search limitation — TraceQL supports real attribute-based search by scanning object-storage blocks narrowed via bloom filters.',
+    gotchas: [
+      'TraceQL queries are generally slower and more resource-intensive per search than an indexed backend like Jaeger — the storage-cost savings come at a real query-time cost.',
+    ],
+  },
   'system-design/url-shortener': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

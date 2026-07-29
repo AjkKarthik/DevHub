@@ -3066,4 +3066,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Fraud-Check Timeout Breaks the Page’s Own 2-3x Rule', route: '/system-design/fault-tolerance/fraud-timeout-breaks-the-pages-own-2-3x-rule' },
     { label: 'PUT Is Idempotent by Definition — It Doesn’t Need a Key', route: '/system-design/fault-tolerance/put-is-idempotent-by-definition-no-key-needed' },
   ],
+  'distributed-tracing': [
+    { label: 'The Tail-Based Sampling Example Was Actually Head-Based', route: '/system-design/distributed-tracing/tail-sampling-example-was-actually-head-based' },
+    { label: 'Jaeger No Longer Needs the OTel Collector for Basic Setups', route: '/system-design/distributed-tracing/jaeger-no-longer-needs-the-otel-collector' },
+    { label: 'Tempo’s No-Indexing Claim Needs a TraceQL Caveat', route: '/system-design/distributed-tracing/tempos-no-indexing-claim-needs-a-traceql-caveat' },
+  ],
 };
