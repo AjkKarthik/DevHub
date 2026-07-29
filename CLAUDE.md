@@ -2657,7 +2657,7 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 19 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 20 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
@@ -2665,7 +2665,7 @@ do this same check before any other new hub's first subtopic set:
   `/system-design/distributed-transactions`, `/system-design/high-availability`,
   `/system-design/fault-tolerance`, `/system-design/distributed-tracing`,
   `/system-design/disaster-recovery`, `/system-design/url-shortener`,
-  `/system-design/social-feed`, 2026-07-29) —
+  `/system-design/social-feed`, `/system-design/chat-application`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2984,6 +2984,38 @@ do this same check before any other new hub's first subtopic set:
   tab-selector button — `Scale & Storage`/`Feed Read` — since the code-block component's own tab
   switcher, not just a single collapsed "View Code" toggle, gates which tab's content is in the
   DOM) and the nav accordion opens correctly with all 3 subtopic labels.
+  **The `chat-application` batch found and fixed THREE more genuine issues, one purely
+  self-contained (a code-vs-requirement contradiction), one an internal cross-page-section
+  contradiction, and one requiring external verification**: the "WebSocket Server" code sample
+  used `connections.set(userId, ws)` — a single-value `Map<string, WebSocket>` keyed by user ID —
+  while the page's own Challenge explicitly requires handling a user "on different device," which
+  a one-connection-per-key Map cannot represent; a second device connecting silently overwrites
+  the first device's entry (no error anywhere), and the first device's later close handler then
+  deletes the SECOND device's still-open entry — fixed to `Map<string, Set<WebSocket>>` with
+  subscribe-once-per-user/fan-out-to-all-devices semantics. The Challenge asked for "Exactly-once
+  delivery" while the page's own Theory section states "At-least-once delivery... is the common
+  default for chat systems... requires the client to deduplicate" — a self-contained
+  cross-section contradiction (if dedup is needed, duplicates can occur, which is definitionally
+  not exactly-once) — corrected the requirement to "Effectively-once delivery" (at-least-once +
+  idempotency-key dedup), matching the page's own stated architecture. The E2E encryption hint
+  described Signal Protocol as "A fetches B's public key → encrypts message locally → sends
+  ciphertext" for every message — verified via WebSearch against Signal's own published
+  specification that this is inaccurate: X3DH performs a ONE-TIME initial key agreement, then
+  the Double Ratchet derives a NEW symmetric key for every subsequent message (never reusing a
+  static public key), providing forward secrecy that repeated public-key encryption cannot.
+  **Real gotcha caught during browser verification, not the build**: generic-syntax mentions like
+  `Map<string, Set<WebSocket>>` written as plain prose inside `[innerHTML]`-bound `theory.points`/
+  `misconceptions.thought` fields were silently parsed as (unknown) HTML tags and vanished from
+  the rendered page — the build stayed green throughout since this is a runtime-only failure, not
+  a compile error. Fixed by wrapping every such mention in `<code>&lt;...&gt;</code>` (the same
+  established treatment already used for angle-bracket placeholders and C# generics in other
+  hubs) — confirmed via `document.body.innerText` checks before and after the fix. No `SUBTOPICS`
+  collision for `chat-application` (checked both forms, confirmed collision-free, left bare).
+  Build passed clean (after one transient, unrelated `fonts.googleapis.com` network fetch failure
+  on the first attempt — retried clean). Browser-verified: nav accordion opens with all 3 labels;
+  all three main-page fixes confirmed rendering (the E2E fix required both "Reveal Solution" AND
+  "View Code" clicks on the Challenge block, matching the established two-step Challenge-solution
+  reveal pattern); 860px wrapper confirmed via `getComputedStyle`.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

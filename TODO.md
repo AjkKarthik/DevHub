@@ -6659,7 +6659,24 @@ off here with a date.
   button — `Scale & Storage`/`Feed Read` — not just a single View Code toggle); 860px wrapper
   max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 19 of 24 topics
   complete.**
-- [ ] `/system-design/chat-application` — Design: Chat Application
+- [x] `/system-design/chat-application` — Design: Chat Application (2026-07-29) — 3 subtopics: (1)
+  **WebSocket Map Silently Drops First Device on Multi-Login**, a self-contained code-vs-Challenge
+  contradiction — `connections.set(userId, ws)` used a single-value Map, silently overwriting a
+  device's connection when a second device connected (despite the page's own Challenge requiring
+  multi-device support), fixed to `Map<string, Set<WebSocket>>`; (2) **‘Exactly-Once Delivery’
+  Contradicts the Page's Own At-Least-Once Theory**, reconciling a real internal contradiction —
+  the Challenge asked for "exactly-once" while the Theory section states at-least-once + dedup is
+  the standard, fixed to "effectively-once delivery"; (3) **E2E Encryption Hint Skipped the
+  Double Ratchet**, fixing a WebSearch-verified inaccuracy — the hint described Signal Protocol as
+  repeated public-key encryption per message, corrected to X3DH (one-time) + Double Ratchet
+  (per-message key, forward secrecy). `chat-application` SUBTOPICS key collision-free, left bare.
+  Real gotcha caught during browser verification (not the build): generic syntax like
+  `Map<string, Set<WebSocket>>` in `[innerHTML]`-bound theory/misconceptions text was silently
+  parsed as HTML tags and vanished — fixed by wrapping in `<code>&lt;...&gt;</code>`. Build passed
+  clean (one transient unrelated font-fetch network failure on first attempt, clean on retry).
+  Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
+  rendering (E2E fix needed both Reveal Solution + View Code clicks); 860px wrapper confirmed via
+  `getComputedStyle`. **System Design hub Phase 10: 20 of 24 topics complete.**
 - [ ] `/system-design/search-engine` — Design: Search Engine
 - [ ] `/system-design/payment-system` — Design: Payment System
 - [ ] `/system-design/video-streaming` — Design: Video Streaming
