@@ -2657,13 +2657,13 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 14 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 15 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
   `/system-design/replication`, `/system-design/indexes`,
   `/system-design/distributed-transactions`, `/system-design/high-availability`,
-  2026-07-29) —
+  `/system-design/fault-tolerance`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2883,6 +2883,28 @@ do this same check before any other new hub's first subtopic set:
   future codeTabs bash/shell sample using trailing-backslash line continuation must use `\\`, not a
   bare `\`, before the newline — grep for a bare, non-escaped `\` at end-of-line in any new bash code
   sample before building. Build passed clean.
+  **The `fault-tolerance` batch found and fixed THREE issues in the page's own Challenge
+  solution, all requiring only internal cross-checks (no external research needed)**: the
+  solution's `new TokenBucketLimiter(redis, 10, 20)` comment claimed "10/min per user," but
+  TokenBucketLimiter's own constructor signature (defined earlier on the SAME page) names its
+  second parameter `ratePerSec` — the value as written configured 600/min (10/sec sustained), a
+  60x-too-permissive rate limit for a payment endpoint; fixed to `10 / 60` with an explanatory
+  comment. The solution's fraud-check timeout used only a 1.25x p99 ratio (800ms p99, 1000ms
+  timeout) while the page's own QnA states an explicit "2-3x p99" sizing rule — and the SAME
+  solution's stripe.charge call, right next to it, correctly used a 2.5x ratio, making this a
+  real internal inconsistency, not just an isolated choice; fixed the fraud-check timeout to
+  2000ms (also 2.5x). A gap-closing subtopic corrected the theory bullet/code comment listing
+  "PUT (with idempotency key)" as retry-safe — verified against RFC 7231 that PUT, DELETE, and
+  GET are idempotent by the HTTP specification's own definition, requiring no idempotency-key
+  workaround at all; that mechanism is specifically needed for POST, which the spec does not
+  classify as idempotent. No `SUBTOPICS` collision for `fault-tolerance` (checked both forms,
+  confirmed collision-free, left bare). Kept all three subtopic folder/file names short from the
+  start (matching the route slug exactly) specifically to avoid a repeat of the High Availability
+  batch's MAX_PATH `git add` failure — confirmed safe margin on the longest slug. Verifying the
+  Challenge-solution fixes in the browser required a TWO-STEP accordion reveal not previously
+  documented for this component: clicking "Reveal Solution" first, THEN a separate "View Code"
+  toggle that appears only after the solution is revealed — a single click on either alone left
+  the corrected code text absent from the DOM. Build passed clean.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

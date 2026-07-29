@@ -6580,7 +6580,23 @@ off here with a date.
   corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
   via `getComputedStyle`; renamed route confirmed resolving correctly at its full descriptive URL.
   **System Design hub Phase 10: 14 of 24 topics complete.**
-- [ ] `/system-design/fault-tolerance` — Fault Tolerance
+- [x] `/system-design/fault-tolerance` — Fault Tolerance (2026-07-29) — 3 subtopics: (1) **The
+  Rate Limiter Was Configured for 600/min, Not 10/min**, fixing a self-contained unit bug — the
+  Challenge solution's `new TokenBucketLimiter(redis, 10, 20)` comment claimed "10/min" but the
+  class's own constructor signature names that parameter `ratePerSec`, making it 60x too
+  permissive; fixed to `10 / 60`; (2) **The Fraud-Check Timeout Breaks the Page's Own 2-3x Rule**,
+  fixing an internal inconsistency — the same solution's fraud-check timeout used only 1.25x p99
+  while its own stripe.charge call correctly used 2.5x, both against the page's own stated "2-3x
+  p99" QnA rule; fixed to 2000ms; (3) **PUT Is Idempotent by Definition — It Doesn't Need a Key**,
+  a gap-closing addition correcting "PUT (with idempotency key)" — verified via RFC 7231 that PUT/
+  DELETE/GET are idempotent by definition, no key needed; that workaround is specifically for
+  POST. `fault-tolerance` SUBTOPICS key collision-free, left bare. All three subtopic folders kept
+  short from the start to avoid a repeat of the prior batch's MAX_PATH failure. Build passed
+  clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
+  corrected text confirmed present via direct DOM text search (after the Challenge's two-step
+  Reveal Solution + View Code accordion); 860px wrapper max-width confirmed via
+  `getComputedStyle`. **System Design hub Phase 10: 15 of 24 topics complete.**
 - [ ] `/system-design/distributed-tracing` — Distributed Tracing
 - [ ] `/system-design/disaster-recovery` — Disaster Recovery
 - [ ] `/system-design/url-shortener` — Design: URL Shortener
