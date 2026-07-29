@@ -3040,4 +3040,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'MongoDB Sharded-Cluster Transactions Arrived in 4.2, Not 4.0', route: '/system-design/sql-vs-nosql/mongodb-sharded-cluster-transactions-arrived-in-42-not-40' },
     { label: 'DynamoDB Scales Automatically, But One Partition Still Has a Ceiling', route: '/system-design/sql-vs-nosql/dynamodb-scales-automatically-but-one-partition-still-has-a-ceiling' },
   ],
+  'replication': [
+    { label: 'PostgreSQL’s synchronous_standby_names Needs a Quoted Name', route: '/system-design/replication/postgresqls-synchronous-standby-names-needs-a-quoted-name' },
+    { label: 'Quorum (W+R greater than N) Guarantees Overlap, Not True Linearizability', route: '/system-design/replication/quorum-w-plus-r-over-n-guarantees-overlap-not-linearizability' },
+    { label: 'DynamoDB Isn’t Tunable Like Cassandra — It’s a Binary Choice', route: '/system-design/replication/dynamodb-isnt-tunable-like-cassandra-its-a-binary-choice' },
+  ],
 };

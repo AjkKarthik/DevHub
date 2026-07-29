@@ -46,8 +46,8 @@ const theory: TheoryPoint[] = [
     points: [
       'All nodes are equal — any node accepts reads and writes.',
       'Quorum: W + R > N ensures at least one node has the latest write when reading.',
-      'With N=3: W=2, R=2 → strongly consistent; W=1, R=1 → eventually consistent.',
-      'Examples: Cassandra, Riak, DynamoDB (by default eventual, tunable to quorum).',
+      'With N=3: W=2, R=2 → read set overlaps write set (commonly called "strongly consistent" — though this guarantee can break under sloppy quorums or genuinely concurrent writes, see below); W=1, R=1 → eventually consistent.',
+      'Examples: Cassandra and Riak offer a genuinely tunable W/R quorum knob. DynamoDB is different: it defaults to eventually consistent reads with a separate BINARY choice (ConsistentRead=true) for strongly consistent reads — not a tunable W/R quorum like Cassandra\'s.',
     ],
   },
   {
@@ -56,7 +56,7 @@ const theory: TheoryPoint[] = [
       'Synchronous: leader waits for replica ACK before returning success. RPO=0 but +10-50ms latency.',
       'Asynchronous: leader returns immediately; replica may lag by seconds. Lower latency; replication lag causes stale reads.',
       'Semi-synchronous (MySQL): one replica must ACK; others async. Middle ground.',
-      'PostgreSQL: synchronous_standby_names = 1 makes one replica synchronous.',
+      'PostgreSQL: synchronous_standby_names = \'replica1\' (a quoted standby name — or FIRST/ANY N (...) for quorum-style multi-replica sync) makes a replica synchronous.',
     ],
   },
   {

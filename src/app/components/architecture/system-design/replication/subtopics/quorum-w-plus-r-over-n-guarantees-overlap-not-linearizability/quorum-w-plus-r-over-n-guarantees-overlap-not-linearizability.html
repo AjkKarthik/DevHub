@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Replication Strategies" topicRoute="/system-design/replication" subtopicLabel="Quorum (W+R greater than N) Guarantees Overlap, Not True Linearizability" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Quorum (W+R &gt; N) Guarantees Overlap, Not True Linearizability</h1>
+  <p class="page-subtitle">The page calls W=2, R=2, N=3 "strongly consistent" — verified the well-documented caveats (sloppy quorums, concurrent writes, racing reads) that can break this guarantee, and tightened the claim.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This adds the real caveats behind the quorum formula. Next: DynamoDB's consistency model is grouped with Cassandra's tunable quorum, but it works differently.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Replication Strategies" topicRoute="/system-design/replication"
+    [prev]="{ label: 'PostgreSQL’s synchronous_standby_names Needs a Quoted Name', route: '/system-design/replication/postgresqls-synchronous-standby-names-needs-a-quoted-name' }"
+    [next]="{ label: 'DynamoDB Isn’t Tunable Like Cassandra — It’s a Binary Choice', route: '/system-design/replication/dynamodb-isnt-tunable-like-cassandra-its-a-binary-choice' }" />
+</div>

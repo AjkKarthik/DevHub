@@ -42557,6 +42557,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Replication lag (the delay between a write on the primary and its appearance on a replica) means reading from a replica right after writing to the primary can return stale data — a common source of confusing "why don\'t I see my own write" bugs.',
     ],
   },
+  'system-design/replication/postgresqls-synchronous-standby-names-needs-a-quoted-name': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Replication Strategies (overview)', route: '/system-design/replication' },
+      { label: 'SQL vs NoSQL',                       route: '/system-design/sql-vs-nosql' },
+    ],
+    tip: 'synchronous_standby_names controls the exact RPO=0 guarantee a "synchronous replication" claim depends on — an invalid value can silently degrade that guarantee rather than failing loudly.',
+    gotchas: [
+      'synchronous_standby_names never accepts a bare number — it takes a quoted standby name, a comma-separated list, or the FIRST/ANY num (...) keyword forms.',
+    ],
+  },
+  'system-design/replication/quorum-w-plus-r-over-n-guarantees-overlap-not-linearizability': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Replication Strategies (overview)', route: '/system-design/replication' },
+      { label: 'CAP Theorem',                        route: '/system-design/cap-theorem' },
+    ],
+    tip: 'W + R > N is a NECESSARY condition for read/write overlap under ideal conditions — it is not, by itself, sufficient for full linearizability once sloppy quorums or concurrent writes enter the picture.',
+    gotchas: [
+      'Sloppy quorums (writing to a substitute node during a brief outage) can break the overlap guarantee entirely — the write may land somewhere the read set never checks.',
+    ],
+  },
+  'system-design/replication/dynamodb-isnt-tunable-like-cassandra-its-a-binary-choice': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Replication Strategies (overview)', route: '/system-design/replication' },
+      { label: 'Database Sharding',                  route: '/system-design/sharding' },
+    ],
+    tip: 'DynamoDB\'s consistency choice is a binary read-side switch (eventually vs. strongly consistent), not a numeric W/R quorum knob like Cassandra — plan around the actual options it exposes.',
+    gotchas: [
+      'DynamoDB has no QUORUM setting and no user-tunable write consistency — writes are always durably coordinated internally regardless of the read-side choice.',
+    ],
+  },
   'system-design/sharding': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
