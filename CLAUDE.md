@@ -2657,8 +2657,8 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 3 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
-  capacity-estimation`, `/system-design/cap-theorem`, 2026-07-29) —
+  Phase 10: 4 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2695,6 +2695,20 @@ do this same check before any other new hub's first subtopic set:
   definition; and a gap-closing subtopic named Gilbert & Lynch's 2002 formal proof (with its
   specific asynchronous-network, atomic-consistency conditions), which the main page's "Brewer's
   theorem (2000)" attribution never mentioned at all.
+  **The `networking` batch found and fixed one real inaccuracy plus two gap-closing additions**:
+  the page's own quiz explanation cited a flat "DNS falls back to TCP for responses > 512 bytes"
+  rule — the pre-EDNS0 (1987-era) limit — verified that modern DNS negotiates a much larger UDP
+  buffer via EDNS0 (commonly ~1232 bytes since the 2020 DNS Flag Day), so DNSSEC-signed and
+  multi-record responses routinely stay on UDP today; a gap-closing subtopic added TCP connection
+  TEARDOWN (the main page covered only the 3-way SETUP handshake) — the 4-way close and the
+  resulting TIME_WAIT state, which can genuinely exhaust a service's ~28,000 ephemeral ports under
+  high connection churn if it isn't pooling connections; and a second gap-closing subtopic
+  explained the cache-stampede (thundering herd) problem behind "stale-while-revalidate," which the
+  page named as a bare Cache-Control directive with zero explanation of what it actually prevents.
+  **Real SUBTOPICS collision**: bare `networking` already claimed by the Linux hub's own topic —
+  hub-prefixed to `sysdesign-networking`, matching the hub's own existing progress/search key
+  prefix (this key was ALREADY `sysdesign-`-prefixed for progress/search purposes before this
+  batch, independent of the subtopics collision, so no separate mismatch to reconcile).
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

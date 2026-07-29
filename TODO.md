@@ -6383,7 +6383,25 @@ off here with a date.
   confirmed all 3 links on direct subtopic-URL navigation; both main-page fixes (old "W=3, R=3"
   and "writes appear in order" confirmed absent, new corrected text confirmed present) verified
   via direct DOM text search; 860px wrapper max-width confirmed via `getComputedStyle`.
-- [ ] `/system-design/networking` — Networking Fundamentals
+- [x] `/system-design/networking` — Networking Fundamentals (2026-07-29) — 3 subtopics: (1)
+  **EDNS0 Raises the DNS UDP Limit Past the Legacy 512 Bytes**, correcting the page's quiz
+  explanation, which cited a flat "falls back to TCP above 512 bytes" rule — the pre-EDNS0
+  1987-era limit; verified modern DNS negotiates a much larger UDP buffer (commonly ~1232 bytes
+  since the 2020 DNS Flag Day), so DNSSEC-signed responses routinely stay on UDP; (2) **TCP
+  Teardown: TIME_WAIT Can Exhaust Ephemeral Ports**, a gap-closing addition — the page's TCP
+  section covered only the 3-way SETUP handshake, never teardown; added the 4-way close and the
+  real production risk of TIME_WAIT exhausting a service's ~28,000 ephemeral ports under high
+  connection churn (the concrete reason connection pooling is standard advice); (3)
+  **Stale-While-Revalidate Exists to Stop Cache Stampedes**, a gap-closing addition explaining the
+  cache-stampede/thundering-herd problem behind a directive the page named with zero context.
+  **Real SUBTOPICS collision**: bare `networking` already claimed by the Linux hub's own topic —
+  hub-prefixed to `sysdesign-networking`, matching this key's ALREADY-established
+  progress/search prefix (independent of the subtopics collision). Gotcha sweep caught and fixed
+  a backtick-wrapped inline-code mention inside an `[innerHTML]`-bound `prompt` field (converted
+  to `<code>`), correctly leaving the matching backtick in the `solution` field alone (plain
+  interpolation). Build passed clean. Browser-verified: nav accordion auto-expand confirmed all 3
+  links on direct subtopic-URL navigation (collision-resolved key working correctly); 860px
+  wrapper max-width confirmed via `getComputedStyle`.
 - [ ] `/system-design/scaling` — Horizontal vs Vertical Scaling
 - [ ] `/system-design/load-balancing` — Load Balancing
 - [ ] `/system-design/caching` — Caching Strategies
