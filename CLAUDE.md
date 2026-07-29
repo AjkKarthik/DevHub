@@ -2657,6 +2657,19 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
+  Phase 10: 1 of 24 topics have subtopics (`/system-design/framework`, pilot batch, 2026-07-29) —
+  fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
+  hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
+  `framework` SUBTOPICS key collision-free, left bare. `.sysdesign-page` wrapper NOT global —
+  every subtopic `.scss` needs the full `.sysdesign-page { max-width: 860px; margin: 0 auto; }`
+  rule. Sidebar keys full-path-prefixed (`system-design/framework`). No live playground (system
+  design content has no in-browser runtime) — plain `<app-code-block>`. The `framework` pilot
+  batch used a different verification style than most hubs: rather than "main page states X,
+  verified wrong," two of the three subtopics were gap-closing additions (peak-vs-average QPS
+  sizing, Little's Law for concurrency sizing) since the main page's own content was largely
+  accurate methodology/interview-strategy material with few hard factual claims to check; the
+  third subtopic DID correct a real, verifiable inaccuracy (a memorized "SSD random read = 0.1ms"
+  figure, corrected to the canonical ~0.15ms per "Latency Numbers Every Programmer Should Know").
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

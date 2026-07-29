@@ -6313,7 +6313,35 @@ off here with a date.
 
 #### System Design — 24 topic pages
 
-- [ ] `/system-design/framework` — System Design Framework
+- [x] `/system-design/framework` — System Design Framework (2026-07-29) — **first System Design
+  hub Phase 10 pilot.** Fixed `SysdesignNavComponent`'s missing subtopics-accordion structural
+  gap (10th `*NavComponent` hub in a row missing it at pilot time), copied `MeshNavComponent`'s
+  implementation exactly. 3 subtopics: (1) **SSD Random Read Is 150 Microseconds, Not 100**,
+  correcting the main page's memorized "0.1ms" QnA figure against the canonical "Latency Numbers
+  Every Programmer Should Know" source (real value: 150,000ns = 0.15ms) — the other three
+  memorized numbers on the same page (disk seek 10ms, same-DC RTT ~0.5ms, cross-region RTT
+  ~150ms) all checked out exactly; (2) **Size for Peak QPS, Not Average QPS**, a gap-closing
+  addition — the main page's own worked "100M DAU → ~11,600 QPS" example (confirmed correct
+  arithmetic, matching its own quiz answer) never states this is an AVERAGE, when standard
+  interview guidance is to size infrastructure for 2-3x that at peak; (3) **Little's Law Turns
+  QPS Into Concurrent Connections Needed**, another gap-closing addition — adds the L=λW formula
+  connecting the main page's own QPS and latency numbers into a concrete thread/connection-pool
+  sizing answer, a common interview follow-up question the main page's framework doesn't equip
+  candidates to answer. **Verification style note**: unlike most hubs' pilots, 2 of 3 subtopics
+  here were gap-closing rather than error-correcting, since "framework" is largely accurate
+  interview-methodology content with few hard, checkable factual claims — the established
+  "verify claims, fix real inaccuracies" discipline still applied to the one number that WAS
+  checkable (SSD latency). `framework` SUBTOPICS key confirmed collision-free, left bare.
+  `.sysdesign-page` wrapper confirmed NOT global — full wrapper rule added to all 3 subtopic
+  `.scss` files. Gotcha sweep (backtick parity 2/2/2 all even, bare `@word`/double-quote-in-label/
+  over-escaped `\"`/angle-bracket-placeholder-in-innerHTML all clean) passed on the first pass —
+  no angle-bracket placeholders needed in this batch's content, unlike the immediately-preceding
+  Consul batch. Build passed clean. Browser-verified: nav accordion toggle confirmed via direct
+  method invocation (`window.ng.getComponent(...).toggleSubtopics(...)`, a same-session tooling
+  fallback — see the `consul` entry above) AND via auto-expand-on-direct-navigation (all 3 links
+  correctly appear on direct subtopic-URL navigation, no click needed), 860px wrapper max-width
+  confirmed via `getComputedStyle`, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/
+  theory/code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`.
 - [ ] `/system-design/capacity-estimation` — Capacity Estimation
 - [ ] `/system-design/cap-theorem` — CAP & PACELC Theorems
 - [ ] `/system-design/networking` — Networking Fundamentals
