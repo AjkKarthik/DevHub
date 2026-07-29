@@ -3076,4 +3076,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'RDS Multi-AZ DB Clusters Apply Here Too', route: '/system-design/disaster-recovery/rds-multi-az-db-clusters-apply-here-too' },
     { label: 'Why Aurora Global Beats a Plain Cross-Region Replica', route: '/system-design/disaster-recovery/why-aurora-global-beats-a-plain-cross-region-replica' },
   ],
+  'url-shortener': [
+    { label: 'The Collision-Probability Formula Is Near-Certain, Not Negligible', route: '/system-design/url-shortener/collision-probability-is-near-certain-not-negligible' },
+    { label: 'The Quiz Answer Was the Mistakes Block’s Own Anti-Pattern', route: '/system-design/url-shortener/quiz-answer-was-the-mistakes-blocks-own-anti-pattern' },
+    { label: 'The Read-QPS Comment Didn’t Match Its Own Formula', route: '/system-design/url-shortener/read-qps-comment-didnt-match-its-own-formula' },
+  ],
 };

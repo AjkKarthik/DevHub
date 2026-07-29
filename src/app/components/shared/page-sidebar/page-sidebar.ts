@@ -42961,6 +42961,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Read-heavy access pattern (far more redirects than URL creations) argues strongly for aggressive caching of the short-code-to-URL mapping.',
     ],
   },
+  'system-design/url-shortener/collision-probability-is-near-certain-not-negligible': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a URL Shortener (overview)', route: '/system-design/url-shortener' },
+      { label: 'Capacity Estimation',                 route: '/system-design/capacity-estimation' },
+    ],
+    tip: 'Before trusting a "collision probability is negligible" claim, actually evaluate the birthday-paradox formula with the stated numbers — the intuition that a huge code space means rare collisions is often wrong at high volume.',
+    gotchas: [
+      'The 50%-collision point is reached at roughly 1.18×√(code space size) draws — far fewer draws than the total space size might suggest.',
+    ],
+  },
+  'system-design/url-shortener/quiz-answer-was-the-mistakes-blocks-own-anti-pattern': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a URL Shortener (overview)', route: '/system-design/url-shortener' },
+      { label: 'Security & Auth',                      route: '/security' },
+    ],
+    tip: 'Counter-based short codes are collision-free but enumerable; random codes are non-enumerable but collision-prone at scale — obfuscating the counter before exposure gets both properties at once.',
+    gotchas: [
+      'A fixed XOR mask is basic obfuscation, not cryptographic security — combine it with rate limiting and monitoring for a genuinely security-critical system.',
+    ],
+  },
+  'system-design/url-shortener/read-qps-comment-didnt-match-its-own-formula': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a URL Shortener (overview)', route: '/system-design/url-shortener' },
+      { label: 'Capacity Estimation',                 route: '/system-design/capacity-estimation' },
+    ],
+    tip: 'When a worked-example comment sits under a formula, check that every division/multiplication term in the formula actually appears in the comment\'s claimed arithmetic — not just that the final number looks plausible.',
+    gotchas: [
+      'A dropped term in an intermediate capacity-estimate number propagates into every downstream calculation that builds on it (Redis sizing, read-replica count).',
+    ],
+  },
   'system-design/chat-application': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

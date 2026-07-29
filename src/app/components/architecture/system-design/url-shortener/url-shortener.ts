@@ -268,7 +268,11 @@ if (existing) return \`https://sho.rt/\${existing.code}\`;
     right: `// Random Base62 code: no pattern, not enumerable
 const code = randomBytes(6).toString('base64url').slice(0, 7);
 // Or: hash(longUrl + salt) → Base62(first 7 chars)
-// Collision probability at 100M URLs: 1 - e^(-100M^2 / 2 × 62^7) ≈ negligible`,
+// Collision check (birthday paradox): 1 - e^(-n²/2m), n=100M, m=62^7≈3.52T
+// Evaluated: exponent ≈ -1420 → probability ≈ 100% -- a collision is
+// NEAR-CERTAIN at this volume with pure random 7-char codes, not negligible.
+// This is exactly why the retry-on-collision loop in shorten() above is
+// essential, not optional insurance -- random codes at this scale WILL collide.`,
     explanation: 'Sequential codes are enumerable — anyone can iterate through all codes and harvest the long URLs. Use random codes or hash-based codes to prevent enumeration attacks.',
   },
 ];
@@ -291,7 +295,7 @@ Calculate:
 5. DB read replica count needed`,
   hints: [
     '50M/day = 50M / 86400 = ~578 writes/s',
-    '50M URLs × 100 clicks each = 5B clicks/day → ~57,870 reads/s',
+    '50M URLs × 100 clicks each = 5B lifetime clicks for one day\'s cohort — spread that over its 5-year (1825-day) life, not all on one day, to estimate steady-state daily reads',
     'Each URL row: ~500 bytes (code + long URL + metadata)',
     'Hot 20% of URLs = 10M URLs; each 500 bytes in Redis = 5 GB',
   ],
@@ -316,9 +320,10 @@ const writeQps = URLS_PER_DAY / SECONDS_PER_DAY;
 // = 578 writes/second → round to 600 with headroom
 
 const totalClicksPerDay = URLS_PER_DAY * CLICKS_PER_URL / RETENTION_YEARS / 365;
-// Spread over lifetime; peak day = 50M × 100 / 365 = 13.7M clicks/day
-const readQps = 13_700_000 / SECONDS_PER_DAY;
-// = ~158 reads/s average; peak 10× = ~1,580 reads/s — Redis handles easily
+// One day's cohort (50M URLs × 100 lifetime clicks = 5B clicks) spread
+// evenly across its 5-year (1825-day) life: 5B / 1825 ≈ 2.74M clicks/day
+const readQps = totalClicksPerDay / SECONDS_PER_DAY;
+// = ~32 reads/s average; peak 10× = ~320 reads/s — Redis handles easily
 
 const totalUrls = URLS_PER_DAY * 365 * RETENTION_YEARS;
 // = 50M × 1825 = 91.25 billion URLs (extreme!) — would need sharding
@@ -333,7 +338,7 @@ const redisMemoryBytes = 10_000_000 * BYTES_PER_URL;
 // = 5 GB — fits in a single Redis node easily
 
 // DB reads: ~80% served from Redis cache → 20% hit DB
-// DB reads/s = 158 × 0.20 = 31.6 reads/s → 1-2 read replicas sufficient`,
+// DB reads/s = 32 × 0.20 = ~6.4 reads/s → a single read replica is easily sufficient`,
 };
 
 const quiz: QuizQuestion[] = [
@@ -366,7 +371,7 @@ const quiz: QuizQuestion[] = [
     explanation: 'Cache-aside is ideal: check Redis first (1ms), fallback to DB on miss (few % of requests), write result to Redis for future reads. This pattern handles the 100:1 read:write ratio with minimal DB load.',
   },
   { q: 'What HTTP status code should a URL shortener return and why?', options: ['200 OK with the long URL in the response body', '301 Moved Permanently so browsers cache the redirect permanently', '302 Found so analytics can track every click via the shortener server', '404 Not Found for expired or unknown short codes'], answer: 2, explanation: '301 (Moved Permanently) tells browsers and caches to permanently remember the redirect; the browser will go directly to the long URL on subsequent clicks without contacting the shortener, reducing load. 302 (Found) is a temporary redirect that the browser does not cache; every click goes through the shortener, enabling analytics. 307 (Temporary Redirect) is similar to 302 but preserves the HTTP method. For analytics-enabled shorteners, 302 is preferred. For performance-first shorteners with no analytics, 301 reduces server load.' },
-  { q: 'What data structure would you use to generate unique short codes at scale?', options: ['Auto-incrementing integers converted to base 62 for a short alphanumeric code', 'A random UUID truncated to 7 characters', 'MD5 hash of the long URL, truncated to 7 characters', 'Sequential alphabetical codes starting from aaaaaaa'], answer: 0, explanation: 'A counter-based approach: maintain a global counter. Convert each counter value to base 62 (a-z, A-Z, 0-9). A 7-character base-62 code gives 62^7 = 3.5 trillion unique URLs, sufficient for virtually any scale. Problem: a single global counter is a bottleneck. Solutions: pre-allocate ranges to each application server (range-based ID generation). Alternative: random codes with collision checking are simpler to implement but require a uniqueness check on every insert. Another option: Snowflake-style IDs that encode timestamp and machine ID, guaranteeing uniqueness without coordination.' },
+  { q: 'What data structure would you use to generate unique short codes at scale?', options: ['Auto-incrementing integers converted to base 62 for a short alphanumeric code', 'A random UUID truncated to 7 characters', 'MD5 hash of the long URL, truncated to 7 characters', 'Sequential alphabetical codes starting from aaaaaaa'], answer: 0, explanation: 'A counter-based approach: maintain a global counter. Convert each counter value to base 62 (a-z, A-Z, 0-9). A 7-character base-62 code gives 62^7 = 3.5 trillion unique URLs, sufficient for virtually any scale, with zero collisions by construction. Problem: a single global counter is a bottleneck, AND the resulting codes are sequential/enumerable — this page\'s own "Predictable sequential codes" mistake block warns against exposing this pattern directly for a public-facing shortener. Mitigations: pre-allocate ranges to each application server (range-based ID generation) to fix the bottleneck, and obfuscate the counter (e.g. XOR/permute it, or Base62-encode a non-sequential transform of it) before exposing it as the public code, so it stays collision-free while no longer being trivially enumerable. Alternative: random codes with collision checking are simpler to implement and non-enumerable by default but require a uniqueness check (and retry) on every insert. Another option: Snowflake-style IDs that encode timestamp and machine ID, guaranteeing uniqueness without coordination.' },
   { q: 'How do you handle custom aliases and expiration in a URL shortener?', options: ['Custom aliases are not possible in a production URL shortener', 'Store custom aliases in the same table as auto-generated codes and check for uniqueness at creation time; add an expires_at column and filter or delete expired entries', 'Custom aliases require a separate database table to avoid conflicts with generated codes', 'Expiration is handled by returning 404 for all URLs older than 30 days'], answer: 1, explanation: 'Custom aliases: allow users to specify the desired short code instead of an auto-generated one. Check for uniqueness in the URL mapping table before inserting. Rate limit custom alias creation to prevent abuse. Expiration: add an expires_at column to the URL table. At redirect time, check if the URL has expired and return 410 (Gone) if so. Use a background job to delete expired entries periodically rather than checking on every request. For analytics, consider soft-deleting to preserve click count history even after expiration.' },
 ];
 

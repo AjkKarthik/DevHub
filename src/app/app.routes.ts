@@ -2900,7 +2900,12 @@ export const routes: Routes = [
       { path: 'rds-multi-az-db-clusters-apply-here-too', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/subtopics/rds-multi-az-db-clusters-apply-here-too/rds-multi-az-db-clusters-apply-here-too').then(m => m.RdsMultiAzDbClustersApplyHereTooSubtopic) },
       { path: 'why-aurora-global-beats-a-plain-cross-region-replica', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/subtopics/why-aurora-global-beats-a-plain-cross-region-replica/why-aurora-global-beats-a-plain-cross-region-replica').then(m => m.WhyAuroraGlobalBeatsAPlainCrossRegionReplicaSubtopic) },
     ] },
-    { path: 'url-shortener', loadComponent: () => import('./components/architecture/system-design/url-shortener/url-shortener').then(m => m.SysdesignUrlShortener) },
+    { path: 'url-shortener', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/url-shortener/url-shortener').then(m => m.SysdesignUrlShortener) },
+      { path: 'collision-probability-is-near-certain-not-negligible', loadComponent: () => import('./components/architecture/system-design/url-shortener/subtopics/collision-probability-is-near-certain-not-negligible/collision-probability-is-near-certain-not-negligible').then(m => m.CollisionProbabilityIsNearCertainNotNegligibleSubtopic) },
+      { path: 'quiz-answer-was-the-mistakes-blocks-own-anti-pattern', loadComponent: () => import('./components/architecture/system-design/url-shortener/subtopics/quiz-answer-was-the-mistakes-blocks-own-anti-pattern/quiz-answer-was-the-mistakes-blocks-own-anti-pattern').then(m => m.QuizAnswerWasTheMistakesBlocksOwnAntiPatternSubtopic) },
+      { path: 'read-qps-comment-didnt-match-its-own-formula', loadComponent: () => import('./components/architecture/system-design/url-shortener/subtopics/read-qps-comment-didnt-match-its-own-formula/read-qps-comment-didnt-match-its-own-formula').then(m => m.ReadQpsCommentDidntMatchItsOwnFormulaSubtopic) },
+    ] },
     { path: 'social-feed', loadComponent: () => import('./components/architecture/system-design/social-feed/social-feed').then(m => m.SysdesignSocialFeed) },
     { path: 'chat-application', loadComponent: () => import('./components/architecture/system-design/chat-application/chat-application').then(m => m.SysdesignChatApplication) },
     { path: 'search-engine', loadComponent: () => import('./components/architecture/system-design/search-engine/search-engine').then(m => m.SysdesignSearchEngine) },

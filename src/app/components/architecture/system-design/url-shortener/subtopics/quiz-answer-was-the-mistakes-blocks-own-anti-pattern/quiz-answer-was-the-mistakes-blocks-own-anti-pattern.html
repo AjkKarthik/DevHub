@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a URL Shortener" topicRoute="/system-design/url-shortener" subtopicLabel="The Quiz Answer Was the Mistakes Block's Own Anti-Pattern" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Quiz Answer Was the Mistakes Block's Own Anti-Pattern</h1>
+  <p class="page-subtitle">The quiz's "correct" short-code generation answer (auto-increment + Base62) is the exact enumerable technique the page's own "Predictable sequential codes" mistake block warns against. Reconciled with an obfuscation fix.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This reconciles a real contradiction between two sections of the same page. Next: the Challenge solution's own read-QPS comment doesn't match the formula written right above it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a URL Shortener" topicRoute="/system-design/url-shortener"
+    [prev]="{ label: 'The Collision-Probability Formula Is Near-Certain, Not Negligible', route: '/system-design/url-shortener/collision-probability-is-near-certain-not-negligible' }"
+    [next]="{ label: 'The Read-QPS Comment Didn’t Match Its Own Formula', route: '/system-design/url-shortener/read-qps-comment-didnt-match-its-own-formula' }" />
+</div>
