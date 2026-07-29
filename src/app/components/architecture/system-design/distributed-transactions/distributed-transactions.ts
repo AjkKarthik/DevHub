@@ -57,7 +57,7 @@ const theory: TheoryPoint[] = [
       'Networks are unreliable — retries are mandatory. Without idempotency, retries cause duplicate effects.',
       'Idempotency key: client sends a unique ID; server stores the result keyed by ID; duplicates return cached result.',
       'Exactly-once processing: idempotent consumer + at-least-once delivery = effectively-exactly-once.',
-      'Kafka transactions: producer writes to topic + marks offset as committed in a single atomic operation.',
+      'Kafka transactions: for a plain producer, atomically writes records across multiple partitions/topics as one all-or-nothing unit. For the consume-transform-produce pattern specifically, sendOffsetsToTransaction() additionally commits the CONSUMER\'S input offset in the same atomic unit as the produced output — that offset-commit behavior is specific to stream processing, not a feature of every Kafka transaction.',
     ],
   },
   {
@@ -174,8 +174,14 @@ async function relayOutboxEvents(db: DB, kafka: KafkaProducer): Promise<void> {
     language: 'typescript',
     code: `// Idempotency key pattern for payment endpoint
 
-// Client generates a unique key per request attempt
-const idempotencyKey = \`pay-\${orderId}-\${Date.now()}\`;
+// Client generates ONE key per logical operation and REUSES it
+// for every retry of that same operation -- generate it once and
+// store it client-side before the first attempt. Do NOT derive it
+// from the current time (e.g. Date.now()): a retry re-running this
+// line would produce a DIFFERENT key on every attempt, defeating
+// idempotency entirely -- the server would treat each retry as a
+// brand-new request and could double-charge the customer.
+const idempotencyKey = crypto.randomUUID(); // generated once, stored client-side
 
 // Server: check if already processed
 async function processPayment(req: PaymentRequest): Promise<PaymentResult> {
@@ -196,10 +202,11 @@ async function processPayment(req: PaymentRequest): Promise<PaymentResult> {
   return result;
 }
 
-// Client retries on network error — server returns same result
-// POST /payments  { idempotencyKey: "pay-123-1700000000" }
+// Client retries on network error — SAME key on the retry as
+// the original attempt, since it was generated once and reused
+// POST /payments  { idempotencyKey: "8f14e45f-ceea-467e-..." }
 //  → network timeout
-// POST /payments  { idempotencyKey: "pay-123-1700000000" }  (retry)
+// POST /payments  { idempotencyKey: "8f14e45f-ceea-467e-..." }  (retry)
 //  → server returns cached result — no double charge`,
   },
 ];

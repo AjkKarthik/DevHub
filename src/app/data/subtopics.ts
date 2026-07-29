@@ -3051,4 +3051,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'REINDEX CONCURRENTLY Avoids Write Locks, But Isn’t Fully Lock-Free', route: '/system-design/indexes/reindex-concurrently-avoids-write-locks-but-isnt-fully-lock-free' },
     { label: 'The Full Rule Is Equality-Sort-Range, Not Just Equality-Then-Range', route: '/system-design/indexes/the-full-rule-is-equality-sort-range-not-just-equality-then-range' },
   ],
+  'distributed-transactions': [
+    { label: 'The Idempotency Key Example Used Date.now(), Defeating Retries', route: '/system-design/distributed-transactions/the-idempotency-key-example-used-date-now-defeating-retries' },
+    { label: 'Kafka Offset-Committing Is Specific to Consume-Transform-Produce', route: '/system-design/distributed-transactions/kafka-offset-committing-is-specific-to-consume-transform-produce' },
+    { label: 'TCC’s Timeout Recovery Still Needs a Transaction Manager', route: '/system-design/distributed-transactions/tccs-timeout-recovery-still-needs-a-transaction-manager' },
+  ],
 };

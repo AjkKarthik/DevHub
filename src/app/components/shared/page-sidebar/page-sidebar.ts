@@ -42646,6 +42646,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Distributed transactions are expensive enough that good service boundary design (minimizing cross-service transactional needs in the first place) is often a better solution than solving the distributed transaction problem well.',
     ],
   },
+  'system-design/distributed-transactions/the-idempotency-key-example-used-date-now-defeating-retries': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Transactions (overview)', route: '/system-design/distributed-transactions' },
+      { label: 'Load Balancing',                        route: '/system-design/load-balancing' },
+    ],
+    tip: 'Generate an idempotency key ONCE per logical operation and store it before the first attempt — never derive it from anything that changes between retries, like the current timestamp.',
+    gotchas: [
+      'A key that regenerates on every retry looks like it implements idempotency (the field exists, the server checks it) while quietly not delivering the guarantee at all.',
+    ],
+  },
+  'system-design/distributed-transactions/kafka-offset-committing-is-specific-to-consume-transform-produce': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Transactions (overview)', route: '/system-design/distributed-transactions' },
+      { label: 'Replication Strategies',                route: '/system-design/replication' },
+    ],
+    tip: 'sendOffsetsToTransaction() only applies to the consume-transform-produce pattern — a plain producer (like an outbox relay) has no consumer offset in the picture at all.',
+    gotchas: [
+      'The main page\'s own outbox example is a plain-producer case — its atomicity comes from the database transaction, not from Kafka\'s offset-committing feature.',
+    ],
+  },
+  'system-design/distributed-transactions/tccs-timeout-recovery-still-needs-a-transaction-manager': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Transactions (overview)', route: '/system-design/distributed-transactions' },
+      { label: 'High Availability Design',               route: '/system-design/high-availability' },
+    ],
+    tip: 'TCC avoids 2PC\'s specific lock-holding blocking behavior, but a Transaction Manager still coordinates timeout-triggered Cancel calls — coordination doesn\'t disappear, it just changes shape.',
+    gotchas: [
+      'A Try request delayed by network congestion can arrive AFTER Cancel already ran, leaving a participant "suspended" — a real TCC edge case, not something that self-resolves automatically.',
+    ],
+  },
   'system-design/fault-tolerance': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

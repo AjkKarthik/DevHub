@@ -268,7 +268,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/distributed-transactions" routerLinkActive="active"><span class="nl-text">Distributed Transactions</span>@if(p.isDone('sysdesign-distributed-transactions')){<span class="nl-done">✓</span>}@if(d('sysdesign-distributed-transactions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/distributed-transactions" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Distributed Transactions</span>
+        @if(p.isDone('sysdesign-distributed-transactions')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-distributed-transactions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('distributed-transactions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('distributed-transactions')"
+                  (click)="toggleSubtopics('distributed-transactions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('distributed-transactions'); as dtSubs) {
+        @if (isSubtopicsExpanded('distributed-transactions')) {
+          <div class="nav-subtopics">
+            @for (s of dtSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
