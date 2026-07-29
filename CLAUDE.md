@@ -2657,7 +2657,7 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 21 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 22 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
@@ -2666,7 +2666,7 @@ do this same check before any other new hub's first subtopic set:
   `/system-design/fault-tolerance`, `/system-design/distributed-tracing`,
   `/system-design/disaster-recovery`, `/system-design/url-shortener`,
   `/system-design/social-feed`, `/system-design/chat-application`,
-  `/system-design/search-engine`, 2026-07-29) —
+  `/system-design/search-engine`, `/system-design/payment-system`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -3017,6 +3017,39 @@ do this same check before any other new hub's first subtopic set:
   all three main-page fixes confirmed rendering (the E2E fix required both "Reveal Solution" AND
   "View Code" clicks on the Challenge block, matching the established two-step Challenge-solution
   reveal pattern); 860px wrapper confirmed via `getComputedStyle`.
+  **The `payment-system` batch found and fixed THREE more genuine issues, one a self-contained
+  internal contradiction, one an external-verification database-locking gap, and one a
+  same-page anti-pattern the page's own quiz warns about**: the Theory section's own $100
+  payment example stated "Credit: merchant_wallet +$100, Credit: platform_fee +$0" while the
+  SAME page's "Double-Entry Ledger" code sample, for the identical $100 scenario, shows a 97/3
+  split (merchant +$97, platform +$3) — caught by comparing the page's own two worked examples
+  against each other; the original $0 entry also directly violated the ledger schema's own
+  `CONSTRAINT no_zero_amount CHECK (amount != 0)` shown in the same code sample, since the
+  correct way to represent "no fee" is omitting the entry, not zeroing it — fixed the theory
+  prose to the 97/3 split used everywhere else on the page. The transfer Challenge solution
+  sorted account IDs (`[from, to].sort()`) with a comment claiming this "locks accounts in
+  consistent order to prevent deadlock," then ran a bare `WHERE id IN (?, ?) FOR UPDATE` —
+  verified via WebSearch/PostgreSQL mailing-list discussion that a bare `IN()` clause does NOT
+  guarantee the database acquires row locks in the order the values were sorted in application
+  code; the query planner is free to choose any scan order, and for a UUID column that's
+  effectively arbitrary — added `ORDER BY id` to make lock-acquisition order actually
+  deterministic. The SAME Challenge solution's idempotency check
+  (`const existing = await db.query(...); if (existing) return existing;` followed by real work
+  before an eventual INSERT) is the EXACT check-then-act race condition the page's own quiz
+  question 4 explicitly names and warns against ("relies on a database uniqueness constraint...
+  not a naive check-then-act pattern") — money itself was still protected (assuming
+  `transfers.id` is a primary key, the losing INSERT fails and its transaction rolls back), but
+  the losing concurrent request would see an uncaught error instead of the promised idempotent
+  success response; added a try/catch that treats a unique-constraint violation as "lost the
+  race" and re-fetches/returns the winner's result. No `SUBTOPICS` collision for
+  `payment-system` (checked both forms, confirmed collision-free, left bare). Build passed
+  clean. Browser-verified: nav accordion opens with all 3 labels; the theory fix confirmed
+  rendering directly (not collapsed); both Challenge-solution fixes required Reveal Solution +
+  clicking the SOLUTION's own separate "▼ View Code" toggle specifically — the Challenge block
+  has TWO such toggles (one for the collapsed starterCode, one for the solution, both with
+  identical button text), and a naive `find()` on button text hits the FIRST (starterCode's) one,
+  not necessarily the solution's — querying and clicking ALL matching toggles is the reliable
+  approach; 860px wrapper confirmed via `getComputedStyle`.
   **The `search-engine` batch found and fixed TWO more genuine issues, one purely self-contained
   arithmetic and one requiring external verification, plus a gap-closing addition**: the
   Challenge solution's own worked example stated "500M docs, 30 primary shards -- each ~33M

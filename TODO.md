@@ -6691,7 +6691,22 @@ off here with a date.
   Solution + the solution's own separate View Code toggle; QnA fix needed the QnA section toggle +
   specific question click); 860px wrapper confirmed via `getComputedStyle`. **System Design hub
   Phase 10: 21 of 24 topics complete.**
-- [ ] `/system-design/payment-system` — Design: Payment System
+- [x] `/system-design/payment-system` — Design: Payment System (2026-07-29) — 3 subtopics: (1)
+  **Ledger Worked Example's Fee Split Contradicted the Code Sample**, a self-contained internal
+  contradiction — Theory's own $100 example gave merchant +$100/platform +$0, contradicting the
+  code sample's own 97/3 split for the same scenario; the $0 entry also violated the schema's own
+  `no_zero_amount` CHECK constraint; (2) **Sorting IDs Doesn't Guarantee Lock Order Without ORDER
+  BY**, a WebSearch-verified database-locking gap — sorting IDs in app code before `WHERE id IN()
+  FOR UPDATE` doesn't guarantee the DB locks rows in that order; added `ORDER BY id`; (3) **The
+  Transfer Solution Used the Race Condition Its Own Quiz Warns About** — the Challenge's
+  idempotency check used the exact check-then-act anti-pattern the page's own Quiz Q4 explicitly
+  warns against; added a try/catch treating a unique-constraint violation as "lost the race."
+  `payment-system` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified:
+  nav accordion opens with all 3 labels; theory fix confirmed directly; both Challenge-solution
+  fixes needed Reveal Solution + the SOLUTION's own separate View Code toggle (two identical
+  toggles exist — starterCode's and solution's — querying all matches is the reliable approach);
+  860px wrapper confirmed via `getComputedStyle`. **System Design hub Phase 10: 22 of 24 topics
+  complete.**
 - [ ] `/system-design/video-streaming` — Design: Video Streaming
 - [ ] `/system-design/ai-ml-system-design` — Design: AI/ML Systems
 
