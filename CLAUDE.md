@@ -2657,8 +2657,8 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 2 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
-  capacity-estimation`, 2026-07-29) —
+  Phase 10: 3 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  capacity-estimation`, `/system-design/cap-theorem`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2684,6 +2684,17 @@ do this same check before any other new hub's first subtopic set:
   rule, when vendors use decimal ×1,000 while only OS/software use binary ×1,024, a gap
   (well-documented, e.g. a "1TB" drive showing as "~931GB" in an OS) that grows from ~2.4% at KB
   scale to ~7.4% at GB/TB scale — exactly the range system design estimates operate in.
+  **The `cap-theorem` batch found and fixed a genuine self-contained quiz-design flaw, tightened
+  an incomplete consistency-model definition, and added a gap-closing history subtopic**: the
+  page's own quorum quiz named W=2,R=2 as the sole correct answer to "which settings guarantee
+  strong consistency" while one of its own "wrong" options, W=3,R=3, ALSO satisfies the page's own
+  stated W+R>N formula (6>3) — fixed by swapping it for a genuinely-wrong option (W=1,R=2, sum 3);
+  the one-line definition "sequential consistency: writes appear in order" omitted the exact
+  property (ALL operations, ALL processes, ONE agreed-upon order) that distinguishes it from
+  causal consistency directly above it on the same spectrum — tightened to the complete
+  definition; and a gap-closing subtopic named Gilbert & Lynch's 2002 formal proof (with its
+  specific asynchronous-network, atomic-consistency conditions), which the main page's "Brewer's
+  theorem (2000)" attribution never mentioned at all.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

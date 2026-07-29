@@ -6363,7 +6363,26 @@ off here with a date.
   confirmed absent from the main page, corrected text confirmed present, via direct DOM text
   search; nav accordion auto-expand confirmed all 3 links on direct subtopic-URL navigation;
   860px wrapper max-width confirmed via `getComputedStyle`.
-- [ ] `/system-design/cap-theorem` — CAP & PACELC Theorems
+- [x] `/system-design/cap-theorem` — CAP & PACELC Theorems (2026-07-29) — 3 subtopics: (1) **The
+  Quorum Quiz Had a Second Technically-Correct Answer**, fixing a self-contained quiz-design flaw
+  requiring zero external research — the page's own quiz named W=2,R=2 as the sole correct answer
+  to "which settings guarantee strong consistency," but one of its own "wrong" options (W=3,R=3)
+  ALSO satisfies the page's own stated W+R>N formula (6>3); fixed by replacing it with a
+  genuinely-wrong option (W=1,R=2, sum 3); (2) **Sequential Consistency Orders ALL Operations, Not
+  Just Writes**, tightening an incomplete definition — "writes appear in order" omitted the exact
+  property (ALL operations, ALL processes, ONE agreed-upon order) that separates sequential from
+  causal consistency directly above it on the same spectrum; (3) **Brewer Conjectured CAP in
+  2000 — Gilbert & Lynch Proved It in 2002**, a gap-closing addition naming the actual formal proof
+  (with its specific asynchronous-network, atomic-consistency conditions) behind "Brewer's theorem
+  (2000)," which the main page never mentioned. Gotcha sweep (backtick parity 2/2/2 all even, bare
+  `@word`/double-quote-in-label/over-escaped `\"`/bare-`{`-in-prose all clean) passed. Caught and
+  fixed one own mistake before build: used HTML-entity `&amp;` inside a bound `[next]` attribute's
+  JS string value (should be a plain `&`, since entities only decode in parsed text content, not
+  JS string literals inside property bindings). `cap-theorem` SUBTOPICS key confirmed
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion auto-expand
+  confirmed all 3 links on direct subtopic-URL navigation; both main-page fixes (old "W=3, R=3"
+  and "writes appear in order" confirmed absent, new corrected text confirmed present) verified
+  via direct DOM text search; 860px wrapper max-width confirmed via `getComputedStyle`.
 - [ ] `/system-design/networking` — Networking Fundamentals
 - [ ] `/system-design/scaling` — Horizontal vs Vertical Scaling
 - [ ] `/system-design/load-balancing` — Load Balancing
