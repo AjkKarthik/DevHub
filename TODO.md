@@ -6402,7 +6402,26 @@ off here with a date.
   interpolation). Build passed clean. Browser-verified: nav accordion auto-expand confirmed all 3
   links on direct subtopic-URL navigation (collision-resolved key working correctly); 860px
   wrapper max-width confirmed via `getComputedStyle`.
-- [ ] `/system-design/scaling` — Horizontal vs Vertical Scaling
+- [x] `/system-design/scaling` — Horizontal vs Vertical Scaling (2026-07-29) — 3 subtopics: (1)
+  **The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current**, correcting a deprecated
+  vendor figure — the page cited u-24tb1.metal (448 vCPU, 24 TB) as the vertical-scaling ceiling,
+  verified via AWS's own docs that this instance type is no longer available for new launches; the
+  current largest is u7in-32tb.224xlarge (896 vCPU, 32 TiB); (2) **Gustafson's Law Is Amdahl's
+  Optimistic Counterpart**, a gap-closing addition — the page states Amdahl's pessimistic
+  fixed-problem-size speedup ceiling without noting it assumes strong scaling; added Gustafson's
+  Law (weak scaling, problem size grows WITH the processors), which is what most horizontal
+  scaling for user/data growth actually is; (3) **Firecracker MicroVMs Boot in ~125ms, Not
+  Minutes**, a gap-closing addition — the page's autoscaling QnA covers VM (2-5min) and container
+  (30-60s) cold starts but omits serverless/Firecracker's ~125ms option, which changes the
+  pre-warming calculus. Gotcha sweep (backtick parity 2/2/2 all even, bare `@word`/
+  double-quote-in-label/over-escaped `\"` all clean) passed. `scaling` SUBTOPICS key confirmed
+  collision-free, left bare. Build passed clean. **Hit and resolved a stale `ng serve` dev-server
+  chunk** for the main-page fix — the production build was correct but the live preview served
+  the old "448 vCPU" text until a forced fresh file-write triggered recompilation (confirmed via
+  `preview_logs` showing a fresh `scaling` chunk rebuild). Browser-verified after the fix: nav
+  accordion auto-expand confirmed all 3 links on direct subtopic-URL navigation; old wrong phrasing
+  confirmed absent and "896 vCPU" confirmed present via direct DOM text search; 860px wrapper
+  max-width confirmed via `getComputedStyle`.
 - [ ] `/system-design/load-balancing` — Load Balancing
 - [ ] `/system-design/caching` — Caching Strategies
 - [ ] `/system-design/cdn` — Content Delivery Networks

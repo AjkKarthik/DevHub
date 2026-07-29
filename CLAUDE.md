@@ -2657,8 +2657,9 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 4 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
-  capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`, 2026-07-29) —
+  Phase 10: 5 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
+  `/system-design/scaling`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2709,6 +2710,18 @@ do this same check before any other new hub's first subtopic set:
   hub-prefixed to `sysdesign-networking`, matching the hub's own existing progress/search key
   prefix (this key was ALREADY `sysdesign-`-prefixed for progress/search purposes before this
   batch, independent of the subtopics collision, so no separate mismatch to reconcile).
+  **The `scaling` batch found and fixed one real inaccuracy plus two gap-closing additions**: the
+  page cited a deprecated AWS instance (u-24tb1.metal, 448 vCPU/24TB) as the vertical-scaling
+  ceiling — verified via AWS's own docs that this type is no longer available for new launches,
+  the current largest is u7in-32tb.224xlarge (896 vCPU/32TiB); a gap-closing subtopic added
+  Gustafson's Law as the counterpart to Amdahl's Law (fixed-problem-size pessimistic ceiling vs.
+  problem-size-grows-with-resources, which is what most horizontal scaling for user/data growth
+  actually is); and a second gap-closing subtopic added Firecracker microVM cold-start times
+  (~125ms) as a third elastic-compute option the page's VM (2-5min) / container (30-60s)
+  cold-start figures never mentioned. Hit and resolved a stale `ng serve` dev-server chunk for the
+  main-page fix during browser verification (forced a fresh file-write to trigger recompilation —
+  the production build itself was correct throughout, confirming this is a preview-tooling
+  artifact, not a real defect).
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
