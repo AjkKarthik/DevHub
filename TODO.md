@@ -6612,7 +6612,21 @@ off here with a date.
   navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
   corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
   via `getComputedStyle`. **System Design hub Phase 10: 16 of 24 topics complete.**
-- [ ] `/system-design/disaster-recovery` — Disaster Recovery
+- [x] `/system-design/disaster-recovery` — Disaster Recovery (2026-07-29) — 3 subtopics: (1)
+  **RDS PITR's 5-Minute Window Claim Confuses Granularity With Recency**, fixing a self-
+  contradiction — the theory said "restore to any 5-min window" while the page's own Challenge
+  solution assumed 30-second precision; verified against AWS docs (LatestRestorableTime is a
+  recency lag, not restore granularity) and fixed both; (2) **RDS Multi-AZ DB Clusters Apply Here
+  Too**, cross-referencing this hub's own already-verified High Availability fact (under-35s
+  failover) to this page's own AZ-failure Challenge scenario; (3) **Why Aurora Global Beats a
+  Plain Cross-Region Replica**, explaining the mechanical reason (dedicated storage-based
+  replication vs. logical WAL replication) behind the page's two unexplained RPO figures.
+  `disaster-recovery` SUBTOPICS key collision-free, left bare. Self-caught and fixed an over-
+  escaped backslash before build. Build passed clean. Browser-verified: nav accordion auto-expand
+  confirmed all 3 links on direct subtopic-URL navigation with the toggle showing its open state;
+  old wrong phrasing confirmed absent and corrected text confirmed present via direct DOM text
+  search (after Reveal Solution + View Code); 860px wrapper max-width confirmed via
+  `getComputedStyle`. **System Design hub Phase 10: 17 of 24 topics complete.**
 - [ ] `/system-design/url-shortener` — Design: URL Shortener
 - [ ] `/system-design/social-feed` — Design: Social Feed
 - [ ] `/system-design/chat-application` — Design: Chat Application

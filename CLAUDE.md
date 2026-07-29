@@ -2657,13 +2657,14 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 16 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 17 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
   `/system-design/replication`, `/system-design/indexes`,
   `/system-design/distributed-transactions`, `/system-design/high-availability`,
-  `/system-design/fault-tolerance`, `/system-design/distributed-tracing`, 2026-07-29) —
+  `/system-design/fault-tolerance`, `/system-design/distributed-tracing`,
+  `/system-design/disaster-recovery`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2925,6 +2926,25 @@ do this same check before any other new hub's first subtopic set:
   ROUTE at a different parent path, which is not a SUBTOPICS-map collision). Build passed clean.
   Hit a cold dev-server start during verification (confirmed via `curl`-polling rather than a
   fixed sleep) — otherwise no incidents.
+  **The `disaster-recovery` batch found and fixed a genuine self-contradicting claim, plus a
+  cross-topic and a mechanism-explaining addition**: the theory section's "restore to any 5-min
+  window" PITR claim directly contradicted the page's OWN Challenge solution, which describes
+  restoring "to 30 seconds before the DELETE" and states "< 30 seconds (PITR granularity)" —
+  verified against AWS's own docs that the real distinction is LatestRestorableTime (a ~5-minute
+  RECENCY lag on how close to now you can restore) versus actual restore GRANULARITY (any second,
+  via continuously archived transaction logs) — fixed both the theory bullet and the Challenge
+  solution's own phrasing to state this correctly. A gap-closing subtopic cross-referenced this
+  hub's own already-verified High Availability fact (RDS Multi-AZ DB Cluster's under-35-second
+  failover) to this page's own AZ-failure Challenge scenario, which still assumed the traditional
+  60-120s Multi-AZ instance figure. A second gap-closing subtopic explained WHY the page's two
+  different cross-region RPO figures (Aurora Global's <1s vs. a plain read replica's <1min) differ
+  by over 60x — verified via AWS's own docs that Aurora Global Database uses dedicated, storage-
+  based replication infrastructure below the engine layer, fundamentally different from a plain
+  replica's logical WAL replication, a mechanical reason the page states both figures but never
+  explains. No `SUBTOPICS` collision for `disaster-recovery` (checked both forms, confirmed
+  collision-free, left bare). Self-caught and fixed an over-escaped `\\'` inside a backtick-
+  delimited `code:` field before build (removed the unnecessary escaping — backticks never need
+  apostrophe-escaping). Build passed clean.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
