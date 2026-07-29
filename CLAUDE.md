@@ -2657,11 +2657,11 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 10 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 11 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
-  2026-07-29) —
+  `/system-design/replication`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2796,6 +2796,20 @@ do this same check before any other new hub's first subtopic set:
   contradicted or under-qualified itself across different sections) combined with external
   verification, not corrections of an isolated wrong fact. No `SUBTOPICS` collision for
   `sql-vs-nosql` (checked both forms, confirmed collision-free, left bare). Build passed clean.
+  **The `replication` batch found and fixed THREE precision issues, one of them a genuine
+  self-contradiction requiring zero external research to catch**: the theory section's
+  `synchronous_standby_names = 1` example directly contradicted the SAME page's own later, correct
+  example (`synchronous_standby_names = 'replica1'` in the "Using async replication for financial
+  data" mistake block) — verified against PostgreSQL's own docs that a bare number is not valid
+  syntax at all (the setting takes a quoted name or FIRST/ANY num (...) forms) and fixed the theory
+  bullet; the quorum formula's "W=2, R=2 → strongly consistent" was tightened to note the
+  well-documented Kleppmann-style caveats (sloppy quorums, concurrent writes, racing reads can all
+  break the overlap guarantee even when W+R>N holds numerically); and the "DynamoDB (by default
+  eventual, tunable to quorum)" grouping alongside Cassandra/Riak was corrected — verified that
+  DynamoDB offers only a binary eventually-vs-strongly-consistent READ choice with no numeric W/R
+  parameter at all, a genuinely different (simpler) model from Cassandra's continuous tunable
+  knob. No `SUBTOPICS` collision for `replication` (checked both forms, confirmed collision-free,
+  left bare). Build passed clean.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

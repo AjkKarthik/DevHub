@@ -6513,7 +6513,20 @@ off here with a date.
   DOM text search (after expanding the collapsed QnA question for the MongoDB fix); 860px wrapper
   max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 10 of 24 topics
   complete.**
-- [ ] `/system-design/replication` — Replication Strategies
+- [x] `/system-design/replication` — Replication Strategies (2026-07-29) — 3 subtopics: (1)
+  **PostgreSQL's synchronous_standby_names Needs a Quoted Name**, correcting the theory section's
+  invalid `= 1` example (contradicted the page's own later correct `= 'replica1'` example, caught
+  via a self-contained cross-check, fix verified against PostgreSQL's own docs); (2) **Quorum
+  (W+R > N) Guarantees Overlap, Not True Linearizability**, tightening the "strongly consistent"
+  claim with the well-documented sloppy-quorum/concurrent-write/racing-read caveats; (3)
+  **DynamoDB Isn't Tunable Like Cassandra — It's a Binary Choice**, correcting the page's grouping
+  of DynamoDB with Cassandra's tunable quorum model — verified DynamoDB offers only a binary
+  eventually-vs-strongly-consistent read choice. `replication` SUBTOPICS key collision-free, left
+  bare. Build passed clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on
+  direct subtopic-URL navigation with the toggle showing its open state; old wrong phrasing
+  confirmed absent and corrected text confirmed present via direct DOM text search; 860px wrapper
+  max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 11 of 24 topics
+  complete.**
 - [ ] `/system-design/indexes` — Indexes & Query Optimisation
 - [ ] `/system-design/distributed-transactions` — Distributed Transactions
 - [ ] `/system-design/high-availability` — High Availability
