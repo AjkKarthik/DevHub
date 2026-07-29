@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Payment System" topicRoute="/system-design/payment-system" subtopicLabel="The Transfer Solution Used the Race Condition Its Own Quiz Warns About" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Transfer Solution Used the Race Condition Its Own Quiz Warns About</h1>
+  <p class="page-subtitle">The Challenge's transfer solution checked for an existing transfer with a bare SELECT, then did real work before inserting — exactly the check-then-act idempotency race the page's own quiz question explicitly warns against.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the ledger example, the lock ordering, and the transfer solution's idempotency handling all corrected, the payment system's design holds together consistently across its own theory, code samples, and Challenge. Next up in Real-World Systems: designing Netflix/YouTube, where the core challenges — video encoding, CDN delivery, adaptive bitrate streaming — look very different from the correctness-first world of payments.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Payment System" topicRoute="/system-design/payment-system"
+    [prev]="{ label: 'Sorting IDs Doesn’t Guarantee Lock Order Without ORDER BY', route: '/system-design/payment-system/for-update-needs-order-by' }" />
+</div>

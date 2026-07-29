@@ -2924,7 +2924,12 @@ export const routes: Routes = [
       { path: 'es-default-shard-count-stale', loadComponent: () => import('./components/architecture/system-design/search-engine/subtopics/es-default-shard-count-stale/es-default-shard-count-stale').then(m => m.ElasticsearchDefaultShardCountIs1Not5Subtopic) },
       { path: 'split-api-faster-than-reindex', loadComponent: () => import('./components/architecture/system-design/search-engine/subtopics/split-api-faster-than-reindex/split-api-faster-than-reindex').then(m => m.SplitApiResizesShardsWithoutAFullReindexSubtopic) },
     ] },
-    { path: 'payment-system', loadComponent: () => import('./components/architecture/system-design/payment-system/payment-system').then(m => m.SysdesignPaymentSystem) },
+    { path: 'payment-system', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/payment-system/payment-system').then(m => m.SysdesignPaymentSystem) },
+      { path: 'ledger-example-fee-mismatch', loadComponent: () => import('./components/architecture/system-design/payment-system/subtopics/ledger-example-fee-mismatch/ledger-example-fee-mismatch').then(m => m.LedgerExampleFeeMismatchSubtopic) },
+      { path: 'for-update-needs-order-by', loadComponent: () => import('./components/architecture/system-design/payment-system/subtopics/for-update-needs-order-by/for-update-needs-order-by').then(m => m.SortingIdsDoesntGuaranteeLockOrderWithoutOrderBySubtopic) },
+      { path: 'transfer-idempotency-check-then-act', loadComponent: () => import('./components/architecture/system-design/payment-system/subtopics/transfer-idempotency-check-then-act/transfer-idempotency-check-then-act').then(m => m.TransferSolutionUsedTheRaceConditionItsOwnQuizWarnsAboutSubtopic) },
+    ] },
     { path: 'video-streaming', loadComponent: () => import('./components/architecture/system-design/video-streaming/video-streaming').then(m => m.SysdesignVideoStreaming) },
     { path: 'ai-ml-system-design', loadComponent: () => import('./components/architecture/system-design/ai-ml-system-design/ai-ml-system-design').then(m => m.SysdesignAiMl) },
     { path: 'cheatsheet', loadComponent: () => import('./components/architecture/system-design/cheatsheet/cheatsheet').then(m => m.SysdesignCheatsheet) },

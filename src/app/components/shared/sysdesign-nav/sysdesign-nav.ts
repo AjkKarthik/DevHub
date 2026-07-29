@@ -456,7 +456,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/payment-system" routerLinkActive="active"><span class="nl-text">Design a Payment System</span>@if(p.isDone('sysdesign-payment-system')){<span class="nl-done">✓</span>}@if(d('sysdesign-payment-system');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/payment-system" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Design a Payment System</span>
+        @if(p.isDone('sysdesign-payment-system')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-payment-system');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('payment-system')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('payment-system')"
+                  (click)="toggleSubtopics('payment-system', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('payment-system'); as psSubs) {
+        @if (isSubtopicsExpanded('payment-system')) {
+          <div class="nav-subtopics">
+            @for (s of psSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/video-streaming" routerLinkActive="active"><span class="nl-text">Design Netflix / YouTube</span>@if(p.isDone('sysdesign-video-streaming')){<span class="nl-done">✓</span>}@if(d('sysdesign-video-streaming');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/ai-ml-system-design" routerLinkActive="active"><span class="nl-text">AI/ML System Design</span>@if(p.isDone('sysdesign-ai-ml-system-design')){<span class="nl-done">✓</span>}@if(d('sysdesign-ai-ml-system-design');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

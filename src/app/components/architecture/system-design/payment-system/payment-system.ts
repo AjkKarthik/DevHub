@@ -36,7 +36,7 @@ const theory: TheoryPoint[] = [
     heading: 'Double-entry ledger',
     points: [
       'Every transaction has two entries: debit one account, credit another. Sum of all entries = 0.',
-      'Example: user pays $100 → Debit: user_wallet -$100, Credit: merchant_wallet +$100, Credit: platform_fee +$0.',
+      'Example: user pays $100 with a 3% platform fee → Debit: user_wallet -$100, Credit: merchant_wallet +$97, Credit: platform_fee +$3.',
       'Ledger entries are immutable — never update or delete. Corrections via new reversal entries.',
       'Balance query: SELECT SUM(amount) FROM ledger WHERE account_id = ? — always consistent.',
     ],
@@ -318,16 +318,41 @@ Challenges:
   amount: number,
   transferId: string  // idempotency key
 ): Promise<TransferResult> {
-  // 1. Idempotency check
+  // 1. Idempotency check -- this SELECT alone is NOT the atomic claim; it's
+  // just a fast path to skip a duplicate before doing any work. The REAL
+  // guarantee against a double-transfer comes from transfers.id being a
+  // UNIQUE/PRIMARY KEY constraint below, combined with the try/catch --
+  // two concurrent requests can both pass this check (neither has written
+  // yet), which is exactly the check-then-act race this page's own quiz
+  // warns about; the constraint + catch is what actually closes it.
   const existing = await db.query('SELECT * FROM transfers WHERE id = ?', [transferId]);
   if (existing) return existing;
 
+  try {
+    return await runTransfer();
+  } catch (err) {
+    if (isUniqueViolation(err, 'transfers.id')) {
+      // Lost the race: another instance already committed this transferId.
+      // Return ITS result instead of surfacing an error -- this is what
+      // makes the function idempotent from the caller's point of view.
+      return await db.query('SELECT * FROM transfers WHERE id = ?', [transferId]);
+    }
+    throw err;
+  }
+
   // 2. Atomic transfer using DB transaction with row-level locking
+  async function runTransfer(): Promise<TransferResult> {
   return await db.transaction(async tx => {
-    // Lock BOTH accounts in consistent order (lower ID first) to prevent deadlock
+    // Lock BOTH accounts in consistent order (lower ID first) to prevent
+    // deadlock -- sorting the IDs alone is NOT enough: without an explicit
+    // ORDER BY in the query, the DB is free to lock rows in whatever order
+    // its query plan returns them (e.g. index scan order for a UUID column
+    // is effectively arbitrary), so two concurrent transfers touching the
+    // same two accounts could still lock them in opposite orders and
+    // deadlock. ORDER BY id makes the lock acquisition order deterministic.
     const [accountA, accountB] = [from, to].sort();
     const accounts = await tx.query(\`
-      SELECT id, balance FROM accounts WHERE id IN (?, ?) FOR UPDATE
+      SELECT id, balance FROM accounts WHERE id IN (?, ?) ORDER BY id FOR UPDATE
     \`, [accountA, accountB]);
 
     const sender = accounts.find(a => a.id === from);
@@ -354,6 +379,7 @@ Challenges:
     return result;
   });
   // If tx fails: both ledger entries rolled back — A not debited, B not credited
+  }
 }`,
 };
 

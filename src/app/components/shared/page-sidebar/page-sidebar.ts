@@ -43139,6 +43139,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A payment system needs a reliable audit trail (every state transition logged immutably) for both debugging and regulatory/compliance requirements — this is a hard requirement, not an optional nicety.',
     ],
   },
+  'system-design/payment-system/ledger-example-fee-mismatch': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a Payment System (overview)', route: '/system-design/payment-system' },
+      { label: 'Sorting IDs Doesn’t Guarantee Lock Order Without ORDER BY', route: '/system-design/payment-system/for-update-needs-order-by' },
+    ],
+    tip: 'When a page shows the same scenario twice (once in prose, once in code), check that both use the exact same numbers — a mismatch usually means one of them is stale relative to the other.',
+    gotchas: [
+      'A ledger entry with amount = 0 isn\'t just unusual — most real ledger schemas reject it outright via a CHECK constraint; represent "no fee" by omitting the entry, not zeroing it.',
+    ],
+  },
+  'system-design/payment-system/for-update-needs-order-by': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Ledger Worked Example’s Fee Split Contradicted the Code Sample', route: '/system-design/payment-system/ledger-example-fee-mismatch' },
+      { label: 'The Transfer Solution Used the Race Condition Its Own Quiz Warns About', route: '/system-design/payment-system/transfer-idempotency-check-then-act' },
+    ],
+    tip: 'Sorting IDs in application code before a SELECT ... FOR UPDATE only controls the query\'s input — the database still needs an explicit ORDER BY to guarantee it locks the matching rows in that same order.',
+    gotchas: [
+      'This is the classic "lock resources in a consistent order to prevent deadlock" pattern — it only works if the consistent order actually holds at the layer doing the locking, not just in application code.',
+    ],
+  },
+  'system-design/payment-system/transfer-idempotency-check-then-act': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sorting IDs Doesn’t Guarantee Lock Order Without ORDER BY', route: '/system-design/payment-system/for-update-needs-order-by' },
+      { label: 'Design a Payment System (overview)', route: '/system-design/payment-system' },
+    ],
+    tip: 'A bare "check if it exists, then insert later" idempotency pattern is unsafe unless a unique constraint AND a catch-and-return-the-winner\'s-result step back it up — a plain SELECT-then-INSERT can let a losing concurrent request see an error instead of the expected success response.',
+    gotchas: [
+      'Money-safety (no duplicate charge) and correct idempotent behavior (retry returns the same success response) are two separate properties — a unique constraint alone guarantees the first but not the second.',
+    ],
+  },
   'system-design/video-streaming': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

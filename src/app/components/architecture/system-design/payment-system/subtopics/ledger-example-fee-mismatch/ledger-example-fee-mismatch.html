@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Payment System" topicRoute="/system-design/payment-system" subtopicLabel="Ledger Worked Example's Fee Split Contradicted the Code Sample" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Ledger Worked Example's Fee Split Contradicted the Code Sample</h1>
+  <p class="page-subtitle">The Theory section's $100 payment example gave the merchant the full $100 with a $0 platform fee — the page's own code sample, for the same scenario, shows a 97/3 split, and the $0 entry would fail the page's own schema constraint.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the ledger examples now consistent, the next issue is in the Challenge's own transfer solution — a lock-ordering comment that isn't actually enforced by the query as written.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Payment System" topicRoute="/system-design/payment-system"
+    [next]="{ label: 'Sorting IDs Doesn’t Guarantee Lock Order Without ORDER BY', route: '/system-design/payment-system/for-update-needs-order-by' }" />
+</div>
