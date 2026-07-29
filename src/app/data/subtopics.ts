@@ -3091,4 +3091,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' },
     { label: 'E2E Encryption Hint Skipped the Double Ratchet', route: '/system-design/chat-application/e2e-encryption-hint-skipped-the-double-ratchet' },
   ],
+  'search-engine': [
+    { label: '30 Shards Doesn’t Divide to 33M Docs Per Shard', route: '/system-design/search-engine/shard-doc-count-mismatch' },
+    { label: 'Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0', route: '/system-design/search-engine/es-default-shard-count-stale' },
+    { label: 'The Split API Resizes Shards Without a Full Reindex', route: '/system-design/search-engine/split-api-faster-than-reindex' },
+  ],
 };

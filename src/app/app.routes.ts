@@ -2918,7 +2918,12 @@ export const routes: Routes = [
       { path: 'exactly-once-contradicts-at-least-once-theory', loadComponent: () => import('./components/architecture/system-design/chat-application/subtopics/exactly-once-vs-at-least-once/exactly-once-vs-at-least-once').then(m => m.ExactlyOnceContradictsPagesOwnAtLeastOnceTheorySubtopic) },
       { path: 'e2e-encryption-hint-skipped-the-double-ratchet', loadComponent: () => import('./components/architecture/system-design/chat-application/subtopics/e2e-encryption-hint-skipped-the-double-ratchet/e2e-encryption-hint-skipped-the-double-ratchet').then(m => m.E2eEncryptionHintSkippedTheDoubleRatchetSubtopic) },
     ] },
-    { path: 'search-engine', loadComponent: () => import('./components/architecture/system-design/search-engine/search-engine').then(m => m.SysdesignSearchEngine) },
+    { path: 'search-engine', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/search-engine/search-engine').then(m => m.SysdesignSearchEngine) },
+      { path: 'shard-doc-count-mismatch', loadComponent: () => import('./components/architecture/system-design/search-engine/subtopics/shard-doc-count-mismatch/shard-doc-count-mismatch').then(m => m.ThirtyShardsDoesntDivideTo33mDocsPerShardSubtopic) },
+      { path: 'es-default-shard-count-stale', loadComponent: () => import('./components/architecture/system-design/search-engine/subtopics/es-default-shard-count-stale/es-default-shard-count-stale').then(m => m.ElasticsearchDefaultShardCountIs1Not5Subtopic) },
+      { path: 'split-api-faster-than-reindex', loadComponent: () => import('./components/architecture/system-design/search-engine/subtopics/split-api-faster-than-reindex/split-api-faster-than-reindex').then(m => m.SplitApiResizesShardsWithoutAFullReindexSubtopic) },
+    ] },
     { path: 'payment-system', loadComponent: () => import('./components/architecture/system-design/payment-system/payment-system').then(m => m.SysdesignPaymentSystem) },
     { path: 'video-streaming', loadComponent: () => import('./components/architecture/system-design/video-streaming/video-streaming').then(m => m.SysdesignVideoStreaming) },
     { path: 'ai-ml-system-design', loadComponent: () => import('./components/architecture/system-design/ai-ml-system-design/ai-ml-system-design').then(m => m.SysdesignAiMl) },

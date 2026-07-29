@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Search Engine" topicRoute="/system-design/search-engine" subtopicLabel="The Split API Resizes Shards Without a Full Reindex" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Split API Resizes Shards Without a Full Reindex</h1>
+  <p class="page-subtitle">The page's Q&amp;A describes changing shard count via the Reindex API — verified that Elasticsearch's Split API is a faster alternative for increasing shard count, since it reroutes existing shard data instead of copying every document.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the shard-sizing arithmetic, the stale default, and the faster resize path all covered, the search engine's Elasticsearch design questions now hold up to closer scrutiny. Next up in Real-World Systems: designing a payment system, where correctness and consistency guarantees take priority over the read-heavy scaling patterns search engines optimize for.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Search Engine" topicRoute="/system-design/search-engine"
+    [prev]="{ label: 'Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0', route: '/system-design/search-engine/es-default-shard-count-stale' }" />
+</div>

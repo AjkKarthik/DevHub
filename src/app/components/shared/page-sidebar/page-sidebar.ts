@@ -43095,6 +43095,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Index updates for frequently-changing content require a strategy (near-real-time indexing vs. batch reindexing) with real tradeoffs in freshness versus system load.',
     ],
   },
+  'system-design/search-engine/shard-doc-count-mismatch': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a Search Engine (overview)', route: '/system-design/search-engine' },
+      { label: 'Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0', route: '/system-design/search-engine/es-default-shard-count-stale' },
+    ],
+    tip: 'Any worked example with two totals (a document count AND a storage size) that share a shard count is worth dividing BOTH ways separately — a figure derived from one can easily get mislabeled as the other.',
+    gotchas: [
+      'A document-count-per-shard figure that\'s off by ~2x can propagate an inaccurate assumption into downstream memory/latency reasoning if not checked against the page\'s own stated totals.',
+    ],
+  },
+  'system-design/search-engine/es-default-shard-count-stale': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: '30 Shards Doesn’t Divide to 33M Docs Per Shard', route: '/system-design/search-engine/shard-doc-count-mismatch' },
+      { label: 'The Split API Resizes Shards Without a Full Reindex', route: '/system-design/search-engine/split-api-faster-than-reindex' },
+    ],
+    tip: 'The default primary shard count changed from 5 to 1 in Elasticsearch 7.0 (2019) — but the more durable lesson is that a real index should always set shard count explicitly rather than relying on any default.',
+    gotchas: [
+      'Version-specific technical defaults are a common source of stale interview/tutorial material — a fact that was true for years can silently become outdated as the underlying software changes.',
+    ],
+  },
+  'system-design/search-engine/split-api-faster-than-reindex': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Elasticsearch’s Default Shard Count Has Been 1, Not 5, Since 7.0', route: '/system-design/search-engine/es-default-shard-count-stale' },
+      { label: 'Design a Search Engine (overview)', route: '/system-design/search-engine' },
+    ],
+    tip: 'The Split API can increase primary shard count by rerouting existing shard data instead of a full document copy — but only when the target count is a valid multiple of the source\'s current shard count.',
+    gotchas: [
+      'Split requires the source index to be read-only first, and cannot reduce shard count or change mappings/analyzers — Reindex is still needed for those cases.',
+    ],
+  },
   'system-design/payment-system': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
