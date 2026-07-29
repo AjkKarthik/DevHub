@@ -2657,14 +2657,15 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 18 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 19 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
   `/system-design/replication`, `/system-design/indexes`,
   `/system-design/distributed-transactions`, `/system-design/high-availability`,
   `/system-design/fault-tolerance`, `/system-design/distributed-tracing`,
-  `/system-design/disaster-recovery`, `/system-design/url-shortener`, 2026-07-29) —
+  `/system-design/disaster-recovery`, `/system-design/url-shortener`,
+  `/system-design/social-feed`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2963,6 +2964,26 @@ do this same check before any other new hub's first subtopic set:
   `readQps`, the downstream DB-reads line, and the matching Challenge hint (which had made the
   same "spread over lifetime" mistake even more severely). No `SUBTOPICS` collision for
   `url-shortener` (checked both forms, confirmed collision-free, left bare). Build passed clean.
+  **The `social-feed` batch found and fixed THREE more genuine issues, two via external
+  verification and one purely self-contained**: the "Scale & Storage" Redis feed-memory estimate
+  ("500M users × 1000 posts × 8 bytes = 4 TB") counted only the post_id payload, ignoring that
+  Redis sorted sets store every member in BOTH a hash table and a skip list once past the
+  128-entry listpack threshold — verified via WebSearch that the real per-entry cost at this list
+  length (feeds trimmed to 1,000 entries, 8x past the threshold) is roughly 100-136+ bytes, not 8,
+  making the real total ~65 TB, not 4 TB (~16x); the same code sample's read-QPS line used "500M
+  active" users while the page's OWN Challenge description states "500M registered users, 100M
+  daily active" — a self-contained 5x overcount caught by comparing the page's two population
+  figures against each other, corrected the read-QPS estimate to use the 100M DAU figure
+  (~5,800 reads/sec, not ~29,000); and the page's own "Feed Read" code sample JOINed against
+  `users` (`SELECT p.*, u.username, u.avatar FROM posts p JOIN users u ON p.author_id = u.id`)
+  despite the SAME page repeatedly recommending denormalizing author data onto posts specifically
+  to avoid this exact JOIN on the hot read path — fixed to a single-table SELECT reading the
+  already-denormalized `author_username`/`author_avatar` columns. No `SUBTOPICS` collision for
+  `social-feed` (checked both forms, confirmed collision-free, left bare). Build passed clean;
+  browser-verified all three main-page fixes render correctly (had to click each `codeTabs`
+  tab-selector button — `Scale & Storage`/`Feed Read` — since the code-block component's own tab
+  switcher, not just a single collapsed "View Code" toggle, gates which tab's content is in the
+  DOM) and the nav accordion opens correctly with all 3 subtopic labels.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

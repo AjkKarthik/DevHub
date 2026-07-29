@@ -6642,7 +6642,23 @@ off here with a date.
   confirmed present via direct DOM text search (after Reveal Solution + View Code); 860px wrapper
   max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 18 of 24 topics
   complete.**
-- [ ] `/system-design/social-feed` — Design: Social Feed
+- [x] `/system-design/social-feed` — Design: Social Feed (2026-07-29) — 3 subtopics: (1)
+  **The Redis ZSET Memory Estimate Ignored Skiplist Overhead**, fixing a real data-structure-
+  overhead gap verified via WebSearch — the page's "8 bytes/entry = 4 TB" estimate counted only
+  the post_id payload, ignoring that ZSETs past the 128-entry listpack threshold use full
+  skiplist+hashtable encoding (~130 bytes/entry), making the real total ~65 TB; (2) **Active-User
+  Count Mismatch: 500M vs. 100M DAU**, a self-contained fix — the read-QPS calc used "500M active"
+  while the page's own Challenge states "500M registered, 100M daily active," a 5x overcount
+  corrected to ~5,800 reads/sec (not ~29,000); (3) **Feed Read Code Still Joined What
+  Denormalization Was For**, reconciling a real contradiction — the "Feed Read" code sample JOINed
+  against `users` despite the page's own repeated denormalization advice, fixed to a single-table
+  SELECT reading the already-denormalized author columns. `social-feed` SUBTOPICS key
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens correctly
+  with all 3 subtopic labels; breadcrumb shows all 4 levels; sidebar shows tailored content; all
+  three main-page fixes confirmed rendering (required clicking each `codeTabs` tab-selector
+  button — `Scale & Storage`/`Feed Read` — not just a single View Code toggle); 860px wrapper
+  max-width confirmed via `getComputedStyle`. **System Design hub Phase 10: 19 of 24 topics
+  complete.**
 - [ ] `/system-design/chat-application` — Design: Chat Application
 - [ ] `/system-design/search-engine` — Design: Search Engine
 - [ ] `/system-design/payment-system` — Design: Payment System
