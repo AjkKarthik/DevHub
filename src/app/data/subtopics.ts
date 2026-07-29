@@ -3086,4 +3086,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Active-User Count Mismatch: 500M vs. 100M DAU', route: '/system-design/social-feed/active-user-count-mismatch-500m-vs-100m-dau' },
     { label: 'Feed Read Code Still Joined What Denormalization Was For', route: '/system-design/social-feed/feed-read-code-still-joined-what-denorm-was-for' },
   ],
+  'chat-application': [
+    { label: 'WebSocket Map Silently Drops First Device on Multi-Login', route: '/system-design/chat-application/websocket-map-silently-drops-first-device-on-multi-login' },
+    { label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' },
+    { label: 'E2E Encryption Hint Skipped the Double Ratchet', route: '/system-design/chat-application/e2e-encryption-hint-skipped-the-double-ratchet' },
+  ],
 };

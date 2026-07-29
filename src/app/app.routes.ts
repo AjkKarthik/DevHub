@@ -2912,7 +2912,12 @@ export const routes: Routes = [
       { path: 'active-user-count-mismatch-500m-vs-100m-dau', loadComponent: () => import('./components/architecture/system-design/social-feed/subtopics/active-user-count-mismatch-500m-vs-100m-dau/active-user-count-mismatch-500m-vs-100m-dau').then(m => m.ActiveUserCountMismatch500mVs100mDauSubtopic) },
       { path: 'feed-read-code-still-joined-what-denorm-was-for', loadComponent: () => import('./components/architecture/system-design/social-feed/subtopics/feed-read-code-still-joined-what-denorm-was-for/feed-read-code-still-joined-what-denorm-was-for').then(m => m.FeedReadCodeStillJoinedWhatDenormWasForSubtopic) },
     ] },
-    { path: 'chat-application', loadComponent: () => import('./components/architecture/system-design/chat-application/chat-application').then(m => m.SysdesignChatApplication) },
+    { path: 'chat-application', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/chat-application/chat-application').then(m => m.SysdesignChatApplication) },
+      { path: 'websocket-map-silently-drops-first-device-on-multi-login', loadComponent: () => import('./components/architecture/system-design/chat-application/subtopics/websocket-map-drops-first-device/websocket-map-drops-first-device').then(m => m.WebsocketMapSilentlyDropsFirstDeviceOnMultiLoginSubtopic) },
+      { path: 'exactly-once-contradicts-at-least-once-theory', loadComponent: () => import('./components/architecture/system-design/chat-application/subtopics/exactly-once-vs-at-least-once/exactly-once-vs-at-least-once').then(m => m.ExactlyOnceContradictsPagesOwnAtLeastOnceTheorySubtopic) },
+      { path: 'e2e-encryption-hint-skipped-the-double-ratchet', loadComponent: () => import('./components/architecture/system-design/chat-application/subtopics/e2e-encryption-hint-skipped-the-double-ratchet/e2e-encryption-hint-skipped-the-double-ratchet').then(m => m.E2eEncryptionHintSkippedTheDoubleRatchetSubtopic) },
+    ] },
     { path: 'search-engine', loadComponent: () => import('./components/architecture/system-design/search-engine/search-engine').then(m => m.SysdesignSearchEngine) },
     { path: 'payment-system', loadComponent: () => import('./components/architecture/system-design/payment-system/payment-system').then(m => m.SysdesignPaymentSystem) },
     { path: 'video-streaming', loadComponent: () => import('./components/architecture/system-design/video-streaming/video-streaming').then(m => m.SysdesignVideoStreaming) },

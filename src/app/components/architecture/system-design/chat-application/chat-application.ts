@@ -83,20 +83,29 @@ const publisher = createClient();
 const subscriber = createClient();
 await Promise.all([publisher.connect(), subscriber.connect()]);
 
-// Map userId → WebSocket connection (in-memory, this server only)
-const connections = new Map<string, WebSocket>();
+// Map userId → Set of WebSocket connections -- one user can have
+// multiple devices (phone + web + desktop) simultaneously online.
+const connections = new Map<string, Set<WebSocket>>();
 
 wss.on('connection', async (ws, req) => {
   const userId = authenticate(req);  // JWT from query param or header
-  connections.set(userId, ws);
+  const isFirstDeviceForUser = !connections.has(userId);
+  if (isFirstDeviceForUser) connections.set(userId, new Set());
+  connections.get(userId)!.add(ws);
 
   // Mark user online in Redis
   await publisher.set(\`presence:\${userId}\`, 'online', { EX: 30 });
 
-  // Subscribe to this user's incoming message channel
-  await subscriber.subscribe(\`inbox:\${userId}\`, (message) => {
-    if (ws.readyState === WebSocket.OPEN) ws.send(message);
-  });
+  // Subscribe ONCE per user, not once per device -- fan out locally to
+  // every connected device's socket below, so a second device doesn't
+  // register a second Redis subscription callback for the same channel.
+  if (isFirstDeviceForUser) {
+    await subscriber.subscribe(\`inbox:\${userId}\`, (message) => {
+      for (const conn of connections.get(userId) ?? []) {
+        if (conn.readyState === WebSocket.OPEN) conn.send(message);
+      }
+    });
+  }
 
   ws.on('message', async (data) => {
     const msg = JSON.parse(data.toString());
@@ -104,9 +113,13 @@ wss.on('connection', async (ws, req) => {
   });
 
   ws.on('close', async () => {
-    connections.delete(userId);
-    await publisher.del(\`presence:\${userId}\`);
-    await subscriber.unsubscribe(\`inbox:\${userId}\`);
+    const userConns = connections.get(userId);
+    userConns?.delete(ws);
+    if (userConns && userConns.size === 0) {
+      connections.delete(userId);
+      await publisher.del(\`presence:\${userId}\`);
+      await subscriber.unsubscribe(\`inbox:\${userId}\`);
+    }
   });
 
   // Heartbeat: refresh presence TTL every 20s
@@ -276,7 +289,7 @@ Scale:
 
 Requirements:
 1. Messages delivered in order within a conversation
-2. Exactly-once delivery (no duplicates on retry)
+2. Effectively-once delivery: at-least-once delivery + idempotency-key dedup, so no duplicates reach the user on retry
 3. Offline support: messages delivered when user reconnects
 4. Read receipts: single tick (sent), double tick (delivered), blue (read)
 5. End-to-end encryption hint (key exchange approach)
@@ -287,7 +300,7 @@ A → sends message; B is: (1) online, (2) offline, (3) on different device`,
     'Sequence number per conversation ensures ordering',
     'Idempotency key on message prevents duplicates on retry',
     'Offline: push notification (FCM) + sync on reconnect via seq_num',
-    'E2E encryption: Signal protocol — sender encrypts with recipient\'s public key',
+    'E2E encryption: Signal Protocol — X3DH for initial key agreement, then the Double Ratchet derives a new key per message (not repeated encryption with a static public key)',
   ],
   starterCode: `type UserState = 'online_same_server' | 'online_diff_server' | 'offline';
 
@@ -334,12 +347,20 @@ interface MessageFlow {
   },
 ];
 
-// E2E Encryption hint (Signal protocol):
-// Key exchange: B publishes public key to key server on registration
-// A fetches B\'s public key → encrypts message locally → sends ciphertext
-// Server stores ciphertext — cannot read content
-// B decrypts with private key (never leaves device)
-// seq_num still assigned by server (plaintext metadata)`,
+// E2E Encryption hint (Signal Protocol -- X3DH + Double Ratchet):
+// Initial key agreement (X3DH): B publishes a signed pre-key + one-time
+// pre-keys to a key server on registration; A fetches these ONCE and
+// derives a shared initial secret -- not a simple "encrypt with B's
+// static public key" step.
+// Every message after that: the Double Ratchet derives a NEW symmetric
+// key from the previous one -- A never reuses the same key twice, which
+// gives forward secrecy (a later key leak can't decrypt past messages).
+// Server stores only ciphertext -- cannot read content at any point.
+// B decrypts using its own side of the ratchet state (private keys
+// never leave the device).
+// seq_num is still assigned by the server as plaintext metadata -- E2E
+// encryption protects message CONTENT only, not conversation structure
+// or ordering, which the server must see to route messages at all.`,
 };
 
 const quiz: QuizQuestion[] = [

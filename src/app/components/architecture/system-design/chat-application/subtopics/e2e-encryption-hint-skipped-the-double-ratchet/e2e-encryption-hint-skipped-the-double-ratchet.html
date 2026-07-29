@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Design a Chat Application" topicRoute="/system-design/chat-application" subtopicLabel="E2E Encryption Hint Skipped the Double Ratchet" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">E2E Encryption Hint Skipped the Double Ratchet</h1>
+  <p class="page-subtitle">The Challenge's E2E encryption hint described the Signal Protocol as "encrypt with the recipient's public key" — verified that real Signal messages use a per-message key from the Double Ratchet, not repeated public-key encryption.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With connection tracking, the delivery-guarantee wording, and the encryption description all corrected, the chat system's design and its own stated requirements now agree with each other. Next up in Real-World Systems: designing a search engine, where the core challenges — crawling, indexing, ranking — look very different from a real-time messaging system.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Design a Chat Application" topicRoute="/system-design/chat-application"
+    [prev]="{ label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' }" />
+</div>

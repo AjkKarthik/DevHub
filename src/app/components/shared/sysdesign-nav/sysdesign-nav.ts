@@ -416,7 +416,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/chat-application" routerLinkActive="active"><span class="nl-text">Design a Chat Application</span>@if(p.isDone('sysdesign-chat-application')){<span class="nl-done">✓</span>}@if(d('sysdesign-chat-application');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/chat-application" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Design a Chat Application</span>
+        @if(p.isDone('sysdesign-chat-application')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-chat-application');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('chat-application')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('chat-application')"
+                  (click)="toggleSubtopics('chat-application', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('chat-application'); as caSubs) {
+        @if (isSubtopicsExpanded('chat-application')) {
+          <div class="nav-subtopics">
+            @for (s of caSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/search-engine" routerLinkActive="active"><span class="nl-text">Design a Search Engine</span>@if(p.isDone('sysdesign-search-engine')){<span class="nl-done">✓</span>}@if(d('sysdesign-search-engine');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/payment-system" routerLinkActive="active"><span class="nl-text">Design a Payment System</span>@if(p.isDone('sysdesign-payment-system')){<span class="nl-done">✓</span>}@if(d('sysdesign-payment-system');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/video-streaming" routerLinkActive="active"><span class="nl-text">Design Netflix / YouTube</span>@if(p.isDone('sysdesign-video-streaming')){<span class="nl-done">✓</span>}@if(d('sysdesign-video-streaming');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

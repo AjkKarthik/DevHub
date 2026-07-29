@@ -43005,6 +43005,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Presence (online/offline status) at scale requires its own design consideration — a naive "ping every user" approach doesn\'t scale to millions of concurrent connections.',
     ],
   },
+  'system-design/chat-application/websocket-map-silently-drops-first-device-on-multi-login': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Design a Chat Application (overview)', route: '/system-design/chat-application' },
+      { label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' },
+    ],
+    tip: 'Any connection-tracking data structure keyed by user ID needs to ask: can this key legitimately have more than one simultaneous value (multiple devices, multiple tabs, multiple sessions)? If so, a plain Map will silently misbehave.',
+    gotchas: [
+      'A Map that overwrites on a second connection produces no error at all — the bug only surfaces as an unexplained "I stopped getting notifications on my other device" complaint.',
+    ],
+  },
+  'system-design/chat-application/exactly-once-contradicts-at-least-once-theory': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'WebSocket Map Silently Drops First Device on Multi-Login', route: '/system-design/chat-application/websocket-map-silently-drops-first-device-on-multi-login' },
+      { label: 'E2E Encryption Hint Skipped the Double Ratchet', route: '/system-design/chat-application/e2e-encryption-hint-skipped-the-double-ratchet' },
+    ],
+    tip: 'If a design needs client-side deduplication by message ID, that alone proves duplicates CAN occur — the correct term for that guarantee is "effectively-once" (at-least-once + dedup), not "exactly-once."',
+    gotchas: [
+      'Being asked to design "exactly-once" delivery in an interview is often a deliberate trap — reaching for at-least-once + idempotent-consumer instead usually signals the stronger answer.',
+    ],
+  },
+  'system-design/chat-application/e2e-encryption-hint-skipped-the-double-ratchet': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: '‘Exactly-Once Delivery’ Contradicts the Page’s Own At-Least-Once Theory', route: '/system-design/chat-application/exactly-once-contradicts-at-least-once-theory' },
+      { label: 'Design a Chat Application (overview)', route: '/system-design/chat-application' },
+    ],
+    tip: 'Signal-style E2E encryption uses a ONE-TIME key agreement (X3DH) followed by a per-message ratchet (Double Ratchet) — never describe it as repeatedly encrypting with a static public key.',
+    gotchas: [
+      'Even correctly implemented E2E encryption protects message content only — the server still sees plaintext sender/recipient/timestamp metadata needed to route messages at all.',
+    ],
+  },
   'system-design/social-feed': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
