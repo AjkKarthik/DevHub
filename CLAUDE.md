@@ -2657,7 +2657,7 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 20 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 21 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
@@ -2665,7 +2665,8 @@ do this same check before any other new hub's first subtopic set:
   `/system-design/distributed-transactions`, `/system-design/high-availability`,
   `/system-design/fault-tolerance`, `/system-design/distributed-tracing`,
   `/system-design/disaster-recovery`, `/system-design/url-shortener`,
-  `/system-design/social-feed`, `/system-design/chat-application`, 2026-07-29) —
+  `/system-design/social-feed`, `/system-design/chat-application`,
+  `/system-design/search-engine`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -3016,6 +3017,30 @@ do this same check before any other new hub's first subtopic set:
   all three main-page fixes confirmed rendering (the E2E fix required both "Reveal Solution" AND
   "View Code" clicks on the Challenge block, matching the established two-step Challenge-solution
   reveal pattern); 860px wrapper confirmed via `getComputedStyle`.
+  **The `search-engine` batch found and fixed TWO more genuine issues, one purely self-contained
+  arithmetic and one requiring external verification, plus a gap-closing addition**: the
+  Challenge solution's own worked example stated "500M docs, 30 primary shards -- each ~33M
+  docs" — 500,000,000 ÷ 30 = ~16.7M, not 33M; tracing the likely cause, the SAME example
+  separately states the index totals 1 TB, and 1000 GB ÷ 30 = ~33 GB per shard (which even fits
+  the page's own "10-50 GB per shard" recommendation elsewhere) — a storage-size figure that
+  appears to have been mislabeled as a document count, sharing a leading digit with the correct
+  answer purely by coincidence of these specific inputs; corrected to state both true figures
+  separately. The QnA stated "By default, an index has 5 primary shards" — verified via
+  WebSearch that this default changed to 1 in Elasticsearch 7.0 (2019), a classic
+  documentation-drift trap where a years-true fact keeps circulating after the software changed;
+  corrected, and a gap-closing subtopic added the Split API (verified via WebSearch) as a faster
+  alternative to the page's own Reindex-based approach for increasing shard count specifically
+  — reroutes existing shard data instead of a full document copy, with two real constraints
+  (source must be read-only; target count must be a multiple of the source count) the page
+  didn't cover. No `SUBTOPICS` collision for `search-engine` (checked both forms, confirmed
+  collision-free, left bare). Build passed clean. Browser-verified: nav accordion opens with all
+  3 labels; both main-page fixes confirmed rendering — the arithmetic fix needed "Reveal
+  Solution" + "View Code" clicks on the Challenge block (the FIRST click landed on the
+  starterCode's own collapsed "View Code" toggle, not the solution's — the solution's own
+  separate "▼ View Code" toggle only appears after "Reveal Solution" is clicked, confirming the
+  established two-step reveal pattern precisely), and the QnA fix needed the QnA section's outer
+  toggle plus the specific question's own row click before its corrected text appeared in the
+  DOM; 860px wrapper confirmed via `getComputedStyle`.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

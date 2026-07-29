@@ -6677,7 +6677,20 @@ off here with a date.
   Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
   rendering (E2E fix needed both Reveal Solution + View Code clicks); 860px wrapper confirmed via
   `getComputedStyle`. **System Design hub Phase 10: 20 of 24 topics complete.**
-- [ ] `/system-design/search-engine` — Design: Search Engine
+- [x] `/system-design/search-engine` — Design: Search Engine (2026-07-29) — 3 subtopics: (1)
+  **30 Shards Doesn't Divide to 33M Docs Per Shard**, a self-contained arithmetic error — the
+  Challenge solution's "500M docs / 30 shards = ~33M docs each" is wrong (~16.7M is correct); the
+  33 actually comes from a separate 1TB/30=~33GB storage calc, mislabeled as a doc count; (2)
+  **Elasticsearch's Default Shard Count Has Been 1, Not 5, Since 7.0**, fixing a WebSearch-verified
+  stale fact — the QnA claimed 5 primary shards by default, changed to 1 in ES 7.0 (2019); (3)
+  **The Split API Resizes Shards Without a Full Reindex**, a gap-closing addition — a faster
+  alternative to the page's own Reindex-based approach for increasing shard count, with two real
+  constraints (read-only source, target must be a multiple of source count). `search-engine`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified: nav accordion
+  opens with all 3 labels; both main-page fixes confirmed rendering (arithmetic fix needed Reveal
+  Solution + the solution's own separate View Code toggle; QnA fix needed the QnA section toggle +
+  specific question click); 860px wrapper confirmed via `getComputedStyle`. **System Design hub
+  Phase 10: 21 of 24 topics complete.**
 - [ ] `/system-design/payment-system` — Design: Payment System
 - [ ] `/system-design/video-streaming` — Design: Video Streaming
 - [ ] `/system-design/ai-ml-system-design` — Design: AI/ML Systems
