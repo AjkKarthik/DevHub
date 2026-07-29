@@ -43227,6 +43227,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A model that performs well in offline evaluation can still fail in production due to training-serving skew (subtle differences between training data and live production data) — a design must account for monitoring this gap.',
     ],
   },
+  'system-design/ai-ml-system-design/openai-sdk-with-claude-model': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'AI/ML System Design (overview)', route: '/system-design/ai-ml-system-design' },
+      { label: 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s', route: '/system-design/ai-ml-system-design/latency-hint-vs-actual-p50' },
+    ],
+    tip: 'A provider SDK (OpenAI, Anthropic, etc.) sends requests to THAT provider\'s own API — the model name string has to match a model actually registered with that provider, not just be a well-formed request.',
+    gotchas: [
+      'A code sample that\'s internally inconsistent about which SDK pairs with which model name will look correct until someone actually runs it.',
+    ],
+  },
+  'system-design/ai-ml-system-design/latency-hint-vs-actual-p50': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'RAG Pipeline Used the OpenAI SDK With a Claude Model Name', route: '/system-design/ai-ml-system-design/openai-sdk-with-claude-model' },
+      { label: 'Naive Serving: “1 Request/Sec” vs “15 Tokens/Sec” Don’t Reconcile', route: '/system-design/ai-ml-system-design/naive-serving-units-mismatch' },
+    ],
+    tip: 'When a Challenge hint states a specific numeric range, check that range against the solution\'s own figures — matching only one end of a range isn\'t enough to confirm they agree.',
+    gotchas: [
+      'The safest way to keep a hint and its solution in sync is deriving the hint\'s numbers directly from the solution\'s own figures, not estimating them independently.',
+    ],
+  },
+  'system-design/ai-ml-system-design/naive-serving-units-mismatch': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s', route: '/system-design/ai-ml-system-design/latency-hint-vs-actual-p50' },
+      { label: 'AI/ML System Design (overview)', route: '/system-design/ai-ml-system-design' },
+    ],
+    tip: 'When a page states throughput in different units (requests/sec vs. tokens/sec) in different sections, use any stated average response length to convert between them and check for agreement.',
+    gotchas: [
+      'Tokens/sec is the more stable metric for comparing LLM serving techniques — requests/sec depends heavily on assumed response length, which varies a lot by use case.',
+    ],
+  },
 };
 
 @Component({

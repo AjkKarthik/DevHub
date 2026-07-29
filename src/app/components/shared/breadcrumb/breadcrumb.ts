@@ -2778,6 +2778,9 @@ const SYSDESIGN_LABELS: Record<string, string> = {
   'video-streaming/pb-per-month-was-actually-per-day': 'A “300 PB/Month” Figure That Was Actually Per Day',
   'video-streaming/resolution-count-mismatch': 'Compute Formula Used 4 Resolutions, Ladder Lists 6',
   'ai-ml-system-design':      'AI/ML System Design',
+  'ai-ml-system-design/openai-sdk-with-claude-model': 'RAG Pipeline Used the OpenAI SDK With a Claude Model Name',
+  'ai-ml-system-design/latency-hint-vs-actual-p50': 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s',
+  'ai-ml-system-design/naive-serving-units-mismatch': 'Naive Serving: “1 Request/Sec” vs “15 Tokens/Sec” Don’t Reconcile',
   'cheatsheet':               'System Design Cheat Sheet',
   'interview-prep':           'System Design Interview Guide',
 };

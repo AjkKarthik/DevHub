@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="AI/ML System Design" topicRoute="/system-design/ai-ml-system-design" subtopicLabel="Challenge Hint Said “LLM 2-4s”, Solution's Own P50 Was 1.5s" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Challenge Hint Said "LLM 2-4s", Solution's Own P50 Was 1.5s</h1>
+  <p class="page-subtitle">The Challenge's hint stated an LLM latency range of "2-4s" — the same Challenge's own solution gives a P50 of 1500ms, below the hint's stated floor, even though the P99 (3500ms) does fall inside the range.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>With the RAG code sample and the latency hint both corrected, the last issue is a units mismatch between the theory section's and the code sample's own descriptions of "naive" LLM serving throughput.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="AI/ML System Design" topicRoute="/system-design/ai-ml-system-design"
+    [prev]="{ label: 'RAG Pipeline Used the OpenAI SDK With a Claude Model Name', route: '/system-design/ai-ml-system-design/openai-sdk-with-claude-model' }"
+    [next]="{ label: 'Naive Serving: “1 Request/Sec” vs “15 Tokens/Sec” Don’t Reconcile', route: '/system-design/ai-ml-system-design/naive-serving-units-mismatch' }" />
+</div>

@@ -2936,7 +2936,12 @@ export const routes: Routes = [
       { path: 'pb-per-month-was-actually-per-day', loadComponent: () => import('./components/architecture/system-design/video-streaming/subtopics/pb-per-month-was-actually-per-day/pb-per-month-was-actually-per-day').then(m => m.PbPerMonthWasActuallyPerDaySubtopic) },
       { path: 'resolution-count-mismatch', loadComponent: () => import('./components/architecture/system-design/video-streaming/subtopics/resolution-count-mismatch/resolution-count-mismatch').then(m => m.ComputeFormulaUsed4ResolutionsLadderLists6Subtopic) },
     ] },
-    { path: 'ai-ml-system-design', loadComponent: () => import('./components/architecture/system-design/ai-ml-system-design/ai-ml-system-design').then(m => m.SysdesignAiMl) },
+    { path: 'ai-ml-system-design', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/ai-ml-system-design/ai-ml-system-design').then(m => m.SysdesignAiMl) },
+      { path: 'openai-sdk-with-claude-model', loadComponent: () => import('./components/architecture/system-design/ai-ml-system-design/subtopics/openai-sdk-with-claude-model/openai-sdk-with-claude-model').then(m => m.OpenaiSdkWithClaudeModelSubtopic) },
+      { path: 'latency-hint-vs-actual-p50', loadComponent: () => import('./components/architecture/system-design/ai-ml-system-design/subtopics/latency-hint-vs-actual-p50/latency-hint-vs-actual-p50').then(m => m.ChallengeHintSaidLlm24sSolutionsOwnP50Was15sSubtopic) },
+      { path: 'naive-serving-units-mismatch', loadComponent: () => import('./components/architecture/system-design/ai-ml-system-design/subtopics/naive-serving-units-mismatch/naive-serving-units-mismatch').then(m => m.NaiveServingRequestsVsTokensMismatchSubtopic) },
+    ] },
     { path: 'cheatsheet', loadComponent: () => import('./components/architecture/system-design/cheatsheet/cheatsheet').then(m => m.SysdesignCheatsheet) },
     { path: 'interview-prep', loadComponent: () => import('./components/architecture/system-design/interview-prep/interview-prep').then(m => m.SysdesignInterviewPrep) },
   ] },

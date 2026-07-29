@@ -496,7 +496,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/ai-ml-system-design" routerLinkActive="active"><span class="nl-text">AI/ML System Design</span>@if(p.isDone('sysdesign-ai-ml-system-design')){<span class="nl-done">✓</span>}@if(d('sysdesign-ai-ml-system-design');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/ai-ml-system-design" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">AI/ML System Design</span>
+        @if(p.isDone('sysdesign-ai-ml-system-design')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-ai-ml-system-design');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('ai-ml-system-design')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ai-ml-system-design')"
+                  (click)="toggleSubtopics('ai-ml-system-design', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ai-ml-system-design'); as aimlSubs) {
+        @if (isSubtopicsExpanded('ai-ml-system-design')) {
+          <div class="nav-subtopics">
+            @for (s of aimlSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
