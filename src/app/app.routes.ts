@@ -2834,7 +2834,12 @@ export const routes: Routes = [
       { path: 'vrrp-failover-takes-about-3-seconds-by-default-not-under-2', loadComponent: () => import('./components/architecture/system-design/load-balancing/subtopics/vrrp-failover-takes-about-3-seconds-by-default-not-under-2/vrrp-failover-takes-about-3-seconds-by-default-not-under-2').then(m => m.VrrpFailoverTakesAbout3SecondsByDefaultNotUnder2Subtopic) },
       { path: 'why-power-of-two-choices-beats-picking-one-random-server', loadComponent: () => import('./components/architecture/system-design/load-balancing/subtopics/why-power-of-two-choices-beats-picking-one-random-server/why-power-of-two-choices-beats-picking-one-random-server').then(m => m.WhyPowerOfTwoChoicesBeatsPickingOneRandomServerSubtopic) },
     ] },
-    { path: 'caching', loadComponent: () => import('./components/architecture/system-design/caching/caching').then(m => m.SysdesignCaching) },
+    { path: 'caching', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/caching/caching').then(m => m.SysdesignCaching) },
+      { path: 'redis-defaults-to-noeviction-not-lru', loadComponent: () => import('./components/architecture/system-design/caching/subtopics/redis-defaults-to-noeviction-not-lru/redis-defaults-to-noeviction-not-lru').then(m => m.RedisDefaultsToNoevictionNotLruSubtopic) },
+      { path: 'the-multi-level-cache-example-never-invalidates-l1', loadComponent: () => import('./components/architecture/system-design/caching/subtopics/the-multi-level-cache-example-never-invalidates-l1/the-multi-level-cache-example-never-invalidates-l1').then(m => m.TheMultiLevelCacheExampleNeverInvalidatesL1Subtopic) },
+      { path: 'the-per-code-is-missing-xfetchs-recompute-cost-signal', loadComponent: () => import('./components/architecture/system-design/caching/subtopics/the-per-code-is-missing-xfetchs-recompute-cost-signal/the-per-code-is-missing-xfetchs-recompute-cost-signal').then(m => m.ThePerCodeIsMissingXfetchsRecomputeCostSignalSubtopic) },
+    ] },
     { path: 'cdn', loadComponent: () => import('./components/architecture/system-design/cdn/cdn').then(m => m.SysdesignCdn) },
     { path: 'sharding', loadComponent: () => import('./components/architecture/system-design/sharding/sharding').then(m => m.SysdesignSharding) },
     { path: 'sql-vs-nosql', loadComponent: () => import('./components/architecture/system-design/sql-vs-nosql/sql-vs-nosql').then(m => m.SysdesignSqlVsNosql) },

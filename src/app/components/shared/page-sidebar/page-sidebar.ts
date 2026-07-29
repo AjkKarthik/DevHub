@@ -42432,6 +42432,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Cache-aside is the most common pattern, but write-through and write-behind exist for different consistency/latency tradeoffs worth knowing for interview depth.',
     ],
   },
+  'system-design/caching/redis-defaults-to-noeviction-not-lru': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Caching Strategies',                                        route: '/system-design/caching' },
+      { label: 'The Multi-Level Cache Example Never Invalidates L1',        route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' },
+    ],
+    tip: 'Redis\'s actual out-of-the-box `maxmemory-policy` default is `noeviction` — it rejects writes with an error at the memory limit rather than evicting anything. `allkeys-lru` is a common, recommended CHOICE, not the automatic default.',
+    gotchas: [
+      'Setting `maxmemory` alone, without explicitly setting `maxmemory-policy`, means Redis rejects new writes at the limit instead of evicting old data — the opposite of what most teams assume.',
+      'This only matters once `maxmemory` is actually configured — an unconfigured (unlimited) instance never triggers any eviction policy.',
+    ],
+  },
+  'system-design/caching/the-multi-level-cache-example-never-invalidates-l1': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Redis Defaults to noeviction, Not LRU',                          route: '/system-design/caching/redis-defaults-to-noeviction-not-lru' },
+      { label: 'The PER Code Is Missing XFetch’s Recompute-Cost Signal',          route: '/system-design/caching/the-per-code-is-missing-xfetchs-recompute-cost-signal' },
+    ],
+    tip: 'redis.del() only clears the SHARED L2 (Redis) entry — it has no reach into any other instance\'s independent, in-process L1 cache. L1 invalidation needs an explicit fan-out mechanism (e.g. Redis Pub/Sub), or staleness is bounded only by L1\'s own TTL.',
+    gotchas: [
+      'This gap is only visible by cross-checking two separately-presented code samples against each other — neither sample alone shows the problem.',
+      'L1 invalidation is fundamentally harder than L2 invalidation because L1 is NOT shared across instances — one DEL command cannot reach every process\'s own local memory.',
+    ],
+  },
+  'system-design/caching/the-per-code-is-missing-xfetchs-recompute-cost-signal': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Multi-Level Cache Example Never Invalidates L1', route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' },
+      { label: 'Caching Strategies',                                 route: '/system-design/caching' },
+    ],
+    tip: 'The real XFetch algorithm\'s trigger formula includes `delta` (observed recompute cost) — the main page\'s PER code only uses `timeLeft` and `ttl`, with no way to start expensive keys\' early refresh sooner than cheap keys\'.',
+    gotchas: [
+      'Without tracking `delta`, an expensive-to-recompute key gets the same early-refresh timing as a cheap one, which can mean its recompute doesn\'t finish before the old value actually expires.',
+      'The fix is straightforward: time each key\'s own `computeFn()` call and feed that observed cost into the real formula.',
+    ],
+  },
   'system-design/cdn': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

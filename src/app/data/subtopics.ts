@@ -3019,4 +3019,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'VRRP Failover Takes About 3 Seconds by Default, Not Under 2', route: '/system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2' },
     { label: 'Why Power of Two Choices Beats Picking One Random Server', route: '/system-design/load-balancing/why-power-of-two-choices-beats-picking-one-random-server' },
   ],
+  // NOTE: bare 'caching' key already taken by the Web Performance hub's own topic
+  'sysdesign-caching': [
+    { label: 'Redis Defaults to noeviction, Not LRU', route: '/system-design/caching/redis-defaults-to-noeviction-not-lru' },
+    { label: 'The Multi-Level Cache Example Never Invalidates L1', route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' },
+    { label: 'The PER Code Is Missing XFetch’s Recompute-Cost Signal', route: '/system-design/caching/the-per-code-is-missing-xfetchs-recompute-cost-signal' },
+  ],
 };

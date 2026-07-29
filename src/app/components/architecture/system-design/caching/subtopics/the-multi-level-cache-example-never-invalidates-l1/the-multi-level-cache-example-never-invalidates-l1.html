@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching Strategies" topicRoute="/system-design/caching" subtopicLabel="The Multi-Level Cache Example Never Invalidates L1" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Multi-Level Cache Example Never Invalidates L1</h1>
+  <p class="page-subtitle">Cross-checking the main page's own two code samples reveals a real gap: redis.del() clears L2 but never reaches any instance's in-process L1 cache.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This closes a gap found across the main page's own examples. Next: the page's "Probabilistic Early Expiration" code names a real algorithm (XFetch) but leaves out its key ingredient.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching Strategies" topicRoute="/system-design/caching"
+    [prev]="{ label: 'Redis Defaults to noeviction, Not LRU', route: '/system-design/caching/redis-defaults-to-noeviction-not-lru' }"
+    [next]="{ label: 'The PER Code Is Missing XFetch’s Recompute-Cost Signal', route: '/system-design/caching/the-per-code-is-missing-xfetchs-recompute-cost-signal' }" />
+</div>

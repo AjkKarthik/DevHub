@@ -16,7 +16,7 @@ const quickRef: QuickRefItem[] = [
   { name: 'Read-through',    type: 'keyword', desc: 'Cache sits in front of DB; on miss, cache fetches from DB transparently.' },
   { name: 'Write-through',   type: 'keyword', desc: 'Write to cache + DB atomically. Always consistent; slower writes.' },
   { name: 'Write-behind',    type: 'keyword', desc: 'Write to cache; async flush to DB. Fast writes; risk of data loss on crash.' },
-  { name: 'LRU',             type: 'keyword', desc: 'Least Recently Used — evict the item not accessed longest. Default Redis eviction.' },
+  { name: 'LRU',             type: 'keyword', desc: 'Least Recently Used — evict the item not accessed longest. A common CHOICE (allkeys-lru), not Redis\'s actual out-of-the-box default (noeviction).' },
   { name: 'TTL',             type: 'keyword', desc: 'Time To Live — auto-expiry after N seconds. Primary cache invalidation tool.' },
   { name: 'Cache stampede',  type: 'keyword', desc: 'Hot key expires → all requests hit DB simultaneously. Prevent with jitter or lock.' },
   { name: 'Cache warming',   type: 'keyword', desc: 'Pre-populate cache before traffic arrives (deploy, cron). Prevents cold-start miss storm.' },

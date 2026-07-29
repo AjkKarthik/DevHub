@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Caching Strategies" topicRoute="/system-design/caching" subtopicLabel="Redis Defaults to noeviction, Not LRU" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Redis Defaults to noeviction, Not LRU</h1>
+  <p class="page-subtitle">The main page called LRU "Default Redis eviction" — verified against Redis's own docs that the real out-of-the-box default is noeviction, which rejects writes instead of evicting anything.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a "default" claim. Next: a gap found by cross-checking the main page's own two code samples — the multi-level cache example never invalidates its L1 layer.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Caching Strategies" topicRoute="/system-design/caching"
+    [next]="{ label: 'The Multi-Level Cache Example Never Invalidates L1', route: '/system-design/caching/the-multi-level-cache-example-never-invalidates-l1' }" />
+</div>
