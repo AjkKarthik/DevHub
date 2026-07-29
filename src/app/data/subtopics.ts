@@ -3056,4 +3056,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Kafka Offset-Committing Is Specific to Consume-Transform-Produce', route: '/system-design/distributed-transactions/kafka-offset-committing-is-specific-to-consume-transform-produce' },
     { label: 'TCC’s Timeout Recovery Still Needs a Transaction Manager', route: '/system-design/distributed-transactions/tccs-timeout-recovery-still-needs-a-transaction-manager' },
   ],
+  'high-availability': [
+    { label: 'RDS Multi-AZ DB Clusters Fail Over in Under 35 Seconds', route: '/system-design/high-availability/rds-multi-az-db-clusters-fail-over-in-under-35-seconds-not-just-60-120' },
+    { label: 'Request-Based and Time-Based Error Budgets Aren’t the Same Thing', route: '/system-design/high-availability/request-based-and-time-based-error-budgets-arent-the-same-thing' },
+    { label: 'Active-Active’s Instant Failover Still Waits on Health-Check Detection', route: '/system-design/high-availability/active-actives-instant-failover-still-waits-on-health-check-detection' },
+  ],
 };

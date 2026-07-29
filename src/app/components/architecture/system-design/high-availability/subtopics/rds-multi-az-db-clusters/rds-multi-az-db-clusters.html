@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="High Availability Design" topicRoute="/system-design/high-availability" subtopicLabel="RDS Multi-AZ DB Clusters Fail Over in Under 35 Seconds, Not Just 60-120" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">RDS Multi-AZ DB Clusters Fail Over in Under 35 Seconds</h1>
+  <p class="page-subtitle">The page's "60-120 seconds" figure is accurate for the traditional Multi-AZ instance deployment — but AWS also offers a newer Multi-AZ DB Cluster option with under-35-second failover and readable standbys.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This adds a faster RDS option the page never mentions. Next: the error-budget QnA conflates two genuinely different measurement methodologies.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="High Availability Design" topicRoute="/system-design/high-availability"
+    [next]="{ label: 'Request-Based and Time-Based Error Budgets Aren’t the Same Thing', route: '/system-design/high-availability/request-based-and-time-based-error-budgets-arent-the-same-thing' }" />
+</div>

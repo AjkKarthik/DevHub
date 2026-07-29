@@ -292,7 +292,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Reliability</p>
-      <a routerLink="/system-design/high-availability" routerLinkActive="active"><span class="nl-text">High Availability Design</span>@if(p.isDone('sysdesign-high-availability')){<span class="nl-done">✓</span>}@if(d('sysdesign-high-availability');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/high-availability" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">High Availability Design</span>
+        @if(p.isDone('sysdesign-high-availability')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-high-availability');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('high-availability')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('high-availability')"
+                  (click)="toggleSubtopics('high-availability', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('high-availability'); as haSubs) {
+        @if (isSubtopicsExpanded('high-availability')) {
+          <div class="nav-subtopics">
+            @for (s of haSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/fault-tolerance" routerLinkActive="active"><span class="nl-text">Fault Tolerance Patterns</span>@if(p.isDone('sysdesign-fault-tolerance')){<span class="nl-done">✓</span>}@if(d('sysdesign-fault-tolerance');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/distributed-tracing" routerLinkActive="active"><span class="nl-text">Distributed Tracing</span>@if(p.isDone('sysdesign-distributed-tracing')){<span class="nl-done">✓</span>}@if(d('sysdesign-distributed-tracing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/disaster-recovery" routerLinkActive="active"><span class="nl-text">Disaster Recovery</span>@if(p.isDone('sysdesign-disaster-recovery')){<span class="nl-done">✓</span>}@if(d('sysdesign-disaster-recovery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

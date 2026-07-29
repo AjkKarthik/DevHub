@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="High Availability Design" topicRoute="/system-design/high-availability" subtopicLabel="Request-Based and Time-Based Error Budgets Aren't the Same Thing" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Request-Based and Time-Based Error Budgets Aren't the Same Thing</h1>
+  <p class="page-subtitle">The QnA presented "0.1% of requests" and "8.7 hours of downtime" as two ways to say the same thing — verified against Google's SRE book that they're different methodologies that can genuinely disagree.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This untangles two different error-budget methodologies. Next: active-active's "no failover delay" claim needs the health-check detection window added back in.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="High Availability Design" topicRoute="/system-design/high-availability"
+    [prev]="{ label: 'RDS Multi-AZ DB Clusters Fail Over in Under 35 Seconds', route: '/system-design/high-availability/rds-multi-az-db-clusters-fail-over-in-under-35-seconds-not-just-60-120' }"
+    [next]="{ label: 'Active-Active’s Instant Failover Still Waits on Health-Check Detection', route: '/system-design/high-availability/active-actives-instant-failover-still-waits-on-health-check-detection' }" />
+</div>

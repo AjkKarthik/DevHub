@@ -42703,6 +42703,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Availability and durability are DIFFERENT guarantees — a highly available system can still lose data if it isn\'t also designed for durability (proper replication, backups).',
     ],
   },
+  'system-design/high-availability/rds-multi-az-db-clusters-fail-over-in-under-35-seconds-not-just-60-120': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'High Availability Design (overview)', route: '/system-design/high-availability' },
+      { label: 'Database Sharding',                     route: '/system-design/sharding' },
+    ],
+    tip: 'For workloads where every second of failover time matters, name the RDS Multi-AZ DB CLUSTER option specifically — its under-35-second failover and readable standbys are a meaningfully different capability from the traditional Multi-AZ instance deployment.',
+    gotchas: [
+      'A traditional Multi-AZ DB instance\'s standby cannot serve any read traffic at all until it is promoted — only the newer Multi-AZ DB cluster option\'s standbys are readable.',
+    ],
+  },
+  'system-design/high-availability/request-based-and-time-based-error-budgets-arent-the-same-thing': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'High Availability Design (overview)', route: '/system-design/high-availability' },
+      { label: 'Fault Tolerance',                       route: '/system-design/fault-tolerance' },
+    ],
+    tip: 'A chronic low-level error rate can fully exhaust a request-based error budget while showing zero downtime on a time-based measure — check which methodology an SLO actually uses before assuming "never down" means "within budget."',
+    gotchas: [
+      'Google\'s own SRE book favors request-based measurement specifically because it captures partial degradation a binary up/down time-based clock misses entirely.',
+    ],
+  },
+  'system-design/high-availability/active-actives-instant-failover-still-waits-on-health-check-detection': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'High Availability Design (overview)', route: '/system-design/high-availability' },
+      { label: 'Load Balancing',                        route: '/system-design/load-balancing' },
+    ],
+    tip: 'Detection time = interval × unhealthy-threshold — tune these two health-check settings deliberately if a specific failover-time bound matters, rather than treating active-active as uniformly "instant."',
+    gotchas: [
+      'A very short interval/threshold detects failures faster but increases false-positive risk on a merely slow-but-healthy node — a real tradeoff, not a setting to minimize for free.',
+    ],
+  },
   'system-design/disaster-recovery': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
