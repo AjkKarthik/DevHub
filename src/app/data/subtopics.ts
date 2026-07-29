@@ -3061,4 +3061,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Request-Based and Time-Based Error Budgets Aren’t the Same Thing', route: '/system-design/high-availability/request-based-and-time-based-error-budgets-arent-the-same-thing' },
     { label: 'Active-Active’s Instant Failover Still Waits on Health-Check Detection', route: '/system-design/high-availability/active-actives-instant-failover-still-waits-on-health-check-detection' },
   ],
+  'fault-tolerance': [
+    { label: 'The Rate Limiter Was Configured for 600/min, Not 10/min', route: '/system-design/fault-tolerance/rate-limiter-unit-bug-per-second-not-per-minute' },
+    { label: 'The Fraud-Check Timeout Breaks the Page’s Own 2-3x Rule', route: '/system-design/fault-tolerance/fraud-timeout-breaks-the-pages-own-2-3x-rule' },
+    { label: 'PUT Is Idempotent by Definition — It Doesn’t Need a Key', route: '/system-design/fault-tolerance/put-is-idempotent-by-definition-no-key-needed' },
+  ],
 };

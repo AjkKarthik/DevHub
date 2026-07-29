@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Fault Tolerance Patterns" topicRoute="/system-design/fault-tolerance" subtopicLabel="PUT Is Idempotent by Definition — It Doesn't Need a Key" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">PUT Is Idempotent by Definition — It Doesn't Need a Key</h1>
+  <p class="page-subtitle">The page grouped PUT with "idempotency key" required — verified against RFC 7231 that PUT, DELETE, and GET are idempotent by HTTP definition; the idempotency-key workaround is specifically for POST.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This tightens which retry-safety mechanism each HTTP method actually needs. Next topic: Distributed Tracing.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Fault Tolerance Patterns" topicRoute="/system-design/fault-tolerance"
+    [prev]="{ label: 'The Fraud-Check Timeout Breaks the Page’s Own 2-3x Rule', route: '/system-design/fault-tolerance/fraud-timeout-breaks-the-pages-own-2-3x-rule' }" />
+</div>

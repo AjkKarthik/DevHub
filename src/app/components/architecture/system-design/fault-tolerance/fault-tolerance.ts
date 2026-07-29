@@ -48,7 +48,7 @@ const theory: TheoryPoint[] = [
       'Always set timeouts. Default HTTP client timeouts are often 30-60s — too long under load.',
       'Exponential backoff: wait 1s, 2s, 4s, 8s between retries. Cap at max (32s).',
       'Jitter: add random delay to stagger retries from multiple clients: wait = base × 2^attempt + rand(0, 1000ms).',
-      'Only retry idempotent operations (GET, PUT with idempotency key). Never blindly retry POST.',
+      'Only retry idempotent operations (GET, PUT, DELETE — idempotent by HTTP definition, no extra key needed). POST is NOT idempotent by definition; only retry it if you\'ve added an idempotency key yourself as a workaround.',
     ],
   },
   {
@@ -166,8 +166,8 @@ const order = await withRetry(
 );
 
 // Only retry idempotent operations:
-// Safe to retry: GET, PUT (with idempotency key), DELETE
-// Unsafe to retry: POST without idempotency key (creates duplicates)`,
+// Safe to retry: GET, PUT, DELETE -- idempotent by HTTP definition (RFC 7231), no idempotency key required
+// Unsafe to retry: POST -- NOT idempotent by definition; needs an explicit idempotency key to be made retry-safe`,
   },
   {
     label: 'Token Bucket Rate Limiter',
@@ -308,7 +308,9 @@ Add: timeout, circuit breaker, retry, graceful degradation, rate limiting`,
   return receipt;
 }`,
   solution: `const fraudCB = new CircuitBreaker(5, 30_000);
-const rateLimiter = new TokenBucketLimiter(redis, 10, 20); // 10/min per user
+// TokenBucketLimiter's 2nd arg is ratePerSec, not per-minute --
+// 10/min sustained = 10/60 tokens refilled per second, burst up to 10
+const rateLimiter = new TokenBucketLimiter(redis, 10 / 60, 10); // 10/min per user
 
 async function processPayment(
   orderId: string,
@@ -321,7 +323,7 @@ async function processPayment(
 
   // 2. Fraud check — circuit breaker + fallback (allow on service outage)
   const fraudResult = await fraudCB.call(
-    () => withTimeout(fraudService.check(orderId), 1000),  // 1s timeout
+    () => withTimeout(fraudService.check(orderId), 2000),  // 2.5x p99 (800ms) per the timeout-sizing rule above
     () => ({ allowed: true, risk: 'unknown' })              // fallback
   );
   if (!fraudResult.allowed) throw new Error('Fraud check failed');

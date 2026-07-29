@@ -42691,6 +42691,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Redundancy (multiple instances of a critical component) only provides fault tolerance if those instances are genuinely independent — sharing a single point of failure (like one power supply or one AZ) defeats the purpose.',
     ],
   },
+  'system-design/fault-tolerance/rate-limiter-unit-bug-per-second-not-per-minute': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fault Tolerance Patterns (overview)', route: '/system-design/fault-tolerance' },
+      { label: 'Load Balancing',                        route: '/system-design/load-balancing' },
+    ],
+    tip: 'Always check what UNIT a rate-limiter or config value actually expects (per-second vs. per-minute) — a plausible-looking number can be off by an order of magnitude if the unit assumption is wrong.',
+    gotchas: [
+      'A rate limit that is too PERMISSIVE (not too strict) is a quiet failure mode — normal usage still works fine, and the gap only shows up under abuse or a runaway retry loop.',
+    ],
+  },
+  'system-design/fault-tolerance/fraud-timeout-breaks-the-pages-own-2-3x-rule': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fault Tolerance Patterns (overview)', route: '/system-design/fault-tolerance' },
+      { label: 'High Availability',                     route: '/system-design/high-availability' },
+    ],
+    tip: 'When a page or codebase states an explicit sizing rule (like "timeout = 2-3x p99"), check EVERY place that value is set against the rule individually — one correct instance does not guarantee the rest follow it.',
+    gotchas: [
+      'A timeout with little headroom above p99 latency routes a meaningfully larger fraction of healthy calls into fallback paths than a properly-sized timeout would — a quiet degradation, not an outright failure.',
+    ],
+  },
+  'system-design/fault-tolerance/put-is-idempotent-by-definition-no-key-needed': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fault Tolerance Patterns (overview)', route: '/system-design/fault-tolerance' },
+      { label: 'Distributed Transactions',              route: '/system-design/distributed-transactions' },
+    ],
+    tip: 'PUT, DELETE, and GET are idempotent by RFC 7231\'s own definition — no idempotency-key infrastructure is needed for them. That workaround exists specifically for POST.',
+    gotchas: [
+      'Adding an idempotency key to an already-idempotent method (PUT/DELETE/GET) is harmless but unnecessary engineering effort for a guarantee the HTTP method already provides.',
+    ],
+  },
   'system-design/high-availability': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

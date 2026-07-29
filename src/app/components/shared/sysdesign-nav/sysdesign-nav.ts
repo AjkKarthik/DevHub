@@ -312,7 +312,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/fault-tolerance" routerLinkActive="active"><span class="nl-text">Fault Tolerance Patterns</span>@if(p.isDone('sysdesign-fault-tolerance')){<span class="nl-done">✓</span>}@if(d('sysdesign-fault-tolerance');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/fault-tolerance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Fault Tolerance Patterns</span>
+        @if(p.isDone('sysdesign-fault-tolerance')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-fault-tolerance');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('fault-tolerance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('fault-tolerance')"
+                  (click)="toggleSubtopics('fault-tolerance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('fault-tolerance'); as ftSubs) {
+        @if (isSubtopicsExpanded('fault-tolerance')) {
+          <div class="nav-subtopics">
+            @for (s of ftSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/distributed-tracing" routerLinkActive="active"><span class="nl-text">Distributed Tracing</span>@if(p.isDone('sysdesign-distributed-tracing')){<span class="nl-done">✓</span>}@if(d('sysdesign-distributed-tracing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/disaster-recovery" routerLinkActive="active"><span class="nl-text">Disaster Recovery</span>@if(p.isDone('sysdesign-disaster-recovery')){<span class="nl-done">✓</span>}@if(d('sysdesign-disaster-recovery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

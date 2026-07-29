@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Fault Tolerance Patterns" topicRoute="/system-design/fault-tolerance" subtopicLabel="The Fraud-Check Timeout Breaks the Page's Own 2-3x Rule" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">The Fraud-Check Timeout Breaks the Page's Own 2-3x Rule</h1>
+  <p class="page-subtitle">The QnA says set timeouts at 2-3x p99 — the solution's stripe.charge call followed it (2.5x) but its fraudService.check() call used only 1.25x. Fixed to match the page's own rule.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This fixes an internal inconsistency between the page's stated rule and its own example. Next: PUT doesn't actually need an idempotency key the way the page implies.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Fault Tolerance Patterns" topicRoute="/system-design/fault-tolerance"
+    [prev]="{ label: 'The Rate Limiter Was Configured for 600/min, Not 10/min', route: '/system-design/fault-tolerance/rate-limiter-unit-bug-per-second-not-per-minute' }"
+    [next]="{ label: 'PUT Is Idempotent by Definition — It Doesn’t Need a Key', route: '/system-design/fault-tolerance/put-is-idempotent-by-definition-no-key-needed' }" />
+</div>

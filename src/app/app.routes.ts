@@ -2882,7 +2882,12 @@ export const routes: Routes = [
       { path: 'request-based-and-time-based-error-budgets-arent-the-same-thing', loadComponent: () => import('./components/architecture/system-design/high-availability/subtopics/request-based-and-time-based-error-budgets-arent-the-same-thing/request-based-and-time-based-error-budgets-arent-the-same-thing').then(m => m.RequestBasedAndTimeBasedErrorBudgetsArentTheSameThingSubtopic) },
       { path: 'active-actives-instant-failover-still-waits-on-health-check-detection', loadComponent: () => import('./components/architecture/system-design/high-availability/subtopics/active-actives-instant-failover-still-waits-on-health-check-detection/active-actives-instant-failover-still-waits-on-health-check-detection').then(m => m.ActiveActivesInstantFailoverStillWaitsOnHealthCheckDetectionSubtopic) },
     ] },
-    { path: 'fault-tolerance', loadComponent: () => import('./components/architecture/system-design/fault-tolerance/fault-tolerance').then(m => m.SysdesignFaultTolerance) },
+    { path: 'fault-tolerance', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/fault-tolerance/fault-tolerance').then(m => m.SysdesignFaultTolerance) },
+      { path: 'rate-limiter-unit-bug-per-second-not-per-minute', loadComponent: () => import('./components/architecture/system-design/fault-tolerance/subtopics/rate-limiter-unit-bug-per-second-not-per-minute/rate-limiter-unit-bug-per-second-not-per-minute').then(m => m.RateLimiterUnitBugPerSecondNotPerMinuteSubtopic) },
+      { path: 'fraud-timeout-breaks-the-pages-own-2-3x-rule', loadComponent: () => import('./components/architecture/system-design/fault-tolerance/subtopics/fraud-timeout-breaks-the-pages-own-2-3x-rule/fraud-timeout-breaks-the-pages-own-2-3x-rule').then(m => m.FraudTimeoutBreaksThePagesOwn23xRuleSubtopic) },
+      { path: 'put-is-idempotent-by-definition-no-key-needed', loadComponent: () => import('./components/architecture/system-design/fault-tolerance/subtopics/put-is-idempotent-by-definition-no-key-needed/put-is-idempotent-by-definition-no-key-needed').then(m => m.PutIsIdempotentByDefinitionNoKeyNeededSubtopic) },
+    ] },
     { path: 'distributed-tracing', loadComponent: () => import('./components/architecture/system-design/distributed-tracing/distributed-tracing').then(m => m.SysdesignDistributedTracing) },
     { path: 'disaster-recovery', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/disaster-recovery').then(m => m.SysdesignDisasterRecovery) },
     { path: 'url-shortener', loadComponent: () => import('./components/architecture/system-design/url-shortener/url-shortener').then(m => m.SysdesignUrlShortener) },
