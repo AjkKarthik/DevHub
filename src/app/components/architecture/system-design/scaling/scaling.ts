@@ -27,7 +27,7 @@ const theory: TheoryPoint[] = [
     heading: 'Vertical vs horizontal scaling',
     points: [
       'Vertical (scale up): bigger machine — more CPU cores, RAM, faster NVMe. Simple — no code changes.',
-      'Ceiling: largest AWS instance is ~448 vCPU, 24 TB RAM. Beyond that, vertical fails.',
+      'Ceiling: the largest current AWS instance (u7in-32tb.224xlarge) is 896 vCPU, 32 TB RAM — the older u-24tb1.metal (448 vCPU, 24 TB) is deprecated for new launches. Beyond the largest available instance, vertical fails.',
       'Horizontal (scale out): add identical servers behind a load balancer. Requires stateless application tier.',
       'Horizontal can be nearly infinite — DynamoDB handles millions of TPS by adding nodes.',
     ],

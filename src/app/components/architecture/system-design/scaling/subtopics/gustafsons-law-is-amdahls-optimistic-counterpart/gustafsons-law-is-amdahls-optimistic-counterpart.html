@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Horizontal vs Vertical Scaling" topicRoute="/system-design/scaling" subtopicLabel="Gustafson’s Law Is Amdahl’s Optimistic Counterpart" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Gustafson’s Law Is Amdahl’s Optimistic Counterpart</h1>
+  <p class="page-subtitle">The main page states Amdahl's pessimistic speedup ceiling as if it were the whole picture — Gustafson's Law covers the "problem size grows with resources" case most horizontal scaling actually is.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This adds the missing counterpart to Amdahl's Law. Next: the main page's autoscaling-delay numbers (VMs, containers) leave out a third, much faster option — Firecracker microVMs.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Horizontal vs Vertical Scaling" topicRoute="/system-design/scaling"
+    [prev]="{ label: 'The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current', route: '/system-design/scaling/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current' }"
+    [next]="{ label: 'Firecracker MicroVMs Boot in ~125ms, Not Minutes', route: '/system-design/scaling/firecracker-microvms-boot-in-125ms-not-minutes' }" />
+</div>

@@ -3008,4 +3008,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'TCP Teardown: TIME_WAIT Can Exhaust Ephemeral Ports', route: '/system-design/networking/tcp-teardown-time-wait-can-exhaust-ephemeral-ports' },
     { label: 'Stale-While-Revalidate Exists to Stop Cache Stampedes', route: '/system-design/networking/stale-while-revalidate-exists-to-stop-cache-stampedes' },
   ],
+  'scaling': [
+    { label: 'The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current', route: '/system-design/scaling/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current' },
+    { label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart', route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' },
+    { label: 'Firecracker MicroVMs Boot in ~125ms, Not Minutes', route: '/system-design/scaling/firecracker-microvms-boot-in-125ms-not-minutes' },
+  ],
 };

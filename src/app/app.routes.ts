@@ -2822,7 +2822,12 @@ export const routes: Routes = [
       { path: 'tcp-teardown-time-wait-can-exhaust-ephemeral-ports', loadComponent: () => import('./components/architecture/system-design/networking/subtopics/tcp-teardown-time-wait-can-exhaust-ephemeral-ports/tcp-teardown-time-wait-can-exhaust-ephemeral-ports').then(m => m.TcpTeardownTimeWaitCanExhaustEphemeralPortsSubtopic) },
       { path: 'stale-while-revalidate-exists-to-stop-cache-stampedes', loadComponent: () => import('./components/architecture/system-design/networking/subtopics/stale-while-revalidate-exists-to-stop-cache-stampedes/stale-while-revalidate-exists-to-stop-cache-stampedes').then(m => m.StaleWhileRevalidateExistsToStopCacheStampedesSubtopic) },
     ] },
-    { path: 'scaling', loadComponent: () => import('./components/architecture/system-design/scaling/scaling').then(m => m.SysdesignScaling) },
+    { path: 'scaling', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/scaling/scaling').then(m => m.SysdesignScaling) },
+      { path: 'the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current', loadComponent: () => import('./components/architecture/system-design/scaling/subtopics/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current').then(m => m.TheLargestAwsInstanceFigureWasStaleU7in32tbIsCurrentSubtopic) },
+      { path: 'gustafsons-law-is-amdahls-optimistic-counterpart', loadComponent: () => import('./components/architecture/system-design/scaling/subtopics/gustafsons-law-is-amdahls-optimistic-counterpart/gustafsons-law-is-amdahls-optimistic-counterpart').then(m => m.GustafsonsLawIsAmdahlsOptimisticCounterpartSubtopic) },
+      { path: 'firecracker-microvms-boot-in-125ms-not-minutes', loadComponent: () => import('./components/architecture/system-design/scaling/subtopics/firecracker-microvms-boot-in-125ms-not-minutes/firecracker-microvms-boot-in-125ms-not-minutes').then(m => m.FirecrackerMicrovmsBootIn125msNotMinutesSubtopic) },
+    ] },
     { path: 'load-balancing', loadComponent: () => import('./components/architecture/system-design/load-balancing/load-balancing').then(m => m.SysdesignLoadBalancing) },
     { path: 'caching', loadComponent: () => import('./components/architecture/system-design/caching/caching').then(m => m.SysdesignCaching) },
     { path: 'cdn', loadComponent: () => import('./components/architecture/system-design/cdn/cdn').then(m => m.SysdesignCdn) },

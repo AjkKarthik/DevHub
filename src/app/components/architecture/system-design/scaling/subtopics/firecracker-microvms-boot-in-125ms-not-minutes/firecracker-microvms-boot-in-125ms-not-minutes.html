@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Horizontal vs Vertical Scaling" topicRoute="/system-design/scaling" subtopicLabel="Firecracker MicroVMs Boot in ~125ms, Not Minutes" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Firecracker MicroVMs Boot in ~125ms, Not Minutes</h1>
+  <p class="page-subtitle">The main page's autoscaling QnA covers VM (2-5 min) and container (30-60s) cold starts — leaving out serverless/Firecracker's ~125ms option, which changes the pre-warming calculus entirely.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final addition in this batch — together, these three subtopics correct a stale vendor figure, add the counterpart to Amdahl's Law, and fill in a missing elastic-compute option.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Horizontal vs Vertical Scaling" topicRoute="/system-design/scaling"
+    [prev]="{ label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart', route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' }" />
+</div>

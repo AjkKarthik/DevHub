@@ -104,7 +104,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Scalability</p>
-      <a routerLink="/system-design/scaling" routerLinkActive="active"><span class="nl-text">Horizontal vs Vertical Scaling</span>@if(p.isDone('sysdesign-scaling')){<span class="nl-done">✓</span>}@if(d('sysdesign-scaling');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/scaling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Horizontal vs Vertical Scaling</span>
+        @if(p.isDone('sysdesign-scaling')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-scaling');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('scaling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('scaling')"
+                  (click)="toggleSubtopics('scaling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('scaling'); as scaleSubs) {
+        @if (isSubtopicsExpanded('scaling')) {
+          <div class="nav-subtopics">
+            @for (s of scaleSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/load-balancing" routerLinkActive="active"><span class="nl-text">Load Balancing</span>@if(p.isDone('sysdesign-load-balancing')){<span class="nl-done">✓</span>}@if(d('sysdesign-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/caching" routerLinkActive="active"><span class="nl-text">Caching Strategies</span>@if(p.isDone('sysdesign-caching')){<span class="nl-done">✓</span>}@if(d('sysdesign-caching');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/cdn" routerLinkActive="active"><span class="nl-text">Content Delivery Networks</span>@if(p.isDone('sysdesign-cdn')){<span class="nl-done">✓</span>}@if(d('sysdesign-cdn');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

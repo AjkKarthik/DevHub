@@ -42336,6 +42336,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Scaling reads and scaling writes are DIFFERENT problems requiring different solutions (read replicas vs. sharding) — conflating them leads to the wrong architecture.',
     ],
   },
+  'system-design/scaling/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Horizontal vs Vertical Scaling',                              route: '/system-design/scaling' },
+      { label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart',           route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' },
+    ],
+    tip: 'AWS\'s current largest instance (u7in-32tb.224xlarge) is 896 vCPUs / 32 TiB RAM — the older u-24tb1.metal (448 vCPU / 24 TB) some material still cites is deprecated for new launches. A "biggest instance" figure is a snapshot in time, not a fixed ceiling.',
+    gotchas: [
+      'A stale vertical-scaling ceiling can lead to concluding horizontal scaling is needed sooner than it actually is for a given workload.',
+      'The durable interview-ready understanding is the CONCEPT (a moving ceiling set by the largest currently-available instance), not a specific memorized number.',
+    ],
+  },
+  'system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Largest AWS Instance Figure Was Stale — u7in-32tb Is Current', route: '/system-design/scaling/the-largest-aws-instance-figure-was-stale-u7in-32tb-is-current' },
+      { label: 'Firecracker MicroVMs Boot in ~125ms, Not Minutes',                 route: '/system-design/scaling/firecracker-microvms-boot-in-125ms-not-minutes' },
+    ],
+    tip: 'Amdahl\'s Law assumes a FIXED problem size (strong scaling) and gives a pessimistic speedup ceiling; Gustafson\'s Law assumes the problem size grows WITH the processors (weak scaling) — the scenario most horizontal scaling for user/data growth actually is.',
+    gotchas: [
+      'The two laws don\'t conflict — they answer different questions ("same job, faster?" vs. "more processors, more work done?"); the skill is recognizing which one describes your actual scaling scenario.',
+      'Citing only Amdahl\'s pessimistic ceiling for a workload that\'s actually scaling with the resources (Gustafson\'s case) understates how well horizontal scaling can work.',
+    ],
+  },
+  'system-design/scaling/firecracker-microvms-boot-in-125ms-not-minutes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart', route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' },
+      { label: 'Horizontal vs Vertical Scaling',                     route: '/system-design/scaling' },
+    ],
+    tip: 'AWS Lambda\'s Firecracker microVMs cold-start in ~125ms — roughly 1,000x faster than a traditional VM (2-5 min) or container (30-60s) — often making dedicated pre-warming automation unnecessary for workloads that fit serverless\'s constraints.',
+    gotchas: [
+      'The microVM boot time is only part of the picture — a heavy runtime on top (an un-optimized JVM app) can still take seconds to fully initialize even on a fast-booting microVM.',
+      'Serverless isn\'t a strictly-better replacement for VM/container autoscaling — it\'s a different point on the trade-off curve (execution time limits, runtime constraints) that happens to have near-instant elasticity.',
+    ],
+  },
   'system-design/load-balancing': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
