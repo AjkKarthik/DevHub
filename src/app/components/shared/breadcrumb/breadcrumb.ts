@@ -2354,6 +2354,9 @@ const MESH_LABELS: Record<string, string> = {
   'multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary': 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary',
   'multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years': 'Kiali Multi-Cluster Support Predates 1.73 by Years',
   'consul':             'Consul Connect',
+  'consul/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model': 'Consul Certs Are Genuinely SPIFFE-Format, Not a Separate Identity Model',
+  'consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent': 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%',
+  'consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment': 'Peered Service DNS Names Include the Peer’s Own Name as a Segment',
   'cheatsheet':         'Service Mesh Cheat Sheet',
   'interview-prep':     'Service Mesh Interview Prep',
 };

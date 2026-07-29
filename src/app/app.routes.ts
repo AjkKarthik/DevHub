@@ -3771,7 +3771,12 @@ export const routes: Routes = [
       { path: 'remotepilotaddress-belongs-to-primary-remote-not-multi-primary', loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/subtopics/remotepilotaddress-belongs-to-primary-remote-not-multi-primary/remotepilotaddress-belongs-to-primary-remote-not-multi-primary').then(m => m.RemotepilotaddressBelongsToPrimaryRemoteNotMultiPrimarySubtopic) },
       { path: 'kiali-multi-cluster-support-predates-1-73-by-years', loadComponent: () => import('./components/cloud/service-mesh/multi-cluster/subtopics/kiali-multi-cluster-support-predates-1-73-by-years/kiali-multi-cluster-support-predates-1-73-by-years').then(m => m.KialiMultiClusterSupportPredates173ByYearsSubtopic) },
     ] },
-    { path: 'consul',             loadComponent: () => import('./components/cloud/service-mesh/consul/consul').then(m => m.MeshConsul) },
+    { path: 'consul', children: [
+      { path: '', loadComponent: () => import('./components/cloud/service-mesh/consul/consul').then(m => m.MeshConsul) },
+      { path: 'consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model', loadComponent: () => import('./components/cloud/service-mesh/consul/subtopics/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model').then(m => m.ConsulCertsAreGenuinelySpiffeFormatNotASeparateIdentityModelSubtopic) },
+      { path: 'leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent', loadComponent: () => import('./components/cloud/service-mesh/consul/subtopics/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent').then(m => m.LeafCertRotationIsA6090PercentWindowNotAFixed60PercentSubtopic) },
+      { path: 'peered-service-dns-names-include-the-peers-own-name-as-a-segment', loadComponent: () => import('./components/cloud/service-mesh/consul/subtopics/peered-service-dns-names-include-the-peers-own-name-as-a-segment/peered-service-dns-names-include-the-peers-own-name-as-a-segment').then(m => m.PeeredServiceDnsNamesIncludeThePeersOwnNameAsASegmentSubtopic) },
+    ] },
     { path: 'cheatsheet',         loadComponent: () => import('./components/cloud/service-mesh/cheatsheet/cheatsheet').then(m => m.MeshCheatsheet) },
     { path: 'interview-prep',     loadComponent: () => import('./components/cloud/service-mesh/interview-prep/interview-prep').then(m => m.MeshInterviewPrep) },
   ] },

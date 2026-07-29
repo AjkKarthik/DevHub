@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Consul Service Mesh" topicRoute="/service-mesh/consul" subtopicLabel="Consul Certs Are Genuinely SPIFFE-Format, Not a Separate Identity Model" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Consul Certs Are Genuinely SPIFFE-Format, Not a Separate Identity Model</h1>
+  <p class="page-subtitle">The main page contradicted itself on whether Consul uses SPIFFE identity — verified against Consul's own built-in CA docs that its certs genuinely use spiffe:// URI SANs.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Consul (current)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a self-contradiction on the main page. Next: a related precision fix on how Consul's certificate rotation actually times itself.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Consul Service Mesh" topicRoute="/service-mesh/consul"
+    [next]="{ label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%', route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Consul Service Mesh" topicRoute="/service-mesh/consul" subtopicLabel="Peered Service DNS Names Include the Peer’s Own Name as a Segment" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Peered Service DNS Names Include the Peer’s Own Name as a Segment</h1>
+  <p class="page-subtitle">The main page's DNS template had no place for the peer's own name at all — verified against Consul's own DNS reference that it's a required segment.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Consul (current)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final correction in this batch — together, these three subtopics tighten the main page's own claims about Consul's identity model, certificate lifecycle, and cluster-peering DNS.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Consul Service Mesh" topicRoute="/service-mesh/consul"
+    [prev]="{ label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%', route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' }" />
+</div>

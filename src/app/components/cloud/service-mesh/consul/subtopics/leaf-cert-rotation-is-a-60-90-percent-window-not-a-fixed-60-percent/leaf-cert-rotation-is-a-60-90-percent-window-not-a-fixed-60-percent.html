@@ -1,0 +1,27 @@
+<div class="mesh-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Consul Service Mesh" topicRoute="/service-mesh/consul" subtopicLabel="Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%" />
+  <div class="page-header-icon mesh-icon">🕸️</div>
+  <h1 class="page-title">Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%</h1>
+  <p class="page-subtitle">The main page described a single fixed rotation trigger — verified against Consul's own docs that the real refresh point is jittered across a 60%–90% window.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Consul (current)" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="mesh-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="mesh-section">
+    <h2>Where this fits</h2>
+    <p>This tightens a precision claim about cert rotation timing. Next: a DNS format correction for cluster-peering service lookups.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Consul Service Mesh" topicRoute="/service-mesh/consul"
+    [prev]="{ label: 'Consul Certs Are Genuinely SPIFFE-Format, Not a Separate Identity Model', route: '/service-mesh/consul/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model' }"
+    [next]="{ label: 'Peered Service DNS Names Include the Peer’s Own Name as a Segment', route: '/service-mesh/consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment' }" />
+</div>

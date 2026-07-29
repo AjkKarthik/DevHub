@@ -41907,6 +41907,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Multi-datacenter Consul federation has its own operational model distinct from Istio\'s multi-cluster approach.',
     ],
   },
+  'service-mesh/consul/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Consul Service Mesh',                                                route: '/service-mesh/consul' },
+      { label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%',              route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' },
+    ],
+    tip: 'Consul\'s per-service mTLS certs genuinely use spiffe:// URI SANs, the same format Istio uses — what differs is the issuer (Consul\'s own CA vs. Istiod\'s), not the identity scheme, so cross-mesh federation is a CA-trust problem, not a format-translation problem.',
+    gotchas: [
+      'Assuming Consul uses a wholly different identity model than SPIFFE leads to overestimating the effort of federating Consul with an Istio mesh.',
+      'Consul ACL tokens govern API/agent-level access — they are not the same thing as the per-request mTLS identity carried in service mesh traffic.',
+    ],
+  },
+  'service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Consul Certs Are Genuinely SPIFFE-Format, Not a Separate Identity Model', route: '/service-mesh/consul/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model' },
+      { label: 'Peered Service DNS Names Include the Peer’s Own Name as a Segment',       route: '/service-mesh/consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment' },
+    ],
+    tip: 'consul-dataplane refreshes a leaf certificate somewhere in a jittered 60%–90% window of its elapsed TTL, not at one fixed instant — a refresh landing anywhere in that range is normal, healthy behavior, not a fault.',
+    gotchas: [
+      'Alerting on a cert that hasn\'t refreshed by exactly 60% of its TTL will fire constantly on perfectly healthy proxies — widen the threshold to the real 60%–90% window instead.',
+      'The rotation jitter is deliberate: it spreads CA request load across many proxies instead of synchronizing every proxy to refresh at the same instant.',
+    ],
+  },
+  'service-mesh/consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%', route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' },
+      { label: 'Consul Service Mesh',                                   route: '/service-mesh/consul' },
+    ],
+    tip: 'A peered Consul service is queried as `<service>.service.<peer-name>.peer.<domain>` — the peer\'s own name is a required, distinct segment, not an implicit or optional part of the DNS name.',
+    gotchas: [
+      'A DNS template with no place for the peer\'s name fails precisely when you have multiple peers exporting same-named services — exactly the scenario cluster peering exists to support.',
+      'The SRV form (`_<service>._<tag>.service.<peer-name>.peer.<domain>`) returns the advertised port too, useful when a plain A/AAAA lookup isn\'t enough.',
+    ],
+  },
   'service-mesh/linkerd': {
     apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
     related: [

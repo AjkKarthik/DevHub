@@ -408,7 +408,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/service-mesh/consul" routerLinkActive="active"><span class="nl-text">Consul Connect</span>@if(p.isDone('mesh-consul')){<span class="nl-done">✓</span>}@if(d('mesh-consul');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/service-mesh/consul" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Consul Connect</span>
+        @if(p.isDone('mesh-consul')){<span class="nl-done">✓</span>}
+        @if(d('mesh-consul');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('consul')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('consul')"
+                  (click)="toggleSubtopics('consul', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('consul'); as consulSubs) {
+        @if (isSubtopicsExpanded('consul')) {
+          <div class="nav-subtopics">
+            @for (s of consulSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

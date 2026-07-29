@@ -2982,4 +2982,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'remotePilotAddress Belongs to Primary-Remote, Not Multi-Primary', route: '/service-mesh/multi-cluster/remotepilotaddress-belongs-to-primary-remote-not-multi-primary' },
     { label: 'Kiali Multi-Cluster Support Predates 1.73 by Years', route: '/service-mesh/multi-cluster/kiali-multi-cluster-support-predates-1-73-by-years' },
   ],
+  'consul': [
+    { label: 'Consul Certs Are Genuinely SPIFFE-Format, Not a Separate Identity Model', route: '/service-mesh/consul/consul-certs-are-genuinely-spiffe-format-not-a-separate-identity-model' },
+    { label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%', route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' },
+    { label: 'Peered Service DNS Names Include the Peer’s Own Name as a Segment', route: '/service-mesh/consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment' },
+  ],
 };
