@@ -2657,9 +2657,10 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 6 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 7 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
-  `/system-design/scaling`, `/system-design/load-balancing`, 2026-07-29) —
+  `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
+  2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2732,6 +2733,16 @@ do this same check before any other new hub's first subtopic set:
   explains the theoretical result (Mitzenmacher) behind the page's one-line "power of two
   choices... near-optimal" claim — an exponential improvement in max load over pure random
   placement, with diminishing (constant-factor only) returns beyond 2 choices.
+  **The `caching` batch found and fixed TWO more real inaccuracies, plus a gap-closing addition**:
+  the page's Quick Reference called LRU "Default Redis eviction" — verified via Redis's own docs
+  that the actual default `maxmemory-policy` is `noeviction` (rejects writes at the memory limit
+  rather than evicting anything; `allkeys-lru` is a common recommended CHOICE, not the automatic
+  default); a self-contained gap found by cross-checking the page's own two code samples — the
+  cache-aside example's `updateUser()` only calls `redis.del()` (invalidating L2), while a
+  separate multi-level-cache example introduces an L1 in-process `Map` with no invalidation path
+  at all, silently relying on an unstated 30-second staleness window; and a gap-closing subtopic
+  on the "Probabilistic Early Expiration" code, which names the real XFetch algorithm but omits
+  its `delta` (recompute-cost) term, verified against the actual published formula.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

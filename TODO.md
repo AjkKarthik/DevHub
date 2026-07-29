@@ -6442,7 +6442,24 @@ off here with a date.
   wrong phrasing ("< 2 seconds") confirmed absent, "~3 seconds" confirmed present; nav accordion
   auto-expand confirmed all 3 links on direct subtopic-URL navigation; 860px wrapper max-width
   confirmed via `getComputedStyle`.
-- [ ] `/system-design/caching` — Caching Strategies
+- [x] `/system-design/caching` — Caching Strategies (2026-07-29) — 3 subtopics: (1) **Redis
+  Defaults to noeviction, Not LRU**, correcting the page's Quick Reference, which called LRU
+  "Default Redis eviction" — verified via Redis's own docs that the real default
+  `maxmemory-policy` is `noeviction` (rejects writes at the limit rather than evicting anything);
+  (2) **The Multi-Level Cache Example Never Invalidates L1**, a self-contained gap found by
+  cross-checking the page's own two code samples — `updateUser()` only calls `redis.del()`
+  (invalidating L2), while a separate multi-level-cache example's L1 in-process `Map` has no
+  invalidation path at all, an unstated 30-second staleness window when the two are combined; (3)
+  **The PER Code Is Missing XFetch's Recompute-Cost Signal**, a gap-closing addition — the page's
+  "Probabilistic Early Expiration" code names the real XFetch algorithm (Vattani et al.) but its
+  formula omits `delta` (observed recompute cost), verified against the actual published formula.
+  Gotcha sweep (backtick parity confirmed via a clean production build, given high raw counts from
+  escaped nested code samples; bare `@word`/double-quote-in-label/over-escaped `\"` all clean)
+  passed. `sysdesign-caching` SUBTOPICS key used — bare `caching` already claimed by the Web
+  Performance hub's own topic. Build passed clean. Browser-verified: nav accordion auto-expand
+  confirmed all 3 links on direct subtopic-URL navigation; old wrong phrasing ("Default Redis
+  eviction") confirmed absent and corrected text confirmed present via direct DOM text search;
+  860px wrapper max-width confirmed via `getComputedStyle`.
 - [ ] `/system-design/cdn` — Content Delivery Networks
 - [ ] `/system-design/sharding` — Database Sharding
 - [ ] `/system-design/sql-vs-nosql` — SQL vs NoSQL
