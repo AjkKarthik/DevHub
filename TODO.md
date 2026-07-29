@@ -6542,7 +6542,25 @@ off here with a date.
   DOM text search (after expanding the collapsed Common Mistakes and QnA sections); 860px wrapper
   max-width confirmed via `getComputedStyle`; SQL hub's own `/sql/indexes` page confirmed
   unaffected. **System Design hub Phase 10: 12 of 24 topics complete — halfway point passed.**
-- [ ] `/system-design/distributed-transactions` — Distributed Transactions
+- [x] `/system-design/distributed-transactions` — Distributed Transactions (2026-07-29) — 3
+  subtopics: (1) **The Idempotency Key Example Used Date.now(), Defeating Retries**, fixing a
+  self-contained bug — the code sample regenerated its key from the current timestamp on every
+  call, contradicting its own retry walkthrough (which showed the SAME key sent twice); fixed to
+  `crypto.randomUUID()` generated once, verified against Stripe's own documented idempotency
+  practice; (2) **Kafka Offset-Committing Is Specific to Consume-Transform-Produce**, tightening
+  the "Kafka transactions... marks offset as committed" claim — verified `sendOffsetsToTransaction()`
+  only applies to stream processing, not every Kafka transaction, and that the page's own outbox
+  example never involved a consumer offset at all; (3) **TCC's Timeout Recovery Still Needs a
+  Transaction Manager**, a gap-closing addition — verified against Apache Seata's own docs that a
+  Transaction Manager still drives timeout-triggered Cancel calls, and that TCC has its own
+  documented "suspended" edge case. Self-caught and fixed a double-quote/apostrophe mistake and an
+  over-escaped backslash before build. Hit one transient build error that did not reproduce on
+  retry (confirmed the file content was clean via direct inspection first). `distributed-
+  transactions` SUBTOPICS key collision-free, left bare. Build passed clean on retry.
+  Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
+  corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
+  via `getComputedStyle`. **System Design hub Phase 10: 13 of 24 topics complete.**
 - [ ] `/system-design/high-availability` — High Availability
 - [ ] `/system-design/fault-tolerance` — Fault Tolerance
 - [ ] `/system-design/distributed-tracing` — Distributed Tracing

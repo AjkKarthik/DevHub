@@ -2657,11 +2657,12 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 12 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 13 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
-  `/system-design/replication`, `/system-design/indexes`, 2026-07-29) —
+  `/system-design/replication`, `/system-design/indexes`,
+  `/system-design/distributed-transactions`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2824,6 +2825,33 @@ do this same check before any other new hub's first subtopic set:
   matching this hub's own existing progress/search key prefix (already `sysdesign-`-prefixed
   before this batch, so no separate mismatch to reconcile) — confirmed via browser check that
   `/sql/indexes` itself rendered unaffected. Build passed clean.
+  **The `distributed-transactions` batch found and fixed THREE issues, including this hub's
+  strongest self-contained catch yet**: the "Idempotency Key" code sample generated its key with
+  `` `pay-${orderId}-${Date.now()}` `` — recomputed on every call, including every retry — while
+  the SAME code sample's own walkthrough directly below it showed the identical literal key sent
+  on both the original attempt and the retry, a self-contradiction requiring zero external
+  research to spot; verified against Stripe's own documented idempotency-key practice (generate
+  once, store, reuse for every retry — never regenerate) and fixed the code to use
+  `crypto.randomUUID()` generated once, outside any retry loop; the "Kafka transactions: producer
+  writes to topic + marks offset as committed" theory bullet was tightened — verified that
+  offset-committing via `sendOffsetsToTransaction()` is specific to the consume-transform-produce
+  (stream processing) pattern, not a feature of every Kafka transaction, and that the page's OWN
+  outbox example (a plain producer with no input topic) never actually involved a consumer offset
+  at all; and a gap-closing subtopic added nuance to the QnA's "TCC does not block if a coordinator
+  fails because each participant can handle Cancel autonomously" claim — verified against Apache
+  Seata's own documentation that a Transaction Manager still drives timeout-triggered Cancel calls,
+  and that TCC has its own documented "suspended" edge case (a delayed Try arriving after Cancel
+  already ran) that does not self-resolve automatically. No `SUBTOPICS` collision for
+  `distributed-transactions` (checked both forms, confirmed collision-free, left bare). Self-caught
+  and fixed a literal-double-quote-inside-a-double-quoted-attribute mistake before build (a `[next]`
+  label used a straight apostrophe in "TCC's" inside a single-quoted string within a double-quoted
+  bound attribute — fixed to the typographic curly quote, the same established rule applied
+  throughout this hub) and an over-escaped `\\'` inside a backtick-delimited `code:` field (removed
+  the unnecessary escaping). Hit one transient build error (`Expected "}" but found "Compile"` at
+  an unrelated line in `subtopics.ts`) that did not reproduce on an immediate retry with zero
+  content changes — treated as a flaky/transient esbuild artifact, not a real defect, since the
+  file's actual content was independently verified clean via direct byte inspection around the
+  reported line before retrying. Build passed clean on retry.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
