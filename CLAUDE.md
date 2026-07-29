@@ -2657,13 +2657,13 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 15 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 16 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
   `/system-design/replication`, `/system-design/indexes`,
   `/system-design/distributed-transactions`, `/system-design/high-availability`,
-  `/system-design/fault-tolerance`, 2026-07-29) —
+  `/system-design/fault-tolerance`, `/system-design/distributed-tracing`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -2905,6 +2905,26 @@ do this same check before any other new hub's first subtopic set:
   documented for this component: clicking "Reveal Solution" first, THEN a separate "View Code"
   toggle that appears only after the solution is revealed — a single click on either alone left
   the corrected code text absent from the DOM. Build passed clean.
+  **The `distributed-tracing` batch found and fixed a genuine self-contradicting label, plus two
+  gap-closing additions**: the "100% sampling in high-traffic production" mistake block's fixed
+  code sample headed itself "// Tail-based sampling: keep 1% of normal + 100% of errors/slow" —
+  directly contradicted by the very next line's own comment, "// 1% head sample." Verified against
+  OpenTelemetry's own docs that ParentBasedSampler/TraceIdRatioBased is a canonical HEAD-based
+  sampler (decides at trace start, no outcome visibility) — the actual tail-based half of the
+  strategy is the Collector's separate tail_sampling processor, which the code sample only ever
+  mentions in a trailing comment without configuring. Fixed the header comment to correctly
+  describe the combined head (SDK) + tail (Collector) strategy. A gap-closing subtopic named
+  Jaeger's native OTLP receiver (shipped in v1.35, May 2022) — the page's only Jaeger example
+  routes through an OTel Collector, never mentioning that a single-backend setup can point its SDK
+  directly at Jaeger's own OTLP endpoint instead. A second gap-closing subtopic added the TraceQL
+  caveat to the page's accurate-but-incomplete "Tempo: no indexing" claim — verified that TraceQL
+  enables real attribute-based search via bloom filters scanning object-storage blocks, not just
+  exact trace-ID lookup, at the cost of slower per-query performance than an indexed backend. No
+  `SUBTOPICS` collision for `distributed-tracing` (checked both forms, confirmed collision-free,
+  left bare — note a DIFFERENT hub, Observability, has its own unrelated `distributed-tracing`
+  ROUTE at a different parent path, which is not a SUBTOPICS-map collision). Build passed clean.
+  Hit a cold dev-server start during verification (confirmed via `curl`-polling rather than a
+  fixed sleep) — otherwise no incidents.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.

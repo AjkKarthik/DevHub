@@ -6597,7 +6597,21 @@ off here with a date.
   corrected text confirmed present via direct DOM text search (after the Challenge's two-step
   Reveal Solution + View Code accordion); 860px wrapper max-width confirmed via
   `getComputedStyle`. **System Design hub Phase 10: 15 of 24 topics complete.**
-- [ ] `/system-design/distributed-tracing` — Distributed Tracing
+- [x] `/system-design/distributed-tracing` — Distributed Tracing (2026-07-29) — 3 subtopics: (1)
+  **The Tail-Based Sampling Example Was Actually Head-Based**, fixing a self-contradicting
+  label — the mistake block's header comment said "tail-based sampling" while its own next line
+  said "1% head sample"; verified against OpenTelemetry's docs and fixed to correctly describe
+  the combined head (SDK)/tail (Collector) strategy; (2) **Jaeger No Longer Needs the OTel
+  Collector for Basic Setups**, a gap-closing addition — verified Jaeger has accepted OTLP
+  directly since v1.35 (2022), an option the page's only example never mentions; (3) **Tempo's
+  No-Indexing Claim Needs a TraceQL Caveat**, a gap-closing addition — verified TraceQL enables
+  real attribute-based search via bloom filters, not just exact trace-ID lookup. `distributed-
+  tracing` SUBTOPICS key collision-free, left bare (a different, unrelated hub route at
+  `/observability/distributed-tracing` does not collide with the SUBTOPICS map). Build passed
+  clean. Browser-verified: nav accordion auto-expand confirmed all 3 links on direct subtopic-URL
+  navigation with the toggle showing its open state; old wrong phrasing confirmed absent and
+  corrected text confirmed present via direct DOM text search; 860px wrapper max-width confirmed
+  via `getComputedStyle`. **System Design hub Phase 10: 16 of 24 topics complete.**
 - [ ] `/system-design/disaster-recovery` — Disaster Recovery
 - [ ] `/system-design/url-shortener` — Design: URL Shortener
 - [ ] `/system-design/social-feed` — Design: Social Feed
