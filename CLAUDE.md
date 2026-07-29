@@ -2657,7 +2657,7 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 22 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  Phase 10: 23 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
   capacity-estimation`, `/system-design/cap-theorem`, `/system-design/networking`,
   `/system-design/scaling`, `/system-design/load-balancing`, `/system-design/caching`,
   `/system-design/cdn`, `/system-design/sharding`, `/system-design/sql-vs-nosql`,
@@ -2666,7 +2666,8 @@ do this same check before any other new hub's first subtopic set:
   `/system-design/fault-tolerance`, `/system-design/distributed-tracing`,
   `/system-design/disaster-recovery`, `/system-design/url-shortener`,
   `/system-design/social-feed`, `/system-design/chat-application`,
-  `/system-design/search-engine`, `/system-design/payment-system`, 2026-07-29) —
+  `/system-design/search-engine`, `/system-design/payment-system`,
+  `/system-design/video-streaming`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
   `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
@@ -3050,6 +3051,33 @@ do this same check before any other new hub's first subtopic set:
   identical button text), and a naive `find()` on button text hits the FIRST (starterCode's) one,
   not necessarily the solution's — querying and clicking ALL matching toggles is the reliable
   approach; 860px wrapper confirmed via `getComputedStyle`.
+  **The `video-streaming` batch found and fixed THREE more genuine issues, the FINAL topic before
+  this hub's Phase 10 rollout is complete**: the "CDN Cache Strategy" code sample cited
+  "Cloudflare/Akamai: 200+ Tbps capacity across all PoPs" — this hub's OWN `/system-design/cdn`
+  topic had already researched and corrected the identical fact to 500+ Tbps during its own
+  Phase 10 authoring, caught by cross-referencing an already-verified fact from a sibling page
+  rather than fresh WebSearch. The Challenge's own cost estimate multiplied three per-day
+  quantities (`100M viewers × 2 hrs/day × 1.5 GB/hr`) and labeled the result "300 PB/month" —
+  every input carries a `/day` unit, so the raw product is a per-DAY total with no ×30
+  (days-in-month) step anywhere in the shown calculation; the accompanying `$3M/month` cost
+  figure was internally consistent with the wrong "300 PB" number (which is exactly what made the
+  mislabeled time period easy to miss), corrected to ~9,000 PB and ~$90M for an actual month. The
+  SAME Challenge's compute formula used `× 4 resolutions` while its own resolution ladder one
+  paragraph earlier lists SIX levels (`240p → 360p → 480p → 720p → 1080p → 4K`) — fixed the
+  multiplier (90,000 vCPU-minutes/min, not 60,000) and scaled the downstream spot-fleet size and
+  hourly-cost figures by the same 1.5× ratio to stay internally consistent. No `SUBTOPICS`
+  collision for `video-streaming` (checked both forms, confirmed collision-free, left bare).
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the CDN capacity
+  fix confirmed after clicking the "CDN Cache Strategy" code-tab button directly (a broad
+  `.code-tabs button` query returns a SINGLE button with all three tab labels concatenated —
+  `find()` on exact trimmed text against `document.querySelectorAll('button')` is what actually
+  finds the real, individually-clickable tab button, the same lesson already documented for this
+  hub's own social-feed batch); both Challenge-solution fixes confirmed after Reveal Solution +
+  the solution's own separate View Code toggle (this Challenge's `starterCode` had no separate
+  toggle of its own, unlike the payment-system batch's two-identical-toggles case, so a single
+  querySelectorAll match was sufficient here — still worth checking the actual count before
+  assuming which pattern applies); 860px wrapper confirmed via `getComputedStyle`. **This leaves
+  only `/system-design/ai-ml-system-design` as the 24th and final Phase 10 topic remaining.**
   **The `search-engine` batch found and fixed TWO more genuine issues, one purely self-contained
   arithmetic and one requiring external verification, plus a gap-closing addition**: the
   Challenge solution's own worked example stated "500M docs, 30 primary shards -- each ~33M

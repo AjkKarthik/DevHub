@@ -6707,7 +6707,21 @@ off here with a date.
   toggles exist — starterCode's and solution's — querying all matches is the reliable approach);
   860px wrapper confirmed via `getComputedStyle`. **System Design hub Phase 10: 22 of 24 topics
   complete.**
-- [ ] `/system-design/video-streaming` — Design: Video Streaming
+- [x] `/system-design/video-streaming` — Design: Video Streaming (2026-07-29) — 3 subtopics: (1)
+  **Stale CDN Capacity Figure, Already Corrected on a Sibling Page** — "Cloudflare/Akamai: 200+
+  Tbps" was stale; this hub's own `/system-design/cdn` topic already corrected the identical fact
+  to 500+ Tbps, caught by cross-referencing a sibling page's already-verified research; (2) **A
+  "300 PB/Month" Figure That Was Actually Per Day**, a self-contained unit-mislabeling bug —
+  multiplying three per-day quantities produced a per-day total labeled "/month" with no ×30
+  step; corrected to ~9,000 PB and ~$90M/month; (3) **Compute Formula Used 4 Resolutions, Ladder
+  Lists 6** — the compute formula's "× 4 resolutions" didn't match the page's own 6-level
+  resolution ladder stated one paragraph earlier; fixed and scaled downstream fleet-size/cost
+  figures by 1.5×. `video-streaming` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
+  rendering (CDN fix needed the individual "CDN Cache Strategy" tab button, not a broad selector
+  that returns concatenated tab text; Challenge fixes needed Reveal Solution + View Code); 860px
+  wrapper confirmed via `getComputedStyle`. **System Design hub Phase 10: 23 of 24 topics
+  complete — only `/system-design/ai-ml-system-design` remains.**
 - [ ] `/system-design/ai-ml-system-design` — Design: AI/ML Systems
 
 #### Architecture Patterns — 22 topic pages
