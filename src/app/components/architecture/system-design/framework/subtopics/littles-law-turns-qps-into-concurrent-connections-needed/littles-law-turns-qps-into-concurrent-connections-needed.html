@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="System Design Framework" topicRoute="/system-design/framework" subtopicLabel="Little’s Law Turns QPS Into Concurrent Connections Needed" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Little’s Law Turns QPS Into Concurrent Connections Needed</h1>
+  <p class="page-subtitle">The main page never answers "how many threads/connections do I need?" — Little's Law (L = λW) is the missing formula that combines QPS and latency into a concrete concurrency number.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This is the third and final subtopic in this batch — together, these three subtopics tighten a memorized latency constant, close a peak-vs-average gap, and add the concurrency-sizing formula the main page's own numbers set up but never use.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="System Design Framework" topicRoute="/system-design/framework"
+    [prev]="{ label: 'Size for Peak QPS, Not Average QPS', route: '/system-design/framework/size-for-peak-qps-not-average-qps' }" />
+</div>

@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProgressService } from '../../../services/progress.service';
 import { SEARCH_INDEX } from '../../../services/search.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 const DIFF: Record<string, string> = Object.fromEntries(
   SEARCH_INDEX.map(e => [e.route, e.difficulty])
@@ -18,7 +20,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Fundamentals</p>
-      <a routerLink="/system-design/framework" routerLinkActive="active"><span class="nl-text">System Design Framework</span>@if(p.isDone('sysdesign-framework')){<span class="nl-done">✓</span>}@if(d('sysdesign-framework');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/framework" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">System Design Framework</span>
+        @if(p.isDone('sysdesign-framework')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-framework');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('framework')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('framework')"
+                  (click)="toggleSubtopics('framework', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('framework'); as fwSubs) {
+        @if (isSubtopicsExpanded('framework')) {
+          <div class="nav-subtopics">
+            @for (s of fwSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/capacity-estimation" routerLinkActive="active"><span class="nl-text">Capacity Estimation</span>@if(p.isDone('sysdesign-capacity-estimation')){<span class="nl-done">✓</span>}@if(d('sysdesign-capacity-estimation');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/cap-theorem" routerLinkActive="active"><span class="nl-text">CAP &amp; PACELC Theorems</span>@if(p.isDone('sysdesign-cap-theorem')){<span class="nl-done">✓</span>}@if(d('sysdesign-cap-theorem');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/networking" routerLinkActive="active"><span class="nl-text">Networking Fundamentals</span>@if(p.isDone('sysdesign-networking')){<span class="nl-done">✓</span>}@if(d('sysdesign-networking');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
@@ -70,5 +91,40 @@ const DIFF: Record<string, string> = Object.fromEntries(
 })
 export class SysdesignNavComponent {
   p = inject(ProgressService);
+  private router = inject(Router);
   d(route: string): string | null { return DIFF[route] ?? null; }
+
+  subtopicsOf(routeSlug: string) {
+    return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  isSubtopicsExpanded(routeSlug: string): boolean {
+    return this.expandedTopics().has(routeSlug);
+  }
+
+  toggleSubtopics(routeSlug: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const next = new Set(this.expandedTopics());
+    next.has(routeSlug) ? next.delete(routeSlug) : next.add(routeSlug);
+    this.expandedTopics.set(next);
+  }
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [topicSlug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(topicSlug));
+        break;
+      }
+    }
+  }
 }

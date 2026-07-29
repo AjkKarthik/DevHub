@@ -2987,4 +2987,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Leaf Cert Rotation Is a 60–90% Window, Not a Fixed 60%', route: '/service-mesh/consul/leaf-cert-rotation-is-a-60-90-percent-window-not-a-fixed-60-percent' },
     { label: 'Peered Service DNS Names Include the Peer’s Own Name as a Segment', route: '/service-mesh/consul/peered-service-dns-names-include-the-peers-own-name-as-a-segment' },
   ],
+  'framework': [
+    { label: 'SSD Random Read Is 150 Microseconds, Not 100', route: '/system-design/framework/ssd-random-read-is-150-microseconds-not-100' },
+    { label: 'Size for Peak QPS, Not Average QPS', route: '/system-design/framework/size-for-peak-qps-not-average-qps' },
+    { label: 'Little’s Law Turns QPS Into Concurrent Connections Needed', route: '/system-design/framework/littles-law-turns-qps-into-concurrent-connections-needed' },
+  ],
 };

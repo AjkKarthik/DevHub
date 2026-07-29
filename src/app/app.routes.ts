@@ -2798,7 +2798,12 @@ export const routes: Routes = [
   ] },
   { path: 'system-design',   children: [
     { path: '', loadComponent: () => import('./components/architecture/system-design/home/home').then(m => m.SystemDesignHome) },
-    { path: 'framework', loadComponent: () => import('./components/architecture/system-design/framework/framework').then(m => m.SysdesignFramework) },
+    { path: 'framework', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/framework/framework').then(m => m.SysdesignFramework) },
+      { path: 'ssd-random-read-is-150-microseconds-not-100', loadComponent: () => import('./components/architecture/system-design/framework/subtopics/ssd-random-read-is-150-microseconds-not-100/ssd-random-read-is-150-microseconds-not-100').then(m => m.SsdRandomReadIs150MicrosecondsNot100Subtopic) },
+      { path: 'size-for-peak-qps-not-average-qps', loadComponent: () => import('./components/architecture/system-design/framework/subtopics/size-for-peak-qps-not-average-qps/size-for-peak-qps-not-average-qps').then(m => m.SizeForPeakQpsNotAverageQpsSubtopic) },
+      { path: 'littles-law-turns-qps-into-concurrent-connections-needed', loadComponent: () => import('./components/architecture/system-design/framework/subtopics/littles-law-turns-qps-into-concurrent-connections-needed/littles-law-turns-qps-into-concurrent-connections-needed').then(m => m.LittlesLawTurnsQpsIntoConcurrentConnectionsNeededSubtopic) },
+    ] },
     { path: 'capacity-estimation', loadComponent: () => import('./components/architecture/system-design/capacity-estimation/capacity-estimation').then(m => m.SysdesignCapacityEstimation) },
     { path: 'cap-theorem', loadComponent: () => import('./components/architecture/system-design/cap-theorem/cap-theorem').then(m => m.SysdesignCapTheorem) },
     { path: 'networking', loadComponent: () => import('./components/architecture/system-design/networking/networking').then(m => m.SysdesignNetworking) },

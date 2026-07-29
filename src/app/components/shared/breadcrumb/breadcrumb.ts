@@ -2686,6 +2686,9 @@ const TESTING_LABELS: Record<string, string> = {
 
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
+  'framework/ssd-random-read-is-150-microseconds-not-100': 'SSD Random Read Is 150 Microseconds, Not 100',
+  'framework/size-for-peak-qps-not-average-qps': 'Size for Peak QPS, Not Average QPS',
+  'framework/littles-law-turns-qps-into-concurrent-connections-needed': 'Little’s Law Turns QPS Into Concurrent Connections Needed',
   'capacity-estimation':      'Capacity Estimation',
   'cap-theorem':              'CAP & PACELC Theorems',
   'networking':               'Networking Fundamentals',

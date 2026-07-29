@@ -42181,6 +42181,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Explicitly stating assumptions and tradeoffs out loud shows the interviewer your reasoning, not just your conclusion.',
     ],
   },
+  'system-design/framework/ssd-random-read-is-150-microseconds-not-100': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'System Design Framework',              route: '/system-design/framework' },
+      { label: 'Size for Peak QPS, Not Average QPS',    route: '/system-design/framework/size-for-peak-qps-not-average-qps' },
+    ],
+    tip: 'The canonical "Latency Numbers Every Programmer Should Know" figure for a 4K random SSD read is ~150 microseconds (0.15ms) — not 0.1ms. Chained across multiple reads against a tight latency budget, that rounding difference compounds fast.',
+    gotchas: [
+      'Using 0.1ms instead of 0.15ms understates real storage latency by a third — enough to make a design look safely within budget when it is actually near the edge.',
+      'The other classic numbers (disk seek 10ms, same-DC round trip ~0.5ms, cross-region round trip ~150ms) are accurate as commonly cited — only the SSD figure needed correction.',
+    ],
+  },
+  'system-design/framework/size-for-peak-qps-not-average-qps': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SSD Random Read Is 150 Microseconds, Not 100',                          route: '/system-design/framework/ssd-random-read-is-150-microseconds-not-100' },
+      { label: 'Little’s Law Turns QPS Into Concurrent Connections Needed',              route: '/system-design/framework/littles-law-turns-qps-into-concurrent-connections-needed' },
+    ],
+    tip: 'A 24-hour average QPS figure is not what you provision infrastructure to handle — real traffic is non-uniform, and the standard interview default is to size for roughly 2–3x the average at peak.',
+    gotchas: [
+      'Stating "that\'s the average; I\'d provision for ~2-3x that at peak" unprompted is a strong, low-cost signal in a system design interview.',
+      'A system provisioned exactly to its average QPS will be under-capacity during its busiest, highest-stakes hours.',
+    ],
+  },
+  'system-design/framework/littles-law-turns-qps-into-concurrent-connections-needed': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Size for Peak QPS, Not Average QPS', route: '/system-design/framework/size-for-peak-qps-not-average-qps' },
+      { label: 'System Design Framework',             route: '/system-design/framework' },
+    ],
+    tip: 'Little\'s Law (L = λW) converts QPS (λ) and average latency (W) into the concurrency (L) — worker threads, connections — a service actually needs provisioned to avoid queueing delay.',
+    gotchas: [
+      'An undersized thread/connection pool causes queueing, which raises real latency, which (per Little\'s Law) raises the true required concurrency further — a feedback loop, not a stable degraded state.',
+      'Use the PEAK QPS figure (not the average) as λ when sizing a pool with Little\'s Law, for the same reason peak matters for raw capacity planning.',
+    ],
+  },
   'system-design/capacity-estimation': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [
