@@ -42384,6 +42384,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Sticky sessions (routing a client to the same backend) reintroduce a form of statefulness that complicates horizontal scaling and failover — avoid them when possible by externalizing session state instead.',
     ],
   },
+  'system-design/load-balancing/albs-default-deregistration-delay-is-300-seconds-not-60': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing',                                                    route: '/system-design/load-balancing' },
+      { label: 'VRRP Failover Takes About 3 Seconds by Default, Not Under 2',        route: '/system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2' },
+    ],
+    tip: 'AWS ALB\'s default deregistration delay (connection draining) is 300 seconds (5 minutes), configurable 0-3600s — 30-60s is a common TUNED-down value, not the out-of-the-box default.',
+    gotchas: [
+      'A rolling deployment budgeted on a "typical 30-60s" drain assumption will take up to 5x longer than expected if the target group\'s deregistration delay was never explicitly configured.',
+      'NGINX and other self-managed LBs have no fixed vendor default at all — drain behavior there is purely whatever you configure.',
+    ],
+  },
+  'system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'ALB’s Default Deregistration Delay Is 300 Seconds, Not 60',    route: '/system-design/load-balancing/albs-default-deregistration-delay-is-300-seconds-not-60' },
+      { label: 'Why Power of Two Choices Beats Picking One Random Server',     route: '/system-design/load-balancing/why-power-of-two-choices-beats-picking-one-random-server' },
+    ],
+    tip: 'VRRP\'s failure-detection formula is (advert_int x 3) + skew_time — with keepalived\'s default 1-second advert_int, that\'s a ~3-second failover window, not under 2 seconds. Sub-second failover requires deliberately lowering advert_int.',
+    gotchas: [
+      'VRRP requires missing THREE consecutive advertisements before declaring the master down — this "x3" is baked into the protocol\'s own formula.',
+      'An alert threshold set below the real ~3-second default failover window will false-positive on every normal failover.',
+    ],
+  },
+  'system-design/load-balancing/why-power-of-two-choices-beats-picking-one-random-server': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'VRRP Failover Takes About 3 Seconds by Default, Not Under 2', route: '/system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2' },
+      { label: 'Load Balancing',                                             route: '/system-design/load-balancing' },
+    ],
+    tip: 'Picking the less-loaded of 2 random servers (power of two choices) gives an EXPONENTIAL improvement in max load over picking 1 random server (Mitzenmacher) — going from 2 choices to 3+ only yields a constant-factor improvement.',
+    gotchas: [
+      'The big win is specifically the jump from 1 choice to 2 — adding a 3rd, 4th, or 5th random choice costs more per-request overhead for comparatively little further gain.',
+      'This achieves near-optimal load distribution using only cheap, local, 2-server state — not a continuously-maintained global view of every backend\'s load.',
+    ],
+  },
   'system-design/caching': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

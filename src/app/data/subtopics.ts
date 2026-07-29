@@ -3013,4 +3013,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Gustafson’s Law Is Amdahl’s Optimistic Counterpart', route: '/system-design/scaling/gustafsons-law-is-amdahls-optimistic-counterpart' },
     { label: 'Firecracker MicroVMs Boot in ~125ms, Not Minutes', route: '/system-design/scaling/firecracker-microvms-boot-in-125ms-not-minutes' },
   ],
+  // NOTE: bare 'load-balancing' key already taken by the AWS hub's own load-balancing topic
+  'sysdesign-load-balancing': [
+    { label: 'ALB’s Default Deregistration Delay Is 300 Seconds, Not 60', route: '/system-design/load-balancing/albs-default-deregistration-delay-is-300-seconds-not-60' },
+    { label: 'VRRP Failover Takes About 3 Seconds by Default, Not Under 2', route: '/system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2' },
+    { label: 'Why Power of Two Choices Beats Picking One Random Server', route: '/system-design/load-balancing/why-power-of-two-choices-beats-picking-one-random-server' },
+  ],
 };

@@ -124,7 +124,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/load-balancing" routerLinkActive="active"><span class="nl-text">Load Balancing</span>@if(p.isDone('sysdesign-load-balancing')){<span class="nl-done">✓</span>}@if(d('sysdesign-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/load-balancing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Load Balancing</span>
+        @if(p.isDone('sysdesign-load-balancing')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('sysdesign-load-balancing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sysdesign-load-balancing')"
+                  (click)="toggleSubtopics('sysdesign-load-balancing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sysdesign-load-balancing'); as lbSubs) {
+        @if (isSubtopicsExpanded('sysdesign-load-balancing')) {
+          <div class="nav-subtopics">
+            @for (s of lbSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/caching" routerLinkActive="active"><span class="nl-text">Caching Strategies</span>@if(p.isDone('sysdesign-caching')){<span class="nl-done">✓</span>}@if(d('sysdesign-caching');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/cdn" routerLinkActive="active"><span class="nl-text">Content Delivery Networks</span>@if(p.isDone('sysdesign-cdn')){<span class="nl-done">✓</span>}@if(d('sysdesign-cdn');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/sharding" routerLinkActive="active"><span class="nl-text">Database Sharding</span>@if(p.isDone('sysdesign-sharding')){<span class="nl-done">✓</span>}@if(d('sysdesign-sharding');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

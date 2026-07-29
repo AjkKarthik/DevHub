@@ -1,0 +1,26 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Load Balancing" topicRoute="/system-design/load-balancing" subtopicLabel="ALB's Default Deregistration Delay Is 300 Seconds, Not 60" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">ALB's Default Deregistration Delay Is 300 Seconds, Not 60</h1>
+  <p class="page-subtitle">The main page's QnA cited "typically 30-60 seconds" for connection draining while naming AWS ALB — verified against AWS's own docs that ALB's actual default is 5 minutes.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This corrects a stale vendor-default figure. Next: a related precision fix — the main page's VRRP failover claim of "under 2 seconds" doesn't match the protocol's own default timers either.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Load Balancing" topicRoute="/system-design/load-balancing"
+    [next]="{ label: 'VRRP Failover Takes About 3 Seconds by Default, Not Under 2', route: '/system-design/load-balancing/vrrp-failover-takes-about-3-seconds-by-default-not-under-2' }" />
+</div>

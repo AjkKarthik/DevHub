@@ -2828,7 +2828,12 @@ export const routes: Routes = [
       { path: 'gustafsons-law-is-amdahls-optimistic-counterpart', loadComponent: () => import('./components/architecture/system-design/scaling/subtopics/gustafsons-law-is-amdahls-optimistic-counterpart/gustafsons-law-is-amdahls-optimistic-counterpart').then(m => m.GustafsonsLawIsAmdahlsOptimisticCounterpartSubtopic) },
       { path: 'firecracker-microvms-boot-in-125ms-not-minutes', loadComponent: () => import('./components/architecture/system-design/scaling/subtopics/firecracker-microvms-boot-in-125ms-not-minutes/firecracker-microvms-boot-in-125ms-not-minutes').then(m => m.FirecrackerMicrovmsBootIn125msNotMinutesSubtopic) },
     ] },
-    { path: 'load-balancing', loadComponent: () => import('./components/architecture/system-design/load-balancing/load-balancing').then(m => m.SysdesignLoadBalancing) },
+    { path: 'load-balancing', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/load-balancing/load-balancing').then(m => m.SysdesignLoadBalancing) },
+      { path: 'albs-default-deregistration-delay-is-300-seconds-not-60', loadComponent: () => import('./components/architecture/system-design/load-balancing/subtopics/albs-default-deregistration-delay-is-300-seconds-not-60/albs-default-deregistration-delay-is-300-seconds-not-60').then(m => m.AlbsDefaultDeregistrationDelayIs300SecondsNot60Subtopic) },
+      { path: 'vrrp-failover-takes-about-3-seconds-by-default-not-under-2', loadComponent: () => import('./components/architecture/system-design/load-balancing/subtopics/vrrp-failover-takes-about-3-seconds-by-default-not-under-2/vrrp-failover-takes-about-3-seconds-by-default-not-under-2').then(m => m.VrrpFailoverTakesAbout3SecondsByDefaultNotUnder2Subtopic) },
+      { path: 'why-power-of-two-choices-beats-picking-one-random-server', loadComponent: () => import('./components/architecture/system-design/load-balancing/subtopics/why-power-of-two-choices-beats-picking-one-random-server/why-power-of-two-choices-beats-picking-one-random-server').then(m => m.WhyPowerOfTwoChoicesBeatsPickingOneRandomServerSubtopic) },
+    ] },
     { path: 'caching', loadComponent: () => import('./components/architecture/system-design/caching/caching').then(m => m.SysdesignCaching) },
     { path: 'cdn', loadComponent: () => import('./components/architecture/system-design/cdn/cdn').then(m => m.SysdesignCdn) },
     { path: 'sharding', loadComponent: () => import('./components/architecture/system-design/sharding/sharding').then(m => m.SysdesignSharding) },

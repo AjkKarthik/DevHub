@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Load Balancing" topicRoute="/system-design/load-balancing" subtopicLabel="VRRP Failover Takes About 3 Seconds by Default, Not Under 2" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">VRRP Failover Takes About 3 Seconds by Default, Not Under 2</h1>
+  <p class="page-subtitle">The main page's "secondary claims the VIP in under 2 seconds" claim doesn't match VRRP's own failure-detection formula with default timers.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This tightens another vendor/protocol-default figure. Next: the main page names "power of two choices" as near-optimal without explaining why — the underlying theoretical result is genuinely striking.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Load Balancing" topicRoute="/system-design/load-balancing"
+    [prev]="{ label: 'ALB’s Default Deregistration Delay Is 300 Seconds, Not 60', route: '/system-design/load-balancing/albs-default-deregistration-delay-is-300-seconds-not-60' }"
+    [next]="{ label: 'Why Power of Two Choices Beats Picking One Random Server', route: '/system-design/load-balancing/why-power-of-two-choices-beats-picking-one-random-server' }" />
+</div>
