@@ -352,7 +352,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/disaster-recovery" routerLinkActive="active"><span class="nl-text">Disaster Recovery</span>@if(p.isDone('sysdesign-disaster-recovery')){<span class="nl-done">✓</span>}@if(d('sysdesign-disaster-recovery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/disaster-recovery" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Disaster Recovery</span>
+        @if(p.isDone('sysdesign-disaster-recovery')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-disaster-recovery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('disaster-recovery')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('disaster-recovery')"
+                  (click)="toggleSubtopics('disaster-recovery', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('disaster-recovery'); as drSubs) {
+        @if (isSubtopicsExpanded('disaster-recovery')) {
+          <div class="nav-subtopics">
+            @for (s of drSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

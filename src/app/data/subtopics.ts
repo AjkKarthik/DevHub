@@ -3071,4 +3071,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Jaeger No Longer Needs the OTel Collector for Basic Setups', route: '/system-design/distributed-tracing/jaeger-no-longer-needs-the-otel-collector' },
     { label: 'Tempo’s No-Indexing Claim Needs a TraceQL Caveat', route: '/system-design/distributed-tracing/tempos-no-indexing-claim-needs-a-traceql-caveat' },
   ],
+  'disaster-recovery': [
+    { label: 'RDS PITR’s 5-Minute Window Claim Confuses Granularity With Recency', route: '/system-design/disaster-recovery/pitr-5-min-window-confuses-granularity-with-recency-lag' },
+    { label: 'RDS Multi-AZ DB Clusters Apply Here Too', route: '/system-design/disaster-recovery/rds-multi-az-db-clusters-apply-here-too' },
+    { label: 'Why Aurora Global Beats a Plain Cross-Region Replica', route: '/system-design/disaster-recovery/why-aurora-global-beats-a-plain-cross-region-replica' },
+  ],
 };

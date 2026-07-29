@@ -42780,6 +42780,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Multi-region active-active provides the best RTO/RPO but is significantly more complex and costly than active-passive — the right choice depends on how costly actual downtime genuinely is for the business.',
     ],
   },
+  'system-design/disaster-recovery/pitr-5-min-window-confuses-granularity-with-recency-lag': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Disaster Recovery (overview)', route: '/system-design/disaster-recovery' },
+      { label: 'Indexes & Query Optimisation', route: '/system-design/indexes' },
+    ],
+    tip: 'RDS PITR supports second-level restore precision — the commonly-cited "5 minutes" figure is AWS\'s LatestRestorableTime (how close to now you can restore), not the spacing between valid restore points.',
+    gotchas: [
+      'A destructive event from more than ~5 minutes ago can be restored to the exact second before it — the 5-minute figure only limits restoring to very recent activity that has not finished archiving yet.',
+    ],
+  },
+  'system-design/disaster-recovery/rds-multi-az-db-clusters-apply-here-too': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Disaster Recovery (overview)', route: '/system-design/disaster-recovery' },
+      { label: 'High Availability Design',       route: '/system-design/high-availability' },
+    ],
+    tip: 'For an RTO-sensitive DR plan, use RDS Multi-AZ DB CLUSTER (under 35s failover) instead of the traditional Multi-AZ instance deployment (60-120s) — the same fact this hub\'s own High Availability topic already verifies.',
+    gotchas: [
+      'Multi-AZ DB Cluster\'s standbys are also independently readable, unlike the traditional Multi-AZ instance deployment\'s unreadable standby — a second, separate benefit beyond failover speed.',
+    ],
+  },
+  'system-design/disaster-recovery/why-aurora-global-beats-a-plain-cross-region-replica': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Disaster Recovery (overview)', route: '/system-design/disaster-recovery' },
+      { label: 'Replication Strategies',         route: '/system-design/replication' },
+    ],
+    tip: 'Aurora Global Database\'s sub-1-second RPO comes from dedicated, storage-based replication infrastructure specific to the Aurora engine — it is not a configuration setting available on plain RDS PostgreSQL/MySQL.',
+    gotchas: [
+      'Adopting Aurora Global Database\'s replication characteristics requires migrating to the Aurora engine itself — a real migration project, not a config change on an existing RDS instance.',
+    ],
+  },
   'system-design/networking': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

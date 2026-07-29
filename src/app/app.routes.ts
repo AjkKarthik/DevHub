@@ -2894,7 +2894,12 @@ export const routes: Routes = [
       { path: 'jaeger-no-longer-needs-the-otel-collector', loadComponent: () => import('./components/architecture/system-design/distributed-tracing/subtopics/jaeger-no-longer-needs-the-otel-collector/jaeger-no-longer-needs-the-otel-collector').then(m => m.JaegerNoLongerNeedsTheOtelCollectorSubtopic) },
       { path: 'tempos-no-indexing-claim-needs-a-traceql-caveat', loadComponent: () => import('./components/architecture/system-design/distributed-tracing/subtopics/tempos-no-indexing-claim-needs-a-traceql-caveat/tempos-no-indexing-claim-needs-a-traceql-caveat').then(m => m.TemposNoIndexingClaimNeedsATraceqlCaveatSubtopic) },
     ] },
-    { path: 'disaster-recovery', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/disaster-recovery').then(m => m.SysdesignDisasterRecovery) },
+    { path: 'disaster-recovery', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/disaster-recovery').then(m => m.SysdesignDisasterRecovery) },
+      { path: 'pitr-5-min-window-confuses-granularity-with-recency-lag', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/subtopics/pitr-5-min-window-confuses-granularity-with-recency-lag/pitr-5-min-window-confuses-granularity-with-recency-lag').then(m => m.Pitr5MinWindowConfusesGranularityWithRecencyLagSubtopic) },
+      { path: 'rds-multi-az-db-clusters-apply-here-too', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/subtopics/rds-multi-az-db-clusters-apply-here-too/rds-multi-az-db-clusters-apply-here-too').then(m => m.RdsMultiAzDbClustersApplyHereTooSubtopic) },
+      { path: 'why-aurora-global-beats-a-plain-cross-region-replica', loadComponent: () => import('./components/architecture/system-design/disaster-recovery/subtopics/why-aurora-global-beats-a-plain-cross-region-replica/why-aurora-global-beats-a-plain-cross-region-replica').then(m => m.WhyAuroraGlobalBeatsAPlainCrossRegionReplicaSubtopic) },
+    ] },
     { path: 'url-shortener', loadComponent: () => import('./components/architecture/system-design/url-shortener/url-shortener').then(m => m.SysdesignUrlShortener) },
     { path: 'social-feed', loadComponent: () => import('./components/architecture/system-design/social-feed/social-feed').then(m => m.SysdesignSocialFeed) },
     { path: 'chat-application', loadComponent: () => import('./components/architecture/system-design/chat-application/chat-application').then(m => m.SysdesignChatApplication) },
