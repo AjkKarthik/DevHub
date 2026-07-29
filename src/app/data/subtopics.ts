@@ -2992,4 +2992,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Size for Peak QPS, Not Average QPS', route: '/system-design/framework/size-for-peak-qps-not-average-qps' },
     { label: 'Little’s Law Turns QPS Into Concurrent Connections Needed', route: '/system-design/framework/littles-law-turns-qps-into-concurrent-connections-needed' },
   ],
+  'capacity-estimation': [
+    { label: 'SSD Is ~65x Faster Than HDD Seek, Not 1,000x', route: '/system-design/capacity-estimation/ssd-is-65x-faster-than-hdd-seek-not-1000x' },
+    { label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms', route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' },
+    { label: 'Decimal Vendor GB vs. Binary OS GiB Diverge by ~7%', route: '/system-design/capacity-estimation/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent' },
+  ],
 };

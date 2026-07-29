@@ -2804,7 +2804,12 @@ export const routes: Routes = [
       { path: 'size-for-peak-qps-not-average-qps', loadComponent: () => import('./components/architecture/system-design/framework/subtopics/size-for-peak-qps-not-average-qps/size-for-peak-qps-not-average-qps').then(m => m.SizeForPeakQpsNotAverageQpsSubtopic) },
       { path: 'littles-law-turns-qps-into-concurrent-connections-needed', loadComponent: () => import('./components/architecture/system-design/framework/subtopics/littles-law-turns-qps-into-concurrent-connections-needed/littles-law-turns-qps-into-concurrent-connections-needed').then(m => m.LittlesLawTurnsQpsIntoConcurrentConnectionsNeededSubtopic) },
     ] },
-    { path: 'capacity-estimation', loadComponent: () => import('./components/architecture/system-design/capacity-estimation/capacity-estimation').then(m => m.SysdesignCapacityEstimation) },
+    { path: 'capacity-estimation', children: [
+      { path: '', loadComponent: () => import('./components/architecture/system-design/capacity-estimation/capacity-estimation').then(m => m.SysdesignCapacityEstimation) },
+      { path: 'ssd-is-65x-faster-than-hdd-seek-not-1000x', loadComponent: () => import('./components/architecture/system-design/capacity-estimation/subtopics/ssd-is-65x-faster-than-hdd-seek-not-1000x/ssd-is-65x-faster-than-hdd-seek-not-1000x').then(m => m.SsdIs65xFasterThanHddSeekNot1000xSubtopic) },
+      { path: 'redis-get-latency-is-network-rtt-not-an-extra-1ms', loadComponent: () => import('./components/architecture/system-design/capacity-estimation/subtopics/redis-get-latency-is-network-rtt-not-an-extra-1ms/redis-get-latency-is-network-rtt-not-an-extra-1ms').then(m => m.RedisGetLatencyIsNetworkRttNotAnExtra1msSubtopic) },
+      { path: 'decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent', loadComponent: () => import('./components/architecture/system-design/capacity-estimation/subtopics/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent').then(m => m.DecimalVendorGbVsBinaryOsGibDivergeBy7PercentSubtopic) },
+    ] },
     { path: 'cap-theorem', loadComponent: () => import('./components/architecture/system-design/cap-theorem/cap-theorem').then(m => m.SysdesignCapTheorem) },
     { path: 'networking', loadComponent: () => import('./components/architecture/system-design/networking/networking').then(m => m.SysdesignNetworking) },
     { path: 'scaling', loadComponent: () => import('./components/architecture/system-design/scaling/scaling').then(m => m.SysdesignScaling) },

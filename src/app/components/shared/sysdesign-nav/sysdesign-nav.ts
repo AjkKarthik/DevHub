@@ -40,7 +40,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/system-design/capacity-estimation" routerLinkActive="active"><span class="nl-text">Capacity Estimation</span>@if(p.isDone('sysdesign-capacity-estimation')){<span class="nl-done">✓</span>}@if(d('sysdesign-capacity-estimation');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/system-design/capacity-estimation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Capacity Estimation</span>
+        @if(p.isDone('sysdesign-capacity-estimation')){<span class="nl-done">✓</span>}
+        @if(d('sysdesign-capacity-estimation');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('capacity-estimation')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('capacity-estimation')"
+                  (click)="toggleSubtopics('capacity-estimation', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('capacity-estimation'); as ceSubs) {
+        @if (isSubtopicsExpanded('capacity-estimation')) {
+          <div class="nav-subtopics">
+            @for (s of ceSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/system-design/cap-theorem" routerLinkActive="active"><span class="nl-text">CAP &amp; PACELC Theorems</span>@if(p.isDone('sysdesign-cap-theorem')){<span class="nl-done">✓</span>}@if(d('sysdesign-cap-theorem');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/system-design/networking" routerLinkActive="active"><span class="nl-text">Networking Fundamentals</span>@if(p.isDone('sysdesign-networking')){<span class="nl-done">✓</span>}@if(d('sysdesign-networking');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

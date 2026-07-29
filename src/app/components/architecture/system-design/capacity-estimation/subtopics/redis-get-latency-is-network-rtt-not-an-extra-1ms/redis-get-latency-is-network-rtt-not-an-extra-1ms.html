@@ -1,0 +1,27 @@
+<div class="sysdesign-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Capacity Estimation" topicRoute="/system-design/capacity-estimation" subtopicLabel="Redis GET Latency Is Network RTT, Not an Extra 1ms" />
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Redis GET Latency Is Network RTT, Not an Extra 1ms</h1>
+  <p class="page-subtitle">The main page listed Redis/Memcached GET at double the network round trip — verified that cache-server processing itself is sub-microsecond, so the RTT is nearly the whole cost.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sysdesign-section">
+    <h2>Where this fits</h2>
+    <p>This corrects an overstated cache-latency figure. Next: the page's own "each step is ×1,024" storage-scale claim only tells half the story — vendors use decimal ×1,000 instead.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Capacity Estimation" topicRoute="/system-design/capacity-estimation"
+    [prev]="{ label: 'SSD Is ~65x Faster Than HDD Seek, Not 1,000x', route: '/system-design/capacity-estimation/ssd-is-65x-faster-than-hdd-seek-not-1000x' }"
+    [next]="{ label: 'Decimal Vendor GB vs. Binary OS GiB Diverge by ~7%', route: '/system-design/capacity-estimation/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent' }" />
+</div>

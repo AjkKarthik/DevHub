@@ -42228,6 +42228,42 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Peak traffic (not average) is usually the number that matters for capacity planning — average load can look comfortably low while peak load reveals a real bottleneck.',
     ],
   },
+  'system-design/capacity-estimation/ssd-is-65x-faster-than-hdd-seek-not-1000x': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Capacity Estimation',                                          route: '/system-design/capacity-estimation' },
+      { label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms',            route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' },
+    ],
+    tip: 'SSD random read (~150µs) is roughly 65x faster than a disk seek (~10ms) — check a "rule of thumb" against its own supporting table before trusting it; this one was off by an order of magnitude.',
+    gotchas: [
+      'Cross-checking a summary claim against the raw numbers it summarizes is a fast, zero-external-research way to catch this class of error.',
+      'The 1,000x figure isn\'t meaningless — it\'s closer to right for RAM vs. disk seek (100,000x) or certain sequential-throughput comparisons, just not for "random SSD read vs. disk seek."',
+    ],
+  },
+  'system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SSD Is ~65x Faster Than HDD Seek, Not 1,000x',                          route: '/system-design/capacity-estimation/ssd-is-65x-faster-than-hdd-seek-not-1000x' },
+      { label: 'Decimal Vendor GB vs. Binary OS GiB Diverge by ~7%',                    route: '/system-design/capacity-estimation/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent' },
+    ],
+    tip: 'Redis/Memcached command processing is sub-microsecond — a same-datacenter GET\'s real latency is close to the network round trip alone (~0.5ms), not an extra ~0.5ms stacked on top of it.',
+    gotchas: [
+      'Overstating a cache\'s own latency cost understates how much benefit the caching layer actually provides — the more accurate number makes the case for caching stronger, not weaker.',
+      'This compounds when stacking multiple cache/network hops in a request\'s critical path — each hop\'s overstated cost inflates the total estimated latency budget.',
+    ],
+  },
+  'system-design/capacity-estimation/decimal-vendor-gb-vs-binary-os-gib-diverge-by-7-percent': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Redis GET Latency Is Network RTT, Not an Extra 1ms', route: '/system-design/capacity-estimation/redis-get-latency-is-network-rtt-not-an-extra-1ms' },
+      { label: 'Capacity Estimation',                                route: '/system-design/capacity-estimation' },
+    ],
+    tip: 'Storage vendors use decimal (×1,000) units; OS/software report binary (×1,024) units — the gap grows from ~2.4% at KB scale to ~7.4% at GB/TB scale, which is why a "1 TB" drive shows up as "~931 GB" in an OS file browser.',
+    gotchas: [
+      'No bytes are missing when a vendor-marketed capacity and an OS-reported capacity disagree — it\'s the same physical bytes expressed in two different unit conventions.',
+      'Pick ONE convention for an entire back-of-envelope estimate and say so out loud, rather than silently mixing ×1,000 and ×1,024 across different steps of the same calculation.',
+    ],
+  },
   'system-design/cap-theorem': {
     apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
     related: [

@@ -14,7 +14,7 @@ import { PageCompleteComponent } from '../../../shared/page-complete/page-comple
 const quickRef: QuickRefItem[] = [
   { name: '1M req/day',    type: 'keyword', desc: '≈ 12 QPS. Useful anchor: 100M req/day ≈ 1,157 QPS.' },
   { name: '86,400',        type: 'keyword', desc: 'Seconds in a day. Memorise this for QPS conversions.' },
-  { name: 'Storage scale', type: 'keyword', desc: 'KB → MB → GB → TB → PB. Each step is 1,024×.' },
+  { name: 'Storage scale', type: 'keyword', desc: 'KB → MB → GB → TB → PB. Software/OS use ×1,024 (binary); vendors/marketing use ×1,000 (decimal) — the gap grows to ~7% by TB scale.' },
   { name: 'Read:Write',    type: 'syntax',  desc: 'Always establish the ratio first. Drives cache sizing, replica count, shard strategy.' },
   { name: '80/20 rule',    type: 'keyword', desc: '20% of content serves 80% of traffic. Use for cache sizing.' },
   { name: 'Bandwidth',     type: 'syntax',  desc: 'QPS × avg response size. Tells you if CDN / compression is needed.' },
@@ -35,7 +35,7 @@ const theory: TheoryPoint[] = [
     heading: 'Key numbers to memorise',
     points: [
       '1 day = 86,400 seconds ≈ 100k seconds (convenient approximation).',
-      'Latency: L1 cache ~1ns, RAM ~100ns, SSD ~100µs, HDD ~10ms, network (same DC) ~500µs, cross-region ~150ms.',
+      'Latency: L1 cache ~1ns, RAM ~100ns, SSD random read ~150µs, HDD seek ~10ms, network (same DC) ~500µs, cross-region ~150ms.',
       'Throughput: SSD ~500 MB/s sequential read, network ~1 Gbps = 125 MB/s, NVMe ~3 GB/s.',
       '1 million = 10^6; 1 billion = 10^9. Keep units consistent.',
     ],
@@ -111,17 +111,18 @@ echo "With indexes:  355 TB"`,
 # L2 cache reference          4 ns
 # L3 cache reference         10 ns
 # Main memory (RAM)          100 ns   (0.1 µs)
-# SSD random read          100 µs   (0.1 ms)
+# SSD random read (4K)       150 µs   (0.15 ms)
 # HDD seek                  10 ms
-# Memcached get (same DC)    1 ms
-# Redis get (same DC)        1 ms
 # Network same data center   0.5 ms
+# Memcached/Redis get (same DC)   ~network RTT -- server-side processing
+#                                  itself is sub-microsecond, so a GET's
+#                                  real latency is dominated by the same
+#                                  ~0.5ms round trip, not extra time on top
 # Network cross region      30-150 ms
 
 # Rules of thumb:
-# RAM is 100,000× faster than disk
-# Network is 10× slower than RAM
-# SSD is 1,000× faster than spinning disk`,
+# RAM is 100,000× faster than disk seek
+# SSD random read is ~65× faster than a disk seek (10ms / 0.15ms)`,
   },
 ];
 
@@ -278,7 +279,7 @@ const revision: RevisionSummary = {
   oneLiner: 'Back-of-envelope: QPS = (DAU × req/user) / 86,400; Storage = writes/day × size × days × 3 replicas.',
   mustKnow: [
     '1 day ≈ 86,400 seconds; 100M req/day ≈ 1,157 QPS',
-    'Latency: RAM 100ns, SSD 100µs, network 1ms, cross-region 150ms',
+    'Latency: RAM 100ns, SSD random read 150µs, network (same DC) 0.5ms, cross-region 150ms',
     'Always multiply storage by 3× for replication',
     'Cache = 20% of hot data (80/20 rule)',
     'Peak traffic = avg × 3-5× (viral: ×10-50)',
