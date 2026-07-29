@@ -6342,7 +6342,27 @@ off here with a date.
   correctly appear on direct subtopic-URL navigation, no click needed), 860px wrapper max-width
   confirmed via `getComputedStyle`, a subtopic page's full breadcrumb (4 levels)/tailored sidebar/
   theory/code block/try-it/misconceptions/prev-next nav all verified via `get_page_text`.
-- [ ] `/system-design/capacity-estimation` — Capacity Estimation
+- [x] `/system-design/capacity-estimation` — Capacity Estimation (2026-07-29) — 3 subtopics: (1)
+  **SSD Is ~65x Faster Than HDD Seek, Not 1,000x**, correcting a self-contained inconsistency
+  requiring zero external research — the page's own "Rules of thumb" claimed "SSD is 1,000×
+  faster than spinning disk" right below its own table listing SSD random read at 100µs and HDD
+  seek at 10ms, numbers which imply a 100× ratio even before any fact-check; corrected to the
+  externally-verified ~65× using the canonical 150µs SSD figure; (2) **Redis GET Latency Is
+  Network RTT, Not an Extra 1ms**, correcting an overstated cache-latency figure — the page listed
+  Redis/Memcached GET at double its own stated network-RTT figure (1ms vs 0.5ms), verified via
+  real-world Redis benchmarks that cache-server command processing is sub-microsecond, so GET
+  latency tracks the network RTT itself; (3) **Decimal Vendor GB vs. Binary OS GiB Diverge by
+  ~7%**, correcting a claim stated as universal — "storage scales ×1,024 at every step" is true
+  for OS/software binary units but not vendor/marketing decimal units, a well-documented gap
+  (a "1TB" drive shows as "~931GB" in an OS) growing from ~2.4% at KB scale to ~7.4% at GB/TB
+  scale. Gotcha sweep (backtick parity 2/2/2 all even, bare `@word`/double-quote-in-label/
+  over-escaped `\"`/angle-bracket-placeholder-in-innerHTML all clean — the one angle-bracket hit
+  was safely inside a `code:` block) passed. `capacity-estimation` SUBTOPICS key confirmed
+  collision-free, left bare. Build passed clean. Browser-verified: all 3 old wrong phrasings
+  ("1,000× faster than spinning disk", "100 µs" SSD figure, "Redis get (same DC)"+"1 ms")
+  confirmed absent from the main page, corrected text confirmed present, via direct DOM text
+  search; nav accordion auto-expand confirmed all 3 links on direct subtopic-URL navigation;
+  860px wrapper max-width confirmed via `getComputedStyle`.
 - [ ] `/system-design/cap-theorem` — CAP & PACELC Theorems
 - [ ] `/system-design/networking` — Networking Fundamentals
 - [ ] `/system-design/scaling` — Horizontal vs Vertical Scaling

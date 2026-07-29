@@ -2657,10 +2657,12 @@ do this same check before any other new hub's first subtopic set:
   All 26 cards `available: true` in `architecture/system-design/home/home.ts`. Progress: `sysdesignTotal=24` in progress.service.ts.
   System Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SysdesignNavComponent at `shared/sysdesign-nav/sysdesign-nav.ts`.
-  Phase 10: 1 of 24 topics have subtopics (`/system-design/framework`, pilot batch, 2026-07-29) —
+  Phase 10: 2 of 24 topics have subtopics (`/system-design/framework`, `/system-design/
+  capacity-estimation`, 2026-07-29) —
   fixed `SysdesignNavComponent`'s missing subtopics-accordion structural gap (10th `*NavComponent`
   hub in a row missing it at pilot time; copied `MeshNavComponent`'s implementation exactly).
-  `framework` SUBTOPICS key collision-free, left bare. `.sysdesign-page` wrapper NOT global —
+  `framework` and `capacity-estimation` SUBTOPICS keys both collision-free, left bare.
+  `.sysdesign-page` wrapper NOT global —
   every subtopic `.scss` needs the full `.sysdesign-page { max-width: 860px; margin: 0 auto; }`
   rule. Sidebar keys full-path-prefixed (`system-design/framework`). No live playground (system
   design content has no in-browser runtime) — plain `<app-code-block>`. The `framework` pilot
@@ -2670,6 +2672,18 @@ do this same check before any other new hub's first subtopic set:
   accurate methodology/interview-strategy material with few hard factual claims to check; the
   third subtopic DID correct a real, verifiable inaccuracy (a memorized "SSD random read = 0.1ms"
   figure, corrected to the canonical ~0.15ms per "Latency Numbers Every Programmer Should Know").
+  **The `capacity-estimation` batch found and fixed THREE more real inaccuracies, including a
+  self-contained one requiring zero external research** — the main page's own "Rules of thumb"
+  claimed "SSD is 1,000× faster than spinning disk" immediately below its OWN latency table
+  listing SSD random read at 100µs and HDD seek at 10ms, numbers which (even before any external
+  fact-check) imply a 100× ratio, not 1,000× — corrected to the externally-verified ~65× using the
+  canonical 150µs SSD figure; a Redis/Memcached same-DC GET listed at double the network round
+  trip (1ms vs. the page's own 0.5ms network RTT figure), when cache-server command processing is
+  actually sub-microsecond, verified via real-world Redis benchmarks showing GET latency tracks
+  the network RTT itself; and a "storage scales ×1,024 at every step" claim stated as a universal
+  rule, when vendors use decimal ×1,000 while only OS/software use binary ×1,024, a gap
+  (well-documented, e.g. a "1TB" drive showing as "~931GB" in an OS) that grows from ~2.4% at KB
+  scale to ~7.4% at GB/TB scale — exactly the range system design estimates operate in.
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
