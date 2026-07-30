@@ -100,7 +100,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/vertical-slice" routerLinkActive="active"><span class="nl-text">Vertical Slice Architecture</span>@if(p.isDone('arch-vertical-slice')){<span class="nl-done">✓</span>}@if(d('arch-vertical-slice');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/vertical-slice" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Vertical Slice Architecture</span>
+        @if(p.isDone('arch-vertical-slice')){<span class="nl-done">✓</span>}
+        @if(d('arch-vertical-slice');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('vertical-slice')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('vertical-slice')"
+                  (click)="toggleSubtopics('vertical-slice', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('vertical-slice'); as vsSubs) {
+        @if (isSubtopicsExpanded('vertical-slice')) {
+          <div class="nav-subtopics">
+            @for (s of vsSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/service-oriented" routerLinkActive="active"><span class="nl-text">Service-Oriented Architecture</span>@if(p.isDone('arch-service-oriented')){<span class="nl-done">✓</span>}@if(d('arch-service-oriented');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

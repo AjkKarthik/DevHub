@@ -2770,7 +2770,12 @@ export const routes: Routes = [
       { path: 'hexagon-shape-explanation-incomplete', loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/subtopics/hexagon-shape-explanation-incomplete/hexagon-shape-explanation-incomplete').then(m => m.HexagonShapeExplanationIncompleteSubtopic) },
       { path: 'challenge-solution-missing-real-adapter', loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/subtopics/challenge-solution-missing-real-adapter/challenge-solution-missing-real-adapter').then(m => m.ChallengeSolutionMissingRealAdapterSubtopic) },
     ] },
-    { path: 'vertical-slice',            loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/vertical-slice').then(m => m.ArchVerticalSlice) },
+    { path: 'vertical-slice', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/vertical-slice').then(m => m.ArchVerticalSlice) },
+      { path: 'mediatr-went-commercial-2025', loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/subtopics/mediatr-went-commercial-2025/mediatr-went-commercial-2025').then(m => m.MediatRWentCommercial2025Subtopic) },
+      { path: 'source-generator-mediator-alternatives', loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/subtopics/source-generator-mediator-alternatives/source-generator-mediator-alternatives').then(m => m.SourceGeneratorMediatorAlternativesSubtopic) },
+      { path: 'rule-of-three-for-slice-duplication', loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/subtopics/rule-of-three-for-slice-duplication/rule-of-three-for-slice-duplication').then(m => m.RuleOfThreeForSliceDuplicationSubtopic) },
+    ] },
     { path: 'service-oriented',          loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/service-oriented').then(m => m.ArchServiceOriented) },
     { path: 'microservices-principles',  loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/microservices-principles').then(m => m.ArchMicroservicesPrinciples) },
     { path: 'service-communication',     loadComponent: () => import('./components/architecture/arch-patterns/service-communication/service-communication').then(m => m.ArchServiceCommunication) },

@@ -27564,6 +27564,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Pairs naturally with CQRS/mediator — each feature becomes a single Command or Query handler with a consistent, predictable shape.',
     ],
   },
+  'arch-patterns/vertical-slice/mediatr-went-commercial-2025': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Vertical Slice Architecture (overview)', route: '/arch-patterns/vertical-slice' },
+      { label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' },
+    ],
+    tip: 'MediatR remains free for individuals and companies under $5M USD annual revenue — the July 2025 licensing change only requires a paid license above that threshold.',
+    gotchas: [
+      '"X is the standard tool" recommendations are time-stamped facts about current circumstances, not permanent architectural truths — worth periodically re-verifying on any reference page.',
+    ],
+  },
+  'arch-patterns/vertical-slice/source-generator-mediator-alternatives': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'MediatR Went Commercial in July 2025', route: '/arch-patterns/vertical-slice/mediatr-went-commercial-2025' },
+      { label: 'The Rule of Three for Cross-Slice Duplication', route: '/arch-patterns/vertical-slice/rule-of-three-for-slice-duplication' },
+    ],
+    tip: 'Source-generator-based mediators resolve handlers at compile time instead of MediatR\'s original runtime reflection — a real technical tradeoff, not just a licensing difference.',
+    gotchas: [
+      'Swapping the underlying mediator library is a composition-root change only — every slice is written against the same abstract IRequestHandler pattern regardless of which library implements it.',
+    ],
+  },
+  'arch-patterns/vertical-slice/rule-of-three-for-slice-duplication': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' },
+      { label: 'Vertical Slice Architecture (overview)', route: '/arch-patterns/vertical-slice' },
+    ],
+    tip: 'The Rule of Three: duplicate the first two times similar logic appears across slices, and extract a shared abstraction only on the third genuine occurrence.',
+    gotchas: [
+      'Extracting after only two occurrences risks shaping the abstraction around just those two cases — a real third example gives evidence of what\'s actually common, not coincidental.',
+    ],
+  },
   'arch-patterns/aggregates-domain-events': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

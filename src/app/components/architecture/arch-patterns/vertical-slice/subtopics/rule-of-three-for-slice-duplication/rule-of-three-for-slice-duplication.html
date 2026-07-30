@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vertical Slice Architecture" topicRoute="/arch-patterns/vertical-slice" subtopicLabel="The Rule of Three for Cross-Slice Duplication" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Rule of Three for Cross-Slice Duplication</h1>
+  <p class="page-subtitle">The page says some duplication across slices is an accepted tradeoff but never says how much is too much — the Rule of Three gives that judgment call a concrete, actionable trigger.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the mediator library landscape and the duplication-vs-extraction judgment call both covered, this page's guidance on organizing and evolving a Vertical Slice codebase is more complete and actionable. Next up: Service-Oriented Architecture, where the same feature-isolation ideas apply across separately deployed services rather than folders within one codebase.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vertical Slice Architecture" topicRoute="/arch-patterns/vertical-slice"
+    [prev]="{ label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' }" />
+</div>

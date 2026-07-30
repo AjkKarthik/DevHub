@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Vertical Slice Architecture" topicRoute="/arch-patterns/vertical-slice" subtopicLabel="Source-Generator Mediators: A Different Technical Tradeoff" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Source-Generator Mediators: A Different Technical Tradeoff</h1>
+  <p class="page-subtitle">The free alternatives that gained traction after MediatR's licensing change aren't just cheaper clones — Mediator and similar libraries use compile-time source generators instead of MediatR's original reflection-based dispatch.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the mediator-library landscape covered, one more angle is worth a closer look: the page's own "some duplication is an accepted tradeoff" theory bullet never states a concrete rule for WHEN that duplication should finally be extracted.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Vertical Slice Architecture" topicRoute="/arch-patterns/vertical-slice"
+    [prev]="{ label: 'MediatR Went Commercial in July 2025', route: '/arch-patterns/vertical-slice/mediatr-went-commercial-2025' }"
+    [next]="{ label: 'The Rule of Three for Cross-Slice Duplication', route: '/arch-patterns/vertical-slice/rule-of-three-for-slice-duplication' }" />
+</div>

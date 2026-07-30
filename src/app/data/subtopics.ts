@@ -3137,4 +3137,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Hexagon-Shape Explanation Was Half the Story', route: '/arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete' },
     { label: 'The Solution Named a Real Adapter It Never Actually Used', route: '/arch-patterns/hexagonal-architecture/challenge-solution-missing-real-adapter' },
   ],
+  'vertical-slice': [
+    { label: 'MediatR Went Commercial in July 2025', route: '/arch-patterns/vertical-slice/mediatr-went-commercial-2025' },
+    { label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' },
+    { label: 'The Rule of Three for Cross-Slice Duplication', route: '/arch-patterns/vertical-slice/rule-of-three-for-slice-duplication' },
+  ],
 };
