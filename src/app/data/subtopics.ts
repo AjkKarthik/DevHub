@@ -3178,4 +3178,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Polly Example Had the Strategy Order Backwards', route: '/arch-patterns/circuit-breaker/polly-strategy-order-was-backwards' },
     { label: 'Making the Bulkhead Pattern Concrete', route: '/arch-patterns/circuit-breaker/bulkhead-pattern-made-concrete' },
   ],
+  // 'sidecar-service-mesh' confirmed collision-free via app.routes.ts grep before adding
+  'sidecar-service-mesh': [
+    { label: 'Three Different Latency Figures, Reconciled', route: '/arch-patterns/sidecar-service-mesh/three-different-latency-figures-reconciled' },
+    { label: 'Ambient Mesh\'s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' },
+    { label: 'The Retry Latency Math Undercounted By One Try', route: '/arch-patterns/sidecar-service-mesh/retry-latency-math-undercounted-by-one-try' },
+  ],
 };

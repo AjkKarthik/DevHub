@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Sidecar & Service Mesh" topicRoute="/arch-patterns/sidecar-service-mesh" subtopicLabel="Three Different Latency Figures, Reconciled" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Page Stated Three Different Sidecar Latency Figures</h1>
+  <p class="page-subtitle">Theory said ~10ms, the mistakes block said 10-30ms, the quiz said 1-5ms — three sections, one fact, three different numbers. Verified via Istio's own published benchmarks which was closest.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic is a cross-hub catch — this same page's QnA repeats an Ambient Mesh GA version claim already researched and corrected on this session's own Service Mesh hub.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Sidecar & Service Mesh" topicRoute="/arch-patterns/sidecar-service-mesh"
+    [next]="{ label: 'Ambient Mesh’s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' }" />
+</div>

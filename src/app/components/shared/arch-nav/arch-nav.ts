@@ -244,7 +244,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/sidecar-service-mesh" routerLinkActive="active"><span class="nl-text">Sidecar &amp; Service Mesh</span>@if(p.isDone('arch-sidecar-service-mesh')){<span class="nl-done">✓</span>}@if(d('arch-sidecar-service-mesh');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/sidecar-service-mesh" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Sidecar &amp; Service Mesh</span>
+        @if(p.isDone('arch-sidecar-service-mesh')){<span class="nl-done">✓</span>}
+        @if(d('arch-sidecar-service-mesh');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('sidecar-service-mesh')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sidecar-service-mesh')"
+                  (click)="toggleSubtopics('sidecar-service-mesh', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sidecar-service-mesh'); as ssmSubs) {
+        @if (isSubtopicsExpanded('sidecar-service-mesh')) {
+          <div class="nav-subtopics">
+            @for (s of ssmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

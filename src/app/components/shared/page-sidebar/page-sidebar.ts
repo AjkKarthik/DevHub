@@ -27738,6 +27738,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Automatic mTLS enforcement underlies a zero-trust model where no service is implicitly trusted just for being inside the perimeter.',
     ],
   },
+  'arch-patterns/sidecar-service-mesh/three-different-latency-figures-reconciled': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Sidecar & Service Mesh (overview)', route: '/arch-patterns/sidecar-service-mesh' },
+      { label: 'Ambient Mesh\'s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' },
+    ],
+    tip: 'A number quoted without a version or percentile attached is rarely a stable fact — Istio\'s own benchmarks show sidecar overhead dropping release over release.',
+    gotchas: [
+      'Tail latency (p99+) and typical/median latency are genuinely different measurements — a tail figure presented as "typical" overstates the common case.',
+    ],
+  },
+  'arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Three Different Latency Figures, Reconciled', route: '/arch-patterns/sidecar-service-mesh/three-different-latency-figures-reconciled' },
+      { label: 'The Retry Latency Math Undercounted By One Try', route: '/arch-patterns/sidecar-service-mesh/retry-latency-math-undercounted-by-one-try' },
+    ],
+    tip: 'Istio Ambient Mesh reached GA in 1.24 (November 2024) — 1.22 still carried it as Beta, a fact already verified once on this project\'s own dedicated Service Mesh hub.',
+    gotchas: [
+      'A fact verified once elsewhere in a project doesn\'t automatically get fixed everywhere it\'s repeated — the same stale claim can reappear independently.',
+    ],
+  },
+  'arch-patterns/sidecar-service-mesh/retry-latency-math-undercounted-by-one-try': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Sidecar & Service Mesh (overview)', route: '/arch-patterns/sidecar-service-mesh' },
+      { label: 'Ambient Mesh\'s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' },
+    ],
+    tip: 'Istio\'s VirtualService attempts field counts RETRIES after the original request — attempts: 2 means 3 total tries, not 2.',
+    gotchas: [
+      'The correct worst-case latency formula is (attempts + 1) x perTryTimeout, not attempts x perTryTimeout.',
+    ],
+  },
   'arch-patterns/strangler-fig': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

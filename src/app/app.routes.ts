@@ -2812,7 +2812,12 @@ export const routes: Routes = [
       { path: 'polly-strategy-order-was-backwards', loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/subtopics/polly-strategy-order-was-backwards/polly-strategy-order-was-backwards').then(m => m.PollyStrategyOrderWasBackwardsSubtopic) },
       { path: 'bulkhead-pattern-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/subtopics/bulkhead-pattern-made-concrete/bulkhead-pattern-made-concrete').then(m => m.BulkheadPatternMadeConcreteSubtopic) },
     ] },
-    { path: 'sidecar-service-mesh',      loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/sidecar-service-mesh').then(m => m.ArchSidecarServiceMesh) },
+    { path: 'sidecar-service-mesh', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/sidecar-service-mesh').then(m => m.ArchSidecarServiceMesh) },
+      { path: 'three-different-latency-figures-reconciled', loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/subtopics/three-different-latency-figures-reconciled/three-different-latency-figures-reconciled').then(m => m.ThreeDifferentLatencyFiguresReconciledSubtopic) },
+      { path: 'ambient-mesh-ga-version-was-off-by-one-release', loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/subtopics/ambient-mesh-ga-version-was-off-by-one-release/ambient-mesh-ga-version-was-off-by-one-release').then(m => m.AmbientMeshGaVersionWasOffByOneReleaseSubtopic) },
+      { path: 'retry-latency-math-undercounted-by-one-try', loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/subtopics/retry-latency-math-undercounted-by-one-try/retry-latency-math-undercounted-by-one-try').then(m => m.RetryLatencyMathUndercountedByOneTrySubtopic) },
+    ] },
     { path: 'event-driven',              loadComponent: () => import('./components/architecture/arch-patterns/event-driven/event-driven').then(m => m.ArchEventDriven) },
     { path: 'cqrs-event-sourcing',       loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/cqrs-event-sourcing').then(m => m.ArchCqrsEventSourcing) },
     { path: 'saga-choreography',         loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/saga-choreography').then(m => m.ArchSagaChoreography) },
