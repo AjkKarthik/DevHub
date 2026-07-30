@@ -2844,6 +2844,43 @@ a subtopic page; sidebar showed tailored (not DEFAULT) content with composite-ke
 `gotchas` entries; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub
 Phase 10: 18 of 22 topics complete.**
 
+**The `aggregates-domain-events` batch — the 3rd and final topic in the Domain-Driven Design nav
+group — found and fixed a genuine compile error plus a genuine durability bug, both self-contained
+(zero external research needed, just careful cross-checking of the page's own codeTabs against
+their own constructors and against the page's own theory text)**: the "Saving & Publishing Events"
+codeTab's `PlaceOrderHandler` class declared a constructor with exactly two dependencies
+(`orders: IOrderRepository`, `events: IDomainEventPublisher`), but its own `handle()` method called
+`this.catalogService.getPrice(line.productId)` — a field never declared anywhere on the class. In
+real TypeScript strict mode this is `TS2339: Property 'catalogService' does not exist`, the same
+class of bug this batch of Architecture Patterns topics has hit repeatedly (CQRS's Snapshots
+codeTab, earlier this hub). Fixed by adding `catalogService: ICatalogService` as a third
+constructor parameter. Separately, this page's own theory section states outright that "the outbox
+pattern is the standard mechanism for reliably publishing domain events alongside a database
+transaction, avoiding the dual-write problem where the aggregate's state change and its
+corresponding event publish could otherwise fall out of sync" — yet the SAME page's own
+"Saving & Publishing Events" codeTab does exactly the two-separate-operations thing that warning
+describes (`await this.orders.save(order)` then a SEPARATE `await this.events.publishAll(...)`),
+labeling it "RIGHT" with no acknowledgment of the gap: if `publishAll()` throws after `save()`
+already committed (a broker hiccup, a network blip — both common, expected production conditions),
+the order is permanently placed but its event is lost forever, since it only ever existed in
+process memory. Fixed with an explicit risk comment on the codeTab (not a full rewrite — the
+"publish after commit, never before" ordering lesson the codeTab teaches is still correct and
+worth keeping intact) pointing to a subtopic for the durable fix. Subtopics: two fix-adjacent (the
+missing `catalogService` field; tracing exactly where and how the event gets lost in the
+save-then-publish sequence) and one gap-closing that applies this hub's OWN already-completed
+Inbox & Outbox Pattern topic directly to this handler — rewriting `PlaceOrderHandler` around a
+single transaction that inserts both the order row and an outbox row, removing the direct broker
+call from the request path entirely and handing that responsibility to the same relay process
+already described in that sibling topic. No `SUBTOPICS` collision for `aggregates-domain-events`
+(checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free,
+left bare). Build passed clean. Browser-verified: nav accordion opens with all 3 labels; both
+main-page fixes confirmed rendering after clicking the relevant codeTab tab buttons; breadcrumb
+showed all 4 levels; sidebar showed tailored composite-key content, including cross-references to
+the sibling Inbox/Outbox topic; 860px wrapper confirmed via `getComputedStyle`. This completes the
+Domain-Driven Design nav group entirely (ddd-core, bounded-contexts, aggregates-domain-events all
+have subtopics). **Architecture Patterns hub Phase 10: 19 of 22 topics complete — only the
+Integration group (anti-corruption-layer, strangler-fig, backend-for-frontend) remains.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3750,7 +3787,7 @@ Phase 10: 18 of 22 topics complete.**
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 18 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 19 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
@@ -3759,7 +3796,7 @@ Phase 10: 18 of 22 topics complete.**
   `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`,
   `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`,
   `/arch-patterns/inbox-outbox`, `/arch-patterns/ddd-core`, `/arch-patterns/bounded-contexts`,
-  2026-07-30) — see
+  `/arch-patterns/aggregates-domain-events`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
@@ -3776,6 +3813,16 @@ Phase 10: 18 of 22 topics complete.**
   completes the Domain-Driven Design nav group's 2nd of 2 topics that have subtopics so far — only
   `aggregates-domain-events` remains from that group, then the Integration group
   (`anti-corruption-layer`, `strangler-fig`, `backend-for-frontend`), before the hub reaches 22/22.
+  The `aggregates-domain-events` batch that followed immediately after fixed a real compile error
+  (the "Saving & Publishing Events" codeTab's `PlaceOrderHandler` constructor declared only
+  `orders`/`events` but its own method body called `this.catalogService.getPrice(...)`, an
+  undeclared field — TS2339 under strict mode) and traced a dual-write bug the page's own theory
+  names but the codeTab doesn't defend against (`orders.save()` and `events.publishAll()` are two
+  separate operations; a broker failure after a successful save silently loses the event forever)
+  — fixed with an explicit risk comment and a subtopic applying this hub's own Inbox & Outbox topic
+  to close the gap. This completes the Domain-Driven Design nav group entirely — only the
+  Integration group (`anti-corruption-layer`, `strangler-fig`, `backend-for-frontend`) remains
+  before the hub reaches 22/22.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.

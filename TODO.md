@@ -7020,7 +7020,24 @@ off here with a date.
   showed all 4 levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
   `getComputedStyle`. **Architecture Patterns hub Phase 10: 18 of 22 topics complete — Domain-Driven
   Design nav group fully done.**
-- [ ] `/arch-patterns/aggregates-domain-events` — Aggregates & Domain Events
+- [x] `/arch-patterns/aggregates-domain-events` — Aggregates & Domain Events (2026-07-30) — 3
+  subtopics: (1) **PlaceOrderHandler Referenced an Undeclared catalogService** — the "Saving &
+  Publishing Events" codeTab's constructor declared only `orders`/`events`, but the method body
+  called `this.catalogService.getPrice(...)`, an undeclared field — a real TS2339 compile error;
+  fixed by adding `catalogService: ICatalogService` to the constructor; (2) **The Save-Then-Publish
+  CodeTab Has a Dual-Write Bug** — the page's own theory names the dual-write problem in plain
+  words, but the SAME page's codeTab does `orders.save()` then a separate `events.publishAll()`
+  labeled "RIGHT" with no acknowledgment that a broker failure after the save silently loses the
+  event forever; fixed with an explicit risk comment on the codeTab; (3) **Fixing It With the
+  Outbox Pattern**, a gap-closing subtopic applying this hub's own already-completed Inbox & Outbox
+  topic directly to this handler — one transaction inserting both the order row and an outbox row,
+  removing the direct broker call from the request path entirely. `aggregates-domain-events`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Build
+  passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page fixes
+  confirmed rendering; breadcrumb showed all 4 levels; sidebar showed tailored composite-key
+  content; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10:
+  19 of 22 topics complete — Domain-Driven Design nav group fully done, only the Integration group
+  (anti-corruption-layer, strangler-fig, backend-for-frontend) remains.**
 - [ ] `/arch-patterns/anti-corruption-layer` — Anti-Corruption Layer
 - [ ] `/arch-patterns/strangler-fig` — Strangler Fig Pattern
 - [ ] `/arch-patterns/backend-for-frontend` — Backend for Frontend (BFF)
