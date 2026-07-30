@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Inbox &amp; Outbox Pattern" topicRoute="/arch-patterns/inbox-outbox" subtopicLabel="The Relay Lock Was Released Before Publishing" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Relay Lock Was Released Before Publishing</h1>
+  <p class="page-subtitle">The relay's SELECT ... FOR UPDATE SKIP LOCKED wasn't wrapped in the same transaction as the publish and UPDATE steps — the lock released before it could protect anything, reproducing the page's own double-publish mistake.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic fixes a smaller but real bug in a different codeTab — invalid SQL syntax in the Inbox pattern's own upsert statement.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Inbox &amp; Outbox Pattern" topicRoute="/arch-patterns/inbox-outbox"
+    [next]="{ label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' }" />
+</div>

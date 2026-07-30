@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Inbox &amp; Outbox Pattern" topicRoute="/arch-patterns/inbox-outbox" subtopicLabel="The Inbox Table Needs Cleanup Too" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Inbox Table Needs Cleanup Too</h1>
+  <p class="page-subtitle">The Outbox gets a full cleanup mistake block; the Inbox gets one sentence — this subtopic shows the actual job, and why an overly-aggressive retention window is a correctness bug, not just housekeeping.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch by making the theory's one-line Inbox cleanup mention as concrete as the Outbox side already is, with the added correctness subtlety the Outbox side doesn't share.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Inbox &amp; Outbox Pattern" topicRoute="/arch-patterns/inbox-outbox"
+    [prev]="{ label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' }" />
+</div>

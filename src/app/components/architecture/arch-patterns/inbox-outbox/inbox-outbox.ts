@@ -130,31 +130,39 @@ async function placeOrder(cmd: PlaceOrderCommand): Promise<string> {
 
 async function runOutboxRelay(): Promise<void> {
   while (true) {
-    // Fetch unpublished events (lock to prevent duplicate relay workers)
-    const rows = await db.query(\`
-      SELECT id, topic, payload
-      FROM outbox
-      WHERE published_at IS NULL
-      ORDER BY created_at
-      LIMIT 100
-      FOR UPDATE SKIP LOCKED
-    \`);
+    // FOR UPDATE SKIP LOCKED only protects against a second worker picking
+    // up the SAME row while the lock is held -- and a row lock is only
+    // held for the life of the TRANSACTION that acquired it. The select
+    // AND the publish-then-update both need to happen inside that SAME
+    // transaction, or the lock is released the instant the SELECT's own
+    // (auto-committed) transaction ends -- before publish() ever runs --
+    // and a second worker can grab the identical row immediately after.
+    await db.transaction(async (tx) => {
+      const rows = await tx.query(\`
+        SELECT id, topic, payload
+        FROM outbox
+        WHERE published_at IS NULL
+        ORDER BY created_at
+        LIMIT 100
+        FOR UPDATE SKIP LOCKED
+      \`);
 
-    for (const row of rows.rows) {
-      try {
-        // Publish to message broker
-        await broker.publish(row.topic, row.payload);
+      for (const row of rows.rows) {
+        try {
+          // Publish to message broker
+          await broker.publish(row.topic, row.payload);
 
-        // Mark as published
-        await db.query(
-          'UPDATE outbox SET published_at = NOW() WHERE id = $1',
-          [row.id]
-        );
-      } catch (err) {
-        console.error('Failed to publish outbox event:', row.id, err);
-        // Leave row as unpublished — next poll will retry
+          // Mark as published -- same transaction, same lock still held
+          await tx.query(
+            'UPDATE outbox SET published_at = NOW() WHERE id = $1',
+            [row.id]
+          );
+        } catch (err) {
+          console.error('Failed to publish outbox event:', row.id, err);
+          // Leave row as unpublished — next poll will retry
+        }
       }
-    }
+    });
 
     // Poll every 100ms; Debezium CDC is near-real-time without polling
     await sleep(100);
@@ -192,8 +200,11 @@ async function processOrderPlaced(event: OrderPlacedEvent): Promise<void> {
     }
 
     // 2. Process the event (same transaction as inbox insert)
+    // ON CONFLICT DO UPDATE needs an explicit conflict target -- the
+    // column/constraint the conflict is detected on -- it isn't optional.
     await tx.query(
-      'INSERT INTO loyalty_points (customer_id, points) VALUES ($1, $2) ON CONFLICT DO UPDATE ...',
+      'INSERT INTO loyalty_points (customer_id, points) VALUES ($1, $2) ' +
+      'ON CONFLICT (customer_id) DO UPDATE SET points = loyalty_points.points + EXCLUDED.points',
       [event.customerId, Math.floor(event.totalAmount)]
     );
 

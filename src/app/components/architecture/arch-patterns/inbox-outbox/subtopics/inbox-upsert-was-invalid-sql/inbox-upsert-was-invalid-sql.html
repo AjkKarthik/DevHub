@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Inbox &amp; Outbox Pattern" topicRoute="/arch-patterns/inbox-outbox" subtopicLabel="The Inbox Upsert Was Invalid SQL" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Inbox Pattern's Upsert Was Invalid SQL</h1>
+  <p class="page-subtitle">ON CONFLICT DO UPDATE ... had no conflict target at all — required syntax, not optional shorthand. The fix also needed to accumulate points, not overwrite the existing balance.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic closes a gap the theory names but never shows in code — what an inbox table's own cleanup job actually looks like, parallel to the Outbox cleanup mistake block.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Inbox &amp; Outbox Pattern" topicRoute="/arch-patterns/inbox-outbox"
+    [prev]="{ label: 'The Relay Lock Was Released Before Publishing', route: '/arch-patterns/inbox-outbox/relay-lock-was-released-before-publishing' }"
+    [next]="{ label: 'The Inbox Table Needs Cleanup Too', route: '/arch-patterns/inbox-outbox/inbox-table-needs-cleanup-too' }" />
+</div>

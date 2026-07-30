@@ -3202,4 +3202,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Durable Saga Dropped Its Own Compensation', route: '/arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic' },
     { label: 'The Semantic Lock Counter-Measure, Made Concrete', route: '/arch-patterns/saga-choreography/semantic-lock-countermeasure-made-concrete' },
   ],
+  // 'inbox-outbox' confirmed collision-free via app.routes.ts grep before adding
+  'inbox-outbox': [
+    { label: 'The Relay Lock Was Released Before Publishing', route: '/arch-patterns/inbox-outbox/relay-lock-was-released-before-publishing' },
+    { label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' },
+    { label: 'The Inbox Table Needs Cleanup Too', route: '/arch-patterns/inbox-outbox/inbox-table-needs-cleanup-too' },
+  ],
 };

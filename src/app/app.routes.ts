@@ -2836,7 +2836,12 @@ export const routes: Routes = [
       { path: 'durable-saga-dropped-compensation-logic', loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/subtopics/durable-saga-dropped-compensation-logic/durable-saga-dropped-compensation-logic').then(m => m.DurableSagaDroppedCompensationLogicSubtopic) },
       { path: 'semantic-lock-countermeasure-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/subtopics/semantic-lock-countermeasure-made-concrete/semantic-lock-countermeasure-made-concrete').then(m => m.SemanticLockCountermeasureMadeConcreteSubtopic) },
     ] },
-    { path: 'inbox-outbox',              loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/inbox-outbox').then(m => m.ArchInboxOutbox) },
+    { path: 'inbox-outbox', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/inbox-outbox').then(m => m.ArchInboxOutbox) },
+      { path: 'relay-lock-was-released-before-publishing', loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/subtopics/relay-lock-was-released-before-publishing/relay-lock-was-released-before-publishing').then(m => m.RelayLockWasReleasedBeforePublishingSubtopic) },
+      { path: 'inbox-upsert-was-invalid-sql', loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/subtopics/inbox-upsert-was-invalid-sql/inbox-upsert-was-invalid-sql').then(m => m.InboxUpsertWasInvalidSqlSubtopic) },
+      { path: 'inbox-table-needs-cleanup-too', loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/subtopics/inbox-table-needs-cleanup-too/inbox-table-needs-cleanup-too').then(m => m.InboxTableNeedsCleanupTooSubtopic) },
+    ] },
     { path: 'ddd-core',                  loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/ddd-core').then(m => m.ArchDddCore) },
     { path: 'bounded-contexts',          loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/bounded-contexts').then(m => m.ArchBoundedContexts) },
     { path: 'aggregates-domain-events',  loadComponent: () => import('./components/architecture/arch-patterns/aggregates-domain-events/aggregates-domain-events').then(m => m.ArchAggregatesDomainEvents) },

@@ -328,7 +328,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/inbox-outbox" routerLinkActive="active"><span class="nl-text">Inbox &amp; Outbox Pattern</span>@if(p.isDone('arch-inbox-outbox')){<span class="nl-done">✓</span>}@if(d('arch-inbox-outbox');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/inbox-outbox" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Inbox &amp; Outbox Pattern</span>
+        @if(p.isDone('arch-inbox-outbox')){<span class="nl-done">✓</span>}
+        @if(d('arch-inbox-outbox');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('inbox-outbox')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('inbox-outbox')"
+                  (click)="toggleSubtopics('inbox-outbox', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('inbox-outbox'); as ioSubs) {
+        @if (isSubtopicsExpanded('inbox-outbox')) {
+          <div class="nav-subtopics">
+            @for (s of ioSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

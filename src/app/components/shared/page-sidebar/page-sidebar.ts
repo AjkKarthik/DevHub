@@ -27510,6 +27510,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Both patterns rely on the same core mechanism: atomically combining a DB state change with a messaging operation within one local transaction.',
     ],
   },
+  'arch-patterns/inbox-outbox/relay-lock-was-released-before-publishing': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Inbox & Outbox Pattern (overview)', route: '/arch-patterns/inbox-outbox' },
+      { label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' },
+    ],
+    tip: 'A row lock from SELECT ... FOR UPDATE only lasts as long as its enclosing transaction — everything that needs the lock\'s protection has to run inside that same transaction.',
+    gotchas: [
+      'A comment claiming a query "locks to prevent duplicate workers" doesn\'t verify the surrounding code actually keeps that lock held while it matters.',
+    ],
+  },
+  'arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Relay Lock Was Released Before Publishing', route: '/arch-patterns/inbox-outbox/relay-lock-was-released-before-publishing' },
+      { label: 'The Inbox Table Needs Cleanup Too', route: '/arch-patterns/inbox-outbox/inbox-table-needs-cleanup-too' },
+    ],
+    tip: 'ON CONFLICT DO UPDATE requires an explicit conflict target — omitting it isn\'t shorthand, it\'s a syntax error.',
+    gotchas: [
+      'A syntactically valid upsert can still be semantically wrong — SET points = EXCLUDED.points overwrites a balance instead of accumulating onto it.',
+    ],
+  },
+  'arch-patterns/inbox-outbox/inbox-table-needs-cleanup-too': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Inbox & Outbox Pattern (overview)', route: '/arch-patterns/inbox-outbox' },
+      { label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' },
+    ],
+    tip: 'An Inbox retention window that\'s too short is a correctness bug, not just housekeeping — deleting a row before the broker\'s worst-case redelivery window has passed lets a legitimate late redelivery slip through as if new.',
+    gotchas: [
+      'Base the retention window on the broker\'s documented WORST CASE redelivery time, not how quickly redelivery usually happens.',
+    ],
+  },
   'arch-patterns/layered-architecture': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
