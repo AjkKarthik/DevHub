@@ -120,7 +120,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/service-oriented" routerLinkActive="active"><span class="nl-text">Service-Oriented Architecture</span>@if(p.isDone('arch-service-oriented')){<span class="nl-done">✓</span>}@if(d('arch-service-oriented');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/service-oriented" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Service-Oriented Architecture</span>
+        @if(p.isDone('arch-service-oriented')){<span class="nl-done">✓</span>}
+        @if(d('arch-service-oriented');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('service-oriented')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('service-oriented')"
+                  (click)="toggleSubtopics('service-oriented', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('service-oriented'); as soSubs) {
+        @if (isSubtopicsExpanded('service-oriented')) {
+          <div class="nav-subtopics">
+            @for (s of soSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

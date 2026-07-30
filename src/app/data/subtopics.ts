@@ -3142,4 +3142,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Source-Generator Mediators: A Different Technical Tradeoff', route: '/arch-patterns/vertical-slice/source-generator-mediator-alternatives' },
     { label: 'The Rule of Three for Cross-Slice Duplication', route: '/arch-patterns/vertical-slice/rule-of-three-for-slice-duplication' },
   ],
+  // 'service-oriented' confirmed collision-free via app.routes.ts grep before adding
+  'service-oriented': [
+    { label: 'Smart Endpoints, Dumb Pipes Was Reversed', route: '/arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed' },
+    { label: 'The SOA Done Right Quote Has No Real Source', route: '/arch-patterns/service-oriented/soa-done-right-quote-unattributable' },
+    { label: 'The Tolerant Reader Pattern', route: '/arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts' },
+  ],
 };

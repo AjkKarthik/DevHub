@@ -2776,7 +2776,12 @@ export const routes: Routes = [
       { path: 'source-generator-mediator-alternatives', loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/subtopics/source-generator-mediator-alternatives/source-generator-mediator-alternatives').then(m => m.SourceGeneratorMediatorAlternativesSubtopic) },
       { path: 'rule-of-three-for-slice-duplication', loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/subtopics/rule-of-three-for-slice-duplication/rule-of-three-for-slice-duplication').then(m => m.RuleOfThreeForSliceDuplicationSubtopic) },
     ] },
-    { path: 'service-oriented',          loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/service-oriented').then(m => m.ArchServiceOriented) },
+    { path: 'service-oriented', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/service-oriented').then(m => m.ArchServiceOriented) },
+      { path: 'smart-endpoints-dumb-pipes-was-reversed', loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/subtopics/smart-endpoints-dumb-pipes-was-reversed/smart-endpoints-dumb-pipes-was-reversed').then(m => m.SmartEndpointsDumbPipesWasReversedSubtopic) },
+      { path: 'soa-done-right-quote-unattributable', loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/subtopics/soa-done-right-quote-unattributable/soa-done-right-quote-unattributable').then(m => m.SoaDoneRightQuoteUnattributableSubtopic) },
+      { path: 'tolerant-reader-pattern-for-contracts', loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/subtopics/tolerant-reader-pattern-for-contracts/tolerant-reader-pattern-for-contracts').then(m => m.TolerantReaderPatternForContractsSubtopic) },
+    ] },
     { path: 'microservices-principles',  loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/microservices-principles').then(m => m.ArchMicroservicesPrinciples) },
     { path: 'service-communication',     loadComponent: () => import('./components/architecture/arch-patterns/service-communication/service-communication').then(m => m.ArchServiceCommunication) },
     { path: 'api-gateway-pattern',       loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/api-gateway-pattern').then(m => m.ArchApiGatewayPattern) },

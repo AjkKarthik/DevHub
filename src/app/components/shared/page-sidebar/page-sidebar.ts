@@ -27528,6 +27528,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'An ESB-heavy SOA and a microservices system can look superficially similar while having very different maintainability characteristics.',
     ],
   },
+  'arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service-Oriented Architecture (overview)', route: '/arch-patterns/service-oriented' },
+      { label: 'The SOA Done Right Quote Has No Real Source', route: '/arch-patterns/service-oriented/soa-done-right-quote-unattributable' },
+    ],
+    tip: 'The coined phrase is "smart endpoints, dumb pipes" (Fowler & Lewis, 2014) — reversed, it reads as a fair one-line description of the ESB-centric SOA model instead.',
+    gotchas: [
+      'A two-word swap doesn\'t always produce nonsense — here it produced a coherent description of the wrong architecture, which is exactly what makes it easy to miss on a skim.',
+    ],
+  },
+  'arch-patterns/service-oriented/soa-done-right-quote-unattributable': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Smart Endpoints, Dumb Pipes Was Reversed', route: '/arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed' },
+      { label: 'The Tolerant Reader Pattern', route: '/arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts' },
+    ],
+    tip: 'A specific quote attributed to a named, real author is a checkable claim distinct from whether the underlying sentiment is reasonable — verify both separately.',
+    gotchas: [
+      'A false attribution can\'t be "partially right" the way an imprecise technical fact sometimes can — either the named person said those words or the citation is inaccurate.',
+    ],
+  },
+  'arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service-Oriented Architecture (overview)', route: '/arch-patterns/service-oriented' },
+      { label: 'Smart Endpoints, Dumb Pipes Was Reversed', route: '/arch-patterns/service-oriented/smart-endpoints-dumb-pipes-was-reversed' },
+    ],
+    tip: 'Additive-only contract changes only stay non-breaking if consumers are also written as tolerant readers — a strict schema validator can still break on a purely additive change.',
+    gotchas: [
+      'additionalProperties: false in a modern JSON Schema validator reproduces the exact brittleness that broke strict WSDL-bound SOAP clients — the failure mode outlived the SOAP era.',
+    ],
+  },
   'arch-patterns/sidecar-service-mesh': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service-Oriented Architecture" topicRoute="/arch-patterns/service-oriented" subtopicLabel="The Tolerant Reader Pattern" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Tolerant Reader Pattern: Why Additive Changes Are Actually Safe</h1>
+  <p class="page-subtitle">The page's fix for over-frequent versioning is "use additive-only changes" — but that only stays non-breaking if consumers are also written as tolerant readers, a pattern the page never names.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>Producer-side contract discipline (additive-only changes, versioned endpoints) and consumer-side tolerance are the two halves of safe service evolution — this page's Canonical Data Model and Contract-First Design sections cover the shared-schema half; this subtopic covers the parsing-discipline half.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service-Oriented Architecture" topicRoute="/arch-patterns/service-oriented"
+    [prev]="{ label: 'The SOA Done Right Quote Has No Real Source', route: '/arch-patterns/service-oriented/soa-done-right-quote-unattributable' }" />
+</div>
