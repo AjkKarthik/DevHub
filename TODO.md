@@ -6890,7 +6890,19 @@ off here with a date.
   Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the Promise.all fix
   confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
   `getComputedStyle`. **Architecture Patterns hub Phase 10: 9 of 22 topics complete.**
-- [ ] `/arch-patterns/service-discovery` — Service Discovery
+- [x] `/arch-patterns/service-discovery` — Service Discovery (2026-07-30) — 3 subtopics:
+  (1) **The Registry's register() Was Not Idempotent** — the Challenge's reference solution
+  appended registrations unconditionally, so a service re-registering with the same id (a normal
+  reconnect, not an edge case) silently created a stale duplicate setHealth() couldn't reach;
+  fixed with an upsert; (2) **The Cache Never Actually Refreshed in the Background**, a
+  gap-closing subtopic on the gap between the mistakes block's promised fix and the codeTab's
+  actual cache-aside-with-TTL-deletion behavior; (3) **Why Long-Lived Connections Can Outlive a
+  Dead Pod**, a gap-closing subtopic (verified via research into kube-proxy's documented
+  behavior) on how conntrack pins an already-open keep-alive connection to a deleted pod.
+  `service-discovery` SUBTOPICS key collision-free (checked app.routes.ts directly), left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the register() fix
+  confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 10 of 22 topics complete.**
 - [ ] `/arch-patterns/circuit-breaker` — Circuit Breaker
 - [ ] `/arch-patterns/sidecar-service-mesh` — Sidecar & Service Mesh
 - [ ] `/arch-patterns/event-driven` — Event-Driven Architecture

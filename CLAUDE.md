@@ -2578,6 +2578,32 @@ after clicking the specific "Request Aggregation" tab button; breadcrumb showed 
 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 9 of 22
 topics complete.**
 
+**The `service-discovery` batch found and fixed ONE self-contained code bug, plus two gap-closing
+subtopics**: the Challenge's own reference solution for `InMemoryRegistry.register()` appended
+every registration unconditionally, with no check for whether an instance with the same `id`
+was already present. A service re-registering with the same id (a normal reconnect scenario, not
+an edge case) silently created a duplicate entry — and since `setHealth(id, ...)` only updates
+the FIRST matching entry via `.find()`, a stale duplicate could keep reporting healthy after the
+real instance was marked down, inflating `getHealthy()`'s count. A purely self-contained catch,
+found by tracing what happens when `register()` is called twice with the same id and checking
+whether the class's OTHER methods still behave correctly afterward. Fixed with an upsert (filter
+out the existing id before appending). A gap-closing subtopic found a real gap between the
+mistakes block's promised fix ("refresh in the background") and what the accompanying codeTab
+actually implements (cache-aside with TTL deletion — the cache entry is deleted, not proactively
+refreshed, so the next caller after expiry pays the full synchronous lookup latency, and under
+concurrent load multiple callers can independently trigger redundant lookups in the same brief
+window). A second gap-closing subtopic, verified via targeted research into kube-proxy's own
+documented behavior (a real GitHub issue confirming iptables-mode kube-proxy doesn't reset
+already-established connections when a backend pod is removed), explained a genuine edge case
+in the page's "Kubernetes Service discovery is fully transparent" framing — a long-lived
+keep-alive HTTP connection stays pinned via Linux conntrack to its original backend pod even
+after that pod is deleted and removed from the Service's routing rules, since kube-proxy's rule
+updates only affect NEW connections. Confirmed `service-discovery` collision-free via the
+standing `app.routes.ts` grep, left bare. Build passed clean. Browser-verified: nav accordion
+opens with all 3 labels; the register() fix confirmed rendering after Reveal Solution + View
+Code; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+**Architecture Patterns hub Phase 10: 10 of 22 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3484,11 +3510,12 @@ topics complete.**
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 9 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 10 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
-  `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`, 2026-07-30) — see
+  `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`,
+  `/arch-patterns/service-discovery`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
