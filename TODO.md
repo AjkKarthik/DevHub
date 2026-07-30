@@ -6810,7 +6810,20 @@ off here with a date.
   clean-architecture collision), left bare. Build passed clean. Browser-verified: nav accordion
   opens with all 3 labels; all three main-page fixes confirmed rendering; 860px wrapper confirmed
   via `getComputedStyle`. **Architecture Patterns hub Phase 10: 4 of 22 topics complete.**
-- [ ] `/arch-patterns/vertical-slice` — Vertical Slice Architecture
+- [x] `/arch-patterns/vertical-slice` — Vertical Slice Architecture (2026-07-30) — 3 subtopics:
+  (1) **MediatR Went Commercial in July 2025** — verified via WebSearch that the QnA's
+  unqualified "de facto standard" claim went stale; MediatR dual-licensed July 2025 (free under
+  $5M revenue, paid above); fixed the QnA; (2) **Source-Generator Mediators: A Different
+  Technical Tradeoff**, extending #1 — the real technical difference (compile-time source
+  generators vs. runtime reflection) between MediatR and free alternatives like Mediator/
+  Wolverine; (3) **The Rule of Three for Cross-Slice Duplication**, a gap-closing subtopic giving
+  the page's own "some duplication is accepted" principle a concrete extraction trigger. Cleanest
+  main page in the hub so far — no self-contained internal contradictions found. Self-caught the
+  same `\\'` over-escaping mistake as the layered-architecture batch before build.
+  `vertical-slice` SUBTOPICS key collision-free (checked app.routes.ts directly), left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; QnA fix confirmed
+  rendering; generic syntax in innerHTML fields correctly escaped; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 5 of 22 topics complete.**
 - [ ] `/arch-patterns/service-oriented` — Service-Oriented Architecture
 - [ ] `/arch-patterns/microservices-principles` — Microservices Principles
 - [ ] `/arch-patterns/service-communication` — Service Communication

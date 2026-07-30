@@ -2400,6 +2400,34 @@ nav accordion opens with all 3 labels on the first check; all three main-page fi
 rendering (the Challenge fixes needed Reveal Solution + all matching "▼ View Code" toggles); 860px
 wrapper confirmed via `getComputedStyle`.
 
+**The `vertical-slice` batch found and fixed ONE genuine issue via external verification, plus
+two gap-closing additions** — this was the cleanest-authored main page in the hub so far, with no
+self-contained internal contradictions found on a careful read (unlike every prior batch this
+hub): the QnA's "MediatR (Jimmy Bogard) is the de facto standard" claim, stated with zero
+qualification, was verified via WebSearch to have gone stale — MediatR launched a commercial
+edition on July 2, 2025 under Bogard's new company, Lucky Penny Software, in a dual-license model
+(free for individuals and companies under $5M USD annual revenue, paid above that). This is a
+distinct FAILURE MODE from every prior "self-contained contradiction" finding in this hub — a
+"standard tool" recommendation going stale over time even though the underlying pattern/library
+technically still works the same way, worth watching for on any technology-recommendation page.
+Corrected the QnA and added a gap-closing subtopic explaining the genuine TECHNICAL difference
+(not just licensing) between MediatR's original reflection-based runtime dispatch and newer
+source-generator-based alternatives (Mediator, Wolverine) that gained traction as a result — a
+real architectural distinction in HOW the same conceptual pattern gets implemented. A third,
+purely gap-closing subtopic named the "Rule of Three" as a concrete decision heuristic for when
+cross-slice duplication should finally be extracted into a shared abstraction, extending the
+page's own "some duplication is an accepted tradeoff" theory bullet with an actionable trigger it
+never stated. **Self-caught and fixed the SAME over-escaping mistake as the `layered-architecture`
+batch** (a `\\'` instead of `\'` inside a nested single-quoted string within a backtick-delimited
+`code:` field) — worth treating as a standing, easy-to-repeat mistake specific to this codebase's
+nested-template-literal convention, not a one-off. No `SUBTOPICS` collision for `vertical-slice`
+(checked `app.routes.ts` directly, confirmed no other hub shares this slug). Build passed clean.
+Browser-verified: nav accordion opens with all 3 labels on the first check; the QnA fix confirmed
+rendering (needed the QnA section's outer toggle plus the specific question's own row click);
+generic syntax (`IRequestHandler<TRequest, TResponse>`) in `[innerHTML]`-bound fields correctly
+entity-escaped and confirmed rendering as literal text, not silently vanishing; 860px wrapper
+confirmed via `getComputedStyle`.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3306,13 +3334,14 @@ wrapper confirmed via `getComputedStyle`.
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 4 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 5 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
-  `/arch-patterns/hexagonal-architecture`, 2026-07-30) — see "Architecture Patterns hub subtopic
-  wiring" section below for the `ArchNavComponent` accordion structural fix (11th
-  `*NavComponent`-based hub in a row missing it at pilot time), a real cross-hub `SUBTOPICS`-key
-  collision risk with the Design Patterns hub's own identical `clean-architecture` slug, and the
-  genuine main-page inaccuracies found and fixed across all four batches so far.
+  `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`, 2026-07-30) — see
+  "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
+  structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
+  cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
+  `clean-architecture` slug, and the genuine main-page inaccuracies found and fixed across all
+  five batches so far.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.
