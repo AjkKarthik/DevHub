@@ -2428,6 +2428,46 @@ generic syntax (`IRequestHandler<TRequest, TResponse>`) in `[innerHTML]`-bound f
 entity-escaped and confirmed rendering as literal text, not silently vanishing; 860px wrapper
 confirmed via `getComputedStyle`.
 
+**The `service-oriented` batch found and fixed TWO more genuine issues, one of them a new failure
+mode for this hub — a fabricated citation, not a wrong fact or a self-contradiction**: the QnA's
+question title asked "What does 'smart pipes, dumb endpoints' mean?" — the two halves of the
+phrase reversed from the actual coined term. Verified via WebSearch that Fowler & Lewis's 2014
+microservices article coined "smart endpoints, dumb pipes" specifically; the reversed order isn't
+just a typo, it reads as a coherent (if unintended) description of the OPPOSITE architecture —
+SOA's ESB-centric model, which the page's own theory section describes elsewhere. Confirmed via a
+self-contained cross-check requiring zero research: the QnA's OWN answer body and the page's
+theory section BOTH already used the correct order; only the question title had it backwards.
+Fixed the question title to match. Separately, the theory section's own "'Microservices = SOA
+done right' — Sam Newman, author of Building Microservices" line attributed a specific quote to a
+named, real author — verified via two separate WebSearch passes that "SOA done right" is a
+widely-repeated industry characterization (discussed at a SATURN 2015 workshop and in many
+articles since) with no source tying the specific phrasing to Sam Newman. This is a genuinely
+different failure category from every prior fix in this hub: not a wrong FACT and not an internal
+contradiction, but a false claim about WHO said something — the underlying sentiment is
+reasonable, but the citation isn't. Reworded to state it as an industry characterization rather
+than a named quote. A third, gap-closing subtopic named the Tolerant Reader pattern (Postel's
+Robustness Principle, later applied to API consumers by Martin Fowler) — the page's own
+"Versioning service contracts too frequently" mistake-fix recommends additive-only producer
+changes without ever naming the consumer-side half of the deal that actually makes additive
+changes non-breaking in practice (a strict/brittle consumer, like a WSDL-bound SOAP client or a
+JSON Schema validator with `additionalProperties: false`, can still break on a purely additive
+change). Confirmed `service-oriented` collision-free via the standing `app.routes.ts` grep, left
+bare. **Weighed, then deferred to, this file's own documented precedent on a `[prev]`/`[next]`
+label**: reasoned through whether `&quot;`-entity-escaping a literal double quote inside a
+`[prev]`/`[next]` bound-attribute label might actually be safe (HTML tokenizes outer attribute
+boundaries on raw, undecoded quote characters, so entity decoding happening later seemed like it
+should sidestep the collision) — but this file's own earlier, explicitly-tested finding states
+plainly that no safe entity-escape exists for this specific case and the fix is to rephrase.
+Deferred to that documented, presumably-tested precedent rather than gambling production content
+on untested reasoning, and reworded the label to drop quote marks entirely instead. Build passed clean. Browser-verified: nav accordion opens
+with all 3 labels (confirmed via direct DOM inspection after a same-tick query returned an empty
+array — Angular's change detection hadn't flushed synchronously after the click, a timing
+artifact, not a bug, confirmed correct on the next separate check); both main-page fixes confirmed
+rendering (the QnA fix needed the section's outer toggle plus the specific question's own row
+click); breadcrumb showed all 4 levels; sidebar showed tailored (not DEFAULT) content; 860px
+wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 6 of 22 topics
+complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3334,9 +3374,10 @@ confirmed via `getComputedStyle`.
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 5 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 6 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
-  `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`, 2026-07-30) — see
+  `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
+  `/arch-patterns/service-oriented`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical

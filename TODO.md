@@ -6824,7 +6824,26 @@ off here with a date.
   Build passed clean. Browser-verified: nav accordion opens with all 3 labels; QnA fix confirmed
   rendering; generic syntax in innerHTML fields correctly escaped; 860px wrapper confirmed via
   `getComputedStyle`. **Architecture Patterns hub Phase 10: 5 of 22 topics complete.**
-- [ ] `/arch-patterns/service-oriented` — Service-Oriented Architecture
+- [x] `/arch-patterns/service-oriented` — Service-Oriented Architecture (2026-07-30) — 3 subtopics:
+  (1) **Smart Endpoints, Dumb Pipes Was Reversed** — the QnA question title said "smart pipes,
+  dumb endpoints," backwards from the coined phrase (Fowler & Lewis, 2014, verified via
+  WebSearch); caught via a self-contained cross-check — the QnA's own answer body and the page's
+  theory section elsewhere both already used the correct order; fixed the question title;
+  (2) **The SOA Done Right Quote Has No Real Source** — the theory section attributed
+  "Microservices = SOA done right" to Sam Newman by name; verified via WebSearch it's a
+  widely-repeated industry characterization with no traceable single source — a fabricated
+  citation, a new failure mode for this hub (false attribution, not a wrong fact); reworded to
+  drop the false attribution while keeping the sentiment; (3) **The Tolerant Reader Pattern**, a
+  gap-closing subtopic naming Postel's Robustness Principle / Fowler's Tolerant Reader as the
+  consumer-side half the page's own "additive-only changes" advice needs to actually be
+  non-breaking. `service-oriented` SUBTOPICS key collision-free (checked app.routes.ts directly),
+  left bare. Weighed then deferred to this file's own tested precedent on a `[prev]`/`[next]`
+  label instead of gambling on untested `&quot;`-entity-escaping reasoning — reworded the label to
+  drop quote marks entirely. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels (confirmed via direct DOM read after a same-tick query returned empty — an Angular
+  change-detection timing artifact, not a bug); both main-page fixes confirmed rendering;
+  breadcrumb showed all 4 levels; sidebar showed tailored content; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 6 of 22 topics complete.**
 - [ ] `/arch-patterns/microservices-principles` — Microservices Principles
 - [ ] `/arch-patterns/service-communication` — Service Communication
 - [ ] `/arch-patterns/api-gateway-pattern` — API Gateway Pattern
