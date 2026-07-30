@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Aggregates & Domain Events" topicRoute="/arch-patterns/aggregates-domain-events" subtopicLabel="Fixing It With the Outbox Pattern" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Fixing It With the Outbox Pattern</h1>
+  <p class="page-subtitle">The previous subtopic traced exactly where the event gets lost. This one applies the fix this hub's own Inbox & Outbox topic already covers — one transaction, order row and outbox row together, no separate broker call left in the request path.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch: together the three subtopics fix a real compile error, trace a real durability bug back to the page's own theory warning, and apply the fix this hub already established in its Inbox & Outbox Pattern topic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Aggregates & Domain Events" topicRoute="/arch-patterns/aggregates-domain-events"
+    [prev]="{ label: 'The Save-Then-Publish CodeTab Has a Dual-Write Bug', route: '/arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug' }" />
+</div>

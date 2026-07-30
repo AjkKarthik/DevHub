@@ -157,6 +157,7 @@ class PlaceOrderHandler {
   constructor(
     private orders: IOrderRepository,
     private events: IDomainEventPublisher,
+    private catalogService: ICatalogService,
   ) {}
 
   async handle(cmd: PlaceOrderCommand): Promise<string> {
@@ -170,7 +171,14 @@ class PlaceOrderHandler {
 
     await this.orders.save(order); // ACID commit — events still pending
 
-    // Publish AFTER commit — events are facts about committed state
+    // Publish AFTER commit — events are facts about committed state.
+    // CAUTION: this is still TWO separate operations. If publishAll()
+    // throws here (broker down, network blip), the order is committed
+    // but its event is lost forever -- the exact "dual-write problem"
+    // named in this page's own theory section. This illustrates the
+    // ORDERING rule (publish after commit, never before) in isolation;
+    // see the Outbox Pattern subtopic for the durable fix that removes
+    // this window entirely.
     await this.events.publishAll(order.domainEvents);
     order.clearDomainEvents();
 
@@ -180,7 +188,9 @@ class PlaceOrderHandler {
 
 // Application service wires the event publication after the transaction
 // WRONG: publishing inside the repository or inside the aggregate method
-// RIGHT: publish in application layer, after the repo.save() call`
+// RIGHT (ordering): publish in application layer, after the repo.save() call
+// STILL AT RISK (durability): a crash between save() and publishAll() loses
+// the event — see the Outbox Pattern subtopic for how to close that gap`
     },
     {
       label: 'Cross-Aggregate via Domain Events',

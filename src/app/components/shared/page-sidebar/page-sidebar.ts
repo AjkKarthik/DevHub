@@ -28039,6 +28039,41 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'When a rule spans multiple aggregates, a domain event published AFTER the originating transaction commits achieves eventual consistency without violating the boundary.',
     ],
   },
+  'arch-patterns/aggregates-domain-events/place-order-handler-referenced-undeclared-catalog-service': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Aggregates & Domain Events (overview)', route: '/arch-patterns/aggregates-domain-events' },
+      { label: 'The Save-Then-Publish CodeTab Has a Dual-Write Bug', route: '/arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug' },
+    ],
+    tip: 'A constructor parameter list is the authoritative list of what a class has to work with — a method body cannot use a dependency that was never declared there, no matter how reasonable it would be.',
+    gotchas: [
+      'TypeScript strict mode rejects this at compile time (TS2339) — plain JavaScript would instead crash at runtime the first time the undeclared field is used.',
+    ],
+  },
+  'arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'PlaceOrderHandler Referenced an Undeclared catalogService', route: '/arch-patterns/aggregates-domain-events/place-order-handler-referenced-undeclared-catalog-service' },
+      { label: 'Fixing It With the Outbox Pattern', route: '/arch-patterns/aggregates-domain-events/fixing-it-with-the-outbox-pattern' },
+      { label: 'Inbox/Outbox', route: '/arch-patterns/inbox-outbox' },
+    ],
+    tip: 'Publishing after commit only fixes the ordering half of the dual-write problem — the publish call can still fail independently and lose the event forever, which is the durability half.',
+    gotchas: [
+      'A process crash between the save and a successful publish loses the event even with retries, since it was only ever held in memory, not in anything durable.',
+    ],
+  },
+  'arch-patterns/aggregates-domain-events/fixing-it-with-the-outbox-pattern': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Aggregates & Domain Events (overview)', route: '/arch-patterns/aggregates-domain-events' },
+      { label: 'The Save-Then-Publish CodeTab Has a Dual-Write Bug', route: '/arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug' },
+      { label: 'Inbox/Outbox', route: '/arch-patterns/inbox-outbox' },
+    ],
+    tip: 'A single transaction inserting both the order row and an outbox row closes the gap entirely — the relay process, not the request path, becomes responsible for the broker publish.',
+    gotchas: [
+      'Events are no longer published synchronously as part of the request — there is a small, bounded delay until the relay actually delivers them.',
+    ],
+  },
 
   // ── Containers/K8s: per-page entries ───────────────────────────────────────
   'containers/fundamentals': {

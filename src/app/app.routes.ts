@@ -2854,7 +2854,12 @@ export const routes: Routes = [
       { path: 'event-publisher-mechanism-vs-relationship', loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/subtopics/event-publisher-mechanism-vs-relationship/event-publisher-mechanism-vs-relationship').then(m => m.EventPublisherMechanismVsRelationshipSubtopic) },
       { path: 'published-language-prevents-acl-sprawl', loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/subtopics/published-language-prevents-acl-sprawl/published-language-prevents-acl-sprawl').then(m => m.PublishedLanguagePreventsAclSprawlSubtopic) },
     ] },
-    { path: 'aggregates-domain-events',  loadComponent: () => import('./components/architecture/arch-patterns/aggregates-domain-events/aggregates-domain-events').then(m => m.ArchAggregatesDomainEvents) },
+    { path: 'aggregates-domain-events', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/aggregates-domain-events/aggregates-domain-events').then(m => m.ArchAggregatesDomainEvents) },
+      { path: 'place-order-handler-referenced-undeclared-catalog-service', loadComponent: () => import('./components/architecture/arch-patterns/aggregates-domain-events/subtopics/place-order-handler-referenced-undeclared-catalog-service/place-order-handler-referenced-undeclared-catalog-service').then(m => m.PlaceOrderHandlerReferencedUndeclaredCatalogServiceSubtopic) },
+      { path: 'save-then-publish-has-a-dual-write-bug', loadComponent: () => import('./components/architecture/arch-patterns/aggregates-domain-events/subtopics/save-then-publish-has-a-dual-write-bug/save-then-publish-has-a-dual-write-bug').then(m => m.SaveThenPublishHasADualWriteBugSubtopic) },
+      { path: 'fixing-it-with-the-outbox-pattern', loadComponent: () => import('./components/architecture/arch-patterns/aggregates-domain-events/subtopics/fixing-it-with-the-outbox-pattern/fixing-it-with-the-outbox-pattern').then(m => m.FixingItWithTheOutboxPatternSubtopic) },
+    ] },
     { path: 'anti-corruption-layer',     loadComponent: () => import('./components/architecture/arch-patterns/anti-corruption-layer/anti-corruption-layer').then(m => m.ArchAntiCorruptionLayer) },
     { path: 'strangler-fig',             loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/strangler-fig').then(m => m.ArchStranglerFig) },
     { path: 'backend-for-frontend',      loadComponent: () => import('./components/architecture/arch-patterns/backend-for-frontend/backend-for-frontend').then(m => m.ArchBackendForFrontend) },
