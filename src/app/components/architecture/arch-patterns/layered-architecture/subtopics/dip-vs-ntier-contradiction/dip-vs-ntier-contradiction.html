@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Layered Architecture" topicRoute="/arch-patterns/layered-architecture" subtopicLabel="Three Sections Said DIP, One Section Said N-Tier" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Three Sections Said DIP, One Section Said N-Tier</h1>
+  <p class="page-subtitle">The page's quickRef, mistakes block, and quiz explanation all describe Infrastructure depending on Domain — the QnA originally said the opposite, for what it called the same "layered architecture" pattern.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the QnA reconciled to the rest of the page, the next issue is in the Challenge's own solution code — a class field that's referenced but never actually declared.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Layered Architecture" topicRoute="/arch-patterns/layered-architecture"
+    [next]="{ label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' }" />
+</div>

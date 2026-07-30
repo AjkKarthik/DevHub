@@ -3116,4 +3116,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' },
     { label: 'The Modular Monolith’s Unstated Tradeoff: One Process, One Failure Domain', route: '/arch-patterns/monolith-vs-modular/shared-process-shared-failure-domain' },
   ],
+  'layered-architecture': [
+    { label: 'Three Sections Said DIP, One Section Said N-Tier', route: '/arch-patterns/layered-architecture/dip-vs-ntier-contradiction' },
+    { label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' },
+    { label: 'Why “Read-Only” Is the Safe Case for Skipping a Layer', route: '/arch-patterns/layered-architecture/why-reads-are-the-safe-skip-case' },
+  ],
 };

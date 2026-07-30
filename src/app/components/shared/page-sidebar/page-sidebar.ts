@@ -27324,6 +27324,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Layering constrains the VERTICAL dependency direction but does nothing to organize horizontal structure within a layer, which is where real complexity accumulates at scale.',
     ],
   },
+  'arch-patterns/layered-architecture/dip-vs-ntier-contradiction': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Layered Architecture (overview)', route: '/arch-patterns/layered-architecture' },
+      { label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' },
+    ],
+    tip: 'When several independent sections of a page describe the same rule and one disagrees, check whether the outlier can be reconciled to match the majority rather than assuming it\'s an intentional nuance.',
+    gotchas: [
+      'Plain layered architecture and dependency-inverted layered architecture are two real, differently-disciplined variants — a page needs to be explicit about which one it\'s teaching.',
+    ],
+  },
+  'arch-patterns/layered-architecture/handler-repo-field-never-declared': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Three Sections Said DIP, One Section Said N-Tier', route: '/arch-patterns/layered-architecture/dip-vs-ntier-contradiction' },
+      { label: 'Why “Read-Only” Is the Safe Case for Skipping a Layer', route: '/arch-patterns/layered-architecture/why-reads-are-the-safe-skip-case' },
+    ],
+    tip: 'Every property a class body USES should be declared somewhere — a field, a constructor parameter property, or inherited — check for properties that appear only inside a method body.',
+    gotchas: [
+      'A "reference solution" deserves MORE scrutiny than an illustrative snippet, since learners are likely to trust and compare their own attempt against it directly.',
+    ],
+  },
+  'arch-patterns/layered-architecture/why-reads-are-the-safe-skip-case': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' },
+      { label: 'Layered Architecture (overview)', route: '/arch-patterns/layered-architecture' },
+    ],
+    tip: 'A layer-skip is safe exactly when the skipped layer\'s only job on that path would have been enforcing invariants over a state change — no state change means no invariant to bypass.',
+    gotchas: [
+      'CQRS formalizes this same read/write asymmetry as a first-class architectural decision — loose layering\'s "skip for reads only" rule is an informal version of the same insight.',
+    ],
+  },
   'arch-patterns/microservices-principles': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

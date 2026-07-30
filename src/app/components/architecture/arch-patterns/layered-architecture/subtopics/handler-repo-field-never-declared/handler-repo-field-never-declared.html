@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Layered Architecture" topicRoute="/arch-patterns/layered-architecture" subtopicLabel="The Solution's PlaceOrderHandler Never Declared Its Own repo Field" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Solution's PlaceOrderHandler Never Declared Its Own repo Field</h1>
+  <p class="page-subtitle">The Challenge solution calls this.repo.save(order) but the class has no constructor and no field declaration for repo anywhere — a compile error in strict mode, or an undefined-property crash at runtime.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the QnA reconciled and the Challenge solution's missing field fixed, one more angle worth expanding: why the page's own "loose layering" example specifically calls out read-only queries as the safe case for skipping a layer.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Layered Architecture" topicRoute="/arch-patterns/layered-architecture"
+    [prev]="{ label: 'Three Sections Said DIP, One Section Said N-Tier', route: '/arch-patterns/layered-architecture/dip-vs-ntier-contradiction' }"
+    [next]="{ label: 'Why “Read-Only” Is the Safe Case for Skipping a Layer', route: '/arch-patterns/layered-architecture/why-reads-are-the-safe-skip-case' }" />
+</div>

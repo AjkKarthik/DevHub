@@ -228,6 +228,8 @@ class Order {
 
 // Application handler — only orchestrates:
 class PlaceOrderHandler {
+  constructor(private repo: IOrderRepository) {}
+
   async handle(cmd: PlaceOrderCommand): Promise<void> {
     const order = new Order(generateId());
     for (const l of cmd.lines) order.addLine(l.product, l.qty);
@@ -279,7 +281,7 @@ class PlaceOrderHandler {
   qna: QnaItem[] = [
     {
       q: 'Is layered architecture the same as Clean Architecture?',
-      a: 'No. Layered architecture often allows Infrastructure to be the bottom layer that Domain depends on. Clean Architecture inverts this: Domain has zero dependencies; Infrastructure depends on Domain interfaces.',
+      a: 'No, though they are closer than often assumed. As taught on this page, layered architecture already applies dependency inversion in its recommended form (Domain defines repository interfaces; Infrastructure implements them -- see the "Domain layer importing infrastructure" mistake above). What actually distinguishes Clean Architecture is enforcing this as a strict, load-bearing rule everywhere -- a dedicated Use Cases layer, zero framework references anywhere near Domain code, project-boundary enforcement -- rather than a best-practice recommendation. In less disciplined "plain" layered codebases (without that enforcement), Domain classes often do end up directly depending on Infrastructure/ORM types over time -- exactly the anti-pattern this page\'s own mistakes block warns against.',
     },
     {
       q: 'When does layered architecture break down?',

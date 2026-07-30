@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Layered Architecture" topicRoute="/arch-patterns/layered-architecture" subtopicLabel="Why “Read-Only” Is the Safe Case for Skipping a Layer" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Why "Read-Only" Is the Safe Case for Skipping a Layer</h1>
+  <p class="page-subtitle">The page names read-only queries as safe to skip a layer for, without explaining why — the reason is that a skipped layer's only job on a write path is enforcing invariants over a state change, and a read changes no state.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the QnA reconciled, the Challenge solution's missing field fixed, and the read/write skip-safety distinction now explained, this page's coverage of layered architecture's rules and their exceptions is more complete. Next up: Clean / Onion Architecture, which takes the dependency-inversion recommendation this page already makes and turns it into a strict, enforced rule.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Layered Architecture" topicRoute="/arch-patterns/layered-architecture"
+    [prev]="{ label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' }" />
+</div>

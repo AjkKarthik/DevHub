@@ -40,7 +40,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/layered-architecture" routerLinkActive="active"><span class="nl-text">Layered Architecture</span>@if(p.isDone('arch-layered-architecture')){<span class="nl-done">✓</span>}@if(d('arch-layered-architecture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/layered-architecture" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Layered Architecture</span>
+        @if(p.isDone('arch-layered-architecture')){<span class="nl-done">✓</span>}
+        @if(d('arch-layered-architecture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('layered-architecture')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('layered-architecture')"
+                  (click)="toggleSubtopics('layered-architecture', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('layered-architecture'); as laSubs) {
+        @if (isSubtopicsExpanded('layered-architecture')) {
+          <div class="nav-subtopics">
+            @for (s of laSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/clean-architecture" routerLinkActive="active"><span class="nl-text">Clean / Onion Architecture</span>@if(p.isDone('arch-clean-architecture')){<span class="nl-done">✓</span>}@if(d('arch-clean-architecture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/hexagonal-architecture" routerLinkActive="active"><span class="nl-text">Hexagonal Architecture</span>@if(p.isDone('arch-hexagonal-architecture')){<span class="nl-done">✓</span>}@if(d('arch-hexagonal-architecture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/vertical-slice" routerLinkActive="active"><span class="nl-text">Vertical Slice Architecture</span>@if(p.isDone('arch-vertical-slice')){<span class="nl-done">✓</span>}@if(d('arch-vertical-slice');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

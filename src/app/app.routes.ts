@@ -2752,7 +2752,12 @@ export const routes: Routes = [
       { path: 'sharedkernel-productid-never-used', loadComponent: () => import('./components/architecture/arch-patterns/monolith-vs-modular/subtopics/sharedkernel-productid-never-used/sharedkernel-productid-never-used').then(m => m.SharedKernelProductIdNeverUsedSubtopic) },
       { path: 'shared-process-shared-failure-domain', loadComponent: () => import('./components/architecture/arch-patterns/monolith-vs-modular/subtopics/shared-process-shared-failure-domain/shared-process-shared-failure-domain').then(m => m.SharedProcessSharedFailureDomainSubtopic) },
     ] },
-    { path: 'layered-architecture',      loadComponent: () => import('./components/architecture/arch-patterns/layered-architecture/layered-architecture').then(m => m.ArchLayeredArchitecture) },
+    { path: 'layered-architecture', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/layered-architecture/layered-architecture').then(m => m.ArchLayeredArchitecture) },
+      { path: 'dip-vs-ntier-contradiction', loadComponent: () => import('./components/architecture/arch-patterns/layered-architecture/subtopics/dip-vs-ntier-contradiction/dip-vs-ntier-contradiction').then(m => m.DipVsNtierContradictionSubtopic) },
+      { path: 'handler-repo-field-never-declared', loadComponent: () => import('./components/architecture/arch-patterns/layered-architecture/subtopics/handler-repo-field-never-declared/handler-repo-field-never-declared').then(m => m.HandlersRepoFieldNeverDeclaredSubtopic) },
+      { path: 'why-reads-are-the-safe-skip-case', loadComponent: () => import('./components/architecture/arch-patterns/layered-architecture/subtopics/why-reads-are-the-safe-skip-case/why-reads-are-the-safe-skip-case').then(m => m.WhyReadsAreTheSafeSkipCaseSubtopic) },
+    ] },
     { path: 'clean-architecture',        loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/clean-architecture').then(m => m.ArchCleanArchitecture) },
     { path: 'hexagonal-architecture',    loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/hexagonal-architecture').then(m => m.ArchHexagonalArchitecture) },
     { path: 'vertical-slice',            loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/vertical-slice').then(m => m.ArchVerticalSlice) },
