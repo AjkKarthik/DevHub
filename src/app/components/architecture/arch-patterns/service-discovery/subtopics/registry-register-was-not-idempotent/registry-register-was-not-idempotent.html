@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Discovery" topicRoute="/arch-patterns/service-discovery" subtopicLabel="The Registry's register() Was Not Idempotent" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Registry's register() Method Wasn't Idempotent</h1>
+  <p class="page-subtitle">The Challenge's InMemoryRegistry appended every registration unconditionally — a service re-registering with the same id (a common reconnection scenario) silently created a stale duplicate entry.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This was a bug in the Challenge's own reference solution. The next subtopic looks at a different codeTab on this page — the client-side discovery cache — and a gap between what it actually does and what the mistakes block says it should do.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Discovery" topicRoute="/arch-patterns/service-discovery"
+    [next]="{ label: 'The Cache Never Actually Refreshed in the Background', route: '/arch-patterns/service-discovery/cache-never-refreshed-in-background' }" />
+</div>

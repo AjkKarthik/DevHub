@@ -204,7 +204,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/service-discovery" routerLinkActive="active"><span class="nl-text">Service Discovery</span>@if(p.isDone('arch-service-discovery')){<span class="nl-done">✓</span>}@if(d('arch-service-discovery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/service-discovery" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Service Discovery</span>
+        @if(p.isDone('arch-service-discovery')){<span class="nl-done">✓</span>}
+        @if(d('arch-service-discovery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('service-discovery')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('service-discovery')"
+                  (click)="toggleSubtopics('service-discovery', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('service-discovery'); as sdSubs) {
+        @if (isSubtopicsExpanded('service-discovery')) {
+          <div class="nav-subtopics">
+            @for (s of sdSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/circuit-breaker" routerLinkActive="active"><span class="nl-text">Circuit Breaker</span>@if(p.isDone('arch-circuit-breaker')){<span class="nl-done">✓</span>}@if(d('arch-circuit-breaker');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/sidecar-service-mesh" routerLinkActive="active"><span class="nl-text">Sidecar &amp; Service Mesh</span>@if(p.isDone('arch-sidecar-service-mesh')){<span class="nl-done">✓</span>}@if(d('arch-sidecar-service-mesh');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

@@ -3166,4 +3166,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Boundary Burst Problem in Fixed-Window Rate Limiting', route: '/arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst' },
     { label: 'How mTLS Makes the Forwarded-Identity Header Trustworthy', route: '/arch-patterns/api-gateway-pattern/mtls-makes-forwarded-identity-trustworthy' },
   ],
+  // 'service-discovery' confirmed collision-free via app.routes.ts grep before adding
+  'service-discovery': [
+    { label: 'The Registry\'s register() Was Not Idempotent', route: '/arch-patterns/service-discovery/registry-register-was-not-idempotent' },
+    { label: 'The Cache Never Actually Refreshed in the Background', route: '/arch-patterns/service-discovery/cache-never-refreshed-in-background' },
+    { label: 'Why Long-Lived Connections Can Outlive a Dead Pod', route: '/arch-patterns/service-discovery/long-lived-connections-outlive-dead-pods' },
+  ],
 };

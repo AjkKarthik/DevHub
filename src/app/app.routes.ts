@@ -2800,7 +2800,12 @@ export const routes: Routes = [
       { path: 'fixed-window-rate-limiting-boundary-burst', loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/subtopics/fixed-window-rate-limiting-boundary-burst/fixed-window-rate-limiting-boundary-burst').then(m => m.FixedWindowRateLimitingBoundaryBurstSubtopic) },
       { path: 'mtls-makes-forwarded-identity-trustworthy', loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/subtopics/mtls-makes-forwarded-identity-trustworthy/mtls-makes-forwarded-identity-trustworthy').then(m => m.MtlsMakesForwardedIdentityTrustworthySubtopic) },
     ] },
-    { path: 'service-discovery',         loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/service-discovery').then(m => m.ArchServiceDiscovery) },
+    { path: 'service-discovery', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/service-discovery').then(m => m.ArchServiceDiscovery) },
+      { path: 'registry-register-was-not-idempotent', loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/subtopics/registry-register-was-not-idempotent/registry-register-was-not-idempotent').then(m => m.RegistryRegisterWasNotIdempotentSubtopic) },
+      { path: 'cache-never-refreshed-in-background', loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/subtopics/cache-never-refreshed-in-background/cache-never-refreshed-in-background').then(m => m.CacheNeverRefreshedInBackgroundSubtopic) },
+      { path: 'long-lived-connections-outlive-dead-pods', loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/subtopics/long-lived-connections-outlive-dead-pods/long-lived-connections-outlive-dead-pods').then(m => m.LongLivedConnectionsOutliveDeadPodsSubtopic) },
+    ] },
     { path: 'circuit-breaker',           loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/circuit-breaker').then(m => m.ArchCircuitBreaker) },
     { path: 'sidecar-service-mesh',      loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/sidecar-service-mesh').then(m => m.ArchSidecarServiceMesh) },
     { path: 'event-driven',              loadComponent: () => import('./components/architecture/arch-patterns/event-driven/event-driven').then(m => m.ArchEventDriven) },

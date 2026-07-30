@@ -27615,6 +27615,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Liveness and readiness checks answer different questions — a service can be alive but not yet ready to accept traffic.',
     ],
   },
+  'arch-patterns/service-discovery/registry-register-was-not-idempotent': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service Discovery (overview)', route: '/arch-patterns/service-discovery' },
+      { label: 'The Cache Never Actually Refreshed in the Background', route: '/arch-patterns/service-discovery/cache-never-refreshed-in-background' },
+    ],
+    tip: 'A registration method that only ever appends silently creates duplicate entries when a service re-registers with the same id — a real, common reconnection scenario, not an edge case.',
+    gotchas: [
+      'setHealth() finding only the FIRST matching id means a stale duplicate entry can keep reporting healthy after the real instance is marked down.',
+    ],
+  },
+  'arch-patterns/service-discovery/cache-never-refreshed-in-background': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Registry\'s register() Was Not Idempotent', route: '/arch-patterns/service-discovery/registry-register-was-not-idempotent' },
+      { label: 'Why Long-Lived Connections Can Outlive a Dead Pod', route: '/arch-patterns/service-discovery/long-lived-connections-outlive-dead-pods' },
+    ],
+    tip: 'Cache-aside with TTL deletion and refresh-ahead are genuinely different strategies — only the second guarantees no caller ever waits on a live registry lookup.',
+    gotchas: [
+      'Under concurrent load, cache-aside can let multiple callers independently trigger redundant lookups in the same brief window right after expiry.',
+    ],
+  },
+  'arch-patterns/service-discovery/long-lived-connections-outlive-dead-pods': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service Discovery (overview)', route: '/arch-patterns/service-discovery' },
+      { label: 'Sidecar & Service Mesh', route: '/arch-patterns/sidecar-service-mesh' },
+    ],
+    tip: 'kube-proxy\'s routing rules only affect NEW connections — an already-open, kept-alive connection stays pinned via conntrack to its original pod even after that pod is removed.',
+    gotchas: [
+      'Retry-on-connection-failure and a bounded max connection lifetime are the standard mitigations — without either, a client can stay pinned to a dead pod indefinitely.',
+    ],
+  },
   'arch-patterns/service-oriented': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
