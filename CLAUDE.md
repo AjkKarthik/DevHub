@@ -2663,6 +2663,31 @@ outer toggle plus the specific question's own row click; the Challenge fix neede
 + View Code); breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
 **Architecture Patterns hub Phase 10: 12 of 22 topics complete.**
 
+**The `event-driven` batch — the hub's first Messaging-group topic — found and fixed TWO genuine
+issues in the same Challenge reference solution, both self-contained, plus a gap-closing
+subtopic**: the in-memory broker stub's `publish()` was written as
+`async (e) => { for (const s of subscribers) await s(e); }` — awaiting each subscriber in turn
+before returning. This directly contradicted the page's own repeated principle ("The producer
+publishes and moves on"; the quiz's own explanation: "the publisher fires an event without
+waiting for any response") — the stub secretly made `placeOrder()` block until every consumer,
+including the Loyalty Service, had fully finished processing. A purely self-contained catch: no
+external research needed, just tracing what `await` inside the loop actually does to the caller.
+Fixed by firing subscribers without awaiting them (catching errors so one failing consumer can't
+crash the demo). Separately, the same solution's DB save line was present but fully commented out
+(`// await orderRepo.save(order); // DB first`) — directly contradicting the Challenge's own
+hint #2, "Publish AFTER DB save — not before," and the page's own "Publishing events before the
+DB transaction commits" mistake block. The solution never actually demonstrated the ordering it
+was teaching, just described it in a dead comment. Fixed by adding a minimal, self-contained
+`orderRepo` stub (matching the existing `broker` stub's style) and un-commenting the save call. A
+gap-closing subtopic made the theory's abstract "fat events risk stale data" claim concrete with
+a worked shipping-address scenario (where staleness genuinely bites) contrasted against a
+loyalty-tier scenario (where embedding stale-ish data is actually fine) — illustrating the
+tradeoff is real and situational, not a rule to always avoid fat events. Confirmed `event-driven`
+collision-free via the standing `app.routes.ts` grep (also checked `subtopics.ts` directly, no
+match), left bare. Build passed clean. Browser-verified: nav accordion opens with all 3 labels;
+both main-page fixes confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed
+via `getComputedStyle`. **Architecture Patterns hub Phase 10: 13 of 22 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3569,13 +3594,13 @@ outer toggle plus the specific question's own row click; the Challenge fix neede
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 12 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 13 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
   `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`,
   `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`,
-  `/arch-patterns/sidecar-service-mesh`, 2026-07-30) — see
+  `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical

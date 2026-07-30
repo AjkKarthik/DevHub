@@ -6930,7 +6930,18 @@ off here with a date.
   Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
   rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
   **Architecture Patterns hub Phase 10: 12 of 22 topics complete.**
-- [ ] `/arch-patterns/event-driven` — Event-Driven Architecture
+- [x] `/arch-patterns/event-driven` — Event-Driven Architecture (2026-07-30) — 3 subtopics:
+  (1) **The Broker Stub Was Secretly Blocking** — the Challenge's in-memory broker awaited every
+  subscriber before returning from publish(), silently blocking placeOrder() on consumer
+  processing, contradicting the page's own "fires and forgets" principle; fixed to fire without
+  awaiting; (2) **The DB Save Was Commented Out** — the same solution's DB save call was
+  commented out, so it never implemented its own hint's "publish AFTER DB save" instruction;
+  added a minimal stub and un-commented it; (3) **The Fat-Events Staleness Risk, Made Concrete**,
+  a gap-closing subtopic with a worked shipping-address-vs-loyalty-tier contrast. `event-driven`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page
+  fixes confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 13 of 22 topics complete.**
 - [ ] `/arch-patterns/cqrs-event-sourcing` — CQRS & Event Sourcing
 - [ ] `/arch-patterns/saga-choreography` — Saga & Choreography
 - [ ] `/arch-patterns/inbox-outbox` — Inbox & Outbox Pattern
