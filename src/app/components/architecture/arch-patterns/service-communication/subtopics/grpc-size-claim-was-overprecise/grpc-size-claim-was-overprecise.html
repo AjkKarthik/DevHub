@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Service Communication" topicRoute="/arch-patterns/service-communication" subtopicLabel="The gRPC Size Claim Was Overprecise" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The gRPC Size Claim Was Overprecise</h1>
+  <p class="page-subtitle">The page stated Protobuf is "~7x smaller than JSON" — verified via WebSearch that the commonly-cited figure is 3-5x, with payload shape mattering more than any single fixed ratio.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This was a precision fix on a claim the page already got the direction of right. The next subtopic goes deeper on a pattern the page names but never explains mechanically — the Outbox Pattern referenced in the "message broker unavailability" mistake block.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Service Communication" topicRoute="/arch-patterns/service-communication"
+    [next]="{ label: 'How the Outbox Pattern Actually Guarantees Delivery', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' }" />
+</div>

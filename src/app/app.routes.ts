@@ -2788,7 +2788,12 @@ export const routes: Routes = [
       { path: 'why-chatty-nanoservices-actually-get-slow', loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/subtopics/why-chatty-nanoservices-actually-get-slow/why-chatty-nanoservices-actually-get-slow').then(m => m.WhyChattyNanoservicesActuallyGetSlowSubtopic) },
       { path: 'consumer-driven-contract-testing-in-practice', loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/subtopics/consumer-driven-contract-testing-in-practice/consumer-driven-contract-testing-in-practice').then(m => m.ConsumerDrivenContractTestingInPracticeSubtopic) },
     ] },
-    { path: 'service-communication',     loadComponent: () => import('./components/architecture/arch-patterns/service-communication/service-communication').then(m => m.ArchServiceCommunication) },
+    { path: 'service-communication', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/service-communication/service-communication').then(m => m.ArchServiceCommunication) },
+      { path: 'grpc-size-claim-was-overprecise', loadComponent: () => import('./components/architecture/arch-patterns/service-communication/subtopics/grpc-size-claim-was-overprecise/grpc-size-claim-was-overprecise').then(m => m.GrpcSizeClaimWasOverpreciseSubtopic) },
+      { path: 'how-the-outbox-pattern-actually-works', loadComponent: () => import('./components/architecture/arch-patterns/service-communication/subtopics/how-the-outbox-pattern-actually-works/how-the-outbox-pattern-actually-works').then(m => m.HowTheOutboxPatternActuallyWorksSubtopic) },
+      { path: 'why-browsers-cannot-call-grpc-directly', loadComponent: () => import('./components/architecture/arch-patterns/service-communication/subtopics/why-browsers-cannot-call-grpc-directly/why-browsers-cannot-call-grpc-directly').then(m => m.WhyBrowsersCannotCallGrpcDirectlySubtopic) },
+    ] },
     { path: 'api-gateway-pattern',       loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/api-gateway-pattern').then(m => m.ArchApiGatewayPattern) },
     { path: 'service-discovery',         loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/service-discovery').then(m => m.ArchServiceDiscovery) },
     { path: 'circuit-breaker',           loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/circuit-breaker').then(m => m.ArchCircuitBreaker) },

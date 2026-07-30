@@ -3154,4 +3154,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why Chatty Nanoservices Actually Get Slow', route: '/arch-patterns/microservices-principles/why-chatty-nanoservices-actually-get-slow' },
     { label: 'Consumer-Driven Contract Testing in Practice', route: '/arch-patterns/microservices-principles/consumer-driven-contract-testing-in-practice' },
   ],
+  // 'service-communication' confirmed collision-free via app.routes.ts grep before adding
+  'service-communication': [
+    { label: 'The gRPC Size Claim Was Overprecise', route: '/arch-patterns/service-communication/grpc-size-claim-was-overprecise' },
+    { label: 'How the Outbox Pattern Actually Works', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' },
+    { label: 'Why Browsers Cannot Call gRPC Directly', route: '/arch-patterns/service-communication/why-browsers-cannot-call-grpc-directly' },
+  ],
 };

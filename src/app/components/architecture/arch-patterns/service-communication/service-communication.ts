@@ -47,7 +47,7 @@ export class ArchServiceCommunication {
       heading: 'REST vs gRPC',
       points: [
         'REST over HTTP/1.1 + JSON: human-readable, easy to debug, browser-compatible, loose contracts.',
-        'gRPC over HTTP/2 + Protobuf: strongly typed contracts (`.proto` files), binary encoding (~7× smaller than JSON), bi-directional streaming.',
+        'gRPC over HTTP/2 + Protobuf: strongly typed contracts (`.proto` files), binary encoding (commonly 3–5× smaller than JSON uncompressed, more for integer/enum-heavy payloads, less for string-heavy ones), bi-directional streaming.',
         'gRPC for internal high-throughput service-to-service calls; REST for public APIs and browser clients.',
         'Both are synchronous by default; gRPC supports server-streaming and bi-directional streaming for push scenarios.',
       ],
@@ -105,7 +105,7 @@ async function getProductPrice(productId: string): Promise<number> {
   }
 }
 
-// gRPC equivalent (typed, binary, ~7× smaller payload)
+// gRPC equivalent (typed, binary, commonly 3-5x smaller payload)
 // const { price } = await catalogClient.getProductPrice({ productId });`
     },
     {

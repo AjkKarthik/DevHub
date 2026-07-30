@@ -27537,6 +27537,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A service mesh moves resilience/observability into infrastructure but adds real per-call latency and operational overhead.',
     ],
   },
+  'arch-patterns/service-communication/grpc-size-claim-was-overprecise': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service Communication (overview)', route: '/arch-patterns/service-communication' },
+      { label: 'How the Outbox Pattern Actually Works', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' },
+    ],
+    tip: 'Protobuf is reliably smaller than JSON, but the ratio depends heavily on payload shape — integer/enum-heavy payloads compress far better than string-heavy ones.',
+    gotchas: [
+      'A precise-sounding multiplier is not automatically more trustworthy than a caveated range — it can come from one edge-case benchmark rather than the typical case.',
+    ],
+  },
+  'arch-patterns/service-communication/how-the-outbox-pattern-actually-works': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The gRPC Size Claim Was Overprecise', route: '/arch-patterns/service-communication/grpc-size-claim-was-overprecise' },
+      { label: 'Why Browsers Cannot Call gRPC Directly', route: '/arch-patterns/service-communication/why-browsers-cannot-call-grpc-directly' },
+    ],
+    tip: 'The Outbox Pattern works by writing the event into the SAME database transaction as the business data — the relay process that publishes it to the broker is a separate, later step.',
+    gotchas: [
+      'The pattern guarantees at-least-once delivery, never exactly-once — the relay can publish the same row twice if it crashes right after publishing but before marking it sent.',
+    ],
+  },
+  'arch-patterns/service-communication/why-browsers-cannot-call-grpc-directly': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Service Communication (overview)', route: '/arch-patterns/service-communication' },
+      { label: 'How the Outbox Pattern Actually Works', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' },
+    ],
+    tip: 'The Fetch API has never implemented HTTP/2 trailers, where gRPC sends its final call status — that gap, not convention, is why browsers need gRPC-Web and a translating proxy.',
+    gotchas: [
+      'gRPC-Web deliberately gives up client-streaming and full bidirectional streaming to work within what a browser can actually read.',
+    ],
+  },
   'arch-patterns/service-discovery': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
