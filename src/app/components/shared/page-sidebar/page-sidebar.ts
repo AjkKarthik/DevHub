@@ -27285,6 +27285,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'An open circuit needs a graceful fallback (cached/default data) to actually improve user experience, not just protect the system.',
     ],
   },
+  'arch-patterns/circuit-breaker/half-open-max-calls-was-never-used': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Circuit Breaker (overview)', route: '/arch-patterns/circuit-breaker' },
+      { label: 'The Polly Example Had the Strategy Order Backwards', route: '/arch-patterns/circuit-breaker/polly-strategy-order-was-backwards' },
+    ],
+    tip: 'A constructor parameter can be declared, typed, and stored while never actually being read anywhere in the class — check usage, not just declaration.',
+    gotchas: [
+      'The basic manual CircuitBreaker closed after ONE successful half-open call regardless of the halfOpenMaxCalls value passed to it.',
+    ],
+  },
+  'arch-patterns/circuit-breaker/polly-strategy-order-was-backwards': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'halfOpenMaxCalls Was Never Actually Used', route: '/arch-patterns/circuit-breaker/half-open-max-calls-was-never-used' },
+      { label: 'Making the Bulkhead Pattern Concrete', route: '/arch-patterns/circuit-breaker/bulkhead-pattern-made-concrete' },
+    ],
+    tip: 'Polly v8 wraps strategies in the order they\'re added — the first strategy added is the OUTERMOST, so circuit breaker must be added before retry to gate the whole retry sequence.',
+    gotchas: [
+      'Adding retry before circuit breaker makes retry the outer strategy — each individual retry attempt still reaches the inner circuit breaker check.',
+    ],
+  },
+  'arch-patterns/circuit-breaker/bulkhead-pattern-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Circuit Breaker (overview)', route: '/arch-patterns/circuit-breaker' },
+      { label: 'The Polly Example Had the Strategy Order Backwards', route: '/arch-patterns/circuit-breaker/polly-strategy-order-was-backwards' },
+    ],
+    tip: 'Bulkhead caps concurrency regardless of success or failure; circuit breaker reacts only to failure rate — a merely slow (not yet failing) dependency can exhaust resources without ever tripping the circuit breaker.',
+    gotchas: [
+      'A bulkhead needs to be scoped per downstream dependency, the same way a shared circuit breaker instance is a documented mistake on this same page.',
+    ],
+  },
   'arch-patterns/clean-architecture': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Circuit Breaker" topicRoute="/arch-patterns/circuit-breaker" subtopicLabel="Making the Bulkhead Pattern Concrete" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Making the Bulkhead Pattern Concrete</h1>
+  <p class="page-subtitle">Every other pattern on this page gets a full codeTab — the Bulkhead QnA is one abstract sentence. This subtopic shows a minimal semaphore-based bulkhead and why it catches a failure mode circuit breaker alone misses.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch by making the QnA's one-line Bulkhead mention as concrete as the page's other resilience patterns already are.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Circuit Breaker" topicRoute="/arch-patterns/circuit-breaker"
+    [prev]="{ label: 'The Polly Example Had the Strategy Order Backwards', route: '/arch-patterns/circuit-breaker/polly-strategy-order-was-backwards' }" />
+</div>

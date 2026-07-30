@@ -94,8 +94,10 @@ class CircuitBreaker {
   constructor(
     private readonly failureThreshold: number = 5,
     private readonly cooldownMs: number = 30_000,
-    private readonly halfOpenMaxCalls: number = 3,
   ) {}
+  // NOTE: this basic version closes after a SINGLE successful half-open
+  // trial call. See the Challenge below for the fuller version that
+  // requires several consecutive half-open successes before closing.
 
   async call<T>(fn: () => Promise<T>, fallback?: () => T): Promise<T> {
     if (this.state === 'open') {
@@ -145,22 +147,17 @@ const price = await cb.call(
       language: 'typescript',
       code: `// .NET — Polly ResiliencePipeline with CircuitBreaker + Retry
 // Program.cs
+//
+// Polly v8 strategies wrap in the order they're ADDED: the FIRST strategy
+// added is the OUTERMOST. Adding CircuitBreaker before Retry makes the
+// circuit breaker the outer gate -- once it's open, Retry (inner) never
+// even runs, so an open circuit truly stops ALL traffic, not just new
+// attempts within a single retry sequence.
 
 services.AddHttpClient<ICatalogClient, CatalogClient>()
   .AddResilienceHandler("catalog-pipeline", builder =>
   {
-    // 1. Retry: 3 attempts, exponential backoff (not on circuit open)
-    builder.AddRetry(new HttpRetryStrategyOptions
-    {
-      MaxRetryAttempts = 3,
-      BackoffType = DelayBackoffType.Exponential,
-      Delay = TimeSpan.FromMilliseconds(200),
-      ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
-        .Handle<HttpRequestException>()
-        .HandleResult(r => (int)r.StatusCode >= 500),
-    });
-
-    // 2. Circuit Breaker: open after 5 failures in 30s window
+    // 1. Circuit Breaker (outer): open after 5 failures in 30s window
     builder.AddCircuitBreaker(new HttpCircuitBreakerStrategyOptions
     {
       FailureRatio = 0.5,              // 50% failure rate trips circuit
@@ -171,7 +168,19 @@ services.AddHttpClient<ICatalogClient, CatalogClient>()
       OnClosed = args => { Console.WriteLine("Circuit CLOSED"); return ValueTask.CompletedTask; },
     });
 
-    // 3. Timeout per attempt
+    // 2. Retry (inner): 3 attempts, exponential backoff -- only reached
+    //    while the circuit above is Closed or Half-Open
+    builder.AddRetry(new HttpRetryStrategyOptions
+    {
+      MaxRetryAttempts = 3,
+      BackoffType = DelayBackoffType.Exponential,
+      Delay = TimeSpan.FromMilliseconds(200),
+      ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+        .Handle<HttpRequestException>()
+        .HandleResult(r => (int)r.StatusCode >= 500),
+    });
+
+    // 3. Timeout per attempt (innermost)
     builder.AddTimeout(TimeSpan.FromSeconds(3));
   });`
     },
@@ -212,7 +221,7 @@ class ProductService {
       title: 'Retrying when the circuit is open',
       wrong: `// Retry 3 times immediately when circuit is open — hammers dead service`,
       right: `// Retry handles transient errors; circuit breaker handles sustained failures — use both but configure retry to NOT fire when circuit is open`,
-      explanation: 'Retrying against an open circuit re-hammers the already-failing service, worsening its recovery time. Polly\'s pipeline applies retry before circuit check.',
+      explanation: 'Retrying against an open circuit re-hammers the already-failing service, worsening its recovery time. In Polly\'s pipeline, add the circuit breaker strategy BEFORE retry — Polly v8 wraps strategies in the order they\'re added, so the circuit breaker becomes the outer gate and its check runs before retry ever fires, stopping the whole retry sequence at once instead of just individual attempts.',
     },
     {
       title: 'No fallback when circuit opens',

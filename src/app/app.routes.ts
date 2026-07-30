@@ -2806,7 +2806,12 @@ export const routes: Routes = [
       { path: 'cache-never-refreshed-in-background', loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/subtopics/cache-never-refreshed-in-background/cache-never-refreshed-in-background').then(m => m.CacheNeverRefreshedInBackgroundSubtopic) },
       { path: 'long-lived-connections-outlive-dead-pods', loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/subtopics/long-lived-connections-outlive-dead-pods/long-lived-connections-outlive-dead-pods').then(m => m.LongLivedConnectionsOutliveDeadPodsSubtopic) },
     ] },
-    { path: 'circuit-breaker',           loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/circuit-breaker').then(m => m.ArchCircuitBreaker) },
+    { path: 'circuit-breaker', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/circuit-breaker').then(m => m.ArchCircuitBreaker) },
+      { path: 'half-open-max-calls-was-never-used', loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/subtopics/half-open-max-calls-was-never-used/half-open-max-calls-was-never-used').then(m => m.HalfOpenMaxCallsWasNeverUsedSubtopic) },
+      { path: 'polly-strategy-order-was-backwards', loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/subtopics/polly-strategy-order-was-backwards/polly-strategy-order-was-backwards').then(m => m.PollyStrategyOrderWasBackwardsSubtopic) },
+      { path: 'bulkhead-pattern-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/subtopics/bulkhead-pattern-made-concrete/bulkhead-pattern-made-concrete').then(m => m.BulkheadPatternMadeConcreteSubtopic) },
+    ] },
     { path: 'sidecar-service-mesh',      loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/sidecar-service-mesh').then(m => m.ArchSidecarServiceMesh) },
     { path: 'event-driven',              loadComponent: () => import('./components/architecture/arch-patterns/event-driven/event-driven').then(m => m.ArchEventDriven) },
     { path: 'cqrs-event-sourcing',       loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/cqrs-event-sourcing').then(m => m.ArchCqrsEventSourcing) },

@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Circuit Breaker" topicRoute="/arch-patterns/circuit-breaker" subtopicLabel="halfOpenMaxCalls Was Never Actually Used" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Manual Circuit Breaker's halfOpenMaxCalls Was Never Used</h1>
+  <p class="page-subtitle">The basic codeTab's constructor accepted a halfOpenMaxCalls parameter that promised multi-trial half-open recovery — but the class actually closed after a single successful call, regardless of the value passed.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This was a self-contained code bug. The next subtopic looks at a bigger, verified issue on this same page — the Polly example's strategy ordering directly contradicting the page's own stated best practice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Circuit Breaker" topicRoute="/arch-patterns/circuit-breaker"
+    [next]="{ label: 'The Polly Example Had Retry and Circuit Breaker Backwards', route: '/arch-patterns/circuit-breaker/polly-strategy-order-was-backwards' }" />
+</div>
