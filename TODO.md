@@ -6779,7 +6779,22 @@ off here with a date.
   passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page fixes
   confirmed rendering; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns
   hub Phase 10: 2 of 22 topics complete.**
-- [ ] `/arch-patterns/clean-architecture` — Clean / Onion Architecture
+- [x] `/arch-patterns/clean-architecture` — Clean / Onion Architecture (2026-07-30) — 3 subtopics:
+  (1) **The mustKnow Ring Order Was Labeled Backwards** — Quick Revision listed "Entities → Use
+  Cases → Interface Adapters → Frameworks (outer to inner)," but that's actually inner-to-outer
+  per the page's own ring definitions and quiz Q1's correctly-ordered explanation; fixed the
+  label; (2) **The Controller Skipped Its Own Presenter** — the "Infrastructure Adapter" code
+  sample's controller built its HTTP response inline instead of using OrderPresenter, despite the
+  page's own file listing, theory, and mistakes block all saying it should; added a real
+  OrderPresenter class; (3) **The OutputPort Pattern: One Use Case, Multiple Presenters**, a
+  gap-closing subtopic showing the OutputPort mechanism the QnA names but never demonstrates in
+  code. Real cross-hub collision RISK caught (not yet an active leak): Design Patterns hub has
+  its own identical `clean-architecture` route slug with no Phase 10 subtopics yet — hub-prefixed
+  the SUBTOPICS entry to `arch-clean-architecture` proactively; confirmed the Design Patterns
+  hub's own clean-architecture page renders with no leaked content. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
+  rendering; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase
+  10: 3 of 22 topics complete.**
 - [ ] `/arch-patterns/hexagonal-architecture` — Hexagonal Architecture
 - [ ] `/arch-patterns/vertical-slice` — Vertical Slice Architecture
 - [ ] `/arch-patterns/service-oriented` — Service-Oriented Architecture

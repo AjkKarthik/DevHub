@@ -2328,6 +2328,49 @@ both main-page fixes confirmed rendering — the QnA fix needed the QnA section'
 the specific question's own row click, and the Challenge fix needed Reveal Solution + all
 matching "▼ View Code" toggles; 860px wrapper confirmed via `getComputedStyle`.
 
+**The `clean-architecture` batch found and fixed TWO more genuine issues, both self-contained
+(zero external research needed), plus a real cross-hub SUBTOPICS collision risk caught before it
+could cause a leak**: the Quick Revision's own `mustKnow` list stated "Entities → Use Cases →
+Interface Adapters → Frameworks (outer to inner)" — but Entities is the page's own documented
+INNERMOST ring and Frameworks the OUTERMOST, so the sequence as written is actually inner-to-outer,
+directly contradicting its own parenthetical label; quiz Q1's own explanation lists the identical
+four rings in the reverse order ("Frameworks → Adapters → Use Cases → Entities"), which correctly
+reads as outer-to-inner, confirming which section's label needed fixing. Corrected to
+"(inner to outer)". The "Infrastructure Adapter" code sample's `OrdersController` built its HTTP
+response inline (`Response.json({ orderId: result.orderId }, ...)`) instead of delegating to a
+presenter — despite the page's OWN "Ring Structure" file listing explicitly naming
+`OrderPresenter.ts` as a separate file, the theory section explicitly splitting controller and
+presenter responsibilities, and the mistakes block's own "right" example showing
+`OrderPresenter.toDto(result)` as the correct pattern for this exact scenario — the controller was
+quietly committing a milder version of the anti-pattern the page's own mistakes block warns
+against. Added a real `OrderPresenter` class and wired the controller to use it. A third,
+gap-closing subtopic elaborated on the OutputPort pattern the page's own QnA names ("communicate
+results via an OutputPort interface or return value") but never shows in code — demonstrating how
+one Use Case can serve an HTTP controller, a GraphQL resolver, and a CLI command with zero
+duplicated mapping logic, directly extending the presenter fix from subtopic 2. **A genuinely new
+kind of gotcha for this file**: `clean-architecture` is NOT collision-free in the way the standard
+sweep checks — `app.routes.ts` already had TWO separate `'clean-architecture'` routes (one under
+`architecture/design-patterns/clean-architecture`, one under `architecture/arch-patterns/
+clean-architecture`), confirmed by grepping the route path before editing. `subtopics.ts` itself
+had no existing `'clean-architecture'` entry (so the standard "checked both forms, collision-free"
+sweep would have said "left bare"), but a bare key here would have been picked up by the SAME
+shared flat `SUBTOPICS` map the moment the Design Patterns hub's own `DpNavComponent` ever adds
+its own accordion support and calls `subtopicsOf('clean-architecture')` for ITS topic — leaking
+these Architecture-Patterns subtopics onto the wrong hub's page. Confirmed `DpNavComponent`
+currently has no `subtopicsOf()` call at all (no active leak today), but hub-prefixed the entry to
+`arch-clean-architecture` anyway as a proactive fix, since the risk was directly confirmed rather
+than merely hypothetical — a stronger signal than the general "some future hub might pick this
+slug" case the standard collision sweep is scoped for. Browser-verified the Design Patterns hub's
+own `/design-patterns/clean-architecture` page renders normally with no leaked subtopic content.
+**New standing check to add whenever a topic slug is shared across two DIFFERENT hubs (found via
+duplicate route paths in `app.routes.ts`, not just duplicate keys in `subtopics.ts`)**: hub-prefix
+the `SUBTOPICS` entry preemptively rather than trusting a clean `subtopics.ts` sweep alone, since
+that sweep only catches collisions that already exist, not ones a sibling hub's own future Phase
+10 pilot would introduce. Build passed clean. Browser-verified: nav accordion opens with all 3
+labels; both main-page fixes confirmed rendering (the Infrastructure Adapter fix needed clicking
+the Code Examples section's own "▼ View Code" toggle FIRST to reveal the tab buttons, then the
+specific "Infrastructure Adapter" tab); 860px wrapper confirmed via `getComputedStyle`.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3234,11 +3277,13 @@ matching "▼ View Code" toggles; 860px wrapper confirmed via `getComputedStyle`
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 2 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
-  `/arch-patterns/layered-architecture`, 2026-07-30) — see "Architecture Patterns hub subtopic
-  wiring" section below for the `ArchNavComponent` accordion structural fix (11th
-  `*NavComponent`-based hub in a row missing it at pilot time) and the genuine main-page
-  inaccuracies found and fixed on both batches so far.
+  Phase 10: 3 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`, 2026-07-30) — see
+  "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
+  structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
+  cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
+  `clean-architecture` slug, and the genuine main-page inaccuracies found and fixed across all
+  three batches so far.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.
