@@ -6917,7 +6917,19 @@ off here with a date.
   Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
   rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
   **Architecture Patterns hub Phase 10: 11 of 22 topics complete.**
-- [ ] `/arch-patterns/sidecar-service-mesh` — Sidecar & Service Mesh
+- [x] `/arch-patterns/sidecar-service-mesh` — Sidecar & Service Mesh (2026-07-30) — 3 subtopics:
+  (1) **Three Different Latency Figures, Reconciled** — the page stated ~10ms, ~10-30ms, and
+  1-5ms sidecar overhead in three different sections for the same fact; verified via Istio's own
+  published benchmark trend that modern figures land in the 1-5ms range; reconciled all three;
+  (2) **Ambient Mesh's GA Version Was Off By One Release** — the QnA repeated the exact same
+  "GA in 1.22+" claim already researched and corrected on this project's own Service Mesh hub
+  (real GA: 1.24, November 2024); (3) **The Retry Latency Math Undercounted By One Try** —
+  verified via Istio's own VirtualService spec that attempts: 2 means 3 total tries, not 2;
+  fixed the Challenge's "2 × 2s = 4s" comment to "3 × 2s = 6s". `sidecar-service-mesh` SUBTOPICS
+  key collision-free (checked app.routes.ts directly), left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; all three main-page fixes confirmed
+  rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 12 of 22 topics complete.**
 - [ ] `/arch-patterns/event-driven` — Event-Driven Architecture
 - [ ] `/arch-patterns/cqrs-event-sourcing` — CQRS & Event Sourcing
 - [ ] `/arch-patterns/saga-choreography` — Saga & Choreography

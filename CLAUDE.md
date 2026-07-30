@@ -2633,6 +2633,36 @@ with all 3 labels; both main-page fixes confirmed rendering after clicking the s
 Circuit Breaker" and "Polly (.NET)" tab buttons; breadcrumb showed all 4 levels; 860px wrapper
 confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 11 of 22 topics complete.**
 
+**The `sidecar-service-mesh` batch found and fixed THREE genuine issues, one a self-contained
+internal contradiction, one a cross-hub duplicate of an already-verified stale fact, and one a
+verified API-semantics correction**: the page stated THREE different sidecar latency overhead
+figures in three different sections — "~10ms" in the theory, "~10-30ms" in the mistakes block,
+"1-5ms" in the quiz explanation — for the exact same underlying fact. Verified via WebSearch
+against Istio's own published benchmark trend (1.1: ~8ms, 1.6: ~3.12ms, 1.16: ~2.65ms at p90 —
+overhead has been actively optimized down release over release) that modern figures land closest
+to the quiz's "1-5ms," not the higher, likely-stale numbers elsewhere on the page. Reconciled all
+three to a consistent, version-aware claim. Separately, the QnA's "GA in Istio 1.22+" claim for
+Ambient Mesh is the EXACT same claim this session's own Service Mesh hub already researched and
+corrected (verified against Istio's own GA announcement: the real release is 1.24, November 2024
+— 1.22 was still Beta) — this page had independently repeated the stale figure, confirming that a
+fact fixed once in a project doesn't automatically get fixed everywhere it recurs; recognizing the
+duplicate was itself the finding, reusing the prior research rather than re-deriving it. Third,
+verified via Istio's own documented VirtualService `HTTPRetry` spec, the Challenge solution's
+comment "Total max latency: 2 × 2s = 4s" undercounted by one try — Istio's `attempts` field counts
+RETRIES after the initial request, so `attempts: 2` means 3 total tries and a real worst case of
+6s, not 4s. Fixed the comment and added the general `(attempts + 1) × perTryTimeout` formula.
+**Also noteworthy**: an earlier assumption I made about Polly's own strategy-wrapping order (from
+the `circuit-breaker` batch) was double-checked against this unrelated Istio API and found to be a
+genuinely separate, unrelated semantics question — worth remembering that "does X count the
+original + N more, or just N total" is a recurring category of API ambiguity across different
+libraries, each needing its own verification rather than assuming a pattern learned on one API
+transfers to another. Confirmed `sidecar-service-mesh` collision-free via the standing
+`app.routes.ts` grep, left bare. Build passed clean. Browser-verified: nav accordion opens with
+all 3 labels; all three main-page fixes confirmed rendering (the QnA fix needed the QnA section's
+outer toggle plus the specific question's own row click; the Challenge fix needed Reveal Solution
++ View Code); breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+**Architecture Patterns hub Phase 10: 12 of 22 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3539,12 +3569,13 @@ confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 11 of 22
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 11 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 12 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
   `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`,
-  `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`, 2026-07-30) — see
+  `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`,
+  `/arch-patterns/sidecar-service-mesh`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
