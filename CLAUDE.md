@@ -2543,6 +2543,41 @@ fixes (theory bullet and code comment) confirmed rendering; breadcrumb showed al
 wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 8 of 22 topics
 complete.**
 
+**The `api-gateway-pattern` batch found and fixed ONE self-contained internal contradiction, plus
+two gap-closing subtopics**: the page's own "Gateway Aggregation and Composition Patterns" theory
+bullet states the fail-entire-request-vs-degrade-gracefully choice "should be explicit rather than
+accidental" — but the "Request Aggregation" code example directly below it used `Promise.all([...])`
+to fan out the three service calls, which fails the ENTIRE aggregation the instant any single call
+rejects, discarding whatever the other calls returned even if they succeeded. The code silently
+made exactly the choice the theory says should be explicit, without ever acknowledging it — a
+purely self-contained catch (no external research needed, `Promise.all`'s fail-fast behavior is
+basic, well-documented JS semantics) found by checking a theory bullet against its own adjacent
+code example rather than reading either in isolation. Fixed by adding a comment naming the
+tradeoff explicitly. A gap-closing subtopic named and explained the classic FIXED WINDOW rate
+limiter algorithm the "Auth + Rate Limiting Middleware" codeTab actually implements (never named
+on the page) and its well-known boundary-burst flaw — a client can get roughly double the stated
+limit in a short span straddling the reset boundary, a real gap the page's own QnA gestures at
+(mentioning both "sliding window" and "fixed window" without ever explaining what actually
+differs between them). A second gap-closing subtopic made concrete what the QnA's "requiring
+network policy enforcement" one-liner actually means — the forwarded `X-User-Id` header is just a
+claim with nothing stopping a bypassed or compromised caller from forging it, and mTLS (not a
+network policy alone) is the mechanism that actually verifies caller identity, explicitly tying
+back to this hub's own Sidecar & Service Mesh topic. **A deliberately NOT-taken finding, worth
+recording as a judgment call**: the YARP config codeTab is labeled `language: 'typescript'` for
+what's actually a raw `appsettings.json` file — considered "fixing" this to match the Azure hub's
+own established "never json/bicep, use bash instead" convention, but reasoned through the actual
+rendering impact first: TypeScript's highlight.js grammar handles JSON-shaped content (quoted
+keys, colons, brackets) reasonably well since JSON overlaps heavily with JS object literal syntax,
+while `'bash'` grammar would likely render WORSE on a pure JSON blob (treating it as shell syntax).
+Left unchanged rather than blindly applying a precedent from a different hub's content shape
+without confirming it would actually improve anything — a real example of NOT treating every
+established pattern as automatically transferable. Confirmed `api-gateway-pattern`
+collision-free via the standing `app.routes.ts` grep, left bare. Build passed clean.
+Browser-verified: nav accordion opens with all 3 labels; the Promise.all fix confirmed rendering
+after clicking the specific "Request Aggregation" tab button; breadcrumb showed all 4 levels;
+860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 9 of 22
+topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3449,11 +3484,11 @@ complete.**
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 8 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 9 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
-  `/arch-patterns/service-communication`, 2026-07-30) — see
+  `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical

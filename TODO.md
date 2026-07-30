@@ -6875,7 +6875,21 @@ off here with a date.
   Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
   rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
   **Architecture Patterns hub Phase 10: 8 of 22 topics complete.**
-- [ ] `/arch-patterns/api-gateway-pattern` — API Gateway Pattern
+- [x] `/arch-patterns/api-gateway-pattern` — API Gateway Pattern (2026-07-30) — 3 subtopics:
+  (1) **Promise.all Hid an Accidental Fail-Fast Choice** — the theory says the fail-vs-degrade
+  choice should be explicit, but the Request Aggregation codeTab used Promise.all, silently
+  choosing fail-fast; fixed with an explanatory comment; (2) **The Boundary Burst Problem in
+  Fixed-Window Rate Limiting**, a gap-closing subtopic naming and explaining the classic algorithm
+  the rate-limiting codeTab implements and its well-known reset-boundary flaw; (3) **How mTLS
+  Makes the Forwarded-Identity Header Trustworthy**, a gap-closing subtopic making concrete what
+  "network policy enforcement" actually means, tying to the Sidecar & Service Mesh topic.
+  Considered but deliberately did NOT relabel the YARP config codeTab's language (json vs
+  typescript) — reasoned the TypeScript grammar likely renders JSON content better than bash
+  would, so left it unchanged rather than blindly applying the Azure hub's own precedent.
+  `api-gateway-pattern` SUBTOPICS key collision-free (checked app.routes.ts directly), left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the Promise.all fix
+  confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 9 of 22 topics complete.**
 - [ ] `/arch-patterns/service-discovery` — Service Discovery
 - [ ] `/arch-patterns/circuit-breaker` — Circuit Breaker
 - [ ] `/arch-patterns/sidecar-service-mesh` — Sidecar & Service Mesh
