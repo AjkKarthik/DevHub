@@ -3214,4 +3214,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What a DDD Factory Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like' },
     { label: 'What a DDD Repository Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-repository-actually-looks-like' },
   ],
+  'bounded-contexts': [
+    { label: 'Order-Catalog Is ACL, Not Customer/Supplier', route: '/arch-patterns/bounded-contexts/order-catalog-is-acl-not-customer-supplier' },
+    { label: 'Event Publisher: Mechanism vs. Relationship', route: '/arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship' },
+    { label: 'Published Language Prevents ACL Sprawl', route: '/arch-patterns/bounded-contexts/published-language-prevents-acl-sprawl' },
+  ],
 };

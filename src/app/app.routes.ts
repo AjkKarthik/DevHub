@@ -2848,7 +2848,12 @@ export const routes: Routes = [
       { path: 'what-a-ddd-factory-actually-looks-like', loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/subtopics/what-a-ddd-factory-actually-looks-like/what-a-ddd-factory-actually-looks-like').then(m => m.WhatADddFactoryActuallyLooksLikeSubtopic) },
       { path: 'what-a-ddd-repository-actually-looks-like', loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/subtopics/what-a-ddd-repository-actually-looks-like/what-a-ddd-repository-actually-looks-like').then(m => m.WhatADddRepositoryActuallyLooksLikeSubtopic) },
     ] },
-    { path: 'bounded-contexts',          loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/bounded-contexts').then(m => m.ArchBoundedContexts) },
+    { path: 'bounded-contexts', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/bounded-contexts').then(m => m.ArchBoundedContexts) },
+      { path: 'order-catalog-is-acl-not-customer-supplier', loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/subtopics/order-catalog-is-acl-not-customer-supplier/order-catalog-is-acl-not-customer-supplier').then(m => m.OrderCatalogIsAclNotCustomerSupplierSubtopic) },
+      { path: 'event-publisher-mechanism-vs-relationship', loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/subtopics/event-publisher-mechanism-vs-relationship/event-publisher-mechanism-vs-relationship').then(m => m.EventPublisherMechanismVsRelationshipSubtopic) },
+      { path: 'published-language-prevents-acl-sprawl', loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/subtopics/published-language-prevents-acl-sprawl/published-language-prevents-acl-sprawl').then(m => m.PublishedLanguagePreventsAclSprawlSubtopic) },
+    ] },
     { path: 'aggregates-domain-events',  loadComponent: () => import('./components/architecture/arch-patterns/aggregates-domain-events/aggregates-domain-events').then(m => m.ArchAggregatesDomainEvents) },
     { path: 'anti-corruption-layer',     loadComponent: () => import('./components/architecture/arch-patterns/anti-corruption-layer/anti-corruption-layer').then(m => m.ArchAntiCorruptionLayer) },
     { path: 'strangler-fig',             loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/strangler-fig').then(m => m.ArchStranglerFig) },
@@ -4063,3 +4068,4 @@ export const routes: Routes = [
 
   { path: '**', redirectTo: '' },
 ];
+

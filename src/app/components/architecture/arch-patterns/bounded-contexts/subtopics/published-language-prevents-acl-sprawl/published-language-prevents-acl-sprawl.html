@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bounded Contexts" topicRoute="/arch-patterns/bounded-contexts" subtopicLabel="Published Language Prevents ACL Sprawl" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Published Language Prevents ACL Sprawl</h1>
+  <p class="page-subtitle">The QnA names Published Language in one sentence and never shows it in code. This subtopic shows what it actually replaces — N bespoke, fragile ACLs against one upstream's internal model — with one shared, upstream-independent schema.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch: together the three subtopics untangle mechanism from relationship (ACL vs. Customer/Supplier, Event Publisher vs. Customer/Supplier) and then show the pattern — Published Language — that scales ACL translation past a single consumer.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bounded Contexts" topicRoute="/arch-patterns/bounded-contexts"
+    [prev]="{ label: 'Event Publisher: Mechanism vs. Relationship', route: '/arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship' }" />
+</div>

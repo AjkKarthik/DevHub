@@ -372,7 +372,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/bounded-contexts" routerLinkActive="active"><span class="nl-text">Bounded Contexts</span>@if(p.isDone('arch-bounded-contexts')){<span class="nl-done">✓</span>}@if(d('arch-bounded-contexts');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/bounded-contexts" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Bounded Contexts</span>
+        @if(p.isDone('arch-bounded-contexts')){<span class="nl-done">✓</span>}
+        @if(d('arch-bounded-contexts');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('bounded-contexts')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('bounded-contexts')"
+                  (click)="toggleSubtopics('bounded-contexts', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('bounded-contexts'); as bcSubs) {
+        @if (isSubtopicsExpanded('bounded-contexts')) {
+          <div class="nav-subtopics">
+            @for (s of bcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/aggregates-domain-events" routerLinkActive="active"><span class="nl-text">Aggregates &amp; Domain Events</span>@if(p.isDone('arch-aggregates-domain-events')){<span class="nl-done">✓</span>}@if(d('arch-aggregates-domain-events');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

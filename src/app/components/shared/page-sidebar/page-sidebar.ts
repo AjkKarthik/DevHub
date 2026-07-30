@@ -27237,6 +27237,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Getting context boundaries wrong is expensive to fix later, since data and behavior entangle across the incorrect boundary over time.',
     ],
   },
+  'arch-patterns/bounded-contexts/order-catalog-is-acl-not-customer-supplier': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Bounded Contexts (overview)', route: '/arch-patterns/bounded-contexts' },
+      { label: 'Event Publisher: Mechanism vs. Relationship', route: '/arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship' },
+    ],
+    tip: 'ACL is a translation mechanism the downstream builds unilaterally; Customer/Supplier is a planning relationship that depends on how the upstream team actually behaves — the two are not the same fact.',
+    gotchas: [
+      'Building an Anti-Corruption Layer against a context does not by itself prove a Customer/Supplier relationship — that needs separate evidence the upstream accommodates your requests in its own planning.',
+    ],
+  },
+  'arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Order-Catalog Is ACL, Not Customer/Supplier', route: '/arch-patterns/bounded-contexts/order-catalog-is-acl-not-customer-supplier' },
+      { label: 'Published Language Prevents ACL Sprawl', route: '/arch-patterns/bounded-contexts/published-language-prevents-acl-sprawl' },
+    ],
+    tip: 'Event Publisher is a real, named upstream context-map pattern (alongside Open Host Service) — it describes HOW data moves, not WHO has influence over whom.',
+    gotchas: [
+      'A relationship can be Event Publisher without being Customer/Supplier — publishing events with zero regard for subscriber needs is Event Publisher alone.',
+    ],
+  },
+  'arch-patterns/bounded-contexts/published-language-prevents-acl-sprawl': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Bounded Contexts (overview)', route: '/arch-patterns/bounded-contexts' },
+      { label: 'Event Publisher: Mechanism vs. Relationship', route: '/arch-patterns/bounded-contexts/event-publisher-mechanism-vs-relationship' },
+    ],
+    tip: 'Published Language replaces N bespoke ACLs (each hand-translating the upstream\'s own internal model) with one shared, upstream-independent schema.',
+    gotchas: [
+      'Published Language does not have to be an external industry standard — what defines it is that the schema is shared and independent of any single context\'s internal model.',
+    ],
+  },
   'arch-patterns/anti-corruption-layer': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

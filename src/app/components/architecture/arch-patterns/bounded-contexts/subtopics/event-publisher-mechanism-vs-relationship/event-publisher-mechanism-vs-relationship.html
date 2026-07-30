@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bounded Contexts" topicRoute="/arch-patterns/bounded-contexts" subtopicLabel="Event Publisher: Mechanism vs. Relationship" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Event Publisher: Mechanism vs. Relationship</h1>
+  <p class="page-subtitle">The page's own QnA listed the canonical context-map patterns and left Event Publisher out — while a codeTab elsewhere used an informal "Event-driven" label for exactly that pattern. This subtopic names it correctly and untangles it from Customer/Supplier.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic gives a concrete example of Published Language — a pattern the page's QnA names but never shows in code, and the natural way teams avoid maintaining a separate bespoke ACL against every single upstream context.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bounded Contexts" topicRoute="/arch-patterns/bounded-contexts"
+    [prev]="{ label: 'Order-Catalog Is ACL, Not Customer/Supplier', route: '/arch-patterns/bounded-contexts/order-catalog-is-acl-not-customer-supplier' }"
+    [next]="{ label: 'Published Language Prevents ACL Sprawl', route: '/arch-patterns/bounded-contexts/published-language-prevents-acl-sprawl' }" />
+</div>
