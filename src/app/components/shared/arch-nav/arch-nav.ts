@@ -144,7 +144,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Microservices</p>
-      <a routerLink="/arch-patterns/microservices-principles" routerLinkActive="active"><span class="nl-text">Microservices Principles</span>@if(p.isDone('arch-microservices-principles')){<span class="nl-done">✓</span>}@if(d('arch-microservices-principles');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/microservices-principles" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Microservices Principles</span>
+        @if(p.isDone('arch-microservices-principles')){<span class="nl-done">✓</span>}
+        @if(d('arch-microservices-principles');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('microservices-principles')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('microservices-principles')"
+                  (click)="toggleSubtopics('microservices-principles', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('microservices-principles'); as mpSubs) {
+        @if (isSubtopicsExpanded('microservices-principles')) {
+          <div class="nav-subtopics">
+            @for (s of mpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/service-communication" routerLinkActive="active"><span class="nl-text">Service Communication</span>@if(p.isDone('arch-service-communication')){<span class="nl-done">✓</span>}@if(d('arch-service-communication');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/api-gateway-pattern" routerLinkActive="active"><span class="nl-text">API Gateway Pattern</span>@if(p.isDone('arch-api-gateway-pattern')){<span class="nl-done">✓</span>}@if(d('arch-api-gateway-pattern');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/service-discovery" routerLinkActive="active"><span class="nl-text">Service Discovery</span>@if(p.isDone('arch-service-discovery')){<span class="nl-done">✓</span>}@if(d('arch-service-discovery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

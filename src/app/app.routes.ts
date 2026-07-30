@@ -2782,7 +2782,12 @@ export const routes: Routes = [
       { path: 'soa-done-right-quote-unattributable', loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/subtopics/soa-done-right-quote-unattributable/soa-done-right-quote-unattributable').then(m => m.SoaDoneRightQuoteUnattributableSubtopic) },
       { path: 'tolerant-reader-pattern-for-contracts', loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/subtopics/tolerant-reader-pattern-for-contracts/tolerant-reader-pattern-for-contracts').then(m => m.TolerantReaderPatternForContractsSubtopic) },
     ] },
-    { path: 'microservices-principles',  loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/microservices-principles').then(m => m.ArchMicroservicesPrinciples) },
+    { path: 'microservices-principles', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/microservices-principles').then(m => m.ArchMicroservicesPrinciples) },
+      { path: 'decentralised-data-example-undefined-type', loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/subtopics/decentralised-data-example-undefined-type/decentralised-data-example-undefined-type').then(m => m.DecentralisedDataExampleUndefinedTypeSubtopic) },
+      { path: 'why-chatty-nanoservices-actually-get-slow', loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/subtopics/why-chatty-nanoservices-actually-get-slow/why-chatty-nanoservices-actually-get-slow').then(m => m.WhyChattyNanoservicesActuallyGetSlowSubtopic) },
+      { path: 'consumer-driven-contract-testing-in-practice', loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/subtopics/consumer-driven-contract-testing-in-practice/consumer-driven-contract-testing-in-practice').then(m => m.ConsumerDrivenContractTestingInPracticeSubtopic) },
+    ] },
     { path: 'service-communication',     loadComponent: () => import('./components/architecture/arch-patterns/service-communication/service-communication').then(m => m.ArchServiceCommunication) },
     { path: 'api-gateway-pattern',       loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/api-gateway-pattern').then(m => m.ArchApiGatewayPattern) },
     { path: 'service-discovery',         loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/service-discovery').then(m => m.ArchServiceDiscovery) },

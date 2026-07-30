@@ -138,7 +138,14 @@ export interface ReserveStockResponse {
     {
       label: 'Decentralised Data',
       language: 'typescript',
-      code: `// WRONG — Order Service reading Inventory DB directly
+      code: `interface ProductDto {
+  productId: string;
+  name: string;
+  unitPrice: number;
+  inStock: boolean;
+}
+
+// WRONG — Order Service reading Inventory DB directly
 const product = await inventoryDb.products.findOne({ id: productId });
 
 // CORRECT — Order Service calls Inventory API

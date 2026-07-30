@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Microservices Principles" topicRoute="/arch-patterns/microservices-principles" subtopicLabel="Consumer-Driven Contract Testing in Practice" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">What Consumer-Driven Contract Testing Actually Looks Like</h1>
+  <p class="page-subtitle">The theory section names consumer-driven contract testing as what makes independent deployability safe, but never shows what it checks or when it runs — this subtopic makes it concrete.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop opened by the "no service versioning strategy" mistake block, and connects directly to the Tolerant Reader pattern covered under the Service-Oriented Architecture topic — the producer-side policy, the consumer-side coding practice, and the CI-enforced check that verifies both.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Microservices Principles" topicRoute="/arch-patterns/microservices-principles"
+    [prev]="{ label: 'Why Chatty Nanoservices Actually Get Slow', route: '/arch-patterns/microservices-principles/why-chatty-nanoservices-actually-get-slow' }" />
+</div>

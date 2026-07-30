@@ -27435,6 +27435,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Conway\'s Law means microservices work best when service boundaries align with actual team boundaries.',
     ],
   },
+  'arch-patterns/microservices-principles/decentralised-data-example-undefined-type': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Microservices Principles (overview)', route: '/arch-patterns/microservices-principles' },
+      { label: 'Why Chatty Nanoservices Actually Get Slow', route: '/arch-patterns/microservices-principles/why-chatty-nanoservices-actually-get-slow' },
+    ],
+    tip: 'A code sample can teach its intended lesson clearly while still being technically incomplete — "reads clearly" and "actually compiles" are separate checks.',
+    gotchas: [
+      'A reader inferring a missing type\'s shape from context is exactly what makes a missing declaration easy to miss on a read-through.',
+    ],
+  },
+  'arch-patterns/microservices-principles/why-chatty-nanoservices-actually-get-slow': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Decentralised-Data Example', route: '/arch-patterns/microservices-principles/decentralised-data-example-undefined-type' },
+      { label: 'Consumer-Driven Contract Testing in Practice', route: '/arch-patterns/microservices-principles/consumer-driven-contract-testing-in-practice' },
+    ],
+    tip: 'Chatty nanoservices are really a bounded-context mistake in disguise — the fix is drawing the boundary around what changes together, not just reducing raw service count.',
+    gotchas: [
+      'Per-hop network/serialization overhead is a fixed cost paid on every call regardless of how little work that call does — it adds up linearly across a sequential chain.',
+    ],
+  },
+  'arch-patterns/microservices-principles/consumer-driven-contract-testing-in-practice': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Microservices Principles (overview)', route: '/arch-patterns/microservices-principles' },
+      { label: 'The Tolerant Reader Pattern', route: '/arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts' },
+    ],
+    tip: 'A provider\'s own integration tests only verify the provider\'s own understanding of its API — consumer-driven contract tests verify it against what real consumers actually depend on.',
+    gotchas: [
+      'Pact-style contract testing replays each consumer\'s published expectations against the provider\'s real implementation before every deploy, catching breaks before they reach production.',
+    ],
+  },
   'arch-patterns/monolith-vs-modular': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

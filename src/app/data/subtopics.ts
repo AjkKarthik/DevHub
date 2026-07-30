@@ -3148,4 +3148,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The SOA Done Right Quote Has No Real Source', route: '/arch-patterns/service-oriented/soa-done-right-quote-unattributable' },
     { label: 'The Tolerant Reader Pattern', route: '/arch-patterns/service-oriented/tolerant-reader-pattern-for-contracts' },
   ],
+  // 'microservices-principles' confirmed collision-free via app.routes.ts grep before adding
+  'microservices-principles': [
+    { label: 'The Decentralised-Data Example Referenced an Undefined Type', route: '/arch-patterns/microservices-principles/decentralised-data-example-undefined-type' },
+    { label: 'Why Chatty Nanoservices Actually Get Slow', route: '/arch-patterns/microservices-principles/why-chatty-nanoservices-actually-get-slow' },
+    { label: 'Consumer-Driven Contract Testing in Practice', route: '/arch-patterns/microservices-principles/consumer-driven-contract-testing-in-practice' },
+  ],
 };
