@@ -6996,7 +6996,30 @@ off here with a date.
   TransferFunds fix confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper
   confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 17 of 22 topics
   complete.**
-- [ ] `/arch-patterns/bounded-contexts` — Bounded Contexts
+- [x] `/arch-patterns/bounded-contexts` — Bounded Contexts (2026-07-30) — 3 subtopics:
+  (1) **Order-Catalog Is ACL, Not Customer/Supplier** — the "Context Map Integration" codeTab
+  showed an Anti-Corruption Layer for Order-to-Catalog, while the separate "Event Storming
+  Output" codeTab labeled the SAME relationship "Customer/Supplier" with no justification;
+  fixed by reconciling ACL (a translation mechanism, built unilaterally) against Customer/Supplier
+  (a planning relationship needing separate accommodation evidence); (2) **Event Publisher:
+  Mechanism vs. Relationship** — the page's own QnA listed the canonical context-map patterns and
+  omitted Event Publisher entirely, while a codeTab used an informal "Event-driven" label for
+  exactly that pattern; verified via WebSearch that Event Publisher is a real, named upstream
+  pattern (ddd-crew/context-mapping reference), fixed the main page's quickRef/theory/QnA/codeTab
+  to name it correctly and generalized the same mechanism-vs-relationship lesson; (3) **Published
+  Language Prevents ACL Sprawl**, a gap-closing subtopic — the QnA names this pattern in one line
+  and never shows it in code; demonstrated replacing N bespoke per-consumer ACLs with one shared,
+  upstream-independent schema. Also tightened the Challenge's Scheduling→Billing example to
+  actually justify its Customer/Supplier label with real accommodation evidence instead of just
+  the publish/subscribe mechanism. `bounded-contexts` SUBTOPICS key collision-free (checked
+  app.routes.ts and subtopics.ts directly), left bare. Hit the standard stale `ng serve` artifact
+  (route file compiled before the new subtopic files were caught by the watcher) — resolved with
+  the standard fresh-file-write fix; the separately-run production build was clean throughout.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the main-page
+  codeTab fix confirmed rendering after clicking the "Event Storming Output" tab; breadcrumb
+  showed all 4 levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
+  `getComputedStyle`. **Architecture Patterns hub Phase 10: 18 of 22 topics complete — Domain-Driven
+  Design nav group fully done.**
 - [ ] `/arch-patterns/aggregates-domain-events` — Aggregates & Domain Events
 - [ ] `/arch-patterns/anti-corruption-layer` — Anti-Corruption Layer
 - [ ] `/arch-patterns/strangler-fig` — Strangler Fig Pattern

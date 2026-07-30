@@ -2805,6 +2805,45 @@ confirmed rendering inside a real `<code>` element, not vanished; breadcrumb sho
 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 17 of 22
 topics complete.**
 
+**The `bounded-contexts` batch — the 2nd topic in the Domain-Driven Design nav group — found and
+fixed a genuine internal inconsistency spanning TWO of the page's own codeTabs, verified against an
+external DDD reference rather than assumed**: the "Context Map Integration" codeTab shows Orders
+building a `CatalogContextAdapter` that explicitly translates Catalog's model into Orders' own
+`ProductSnapshot` ("Orders does NOT use CatalogContext.Product directly") — a textbook
+Anti-Corruption Layer. The separate "Event Storming Output" codeTab, describing the SAME
+Order-to-Catalog dependency, originally labeled it "Customer/Supplier" instead — a different
+pattern, with no explanation for why both apply. The same codeTab also labeled Order-to-Shipping
+and Order-to-Notification as ad-hoc "Event-driven," a name that never appeared anywhere in the
+page's own QnA, which is written as an exhaustive-sounding list of the canonical context-map
+patterns (Partnership, Shared Kernel, Customer-Supplier, Conformist, ACL, Open Host Service,
+Published Language, Separate Ways). WebSearch confirmed Event Publisher is a real, named UPSTREAM
+pattern in the modern DDD context-mapping vocabulary (the ddd-crew/context-mapping reference and
+the Context Mapper tool group it alongside Open Host Service as one of exactly two upstream-side
+patterns) — the page's own vocabulary was simply incomplete. Fixed by renaming "Event-driven" to
+"Event Publisher" throughout, adding it to the quickRef/theory/QnA's canonical list, and
+reconciling the ACL-vs-Customer/Supplier mislabeling by establishing the general lesson: ACL is a
+TRANSLATION MECHANISM the downstream builds unilaterally (needs no upstream cooperation), while
+Customer/Supplier is a PLANNING RELATIONSHIP requiring separate evidence the upstream actually
+accommodates the downstream in its own roadmap — a relationship can be one, the other, both, or
+neither, and "uses events"/"has an ACL" alone never proves the relationship-level pattern. The
+Challenge's own Scheduling→Billing example was tightened to actually justify its "Customer/Supplier"
+label with real accommodation evidence (an insurancePreAuthId field Billing requested and Scheduling
+added) rather than merely describing the publish/subscribe mechanism as if that were sufficient on
+its own. Three subtopics: two fix-adjacent (ACL vs. Customer/Supplier for Order-Catalog; Event
+Publisher's mechanism-vs-relationship distinction, generalizing the same lesson to events) and one
+gap-closing (Published Language — named once in the QnA and never shown in code; demonstrated as
+what replaces N bespoke per-consumer ACLs with one shared, upstream-independent schema). No
+`SUBTOPICS` collision for `bounded-contexts` (checked both `subtopics.ts` forms and grepped
+`app.routes.ts` directly, confirmed collision-free, left bare). Hit the by-now-familiar stale
+`ng serve` artifact (the watcher errored on the route file before catching up to the newly-written
+subtopic files) — resolved with the standard fresh-file-write fix on `app.routes.ts`; the
+production build, run separately and afterward, was clean throughout. Build passed clean.
+Browser-verified: nav accordion opens with all 3 labels; the main-page codeTab fix confirmed
+rendering after clicking the "Event Storming Output" tab button; breadcrumb showed all 4 levels on
+a subtopic page; sidebar showed tailored (not DEFAULT) content with composite-key `related`/`tip`/
+`gotchas` entries; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub
+Phase 10: 18 of 22 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3711,7 +3750,7 @@ topics complete.**
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 17 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 18 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
@@ -3719,12 +3758,24 @@ topics complete.**
   `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`,
   `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`,
   `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`,
-  `/arch-patterns/inbox-outbox`, `/arch-patterns/ddd-core`, 2026-07-30) — see
+  `/arch-patterns/inbox-outbox`, `/arch-patterns/ddd-core`, `/arch-patterns/bounded-contexts`,
+  2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
-  `clean-architecture` slug, and the genuine main-page inaccuracies found and fixed across all
-  five batches so far.
+  `clean-architecture` slug, and the genuine main-page inaccuracies found and fixed across every
+  batch so far. The `bounded-contexts` batch found and fixed an internal inconsistency where the
+  page's own "Event Storming Output" codeTab labeled the Order-to-Catalog relationship as
+  Customer/Supplier while a separate codeTab showed the identical relationship using an
+  Anti-Corruption Layer, and labeled Order-to-Shipping/Notification with an ad-hoc "Event-driven"
+  name absent from the page's own QnA list of canonical context-map patterns — verified via
+  WebSearch and fixed by naming the real pattern (Event Publisher, a canonical upstream pattern
+  per the ddd-crew/context-mapping reference, alongside Open Host Service) and reconciling ACL
+  (a translation mechanism the downstream builds unilaterally) against Customer/Supplier (a
+  planning relationship needing separate evidence the upstream accommodates the downstream). This
+  completes the Domain-Driven Design nav group's 2nd of 2 topics that have subtopics so far — only
+  `aggregates-domain-events` remains from that group, then the Integration group
+  (`anti-corruption-layer`, `strangler-fig`, `backend-for-frontend`), before the hub reaches 22/22.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.
