@@ -2713,6 +2713,33 @@ opens with all 3 labels; the Snapshots fix confirmed rendering after clicking th
 "Snapshots" tab button; breadcrumb showed all 4 levels; 860px wrapper confirmed via
 `getComputedStyle`. **Architecture Patterns hub Phase 10: 14 of 22 topics complete.**
 
+**The `saga-choreography` batch found and fixed TWO genuine issues, both self-contained
+completeness gaps, plus a gap-closing subtopic**: the "Choreography Pattern" codeTab's Inventory
+Service publishes either `stock.reserved` or `stock.reservation.failed`, but nothing anywhere in
+the codeTab subscribes to the failure event — unlike `payment.failed`, which correctly has a
+compensating subscriber. A saga hitting the stock-failure path would stall silently with the
+order left in limbo forever, exactly the failure mode the page's own "Debugging and
+Observability" theory section warns about. A purely self-contained catch: checking whether every
+event a choreography example PUBLISHES also has a SUBSCRIBER somewhere in the same example.
+Fixed by adding the missing subscriber, bringing both failure paths to parity. Separately, the
+"Durable Saga with State Persistence" codeTab — introduced as the production version — had zero
+try/catch or compensation logic at all, a regression from the simpler "Orchestration Pattern"
+codeTab directly above it on the same page, which DID have proper compensation. Fixed by adding a
+catch block that reuses the same `completedSteps` record already used for resume to drive
+compensation, checkpointing a `'compensating'`/`'failed'` state so a crash mid-compensation can
+also resume. A gap-closing subtopic made the QnA's "semantic lock counter-measure" concrete with
+a `pending`-flag pattern, highlighting a real correctness trap: the lock must be released on BOTH
+the success and compensation paths, or a cleanly-compensated saga leaves its resource stuck
+forever even though the underlying data is consistent again. Confirmed `saga-choreography`
+collision-free via the standing `app.routes.ts` grep (also checked `subtopics.ts` directly, no
+match), left bare. Renamed a nav-template loop variable (`scSubs` → `sagaSubs`) to avoid reusing
+the same local name already used in the Service Communication block earlier in the same
+`ArchNavComponent` template. Build passed clean. Browser-verified: nav accordion opens with all 3
+labels; both main-page fixes confirmed rendering after clicking the specific "Choreography
+Pattern" and "Durable Saga with State Persistence" tab buttons; breadcrumb showed all 4 levels;
+860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 15 of 22
+topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3619,14 +3646,14 @@ opens with all 3 labels; the Snapshots fix confirmed rendering after clicking th
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 14 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 15 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
   `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`,
   `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`,
   `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`,
-  `/arch-patterns/cqrs-event-sourcing`, 2026-07-30) — see
+  `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical

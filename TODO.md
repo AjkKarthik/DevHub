@@ -6954,7 +6954,19 @@ off here with a date.
   clean. Browser-verified: nav accordion opens with all 3 labels; the Snapshots fix confirmed
   rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
   **Architecture Patterns hub Phase 10: 14 of 22 topics complete.**
-- [ ] `/arch-patterns/saga-choreography` — Saga & Choreography
+- [x] `/arch-patterns/saga-choreography` — Saga & Choreography (2026-07-30) — 3 subtopics:
+  (1) **Choreography Never Handled Stock Failure** — the Inventory Service publishes
+  stock.reservation.failed but nothing subscribes to it, unlike the correctly-handled
+  payment.failed path; added the missing subscriber; (2) **The Durable Saga Dropped Its Own
+  Compensation** — the "production" durable orchestration codeTab had zero try/catch or
+  compensation logic, a regression from the simpler example above it; fixed by reusing the
+  completedSteps record to drive compensation; (3) **The Semantic Lock Counter-Measure, Made
+  Concrete**, a gap-closing subtopic showing the pending-flag pattern and the trap of only
+  releasing it on success. `saga-choreography` SUBTOPICS key collision-free (checked
+  app.routes.ts and subtopics.ts directly), left bare. Build passed clean. Browser-verified:
+  nav accordion opens with all 3 labels; both main-page fixes confirmed rendering; breadcrumb
+  showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns
+  hub Phase 10: 15 of 22 topics complete.**
 - [ ] `/arch-patterns/inbox-outbox` — Inbox & Outbox Pattern
 - [ ] `/arch-patterns/ddd-core` — Domain-Driven Design Core
 - [ ] `/arch-patterns/bounded-contexts` — Bounded Contexts
