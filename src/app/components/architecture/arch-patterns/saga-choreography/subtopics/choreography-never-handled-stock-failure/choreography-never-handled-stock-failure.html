@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Saga & Choreography" topicRoute="/arch-patterns/saga-choreography" subtopicLabel="Choreography Never Handled Stock Failure" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Choreography Example Never Handled Stock Reservation Failure</h1>
+  <p class="page-subtitle">The Inventory Service publishes stock.reservation.failed on failure, but nothing in the entire codeTab subscribes to it — unlike the correctly-handled payment.failed path right below it.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic finds a similar completeness gap in a different codeTab — the "durable" orchestration example that added persistence but silently dropped compensation entirely.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Saga & Choreography" topicRoute="/arch-patterns/saga-choreography"
+    [next]="{ label: 'The Durable Saga Dropped Its Own Compensation Logic', route: '/arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic' }" />
+</div>

@@ -118,6 +118,15 @@ broker.subscribe('payment.failed', async (e) => {
   await inventoryRepo.release(e.orderId); // compensating transaction
   await orderRepo.cancel(e.orderId);
   await broker.publish('order.cancelled', { orderId: e.orderId, reason: 'Payment failed' });
+});
+
+// 5. Compensation — if stock reservation itself fails, the order was
+// never reserved anywhere, so there's nothing to release; just cancel it.
+// Every published failure event needs SOME subscriber, or the saga
+// silently stalls with the order stuck in "placed" forever.
+broker.subscribe('stock.reservation.failed', async (e) => {
+  await orderRepo.cancel(e.orderId);
+  await broker.publish('order.cancelled', { orderId: e.orderId, reason: e.reason });
 });`
     },
     {
@@ -190,26 +199,46 @@ class DurableOrderSaga {
       completedSteps: [], createdAt: new Date().toISOString(), updatedAt: ''
     };
 
-    // Resume from last known state (idempotent steps)
-    if (!record.completedSteps.includes('reserve_stock')) {
-      await inventoryService.reserve(cmd.items);
-      record.completedSteps.push('reserve_stock');
-      record.state = 'stock_reserved';
-      await sagaRepo.save(record); // checkpoint after each step
-    }
+    try {
+      // Resume from last known state (idempotent steps)
+      if (!record.completedSteps.includes('reserve_stock')) {
+        await inventoryService.reserve(cmd.items);
+        record.completedSteps.push('reserve_stock');
+        record.state = 'stock_reserved';
+        await sagaRepo.save(record); // checkpoint after each step
+      }
 
-    if (!record.completedSteps.includes('charge_payment')) {
-      await paymentService.charge(cmd.customerId, cmd.totalAmount);
-      record.completedSteps.push('charge_payment');
-      record.state = 'payment_charged';
-      await sagaRepo.save(record);
-    }
+      if (!record.completedSteps.includes('charge_payment')) {
+        await paymentService.charge(cmd.customerId, cmd.totalAmount);
+        record.completedSteps.push('charge_payment');
+        record.state = 'payment_charged';
+        await sagaRepo.save(record);
+      }
 
-    if (!record.completedSteps.includes('confirm_order')) {
-      await orderService.confirm(cmd.orderId);
-      record.completedSteps.push('confirm_order');
-      record.state = 'completed';
+      if (!record.completedSteps.includes('confirm_order')) {
+        await orderService.confirm(cmd.orderId);
+        record.completedSteps.push('confirm_order');
+        record.state = 'completed';
+        await sagaRepo.save(record);
+      }
+    } catch (err) {
+      // Durability without compensation isn't a saga -- it's just a
+      // resumable script. Compensate in reverse, driven by the SAME
+      // persisted completedSteps record used to resume, so a crash
+      // mid-compensation can resume compensating too.
+      record.state = 'compensating';
       await sagaRepo.save(record);
+
+      if (record.completedSteps.includes('charge_payment')) {
+        await paymentService.refund(cmd.orderId);
+      }
+      if (record.completedSteps.includes('reserve_stock')) {
+        await inventoryService.release(cmd.orderId);
+      }
+
+      record.state = 'failed';
+      await sagaRepo.save(record);
+      throw err;
     }
   }
 }`

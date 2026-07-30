@@ -27657,6 +27657,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A saga failing partway through can be hard to detect without a lightweight observability projection, since no single component tracks the full expected sequence.',
     ],
   },
+  'arch-patterns/saga-choreography/choreography-never-handled-stock-failure': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Saga & Choreography (overview)', route: '/arch-patterns/saga-choreography' },
+      { label: 'The Durable Saga Dropped Its Own Compensation', route: '/arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic' },
+    ],
+    tip: 'Every event a choreographed saga step publishes needs at least one subscriber somewhere — publishing the right event on failure isn\'t enough if nothing ever reacts to it.',
+    gotchas: [
+      'A saga with an unhandled failure path stalls silently — no error, no alert, just an order stuck in limbo forever.',
+    ],
+  },
+  'arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Choreography Never Handled Stock Failure', route: '/arch-patterns/saga-choreography/choreography-never-handled-stock-failure' },
+      { label: 'The Semantic Lock Counter-Measure, Made Concrete', route: '/arch-patterns/saga-choreography/semantic-lock-countermeasure-made-concrete' },
+    ],
+    tip: 'Durability (surviving a crash between steps) and compensation (undoing completed steps when a later one fails) solve different problems — a saga needs both.',
+    gotchas: [
+      'The same completedSteps record used to resume forward progress after a crash is exactly what a compensation routine needs to know what to undo.',
+    ],
+  },
+  'arch-patterns/saga-choreography/semantic-lock-countermeasure-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Saga & Choreography (overview)', route: '/arch-patterns/saga-choreography' },
+      { label: 'Durable Saga Dropped Its Own Compensation', route: '/arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic' },
+    ],
+    tip: 'A semantic lock (a pending flag) protects against unrelated operations touching a resource mid-saga — a different risk from step idempotency, which protects against the same step retrying.',
+    gotchas: [
+      'The lock must be released on BOTH the success path and the compensation path — clearing it only on success leaves a cleanly-compensated resource permanently stuck.',
+    ],
+  },
   'arch-patterns/service-communication': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

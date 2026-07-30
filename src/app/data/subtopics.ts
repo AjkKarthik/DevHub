@@ -3196,4 +3196,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Optimistic UI Updates, Made Concrete', route: '/arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete' },
     { label: 'What an Upcaster Actually Looks Like', route: '/arch-patterns/cqrs-event-sourcing/what-an-upcaster-actually-looks-like' },
   ],
+  // 'saga-choreography' confirmed collision-free via app.routes.ts grep before adding
+  'saga-choreography': [
+    { label: 'Choreography Never Handled Stock Failure', route: '/arch-patterns/saga-choreography/choreography-never-handled-stock-failure' },
+    { label: 'The Durable Saga Dropped Its Own Compensation', route: '/arch-patterns/saga-choreography/durable-saga-dropped-compensation-logic' },
+    { label: 'The Semantic Lock Counter-Measure, Made Concrete', route: '/arch-patterns/saga-choreography/semantic-lock-countermeasure-made-concrete' },
+  ],
 };

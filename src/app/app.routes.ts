@@ -2830,7 +2830,12 @@ export const routes: Routes = [
       { path: 'optimistic-ui-updates-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/subtopics/optimistic-ui-updates-made-concrete/optimistic-ui-updates-made-concrete').then(m => m.OptimisticUiUpdatesMadeConcreteSubtopic) },
       { path: 'what-an-upcaster-actually-looks-like', loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/subtopics/what-an-upcaster-actually-looks-like/what-an-upcaster-actually-looks-like').then(m => m.WhatAnUpcasterActuallyLooksLikeSubtopic) },
     ] },
-    { path: 'saga-choreography',         loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/saga-choreography').then(m => m.ArchSagaChoreography) },
+    { path: 'saga-choreography', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/saga-choreography').then(m => m.ArchSagaChoreography) },
+      { path: 'choreography-never-handled-stock-failure', loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/subtopics/choreography-never-handled-stock-failure/choreography-never-handled-stock-failure').then(m => m.ChoreographyNeverHandledStockFailureSubtopic) },
+      { path: 'durable-saga-dropped-compensation-logic', loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/subtopics/durable-saga-dropped-compensation-logic/durable-saga-dropped-compensation-logic').then(m => m.DurableSagaDroppedCompensationLogicSubtopic) },
+      { path: 'semantic-lock-countermeasure-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/subtopics/semantic-lock-countermeasure-made-concrete/semantic-lock-countermeasure-made-concrete').then(m => m.SemanticLockCountermeasureMadeConcreteSubtopic) },
+    ] },
     { path: 'inbox-outbox',              loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/inbox-outbox').then(m => m.ArchInboxOutbox) },
     { path: 'ddd-core',                  loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/ddd-core').then(m => m.ArchDddCore) },
     { path: 'bounded-contexts',          loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/bounded-contexts').then(m => m.ArchBoundedContexts) },
