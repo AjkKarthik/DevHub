@@ -6795,7 +6795,21 @@ off here with a date.
   Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
   rendering; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase
   10: 3 of 22 topics complete.**
-- [ ] `/arch-patterns/hexagonal-architecture` — Hexagonal Architecture
+- [x] `/arch-patterns/hexagonal-architecture` — Hexagonal Architecture (2026-07-30) — 3
+  subtopics: (1) **The Challenge Referenced Two Types It Never Defined** — INotificationGateway
+  and SendNotificationUseCase were used throughout the Challenge (implements/new) but never
+  declared anywhere, a real compile error; fixed by declaring both, matching the main page's own
+  PlaceOrderUseCase pattern; (2) **The Hexagon-Shape Explanation Was Half the Story** — verified
+  via WebSearch that Cockburn's own account gives two reasons for the hexagon shape, the page only
+  had one; added the second (drawing mechanics: simplest non-rectangular polygon with room for
+  multiple ports); (3) **The Solution Named a Real Adapter It Never Actually Used** — the
+  Challenge's hints named a production SmtpGateway the solution never built, violating the page's
+  own "at least two adapters per port" rule; added a real SmtpNotificationGateway at a separate
+  production composition root. `hexagonal-architecture` SUBTOPICS key collision-free (checked
+  app.routes.ts directly this time, not just subtopics.ts, per the lesson from the prior
+  clean-architecture collision), left bare. Build passed clean. Browser-verified: nav accordion
+  opens with all 3 labels; all three main-page fixes confirmed rendering; 860px wrapper confirmed
+  via `getComputedStyle`. **Architecture Patterns hub Phase 10: 4 of 22 topics complete.**
 - [ ] `/arch-patterns/vertical-slice` — Vertical Slice Architecture
 - [ ] `/arch-patterns/service-oriented` — Service-Oriented Architecture
 - [ ] `/arch-patterns/microservices-principles` — Microservices Principles

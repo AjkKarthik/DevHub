@@ -2371,6 +2371,35 @@ labels; both main-page fixes confirmed rendering (the Infrastructure Adapter fix
 the Code Examples section's own "▼ View Code" toggle FIRST to reveal the tab buttons, then the
 specific "Infrastructure Adapter" tab); 860px wrapper confirmed via `getComputedStyle`.
 
+**The `hexagonal-architecture` batch found and fixed THREE more genuine issues**: the Challenge's
+starterCode and solution both used `INotificationGateway` (via `implements`) and
+`SendNotificationUseCase` (via `new`) throughout, but neither type was ever declared anywhere in
+the Challenge — a genuine TypeScript compile error, the same category of bug already found once
+on the sibling Layered Architecture topic's own Challenge solution (an undeclared `this.repo`
+field), confirming this is worth a standing check on every Challenge solution in this hub: does
+every referenced type name have a matching declaration in the same Challenge? Fixed by declaring
+both, matching the main page's own established `PlaceOrderUseCase implements PlaceOrderPort`
+pattern. The theory's hexagon-shape explanation ("drawn as a hexagon to emphasise equal treatment
+of all sides — no 'top' or 'bottom'") was verified via WebSearch against Cockburn's own account to
+capture only ONE of his two stated reasons — the other being pure drawing mechanics (a hexagon is
+the simplest non-rectangular polygon with enough room per side to sketch multiple ports without
+crowding); this wasn't a factual error so much as an incomplete one, fixed by adding the second
+half. The Challenge's own hints explicitly named a production `SmtpGateway` in a composition-root
+example, but the solution only ever built and used `InMemoryNotificationGateway` — directly
+violating the page's own "every secondary port needs at least two adapters: real + in-memory" rule
+stated in both `revision.mustKnow` and the QnA, and the exact anti-pattern the mistakes block's own
+"Having only one adapter per port" entry warns against ("you have not implemented ports & adapters
+— just an interface"). Fixed by adding a real `SmtpNotificationGateway` and wiring it at a separate
+production composition root alongside the existing test-focused one. **A second real cross-hub
+collision check performed this batch**: confirmed via a direct grep of `app.routes.ts` (not just
+`subtopics.ts`) that no OTHER hub shares the `hexagonal-architecture` route slug, so the
+`SUBTOPICS` entry was left bare — following the standing check established on the prior
+`clean-architecture` batch (grep route paths directly, don't rely on a clean `subtopics.ts` sweep
+alone). No `SUBTOPICS` collision for `hexagonal-architecture`. Build passed clean. Browser-verified:
+nav accordion opens with all 3 labels on the first check; all three main-page fixes confirmed
+rendering (the Challenge fixes needed Reveal Solution + all matching "▼ View Code" toggles); 860px
+wrapper confirmed via `getComputedStyle`.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3277,13 +3306,13 @@ specific "Infrastructure Adapter" tab); 860px wrapper confirmed via `getComputed
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 3 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
-  `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`, 2026-07-30) — see
-  "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
-  structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
-  cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
-  `clean-architecture` slug, and the genuine main-page inaccuracies found and fixed across all
-  three batches so far.
+  Phase 10: 4 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
+  `/arch-patterns/hexagonal-architecture`, 2026-07-30) — see "Architecture Patterns hub subtopic
+  wiring" section below for the `ArchNavComponent` accordion structural fix (11th
+  `*NavComponent`-based hub in a row missing it at pilot time), a real cross-hub `SUBTOPICS`-key
+  collision risk with the Design Patterns hub's own identical `clean-architecture` slug, and the
+  genuine main-page inaccuracies found and fixed across all four batches so far.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.
