@@ -27375,6 +27375,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Snapshotting avoids replaying an aggregate\'s entire history every time current state is needed.',
     ],
   },
+  'arch-patterns/cqrs-event-sourcing/snapshots-referenced-six-undefined-methods': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'CQRS & Event Sourcing (overview)', route: '/arch-patterns/cqrs-event-sourcing' },
+      { label: 'Optimistic UI Updates, Made Concrete', route: '/arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete' },
+    ],
+    tip: 'A class used consistently across multiple code samples needs its declared members checked against every place it\'s actually used — each snippet can read fine in isolation while disagreeing about what the class contains.',
+    gotchas: [
+      'rehydrate() (replaying history) and apply() (recording new writes) serve different purposes — rehydrate should not re-mark an already-persisted event as uncommitted.',
+    ],
+  },
+  'arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Snapshots Referenced Six Undefined Methods', route: '/arch-patterns/cqrs-event-sourcing/snapshots-referenced-six-undefined-methods' },
+      { label: 'What an Upcaster Actually Looks Like', route: '/arch-patterns/cqrs-event-sourcing/what-an-upcaster-actually-looks-like' },
+    ],
+    tip: 'Optimistic UI updates need a stable, client-generated ID carried through to the read model\'s eventual response — without one, reconciliation can\'t tell which authoritative record replaces which placeholder.',
+    gotchas: [
+      'A failed command needs an explicit rollback and user notification — silently leaving a failed optimistic entry on screen shows something that never happened.',
+    ],
+  },
+  'arch-patterns/cqrs-event-sourcing/what-an-upcaster-actually-looks-like': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'CQRS & Event Sourcing (overview)', route: '/arch-patterns/cqrs-event-sourcing' },
+      { label: 'Service Communication', route: '/arch-patterns/service-communication' },
+    ],
+    tip: 'Upcasters convert an old stored event shape to the current one at the read boundary — consumers downstream only ever see the latest shape and need zero version-awareness of their own.',
+    gotchas: [
+      'Chain upcasters incrementally (v1→v2, v2→v3) rather than writing one large v1-to-latest conversion — a future version only needs one new step, not a full rewrite.',
+    ],
+  },
   'arch-patterns/event-driven': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

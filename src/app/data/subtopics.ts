@@ -3190,4 +3190,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The DB Save Was Commented Out', route: '/arch-patterns/event-driven/db-save-was-commented-out' },
     { label: 'The Fat-Events Staleness Risk, Made Concrete', route: '/arch-patterns/event-driven/fat-events-staleness-risk-made-concrete' },
   ],
+  // 'cqrs-event-sourcing' confirmed collision-free via app.routes.ts grep before adding
+  'cqrs-event-sourcing': [
+    { label: 'Snapshots Referenced Six Undefined Methods', route: '/arch-patterns/cqrs-event-sourcing/snapshots-referenced-six-undefined-methods' },
+    { label: 'Optimistic UI Updates, Made Concrete', route: '/arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete' },
+    { label: 'What an Upcaster Actually Looks Like', route: '/arch-patterns/cqrs-event-sourcing/what-an-upcaster-actually-looks-like' },
+  ],
 };

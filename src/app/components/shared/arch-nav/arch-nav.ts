@@ -288,7 +288,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/cqrs-event-sourcing" routerLinkActive="active"><span class="nl-text">CQRS &amp; Event Sourcing</span>@if(p.isDone('arch-cqrs-event-sourcing')){<span class="nl-done">✓</span>}@if(d('arch-cqrs-event-sourcing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/cqrs-event-sourcing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">CQRS &amp; Event Sourcing</span>
+        @if(p.isDone('arch-cqrs-event-sourcing')){<span class="nl-done">✓</span>}
+        @if(d('arch-cqrs-event-sourcing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('cqrs-event-sourcing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cqrs-event-sourcing')"
+                  (click)="toggleSubtopics('cqrs-event-sourcing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cqrs-event-sourcing'); as cesSubs) {
+        @if (isSubtopicsExpanded('cqrs-event-sourcing')) {
+          <div class="nav-subtopics">
+            @for (s of cesSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/saga-choreography" routerLinkActive="active"><span class="nl-text">Saga &amp; Choreography</span>@if(p.isDone('arch-saga-choreography')){<span class="nl-done">✓</span>}@if(d('arch-saga-choreography');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/inbox-outbox" routerLinkActive="active"><span class="nl-text">Inbox &amp; Outbox Pattern</span>@if(p.isDone('arch-inbox-outbox')){<span class="nl-done">✓</span>}@if(d('arch-inbox-outbox');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

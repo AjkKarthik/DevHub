@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CQRS & Event Sourcing" topicRoute="/arch-patterns/cqrs-event-sourcing" subtopicLabel="What an Upcaster Actually Looks Like" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">What an Upcaster Actually Looks Like</h1>
+  <p class="page-subtitle">The QnA names upcasters in one clause without ever showing one — this subtopic walks through a small incremental upcaster chain converting old event versions to the current shape on read.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch by making a one-line QnA mention concrete, connecting it back to this hub's own additive-vs-breaking-change guidance from the Service Communication topic.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CQRS & Event Sourcing" topicRoute="/arch-patterns/cqrs-event-sourcing"
+    [prev]="{ label: 'Optimistic UI Updates, Made Concrete', route: '/arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete' }" />
+</div>

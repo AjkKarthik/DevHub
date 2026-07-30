@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CQRS & Event Sourcing" topicRoute="/arch-patterns/cqrs-event-sourcing" subtopicLabel="Optimistic UI Updates, Made Concrete" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Optimistic UI Updates, Made Concrete</h1>
+  <p class="page-subtitle">The QnA describes optimistic updates and rollback in one sentence — this subtopic shows the actual mechanics: a client-generated ID that lets the UI reconcile or roll back once the command resolves.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic makes a different one-line QnA mention concrete — what an upcaster for event schema evolution actually looks like in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CQRS & Event Sourcing" topicRoute="/arch-patterns/cqrs-event-sourcing"
+    [prev]="{ label: 'Snapshots Referenced Six Undefined Methods', route: '/arch-patterns/cqrs-event-sourcing/snapshots-referenced-six-undefined-methods' }"
+    [next]="{ label: 'What an Upcaster Actually Looks Like', route: '/arch-patterns/cqrs-event-sourcing/what-an-upcaster-actually-looks-like' }" />
+</div>

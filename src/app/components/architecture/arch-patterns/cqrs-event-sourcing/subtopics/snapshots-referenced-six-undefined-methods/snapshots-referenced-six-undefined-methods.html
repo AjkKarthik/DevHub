@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CQRS & Event Sourcing" topicRoute="/arch-patterns/cqrs-event-sourcing" subtopicLabel="Snapshots Referenced Six Undefined Methods" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Snapshots Tab Referenced Six Undefined Order Methods</h1>
+  <p class="page-subtitle">The "Snapshots" codeTab called rehydrate(), restoreFromSnapshot(), uncommittedEvents, version, clearEvents(), and toSnapshot() on Order — none of which exist on the Order class defined earlier on the same page.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This was a self-contained code-consistency bug. The next subtopic makes a different part of the page concrete — the QnA's "optimistic updates" pattern for handling eventual consistency in the UI, described in prose but never shown in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CQRS & Event Sourcing" topicRoute="/arch-patterns/cqrs-event-sourcing"
+    [next]="{ label: 'Optimistic UI Updates, Made Concrete', route: '/arch-patterns/cqrs-event-sourcing/optimistic-ui-updates-made-concrete' }" />
+</div>

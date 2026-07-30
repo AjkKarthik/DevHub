@@ -2824,7 +2824,12 @@ export const routes: Routes = [
       { path: 'db-save-was-commented-out', loadComponent: () => import('./components/architecture/arch-patterns/event-driven/subtopics/db-save-was-commented-out/db-save-was-commented-out').then(m => m.DbSaveWasCommentedOutSubtopic) },
       { path: 'fat-events-staleness-risk-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/event-driven/subtopics/fat-events-staleness-risk-made-concrete/fat-events-staleness-risk-made-concrete').then(m => m.FatEventsStalenessRiskMadeConcreteSubtopic) },
     ] },
-    { path: 'cqrs-event-sourcing',       loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/cqrs-event-sourcing').then(m => m.ArchCqrsEventSourcing) },
+    { path: 'cqrs-event-sourcing', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/cqrs-event-sourcing').then(m => m.ArchCqrsEventSourcing) },
+      { path: 'snapshots-referenced-six-undefined-methods', loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/subtopics/snapshots-referenced-six-undefined-methods/snapshots-referenced-six-undefined-methods').then(m => m.SnapshotsReferencedSixUndefinedMethodsSubtopic) },
+      { path: 'optimistic-ui-updates-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/subtopics/optimistic-ui-updates-made-concrete/optimistic-ui-updates-made-concrete').then(m => m.OptimisticUiUpdatesMadeConcreteSubtopic) },
+      { path: 'what-an-upcaster-actually-looks-like', loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/subtopics/what-an-upcaster-actually-looks-like/what-an-upcaster-actually-looks-like').then(m => m.WhatAnUpcasterActuallyLooksLikeSubtopic) },
+    ] },
     { path: 'saga-choreography',         loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/saga-choreography').then(m => m.ArchSagaChoreography) },
     { path: 'inbox-outbox',              loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/inbox-outbox').then(m => m.ArchInboxOutbox) },
     { path: 'ddd-core',                  loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/ddd-core').then(m => m.ArchDddCore) },

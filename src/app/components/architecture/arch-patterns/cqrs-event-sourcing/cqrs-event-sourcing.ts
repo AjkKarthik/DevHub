@@ -184,6 +184,22 @@ interface Snapshot {
   takenAt: string;
 }
 
+// Order (from the "CQRS — Commands & Queries" tab) needs these extra
+// members to support snapshotting -- shown here as the additions, not
+// a full re-listing of the class:
+//   class Order {
+//     private version = 0;
+//     get uncommittedEvents(): DomainEvent[] { return this.events; }
+//     clearEvents(): void { this.events = []; }
+//     rehydrate(event: DomainEvent): void { this.when(event); this.version++; }
+//     toSnapshot(): unknown { return { lines: this.lines, status: this.status }; }
+//     static restoreFromSnapshot(state: any): Order {
+//       const o = new Order();
+//       o.lines = state.lines; o.status = state.status;
+//       return o;
+//     }
+//   }
+
 async function loadWithSnapshot(streamId: string): Promise<Order> {
   // 1. Load latest snapshot
   const snapshot = await snapshotStore.getLatest(streamId);
