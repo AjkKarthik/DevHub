@@ -6981,7 +6981,21 @@ off here with a date.
   labels; both main-page fixes confirmed rendering; breadcrumb showed all 4 levels; 860px
   wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 16 of 22
   topics complete — Messaging nav group fully done.**
-- [ ] `/arch-patterns/ddd-core` — Domain-Driven Design Core
+- [x] `/arch-patterns/ddd-core` — Domain-Driven Design Core (2026-07-30) — 3 subtopics:
+  (1) **TransferFunds Never Handled Partial Save Failure** — the Domain Service codeTab saved
+  two aggregates via two unhandled separate saves; if the second failed after the first
+  committed, money was silently lost; fixed with explicit compensation (not a shared
+  transaction, per classic DDD's one-transaction-per-aggregate rule), connecting to the Saga &
+  Choreography topic; (2) **What a DDD Factory Actually Looks Like**, a gap-closing subtopic
+  since the page only describes factories in prose; (3) **What a DDD Repository Actually Looks
+  Like**, a gap-closing subtopic contrasting a generic DAO against a real domain-oriented
+  repository. Self-caught and fixed a real build error (unescaped backticks/${} nested inside
+  the outer code: template literal) before finishing — switched to string concatenation.
+  `ddd-core` SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly),
+  left bare. Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the
+  TransferFunds fix confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 17 of 22 topics
+  complete.**
 - [ ] `/arch-patterns/bounded-contexts` — Bounded Contexts
 - [ ] `/arch-patterns/aggregates-domain-events` — Aggregates & Domain Events
 - [ ] `/arch-patterns/anti-corruption-layer` — Anti-Corruption Layer

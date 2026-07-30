@@ -2770,6 +2770,41 @@ specific "Relay Process" and "Inbox Pattern (Consumer)" tab buttons; breadcrumb 
 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10:
 16 of 22 topics complete — Messaging nav group fully done.**
 
+**The `ddd-core` batch — starting the hub's Domain-Driven Design nav group — was the cleanest
+main page found so far in terms of cross-tab reference bugs (unlike CQRS's six undefined
+methods, DDD Core's own three codeTabs are each genuinely self-contained), but found ONE
+well-reasoned, self-contained gap in application logic, plus two gap-closing subtopics**: the
+"Domain Service" codeTab's `TransferFundsService.transfer()` calls `from.debit(amount)` and
+`to.credit(amount)` (each aggregate correctly validating its own invariant), then saves BOTH
+aggregates via two separate, unhandled `accountRepo.save()` calls. Tracing what happens if the
+SECOND save fails after the first already committed: money is silently debited from one account
+and never credited to the other — a real, silent fund-loss bug in an operation literally named
+"TransferFunds," requiring no external research to spot. Verifying the RIGHT fix did need
+checking DDD convention: classic DDD (Evans, Vernon) recommends one transaction per aggregate as
+a design rule, so wrapping both saves in one shared DB transaction — the natural first
+instinct — is actually the wrong fix; a domain service spanning multiple aggregates without a
+shared transaction is a small-scale saga in substance and needs the same compensating-action
+discipline as this hub's own Saga & Choreography topic covers at larger scale. Fixed by adding a
+compensating credit-back if the second save throws. Two gap-closing subtopics made the Factory
+and Repository patterns concrete — both are precisely described in the page's own quiz/QnA text
+but never shown in a single codeTab anywhere on the page, unlike every other pattern the page
+covers. **Also caught and self-fixed a real build error mid-batch**: the main page's own edit
+initially used raw, unescaped backticks and `${...}` inside a nested string within the outer
+`code:` template literal (the exact "backtick terminates the outer template literal" gotcha this
+file has documented many times for OTHER hubs' authoring) — the build failed with the classic
+unrelated-error cascade (`TS1128`, `Unexpected "]"` at a completely different line); fixed by
+switching to plain string concatenation instead of a nested template literal, sidestepping the
+escaping question entirely. Confirmed `ddd-core` collision-free via the standing `app.routes.ts`
+grep (also checked `subtopics.ts` directly, no match), left bare. A separate real catch during
+the pre-build sweep: an `exercise.prompt` field (bound via `[innerHTML]`) contained a bare
+`Promise<BankAccount[]>` generic mention that would have silently vanished as a misparsed HTML
+tag — wrapped in `<code>&lt;...&gt;</code>` before the build ever ran. Build passed clean.
+Browser-verified: nav accordion opens with all 3 labels; the TransferFunds fix confirmed
+rendering after clicking the specific "Domain Service" tab button; the generic-syntax fix
+confirmed rendering inside a real `<code>` element, not vanished; breadcrumb showed all 4 levels;
+860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 17 of 22
+topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3676,7 +3711,7 @@ levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns 
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 16 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 17 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
@@ -3684,7 +3719,7 @@ levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns 
   `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`,
   `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`,
   `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`,
-  `/arch-patterns/inbox-outbox`, 2026-07-30) — see
+  `/arch-patterns/inbox-outbox`, `/arch-patterns/ddd-core`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
