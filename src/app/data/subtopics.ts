@@ -3160,4 +3160,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How the Outbox Pattern Actually Works', route: '/arch-patterns/service-communication/how-the-outbox-pattern-actually-works' },
     { label: 'Why Browsers Cannot Call gRPC Directly', route: '/arch-patterns/service-communication/why-browsers-cannot-call-grpc-directly' },
   ],
+  // 'api-gateway-pattern' confirmed collision-free via app.routes.ts grep before adding
+  'api-gateway-pattern': [
+    { label: 'Promise.all Hid an Accidental Fail-Fast Choice', route: '/arch-patterns/api-gateway-pattern/promise-all-hid-an-accidental-fail-fast-choice' },
+    { label: 'The Boundary Burst Problem in Fixed-Window Rate Limiting', route: '/arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst' },
+    { label: 'How mTLS Makes the Forwarded-Identity Header Trustworthy', route: '/arch-patterns/api-gateway-pattern/mtls-makes-forwarded-identity-trustworthy' },
+  ],
 };

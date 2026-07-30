@@ -27228,6 +27228,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Gateway aggregation introduces a new failure mode — decide explicitly whether a failed partial call fails the whole request or degrades gracefully.',
     ],
   },
+  'arch-patterns/api-gateway-pattern/promise-all-hid-an-accidental-fail-fast-choice': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'API Gateway Pattern (overview)', route: '/arch-patterns/api-gateway-pattern' },
+      { label: 'The Boundary Burst Problem in Fixed-Window Rate Limiting', route: '/arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst' },
+    ],
+    tip: 'Promise.all rejects the whole batch on any single failure; Promise.allSettled reports every call\'s outcome individually — the choice between them should be deliberate, not whichever function was reached for first.',
+    gotchas: [
+      'A theory section stating a design principle doesn\'t guarantee its own adjacent code example actually follows it — check them against each other.',
+    ],
+  },
+  'arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Promise.all Hid an Accidental Fail-Fast Choice', route: '/arch-patterns/api-gateway-pattern/promise-all-hid-an-accidental-fail-fast-choice' },
+      { label: 'How mTLS Makes the Forwarded-Identity Header Trustworthy', route: '/arch-patterns/api-gateway-pattern/mtls-makes-forwarded-identity-trustworthy' },
+    ],
+    tip: 'A fixed-window rate limiter can allow roughly double its stated limit in a short burst straddling the reset boundary — sliding window avoids this by never fully resetting to zero at one instant.',
+    gotchas: [
+      '"100 requests/minute" describes each fixed window correctly but is not a hard worst-case guarantee on any 60-second span.',
+    ],
+  },
+  'arch-patterns/api-gateway-pattern/mtls-makes-forwarded-identity-trustworthy': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'API Gateway Pattern (overview)', route: '/arch-patterns/api-gateway-pattern' },
+      { label: 'Sidecar & Service Mesh', route: '/arch-patterns/sidecar-service-mesh' },
+    ],
+    tip: 'A forwarded X-User-Id header is just a claim — mTLS verifies the CALLER\'S cryptographic identity on every connection, which is what actually makes trusting that header safe.',
+    gotchas: [
+      'A network policy restricting which pods can reach a service is not the same protection as mTLS — anything already inside the allowed scope can still forge the header.',
+    ],
+  },
   'arch-patterns/backend-for-frontend': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

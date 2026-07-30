@@ -2794,7 +2794,12 @@ export const routes: Routes = [
       { path: 'how-the-outbox-pattern-actually-works', loadComponent: () => import('./components/architecture/arch-patterns/service-communication/subtopics/how-the-outbox-pattern-actually-works/how-the-outbox-pattern-actually-works').then(m => m.HowTheOutboxPatternActuallyWorksSubtopic) },
       { path: 'why-browsers-cannot-call-grpc-directly', loadComponent: () => import('./components/architecture/arch-patterns/service-communication/subtopics/why-browsers-cannot-call-grpc-directly/why-browsers-cannot-call-grpc-directly').then(m => m.WhyBrowsersCannotCallGrpcDirectlySubtopic) },
     ] },
-    { path: 'api-gateway-pattern',       loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/api-gateway-pattern').then(m => m.ArchApiGatewayPattern) },
+    { path: 'api-gateway-pattern', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/api-gateway-pattern').then(m => m.ArchApiGatewayPattern) },
+      { path: 'promise-all-hid-an-accidental-fail-fast-choice', loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/subtopics/promise-all-hid-an-accidental-fail-fast-choice/promise-all-hid-an-accidental-fail-fast-choice').then(m => m.PromiseAllHidAnAccidentalFailFastChoiceSubtopic) },
+      { path: 'fixed-window-rate-limiting-boundary-burst', loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/subtopics/fixed-window-rate-limiting-boundary-burst/fixed-window-rate-limiting-boundary-burst').then(m => m.FixedWindowRateLimitingBoundaryBurstSubtopic) },
+      { path: 'mtls-makes-forwarded-identity-trustworthy', loadComponent: () => import('./components/architecture/arch-patterns/api-gateway-pattern/subtopics/mtls-makes-forwarded-identity-trustworthy/mtls-makes-forwarded-identity-trustworthy').then(m => m.MtlsMakesForwardedIdentityTrustworthySubtopic) },
+    ] },
     { path: 'service-discovery',         loadComponent: () => import('./components/architecture/arch-patterns/service-discovery/service-discovery').then(m => m.ArchServiceDiscovery) },
     { path: 'circuit-breaker',           loadComponent: () => import('./components/architecture/arch-patterns/circuit-breaker/circuit-breaker').then(m => m.ArchCircuitBreaker) },
     { path: 'sidecar-service-mesh',      loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/sidecar-service-mesh').then(m => m.ArchSidecarServiceMesh) },

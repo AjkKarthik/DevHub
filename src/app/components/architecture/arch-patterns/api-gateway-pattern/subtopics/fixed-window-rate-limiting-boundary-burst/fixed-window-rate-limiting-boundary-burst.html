@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Gateway Pattern" topicRoute="/arch-patterns/api-gateway-pattern" subtopicLabel="The Boundary Burst Problem in Fixed-Window Rate Limiting" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Boundary Burst Problem in Fixed-Window Rate Limiting</h1>
+  <p class="page-subtitle">The middleware codeTab implements a fixed-window counter without naming the algorithm or its well-known boundary flaw — a client can get roughly 2x the stated limit right at the reset instant.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>Fixed-window rate limiting is a real, common gateway choice with a known tradeoff — the last subtopic in this batch expands on a different one-line risk this page names but never explains: what actually makes the forwarded X-User-Id header trustworthy.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Gateway Pattern" topicRoute="/arch-patterns/api-gateway-pattern"
+    [prev]="{ label: 'Promise.all Hid an Accidental Fail-Fast Choice', route: '/arch-patterns/api-gateway-pattern/promise-all-hid-an-accidental-fail-fast-choice' }"
+    [next]="{ label: 'How mTLS Makes the Forwarded-Identity Header Trustworthy', route: '/arch-patterns/api-gateway-pattern/mtls-makes-forwarded-identity-trustworthy' }" />
+</div>

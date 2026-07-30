@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Gateway Pattern" topicRoute="/arch-patterns/api-gateway-pattern" subtopicLabel="Promise.all Hid an Accidental Fail-Fast Choice" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Promise.all Hid an Accidental Fail-Fast Choice</h1>
+  <p class="page-subtitle">The theory says the fail-fast-vs-degrade-gracefully choice should be explicit — the Request Aggregation example used Promise.all, making that choice silently, without saying so.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This fix was about failure-handling in aggregation. The next subtopic looks at a different codeTab on this same page — the rate-limiting middleware — and a well-known flaw in the specific algorithm it implements that the page never names.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Gateway Pattern" topicRoute="/arch-patterns/api-gateway-pattern"
+    [next]="{ label: 'The Boundary Burst Problem in Fixed-Window Rate Limiting', route: '/arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst' }" />
+</div>

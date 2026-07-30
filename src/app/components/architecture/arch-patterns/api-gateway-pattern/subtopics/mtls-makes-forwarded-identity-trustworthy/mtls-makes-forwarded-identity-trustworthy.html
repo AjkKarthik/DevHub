@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Gateway Pattern" topicRoute="/arch-patterns/api-gateway-pattern" subtopicLabel="How mTLS Makes the Forwarded-Identity Header Trustworthy" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">How mTLS Makes the Forwarded-Identity Header Trustworthy</h1>
+  <p class="page-subtitle">The QnA names the risk of a bypassed gateway and gestures at "network policy enforcement" without explaining the mechanism — this subtopic makes it concrete and ties it to the hub's own Sidecar & Service Mesh topic.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop on the QnA's own "requiring network policy enforcement" line with the concrete mechanism, and connects the gateway's trust model to the service mesh content already covered elsewhere in this hub.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Gateway Pattern" topicRoute="/arch-patterns/api-gateway-pattern"
+    [prev]="{ label: 'The Boundary Burst Problem in Fixed-Window Rate Limiting', route: '/arch-patterns/api-gateway-pattern/fixed-window-rate-limiting-boundary-burst' }" />
+</div>
