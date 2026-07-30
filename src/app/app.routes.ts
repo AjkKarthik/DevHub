@@ -2758,7 +2758,12 @@ export const routes: Routes = [
       { path: 'handler-repo-field-never-declared', loadComponent: () => import('./components/architecture/arch-patterns/layered-architecture/subtopics/handler-repo-field-never-declared/handler-repo-field-never-declared').then(m => m.HandlersRepoFieldNeverDeclaredSubtopic) },
       { path: 'why-reads-are-the-safe-skip-case', loadComponent: () => import('./components/architecture/arch-patterns/layered-architecture/subtopics/why-reads-are-the-safe-skip-case/why-reads-are-the-safe-skip-case').then(m => m.WhyReadsAreTheSafeSkipCaseSubtopic) },
     ] },
-    { path: 'clean-architecture',        loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/clean-architecture').then(m => m.ArchCleanArchitecture) },
+    { path: 'clean-architecture', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/clean-architecture').then(m => m.ArchCleanArchitecture) },
+      { path: 'mustknow-ring-order-mislabeled', loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/subtopics/mustknow-ring-order-mislabeled/mustknow-ring-order-mislabeled').then(m => m.MustknowRingOrderMislabeledSubtopic) },
+      { path: 'controller-skipped-the-presenter', loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/subtopics/controller-skipped-the-presenter/controller-skipped-the-presenter').then(m => m.ControllerSkippedThePresenterSubtopic) },
+      { path: 'one-usecase-multiple-presenters', loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/subtopics/one-usecase-multiple-presenters/one-usecase-multiple-presenters').then(m => m.OneUsecaseMultiplePresentersSubtopic) },
+    ] },
     { path: 'hexagonal-architecture',    loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/hexagonal-architecture').then(m => m.ArchHexagonalArchitecture) },
     { path: 'vertical-slice',            loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/vertical-slice').then(m => m.ArchVerticalSlice) },
     { path: 'service-oriented',          loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/service-oriented').then(m => m.ArchServiceOriented) },

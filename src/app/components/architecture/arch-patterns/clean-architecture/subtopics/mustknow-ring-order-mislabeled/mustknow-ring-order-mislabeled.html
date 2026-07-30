@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Clean / Onion Architecture" topicRoute="/arch-patterns/clean-architecture" subtopicLabel="The mustKnow Ring Order Was Labeled Backwards" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The mustKnow Ring Order Was Labeled Backwards</h1>
+  <p class="page-subtitle">The Quick Revision listed "Entities → Use Cases → Interface Adapters → Frameworks (outer to inner)" — but Entities is the page's own innermost ring, so the sequence is actually inner-to-outer, the opposite of its label.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the ring-order label corrected, the next issue is in the page's own "Infrastructure Adapter" code sample — a controller that skips the presenter class the page's own file structure and mistakes block both say should be there.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Clean / Onion Architecture" topicRoute="/arch-patterns/clean-architecture"
+    [next]="{ label: 'The Controller Skipped Its Own Presenter', route: '/arch-patterns/clean-architecture/controller-skipped-the-presenter' }" />
+</div>

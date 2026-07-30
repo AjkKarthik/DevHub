@@ -27264,6 +27264,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A simple CRUD app with minimal business logic often does not need the full layering.',
     ],
   },
+  'arch-patterns/clean-architecture/mustknow-ring-order-mislabeled': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Clean / Onion Architecture (overview)', route: '/arch-patterns/clean-architecture' },
+      { label: 'The Controller Skipped Its Own Presenter', route: '/arch-patterns/clean-architecture/controller-skipped-the-presenter' },
+    ],
+    tip: 'Check a labeled sequence\'s direction against the page\'s own separately-stated definitions — which item it calls "innermost" and which it calls "outermost" — rather than trusting the parenthetical label at face value.',
+    gotchas: [
+      'A quick-revision summary is often trusted MORE than detailed sections for fast recall — a wrong label there can be more consequential than the same error buried in prose.',
+    ],
+  },
+  'arch-patterns/clean-architecture/controller-skipped-the-presenter': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The mustKnow Ring Order Was Labeled Backwards', route: '/arch-patterns/clean-architecture/mustknow-ring-order-mislabeled' },
+      { label: 'The OutputPort Pattern: One Use Case, Multiple Presenters', route: '/arch-patterns/clean-architecture/one-usecase-multiple-presenters' },
+    ],
+    tip: 'A controller that builds even a trivial response object inline is the first step toward response-shaping logic re-accumulating there — keep the presenter as a real, separate class regardless of current complexity.',
+    gotchas: [
+      'A page can correctly explain an anti-pattern in its mistakes block while a DIFFERENT code sample elsewhere on the same page quietly commits a milder version of it.',
+    ],
+  },
+  'arch-patterns/clean-architecture/one-usecase-multiple-presenters': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Controller Skipped Its Own Presenter', route: '/arch-patterns/clean-architecture/controller-skipped-the-presenter' },
+      { label: 'Clean / Onion Architecture (overview)', route: '/arch-patterns/clean-architecture' },
+    ],
+    tip: 'OutputPort earns its extra indirection specifically when a single Use Case needs to serve multiple, differently-shaped callers — for a Use Case with one caller, a plain return value is simpler and just as compliant.',
+    gotchas: [
+      'OutputPort is a generalization of the single-presenter pattern, not a separate concept — the Use Case pushes its result through an interface DIFFERENT presenters can each implement.',
+    ],
+  },
   'arch-patterns/cqrs-event-sourcing': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

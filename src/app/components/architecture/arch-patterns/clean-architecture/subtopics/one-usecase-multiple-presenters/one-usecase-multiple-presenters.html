@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Clean / Onion Architecture" topicRoute="/arch-patterns/clean-architecture" subtopicLabel="The OutputPort Pattern: One Use Case, Multiple Presenters" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The OutputPort Pattern: One Use Case, Multiple Presenters</h1>
+  <p class="page-subtitle">The page's QnA names OutputPort as an alternative to a return value but never shows it in code — it's the mechanism that lets one Use Case serve an HTTP controller, a GraphQL resolver, and a CLI command with zero duplicated logic.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With the ring-order label, the missing presenter, and the multi-presenter OutputPort pattern all covered, this page's treatment of Clean Architecture's rings and their boundary-crossing rules is more complete and internally consistent. Next up: Hexagonal Architecture, which frames the same dependency-inversion idea through ports and adapters rather than concentric rings.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Clean / Onion Architecture" topicRoute="/arch-patterns/clean-architecture"
+    [prev]="{ label: 'The Controller Skipped Its Own Presenter', route: '/arch-patterns/clean-architecture/controller-skipped-the-presenter' }" />
+</div>

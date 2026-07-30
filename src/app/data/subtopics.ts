@@ -3121,4 +3121,15 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Solution’s PlaceOrderHandler Never Declared Its Own repo Field', route: '/arch-patterns/layered-architecture/handler-repo-field-never-declared' },
     { label: 'Why “Read-Only” Is the Safe Case for Skipping a Layer', route: '/arch-patterns/layered-architecture/why-reads-are-the-safe-skip-case' },
   ],
+  // NOTE: hub-prefixed even though no CURRENT collision exists in this map --
+  // the Design Patterns hub has its own /design-patterns/clean-architecture
+  // topic using the identical bare slug 'clean-architecture'; DpNavComponent
+  // doesn't call subtopicsOf() yet (no Phase 10 rollout there), but a bare
+  // key here would leak these Architecture-Patterns subtopics into that
+  // hub's own clean-architecture page the moment it gets its own accordion.
+  'arch-clean-architecture': [
+    { label: 'The mustKnow Ring Order Was Labeled Backwards', route: '/arch-patterns/clean-architecture/mustknow-ring-order-mislabeled' },
+    { label: 'The Controller Skipped Its Own Presenter', route: '/arch-patterns/clean-architecture/controller-skipped-the-presenter' },
+    { label: 'The OutputPort Pattern: One Use Case, Multiple Presenters', route: '/arch-patterns/clean-architecture/one-usecase-multiple-presenters' },
+  ],
 };
