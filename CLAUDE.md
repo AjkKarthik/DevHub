@@ -2508,6 +2508,41 @@ opens with all 3 labels; the `ProductDto` fix confirmed rendering inside real `<
 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10:
 7 of 22 topics complete.**
 
+**The `service-communication` batch found and fixed ONE overprecise numeric claim, verified via
+WebSearch, plus two gap-closing subtopics**: the page stated Protobuf binary encoding is "~7×
+smaller than JSON" in both the theory section and a code comment. Verified via WebSearch across
+several independent benchmarks that the commonly cited figure is 3-5× smaller (uncompressed),
+with one source describing "~56% smaller" (roughly 2.3×) as typical — the specific "~7×" figure
+only appeared at the extreme edge of one small-message benchmark (protobuf reaching ~16% of
+gzipped JSON size), not as a general rule. This is a distinct failure mode from a wrong fact or a
+self-contradiction: the DIRECTION of the claim (Protobuf is smaller) was never in question, only
+the specific multiplier was overprecise — a pattern this file has now seen several times (CDN
+capacity figures, Grafana dashboard IDs): a specific-sounding number reads as more authoritative,
+which paradoxically makes it less likely to get double-checked. Corrected to "commonly 3–5×
+smaller... more for integer/enum-heavy payloads, less for string-heavy ones," trading a false
+precision for an accurate, more useful range. A gap-closing subtopic explained the mechanism
+behind the "Not handling message broker unavailability" mistake block's one-line "Use Outbox
+Pattern" fix — why the write has to be atomic (writing the event to an outbox TABLE in the SAME
+transaction as the business data, since a DB commit and a broker publish can't be one atomic
+operation across two different systems) and how a separate relay process actually moves rows to
+the broker, explicitly noting the pattern only guarantees at-least-once delivery (tying it back
+to this same page's OWN consumer-idempotency mistake block as a complementary, not optional,
+companion). A second gap-closing subtopic explained why the page's "REST for browser clients"
+recommendation isn't just convention — verified via WebSearch that browsers have never
+implemented the Fetch API's own `trailers` property (where gRPC sends its final call status),
+and don't expose raw HTTP/2 framing at all, making direct gRPC calls from browser JavaScript a
+genuine platform limitation, not a preference; gRPC-Web works around this via a translating
+proxy at the cost of giving up client-streaming and full bidirectional streaming. **A NEW variant
+of the backtick-vs-`<code>` style-consistency issue**: two backtick-wrapped mentions with no
+angle brackets (safe from the vanishing-HTML-tag bug, just a style question) were converted to
+`<code>` tags anyway for consistency with the rest of the same file, following the established
+"don't mix backticks and `<code>` in the same sentence/field" convention from prior hubs.
+Confirmed `service-communication` collision-free via the standing `app.routes.ts` grep, left
+bare. Build passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page
+fixes (theory bullet and code comment) confirmed rendering; breadcrumb showed all 4 levels; 860px
+wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 8 of 22 topics
+complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3414,10 +3449,11 @@ opens with all 3 labels; the `ProductDto` fix confirmed rendering inside real `<
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 7 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 8 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
-  `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`, 2026-07-30) — see
+  `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
+  `/arch-patterns/service-communication`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical

@@ -6862,7 +6862,19 @@ off here with a date.
   labels; the ProductDto fix confirmed rendering inside real `<code>` elements; breadcrumb showed
   all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub
   Phase 10: 7 of 22 topics complete.**
-- [ ] `/arch-patterns/service-communication` — Service Communication
+- [x] `/arch-patterns/service-communication` — Service Communication (2026-07-30) — 3 subtopics:
+  (1) **The gRPC Size Claim Was Overprecise** — the page said Protobuf is "~7x smaller than
+  JSON" in two places; verified via WebSearch the commonly cited figure is 3-5x, varying by
+  payload shape; corrected to a caveated range; (2) **How the Outbox Pattern Actually Works**, a
+  gap-closing subtopic explaining the mechanism behind the mistakes block's one-line fix — atomic
+  write to an outbox table, a separate relay process, at-least-once (not exactly-once) delivery;
+  (3) **Why Browsers Cannot Call gRPC Directly**, a gap-closing subtopic explaining the real
+  platform limitation (Fetch API never implemented HTTP/2 trailers) behind the page's unexplained
+  "REST for browser clients" recommendation, verified via WebSearch. `service-communication`
+  SUBTOPICS key collision-free (checked app.routes.ts directly), left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
+  rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 8 of 22 topics complete.**
 - [ ] `/arch-patterns/api-gateway-pattern` — API Gateway Pattern
 - [ ] `/arch-patterns/service-discovery` — Service Discovery
 - [ ] `/arch-patterns/circuit-breaker` — Circuit Breaker
