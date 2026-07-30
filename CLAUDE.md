@@ -2234,6 +2234,69 @@ do this same check before any other new hub's first subtopic set:
     No stale-dev-server incident — toggle count updated correctly (15→16) on the first browser
     check.
 
+### Architecture Patterns hub subtopic wiring — first pilot; the 11th `*NavComponent` in a row
+missing the subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/arch-patterns/monolith-vs-modular`,
+2026-07-30) — do this same check before any other new hub's first subtopic set:
+
+1. **`ArchNavComponent` (`shared/arch-nav/arch-nav.ts`) had ZERO subtopics-accordion support** —
+   the same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot
+   before it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design —
+   confirmed this makes 11 in a row, since System Design was the 10th). Fixed identically: added
+   `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from
+   `../../../data/subtopics`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, copied directly from `TerraformNavComponent`'s own implementation (read
+   directly, not reconstructed from memory, per the established copy-fidelity discipline). Worked
+   correctly on the first browser check — no stale-chunk incident.
+2. **No `SUBTOPICS` map bare-key collision for `monolith-vs-modular`** (checked both quoted and
+   unquoted forms, confirmed collision-free) — left as a bare key.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'arch-patterns/monolith-vs-modular'`,
+   confirmed the base entry — and its own `ARCH_DEFAULT` constant — already existed) — subtopic
+   composite keys follow suit: `'arch-patterns/monolith-vs-modular/<slug>'`.
+4. **`ARCH_LABELS` breadcrumb map uses bare keys** (`'monolith-vs-modular'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'monolith-vs-modular/<slug>'`).
+5. **`.arch-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`) — every
+   subtopic `.scss` needs the full `.arch-page { max-width: 860px; margin: 0 auto; }` rule.
+6. **No live playground** — architecture-pattern content (module structure, DDD concepts, code
+   organization) has no in-browser runtime, following the same `<app-code-block>`-only pattern as
+   every other non-JS-runtime hub — every code tab across all three subtopics uses plain
+   TypeScript/bash illustrative snippets, matching the main page's own `codeTabs` style exactly.
+   `$accent: #7c3aed`, `$tint: #f5f3ff`, icon `🏛️`, `tech="javascript"`.
+7. **Corrected a stale nav-groups line in this file's own "Current state" section** — Architecture
+   Patterns' nav groups were previously documented as "Foundations, Service Patterns, Data
+   Patterns, Deployment, Reference," which does not match the real `arch-nav.ts` (actual groups:
+   Architectural Styles, Microservices, Messaging, Domain-Driven Design, Integration, Reference)
+   — the same "verify a hub's own documented summary against the real component file" discipline
+   already applied to the Python hub's CSS-class staleness earlier in this file.
+8. **The `monolith-vs-modular` batch found and fixed TWO genuine main-page issues, both
+   self-contained (zero external research needed)**: the theory section's own "Rule of thumb: you
+   need at least a team of 10-15 engineers... before microservices pay off" contradicted the
+   quiz explanation's original "choose a modular monolith when the team is small (fewer than 20
+   engineers)" — for a team of 17, the page gave opposite advice depending on which section was
+   read; corrected the quiz explanation to reference the theory section's own 10-15 figure
+   directly rather than maintain a second, independently-chosen number. The Challenge solution's
+   SharedKernel exports a `ProductId` value object specifically for cross-module type safety, but
+   the one actual cross-module method (`getProductPrice`) originally took a bare `string`
+   instead — undercutting the entire point of a typed SharedKernel at the one boundary that
+   needed it; fixed the signature to `getProductPrice(productId: ProductId): Promise<Money>`. A
+   third, gap-closing subtopic named a real tradeoff the main page never states despite covering
+   almost every other angle: a modular monolith provides logical isolation (module boundaries)
+   but not operational isolation (process-level fault containment) — a crash or memory leak in
+   one module can take every other module down too, unlike true microservices. **Real gotcha
+   caught during the gotcha sweep, not the build**: generic syntax like `Promise<Money>` written
+   as plain prose inside `[innerHTML]`-bound `theory.points`/`exercise.prompt` fields would have
+   been silently parsed as an HTML tag and vanished — fixed by wrapping in
+   `<code>...&lt;...&gt;</code>` before the build ever ran, confirmed via `document.body.innerText`
+   checks after publishing. Build passed clean. Browser-verified: nav accordion opens with all 3
+   labels on the first check; both main-page fixes confirmed rendering — the team-size fix
+   required clicking through all 6 quiz questions one at a time (`Next →` after each answer) since
+   this quiz shows one question at a time rather than a flat list, and the SharedKernel fix
+   required Reveal Solution + all matching "▼ View Code" toggles; 860px wrapper confirmed via
+   `getComputedStyle`.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3134,10 +3197,16 @@ do this same check before any other new hub's first subtopic set:
 - **Architecture Patterns hub**: 22 trackable topic pages + 3 reference (25 cards total). Feature-complete.
   Violet theme `$accent: #7c3aed`, `$tint: #f5f3ff`, dark `#c4b5fd`. Search prefix `arch-`. Route: `/arch-patterns`.
   CSS classes: `.arch-page`, `.arch-icon`, `.arch-section`. Icon content: `🏛️` at `font-size: 1.8rem`. `tech="javascript"`.
-  Nav groups: Foundations, Service Patterns, Data Patterns, Deployment, Reference.
+  Nav groups (corrected 2026-07-30 — previously misdocumented as "Foundations, Service Patterns,
+  Data Patterns, Deployment, Reference"; confirmed against the real `arch-nav.ts`): Architectural
+  Styles, Microservices, Messaging, Domain-Driven Design, Integration, Reference.
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
+  Phase 10: 1 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`, pilot batch,
+  2026-07-30) — see "Architecture Patterns hub subtopic wiring" section below for the
+  `ArchNavComponent` accordion structural fix (11th `*NavComponent`-based hub in a row missing
+  it at pilot time) and the two genuine main-page inaccuracies found and fixed.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.

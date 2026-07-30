@@ -6739,7 +6739,30 @@ off here with a date.
 
 #### Architecture Patterns — 22 topic pages
 
-- [ ] `/arch-patterns/monolith-vs-modular` — Monolith vs Modular Monolith
+- [x] `/arch-patterns/monolith-vs-modular` — Monolith vs Modular Monolith (2026-07-30) —
+  **first Phase 10 subtopic batch for the Architecture Patterns hub**; fixed `ArchNavComponent`'s
+  missing subtopics-accordion structural gap (11th `*NavComponent` hub in a row missing it at
+  pilot time — copied `TerraformNavComponent`'s implementation directly); also corrected a stale
+  nav-groups line in CLAUDE.md's own "Current state" section (documented as "Foundations, Service
+  Patterns, Data Patterns, Deployment, Reference," actually "Architectural Styles, Microservices,
+  Messaging, Domain-Driven Design, Integration, Reference"). 3 subtopics: (1) **Team-Size
+  Thresholds Disagreed by 5-10 Engineers**, a self-contained internal contradiction — theory's
+  "10-15 engineers" (microservices threshold) vs. the quiz's original "fewer than 20 engineers"
+  (modular monolith threshold) gave opposite advice for a team of 17; fixed the quiz to reference
+  theory's own figure; (2) **SharedKernel's Own ProductId Type Was Never Actually Used** — the
+  Challenge solution declared a `ProductId` SharedKernel export but the one cross-module method
+  (`getProductPrice`) used a bare `string` instead, undercutting the type safety a typed
+  SharedKernel is meant to provide; fixed the signature; (3) **The Modular Monolith's Unstated
+  Tradeoff: One Process, One Failure Domain**, a gap-closing subtopic naming the operational-
+  isolation tradeoff (shared process = shared failure domain) the main page never states despite
+  covering nearly every other angle. `monolith-vs-modular` SUBTOPICS key collision-free, left
+  bare. Real gotcha caught during the sweep (not the build): generic syntax like `Promise<Money>`
+  in `[innerHTML]`-bound fields silently vanishes when parsed as an HTML tag — fixed with
+  `<code>&lt;...&gt;</code>` escaping before publishing. Build passed clean. Browser-verified: nav
+  accordion opens with all 3 labels; both main-page fixes confirmed rendering (team-size fix
+  required clicking through all 6 quiz questions one at a time, since this quiz shows one question
+  at a time rather than a flat list); 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 1 of 22 topics complete.**
 - [ ] `/arch-patterns/layered-architecture` — Layered Architecture
 - [ ] `/arch-patterns/clean-architecture` — Clean / Onion Architecture
 - [ ] `/arch-patterns/hexagonal-architecture` — Hexagonal Architecture
