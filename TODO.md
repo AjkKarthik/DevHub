@@ -6763,7 +6763,22 @@ off here with a date.
   required clicking through all 6 quiz questions one at a time, since this quiz shows one question
   at a time rather than a flat list); 860px wrapper confirmed via `getComputedStyle`.
   **Architecture Patterns hub Phase 10: 1 of 22 topics complete.**
-- [ ] `/arch-patterns/layered-architecture` — Layered Architecture
+- [x] `/arch-patterns/layered-architecture` — Layered Architecture (2026-07-30) — 3 subtopics:
+  (1) **Three Sections Said DIP, One Section Said N-Tier** — the QnA claimed layered architecture
+  "allows Infrastructure to be the bottom layer that Domain depends on," contradicted by THREE
+  other sections (quickRef, mistakes block, quiz Q1) all describing the opposite (dependency
+  inversion); fixed the 3-to-1 outlier (QnA) to reconcile with the majority; (2) **The Solution's
+  PlaceOrderHandler Never Declared Its Own repo Field** — the Challenge solution called
+  `this.repo.save(order)` with no constructor/field declaration anywhere, a real TypeScript
+  strict-mode compile error, inconsistent with the page's own earlier correct example; fixed by
+  adding the constructor parameter property; (3) **Why "Read-Only" Is the Safe Case for Skipping
+  a Layer**, a gap-closing subtopic explaining why the page's loose-layering guidance specifically
+  names reads as safe (no state change = no invariant to bypass), connecting to CQRS. Self-caught
+  an over-escaped `\'` inside a backtick-delimited field before build (backticks never need
+  apostrophe-escaping). `layered-architecture` SUBTOPICS key collision-free, left bare. Build
+  passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page fixes
+  confirmed rendering; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns
+  hub Phase 10: 2 of 22 topics complete.**
 - [ ] `/arch-patterns/clean-architecture` — Clean / Onion Architecture
 - [ ] `/arch-patterns/hexagonal-architecture` — Hexagonal Architecture
 - [ ] `/arch-patterns/vertical-slice` — Vertical Slice Architecture

@@ -2297,6 +2297,37 @@ Confirmed via direct file inspection before the pilot (`/arch-patterns/monolith-
    required Reveal Solution + all matching "▼ View Code" toggles; 860px wrapper confirmed via
    `getComputedStyle`.
 
+**The `layered-architecture` batch found and fixed TWO more genuine issues, both self-contained
+(zero external research needed)**: the page's own QnA claimed "layered architecture often allows
+Infrastructure to be the bottom layer that Domain depends on" — directly contradicted by THREE
+other independent sections of the same page, all describing the opposite dependency direction
+for what the QnA called the identical pattern: the Quick Reference ("Domain Layer... zero
+external deps"; "Infrastructure Layer... implements domain interfaces"), the mistakes block
+(explicitly forbids "Domain layer importing infrastructure," with the fix being "Domain defines
+interface; Infrastructure implements it"), and quiz Q1's own explanation ("Infrastructure
+implements Domain interfaces (dependency inversion)"). Rather than pick a side abstractly, fixed
+the 3-to-1 outlier (the QnA) to reconcile with the majority, while preserving the QnA's still-
+valid point about what actually distinguishes Clean Architecture (enforcement rigor, not mere
+presence of dependency inversion — since the page's own recommended layered-architecture
+practice already uses it). The Challenge solution's `PlaceOrderHandler` called
+`this.repo.save(order)` but declared no constructor and no `repo` field anywhere in the class —
+a genuine compile error in TypeScript strict mode, inconsistent with the page's own EARLIER,
+correct "Application Layer Handler" theory example, which correctly declares
+`constructor(private orders: IOrderRepository, ...)`; fixed by adding the matching constructor
+parameter property. A third, gap-closing subtopic explained WHY the page's own "loose layering
+may skip a layer for read-only queries" guidance specifically names reads as safe — a skipped
+layer's only job on a write path is enforcing invariants over a state change (demonstrated via
+the page's own `Order.confirm()` example), and a read changes no state, so there's no invariant
+to bypass — connecting this to CQRS, which the page's own QnA already names as a related pattern.
+**Self-caught and fixed an over-escaped `\'` inside a backtick-delimited `code:` field before the
+build** (two instances — backticks never need apostrophe-escaping; the correct form is a bare `'`
+or a double-quoted string, not `\'`, which renders a visible stray backslash). No `SUBTOPICS`
+collision for `layered-architecture` (checked both forms, confirmed collision-free, left bare).
+Build passed clean. Browser-verified: nav accordion opens with all 3 labels on the first check;
+both main-page fixes confirmed rendering — the QnA fix needed the QnA section's outer toggle plus
+the specific question's own row click, and the Challenge fix needed Reveal Solution + all
+matching "▼ View Code" toggles; 860px wrapper confirmed via `getComputedStyle`.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3203,10 +3234,11 @@ Confirmed via direct file inspection before the pilot (`/arch-patterns/monolith-
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 1 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`, pilot batch,
-  2026-07-30) — see "Architecture Patterns hub subtopic wiring" section below for the
-  `ArchNavComponent` accordion structural fix (11th `*NavComponent`-based hub in a row missing
-  it at pilot time) and the two genuine main-page inaccuracies found and fixed.
+  Phase 10: 2 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  `/arch-patterns/layered-architecture`, 2026-07-30) — see "Architecture Patterns hub subtopic
+  wiring" section below for the `ArchNavComponent` accordion structural fix (11th
+  `*NavComponent`-based hub in a row missing it at pilot time) and the genuine main-page
+  inaccuracies found and fixed on both batches so far.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.
