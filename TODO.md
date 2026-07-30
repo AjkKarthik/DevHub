@@ -6967,7 +6967,20 @@ off here with a date.
   nav accordion opens with all 3 labels; both main-page fixes confirmed rendering; breadcrumb
   showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns
   hub Phase 10: 15 of 22 topics complete.**
-- [ ] `/arch-patterns/inbox-outbox` — Inbox & Outbox Pattern
+- [x] `/arch-patterns/inbox-outbox` — Inbox & Outbox Pattern (2026-07-30) — 3 subtopics:
+  (1) **The Relay Lock Was Released Before Publishing** — SELECT ... FOR UPDATE SKIP LOCKED
+  wasn't wrapped in the same transaction as the publish+UPDATE steps, so the lock released
+  before it could protect anything, reproducing the page's own double-publish mistake; fixed
+  with db.transaction(); (2) **The Inbox Upsert Was Invalid SQL** — ON CONFLICT DO UPDATE ...
+  had no conflict target (a real syntax error, not shorthand); fixed to accumulate points
+  correctly via ON CONFLICT (customer_id) DO UPDATE SET points = loyalty_points.points +
+  EXCLUDED.points; (3) **The Inbox Table Needs Cleanup Too**, a gap-closing subtopic on why an
+  overly-aggressive Inbox retention window is a correctness bug, not just housekeeping.
+  `inbox-outbox` SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts
+  directly), left bare. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels; both main-page fixes confirmed rendering; breadcrumb showed all 4 levels; 860px
+  wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 16 of 22
+  topics complete — Messaging nav group fully done.**
 - [ ] `/arch-patterns/ddd-core` — Domain-Driven Design Core
 - [ ] `/arch-patterns/bounded-contexts` — Bounded Contexts
 - [ ] `/arch-patterns/aggregates-domain-events` — Aggregates & Domain Events

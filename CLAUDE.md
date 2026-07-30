@@ -2740,6 +2740,36 @@ Pattern" and "Durable Saga with State Persistence" tab buttons; breadcrumb showe
 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 15 of 22
 topics complete.**
 
+**The `inbox-outbox` batch — completing the hub's Messaging nav group — found and fixed TWO
+genuine issues, one a subtle transaction-boundary bug and one an invalid SQL statement, plus a
+gap-closing subtopic**: the "Relay Process" codeTab's `SELECT ... FOR UPDATE SKIP LOCKED` ran as
+a standalone query, with the subsequent `broker.publish()` and `UPDATE outbox SET published_at`
+calls also standalone — NOT wrapped in one shared transaction. Since a PostgreSQL row lock only
+lasts as long as the transaction that acquired it, the lock released the instant the SELECT's own
+(auto-committed) transaction ended, well before publish ever ran — meaning a second concurrent
+relay worker could pick up the identical unpublished row moments later, reproducing the exact
+double-publish race the page's OWN "Running multiple relay workers without row-level locking"
+mistake block explicitly warns against, in the very codeTab whose comment claims to prevent it.
+Fixed by wrapping the whole select-publish-update sequence in `db.transaction()`, the same
+pattern the page's own "Outbox Pattern" codeTab already uses. Separately, the "Inbox Pattern"
+codeTab's loyalty-points upsert read `ON CONFLICT DO UPDATE ...` — PostgreSQL requires an
+explicit conflict target before `DO UPDATE`, making this invalid syntax, not abbreviated
+shorthand. Fixed to `ON CONFLICT (customer_id) DO UPDATE SET points = loyalty_points.points +
+EXCLUDED.points`, also correcting a second, subtler issue: a naive fix using only
+`EXCLUDED.points` would have compiled and run but silently overwritten the customer's entire
+existing point balance instead of accumulating onto it. A gap-closing subtopic made the Inbox
+table's own cleanup job concrete — the Outbox side gets a full mistake block with a wrong/right
+example, the Inbox side gets one sentence — and explained why an overly-aggressive retention
+window is a genuine correctness bug for the Inbox specifically (unlike the Outbox, where early
+cleanup has no correctness consequence): deleting a row before the broker's worst-case
+redelivery window has passed lets a legitimate late redelivery slip through as if it were brand
+new. Confirmed `inbox-outbox` collision-free via the standing `app.routes.ts` grep (also checked
+`subtopics.ts` directly, no match), left bare. Build passed clean. Browser-verified: nav
+accordion opens with all 3 labels; both main-page fixes confirmed rendering after clicking the
+specific "Relay Process" and "Inbox Pattern (Consumer)" tab buttons; breadcrumb showed all 4
+levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10:
+16 of 22 topics complete — Messaging nav group fully done.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3646,14 +3676,15 @@ topics complete.**
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 15 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 16 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
   `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`,
   `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`,
   `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`,
-  `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`, 2026-07-30) — see
+  `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`,
+  `/arch-patterns/inbox-outbox`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
