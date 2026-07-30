@@ -2746,7 +2746,12 @@ export const routes: Routes = [
   ] },
   { path: 'arch-patterns',   children: [
     { path: '', loadComponent: () => import('./components/architecture/arch-patterns/home/home').then(m => m.ArchPatternsHome) },
-    { path: 'monolith-vs-modular',       loadComponent: () => import('./components/architecture/arch-patterns/monolith-vs-modular/monolith-vs-modular').then(m => m.ArchMonolithVsModular) },
+    { path: 'monolith-vs-modular', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/monolith-vs-modular/monolith-vs-modular').then(m => m.ArchMonolithVsModular) },
+      { path: 'team-size-threshold-contradiction', loadComponent: () => import('./components/architecture/arch-patterns/monolith-vs-modular/subtopics/team-size-threshold-contradiction/team-size-threshold-contradiction').then(m => m.TeamSizeThresholdContradictionSubtopic) },
+      { path: 'sharedkernel-productid-never-used', loadComponent: () => import('./components/architecture/arch-patterns/monolith-vs-modular/subtopics/sharedkernel-productid-never-used/sharedkernel-productid-never-used').then(m => m.SharedKernelProductIdNeverUsedSubtopic) },
+      { path: 'shared-process-shared-failure-domain', loadComponent: () => import('./components/architecture/arch-patterns/monolith-vs-modular/subtopics/shared-process-shared-failure-domain/shared-process-shared-failure-domain').then(m => m.SharedProcessSharedFailureDomainSubtopic) },
+    ] },
     { path: 'layered-architecture',      loadComponent: () => import('./components/architecture/arch-patterns/layered-architecture/layered-architecture').then(m => m.ArchLayeredArchitecture) },
     { path: 'clean-architecture',        loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/clean-architecture').then(m => m.ArchCleanArchitecture) },
     { path: 'hexagonal-architecture',    loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/hexagonal-architecture').then(m => m.ArchHexagonalArchitecture) },

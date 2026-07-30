@@ -3111,4 +3111,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Challenge Hint Said “LLM 2-4s”, Solution’s Own P50 Was 1.5s', route: '/system-design/ai-ml-system-design/latency-hint-vs-actual-p50' },
     { label: 'Naive Serving: “1 Request/Sec” vs “15 Tokens/Sec” Don’t Reconcile', route: '/system-design/ai-ml-system-design/naive-serving-units-mismatch' },
   ],
+  'monolith-vs-modular': [
+    { label: 'Team-Size Thresholds Disagreed by 5-10 Engineers', route: '/arch-patterns/monolith-vs-modular/team-size-threshold-contradiction' },
+    { label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' },
+    { label: 'The Modular Monolith’s Unstated Tradeoff: One Process, One Failure Domain', route: '/arch-patterns/monolith-vs-modular/shared-process-shared-failure-domain' },
+  ],
 };

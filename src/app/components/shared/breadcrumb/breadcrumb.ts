@@ -2363,6 +2363,9 @@ const MESH_LABELS: Record<string, string> = {
 
 const ARCH_LABELS: Record<string, string> = {
   'monolith-vs-modular':       'Monolith vs Modular Monolith',
+  'monolith-vs-modular/team-size-threshold-contradiction': 'Team-Size Thresholds Disagreed by 5-10 Engineers',
+  'monolith-vs-modular/sharedkernel-productid-never-used': 'SharedKernel’s Own ProductId Type Was Never Actually Used',
+  'monolith-vs-modular/shared-process-shared-failure-domain': 'The Modular Monolith’s Unstated Tradeoff: One Process, One Failure Domain',
   'layered-architecture':      'Layered Architecture',
   'clean-architecture':        'Clean / Onion Architecture',
   'hexagonal-architecture':    'Hexagonal Architecture',

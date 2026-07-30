@@ -27348,6 +27348,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Module boundaries in a monolith are far cheaper to refactor than service boundaries once real network contracts exist between separate services.',
     ],
   },
+  'arch-patterns/monolith-vs-modular/team-size-threshold-contradiction': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Monolith vs Modular Monolith (overview)', route: '/arch-patterns/monolith-vs-modular' },
+      { label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' },
+    ],
+    tip: 'When a page states a numeric "rule of thumb" in more than one place, pick a single canonical figure and reference it everywhere rather than letting each section restate its own approximate number.',
+    gotchas: [
+      'Two independently-stated thresholds for the same decision can create a real disagreement zone even when both sound like reasonable rules of thumb individually.',
+    ],
+  },
+  'arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Team-Size Thresholds Disagreed by 5-10 Engineers', route: '/arch-patterns/monolith-vs-modular/team-size-threshold-contradiction' },
+      { label: 'The Modular Monolith’s Unstated Tradeoff: One Process, One Failure Domain', route: '/arch-patterns/monolith-vs-modular/shared-process-shared-failure-domain' },
+    ],
+    tip: 'A SharedKernel value object only delivers type safety if it\'s actually used at the module boundary it\'s meant to protect — declaring it without using it is a subtle "looks right, doesn\'t deliver" gap.',
+    gotchas: [
+      'A bare string parameter accepts any string, including the wrong kind of identifier — a distinct value-object type turns that mistake into a compile error instead.',
+    ],
+  },
+  'arch-patterns/monolith-vs-modular/shared-process-shared-failure-domain': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'SharedKernel’s Own ProductId Type Was Never Actually Used', route: '/arch-patterns/monolith-vs-modular/sharedkernel-productid-never-used' },
+      { label: 'Monolith vs Modular Monolith (overview)', route: '/arch-patterns/monolith-vs-modular' },
+    ],
+    tip: 'A modular monolith provides logical isolation (module boundaries) but not operational isolation (process-level fault containment) — a crash or memory leak in one module can take every module down.',
+    gotchas: [
+      'A module whose failure modes threaten the whole application\'s uptime is a legitimate fourth reason to split it out, alongside scale, team, and technology needs.',
+    ],
+  },
   'arch-patterns/saga-choreography': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
