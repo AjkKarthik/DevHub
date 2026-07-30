@@ -2688,6 +2688,31 @@ match), left bare. Build passed clean. Browser-verified: nav accordion opens wit
 both main-page fixes confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed
 via `getComputedStyle`. **Architecture Patterns hub Phase 10: 13 of 22 topics complete.**
 
+**The `cqrs-event-sourcing` batch found and fixed the hub's largest single reference-integrity
+gap so far — SIX undefined members, not one — plus two gap-closing subtopics**: the "Snapshots"
+codeTab called `order.rehydrate(e)`, `Order.restoreFromSnapshot(snapshot.state)`,
+`order.uncommittedEvents`, `order.version`, `order.clearEvents()`, and `order.toSnapshot()` — none
+of which exist on the `Order` class defined in the page's own earlier "CQRS — Commands & Queries"
+codeTab (which only has `create`, `addLine`, `confirm`, and private `apply`/`when`). A purely
+self-contained catch: each codeTab reads fluently in isolation, and the gap only surfaces when
+checking a class's declared members across every codeTab that uses it, the same discipline already
+applied to single undefined-type Challenge bugs elsewhere in this hub, just scaled to six members
+on one class. Fixed by adding the missing methods inline in the Snapshots codeTab as an explicit
+extension, distinguishing `apply()` (writes, records as uncommitted) from the new `rehydrate()`
+(replay during load, should not re-mark already-persisted events as uncommitted). A gap-closing
+subtopic made the QnA's one-sentence "optimistic updates... roll back" mention concrete with a
+client-ID-based reconcile/rollback pattern (the stable ID is what lets the eventual authoritative
+read-model data replace, not duplicate, the optimistic placeholder). A second gap-closing subtopic
+showed what an upcaster chain actually looks like — incremental v1→v2→v3 steps applied at the read
+boundary, so downstream consumers (projections, replay logic) only ever see the latest event
+shape — connecting back to the Service Communication topic's own additive-vs-breaking-change
+distinction, just applied to stored historical events instead of live API responses. Confirmed
+`cqrs-event-sourcing` collision-free via the standing `app.routes.ts` grep (also checked
+`subtopics.ts` directly, no match), left bare. Build passed clean. Browser-verified: nav accordion
+opens with all 3 labels; the Snapshots fix confirmed rendering after clicking the specific
+"Snapshots" tab button; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+`getComputedStyle`. **Architecture Patterns hub Phase 10: 14 of 22 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3594,13 +3619,14 @@ via `getComputedStyle`. **Architecture Patterns hub Phase 10: 13 of 22 topics co
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 13 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 14 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
   `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`,
   `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`,
-  `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`, 2026-07-30) — see
+  `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`,
+  `/arch-patterns/cqrs-event-sourcing`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical

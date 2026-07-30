@@ -6942,7 +6942,18 @@ off here with a date.
   Build passed clean. Browser-verified: nav accordion opens with all 3 labels; both main-page
   fixes confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
   `getComputedStyle`. **Architecture Patterns hub Phase 10: 13 of 22 topics complete.**
-- [ ] `/arch-patterns/cqrs-event-sourcing` — CQRS & Event Sourcing
+- [x] `/arch-patterns/cqrs-event-sourcing` — CQRS & Event Sourcing (2026-07-30) — 3 subtopics:
+  (1) **Snapshots Referenced Six Undefined Methods** — the Snapshots codeTab called
+  rehydrate(), restoreFromSnapshot(), uncommittedEvents, version, clearEvents(), and
+  toSnapshot() on Order, none of which exist on the Order class defined earlier on the same
+  page; added the missing methods inline; (2) **Optimistic UI Updates, Made Concrete**, a
+  gap-closing subtopic showing the client-ID-based reconcile/rollback mechanics the QnA only
+  described in one sentence; (3) **What an Upcaster Actually Looks Like**, a gap-closing
+  subtopic with an incremental v1→v2→v3 upcaster chain. `cqrs-event-sourcing` SUBTOPICS key
+  collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Build passed
+  clean. Browser-verified: nav accordion opens with all 3 labels; the Snapshots fix confirmed
+  rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 14 of 22 topics complete.**
 - [ ] `/arch-patterns/saga-choreography` — Saga & Choreography
 - [ ] `/arch-patterns/inbox-outbox` — Inbox & Outbox Pattern
 - [ ] `/arch-patterns/ddd-core` — Domain-Driven Design Core
