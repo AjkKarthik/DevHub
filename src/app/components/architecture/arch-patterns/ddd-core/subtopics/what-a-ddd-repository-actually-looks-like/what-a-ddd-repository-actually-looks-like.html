@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DDD Core Concepts" topicRoute="/arch-patterns/ddd-core" subtopicLabel="What a DDD Repository Actually Looks Like" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">What a DDD Repository Actually Looks Like</h1>
+  <p class="page-subtitle">The QnA describes domain-oriented repositories in precise words but never shows the contrast in code — this subtopic shows a generic DAO versus a real IAccountRepository, and where the implementation actually lives.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch by making the QnA's own precise repository description as concrete as the page's other patterns already are, and connects to the hub's own Hexagonal Architecture and Layered Architecture topics via dependency inversion.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DDD Core Concepts" topicRoute="/arch-patterns/ddd-core"
+    [prev]="{ label: 'What a DDD Factory Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like' }" />
+</div>

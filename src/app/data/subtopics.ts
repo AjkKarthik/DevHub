@@ -3208,4 +3208,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Inbox Upsert Was Invalid SQL', route: '/arch-patterns/inbox-outbox/inbox-upsert-was-invalid-sql' },
     { label: 'The Inbox Table Needs Cleanup Too', route: '/arch-patterns/inbox-outbox/inbox-table-needs-cleanup-too' },
   ],
+  // 'ddd-core' confirmed collision-free via app.routes.ts grep before adding
+  'ddd-core': [
+    { label: 'TransferFunds Never Handled Partial Save Failure', route: '/arch-patterns/ddd-core/transfer-funds-never-handled-partial-save-failure' },
+    { label: 'What a DDD Factory Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like' },
+    { label: 'What a DDD Repository Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-repository-actually-looks-like' },
+  ],
 };

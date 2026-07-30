@@ -2842,7 +2842,12 @@ export const routes: Routes = [
       { path: 'inbox-upsert-was-invalid-sql', loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/subtopics/inbox-upsert-was-invalid-sql/inbox-upsert-was-invalid-sql').then(m => m.InboxUpsertWasInvalidSqlSubtopic) },
       { path: 'inbox-table-needs-cleanup-too', loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/subtopics/inbox-table-needs-cleanup-too/inbox-table-needs-cleanup-too').then(m => m.InboxTableNeedsCleanupTooSubtopic) },
     ] },
-    { path: 'ddd-core',                  loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/ddd-core').then(m => m.ArchDddCore) },
+    { path: 'ddd-core', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/ddd-core').then(m => m.ArchDddCore) },
+      { path: 'transfer-funds-never-handled-partial-save-failure', loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/subtopics/transfer-funds-never-handled-partial-save-failure/transfer-funds-never-handled-partial-save-failure').then(m => m.TransferFundsNeverHandledPartialSaveFailureSubtopic) },
+      { path: 'what-a-ddd-factory-actually-looks-like', loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/subtopics/what-a-ddd-factory-actually-looks-like/what-a-ddd-factory-actually-looks-like').then(m => m.WhatADddFactoryActuallyLooksLikeSubtopic) },
+      { path: 'what-a-ddd-repository-actually-looks-like', loadComponent: () => import('./components/architecture/arch-patterns/ddd-core/subtopics/what-a-ddd-repository-actually-looks-like/what-a-ddd-repository-actually-looks-like').then(m => m.WhatADddRepositoryActuallyLooksLikeSubtopic) },
+    ] },
     { path: 'bounded-contexts',          loadComponent: () => import('./components/architecture/arch-patterns/bounded-contexts/bounded-contexts').then(m => m.ArchBoundedContexts) },
     { path: 'aggregates-domain-events',  loadComponent: () => import('./components/architecture/arch-patterns/aggregates-domain-events/aggregates-domain-events').then(m => m.ArchAggregatesDomainEvents) },
     { path: 'anti-corruption-layer',     loadComponent: () => import('./components/architecture/arch-patterns/anti-corruption-layer/anti-corruption-layer').then(m => m.ArchAntiCorruptionLayer) },

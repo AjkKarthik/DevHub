@@ -197,8 +197,23 @@ class TransferFundsService {
     from.debit(amount);  // throws if insufficient funds
     to.credit(amount);
 
+    // NOTE: these are two SEPARATE saves against two SEPARATE aggregates
+    // -- classic DDD deliberately keeps one transaction per aggregate, so
+    // wrapping both in one shared DB transaction isn't the fix. That
+    // means the failure case below needs handling explicitly: if
+    // save(to) fails AFTER save(from) already committed, money has been
+    // debited but never credited -- a real inconsistency, not a
+    // hypothetical edge case.
     await this.accountRepo.save(from);
-    await this.accountRepo.save(to);
+    try {
+      await this.accountRepo.save(to);
+    } catch (err) {
+      // Compensate: reverse the debit that already committed, since the
+      // credit that was supposed to complete this transfer did not.
+      from.credit(amount);
+      await this.accountRepo.save(from);
+      throw new Error('Transfer failed and was compensated: ' + (err as Error).message);
+    }
 
     // Publish domain events from both aggregates
     this.events.publishAll([...from.domainEvents, ...to.domainEvents]);

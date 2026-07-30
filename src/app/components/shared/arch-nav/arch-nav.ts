@@ -352,7 +352,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Domain-Driven Design</p>
-      <a routerLink="/arch-patterns/ddd-core" routerLinkActive="active"><span class="nl-text">DDD Core Concepts</span>@if(p.isDone('arch-ddd-core')){<span class="nl-done">✓</span>}@if(d('arch-ddd-core');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/ddd-core" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">DDD Core Concepts</span>
+        @if(p.isDone('arch-ddd-core')){<span class="nl-done">✓</span>}
+        @if(d('arch-ddd-core');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('ddd-core')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ddd-core')"
+                  (click)="toggleSubtopics('ddd-core', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ddd-core'); as dddSubs) {
+        @if (isSubtopicsExpanded('ddd-core')) {
+          <div class="nav-subtopics">
+            @for (s of dddSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/bounded-contexts" routerLinkActive="active"><span class="nl-text">Bounded Contexts</span>@if(p.isDone('arch-bounded-contexts')){<span class="nl-done">✓</span>}@if(d('arch-bounded-contexts');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/aggregates-domain-events" routerLinkActive="active"><span class="nl-text">Aggregates &amp; Domain Events</span>@if(p.isDone('arch-aggregates-domain-events')){<span class="nl-done">✓</span>}@if(d('arch-aggregates-domain-events');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

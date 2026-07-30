@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DDD Core Concepts" topicRoute="/arch-patterns/ddd-core" subtopicLabel="TransferFunds Never Handled Partial Save Failure" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">TransferFundsService Never Handled Partial Save Failure</h1>
+  <p class="page-subtitle">Two separate saves against two separate aggregates, with no handling for the second one failing after the first already committed — a real money-loss risk in an operation literally named TransferFunds.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic makes a different QnA mention concrete — what a DDD Factory actually looks like in code, since the page only describes it in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DDD Core Concepts" topicRoute="/arch-patterns/ddd-core"
+    [next]="{ label: 'What a DDD Factory Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like' }" />
+</div>

@@ -27191,6 +27191,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Modeling something that should be a Value Object (like an Address) as an Entity adds unnecessary identity-tracking complexity.',
     ],
   },
+  'arch-patterns/ddd-core/transfer-funds-never-handled-partial-save-failure': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'DDD Core Concepts (overview)', route: '/arch-patterns/ddd-core' },
+      { label: 'Saga & Choreography', route: '/arch-patterns/saga-choreography' },
+    ],
+    tip: 'Classic DDD recommends one transaction per aggregate — a domain service spanning two aggregates needs explicit compensation if the second save fails, not one shared transaction.',
+    gotchas: [
+      'A domain service touching multiple aggregates without a shared transaction is a small-scale saga in substance and needs the same compensating-action discipline.',
+    ],
+  },
+  'arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'TransferFunds Never Handled Partial Save Failure', route: '/arch-patterns/ddd-core/transfer-funds-never-handled-partial-save-failure' },
+      { label: 'What a DDD Repository Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-repository-actually-looks-like' },
+    ],
+    tip: 'A factory becomes necessary once construction needs something a constructor structurally can\'t do — most commonly, asynchronous I/O like a repository lookup.',
+    gotchas: [
+      'A static create() method on the aggregate itself is often enough — a dedicated factory class is only worthwhile once construction needs its own external dependencies.',
+    ],
+  },
+  'arch-patterns/ddd-core/what-a-ddd-repository-actually-looks-like': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'DDD Core Concepts (overview)', route: '/arch-patterns/ddd-core' },
+      { label: 'What a DDD Factory Actually Looks Like', route: '/arch-patterns/ddd-core/what-a-ddd-factory-actually-looks-like' },
+    ],
+    tip: 'A DDD repository exposes domain-meaningful operations (findDormantAccounts) hiding storage details entirely — a generic DAO exposes the storage shape (rows, query criteria) directly to callers.',
+    gotchas: [
+      'The repository interface belongs in the domain layer; only its implementation belongs in infrastructure — the same dependency inversion the hub\'s Hexagonal Architecture topic covers.',
+    ],
+  },
   'arch-patterns/bounded-contexts': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
