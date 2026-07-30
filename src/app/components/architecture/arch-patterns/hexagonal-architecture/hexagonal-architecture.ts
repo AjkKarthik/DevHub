@@ -45,7 +45,7 @@ export class ArchHexagonalArchitecture {
     {
       heading: 'Why "Hexagonal"?',
       points: [
-        'The hex shape has nothing to do with six. It is drawn as a hexagon to emphasise equal treatment of all sides — no "top" or "bottom".',
+        'The hex shape has nothing to do with six. Cockburn\'s own account gives two reasons: breaking the reflex of drawing a rectangle with a "top"/"bottom" or user-on-left/database-on-right hierarchy, AND hexagons being the simplest non-rectangular polygon to draw that still leaves enough room to sketch multiple ports and adapters per side without visual crowding — any polygon with enough sides would work equally well architecturally.',
         'You can plug any adapter into any port: swap HTTP for CLI, Postgres for in-memory, SMTP for a console logger.',
         'This symmetry enables fully in-process testing without any infrastructure running.',
       ],
@@ -222,12 +222,39 @@ Currently only an HTTP adapter (NotificationController) drives it.
   execute(cmd: { recipient: string; message: string }): Promise<void>;
 }
 
+// Secondary port -- the core depends on this; adapters implement it
+interface INotificationGateway {
+  send(recipient: string, message: string): Promise<void>;
+}
+
+// TODO: implement the use case (primary port)
+class SendNotificationUseCase implements SendNotificationPort { }
+
 // TODO: implement CLI driving adapter
 class SendNotificationCli { }
 
+// TODO: implement a REAL driven adapter (e.g. SMTP) -- the page's own
+// rule requires at least two adapters per secondary port
+class SmtpNotificationGateway implements INotificationGateway { }
+
 // TODO: implement in-memory driven adapter
 class InMemoryNotificationGateway implements INotificationGateway { }`,
-    solution: `// CLI Driving Adapter
+    solution: `// Secondary port -- the core depends on this; adapters implement it
+interface INotificationGateway {
+  send(recipient: string, message: string): Promise<void>;
+}
+
+// Application Core -- implements the primary port, depends only on
+// the secondary port interface (never a concrete adapter)
+class SendNotificationUseCase implements SendNotificationPort {
+  constructor(private gateway: INotificationGateway) {}
+
+  async execute(cmd: { recipient: string; message: string }): Promise<void> {
+    await this.gateway.send(cmd.recipient, cmd.message);
+  }
+}
+
+// CLI Driving Adapter
 class SendNotificationCli {
   constructor(private port: SendNotificationPort) {}
 
@@ -242,7 +269,18 @@ class SendNotificationCli {
   }
 }
 
-// In-Memory Driven Adapter (for tests)
+// Real Driven Adapter (production) -- the page's own rule requires
+// at least two adapters per secondary port; this is the "real" one,
+// matching the SmtpGateway named in the hints.
+class SmtpNotificationGateway implements INotificationGateway {
+  constructor(private smtpConfig: SmtpConfig) {}
+
+  async send(recipient: string, message: string): Promise<void> {
+    await sendMail(this.smtpConfig, recipient, message);
+  }
+}
+
+// In-Memory Driven Adapter (for tests) -- the second required adapter
 class InMemoryNotificationGateway implements INotificationGateway {
   sent: Array<{ recipient: string; message: string }> = [];
 
@@ -251,11 +289,16 @@ class InMemoryNotificationGateway implements INotificationGateway {
   }
 }
 
-// Composition Root
-const gateway = new InMemoryNotificationGateway();
-const useCase = new SendNotificationUseCase(gateway);
+// Composition Root (production) -- wires the REAL adapter
+const useCase = new SendNotificationUseCase(new SmtpNotificationGateway(smtpConfig));
 const cli = new SendNotificationCli(useCase);
-cli.run();`,
+cli.run();
+
+// Composition root (tests) -- wires the in-memory adapter instead;
+// same SendNotificationUseCase and SendNotificationCli classes,
+// zero core/adapter code changes needed to swap them.
+const testGateway = new InMemoryNotificationGateway();
+const testUseCase = new SendNotificationUseCase(testGateway);`,
   };
 
   quiz: QuizQuestion[] = [

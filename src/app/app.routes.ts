@@ -2764,7 +2764,12 @@ export const routes: Routes = [
       { path: 'controller-skipped-the-presenter', loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/subtopics/controller-skipped-the-presenter/controller-skipped-the-presenter').then(m => m.ControllerSkippedThePresenterSubtopic) },
       { path: 'one-usecase-multiple-presenters', loadComponent: () => import('./components/architecture/arch-patterns/clean-architecture/subtopics/one-usecase-multiple-presenters/one-usecase-multiple-presenters').then(m => m.OneUsecaseMultiplePresentersSubtopic) },
     ] },
-    { path: 'hexagonal-architecture',    loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/hexagonal-architecture').then(m => m.ArchHexagonalArchitecture) },
+    { path: 'hexagonal-architecture', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/hexagonal-architecture').then(m => m.ArchHexagonalArchitecture) },
+      { path: 'challenge-referenced-undefined-types', loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/subtopics/challenge-referenced-undefined-types/challenge-referenced-undefined-types').then(m => m.ChallengeReferencedUndefinedTypesSubtopic) },
+      { path: 'hexagon-shape-explanation-incomplete', loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/subtopics/hexagon-shape-explanation-incomplete/hexagon-shape-explanation-incomplete').then(m => m.HexagonShapeExplanationIncompleteSubtopic) },
+      { path: 'challenge-solution-missing-real-adapter', loadComponent: () => import('./components/architecture/arch-patterns/hexagonal-architecture/subtopics/challenge-solution-missing-real-adapter/challenge-solution-missing-real-adapter').then(m => m.ChallengeSolutionMissingRealAdapterSubtopic) },
+    ] },
     { path: 'vertical-slice',            loadComponent: () => import('./components/architecture/arch-patterns/vertical-slice/vertical-slice').then(m => m.ArchVerticalSlice) },
     { path: 'service-oriented',          loadComponent: () => import('./components/architecture/arch-patterns/service-oriented/service-oriented').then(m => m.ArchServiceOriented) },
     { path: 'microservices-principles',  loadComponent: () => import('./components/architecture/arch-patterns/microservices-principles/microservices-principles').then(m => m.ArchMicroservicesPrinciples) },

@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hexagonal Architecture" topicRoute="/arch-patterns/hexagonal-architecture" subtopicLabel="The Challenge Referenced Two Types It Never Defined" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Challenge Referenced Two Types It Never Defined</h1>
+  <p class="page-subtitle">The Challenge solution used INotificationGateway and SendNotificationUseCase throughout, but neither was ever declared anywhere in the starterCode, hints, or solution — a real compile error.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>With both missing types defined, the next issue is in the page's own explanation of why the architecture is drawn as a hexagon — a claim that's directionally right but leaves out half of Cockburn's own reasoning.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Hexagonal Architecture" topicRoute="/arch-patterns/hexagonal-architecture"
+    [next]="{ label: 'The Hexagon-Shape Explanation Was Half the Story', route: '/arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete' }" />
+</div>

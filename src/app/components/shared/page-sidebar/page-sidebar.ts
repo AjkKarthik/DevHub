@@ -27333,6 +27333,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Adapters still need their own integration tests — hexagonal architecture isolates WHERE integration testing happens, it does not eliminate the need for it.',
     ],
   },
+  'arch-patterns/hexagonal-architecture/challenge-referenced-undefined-types': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Hexagonal Architecture (overview)', route: '/arch-patterns/hexagonal-architecture' },
+      { label: 'The Hexagon-Shape Explanation Was Half the Story', route: '/arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete' },
+    ],
+    tip: 'For any Challenge solution, check that every type name used after "implements", "new", or as a parameter type actually has a matching declaration somewhere in the same Challenge.',
+    gotchas: [
+      'A class that\'s internally well-formed can still reference undeclared types elsewhere in the same file — the bug is in what\'s missing, not what\'s written.',
+    ],
+  },
+  'arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Challenge Referenced Two Types It Never Defined', route: '/arch-patterns/hexagonal-architecture/challenge-referenced-undefined-types' },
+      { label: 'The Solution Named a Real Adapter It Never Actually Used', route: '/arch-patterns/hexagonal-architecture/challenge-solution-missing-real-adapter' },
+    ],
+    tip: 'Cockburn\'s hexagon choice has two distinct reasons: breaking the rectangle-hierarchy habit, and simple drawing mechanics (room for multiple ports per side) — the number six itself carries no architectural meaning either way.',
+    gotchas: [
+      'A directionally-true explanation can still be incomplete — check whether a claim answers ALL the natural follow-up questions a reader might have, not just the most commonly repeated one.',
+    ],
+  },
+  'arch-patterns/hexagonal-architecture/challenge-solution-missing-real-adapter': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Hexagon-Shape Explanation Was Half the Story', route: '/arch-patterns/hexagonal-architecture/hexagon-shape-explanation-incomplete' },
+      { label: 'Hexagonal Architecture (overview)', route: '/arch-patterns/hexagonal-architecture' },
+    ],
+    tip: 'A secondary port with only ONE implementation anywhere in the codebase isn\'t genuinely demonstrating ports & adapters — the pattern\'s actual payoff is swappability, which needs at least two real implementations to exist.',
+    gotchas: [
+      'Check a Challenge\'s hints against its own solution — a class explicitly named in the hints but never built anywhere in the solution is a real, checkable gap.',
+    ],
+  },
   'arch-patterns/inbox-outbox': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [
