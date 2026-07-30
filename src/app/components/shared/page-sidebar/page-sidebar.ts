@@ -27387,6 +27387,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Event ordering and timing at scale is expected to be inconsistent — application logic must explicitly account for this, not treat it as an edge case.',
     ],
   },
+  'arch-patterns/event-driven/broker-stub-was-secretly-blocking': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Event-Driven Architecture (overview)', route: '/arch-patterns/event-driven' },
+      { label: 'The DB Save Was Commented Out', route: '/arch-patterns/event-driven/db-save-was-commented-out' },
+    ],
+    tip: 'A publish() that awaits every subscriber before returning secretly turns an asynchronous fire-and-forget operation into a blocking one — check what a stub actually does, not just whether it eventually calls every subscriber.',
+    gotchas: [
+      'A demo/stub still needs to model the real behavior it\'s teaching — simplification and accidentally demonstrating the opposite concept are different things.',
+    ],
+  },
+  'arch-patterns/event-driven/db-save-was-commented-out': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'The Broker Stub Was Secretly Blocking', route: '/arch-patterns/event-driven/broker-stub-was-secretly-blocking' },
+      { label: 'The Fat-Events Staleness Risk, Made Concrete', route: '/arch-patterns/event-driven/fat-events-staleness-risk-made-concrete' },
+    ],
+    tip: 'A comment describing intended behavior is not a substitute for code that actually does it — a reference solution\'s job is to demonstrate working code, not document an intention.',
+    gotchas: [
+      'The Challenge\'s own hint explicitly asked for DB-save-before-publish ordering that the original reference solution never actually implemented.',
+    ],
+  },
+  'arch-patterns/event-driven/fat-events-staleness-risk-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Event-Driven Architecture (overview)', route: '/arch-patterns/event-driven' },
+      { label: 'The DB Save Was Commented Out', route: '/arch-patterns/event-driven/db-save-was-commented-out' },
+    ],
+    tip: 'Fat events risk acting on data that has aged past validity by processing time — whether that matters depends on how often the embedded data actually changes and how costly a stale read would be.',
+    gotchas: [
+      'Staleness (a genuine event carrying outdated data) is a different problem from duplicate delivery (the same event arriving twice) — the two need different fixes.',
+    ],
+  },
   'arch-patterns/hexagonal-architecture': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

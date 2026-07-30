@@ -268,7 +268,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Messaging</p>
-      <a routerLink="/arch-patterns/event-driven" routerLinkActive="active"><span class="nl-text">Event-Driven Architecture</span>@if(p.isDone('arch-event-driven')){<span class="nl-done">✓</span>}@if(d('arch-event-driven');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/event-driven" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Event-Driven Architecture</span>
+        @if(p.isDone('arch-event-driven')){<span class="nl-done">✓</span>}
+        @if(d('arch-event-driven');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('event-driven')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('event-driven')"
+                  (click)="toggleSubtopics('event-driven', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('event-driven'); as edSubs) {
+        @if (isSubtopicsExpanded('event-driven')) {
+          <div class="nav-subtopics">
+            @for (s of edSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/cqrs-event-sourcing" routerLinkActive="active"><span class="nl-text">CQRS &amp; Event Sourcing</span>@if(p.isDone('arch-cqrs-event-sourcing')){<span class="nl-done">✓</span>}@if(d('arch-cqrs-event-sourcing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/saga-choreography" routerLinkActive="active"><span class="nl-text">Saga &amp; Choreography</span>@if(p.isDone('arch-saga-choreography')){<span class="nl-done">✓</span>}@if(d('arch-saga-choreography');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/inbox-outbox" routerLinkActive="active"><span class="nl-text">Inbox &amp; Outbox Pattern</span>@if(p.isDone('arch-inbox-outbox')){<span class="nl-done">✓</span>}@if(d('arch-inbox-outbox');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

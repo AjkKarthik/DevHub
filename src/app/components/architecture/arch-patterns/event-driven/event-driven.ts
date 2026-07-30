@@ -245,17 +245,32 @@ const loyaltyPoints = new Map<string, number>(); // customerId → points
 const processedEvents = new Set<string>();
 const loyaltyPoints = new Map<string, number>();
 
+// Simple in-memory "DB" stub — just enough to make the DB-then-publish
+// ordering below real and runnable, not commented out
+const orderRepo = {
+  save: async (order: { orderId: string; customerId: string; totalAmount: number }) => {
+    console.log(\`Saved order \${order.orderId} to DB\`);
+  },
+};
+
 // Simple in-memory broker stub
+// NOTE: publish() fires subscribers WITHOUT awaiting them — a real
+// producer does not wait for consumers to finish processing before
+// moving on, matching this page's own "publisher fires and forgets"
+// principle. Errors inside a subscriber are caught and logged here
+// only so one failing consumer can't crash the demo process.
 const subscribers: Array<(e: OrderPlacedEvent) => Promise<void>> = [];
 const broker = {
-  publish: async (e: OrderPlacedEvent) => { for (const s of subscribers) await s(e); },
+  publish: async (e: OrderPlacedEvent) => {
+    for (const s of subscribers) s(e).catch(err => console.error('Consumer error:', err));
+  },
   subscribe: (fn: (e: OrderPlacedEvent) => Promise<void>) => { subscribers.push(fn); },
 };
 
 // Order Service — publish after save
 async function placeOrder(customerId: string, total: number): Promise<string> {
   const orderId = 'ord-' + Date.now();
-  // await orderRepo.save(order); // DB first
+  await orderRepo.save({ orderId, customerId, totalAmount: total }); // DB commit first
   await broker.publish({ id: 'evt-' + Date.now(), data: { orderId, customerId, totalAmount: total } });
   return orderId;
 }

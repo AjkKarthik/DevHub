@@ -3184,4 +3184,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Ambient Mesh\'s GA Version Was Off By One Release', route: '/arch-patterns/sidecar-service-mesh/ambient-mesh-ga-version-was-off-by-one-release' },
     { label: 'The Retry Latency Math Undercounted By One Try', route: '/arch-patterns/sidecar-service-mesh/retry-latency-math-undercounted-by-one-try' },
   ],
+  // 'event-driven' confirmed collision-free via app.routes.ts grep before adding
+  'event-driven': [
+    { label: 'The Broker Stub Was Secretly Blocking', route: '/arch-patterns/event-driven/broker-stub-was-secretly-blocking' },
+    { label: 'The DB Save Was Commented Out', route: '/arch-patterns/event-driven/db-save-was-commented-out' },
+    { label: 'The Fat-Events Staleness Risk, Made Concrete', route: '/arch-patterns/event-driven/fat-events-staleness-risk-made-concrete' },
+  ],
 };

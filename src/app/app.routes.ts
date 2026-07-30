@@ -2818,7 +2818,12 @@ export const routes: Routes = [
       { path: 'ambient-mesh-ga-version-was-off-by-one-release', loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/subtopics/ambient-mesh-ga-version-was-off-by-one-release/ambient-mesh-ga-version-was-off-by-one-release').then(m => m.AmbientMeshGaVersionWasOffByOneReleaseSubtopic) },
       { path: 'retry-latency-math-undercounted-by-one-try', loadComponent: () => import('./components/architecture/arch-patterns/sidecar-service-mesh/subtopics/retry-latency-math-undercounted-by-one-try/retry-latency-math-undercounted-by-one-try').then(m => m.RetryLatencyMathUndercountedByOneTrySubtopic) },
     ] },
-    { path: 'event-driven',              loadComponent: () => import('./components/architecture/arch-patterns/event-driven/event-driven').then(m => m.ArchEventDriven) },
+    { path: 'event-driven', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/event-driven/event-driven').then(m => m.ArchEventDriven) },
+      { path: 'broker-stub-was-secretly-blocking', loadComponent: () => import('./components/architecture/arch-patterns/event-driven/subtopics/broker-stub-was-secretly-blocking/broker-stub-was-secretly-blocking').then(m => m.BrokerStubWasSecretlyBlockingSubtopic) },
+      { path: 'db-save-was-commented-out', loadComponent: () => import('./components/architecture/arch-patterns/event-driven/subtopics/db-save-was-commented-out/db-save-was-commented-out').then(m => m.DbSaveWasCommentedOutSubtopic) },
+      { path: 'fat-events-staleness-risk-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/event-driven/subtopics/fat-events-staleness-risk-made-concrete/fat-events-staleness-risk-made-concrete').then(m => m.FatEventsStalenessRiskMadeConcreteSubtopic) },
+    ] },
     { path: 'cqrs-event-sourcing',       loadComponent: () => import('./components/architecture/arch-patterns/cqrs-event-sourcing/cqrs-event-sourcing').then(m => m.ArchCqrsEventSourcing) },
     { path: 'saga-choreography',         loadComponent: () => import('./components/architecture/arch-patterns/saga-choreography/saga-choreography').then(m => m.ArchSagaChoreography) },
     { path: 'inbox-outbox',              loadComponent: () => import('./components/architecture/arch-patterns/inbox-outbox/inbox-outbox').then(m => m.ArchInboxOutbox) },

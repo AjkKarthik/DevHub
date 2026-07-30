@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event-Driven Architecture" topicRoute="/arch-patterns/event-driven" subtopicLabel="The Fat-Events Staleness Risk, Made Concrete" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Fat-Events Staleness Risk, Made Concrete</h1>
+  <p class="page-subtitle">The theory names the staleness risk of event-carried state transfer in one abstract sentence — this subtopic walks through a concrete shipping-address scenario where it actually bites, and one where fat events are genuinely fine.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch by making the page's own fat-vs-thin tradeoff concrete with worked examples on both sides.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Event-Driven Architecture" topicRoute="/arch-patterns/event-driven"
+    [prev]="{ label: 'The DB Save Was Commented Out', route: '/arch-patterns/event-driven/db-save-was-commented-out' }" />
+</div>
