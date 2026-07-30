@@ -2468,6 +2468,46 @@ click); breadcrumb showed all 4 levels; sidebar showed tailored (not DEFAULT) co
 wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 6 of 22 topics
 complete.**
 
+**The `microservices-principles` batch found and fixed ONE self-contained issue, plus two
+gap-closing additions**: the "Decentralised Data" code example annotated a variable as
+`product: ProductDto` and a helper function returned `Promise<ProductDto | null>` — but
+`ProductDto` was never actually declared anywhere in that sample or elsewhere on the page. A
+purely self-contained catch requiring no external research: the sample reads clearly (a human
+infers the DTO shape from context) but would fail to compile the moment it's pasted into a real
+project. Fixed by declaring the interface at the top of the sample. A gap-closing subtopic
+quantified the "creates chatty network calls" consequence the mistakes block states but never
+explains mechanically — per-hop network/serialization overhead is a FIXED cost paid on every
+call regardless of how little work it does, and for a sequential chain these costs add up
+linearly (a worked example: 6 sequential 15ms-overhead calls add ~90ms of pure tax before any
+useful work happens), reframing the "nanoservices" mistake as really a bounded-context mistake
+(a cohesive operation split across an unnecessary boundary) rather than simply "too many
+services." A second gap-closing subtopic made "consumer-driven contract testing" concrete — the
+theory section names it as what makes independent deployability safe without ever showing what
+it actually checks or when it runs; the subtopic explains the Pact-style pattern (consumers
+publish contracts, providers replay them in CI before every deploy) and explicitly ties it back
+to the Service-Oriented Architecture topic's own Tolerant Reader subtopic as the same underlying
+discipline at three different layers (producer policy, consumer coding practice, CI-enforced
+verification). Verified via WebSearch that both the Werner Vogels "you build it, you run it"
+quote (2006 ACM Queue interview) and the "two-pizza team, 6-10 people" figure are both accurate
+and well-attributed — checked as candidates but found no issue, confirming not every
+attribution-shaped claim on this hub is wrong. **A NEW variant of the generic-syntax-in-innerHTML
+gotcha, distinct from every prior instance in this file**: wrapping a generic type mention in
+markdown-style BACKTICKS inside an `[innerHTML]`-bound field (`` `Promise<ProductDto | null>` ``
+in a `theory.points` entry and an `exercise.prompt`) does NOT protect it — the browser's HTML
+parser still sees the raw `<`/`>` characters and misparses them as a tag start regardless of
+surrounding backtick characters, since backticks have no special meaning to HTML. Caught via the
+standing pre-build sweep (grepping for backtick-wrapped identifiers, not just bare `<word`
+patterns) before this ever reached the build. **Fix: the same `<code>&lt;...&gt;</code>`
+entity-escape already established for BARE generic mentions applies equally to backtick-wrapped
+ones** — the backtick wrapping was cosmetic and never provided real protection; converted all
+markdown-backtick inline-code mentions in the affected fields to real `<code>` tags for both
+correctness and house-style consistency. Confirmed `microservices-principles` collision-free via
+the standing `app.routes.ts` grep, left bare. Build passed clean. Browser-verified: nav accordion
+opens with all 3 labels; the `ProductDto` fix confirmed rendering inside real `<code>` elements
+(not vanished) after clicking the specific "Decentralised Data" tab button; breadcrumb showed all
+4 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10:
+7 of 22 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3374,10 +3414,10 @@ complete.**
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 6 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 7 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
-  `/arch-patterns/service-oriented`, 2026-07-30) — see
+  `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical

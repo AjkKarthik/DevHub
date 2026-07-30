@@ -6844,7 +6844,24 @@ off here with a date.
   change-detection timing artifact, not a bug); both main-page fixes confirmed rendering;
   breadcrumb showed all 4 levels; sidebar showed tailored content; 860px wrapper confirmed via
   `getComputedStyle`. **Architecture Patterns hub Phase 10: 6 of 22 topics complete.**
-- [ ] `/arch-patterns/microservices-principles` — Microservices Principles
+- [x] `/arch-patterns/microservices-principles` — Microservices Principles (2026-07-30) — 3
+  subtopics: (1) **The Decentralised-Data Example Referenced an Undefined Type** — the code
+  sample annotated `product: ProductDto` and `Promise<ProductDto | null>` but never declared the
+  interface; reads clearly, doesn't compile; fixed by declaring it; (2) **Why Chatty Nanoservices
+  Actually Get Slow**, a gap-closing subtopic quantifying the mistakes block's bare "creates
+  chatty network calls" claim with the actual per-hop overhead arithmetic, reframing it as a
+  bounded-context mistake rather than a service-count problem; (3) **Consumer-Driven Contract
+  Testing in Practice**, a gap-closing subtopic making the theory section's name-dropped practice
+  concrete (Pact-style: consumers publish contracts, providers replay them in CI), explicitly
+  tying back to the Service-Oriented Architecture topic's Tolerant Reader subtopic. Verified via
+  WebSearch that the Werner Vogels quote and two-pizza-team figure are both accurate — checked,
+  no issue found. Caught a new backtick-wrapped-generic variant of the innerHTML-vanishing
+  gotcha (backticks don't protect `<...>` from being misparsed as an HTML tag) via the pre-build
+  sweep. `microservices-principles` SUBTOPICS key collision-free (checked app.routes.ts
+  directly), left bare. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels; the ProductDto fix confirmed rendering inside real `<code>` elements; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub
+  Phase 10: 7 of 22 topics complete.**
 - [ ] `/arch-patterns/service-communication` — Service Communication
 - [ ] `/arch-patterns/api-gateway-pattern` — API Gateway Pattern
 - [ ] `/arch-patterns/service-discovery` — Service Discovery
