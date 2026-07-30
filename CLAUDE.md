@@ -2604,6 +2604,35 @@ opens with all 3 labels; the register() fix confirmed rendering after Reveal Sol
 Code; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
 **Architecture Patterns hub Phase 10: 10 of 22 topics complete.**
 
+**The `circuit-breaker` batch found and fixed TWO genuine issues, one self-contained and one
+requiring external verification that overturned an initial wrong assumption, plus a gap-closing
+subtopic**: the "Manual Circuit Breaker" codeTab's constructor accepted a `halfOpenMaxCalls:
+number = 3` parameter that was never referenced anywhere in the class body — `onSuccess()`
+unconditionally closed the circuit on the FIRST successful half-open call regardless of the value
+passed, a purely self-contained catch (grep the class for the parameter name; it only appears in
+the constructor). Removed the misleading dead parameter, with a note that the page's own Challenge
+directly below correctly implements the fuller multi-trial version. Separately, the "Polly (.NET)"
+codeTab added `AddRetry` before `AddCircuitBreaker` — my own first read assumed this made
+CircuitBreaker the outer wrapper (later-added = outer), but a targeted WebSearch against Polly v8's
+own documented pipeline semantics confirmed the OPPOSITE: the first-added strategy is outermost.
+This meant the codeTab actually made Retry outer and CircuitBreaker inner — directly contradicting
+the page's own theory bullet stating "a well-designed resilience strategy applies the circuit
+breaker at the OUTER boundary... wrapping the entire retry logic." Swapped the builder order and
+corrected the "Retrying when the circuit is open" mistake explanation, which had described the
+backwards ordering as the recommended pattern. **Worth noting for future Polly/pipeline-ordering
+claims**: my own initial intuition about which order produces which wrapping was wrong and only
+caught by actually searching rather than trusting the assumption — a good reminder that "outer vs.
+inner" builder semantics vary by library and are worth verifying, not inferring. A gap-closing
+subtopic made the Bulkhead pattern concrete with a semaphore-based `Bulkhead` class — every OTHER
+resilience pattern on the page (circuit breaker, retry, fallback) gets a full codeTab, but Bulkhead
+was one abstract QnA sentence — and explained why it catches a failure mode circuit breaker alone
+misses (a dependency that's merely slow, not yet failing, never trips a failure-rate-based circuit
+breaker but can still exhaust concurrency). Confirmed `circuit-breaker` collision-free via the
+standing `app.routes.ts` grep, left bare. Build passed clean. Browser-verified: nav accordion opens
+with all 3 labels; both main-page fixes confirmed rendering after clicking the specific "Manual
+Circuit Breaker" and "Polly (.NET)" tab buttons; breadcrumb showed all 4 levels; 860px wrapper
+confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 11 of 22 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3510,12 +3539,12 @@ Code; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedSt
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 10 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 11 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
   `/arch-patterns/service-communication`, `/arch-patterns/api-gateway-pattern`,
-  `/arch-patterns/service-discovery`, 2026-07-30) — see
+  `/arch-patterns/service-discovery`, `/arch-patterns/circuit-breaker`, 2026-07-30) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical

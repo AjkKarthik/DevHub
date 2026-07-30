@@ -6903,7 +6903,20 @@ off here with a date.
   Build passed clean. Browser-verified: nav accordion opens with all 3 labels; the register() fix
   confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
   `getComputedStyle`. **Architecture Patterns hub Phase 10: 10 of 22 topics complete.**
-- [ ] `/arch-patterns/circuit-breaker` — Circuit Breaker
+- [x] `/arch-patterns/circuit-breaker` — Circuit Breaker (2026-07-30) — 3 subtopics:
+  (1) **halfOpenMaxCalls Was Never Actually Used** — the Manual Circuit Breaker codeTab accepted
+  a halfOpenMaxCalls constructor parameter never read anywhere in the class; closed after ONE
+  half-open success regardless of the value; removed the dead parameter; (2) **The Polly Example
+  Had the Strategy Order Backwards** — verified via WebSearch (overturning my own initial wrong
+  assumption) that Polly v8's first-added strategy is OUTERMOST; the codeTab added Retry before
+  CircuitBreaker, contradicting the page's own theory that circuit breaker should be the outer
+  wrapper; swapped the order and fixed the matching mistake explanation; (3) **Making the
+  Bulkhead Pattern Concrete**, a gap-closing subtopic with a semaphore-based code example (every
+  other pattern on the page had one; Bulkhead was one abstract sentence). `circuit-breaker`
+  SUBTOPICS key collision-free (checked app.routes.ts directly), left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels; both main-page fixes confirmed
+  rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Architecture Patterns hub Phase 10: 11 of 22 topics complete.**
 - [ ] `/arch-patterns/sidecar-service-mesh` — Sidecar & Service Mesh
 - [ ] `/arch-patterns/event-driven` — Event-Driven Architecture
 - [ ] `/arch-patterns/cqrs-event-sourcing` — CQRS & Event Sourcing
