@@ -7061,7 +7061,24 @@ off here with a date.
   composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page text swept for
   vanished/misparsed content, none found. **Architecture Patterns hub Phase 10: 20 of 22 topics
   complete — only `strangler-fig` and `backend-for-frontend` remain.**
-- [ ] `/arch-patterns/strangler-fig` — Strangler Fig Pattern
+- [x] `/arch-patterns/strangler-fig` — Strangler Fig Pattern (2026-08-04) — 3 subtopics: (1)
+  **Feature-Flag Comment Named the Wrong Migrated Feature** — the "Facade with Feature Flags"
+  codeTab's rollout-ramp comment said "Day 21: 100% → retire legacy cancel code," but
+  cancelOrder() has no feature-flag check at all — the ramp actually belongs to placeOrder()'s
+  own 'new-order-placement' flag; fixed the comment rather than adding an unnecessary flag to
+  cancelOrder(); (2) **Parallel Run Skipped Its Own Discrepancy Check** — the status/total
+  comparison was nested inside an ID-difference check, silently skipping the one thing a parallel
+  run exists to do whenever the two systems happened to produce the same order ID; un-nested it to
+  run unconditionally; (3) **The Split-Brain Risk Made Concrete**, a gap-closing subtopic — the
+  page's own mistakes block names "split-brain" in one code comment; traced one customer's order
+  history through the facade to show exactly how their data ends up silently split across both
+  systems with zero errors thrown. `strangler-fig` SUBTOPICS key collision-free (checked
+  app.routes.ts and subtopics.ts directly), left bare. Build passed clean (both production and
+  dev-server compiles, no stale-server incident this batch). Browser-verified: no console errors;
+  both main-page codeTab fixes confirmed rendering; nav accordion opens with all 3 labels;
+  breadcrumb showed all 4 levels; sidebar showed tailored composite-key content; 860px wrapper
+  confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 21 of 22 topics complete
+  — only `backend-for-frontend` remains to finish the hub.**
 - [ ] `/arch-patterns/backend-for-frontend` — Backend for Frontend (BFF)
 
 #### Design Patterns — 36 topic pages

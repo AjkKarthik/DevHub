@@ -2917,6 +2917,42 @@ showed tailored composite-key content; 860px wrapper confirmed via `getComputedS
 text swept for vanished/misparsed content, none found. **Architecture Patterns hub Phase 10: 20 of
 22 topics complete — only `strangler-fig` and `backend-for-frontend` remain.**
 
+**The `strangler-fig` batch — the 2nd topic in the Integration nav group — found and fixed TWO
+more genuine bugs, both self-contained (zero external research needed)**: the "Facade with Feature
+Flags" codeTab shows `OrderServiceFacade` with three methods at three different migration states —
+`placeOrder()` checks a `'new-order-placement'` feature flag and can go either way, `getOrder()` is
+hard-coded to always call the new system ("already fully migrated"), and `cancelOrder()` is
+hard-coded to always call legacy ("not yet migrated"). A trailing comment describing a day-by-day
+rollout ramp (0% → 100% over 21 days) originally ended with "Day 21: 100% → retire legacy **cancel**
+code" — but `cancelOrder()` has no feature-flag check anywhere in its body, so there is no mechanism
+in the code for it to ramp at all. The ramp actually belongs to `placeOrder()`'s own flag; fixed the
+comment to name the feature that is genuinely shown ramping, rather than adding an unnecessary
+feature-flag mechanism to `cancelOrder()` just to match a comment. Separately, the "Parallel Run for
+Validation" codeTab's own comment states the intent plainly — "IDs differ (expected) — compare
+status and total" — but the code nested the actual status/total comparison INSIDE an
+`if (legacyResult.value.orderId !== newResult.value.orderId)` block, meaning the one check a
+parallel run exists to perform only ran when the two systems' IDs happened to differ; on the rare
+occasion the IDs matched (a coincidence, a shared sequence, a test fixture), the entire discrepancy
+check — including a genuine status/total mismatch — would be silently skipped. Fixed by un-nesting
+the comparison so it runs unconditionally once both results are fulfilled, matching what the
+comment already claimed was happening. Subtopics: two fix-adjacent (the mismatched rollout comment;
+the inverted nested-if logic bug) and one gap-closing (the page's own mistakes block names
+"split-brain" in a single code comment and moves on — traced one customer's order history through
+the facade, request by request, to show concretely how a customer's data ends up silently split
+across both systems with zero errors thrown anywhere in the sequence). No `SUBTOPICS` collision for
+`strangler-fig` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+collision-free, left bare). This batch also confirmed the FULLER stale-dev-server-process incident
+from the previous (`anti-corruption-layer`) batch was a one-off, isolated event — this batch's dev
+server picked up the file-watcher changes normally with no restart needed, and a same-tick DOM
+query staleness (querying immediately after a tab-click in the same script execution returned an
+empty string) resolved on a simple re-query in a separate `javascript_tool` call, the same
+established pattern documented repeatedly earlier in this file. Build passed clean (both the
+standalone production build and the dev-server compile). Browser-verified: no console errors; both
+main-page codeTab fixes confirmed rendering after clicking their respective tab buttons; nav
+accordion opens with all 3 labels; breadcrumb showed all 4 levels; sidebar showed tailored
+composite-key content; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub
+Phase 10: 21 of 22 topics complete — only `backend-for-frontend` remains to finish the hub.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3823,7 +3859,7 @@ text swept for vanished/misparsed content, none found. **Architecture Patterns h
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 20 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 21 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
@@ -3832,8 +3868,8 @@ text swept for vanished/misparsed content, none found. **Architecture Patterns h
   `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`,
   `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`,
   `/arch-patterns/inbox-outbox`, `/arch-patterns/ddd-core`, `/arch-patterns/bounded-contexts`,
-  `/arch-patterns/aggregates-domain-events`, `/arch-patterns/anti-corruption-layer`, 2026-07-30) —
-  see
+  `/arch-patterns/aggregates-domain-events`, `/arch-patterns/anti-corruption-layer`,
+  `/arch-patterns/strangler-fig`, 2026-08-04) — see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
@@ -3861,9 +3897,13 @@ text swept for vanished/misparsed content, none found. **Architecture Patterns h
   `anti-corruption-layer` batch that followed fixed another real compile error (the "ACL: Legacy
   ERP Integration" codeTab's `LegacyErpAdapter` declared one field but used a second, undeclared
   `erpClient` in a different method) plus a real gap (the page's own revision/QnA claim the ACL
-  implements a Domain-defined `IPaymentGateway` interface, but no codeTab ever shows it). Only the
-  Integration group's remaining two topics (`strangler-fig`, `backend-for-frontend`) remain before
-  the hub reaches 22/22.
+  implements a Domain-defined `IPaymentGateway` interface, but no codeTab ever shows it). The
+  `strangler-fig` batch that followed fixed two more self-contained bugs: a rollout-ramp comment
+  naming the wrong migrated feature (it named `cancelOrder()`, which has no feature-flag mechanism
+  at all, when the ramp actually describes `placeOrder()`'s own flag), and the Parallel Run
+  codeTab's discrepancy check nested inside an ID-difference condition, silently skipping the
+  status/total comparison whenever the two systems happened to produce the same order ID. Only
+  `backend-for-frontend` remains before the hub reaches 22/22.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.
