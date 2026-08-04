@@ -7079,7 +7079,32 @@ off here with a date.
   breadcrumb showed all 4 levels; sidebar showed tailored composite-key content; 860px wrapper
   confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10: 21 of 22 topics complete
   — only `backend-for-frontend` remains to finish the hub.**
-- [ ] `/arch-patterns/backend-for-frontend` — Backend for Frontend (BFF)
+- [x] `/arch-patterns/backend-for-frontend` — Backend for Frontend (BFF) (2026-08-04) — 3
+  subtopics, all gap-closing (this page was unusually clean — no undeclared-field bug or internal
+  contradiction found after a careful pass through all 3 codeTabs, the Challenge, and the theory/
+  mistakes/QnA text): (1) **GraphQL BFF's N+1 Problem, Made Concrete** — the QnA discusses N+1
+  query problems and DataLoader batching at length but no codeTab ever shows a GraphQL resolver;
+  wrote the naive N+1-prone resolver and the DataLoader-batched fix; (2) **Is hasBreakingNews
+  Business Logic in the BFF?** — the Challenge's own solution computes a hardcoded one-hour
+  threshold directly in the BFF handler; examined against the page's own "no business logic in
+  the BFF" mistake and proposed a concrete test (could the rule change independently of the
+  client UI?) that the threshold fails and the thumbnailUrl mapping on the same line passes; (3)
+  **What the v2 Migration Actually Looks Like** — the Third-Party BFF codeTab's own trailing
+  comment names a v1→v2 migration and never shows it; wrote v2 alongside the untouched v1 and
+  traced why the price-field type change is genuinely breaking. Caught and fixed a real gotcha
+  before it could break sibling pages: this subtopic's own title had a straight apostrophe, which
+  would break the build once referenced in a sibling's [prev]/[next] label — fixed with the
+  established typographic curly-quote (’) convention throughout, in all six wiring touchpoints.
+  Confirmed this topic sits at the END of its own nav-group in arch-nav.ts, so the accordion
+  markup was added after the existing link, not before a following sibling. `backend-for-frontend`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare.
+  Build passed clean. Browser-verified: no console errors; nav accordion opens with all 3 labels
+  (22 total toggles site-wide in this hub — every topic now has subtopics); curly-quote title
+  renders correctly everywhere it's referenced; breadcrumb showed all 4 levels; sidebar showed
+  tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page text
+  swept for vanished/misparsed content, none found. **This completes the Architecture Patterns
+  hub's entire Phase 10 rollout — all 22 topics now have deep-dive subtopic pages, 66 subtopic
+  pages total across the hub.**
 
 #### Design Patterns — 36 topic pages
 

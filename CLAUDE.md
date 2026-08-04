@@ -2953,6 +2953,53 @@ accordion opens with all 3 labels; breadcrumb showed all 4 levels; sidebar showe
 composite-key content; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub
 Phase 10: 21 of 22 topics complete — only `backend-for-frontend` remains to finish the hub.**
 
+**The `backend-for-frontend` batch — the 3rd and final topic in the Integration nav group, and the
+last topic in the entire hub — was the cleanest page found in the last several batches: a careful
+pass through all 3 codeTabs (Mobile BFF, Web BFF, Third-Party BFF), the Challenge, and cross-checks
+against the theory/mistakes/QnA text found no undeclared-field bug, no internal contradiction, and
+no misleading comment.** All three subtopics are gap-closing instead: (1) the page's own QnA
+discusses GraphQL-as-BFF's N+1 query problem and DataLoader batching at real length ("a GraphQL
+resolver layer can silently accumulate N+1 query problems... unless carefully batched with tools
+like DataLoader"), but every codeTab on the page is a REST handler — none demonstrates a GraphQL
+resolver at all. Wrote the naive N+1-prone resolver (a `reviews` field resolver called once per
+product in a list) alongside the DataLoader-batched fix, and explained why REST BFFs have a fixed
+per-request call count while GraphQL resolvers scale with query shape. (2) The Challenge's own
+reference solution computes `hasBreakingNews` via a hardcoded one-hour threshold directly inside
+the BFF handler — examined against the page's own "no business logic in the BFF" mistake block
+(whose stated reasoning is about WHERE a rule lives, not how consequential it is) and proposed a
+concrete test: could the rule change independently of the client UI? The one-hour threshold passes
+that test as a business rule that does not belong hardcoded in the BFF, while `thumbnailUrl:
+a.images[0]?.url ?? null` on the same line fails it (a genuine, UI-only shaping decision) — showing
+the same Challenge solution contains one example of each side of the line. (3) The Third-Party BFF
+codeTab's own trailing comment names a v1→v2 migration ("When breaking changes are needed: create
+/api/v2/products/:id... Partner BFF team owns the versioning contract independently of services")
+and never shows it — wrote the v2 endpoint alongside the untouched v1, both calling the same
+underlying `catalogService`/`inventoryService`, and traced why changing `priceUsd: number` to a
+structured `price: { amount, currency }` is a genuinely breaking change (a type change any existing
+v1 partner parsing a bare number cannot absorb) rather than something patchable into v1 directly.
+**Caught and fixed a real gotcha before it could break sibling pages**: this subtopic's own working
+title contained a straight apostrophe ("GraphQL BFF's N+1 Problem") — since every subtopic's title
+gets reused verbatim as a `[prev]`/`[next]` label on its sibling pages (a single-quoted JS object
+literal wrapped in a double-quoted Angular attribute), a straight apostrophe there would have broken
+the build the moment a sibling page referenced it. Fixed by using the established typographic curly
+quote (`’`, U+2019) convention throughout the title, in all six wiring touchpoints, consistently —
+caught proactively while authoring the first subtopic file, before any sibling reference could
+trigger the actual build failure. No `SUBTOPICS` collision for `backend-for-frontend` (checked both
+`subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+Also confirmed this topic sits at the END of its own nav-group in `arch-nav.ts` (the Integration
+group's last link, directly before the Reference group's own `<div>` opens) — the accordion markup
+was added after the existing `<a>`, not before a following sibling, matching the same structural
+note this file has documented once before for a different hub's own final-topic-in-group batch.
+Build passed clean (both the standalone production build and the dev-server compile, picked up the
+file-watcher changes normally with no restart needed). Browser-verified: no console errors; nav
+accordion opens with all 3 labels (confirmed 22 total toggles site-wide in this hub, one per topic
+— every topic in the hub now has subtopics); the curly-quote title renders correctly in the nav
+accordion, the sidebar's Related Topics, and the breadcrumb; breadcrumb showed all 4 levels; sidebar
+showed tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page
+text swept for vanished/misparsed content on a subtopic page, none found. **This completes the
+Architecture Patterns hub's entire Phase 10 rollout — all 22 topics now have deep-dive subtopic
+pages, 66 subtopic pages total across the hub, finished 2026-08-04.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3859,7 +3906,7 @@ Phase 10: 21 of 22 topics complete — only `backend-for-frontend` remains to fi
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 21 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: **COMPLETE — 22 of 22 topics have subtopics** (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
@@ -3869,7 +3916,8 @@ Phase 10: 21 of 22 topics complete — only `backend-for-frontend` remains to fi
   `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`,
   `/arch-patterns/inbox-outbox`, `/arch-patterns/ddd-core`, `/arch-patterns/bounded-contexts`,
   `/arch-patterns/aggregates-domain-events`, `/arch-patterns/anti-corruption-layer`,
-  `/arch-patterns/strangler-fig`, 2026-08-04) — see
+  `/arch-patterns/strangler-fig`, `/arch-patterns/backend-for-frontend`, finished 2026-08-04) —
+  see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
@@ -3902,8 +3950,15 @@ Phase 10: 21 of 22 topics complete — only `backend-for-frontend` remains to fi
   naming the wrong migrated feature (it named `cancelOrder()`, which has no feature-flag mechanism
   at all, when the ramp actually describes `placeOrder()`'s own flag), and the Parallel Run
   codeTab's discrepancy check nested inside an ID-difference condition, silently skipping the
-  status/total comparison whenever the two systems happened to produce the same order ID. Only
-  `backend-for-frontend` remains before the hub reaches 22/22.
+  status/total comparison whenever the two systems happened to produce the same order ID. The
+  final batch, `backend-for-frontend`, was unusually clean (no self-contained bug or contradiction
+  found) — its 3 subtopics are all gap-closing: a GraphQL BFF resolver demonstrating the N+1
+  problem and DataLoader fix the page's own QnA discusses but never shows in code; an examination
+  of whether the Challenge's own hardcoded `hasBreakingNews` threshold quietly violates the page's
+  "no business logic in the BFF" mistake; and a v1/v2 versioning migration the Third-Party BFF
+  codeTab's own trailing comment names but never demonstrates. **This completes the Architecture
+  Patterns hub's entire Phase 10 rollout — all 22 topics now have deep-dive subtopic pages, 66
+  subtopic pages total across the hub.**
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.
