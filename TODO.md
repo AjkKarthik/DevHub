@@ -7038,7 +7038,29 @@ off here with a date.
   content; 860px wrapper confirmed via `getComputedStyle`. **Architecture Patterns hub Phase 10:
   19 of 22 topics complete — Domain-Driven Design nav group fully done, only the Integration group
   (anti-corruption-layer, strangler-fig, backend-for-frontend) remains.**
-- [ ] `/arch-patterns/anti-corruption-layer` — Anti-Corruption Layer
+- [x] `/arch-patterns/anti-corruption-layer` — Anti-Corruption Layer (2026-07-30) — 3 subtopics:
+  (1) **LegacyErpAdapter Referenced an Undeclared erpClient** — the "ACL: Legacy ERP Integration"
+  codeTab's class declared one field (STATUS_MAP, no constructor) but its own `getOrder()` method
+  used a second, undeclared `erpClient` — a real TS2339 compile error; fixed by adding a
+  constructor declaring `erpClient`, matching the pattern StripePaymentAdapter already uses
+  elsewhere on the page; (2) **The Missing IPaymentGateway Interface**, a gap-closing subtopic —
+  the page's own revision and QnA both claim the Domain defines the interface and the ACL
+  implements it, but no codeTab ever actually shows an `implements` clause or the interface
+  itself; demonstrated it concretely with a swappable `FakePaymentGateway` test double; (3)
+  **Splitting Call and Translate Lets Stripe Leak Back In**, a gap-closing subtopic making
+  concrete a risk the QnA names in one sentence and never shows — a split call/translate ACL
+  design leaves a raw shortcut for domain code to bypass translation under time pressure, which
+  the page's own full-round-trip design makes structurally impossible. `anti-corruption-layer`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Hit
+  a transient esbuild panic on the first production build attempt (unrelated to content, resolved
+  on retry) and a fuller stale-dev-server incident (the `ng serve` process itself had gone
+  stale/unreachable after the long session, requiring a full restart) — confirmed the source was
+  correct throughout via direct filesystem checks before the restart. Build passed clean.
+  Browser-verified: no console errors; nav accordion opens with all 3 labels; the main-page
+  codeTab fix confirmed rendering; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page text swept for
+  vanished/misparsed content, none found. **Architecture Patterns hub Phase 10: 20 of 22 topics
+  complete — only `strangler-fig` and `backend-for-frontend` remain.**
 - [ ] `/arch-patterns/strangler-fig` — Strangler Fig Pattern
 - [ ] `/arch-patterns/backend-for-frontend` — Backend for Frontend (BFF)
 

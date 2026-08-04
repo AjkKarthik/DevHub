@@ -2881,6 +2881,42 @@ Domain-Driven Design nav group entirely (ddd-core, bounded-contexts, aggregates-
 have subtopics). **Architecture Patterns hub Phase 10: 19 of 22 topics complete — only the
 Integration group (anti-corruption-layer, strangler-fig, backend-for-frontend) remains.**
 
+**The `anti-corruption-layer` batch — the 1st topic in the Integration nav group — found and fixed
+a genuine compile error plus a genuine gap, both self-contained (zero external research needed)**:
+the "ACL: Legacy ERP Integration" codeTab's `LegacyErpAdapter` class declared exactly one member (a
+`STATUS_MAP` property initializer, no constructor at all), but its own `getOrder()` method called
+`this.erpClient.fetchOrder(orderId)` — a field never declared anywhere on the class, the same
+TS2339-under-strict-mode category of bug this batch of Architecture Patterns topics has now hit
+repeatedly (CQRS's Snapshots codeTab, `PlaceOrderHandler`'s missing `catalogService`). Fixed by
+adding a constructor declaring `erpClient`, matching the pattern `StripePaymentAdapter` already
+uses elsewhere on the same page. Separately, the page's own revision `mustKnow` list AND its QnA
+both state directly that "the Domain defines the interface (IPaymentGateway); the ACL implementation
+in Infrastructure wraps the external client" — a real dependency-inversion claim — but every codeTab
+on the page defines `StripePaymentAdapter` as a bare class with no `implements` clause, and
+`IPaymentGateway` never appears in any codeTab at all; the structure the page describes in prose was
+never actually demonstrated in code. Subtopics: one fix-adjacent (the missing `erpClient` field) and
+two gap-closing (making the `IPaymentGateway` interface concrete with an `implements` clause and a
+swappable `FakePaymentGateway` test double; and making concrete a risk the QnA names in one sentence
+and never shows happening — a split call/translate ACL design leaving a raw "just call Stripe
+directly" shortcut for domain code to reach for under time pressure, which the full-round-trip
+design makes structurally impossible). No `SUBTOPICS` collision for `anti-corruption-layer` (checked
+both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+bare). Hit a transient esbuild panic (`panic: runtime error: index out of range [-1]`) on the first
+production build attempt — unrelated to any content change, resolved cleanly on an immediate retry
+with zero files touched, consistent with the flaky-esbuild-artifact category already documented
+once before in this file. Also hit a fuller version of the stale-`ng serve`-artifact family this
+session: the dev server process itself had gone stale/unreachable (`preview_list` returned no
+running servers) after the extended session, requiring a full `preview_start` restart rather than
+just a forced file-write — confirmed via direct filesystem checks (`ls` on the new subtopic folders,
+grepping the fixed line in `ddd-core.ts`) that the source was correct throughout, independent of
+what the dev-server's log buffer was still showing from far earlier in the session. Build passed
+clean (both the standalone production build and the fresh dev-server compile). Browser-verified: no
+console errors; nav accordion opens with all 3 labels; the main-page codeTab fix confirmed rendering
+after clicking the "ACL: Legacy ERP Integration" tab button; breadcrumb showed all 4 levels; sidebar
+showed tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page
+text swept for vanished/misparsed content, none found. **Architecture Patterns hub Phase 10: 20 of
+22 topics complete — only `strangler-fig` and `backend-for-frontend` remain.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3787,7 +3823,7 @@ Integration group (anti-corruption-layer, strangler-fig, backend-for-frontend) r
   All 25 cards `available: true` in `architecture/arch-patterns/home/home.ts`. Progress: `archTotal=22` in progress.service.ts.
   Architecture Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ArchNavComponent at `shared/arch-nav/arch-nav.ts`.
-  Phase 10: 19 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
+  Phase 10: 20 of 22 topics have subtopics (`/arch-patterns/monolith-vs-modular`,
   `/arch-patterns/layered-architecture`, `/arch-patterns/clean-architecture`,
   `/arch-patterns/hexagonal-architecture`, `/arch-patterns/vertical-slice`,
   `/arch-patterns/service-oriented`, `/arch-patterns/microservices-principles`,
@@ -3796,7 +3832,8 @@ Integration group (anti-corruption-layer, strangler-fig, backend-for-frontend) r
   `/arch-patterns/sidecar-service-mesh`, `/arch-patterns/event-driven`,
   `/arch-patterns/cqrs-event-sourcing`, `/arch-patterns/saga-choreography`,
   `/arch-patterns/inbox-outbox`, `/arch-patterns/ddd-core`, `/arch-patterns/bounded-contexts`,
-  `/arch-patterns/aggregates-domain-events`, 2026-07-30) — see
+  `/arch-patterns/aggregates-domain-events`, `/arch-patterns/anti-corruption-layer`, 2026-07-30) —
+  see
   "Architecture Patterns hub subtopic wiring" section below for the `ArchNavComponent` accordion
   structural fix (11th `*NavComponent`-based hub in a row missing it at pilot time), a real
   cross-hub `SUBTOPICS`-key collision risk with the Design Patterns hub's own identical
@@ -3820,9 +3857,13 @@ Integration group (anti-corruption-layer, strangler-fig, backend-for-frontend) r
   names but the codeTab doesn't defend against (`orders.save()` and `events.publishAll()` are two
   separate operations; a broker failure after a successful save silently loses the event forever)
   — fixed with an explicit risk comment and a subtopic applying this hub's own Inbox & Outbox topic
-  to close the gap. This completes the Domain-Driven Design nav group entirely — only the
-  Integration group (`anti-corruption-layer`, `strangler-fig`, `backend-for-frontend`) remains
-  before the hub reaches 22/22.
+  to close the gap. This completes the Domain-Driven Design nav group entirely. The
+  `anti-corruption-layer` batch that followed fixed another real compile error (the "ACL: Legacy
+  ERP Integration" codeTab's `LegacyErpAdapter` declared one field but used a second, undeclared
+  `erpClient` in a different method) plus a real gap (the page's own revision/QnA claim the ACL
+  implements a Domain-defined `IPaymentGateway` interface, but no codeTab ever shows it). Only the
+  Integration group's remaining two topics (`strangler-fig`, `backend-for-frontend`) remain before
+  the hub reaches 22/22.
 - **Design Patterns hub**: 36 trackable topic pages + 3 reference (39 cards total). Feature-complete.
   Blue theme `$accent: #0369a1`, `$tint: #e0f2fe`, dark `#7dd3fc`. Search prefix `dp-`. Route: `/design-patterns`.
   CSS classes: `.dp-page`, `.dp-icon`, `.dp-section`. Icon content: `DP`. `tech="javascript"`.
