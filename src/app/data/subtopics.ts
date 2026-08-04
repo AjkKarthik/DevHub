@@ -3244,4 +3244,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Double-Checked Locking, Actually Written Out', route: '/design-patterns/singleton/double-checked-locking-actually-written-out' },
     { label: 'What Monostate Actually Looks Like in Code', route: '/design-patterns/singleton/what-monostate-actually-looks-like-in-code' },
   ],
+  'factory-method': [
+    { label: 'DI Approach Referenced an Undefined PushNotification Class', route: '/design-patterns/factory-method/di-approach-referenced-an-undefined-push-notification-class' },
+    { label: 'Backticks Are Not C#', route: '/design-patterns/factory-method/backticks-are-not-c-sharp' },
+    { label: 'Does the channel Switch Really Decouple Which Factory?', route: '/design-patterns/factory-method/does-the-channel-switch-really-decouple-which-factory' },
+  ],
 };

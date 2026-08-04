@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Factory Method" topicRoute="/design-patterns/factory-method" subtopicLabel="DI Approach Referenced an Undefined PushNotification Class" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">DI Approach Referenced an Undefined PushNotification Class</h1>
+  <p class="page-subtitle">The "DI Approach" codeTab switches on a "push" case that returns a PushNotification — a class that was never declared anywhere on the page. A real C# compile error, even though the theory section already named it.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic looks at a second, unrelated bug in the same codeTab — the exception message uses JavaScript template-literal syntax, which isn't valid C# at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Factory Method" topicRoute="/design-patterns/factory-method"
+    [next]="{ label: 'Backticks Are Not C#', route: '/design-patterns/factory-method/backticks-are-not-c-sharp' }" />
+</div>

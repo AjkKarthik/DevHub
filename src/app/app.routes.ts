@@ -2705,7 +2705,12 @@ export const routes: Routes = [
       { path: 'double-checked-locking-actually-written-out', loadComponent: () => import('./components/architecture/design-patterns/singleton/subtopics/double-checked-locking-actually-written-out/double-checked-locking-actually-written-out').then(m => m.DoubleCheckedLockingActuallyWrittenOutSubtopic) },
       { path: 'what-monostate-actually-looks-like-in-code', loadComponent: () => import('./components/architecture/design-patterns/singleton/subtopics/what-monostate-actually-looks-like-in-code/what-monostate-actually-looks-like-in-code').then(m => m.WhatMonostateActuallyLooksLikeInCodeSubtopic) },
     ] },
-    { path: 'factory-method',     loadComponent: () => import('./components/architecture/design-patterns/factory-method/factory-method').then(m => m.DpFactoryMethod) },
+    { path: 'factory-method', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/factory-method/factory-method').then(m => m.DpFactoryMethod) },
+      { path: 'di-approach-referenced-an-undefined-push-notification-class', loadComponent: () => import('./components/architecture/design-patterns/factory-method/subtopics/di-approach-referenced-an-undefined-push-notification-class/di-approach-referenced-an-undefined-push-notification-class').then(m => m.DiApproachReferencedAnUndefinedPushNotificationClassSubtopic) },
+      { path: 'backticks-are-not-c-sharp', loadComponent: () => import('./components/architecture/design-patterns/factory-method/subtopics/backticks-are-not-c-sharp/backticks-are-not-c-sharp').then(m => m.BackticksAreNotCSharpSubtopic) },
+      { path: 'does-the-channel-switch-really-decouple-which-factory', loadComponent: () => import('./components/architecture/design-patterns/factory-method/subtopics/does-the-channel-switch-really-decouple-which-factory/does-the-channel-switch-really-decouple-which-factory').then(m => m.DoesTheChannelSwitchReallyDecoupleWhichFactorySubtopic) },
+    ] },
     { path: 'abstract-factory',   loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/abstract-factory').then(m => m.DpAbstractFactory) },
     { path: 'builder',            loadComponent: () => import('./components/architecture/design-patterns/builder/builder').then(m => m.DpBuilder) },
     { path: 'prototype',          loadComponent: () => import('./components/architecture/design-patterns/prototype/prototype').then(m => m.DpPrototype) },

@@ -40,7 +40,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/factory-method" routerLinkActive="active"><span class="nl-text">Factory Method</span>@if(p.isDone('dp-factory-method')){<span class="nl-done">✓</span>}@if(d('dp-factory-method');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/factory-method" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Factory Method</span>
+        @if(p.isDone('dp-factory-method')){<span class="nl-done">✓</span>}
+        @if(d('dp-factory-method');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('factory-method')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('factory-method')"
+                  (click)="toggleSubtopics('factory-method', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('factory-method'); as fmSubs) {
+        @if (isSubtopicsExpanded('factory-method')) {
+          <div class="nav-subtopics">
+            @for (s of fmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/abstract-factory" routerLinkActive="active"><span class="nl-text">Abstract Factory</span>@if(p.isDone('dp-abstract-factory')){<span class="nl-done">✓</span>}@if(d('dp-abstract-factory');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/builder" routerLinkActive="active"><span class="nl-text">Builder</span>@if(p.isDone('dp-builder')){<span class="nl-done">✓</span>}@if(d('dp-builder');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/prototype" routerLinkActive="active"><span class="nl-text">Prototype</span>@if(p.isDone('dp-prototype')){<span class="nl-done">✓</span>}@if(d('dp-prototype');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

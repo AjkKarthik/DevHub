@@ -26920,6 +26920,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'For a fixed, unlikely-to-grow set of types, a simple factory function is often sufficient without subclass-based extension.',
     ],
   },
+  'design-patterns/factory-method/di-approach-referenced-an-undefined-push-notification-class': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Factory Method (overview)', route: '/design-patterns/factory-method' },
+      { label: 'Backticks Are Not C#', route: '/design-patterns/factory-method/backticks-are-not-c-sharp' },
+    ],
+    tip: 'A class referenced elsewhere on a page but never declared is a real compile error — checking that every used type has a matching declaration is worth doing even when the theory text already names it correctly.',
+    gotchas: [
+      'Two codeTabs meant to be read together, where the second reuses classes from the first, is exactly the situation where a new undeclared reference is easiest to introduce unnoticed.',
+    ],
+  },
+  'design-patterns/factory-method/backticks-are-not-c-sharp': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'DI Approach Referenced an Undefined PushNotification Class', route: '/design-patterns/factory-method/di-approach-referenced-an-undefined-push-notification-class' },
+      { label: 'Does the channel Switch Really Decouple Which Factory?', route: '/design-patterns/factory-method/does-the-channel-switch-really-decouple-which-factory' },
+    ],
+    tip: 'C# has no backtick string syntax at all — its interpolation uses a completely different delimiter ($ plus double quotes), unlike TypeScript\'s backtick template literals.',
+    gotchas: [
+      'Swapping backticks for double quotes without adding the leading $ compiles fine but silently stops interpolating anything at all.',
+    ],
+  },
+  'design-patterns/factory-method/does-the-channel-switch-really-decouple-which-factory': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Factory Method (overview)', route: '/design-patterns/factory-method' },
+      { label: 'Backticks Are Not C#', route: '/design-patterns/factory-method/backticks-are-not-c-sharp' },
+    ],
+    tip: 'Dependency injection solves how a dependency reaches its consumer — it says nothing about whether that dependency\'s own internal logic still needs editing for every new case.',
+    gotchas: [
+      'A DI-registered factory with an internal type-switch has the exact same Open/Closed cost as the classic pattern\'s own anti-pattern example — DI alone does not preserve OCP.',
+    ],
+  },
   'design-patterns/flyweight': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
