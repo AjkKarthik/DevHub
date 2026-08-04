@@ -1,0 +1,31 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Object Pool" topicRoute="/design-patterns/object-pool"
+    subtopicLabel="The Count-Check Race Condition" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Race in <code>if (Count &lt; MaxSize)</code></h1>
+  <p class="page-subtitle">The main page's <code>Release()</code> checks a Count then adds — a classic
+    check-then-act race. Here's exactly how it breaks under concurrency, and how the real .NET
+    <code>ObjectPool&lt;T&gt;</code> avoids the problem entirely.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This race is a soft-cap overshoot on the main page's illustrative pool, not a correctness bug —
+      but it's exactly the kind of thing that turns into a real problem the moment maxSize is meant to
+      cap something expensive, like open connections. The next subtopic looks at a gap the main page's
+      theory promises but never shows in code: idle-object eviction.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Object Pool" topicRoute="/design-patterns/object-pool"
+    [next]="{ label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' }" />
+</div>

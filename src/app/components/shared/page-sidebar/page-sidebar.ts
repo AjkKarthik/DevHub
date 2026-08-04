@@ -27103,6 +27103,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Modern generational garbage collectors have reduced how broadly necessary this pattern is for ordinary allocation.',
     ],
   },
+  'design-patterns/object-pool/count-check-race-condition': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Object Pool (overview)', route: '/design-patterns/object-pool' },
+      { label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' },
+    ],
+    tip: 'A Count-then-Add pair is a check-then-act race even when both individual operations are individually thread-safe — thread-safety of one step does not compose across two steps.',
+    gotchas: [
+      'This race causes a soft overshoot of maxSize, not data corruption — severity depends entirely on whether the cap is meant to be a hard resource ceiling.',
+    ],
+  },
+  'design-patterns/object-pool/idle-object-eviction': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Count-Check Race Condition', route: '/design-patterns/object-pool/count-check-race-condition' },
+      { label: 'ConcurrentBag vs. ConcurrentQueue for Pool Storage', route: '/design-patterns/object-pool/concurrentbag-vs-concurrentqueue' },
+    ],
+    tip: 'Evicting a pooled item from the collection and disposing its underlying resource are two separate steps — for disposable pooled items, both have to happen together or the resource leaks.',
+    gotchas: [
+      'A background Timer sweep keeps eviction off the Acquire()/Release() hot path entirely.',
+    ],
+  },
+  'design-patterns/object-pool/concurrentbag-vs-concurrentqueue': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Object Pool (overview)', route: '/design-patterns/object-pool' },
+      { label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' },
+    ],
+    tip: 'maxSize on the main page\'s pool only bounds retained IDLE instances — a real concurrency cap needs a SemaphoreSlim that Acquire() actually waits on.',
+    gotchas: [
+      'ConcurrentBag is optimized for same-thread produce/consume; a pool whose Acquire and Release routinely happen on different thread-pool threads (common with async/await) is exactly the pattern it is weak at.',
+    ],
+  },
   'design-patterns/observer': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

@@ -2729,7 +2729,12 @@ export const routes: Routes = [
       { path: 'why-immutable-sub-objects-make-shallow-copy-safe', loadComponent: () => import('./components/architecture/design-patterns/prototype/subtopics/why-immutable-sub-objects-make-shallow-copy-safe/why-immutable-sub-objects-make-shallow-copy-safe').then(m => m.WhyImmutableSubObjectsMakeShallowCopySafeSubtopic) },
       { path: 'is-with-prototype-or-an-alternative-to-it', loadComponent: () => import('./components/architecture/design-patterns/prototype/subtopics/is-with-prototype-or-an-alternative-to-it/is-with-prototype-or-an-alternative-to-it').then(m => m.IsWithPrototypeOrAnAlternativeToItSubtopic) },
     ] },
-    { path: 'object-pool',        loadComponent: () => import('./components/architecture/design-patterns/object-pool/object-pool').then(m => m.DpObjectPool) },
+    { path: 'object-pool', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/object-pool/object-pool').then(m => m.DpObjectPool) },
+      { path: 'count-check-race-condition', loadComponent: () => import('./components/architecture/design-patterns/object-pool/subtopics/count-check-race-condition/count-check-race-condition').then(m => m.CountCheckRaceConditionSubtopic) },
+      { path: 'idle-object-eviction', loadComponent: () => import('./components/architecture/design-patterns/object-pool/subtopics/idle-object-eviction/idle-object-eviction').then(m => m.IdleObjectEvictionSubtopic) },
+      { path: 'concurrentbag-vs-concurrentqueue', loadComponent: () => import('./components/architecture/design-patterns/object-pool/subtopics/concurrentbag-vs-concurrentqueue/concurrentbag-vs-concurrentqueue').then(m => m.ConcurrentbagVsConcurrentqueueSubtopic) },
+    ] },
     // Structural
     { path: 'adapter',            loadComponent: () => import('./components/architecture/design-patterns/adapter/adapter').then(m => m.DpAdapter) },
     { path: 'bridge',             loadComponent: () => import('./components/architecture/design-patterns/bridge/bridge').then(m => m.DpBridge) },

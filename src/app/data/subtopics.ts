@@ -3264,4 +3264,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' },
     { label: 'Is with Prototype, or an Alternative to It?', route: '/design-patterns/prototype/is-with-prototype-or-an-alternative-to-it' },
   ],
+  'object-pool': [
+    { label: 'The Count-Check Race Condition', route: '/design-patterns/object-pool/count-check-race-condition' },
+    { label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' },
+    { label: 'ConcurrentBag vs. ConcurrentQueue for Pool Storage', route: '/design-patterns/object-pool/concurrentbag-vs-concurrentqueue' },
+  ],
 };

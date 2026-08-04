@@ -1,0 +1,31 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Object Pool" topicRoute="/design-patterns/object-pool"
+    subtopicLabel="ConcurrentBag vs. ConcurrentQueue for Pool Storage" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">ConcurrentBag vs. ConcurrentQueue for Pool Storage</h1>
+  <p class="page-subtitle">The main page's own codeTab uses <code>ConcurrentBag&lt;T&gt;</code>, but its own
+    QnA recommends <code>ConcurrentQueue&lt;T&gt;</code> plus a <code>SemaphoreSlim</code> for a thread-safe
+    pool. Here's why both are right — for different jobs — and what maxSize actually does and doesn't cap.</p>
+  <app-page-meta [readingTime]="10" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Between this subtopic and the count-check race condition, the pattern is the same: maxSize on the main
+      page's pool is a soft, best-effort bound, not a hard guarantee. Whether that's fine depends entirely on
+      what you're pooling — for a StringBuilder, it never matters; for a database connection, reach for a
+      SemaphoreSlim-backed design like the one shown here instead.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Object Pool" topicRoute="/design-patterns/object-pool"
+    [prev]="{ label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' }" />
+</div>

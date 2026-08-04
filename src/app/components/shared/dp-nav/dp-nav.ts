@@ -120,7 +120,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/object-pool" routerLinkActive="active"><span class="nl-text">Object Pool</span>@if(p.isDone('dp-object-pool')){<span class="nl-done">✓</span>}@if(d('dp-object-pool');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/object-pool" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Object Pool</span>
+        @if(p.isDone('dp-object-pool')){<span class="nl-done">✓</span>}
+        @if(d('dp-object-pool');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('object-pool')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('object-pool')"
+                  (click)="toggleSubtopics('object-pool', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('object-pool'); as opSubs) {
+        @if (isSubtopicsExpanded('object-pool')) {
+          <div class="nav-subtopics">
+            @for (s of opSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

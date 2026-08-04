@@ -33,7 +33,7 @@ const theory: TheoryPoint[] = [
   {
     heading: 'Acquire / Release Lifecycle',
     points: [
-      'Acquire: pool checks if a free object is available; if yes, hands it out. If no, creates a new one (up to max).',
+      'Acquire: pool checks if a free object is available; if yes, hands it out. If no, creates a new one — maxSize caps how many IDLE instances are kept around for reuse, it does not by itself block or limit how many can be concurrently in use.',
       'Release: client returns the object; pool resets it to a clean state and marks it as available.',
       'If the client forgets to return the object, it leaks — implement IDisposable to ensure return via `using`.',
       'Pool may shrink idle objects after a timeout to free memory when demand drops.',
