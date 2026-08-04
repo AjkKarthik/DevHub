@@ -26813,6 +26813,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Named/default parameters in modern languages reduce the need for Builder on simpler cases — reserve it for genuinely complex, validated construction.',
     ],
   },
+  'design-patterns/builder/the-director-used-backticks-instead-of-c-sharp-interpolation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Builder Pattern (overview)', route: '/design-patterns/builder' },
+      { label: 'The Wrong Example Was a Compile Error, Not a Design Smell', route: '/design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell' },
+    ],
+    tip: 'C# has no backtick string syntax at all — a string that already contains embedded double quotes needs either escaping or a verbatim ($@"...") string once it is written correctly as $"...".',
+    gotchas: [
+      'The same backtick-instead-of-interpolation mistake recurred on a second topic in this hub — worth specifically checking for on any C#-labeled codeTab.',
+    ],
+  },
+  'design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Director Used Backticks Instead of C# Interpolation', route: '/design-patterns/builder/the-director-used-backticks-instead-of-c-sharp-interpolation' },
+      { label: 'What a Test Data Builder Actually Looks Like', route: '/design-patterns/builder/what-a-test-data-builder-actually-looks-like' },
+    ],
+    tip: 'A method declared to return a non-void type with no return statement is a compile error at that method\'s own definition — a genuinely void-returning method compiles fine and only breaks a chain later, at the call site.',
+    gotchas: [
+      'Where a compiler error actually appears changes what a reader learns from a mistakes-block example — matching the real place a mistake gets discovered matters, not just failing somehow.',
+    ],
+  },
+  'design-patterns/builder/what-a-test-data-builder-actually-looks-like': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Builder Pattern (overview)', route: '/design-patterns/builder' },
+      { label: 'The Wrong Example Was a Compile Error, Not a Design Smell', route: '/design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell' },
+    ],
+    tip: 'A Test Data Builder\'s defining feature is DEFAULTS — every field starts populated with a realistic value, so a test only ever sets the one field it actually cares about.',
+    gotchas: [
+      'When a class gains a new required field, only the builder\'s own default needs updating — not every individual test that constructs that type.',
+    ],
+  },
   'design-patterns/chain-of-responsibility': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

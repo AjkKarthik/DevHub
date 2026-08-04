@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Builder Pattern" topicRoute="/design-patterns/builder" subtopicLabel="The Director Used Backticks Instead of C# Interpolation" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Director Used Backticks Instead of C# Interpolation</h1>
+  <p class="page-subtitle">The same category of bug already found on this hub's Factory Method topic recurred here — backtick template-literal syntax inside a C#-labeled codeTab, with a twist: the string already contained its own embedded quotes.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic looks at a different codeTab on the same page — the "Forgetting to return this" mistake's own wrong example was actually a compile error, not the design smell it claimed to illustrate.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Builder Pattern" topicRoute="/design-patterns/builder"
+    [next]="{ label: 'The Wrong Example Was a Compile Error, Not a Design Smell', route: '/design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell' }" />
+</div>

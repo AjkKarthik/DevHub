@@ -2717,7 +2717,12 @@ export const routes: Routes = [
       { path: 'a-registry-based-factory-selector-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/subtopics/a-registry-based-factory-selector-made-concrete/a-registry-based-factory-selector-made-concrete').then(m => m.ARegistryBasedFactorySelectorMadeConcreteSubtopic) },
       { path: 'using-abstract-factory-for-test-doubles', loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/subtopics/using-abstract-factory-for-test-doubles/using-abstract-factory-for-test-doubles').then(m => m.UsingAbstractFactoryForTestDoublesSubtopic) },
     ] },
-    { path: 'builder',            loadComponent: () => import('./components/architecture/design-patterns/builder/builder').then(m => m.DpBuilder) },
+    { path: 'builder', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/builder/builder').then(m => m.DpBuilder) },
+      { path: 'the-director-used-backticks-instead-of-c-sharp-interpolation', loadComponent: () => import('./components/architecture/design-patterns/builder/subtopics/the-director-used-backticks-instead-of-c-sharp-interpolation/the-director-used-backticks-instead-of-c-sharp-interpolation').then(m => m.TheDirectorUsedBackticksInsteadOfCSharpInterpolationSubtopic) },
+      { path: 'the-wrong-example-was-a-compile-error-not-a-design-smell', loadComponent: () => import('./components/architecture/design-patterns/builder/subtopics/the-wrong-example-was-a-compile-error-not-a-design-smell/the-wrong-example-was-a-compile-error-not-a-design-smell').then(m => m.TheWrongExampleWasACompileErrorNotADesignSmellSubtopic) },
+      { path: 'what-a-test-data-builder-actually-looks-like', loadComponent: () => import('./components/architecture/design-patterns/builder/subtopics/what-a-test-data-builder-actually-looks-like/what-a-test-data-builder-actually-looks-like').then(m => m.WhatATestDataBuilderActuallyLooksLikeSubtopic) },
+    ] },
     { path: 'prototype',          loadComponent: () => import('./components/architecture/design-patterns/prototype/prototype').then(m => m.DpPrototype) },
     { path: 'object-pool',        loadComponent: () => import('./components/architecture/design-patterns/object-pool/object-pool').then(m => m.DpObjectPool) },
     // Structural

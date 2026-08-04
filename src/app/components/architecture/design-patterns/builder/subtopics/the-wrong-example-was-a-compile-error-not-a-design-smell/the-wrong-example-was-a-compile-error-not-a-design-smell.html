@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Builder Pattern" topicRoute="/design-patterns/builder" subtopicLabel="The Wrong Example Was a Compile Error, Not a Design Smell" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Wrong Example Was a Compile Error, Not a Design Smell</h1>
+  <p class="page-subtitle">The mistakes block's "wrong" example for forgetting to return this declared a real return type but had no return statement — a compile error unrelated to what its own comment claimed to show.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic writes out a pattern the QnA names but never shows — the Test Data Builder, used to construct test fixtures with only the fields a specific test actually cares about.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Builder Pattern" topicRoute="/design-patterns/builder"
+    [prev]="{ label: 'The Director Used Backticks Instead of C# Interpolation', route: '/design-patterns/builder/the-director-used-backticks-instead-of-c-sharp-interpolation' }"
+    [next]="{ label: 'What a Test Data Builder Actually Looks Like', route: '/design-patterns/builder/what-a-test-data-builder-actually-looks-like' }" />
+</div>

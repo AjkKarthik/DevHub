@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Builder Pattern" topicRoute="/design-patterns/builder" subtopicLabel="What a Test Data Builder Actually Looks Like" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">What a Test Data Builder Actually Looks Like</h1>
+  <p class="page-subtitle">The QnA describes a UserBuilder with sensible defaults precisely, in prose. This subtopic writes it out, and shows exactly why the defaults — not just the fluent chaining — are the whole point.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch: together the three subtopics fix a recurring backtick-vs-C# bug and a mismatched wrong-example bug, then write out a real-world use case (test data construction) the QnA describes but never demonstrates.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Builder Pattern" topicRoute="/design-patterns/builder"
+    [prev]="{ label: 'The Wrong Example Was a Compile Error, Not a Design Smell', route: '/design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell' }" />
+</div>

@@ -80,7 +80,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/builder" routerLinkActive="active"><span class="nl-text">Builder</span>@if(p.isDone('dp-builder')){<span class="nl-done">✓</span>}@if(d('dp-builder');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/builder" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Builder</span>
+        @if(p.isDone('dp-builder')){<span class="nl-done">✓</span>}
+        @if(d('dp-builder');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('builder')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('builder')"
+                  (click)="toggleSubtopics('builder', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('builder'); as blSubs) {
+        @if (isSubtopicsExpanded('builder')) {
+          <div class="nav-subtopics">
+            @for (s of blSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/prototype" routerLinkActive="active"><span class="nl-text">Prototype</span>@if(p.isDone('dp-prototype')){<span class="nl-done">✓</span>}@if(d('dp-prototype');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/object-pool" routerLinkActive="active"><span class="nl-text">Object Pool</span>@if(p.isDone('dp-object-pool')){<span class="nl-done">✓</span>}@if(d('dp-object-pool');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
