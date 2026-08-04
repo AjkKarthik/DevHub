@@ -3076,6 +3076,64 @@ do this same check before any other new hub's first subtopic set:
    tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; the `Lazy<T>`
    misconceptions fix confirmed rendering as literal text (not vanished, not raw entity codes) in
    the final browser check. **Design Patterns hub Phase 10: 1 of 36 topics complete.**
+8. **The `factory-method` batch found and fixed TWO more self-contained bugs in the "DI Approach"
+   codeTab**: a switch case returning `new PushNotification()` — a class never declared in ANY
+   codeTab on the page, even though the theory section's own prose already named it correctly
+   among the three concrete products ("EmailNotification, SmsNotification, PushNotification") —
+   confirming once again that a correct prose description elsewhere on a page says nothing about
+   whether the code itself actually compiles. Fixed by adding the missing class. Separately, the
+   same codeTab's default switch arm used JavaScript/TypeScript backtick template-literal syntax
+   (`` `Unknown channel: {channel}` ``) where valid C# requires `$"Unknown channel: {channel}"` —
+   backticks are not valid C# string syntax at all; this codeTab would not compile as written. A
+   third subtopic named a real, unstated tension: the page's own mistake #1 ("Switching on enum
+   instead of using subclasses") explicitly calls out type-switching as an OCP violation, but the
+   "DI Approach" codeTab's own `Create(string channel)` method does the exact same switch-on-a-key
+   shape internally — DI solves testability/inheritance-avoidance, not Open/Closed compliance,
+   which only the classic subclass-based pattern actually preserves. **A genuine refinement to the
+   brace-escaping gotcha's scope, caught and corrected mid-batch**: while drafting the `backticks
+   Are Not C#` subtopic, bare `{channel}`/`{expression}` text was initially (over-cautiously)
+   escaped as `&#123;`/`&#125;` inside `theory.points`/`exercise.prompt`/`.hint`/
+   `misconceptions.thought` fields, on the assumption these were subject to the same bare-`{`-in-
+   prose gotcha this file has documented for STATIC `.html` template text (the TypeScript hub's
+   `EventHandlers<T>`/`on${string}` incident). Direct inspection of `theory-block.ts` confirmed
+   `points` binds via `[innerHTML]="p"` — but critically, the ACTUAL RISK MECHANISM for that
+   binding is the BROWSER'S runtime HTML parser processing the STRING VALUE at `[innerHTML]`-set
+   time, not Angular's AOT TEMPLATE COMPILER parsing the `.html` FILE'S OWN STATIC SOURCE TEXT at
+   BUILD time — and a `{`/`}` character has zero special meaning to a browser's HTML parser (unlike
+   `<`/`>`, which start/end real tags). The bare-`{`-in-prose gotcha's own established fix guidance
+   already said as much ("Grep for a bare `{` in prose text (**not inside a bound attribute
+   expression**)") — the risk zone is specifically STATIC TEXT NODES directly inside a `.html`
+   file's own markup (a `<p>` or `<h1>`'s literal content), which the AOT compiler statically
+   parses, NOT TS STRING VALUES assigned to component properties and bound via property/innerHTML
+   binding at runtime, regardless of which binding mechanism is used. **This means: `theory.points`
+   / `misconceptions.thought`/`.reality` / `exercise.prompt`/`.hint` — every `[innerHTML]`-bound TS
+   string FIELD — is safe from the bare-single-brace gotcha entirely; only literal HTML TAG NAMES
+   (`<span>`, generic syntax `<T>`, etc.) are actually at risk in those fields, per the
+   already-separately-documented tag-vanishing gotcha, which IS a real browser-HTML-parsing
+   concern.** The entity-escaping applied before this was re-derived stayed in place (harmless —
+   entities still decode to the correct literal characters) rather than being reverted, but no
+   further brace-escaping was applied to TS string fields for the rest of this batch — confirmed
+   correct by checking that a plain, UNESCAPED `Console.WriteLine($"Push → {recipient}:
+   {message}");` inside a `codeTabs.code` field (which renders via `hljs.highlight()` → `[innerHTML]`,
+   the exact same runtime-browser-parsing mechanism) rendered perfectly in the browser with no
+   escaping at all — matching how dozens of prior C# codeTabs across this entire project have
+   already used bare `{variable}` interpolation successfully without incident. A genuine authoring
+   mistake was also caught and fixed in the SAME batch: an early draft of the `does-the-channel-
+   switch-really-decouple-which-factory` subtopic's own codeTab literally wrote out Angular's
+   `{{ '{' }}`-style DOUBLE-BRACE-escape-for-STATIC-TEMPLATE-TEXT trick (`{'{'}channel{'}'}`) AS
+   PLAIN CHARACTERS inside a TS backtick string — which is the WRONG fix for the WRONG mechanism
+   (that trick only applies to literal `{{ }}` interpolation syntax appearing directly in `.html`
+   template markup, never inside a TS string value) — caught before the build via a direct content
+   re-read, corrected back to plain `{channel}`. No `SUBTOPICS` collision for `factory-method`
+   (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+   collision-free, left bare). Build passed clean. Browser-verified: no console errors; both
+   main-page codeTab fixes confirmed rendering (the `PushNotification` fix on the "Classic Pattern"
+   tab, the `$"..."` interpolation fix on the "DI Approach" tab); nav accordion opens with 2 toggles
+   total (`singleton` + `factory-method`); breadcrumb showed all 4 levels; sidebar showed tailored
+   composite-key content; 860px wrapper confirmed via `getComputedStyle`; a subtopic page's full
+   text swept and confirmed every `{channel}`/`{expression}`/`${i}`/`${e}` mention rendered as
+   correct, literal text with nothing vanished. **Design Patterns hub Phase 10: 2 of 36 topics
+   complete.**
 
 ## Current state (update when it changes!)
 
@@ -4043,10 +4101,19 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 1 of 36 topics have subtopics (`/design-patterns/singleton`, 2026-08-04) — see
+  Phase 10: 2 of 36 topics have subtopics (`/design-patterns/singleton`,
+  `/design-patterns/factory-method`, 2026-08-04) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
-  fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and a genuine C#
-  access-modifier inaccuracy found and fixed, repeated in both the mistakes block and the quiz.
+  fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
+  and fixed across both batches so far. The `factory-method` batch found and fixed two more
+  self-contained bugs in the "DI Approach" codeTab: a switch case returning `new
+  PushNotification()`, a class never declared anywhere on the page (even though the theory section
+  already named it correctly), and an exception message using JavaScript template-literal syntax
+  (backticks) instead of valid C# string interpolation (`$"..."`) — backticks aren't valid C#
+  syntax at all. A third subtopic named a genuine, unstated tension: the page's own mistake #1
+  calls out type-switching as an OCP violation, but the "DI Approach" codeTab's own
+  `Create(channel)` method does the exact same thing internally — DI solves testability, not
+  Open/Closed compliance, which the classic subclass-based pattern uniquely preserves.
 - **Security & Auth hub**: 23 trackable topic pages + 2 reference (25 cards total). Feature-complete.
   Red theme `$accent: #dc2626`, `$tint: #fef2f2`, dark `#f87171`. Search prefix `sec-`. Route: `/security`.
   CSS classes: `.sec-page`, `.sec-icon`, `.sec-section`. Icon content: `🔒` at `font-size: 1.8rem`. `tech="javascript"`.

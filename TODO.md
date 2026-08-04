@@ -7128,7 +7128,31 @@ off here with a date.
   accordion opens with 1 toggle; breadcrumb showed all 4 levels; sidebar showed tailored
   composite-key content; 860px wrapper confirmed via `getComputedStyle`; the Lazy<T> fix confirmed
   rendering as literal text. **Design Patterns hub Phase 10: 1 of 36 topics complete.**
-- [ ] `/design-patterns/factory-method` — Factory Method Pattern
+- [x] `/design-patterns/factory-method` — Factory Method Pattern (2026-08-04) — 3 subtopics: (1)
+  **DI Approach Referenced an Undefined PushNotification Class** — the switch case returned `new
+  PushNotification()`, a class never declared anywhere on the page, even though the theory
+  section's own prose already named it correctly; fixed by adding the missing class; (2)
+  **Backticks Are Not C#** — the same codeTab's exception message used JavaScript template-literal
+  syntax (backticks) instead of valid C# string interpolation (`$"..."`); backticks aren't valid
+  C# syntax at all; (3) **Does the channel Switch Really Decouple Which Factory?** — a genuine
+  tension: the page's own mistake #1 calls out type-switching as an OCP violation, but the "DI
+  Approach" codeTab's own `Create(channel)` method does the exact same thing internally; DI solves
+  testability, not Open/Closed compliance. **A real refinement to the brace-escaping gotcha's
+  scope caught mid-batch** — bare `{channel}` in `[innerHTML]`-bound TS string fields (theory.
+  points, misconceptions.thought, etc.) is actually SAFE, unlike bare braces in static `.html`
+  template text; the risk mechanism (browser HTML parsing at runtime vs. Angular's AOT compiler
+  parsing the `.html` file's own static source at build time) are genuinely different, and only
+  literal HTML tag names are at risk in innerHTML-bound TS fields, not braces — see CLAUDE.md's
+  "Design Patterns hub subtopic wiring" section for the full explanation. Also caught and fixed a
+  genuine authoring mistake: an early codeTab draft literally wrote Angular's `{{ '{' }}` static-
+  template-escape trick as plain characters inside a TS backtick string (wrong fix for the wrong
+  mechanism) — corrected to plain `{channel}` before the build. `factory-method` SUBTOPICS key
+  collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Build passed clean.
+  Browser-verified: no console errors; both main-page codeTab fixes confirmed rendering; nav
+  accordion opens with 2 toggles total; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`; full text sweep confirmed
+  every brace/interpolation mention renders correctly with nothing vanished. **Design Patterns hub
+  Phase 10: 2 of 36 topics complete.**
 - [ ] `/design-patterns/abstract-factory` — Abstract Factory Pattern
 - [ ] `/design-patterns/builder` — Builder Pattern
 - [ ] `/design-patterns/prototype` — Prototype Pattern
