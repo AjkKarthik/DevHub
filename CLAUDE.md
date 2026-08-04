@@ -3159,6 +3159,51 @@ do this same check before any other new hub's first subtopic set:
    composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page text swept for
    vanished/misparsed content on a subtopic page containing generic syntax (`Dictionary<string,
    Func<IUiFactory>>`), none found. **Design Patterns hub Phase 10: 3 of 36 topics complete.**
+10. **The `builder` batch found and fixed TWO more genuine bugs**: the "Director Pattern"
+    codeTab's `BuildPasswordResetEmail` method used backtick template-literal syntax — the SAME
+    category of bug already found on this hub's Factory Method topic, confirming it is worth
+    specifically checking for on any C#-labeled codeTab in this hub, not assuming one prior fix
+    means the pattern is fully caught. This instance was trickier than the earlier one: the string
+    being interpolated already contained its own embedded double quotes (an HTML `href="..."`
+    attribute), so the fix could not be a simple backtick-to-double-quote swap — it needed either
+    escaped quotes (`$"...\"...\"..."`) or a verbatim interpolated string (`$@"...""...""..."`).
+    **A genuine mistake was made and caught during THIS SAME fix**: the first attempt used a
+    single-escaped `\"` inside the codeTab's own outer TS backtick template literal — but `\"` is a
+    universal ECMAScript escape sequence (SingleEscapeCharacter) that resolves to a bare `"`
+    regardless of which quote character delimits the containing string, meaning TypeScript's own
+    parser silently consumed the backslash before the string value was ever set, leaving the
+    DISPLAYED C# code sample with no backslash at all — reproducing the exact "embedded quote
+    prematurely ends the string" problem the fix was supposed to solve, just one level removed.
+    Caught via direct browser inspection of the rendered code sample (the backslash was visibly
+    missing from the displayed text) rather than assumed correct from the build passing (a build
+    failure would never have caught this, since the resulting string was still syntactically valid
+    TypeScript — just not the intended DISPLAY content). Fixed by doubling the backslash (`\\"`),
+    which is what actually survives TypeScript's own escape processing to leave a literal `\"` in
+    the rendered output. Separately, the "Forgetting to return `this` in fluent methods" mistake's
+    own wrong example declared `HttpRequestBuilder` as its return type (matching the "right"
+    example's signature) but had no `return` statement at all — a straight C# compile error
+    (CS0161: not all code paths return a value) at the method's OWN definition, unrelated to what
+    its own comment ("// void — breaks chaining") claimed to illustrate; a method that fails to
+    compile can never reach a runtime state where "chaining breaks." Fixed by changing the declared
+    return type to `void`, which genuinely compiles and genuinely reproduces the named mistake — and
+    crucially, moves the resulting compile error to the CALL SITE in a chain, which is the more
+    realistic place a developer would actually encounter and diagnose this mistake in real code.
+    Subtopics: two fix-adjacent (the backtick bug, including both correct fixes shown side by side;
+    the compile-error-vs-design-smell distinction, tracing exactly where each version's error
+    appears) and one gap-closing (the QnA describes a `UserBuilder` "Test Data Builder" with
+    sensible defaults in precise prose, never shown in code — wrote it out and demonstrated why a
+    new required field only costs ONE change to the builder's own default, not an edit to every
+    test that constructs that type). No `SUBTOPICS` collision for `builder` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). Build passed clean (both the buggy first attempt — which still compiled, since it was
+    valid TypeScript — and the corrected version, confirmed via direct browser rendering, not the
+    build result). Browser-verified: no console errors; both main-page fixes confirmed rendering,
+    including the corrected `\"` escaping visible in the actual displayed code sample; nav
+    accordion opens with 4 toggles total; breadcrumb showed all 4 levels; sidebar showed tailored
+    composite-key content; 860px wrapper confirmed via `getComputedStyle`; a subtopic page's own
+    FIX 1 and FIX 2 codeTab variants (escaped-quote and verbatim-string versions) both confirmed
+    rendering with correct, distinct escaping. **Design Patterns hub Phase 10: 4 of 36 topics
+    complete.**
 
 ## Current state (update when it changes!)
 
@@ -4126,8 +4171,9 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 3 of 36 topics have subtopics (`/design-patterns/singleton`,
-  `/design-patterns/factory-method`, `/design-patterns/abstract-factory`, 2026-08-04) — see
+  Phase 10: 4 of 36 topics have subtopics (`/design-patterns/singleton`,
+  `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
+  `/design-patterns/builder`, 2026-08-04) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more

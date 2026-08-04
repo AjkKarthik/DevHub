@@ -7168,7 +7168,23 @@ off here with a date.
   composite-key content; 860px wrapper confirmed via `getComputedStyle`; full text sweep confirmed
   no vanished/misparsed content, including generic syntax (`Dictionary<string, Func<IUiFactory>>`).
   **Design Patterns hub Phase 10: 3 of 36 topics complete.**
-- [ ] `/design-patterns/builder` — Builder Pattern
+- [x] `/design-patterns/builder` — Builder Pattern (2026-08-04) — 3 subtopics: (1) **The Director
+  Used Backticks Instead of C# Interpolation** — the same backtick-vs-C# bug from Factory Method
+  recurred; this instance was trickier since the string already had embedded quotes, needing
+  escaped quotes or a verbatim string; caught and fixed a real mistake in the fix itself — a
+  single-escaped `\"` was consumed by TypeScript's own parser, leaving the displayed code with no
+  backslash; doubled to `\\"` so the intended C# escape survives into the rendered sample; (2)
+  **The Wrong Example Was a Compile Error, Not a Design Smell** — the "forgetting to return this"
+  mistake's wrong example declared a real return type with no return statement (CS0161), unrelated
+  to its own "void" comment; changed the declared type to void so it genuinely compiles and
+  demonstrates the named mistake, with the error now appearing at the realistic call site; (3)
+  **What a Test Data Builder Actually Looks Like** — the QnA describes a UserBuilder with sensible
+  defaults precisely, never shown in code. `builder` SUBTOPICS key collision-free (checked
+  app.routes.ts and subtopics.ts directly), left bare. Build passed clean. Browser-verified: no
+  console errors; both main-page fixes confirmed rendering, including the corrected `\"` escaping
+  visible in the actual displayed code; nav accordion opens with 4 toggles total; breadcrumb showed
+  all 4 levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
+  `getComputedStyle`. **Design Patterns hub Phase 10: 4 of 36 topics complete.**
 - [ ] `/design-patterns/prototype` — Prototype Pattern
 - [ ] `/design-patterns/object-pool` — Object Pool Pattern
 - [ ] `/design-patterns/adapter` — Adapter Pattern
