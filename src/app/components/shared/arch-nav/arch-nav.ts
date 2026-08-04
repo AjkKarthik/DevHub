@@ -456,7 +456,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/backend-for-frontend" routerLinkActive="active"><span class="nl-text">Backend for Frontend (BFF)</span>@if(p.isDone('arch-backend-for-frontend')){<span class="nl-done">✓</span>}@if(d('arch-backend-for-frontend');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/backend-for-frontend" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Backend for Frontend (BFF)</span>
+        @if(p.isDone('arch-backend-for-frontend')){<span class="nl-done">✓</span>}
+        @if(d('arch-backend-for-frontend');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('backend-for-frontend')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('backend-for-frontend')"
+                  (click)="toggleSubtopics('backend-for-frontend', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('backend-for-frontend'); as bffSubs) {
+        @if (isSubtopicsExpanded('backend-for-frontend')) {
+          <div class="nav-subtopics">
+            @for (s of bffSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

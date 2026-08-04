@@ -3234,4 +3234,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Parallel Run Skipped Its Own Discrepancy Check', route: '/arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check' },
     { label: 'The Split-Brain Risk Made Concrete', route: '/arch-patterns/strangler-fig/the-split-brain-risk-made-concrete' },
   ],
+  'backend-for-frontend': [
+    { label: 'GraphQL BFF’s N+1 Problem, Made Concrete', route: '/arch-patterns/backend-for-frontend/graphql-bff-n-plus-one-problem-made-concrete' },
+    { label: 'Is hasBreakingNews Business Logic in the BFF?', route: '/arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff' },
+    { label: 'What the v2 Migration Actually Looks Like', route: '/arch-patterns/backend-for-frontend/what-the-v2-migration-actually-looks-like' },
+  ],
 };

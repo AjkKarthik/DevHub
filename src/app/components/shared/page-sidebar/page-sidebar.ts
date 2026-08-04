@@ -27372,6 +27372,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing BFFs for client types that don\'t actually diverge significantly adds operational overhead without benefit.',
     ],
   },
+  'arch-patterns/backend-for-frontend/graphql-bff-n-plus-one-problem-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Backend for Frontend (overview)', route: '/arch-patterns/backend-for-frontend' },
+      { label: 'Is hasBreakingNews Business Logic in the BFF?', route: '/arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff' },
+    ],
+    tip: 'A GraphQL resolver resolving a field per item in a list scales its downstream calls with the SHAPE of the query — a REST BFF decides its call count once, up front, regardless of result size.',
+    gotchas: [
+      'A per-key cache does not fix N+1 for a list of genuinely distinct items — DataLoader\'s batching (not its caching) is what collapses N calls into one.',
+    ],
+  },
+  'arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'GraphQL BFF’s N+1 Problem, Made Concrete', route: '/arch-patterns/backend-for-frontend/graphql-bff-n-plus-one-problem-made-concrete' },
+      { label: 'What the v2 Migration Actually Looks Like', route: '/arch-patterns/backend-for-frontend/what-the-v2-migration-actually-looks-like' },
+    ],
+    tip: 'The test for business logic in a BFF is not how consequential a rule is — it is whether the rule could reasonably change independently of the client UI.',
+    gotchas: [
+      'Response shaping (like picking the first image as a thumbnail) is legitimate BFF work — a hardcoded classification threshold like a one-hour "breaking news" cutoff is not.',
+    ],
+  },
+  'arch-patterns/backend-for-frontend/what-the-v2-migration-actually-looks-like': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Backend for Frontend (overview)', route: '/arch-patterns/backend-for-frontend' },
+      { label: 'Is hasBreakingNews Business Logic in the BFF?', route: '/arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff' },
+    ],
+    tip: 'v1 and v2 call the SAME underlying services — they are two different response shapes over one source of truth, not two systems that could drift out of sync.',
+    gotchas: [
+      'Blindly deriving one version\'s shaped output from the other risks silently breaking a contract existing partners depend on — share the data fetch, not the shaping logic.',
+    ],
+  },
   'arch-patterns/circuit-breaker': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Backend for Frontend (BFF)" topicRoute="/arch-patterns/backend-for-frontend" subtopicLabel="Is hasBreakingNews Business Logic in the BFF?" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Is hasBreakingNews Business Logic in the BFF?</h1>
+  <p class="page-subtitle">The mistakes block warns against putting business logic in the BFF. The Challenge's own solution computes a hardcoded one-hour "breaking news" threshold directly inside the handler — does that quietly cross the same line?</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch — and the entire hub's Phase 10 rollout — with a gap the Third-Party BFF codeTab gestures at but never shows: what an actual v1-to-v2 migration looks like in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Backend for Frontend (BFF)" topicRoute="/arch-patterns/backend-for-frontend"
+    [prev]="{ label: 'GraphQL BFF’s N+1 Problem, Made Concrete', route: '/arch-patterns/backend-for-frontend/graphql-bff-n-plus-one-problem-made-concrete' }"
+    [next]="{ label: 'What the v2 Migration Actually Looks Like', route: '/arch-patterns/backend-for-frontend/what-the-v2-migration-actually-looks-like' }" />
+</div>

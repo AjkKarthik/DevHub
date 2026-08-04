@@ -2872,7 +2872,12 @@ export const routes: Routes = [
       { path: 'parallel-run-skipped-its-own-discrepancy-check', loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/subtopics/parallel-run-skipped-its-own-discrepancy-check/parallel-run-skipped-its-own-discrepancy-check').then(m => m.ParallelRunSkippedItsOwnDiscrepancyCheckSubtopic) },
       { path: 'the-split-brain-risk-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/subtopics/the-split-brain-risk-made-concrete/the-split-brain-risk-made-concrete').then(m => m.TheSplitBrainRiskMadeConcreteSubtopic) },
     ] },
-    { path: 'backend-for-frontend',      loadComponent: () => import('./components/architecture/arch-patterns/backend-for-frontend/backend-for-frontend').then(m => m.ArchBackendForFrontend) },
+    { path: 'backend-for-frontend', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/backend-for-frontend/backend-for-frontend').then(m => m.ArchBackendForFrontend) },
+      { path: 'graphql-bff-n-plus-one-problem-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/backend-for-frontend/subtopics/graphql-bff-n-plus-one-problem-made-concrete/graphql-bff-n-plus-one-problem-made-concrete').then(m => m.GraphqlBffNPlusOneProblemMadeConcreteSubtopic) },
+      { path: 'is-has-breaking-news-business-logic-in-the-bff', loadComponent: () => import('./components/architecture/arch-patterns/backend-for-frontend/subtopics/is-has-breaking-news-business-logic-in-the-bff/is-has-breaking-news-business-logic-in-the-bff').then(m => m.IsHasBreakingNewsBusinessLogicInTheBffSubtopic) },
+      { path: 'what-the-v2-migration-actually-looks-like', loadComponent: () => import('./components/architecture/arch-patterns/backend-for-frontend/subtopics/what-the-v2-migration-actually-looks-like/what-the-v2-migration-actually-looks-like').then(m => m.WhatTheV2MigrationActuallyLooksLikeSubtopic) },
+    ] },
     { path: 'adr',                       loadComponent: () => import('./components/architecture/arch-patterns/adr/adr').then(m => m.ArchAdr) },
     { path: 'pattern-comparison',        loadComponent: () => import('./components/architecture/arch-patterns/pattern-comparison/pattern-comparison').then(m => m.ArchPatternComparison) },
     { path: 'interview-prep',            loadComponent: () => import('./components/architecture/arch-patterns/interview-prep/interview-prep').then(m => m.ArchInterviewPrep) },
