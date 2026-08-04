@@ -7108,7 +7108,26 @@ off here with a date.
 
 #### Design Patterns — 36 topic pages
 
-- [ ] `/design-patterns/singleton` — Singleton Pattern
+- [x] `/design-patterns/singleton` — Singleton Pattern (2026-08-04) — first Phase 10 pilot for
+  this hub; fixed `DpNavComponent`'s missing subtopics-accordion structural support (12th
+  `*NavComponent`-based hub in a row missing it at pilot time). 3 subtopics: (1) **Sealed Does Not
+  Fix What the Mistake Said It Fixes** — the mistakes block AND the quiz both claimed a subclass
+  could bypass a private Singleton constructor via base(), creating additional instances; verified
+  via WebSearch that this does not compile in C# — a private constructor is inaccessible outside
+  its declaring class; corrected both to state what sealed actually guards against (a future
+  private→protected widening, and a nested class, which DOES have access to its enclosing type's
+  private members); (2) **Double-Checked Locking, Actually Written Out** — the theory names it and
+  the QnA sketches it inline but omits the volatile field the QnA's own text says is required;
+  wrote the complete, correct version; (3) **What Monostate Actually Looks Like in Code** — an
+  entire theory section describes it, zero code shows it. Caught and fixed a real innerHTML
+  gotcha before the build: `Lazy<T>` mentioned as plain prose in `misconceptions.thought`/
+  `.reality` fields would have silently vanished as a misparsed HTML tag — wrapped in
+  `<code>Lazy&lt;T&gt;</code>`. `singleton` SUBTOPICS key collision-free (checked app.routes.ts
+  and subtopics.ts directly), left bare. Build passed clean. Browser-verified: no console errors;
+  both main-page fixes confirmed rendering (mistakes-block accordion + quiz question 2); nav
+  accordion opens with 1 toggle; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`; the Lazy<T> fix confirmed
+  rendering as literal text. **Design Patterns hub Phase 10: 1 of 36 topics complete.**
 - [ ] `/design-patterns/factory-method` — Factory Method Pattern
 - [ ] `/design-patterns/abstract-factory` — Abstract Factory Pattern
 - [ ] `/design-patterns/builder` — Builder Pattern

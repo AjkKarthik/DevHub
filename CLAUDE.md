@@ -3000,6 +3000,83 @@ text swept for vanished/misparsed content on a subtopic page, none found. **This
 Architecture Patterns hub's entire Phase 10 rollout — all 22 topics now have deep-dive subtopic
 pages, 66 subtopic pages total across the hub, finished 2026-08-04.**
 
+### Design Patterns hub subtopic wiring — first pilot; the 12th `*NavComponent` in a row missing
+the subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/design-patterns/singleton`, 2026-08-04) —
+do this same check before any other new hub's first subtopic set:
+
+1. **`DpNavComponent` (`shared/dp-nav/dp-nav.ts`) had ZERO subtopics-accordion support** — the
+   same structural gap already hit and fixed on every `*NavComponent`-based hub's own pilot before
+   it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System Design,
+   Architecture Patterns — this is the 12th in a row). Fixed identically: added `signal`, `Router`,
+   `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from `../../../data/subtopics`) to the
+   imports, then the same three methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and
+   constructor-level router subscription, copied directly from `ArchNavComponent`'s own
+   implementation (read directly, not reconstructed from memory, per the established copy-fidelity
+   discipline). Worked correctly on the first browser check — no stale-chunk incident.
+2. **No `SUBTOPICS` map bare-key collision for `singleton`** (checked both quoted and unquoted
+   forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed collision-free) — left
+   as a bare key.
+3. **`DP_LABELS` breadcrumb map uses bare keys** (`'singleton'`), matching the generic pattern
+   every hub's own dedicated labels map shares — composite subtopic keys there are bare too
+   (`'singleton/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'design-patterns/singleton'`, confirmed the
+   base entry — and its own `DP_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'design-patterns/singleton/<slug>'`.
+5. **This hub's `singleton.ts` uses a DIFFERENT authoring pattern than every prior hub covered by
+   Phase 10 so far** — `quickRef`/`theory`/`codeTabs`/`mistakes`/`challenge`/`quiz`/`qna`/
+   `revision` are declared as top-level `const` values OUTSIDE the `@Component` class, then simply
+   assigned to class properties inside it (`quickRef = quickRef;` etc.), rather than being declared
+   directly as class properties the way every Architecture Patterns file does. This is a
+   Design-Patterns-hub-wide convention (not specific to Singleton) — subtopic files themselves are
+   NOT affected, since Phase 10 subtopic pages always declare their own `theory`/`codeTabs`/etc.
+   directly as class properties regardless of which convention the PARENT topic page uses.
+6. **`.dp-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`) — every
+   subtopic `.scss` needs the full `.dp-page { max-width: 860px; margin: 0 auto; }` rule.
+   `$accent: #0369a1`, `$tint: #e0f2fe`, `.dp-icon`, icon content `DP`, `tech="javascript"` in
+   `app-page-meta` (Design Patterns pages share the JS/TS playground and run-it links, same as
+   every other non-JS-runtime hub). No live playground — Singleton's own codeTabs are `language:
+   'csharp'` even though the hub's own documented `Challenge.language` convention is
+   `'typescript'` — the MAIN page itself mixes both (C# codeTabs, TypeScript Challenge), and
+   subtopic codeTabs followed the main page's own C#-for-illustration choice since the content is
+   specifically about C# language semantics (access modifiers, `volatile`, static initialization).
+7. **The `singleton` batch found and fixed a genuine C# language-semantics inaccuracy, repeated in
+   TWO places on the same page (the mistakes block AND the quiz), verified via WebSearch rather
+   than assumed**: both originally claimed a subclass could bypass a **private** Singleton
+   constructor via `base()`, creating additional instances, and that `sealed` exists to prevent
+   this. Verified against actual C# access-modifier semantics (confirmed via web search results
+   citing standard C# constructor-accessibility behavior) that this does not compile at all — a
+   class with ONLY a private constructor and no public/protected constructor cannot be inherited
+   from outside the declaring class; the derived class has no accessible base constructor to call.
+   Corrected both the mistakes-block `wrong`/`right`/`explanation` and the quiz question's own
+   option text/explanation to state what `sealed` actually guards against: a FUTURE edit widening
+   the constructor from `private` to `protected` (which would silently reopen subclassing on an
+   unsealed class), and a class NESTED inside the Singleton itself (nested types in C# DO have
+   access to their enclosing type's private members, including a private constructor — a genuine,
+   narrower edge case a private constructor alone does not block). Subtopics: one fix-adjacent
+   (tracing exactly why the original bypass claim does not compile, with a working nested-class
+   counterexample) and two gap-closing (double-checked locking — named in the theory and sketched
+   inline in the QnA, but the QnA's own inline sketch omits the `volatile` field it separately says
+   is required, and neither mention is a complete, compilable codeTab; and Monostate — an entire
+   theory section describing it, zero code anywhere on the page). **Real gotcha caught during the
+   pre-build sweep, not the build**: the double-checked-locking subtopic's own `misconceptions`
+   entries mentioned `Lazy<T>` as plain prose inside `[innerHTML]`-bound `thought`/`reality`
+   fields — silently misparsed as an HTML tag and vanishing — fixed by wrapping in
+   `<code>Lazy&lt;T&gt;</code>`, while the SAME `Lazy<T>` mention inside `exercise.solution` (plain
+   interpolation) needed no escaping at all, confirming the established per-field-binding-type rule
+   still applies exactly as documented for every prior hub. Build passed clean. Browser-verified:
+   no console errors; the mistakes-block fix required expanding the "Common Mistakes" accordion
+   (confirmed via direct `.cm-toggle` click, not a broader button-text match, which unreliably
+   toggled state across separate `javascript_tool` calls) — an isolated click quirk specific to
+   this component, not a build or content issue, resolved by targeting the toggle's own CSS class
+   directly; the quiz fix required advancing to question 2 via the quiz's own one-question-at-a-time
+   flow and selecting an answer to reveal the explanation text; nav accordion opens with 1 toggle
+   (this hub's first and only Phase 10 topic so far); breadcrumb showed all 4 levels; sidebar showed
+   tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; the `Lazy<T>`
+   misconceptions fix confirmed rendering as literal text (not vanished, not raw entity codes) in
+   the final browser check. **Design Patterns hub Phase 10: 1 of 36 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -3966,6 +4043,10 @@ pages, 66 subtopic pages total across the hub, finished 2026-08-04.**
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
+  Phase 10: 1 of 36 topics have subtopics (`/design-patterns/singleton`, 2026-08-04) — see
+  "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
+  fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and a genuine C#
+  access-modifier inaccuracy found and fixed, repeated in both the mistakes block and the quiz.
 - **Security & Auth hub**: 23 trackable topic pages + 2 reference (25 cards total). Feature-complete.
   Red theme `$accent: #dc2626`, `$tint: #fef2f2`, dark `#f87171`. Search prefix `sec-`. Route: `/security`.
   CSS classes: `.sec-page`, `.sec-icon`, `.sec-section`. Icon content: `🔒` at `font-size: 1.8rem`. `tech="javascript"`.
