@@ -3269,4 +3269,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implementing Idle-Object Eviction', route: '/design-patterns/object-pool/idle-object-eviction' },
     { label: 'ConcurrentBag vs. ConcurrentQueue for Pool Storage', route: '/design-patterns/object-pool/concurrentbag-vs-concurrentqueue' },
   ],
+  'adapter': [
+    { label: 'The ProcessPayment One-Liner Doesn’t Compile', route: '/design-patterns/adapter/processpayment-void-compile-error' },
+    { label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' },
+    { label: 'IObservable vs. IQueryable: Which One Really Needs an Adapter', route: '/design-patterns/adapter/iobservable-vs-iqueryable-real-adapter-need' },
+  ],
 };

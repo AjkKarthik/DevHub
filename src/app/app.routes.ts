@@ -2736,7 +2736,12 @@ export const routes: Routes = [
       { path: 'concurrentbag-vs-concurrentqueue', loadComponent: () => import('./components/architecture/design-patterns/object-pool/subtopics/concurrentbag-vs-concurrentqueue/concurrentbag-vs-concurrentqueue').then(m => m.ConcurrentbagVsConcurrentqueueSubtopic) },
     ] },
     // Structural
-    { path: 'adapter',            loadComponent: () => import('./components/architecture/design-patterns/adapter/adapter').then(m => m.DpAdapter) },
+    { path: 'adapter', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/adapter/adapter').then(m => m.DpAdapter) },
+      { path: 'processpayment-void-compile-error', loadComponent: () => import('./components/architecture/design-patterns/adapter/subtopics/processpayment-void-compile-error/processpayment-void-compile-error').then(m => m.ProcesspaymentVoidCompileErrorSubtopic) },
+      { path: 'missing-loglevel-mappings', loadComponent: () => import('./components/architecture/design-patterns/adapter/subtopics/missing-loglevel-mappings/missing-loglevel-mappings').then(m => m.MissingLoglevelMappingsSubtopic) },
+      { path: 'iobservable-vs-iqueryable-real-adapter-need', loadComponent: () => import('./components/architecture/design-patterns/adapter/subtopics/iobservable-vs-iqueryable-real-adapter-need/iobservable-vs-iqueryable-real-adapter-need').then(m => m.IobservableVsIqueryableRealAdapterNeedSubtopic) },
+    ] },
     { path: 'bridge',             loadComponent: () => import('./components/architecture/design-patterns/bridge/bridge').then(m => m.DpBridge) },
     { path: 'composite',          loadComponent: () => import('./components/architecture/design-patterns/composite/composite').then(m => m.DpComposite) },
     { path: 'decorator',          loadComponent: () => import('./components/architecture/design-patterns/decorator/decorator').then(m => m.DpDecorator) },

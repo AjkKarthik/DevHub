@@ -1,0 +1,31 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Adapter" topicRoute="/design-patterns/adapter"
+    subtopicLabel="The Missing LogLevel Mappings" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Missing LogLevel Mappings (Trace, Critical, None)</h1>
+  <p class="page-subtitle">The main page's Logging Adapter only explicitly handled 4 of .NET's 7 LogLevel
+    values — silently demoting Critical logs to Information severity. Here's the gap, why it matters, and
+    the complete, correct mapping.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Both fixes on the main page tighten a translation layer to match what it claims to translate. The next
+      subtopic looks at a different kind of gap — a theory bullet describing something that isn't really an
+      Adapter scenario at all.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Adapter" topicRoute="/design-patterns/adapter"
+    [prev]="{ label: 'The ProcessPayment One-Liner Doesn’t Compile', route: '/design-patterns/adapter/processpayment-void-compile-error' }"
+    [next]="{ label: 'IObservable vs. IQueryable: Which One Really Needs an Adapter', route: '/design-patterns/adapter/iobservable-vs-iqueryable-real-adapter-need' }" />
+</div>

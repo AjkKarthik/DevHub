@@ -26788,6 +26788,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Adapter vs Facade confusion: Adapter fixes an incompatible interface; Facade simplifies a complex one. They can look similar but solve different problems.',
     ],
   },
+  'design-patterns/adapter/processpayment-void-compile-error': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Adapter (overview)', route: '/design-patterns/adapter' },
+      { label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' },
+    ],
+    tip: 'Console.WriteLine returns void — C# cannot compare a void expression to null, so this one-liner fails to compile, not just at style review.',
+    gotchas: [
+      'A broken left-hand operand stops the whole expression from compiling, regardless of what a trailing || true is meant to do — short-circuiting is a runtime concept, not a compile-time rescue.',
+    ],
+  },
+  'design-patterns/adapter/missing-loglevel-mappings': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The ProcessPayment One-Liner Doesn’t Compile', route: '/design-patterns/adapter/processpayment-void-compile-error' },
+      { label: 'IObservable vs. IQueryable: Which One Really Needs an Adapter', route: '/design-patterns/adapter/iobservable-vs-iqueryable-real-adapter-need' },
+    ],
+    tip: 'Trace maps to Verbose and Critical maps to Fatal in Serilog — leaving both out of a catch-all silently demotes the most urgent log level to the same bucket as logging being off.',
+    gotchas: [
+      'IsEnabled() and Log() must agree on which levels exist, or a caller that checks IsEnabled first behaves differently from one that logs unconditionally.',
+    ],
+  },
+  'design-patterns/adapter/iobservable-vs-iqueryable-real-adapter-need': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Adapter (overview)', route: '/design-patterns/adapter' },
+      { label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' },
+    ],
+    tip: 'IQueryable<T> already extends IEnumerable<T> through interface inheritance — no adapter needed. IObservable<T> shares no inheritance with IEnumerable<T> at all, which is the genuine Adapter case.',
+    gotchas: [
+      'Different interface names or different intended use cases do not by themselves mean an Adapter is needed — check member-level compatibility first.',
+    ],
+  },
   'design-patterns/bridge': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
