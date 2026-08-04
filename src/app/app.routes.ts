@@ -2723,7 +2723,12 @@ export const routes: Routes = [
       { path: 'the-wrong-example-was-a-compile-error-not-a-design-smell', loadComponent: () => import('./components/architecture/design-patterns/builder/subtopics/the-wrong-example-was-a-compile-error-not-a-design-smell/the-wrong-example-was-a-compile-error-not-a-design-smell').then(m => m.TheWrongExampleWasACompileErrorNotADesignSmellSubtopic) },
       { path: 'what-a-test-data-builder-actually-looks-like', loadComponent: () => import('./components/architecture/design-patterns/builder/subtopics/what-a-test-data-builder-actually-looks-like/what-a-test-data-builder-actually-looks-like').then(m => m.WhatATestDataBuilderActuallyLooksLikeSubtopic) },
     ] },
-    { path: 'prototype',          loadComponent: () => import('./components/architecture/design-patterns/prototype/prototype').then(m => m.DpPrototype) },
+    { path: 'prototype', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/prototype/prototype').then(m => m.DpPrototype) },
+      { path: 'polymorphic-cloning-via-iprototype', loadComponent: () => import('./components/architecture/design-patterns/prototype/subtopics/polymorphic-cloning-via-iprototype/polymorphic-cloning-via-iprototype').then(m => m.PolymorphicCloningViaIPrototypeSubtopic) },
+      { path: 'why-immutable-sub-objects-make-shallow-copy-safe', loadComponent: () => import('./components/architecture/design-patterns/prototype/subtopics/why-immutable-sub-objects-make-shallow-copy-safe/why-immutable-sub-objects-make-shallow-copy-safe').then(m => m.WhyImmutableSubObjectsMakeShallowCopySafeSubtopic) },
+      { path: 'is-with-prototype-or-an-alternative-to-it', loadComponent: () => import('./components/architecture/design-patterns/prototype/subtopics/is-with-prototype-or-an-alternative-to-it/is-with-prototype-or-an-alternative-to-it').then(m => m.IsWithPrototypeOrAnAlternativeToItSubtopic) },
+    ] },
     { path: 'object-pool',        loadComponent: () => import('./components/architecture/design-patterns/object-pool/object-pool').then(m => m.DpObjectPool) },
     // Structural
     { path: 'adapter',            loadComponent: () => import('./components/architecture/design-patterns/adapter/adapter').then(m => m.DpAdapter) },

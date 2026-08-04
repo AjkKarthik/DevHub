@@ -3259,4 +3259,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Wrong Example Was a Compile Error, Not a Design Smell', route: '/design-patterns/builder/the-wrong-example-was-a-compile-error-not-a-design-smell' },
     { label: 'What a Test Data Builder Actually Looks Like', route: '/design-patterns/builder/what-a-test-data-builder-actually-looks-like' },
   ],
+  'prototype': [
+    { label: 'Polymorphic Cloning via IPrototype', route: '/design-patterns/prototype/polymorphic-cloning-via-iprototype' },
+    { label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' },
+    { label: 'Is with Prototype, or an Alternative to It?', route: '/design-patterns/prototype/is-with-prototype-or-an-alternative-to-it' },
+  ],
 };

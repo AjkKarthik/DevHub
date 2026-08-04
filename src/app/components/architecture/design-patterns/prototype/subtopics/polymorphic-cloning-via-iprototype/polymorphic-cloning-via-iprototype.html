@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prototype Pattern" topicRoute="/design-patterns/prototype" subtopicLabel="Polymorphic Cloning via IPrototype" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Polymorphic Cloning via IPrototype</h1>
+  <p class="page-subtitle">The theory names "concrete type unknown at compile time" as a use case for Prototype — but both codeTabs use a single, statically-known type throughout. This subtopic writes the genuinely polymorphic version.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic makes concrete a claim the theory states but never demonstrates — that immutable sub-objects make a plain shallow copy genuinely safe, contrasted against EmailTemplate's own mutable Recipients list.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prototype Pattern" topicRoute="/design-patterns/prototype"
+    [next]="{ label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' }" />
+</div>

@@ -27140,6 +27140,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Less needed in languages/frameworks with efficient construction and DI — remains valuable when construction is genuinely expensive.',
     ],
   },
+  'design-patterns/prototype/polymorphic-cloning-via-iprototype': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Prototype Pattern (overview)', route: '/design-patterns/prototype' },
+      { label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' },
+    ],
+    tip: 'A shared Clone() interface lets client code duplicate objects without knowing their concrete type — the cloning equivalent of what a factory interface does for creation.',
+    gotchas: [
+      'Adding a new prototype type requires zero changes to client code that only depends on the shared interface, not the concrete implementations.',
+    ],
+  },
+  'design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Polymorphic Cloning via IPrototype', route: '/design-patterns/prototype/polymorphic-cloning-via-iprototype' },
+      { label: 'Is with Prototype, or an Alternative to It?', route: '/design-patterns/prototype/is-with-prototype-or-an-alternative-to-it' },
+    ],
+    tip: 'A shallow copy sharing a reference to an immutable sub-object is completely safe — there is no method that could mutate it through either reference.',
+    gotchas: [
+      'The danger of a shallow copy comes from mutability, not from reference-sharing itself — sharing a reference to something that can never change is never a bug.',
+    ],
+  },
+  'design-patterns/prototype/is-with-prototype-or-an-alternative-to-it': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Prototype Pattern (overview)', route: '/design-patterns/prototype' },
+      { label: 'Why Immutable Sub-Objects Make Shallow Copy Safe', route: '/design-patterns/prototype/why-immutable-sub-objects-make-shallow-copy-safe' },
+    ],
+    tip: 'Record with expressions are structurally identical to Prototype\'s own definition — copy an existing instance, override specific fields — just implemented as a built-in language feature.',
+    gotchas: [
+      'Mistake #3 warns against building unnecessary explicit Prototype infrastructure for records, not against the underlying clone-and-modify operation itself.',
+    ],
+  },
   'design-patterns/proxy': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

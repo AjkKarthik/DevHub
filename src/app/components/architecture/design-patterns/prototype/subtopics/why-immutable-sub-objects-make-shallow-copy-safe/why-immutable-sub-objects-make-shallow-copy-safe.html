@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Prototype Pattern" topicRoute="/design-patterns/prototype" subtopicLabel="Why Immutable Sub-Objects Make Shallow Copy Safe" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Why Immutable Sub-Objects Make Shallow Copy Safe</h1>
+  <p class="page-subtitle">The theory states this in one line and then only ever shows the dangerous half — a mutable sub-object shared by a shallow copy. This subtopic builds the missing, genuinely safe contrast.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic reconciles a genuine tension between two other sections of the main page — does mistake #3 mean record with expressions AREN'T Prototype, or ARE they, as the quiz explanation elsewhere claims?</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Prototype Pattern" topicRoute="/design-patterns/prototype"
+    [prev]="{ label: 'Polymorphic Cloning via IPrototype', route: '/design-patterns/prototype/polymorphic-cloning-via-iprototype' }"
+    [next]="{ label: 'Is with Prototype, or an Alternative to It?', route: '/design-patterns/prototype/is-with-prototype-or-an-alternative-to-it' }" />
+</div>
