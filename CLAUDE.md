@@ -3134,6 +3134,31 @@ do this same check before any other new hub's first subtopic set:
    text swept and confirmed every `{channel}`/`{expression}`/`${i}`/`${e}` mention rendered as
    correct, literal text with nothing vanished. **Design Patterns hub Phase 10: 2 of 36 topics
    complete.**
+9. **The `abstract-factory` batch was the cleanest page found in this hub so far** — a careful
+   pass through both codeTabs (Classic Pattern, ADO.NET Example), the Challenge, and cross-checks
+   against theory/mistakes/QnA found no undeclared class, no invalid syntax, no internal
+   contradiction. All three subtopics are gap-closing, each writing out something the page names
+   in prose but never shows in code: (1) mistake #1's own "right" side is two lines of pure
+   comments naming two mitigations ("version the factory interface or use extension methods") for
+   the trade-off of adding a new product type — wrote out the first one concretely
+   (`IUiFactoryV2 : IUiFactory`, existing concrete factories completely untouched); (2) the QnA
+   describes selecting a concrete factory from configuration "not hardcoded in client code" via "a
+   factory registry or... dependency injection," contrasted against the main page's own
+   composition-root example, which hardcodes `new WindowsUiFactory()` directly — wrote the actual
+   registry (`Dictionary<string, Func<IUiFactory>>`, self-registering factories, a lookup that
+   never needs editing for new themes) and explicitly connected it back to this hub's own Factory
+   Method topic's OCP discussion; (3) the QnA's own list of real-world examples names "Test doubles
+   in testing frameworks: a TestFactory creates mock or stub implementations" in one sentence — used
+   the main page's OWN Challenge (`DatabaseClient` depending only on `IDbFactory`) as the subject,
+   adding a third, purpose-built `FakeDbFactory` alongside the page's existing `SqliteFactory`/
+   `InMemoryFactory`, with fields recording exactly how the client used it (`lastSql`, `openCalled`,
+   `closeCalled`). No `SUBTOPICS` collision for `abstract-factory` (checked both `subtopics.ts`
+   forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). Build passed
+   clean. Browser-verified: no console errors; nav accordion opens with 3 toggles total (`singleton`
+   + `factory-method` + `abstract-factory`); breadcrumb showed all 4 levels; sidebar showed tailored
+   composite-key content; 860px wrapper confirmed via `getComputedStyle`; full page text swept for
+   vanished/misparsed content on a subtopic page containing generic syntax (`Dictionary<string,
+   Func<IUiFactory>>`), none found. **Design Patterns hub Phase 10: 3 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4101,8 +4126,8 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 2 of 36 topics have subtopics (`/design-patterns/singleton`,
-  `/design-patterns/factory-method`, 2026-08-04) — see
+  Phase 10: 3 of 36 topics have subtopics (`/design-patterns/singleton`,
+  `/design-patterns/factory-method`, `/design-patterns/abstract-factory`, 2026-08-04) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more

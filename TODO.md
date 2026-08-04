@@ -7153,7 +7153,21 @@ off here with a date.
   composite-key content; 860px wrapper confirmed via `getComputedStyle`; full text sweep confirmed
   every brace/interpolation mention renders correctly with nothing vanished. **Design Patterns hub
   Phase 10: 2 of 36 topics complete.**
-- [ ] `/design-patterns/abstract-factory` — Abstract Factory Pattern
+- [x] `/design-patterns/abstract-factory` — Abstract Factory Pattern (2026-08-04) — cleanest page
+  in this hub so far (no undeclared class, no syntax bug found). 3 gap-closing subtopics: (1)
+  **What Versioning the Factory Interface Actually Looks Like** — mistake #1's own "right" side is
+  pure comments naming two mitigations; wrote out interface versioning (`IUiFactoryV2 :
+  IUiFactory`) concretely; (2) **A Registry-Based Factory Selector, Made Concrete** — the QnA
+  describes config-driven factory selection without hardcoding, never shown; wrote the actual
+  registry and connected it to the Factory Method topic's own OCP discussion; (3) **Using Abstract
+  Factory for Test Doubles** — the QnA names test-double factories in one sentence; added a third,
+  fake factory to the page's own Challenge (`DatabaseClient`) and used it to test in complete
+  isolation. `abstract-factory` SUBTOPICS key collision-free (checked app.routes.ts and
+  subtopics.ts directly), left bare. Build passed clean. Browser-verified: no console errors; nav
+  accordion opens with 3 toggles total; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`; full text sweep confirmed
+  no vanished/misparsed content, including generic syntax (`Dictionary<string, Func<IUiFactory>>`).
+  **Design Patterns hub Phase 10: 3 of 36 topics complete.**
 - [ ] `/design-patterns/builder` — Builder Pattern
 - [ ] `/design-patterns/prototype` — Prototype Pattern
 - [ ] `/design-patterns/object-pool` — Object Pool Pattern
