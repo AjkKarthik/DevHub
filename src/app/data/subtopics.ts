@@ -3239,4 +3239,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Is hasBreakingNews Business Logic in the BFF?', route: '/arch-patterns/backend-for-frontend/is-has-breaking-news-business-logic-in-the-bff' },
     { label: 'What the v2 Migration Actually Looks Like', route: '/arch-patterns/backend-for-frontend/what-the-v2-migration-actually-looks-like' },
   ],
+  'singleton': [
+    { label: 'Sealed Does Not Fix What the Mistake Said It Fixes', route: '/design-patterns/singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes' },
+    { label: 'Double-Checked Locking, Actually Written Out', route: '/design-patterns/singleton/double-checked-locking-actually-written-out' },
+    { label: 'What Monostate Actually Looks Like in Code', route: '/design-patterns/singleton/what-monostate-actually-looks-like-in-code' },
+  ],
 };

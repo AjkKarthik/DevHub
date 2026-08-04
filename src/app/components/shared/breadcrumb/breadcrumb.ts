@@ -2457,6 +2457,9 @@ const ARCH_LABELS: Record<string, string> = {
 
 const DP_LABELS: Record<string, string> = {
   'singleton':               'Singleton',
+  'singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes': 'Sealed Does Not Fix What the Mistake Said It Fixes',
+  'singleton/double-checked-locking-actually-written-out': 'Double-Checked Locking, Actually Written Out',
+  'singleton/what-monostate-actually-looks-like-in-code': 'What Monostate Actually Looks Like in Code',
   'factory-method':          'Factory Method',
   'abstract-factory':        'Abstract Factory',
   'builder':                 'Builder',

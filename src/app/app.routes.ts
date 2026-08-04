@@ -2699,7 +2699,12 @@ export const routes: Routes = [
   { path: 'design-patterns', children: [
     { path: '', loadComponent: () => import('./components/architecture/design-patterns/home/home').then(m => m.DesignPatternsHome) },
     // Creational
-    { path: 'singleton',          loadComponent: () => import('./components/architecture/design-patterns/singleton/singleton').then(m => m.DpSingleton) },
+    { path: 'singleton', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/singleton/singleton').then(m => m.DpSingleton) },
+      { path: 'sealed-does-not-fix-what-the-mistake-said-it-fixes', loadComponent: () => import('./components/architecture/design-patterns/singleton/subtopics/sealed-does-not-fix-what-the-mistake-said-it-fixes/sealed-does-not-fix-what-the-mistake-said-it-fixes').then(m => m.SealedDoesNotFixWhatTheMistakeSaidItFixesSubtopic) },
+      { path: 'double-checked-locking-actually-written-out', loadComponent: () => import('./components/architecture/design-patterns/singleton/subtopics/double-checked-locking-actually-written-out/double-checked-locking-actually-written-out').then(m => m.DoubleCheckedLockingActuallyWrittenOutSubtopic) },
+      { path: 'what-monostate-actually-looks-like-in-code', loadComponent: () => import('./components/architecture/design-patterns/singleton/subtopics/what-monostate-actually-looks-like-in-code/what-monostate-actually-looks-like-in-code').then(m => m.WhatMonostateActuallyLooksLikeInCodeSubtopic) },
+    ] },
     { path: 'factory-method',     loadComponent: () => import('./components/architecture/design-patterns/factory-method/factory-method').then(m => m.DpFactoryMethod) },
     { path: 'abstract-factory',   loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/abstract-factory').then(m => m.DpAbstractFactory) },
     { path: 'builder',            loadComponent: () => import('./components/architecture/design-patterns/builder/builder').then(m => m.DpBuilder) },

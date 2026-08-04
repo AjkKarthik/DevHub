@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Singleton Pattern" topicRoute="/design-patterns/singleton" subtopicLabel="What Monostate Actually Looks Like in Code" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">What Monostate Actually Looks Like in Code</h1>
+  <p class="page-subtitle">The theory section describes Monostate in one paragraph and never shows it. This subtopic writes it out — two independently-constructed instances that silently share every write.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch — and the Design Patterns hub's first Phase 10 pilot — by writing out the two patterns the main page names in prose but never shows in code, alongside a correction to a genuine C# access-modifier inaccuracy in the page's own mistakes block and quiz.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Singleton Pattern" topicRoute="/design-patterns/singleton"
+    [prev]="{ label: 'Double-Checked Locking, Actually Written Out', route: '/design-patterns/singleton/double-checked-locking-actually-written-out' }" />
+</div>

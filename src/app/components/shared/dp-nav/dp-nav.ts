@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProgressService } from '../../../services/progress.service';
 import { SEARCH_INDEX } from '../../../services/search.service';
+import { SUBTOPICS } from '../../../data/subtopics';
 
 const DIFF: Record<string, string> = Object.fromEntries(
   SEARCH_INDEX.map(e => [e.route, e.difficulty])
@@ -18,7 +20,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Creational</p>
-      <a routerLink="/design-patterns/singleton" routerLinkActive="active"><span class="nl-text">Singleton</span>@if(p.isDone('dp-singleton')){<span class="nl-done">✓</span>}@if(d('dp-singleton');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/singleton" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Singleton</span>
+        @if(p.isDone('dp-singleton')){<span class="nl-done">✓</span>}
+        @if(d('dp-singleton');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('singleton')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('singleton')"
+                  (click)="toggleSubtopics('singleton', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('singleton'); as sgSubs) {
+        @if (isSubtopicsExpanded('singleton')) {
+          <div class="nav-subtopics">
+            @for (s of sgSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/factory-method" routerLinkActive="active"><span class="nl-text">Factory Method</span>@if(p.isDone('dp-factory-method')){<span class="nl-done">✓</span>}@if(d('dp-factory-method');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/abstract-factory" routerLinkActive="active"><span class="nl-text">Abstract Factory</span>@if(p.isDone('dp-abstract-factory')){<span class="nl-done">✓</span>}@if(d('dp-abstract-factory');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/builder" routerLinkActive="active"><span class="nl-text">Builder</span>@if(p.isDone('dp-builder')){<span class="nl-done">✓</span>}@if(d('dp-builder');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
@@ -82,5 +103,40 @@ const DIFF: Record<string, string> = Object.fromEntries(
 })
 export class DpNavComponent {
   p = inject(ProgressService);
+  private router = inject(Router);
   d(route: string) { return DIFF[route] ?? ''; }
+
+  subtopicsOf(routeSlug: string) {
+    return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  isSubtopicsExpanded(routeSlug: string): boolean {
+    return this.expandedTopics().has(routeSlug);
+  }
+
+  toggleSubtopics(routeSlug: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const next = new Set(this.expandedTopics());
+    next.has(routeSlug) ? next.delete(routeSlug) : next.add(routeSlug);
+    this.expandedTopics.set(next);
+  }
+
+  constructor() {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.autoExpandForCurrentUrl());
+    this.autoExpandForCurrentUrl();
+  }
+
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [topicSlug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(topicSlug));
+        break;
+      }
+    }
+  }
 }

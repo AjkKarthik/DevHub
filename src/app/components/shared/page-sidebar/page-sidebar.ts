@@ -27091,6 +27091,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Global mutable state on a Singleton creates hidden coupling between otherwise unrelated parts of a codebase.',
     ],
   },
+  'design-patterns/singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Singleton Pattern (overview)', route: '/design-patterns/singleton' },
+      { label: 'Double-Checked Locking, Actually Written Out', route: '/design-patterns/singleton/double-checked-locking-actually-written-out' },
+    ],
+    tip: 'A private constructor already blocks external subclassing in C# — sealed instead guards against a future constructor-visibility change and a nested class inheriting from its own enclosing type.',
+    gotchas: [
+      'A nested class DOES have access to its enclosing type\'s private members, including a private constructor — an ordinary external class never does.',
+    ],
+  },
+  'design-patterns/singleton/double-checked-locking-actually-written-out': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Sealed Does Not Fix What the Mistake Said It Fixes', route: '/design-patterns/singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes' },
+      { label: 'What Monostate Actually Looks Like in Code', route: '/design-patterns/singleton/what-monostate-actually-looks-like-in-code' },
+    ],
+    tip: 'The lock statement only protects code inside the lock block — the outer, unlocked fast-path check relies entirely on volatile for its memory-ordering safety.',
+    gotchas: [
+      'Removing volatile from a double-checked-locking Singleton reopens the exact race condition the pattern exists to close.',
+    ],
+  },
+  'design-patterns/singleton/what-monostate-actually-looks-like-in-code': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Singleton Pattern (overview)', route: '/design-patterns/singleton' },
+      { label: 'Dependency Inversion', route: '/design-patterns/dependency-inversion' },
+    ],
+    tip: 'Monostate\'s public constructor lets you build genuinely independent-looking instances — but every field is static, so all of them read and write the exact same underlying storage.',
+    gotchas: [
+      'Constructing and injecting a real Monostate instance solves the coupling problem but does nothing for the shared-mutable-state problem underneath it.',
+    ],
+  },
   'design-patterns/solid': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

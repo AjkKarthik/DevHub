@@ -1311,6 +1311,9 @@ export const SEARCH_INDEX: SearchEntry[] = [
 
   // ── Design Patterns ──────────────────────────────────────────────────────
   { route: 'dp-singleton',                title: 'Singleton',                       section: 'Design Patterns', difficulty: 'beginner',      keywords: 'singleton instance thread safe lazy eager double check lock initialization on demand static' },
+  { route: 'dp-singleton/sealed-does-not-fix-what-the-mistake-said-it-fixes', title: 'Sealed Does Not Fix What the Mistake Said It Fixes', section: 'Design Patterns', difficulty: 'intermediate', keywords: 'sealed private constructor subclass c# access modifier singleton' },
+  { route: 'dp-singleton/double-checked-locking-actually-written-out', title: 'Double-Checked Locking, Actually Written Out', section: 'Design Patterns', difficulty: 'advanced', keywords: 'double checked locking volatile thread safety memory ordering singleton' },
+  { route: 'dp-singleton/what-monostate-actually-looks-like-in-code', title: 'What Monostate Actually Looks Like in Code', section: 'Design Patterns', difficulty: 'intermediate', keywords: 'monostate static fields shared state singleton alternative' },
   { route: 'dp-factory-method',           title: 'Factory Method',                  section: 'Design Patterns', difficulty: 'beginner',      keywords: 'factory method creator product concrete factory polymorphism extensibility gof creational' },
   { route: 'dp-abstract-factory',         title: 'Abstract Factory',                section: 'Design Patterns', difficulty: 'intermediate',  keywords: 'abstract factory families products platform theme consistency interface creation creational gof' },
   { route: 'dp-builder',                  title: 'Builder',                         section: 'Design Patterns', difficulty: 'beginner',      keywords: 'builder fluent interface step by step construction director method chaining complex object creation' },
