@@ -7205,7 +7205,23 @@ off here with a date.
   showed tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; the
   corrected solution field confirmed rendering literal `List<string>` text correctly.
   **Design Patterns hub Phase 10: 5 of 36 topics complete.**
-- [ ] `/design-patterns/object-pool` — Object Pool Pattern
+- [x] `/design-patterns/object-pool` — Object Pool Pattern (2026-08-04) — fixed a genuine
+  inaccuracy in the theory ("Acquire creates a new one (up to max)" — the code has no such check;
+  maxSize only bounds retained idle instances in Release(), not concurrent creation). 3 subtopics:
+  (1) **The Count-Check Race Condition** — the TOCTOU race in `if (Count < maxSize) Add()`,
+  verified via WebSearch how the real .NET DefaultObjectPool avoids it entirely (lock-free
+  CompareExchange slots, no Count field); (2) **Implementing Idle-Object Eviction** — theory
+  promises eviction, neither codeTab shows it; built a TimestampedObjectPool with a background
+  sweep, plus the eviction-must-also-dispose correctness point; (3) **ConcurrentBag vs.
+  ConcurrentQueue for Pool Storage** — reconciles the main codeTab's ConcurrentBag choice against
+  the page's own QnA recommending ConcurrentQueue+SemaphoreSlim, verified via WebSearch (thread-
+  affinity vs. dedicated producer/consumer tradeoff), with a SemaphoreSlim-backed
+  BoundedObjectPool giving Acquire() a real hard concurrency cap. `object-pool` SUBTOPICS key
+  collision-free (checked app.routes.ts and subtopics.ts directly), left bare. Build passed
+  clean. Browser-verified: no console errors; the theory fix confirmed rendering; nav accordion
+  opens with 6 toggles total; breadcrumb showed all 4 levels; sidebar showed tailored
+  composite-key content; 860px wrapper confirmed via `getComputedStyle`.
+  **Design Patterns hub Phase 10: 6 of 36 topics complete.**
 - [ ] `/design-patterns/adapter` — Adapter Pattern
 - [ ] `/design-patterns/bridge` — Bridge Pattern
 - [ ] `/design-patterns/composite` — Composite Pattern

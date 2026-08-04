@@ -3242,6 +3242,48 @@ do this same check before any other new hub's first subtopic set:
     SAME string mentioned via `theory.points`' `&lt;`/`&gt;`-escaped `<code>` wrapping confirmed
     rendering identically correctly — verifying both binding-type rules side by side on the same
     live page. **Design Patterns hub Phase 10: 5 of 36 topics complete.**
+12. **The `object-pool` batch found no undeclared-class bug, but a genuine, self-contained
+    inaccuracy in the main page's own theory prose, plus a real concurrency race identified purely
+    by reading — no external research needed to spot either**: the "Acquire / Release Lifecycle"
+    theory bullet claimed Acquire() "creates a new one (up to max)," but the codeTab's actual
+    `Acquire()` is `_pool.TryTake(out var item) ? item : _factory();` — no maxSize check anywhere
+    on that path at all; maxSize is only ever consulted in Release(), where it bounds how many
+    RETURNED instances are retained for reuse, not how many can be concurrently created and in use.
+    Verified this also matches the real `Microsoft.Extensions.ObjectPool`'s own documented
+    behavior (`Get()` never blocks or refuses to create) before tightening the theory bullet's
+    wording to state the true, narrower guarantee. Separately, the same codeTab's `Release()` —
+    `if (_pool.Count < _maxSize) _pool.Add(item);` — is a textbook check-then-act (TOCTOU) race:
+    two threads can both read Count below maxSize before either one calls Add(), and the pool ends
+    up holding more than maxSize idle instances. Verified via WebSearch against the real
+    `DefaultObjectPool<T>` source (dotnet/aspnetcore) that Microsoft's own implementation sidesteps
+    this exact race entirely by never tracking a Count at all — a fixed-size array of slots, each
+    claimed via a single atomic `Interlocked.CompareExchange`, with excess Return() calls simply
+    dropping the object for the GC to reclaim instead of racing on a counter. Three subtopics: (1)
+    **The Count-Check Race Condition** — the TOCTOU race itself, its real-world severity (soft
+    overshoot, not corruption), and the verified lock-free slot design .NET's own source actually
+    uses instead; (2) **Implementing Idle-Object Eviction** — the theory promises "pool may shrink
+    idle objects after a timeout" but NEITHER codeTab shows this; built the missing
+    `TimestampedObjectPool<T>` with a background Timer sweep, plus the easy-to-miss correctness
+    point that evicting an item from the pool's own collection and disposing its underlying
+    resource are two separate steps that must happen together for disposable pooled items; (3)
+    **ConcurrentBag vs. ConcurrentQueue for Pool Storage** — reconciles the main codeTab's own
+    choice of `ConcurrentBag<T>` against the SAME page's own QnA, which recommends
+    `ConcurrentQueue<T>` + `SemaphoreSlim` for a thread-safe pool instead; verified via WebSearch
+    that ConcurrentBag is specifically documented as optimized for same-thread produce/consume
+    (thread-local lists, no locking on the fast path) and explicitly weak at the
+    dedicated-producer/dedicated-consumer pattern that async/await routinely creates (a
+    continuation resuming on a different thread-pool thread than the one that awaited) — ties back
+    into subtopic 1 by showing a `BoundedObjectPool<T>` that uses `SemaphoreSlim.WaitAsync()` to
+    give Acquire() an actual hard concurrency cap, the capability a bare Count check can never
+    provide. Applied the same backtick-vs-`<code>` house-style discipline established in prior
+    batches — inline code mentions inside `[innerHTML]`-bound `theory.points`/`misconceptions`
+    fields use `<code>&lt;tag&gt;</code>`, never backtick-wrapped markdown-style spans. No
+    `SUBTOPICS` collision for `object-pool` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean.
+    Browser-verified: no console errors; the main-page theory-bullet fix confirmed rendering; nav
+    accordion opens with 6 toggles total; breadcrumb showed all 4 levels on every subtopic; sidebar
+    showed tailored composite-key content (confirmed via direct text search); 860px wrapper
+    confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 6 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4209,9 +4251,10 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 5 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 6 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
-  `/design-patterns/builder`, `/design-patterns/prototype`, 2026-08-04) — see
+  `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
+  2026-08-04) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more
