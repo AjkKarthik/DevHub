@@ -26742,6 +26742,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Reach for Abstract Factory only when there are genuinely multiple interchangeable families — for one family, plain Factory Method or direct construction is simpler.',
     ],
   },
+  'design-patterns/abstract-factory/what-versioning-the-factory-interface-actually-looks-like': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Abstract Factory (overview)', route: '/design-patterns/abstract-factory' },
+      { label: 'A Registry-Based Factory Selector, Made Concrete', route: '/design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete' },
+    ],
+    tip: 'A newer interface extending the original lets existing factories and client code stay completely untouched — only code that wants the new capability has to depend on the newer interface.',
+    gotchas: [
+      'Versioning trades one cost for a smaller one — it does not eliminate the cost of adding a new product type entirely.',
+    ],
+  },
+  'design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'What Versioning the Factory Interface Actually Looks Like', route: '/design-patterns/abstract-factory/what-versioning-the-factory-interface-actually-looks-like' },
+      { label: 'Using Abstract Factory for Test Doubles', route: '/design-patterns/abstract-factory/using-abstract-factory-for-test-doubles' },
+    ],
+    tip: 'A registry\'s dictionary lookup never changes as new factories are added — only the independent Register() call for each new factory needs to exist.',
+    gotchas: [
+      'A switch statement mapping a config key to a factory type has the exact same maintenance cost as any other type-switch — a registry avoids this entirely.',
+    ],
+  },
+  'design-patterns/abstract-factory/using-abstract-factory-for-test-doubles': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Abstract Factory (overview)', route: '/design-patterns/abstract-factory' },
+      { label: 'A Registry-Based Factory Selector, Made Concrete', route: '/design-patterns/abstract-factory/a-registry-based-factory-selector-made-concrete' },
+    ],
+    tip: 'A client depending only on the abstract factory interface — never a concrete factory by name — is what makes swapping in a purpose-built fake for tests possible with zero changes to the client.',
+    gotchas: [
+      'A lightweight production alternative (like an in-memory implementation) and a purpose-built test fake serve different goals — a fake exists specifically to record and assert on HOW it was used.',
+    ],
+  },
   'design-patterns/adapter': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

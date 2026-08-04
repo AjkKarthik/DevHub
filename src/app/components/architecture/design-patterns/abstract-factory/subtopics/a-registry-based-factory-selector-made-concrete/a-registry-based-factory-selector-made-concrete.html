@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Abstract Factory" topicRoute="/design-patterns/abstract-factory" subtopicLabel="A Registry-Based Factory Selector, Made Concrete" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">A Registry-Based Factory Selector, Made Concrete</h1>
+  <p class="page-subtitle">The QnA describes selecting a concrete factory from configuration "without hardcoding it in client code" in one dense paragraph. This subtopic writes the registry that actually does it.</p>
+  <app-page-meta [readingTime]="6" difficulty="advanced" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic makes concrete a third real-world use case the QnA names but never shows — using Abstract Factory to swap in test doubles for the Challenge's own DatabaseClient.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Abstract Factory" topicRoute="/design-patterns/abstract-factory"
+    [prev]="{ label: 'What Versioning the Factory Interface Actually Looks Like', route: '/design-patterns/abstract-factory/what-versioning-the-factory-interface-actually-looks-like' }"
+    [next]="{ label: 'Using Abstract Factory for Test Doubles', route: '/design-patterns/abstract-factory/using-abstract-factory-for-test-doubles' }" />
+</div>

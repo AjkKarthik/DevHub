@@ -60,7 +60,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/abstract-factory" routerLinkActive="active"><span class="nl-text">Abstract Factory</span>@if(p.isDone('dp-abstract-factory')){<span class="nl-done">✓</span>}@if(d('dp-abstract-factory');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/abstract-factory" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Abstract Factory</span>
+        @if(p.isDone('dp-abstract-factory')){<span class="nl-done">✓</span>}
+        @if(d('dp-abstract-factory');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('abstract-factory')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('abstract-factory')"
+                  (click)="toggleSubtopics('abstract-factory', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('abstract-factory'); as afSubs) {
+        @if (isSubtopicsExpanded('abstract-factory')) {
+          <div class="nav-subtopics">
+            @for (s of afSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/builder" routerLinkActive="active"><span class="nl-text">Builder</span>@if(p.isDone('dp-builder')){<span class="nl-done">✓</span>}@if(d('dp-builder');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/prototype" routerLinkActive="active"><span class="nl-text">Prototype</span>@if(p.isDone('dp-prototype')){<span class="nl-done">✓</span>}@if(d('dp-prototype');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/object-pool" routerLinkActive="active"><span class="nl-text">Object Pool</span>@if(p.isDone('dp-object-pool')){<span class="nl-done">✓</span>}@if(d('dp-object-pool');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

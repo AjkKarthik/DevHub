@@ -2711,7 +2711,12 @@ export const routes: Routes = [
       { path: 'backticks-are-not-c-sharp', loadComponent: () => import('./components/architecture/design-patterns/factory-method/subtopics/backticks-are-not-c-sharp/backticks-are-not-c-sharp').then(m => m.BackticksAreNotCSharpSubtopic) },
       { path: 'does-the-channel-switch-really-decouple-which-factory', loadComponent: () => import('./components/architecture/design-patterns/factory-method/subtopics/does-the-channel-switch-really-decouple-which-factory/does-the-channel-switch-really-decouple-which-factory').then(m => m.DoesTheChannelSwitchReallyDecoupleWhichFactorySubtopic) },
     ] },
-    { path: 'abstract-factory',   loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/abstract-factory').then(m => m.DpAbstractFactory) },
+    { path: 'abstract-factory', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/abstract-factory').then(m => m.DpAbstractFactory) },
+      { path: 'what-versioning-the-factory-interface-actually-looks-like', loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/subtopics/what-versioning-the-factory-interface-actually-looks-like/what-versioning-the-factory-interface-actually-looks-like').then(m => m.WhatVersioningTheFactoryInterfaceActuallyLooksLikeSubtopic) },
+      { path: 'a-registry-based-factory-selector-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/subtopics/a-registry-based-factory-selector-made-concrete/a-registry-based-factory-selector-made-concrete').then(m => m.ARegistryBasedFactorySelectorMadeConcreteSubtopic) },
+      { path: 'using-abstract-factory-for-test-doubles', loadComponent: () => import('./components/architecture/design-patterns/abstract-factory/subtopics/using-abstract-factory-for-test-doubles/using-abstract-factory-for-test-doubles').then(m => m.UsingAbstractFactoryForTestDoublesSubtopic) },
+    ] },
     { path: 'builder',            loadComponent: () => import('./components/architecture/design-patterns/builder/builder').then(m => m.DpBuilder) },
     { path: 'prototype',          loadComponent: () => import('./components/architecture/design-patterns/prototype/prototype').then(m => m.DpPrototype) },
     { path: 'object-pool',        loadComponent: () => import('./components/architecture/design-patterns/object-pool/object-pool').then(m => m.DpObjectPool) },
