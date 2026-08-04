@@ -7185,7 +7185,26 @@ off here with a date.
   visible in the actual displayed code; nav accordion opens with 4 toggles total; breadcrumb showed
   all 4 levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
   `getComputedStyle`. **Design Patterns hub Phase 10: 4 of 36 topics complete.**
-- [ ] `/design-patterns/prototype` — Prototype Pattern
+- [x] `/design-patterns/prototype` — Prototype Pattern (2026-08-04) — 3 subtopics: (1)
+  **Polymorphic Cloning via IPrototype** — the theory names "concrete type unknown at compile
+  time" as a use case but both codeTabs use a single statically-known type throughout; wrote the
+  genuinely polymorphic version via a shared IShape interface; (2) **Why Immutable Sub-Objects
+  Make Shallow Copy Safe** — the theory states this in one line and only ever shows the dangerous
+  (mutable) half; built the missing safe contrast with an immutable Address record. Caught and
+  fixed a real mistake while writing this subtopic: HTML entities used inside an
+  exercise.solution field (which binds via plain interpolation and never decodes entities) —
+  proactively re-checked every solution field across every Phase 10 subtopic this session for the
+  same mistake, confirmed isolated to this one instance, fixed to raw characters; (3) **Is with
+  Prototype, or an Alternative to It?** — reconciled a genuine tension: mistake #3 reads as "use
+  with instead of Prototype," while the quiz elsewhere calls with expressions "the prototype
+  pattern made idiomatic." Tightened mistake #3's own explanation on the main page to make
+  explicit that with IS Prototype (built-in language form), not an alternative to it. `prototype`
+  SUBTOPICS key collision-free (checked app.routes.ts and subtopics.ts directly), left bare.
+  Build passed clean. Browser-verified: no console errors; the main-page clarification confirmed
+  rendering; nav accordion opens with 5 toggles total; breadcrumb showed all 4 levels; sidebar
+  showed tailored composite-key content; 860px wrapper confirmed via `getComputedStyle`; the
+  corrected solution field confirmed rendering literal `List<string>` text correctly.
+  **Design Patterns hub Phase 10: 5 of 36 topics complete.**
 - [ ] `/design-patterns/object-pool` — Object Pool Pattern
 - [ ] `/design-patterns/adapter` — Adapter Pattern
 - [ ] `/design-patterns/bridge` — Bridge Pattern

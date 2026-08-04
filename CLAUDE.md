@@ -3204,6 +3204,44 @@ do this same check before any other new hub's first subtopic set:
     FIX 1 and FIX 2 codeTab variants (escaped-quote and verbatim-string versions) both confirmed
     rendering with correct, distinct escaping. **Design Patterns hub Phase 10: 4 of 36 topics
     complete.**
+11. **The `prototype` batch found no undeclared-class or syntax bug, but a genuine, self-contained
+    internal tension between two different sections of the same page**: mistake #3 ("Using
+    Prototype when construction is cheap") originally read as "use a record `with` expression
+    INSTEAD OF Prototype" for simple objects, while the quiz, on an unrelated question, explicitly
+    calls `with` expressions "the prototype pattern made idiomatic" — the two readings cannot both
+    be literally true at once. Resolved by tightening mistake #3's own explanation: `with` genuinely
+    IS Prototype (copy an existing instance, override specific fields — Prototype's own definition),
+    just implemented as a built-in language feature instead of a hand-written `Clone()` method; the
+    actual point mistake #3 makes is narrower than "avoid Prototype" — it is "avoid building
+    unnecessary explicit Prototype INFRASTRUCTURE (an interface, a hand-rolled method) for something
+    records already give you for free." Two further subtopics are gap-closing: the theory names
+    "concrete type not known at compile time" as a Prototype use case, but both codeTabs use a
+    single, statically-known type throughout (`EmailTemplate`, `NotificationConfig`) — wrote the
+    genuinely polymorphic version via a shared `IShape` interface, where client code clones through
+    the interface with zero branches on concrete type. Separately, the theory states "for immutable
+    sub-objects, shallow copy is safe" in one line, then only ever shows the DANGEROUS half (a
+    shared mutable `List&lt;string&gt;`) — built the missing safe contrast with an immutable
+    `Address` record, showing that reference-sharing alone is never the danger; mutability through
+    that shared reference is. **A genuine mistake was caught and fixed while writing this exact
+    subtopic**: an early draft used HTML entities (`&lt;`/`&gt;`) inside an `exercise.solution`
+    field describing `List&lt;string&gt;` — but `solution` binds via PLAIN interpolation (confirmed
+    against the already-established per-field-binding rule: `heading`/`solution` → raw characters,
+    no entities; `points`/`thought`/`reality`/`prompt`/`hint` → entities/`<code>` wrapping for tag
+    and generic mentions), which never decodes HTML entities at all — the entities would have
+    rendered as the literal, raw text `List&lt;string&gt;` to the reader instead of `List<string>`.
+    Caught via a proactive re-check of every subtopic file created THIS SESSION for the same
+    mistake (grepped every `solution:` field across all Phase 10 subtopics for `&lt;`/`&gt;`/`&#`
+    on the same line) rather than assuming it was isolated — confirmed genuinely isolated to this
+    one instance, then fixed to raw `List<string>`. No `SUBTOPICS` collision for `prototype`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). Build passed clean. Browser-verified: no console errors; the
+    main-page mistake-block clarification confirmed rendering; nav accordion opens with 5 toggles
+    total; breadcrumb showed all 4 levels; sidebar showed tailored composite-key content; 860px
+    wrapper confirmed via `getComputedStyle`; the corrected `exercise.solution` field confirmed
+    rendering `List<string>` as literal text (not vanished, not showing raw entity codes), and the
+    SAME string mentioned via `theory.points`' `&lt;`/`&gt;`-escaped `<code>` wrapping confirmed
+    rendering identically correctly — verifying both binding-type rules side by side on the same
+    live page. **Design Patterns hub Phase 10: 5 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4171,9 +4209,9 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 4 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 5 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
-  `/design-patterns/builder`, 2026-08-04) — see
+  `/design-patterns/builder`, `/design-patterns/prototype`, 2026-08-04) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more
