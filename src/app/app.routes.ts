@@ -2866,7 +2866,12 @@ export const routes: Routes = [
       { path: 'the-missing-ipaymentgateway-interface', loadComponent: () => import('./components/architecture/arch-patterns/anti-corruption-layer/subtopics/the-missing-ipaymentgateway-interface/the-missing-ipaymentgateway-interface').then(m => m.TheMissingIPaymentGatewayInterfaceSubtopic) },
       { path: 'splitting-call-and-translate-lets-stripe-leak-back-in', loadComponent: () => import('./components/architecture/arch-patterns/anti-corruption-layer/subtopics/splitting-call-and-translate-lets-stripe-leak-back-in/splitting-call-and-translate-lets-stripe-leak-back-in').then(m => m.SplittingCallAndTranslateLetsStripeLeakBackInSubtopic) },
     ] },
-    { path: 'strangler-fig',             loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/strangler-fig').then(m => m.ArchStranglerFig) },
+    { path: 'strangler-fig', children: [
+      { path: '', loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/strangler-fig').then(m => m.ArchStranglerFig) },
+      { path: 'feature-flag-comment-named-the-wrong-migrated-feature', loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/subtopics/feature-flag-comment-named-the-wrong-migrated-feature/feature-flag-comment-named-the-wrong-migrated-feature').then(m => m.FeatureFlagCommentNamedTheWrongMigratedFeatureSubtopic) },
+      { path: 'parallel-run-skipped-its-own-discrepancy-check', loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/subtopics/parallel-run-skipped-its-own-discrepancy-check/parallel-run-skipped-its-own-discrepancy-check').then(m => m.ParallelRunSkippedItsOwnDiscrepancyCheckSubtopic) },
+      { path: 'the-split-brain-risk-made-concrete', loadComponent: () => import('./components/architecture/arch-patterns/strangler-fig/subtopics/the-split-brain-risk-made-concrete/the-split-brain-risk-made-concrete').then(m => m.TheSplitBrainRiskMadeConcreteSubtopic) },
+    ] },
     { path: 'backend-for-frontend',      loadComponent: () => import('./components/architecture/arch-patterns/backend-for-frontend/backend-for-frontend').then(m => m.ArchBackendForFrontend) },
     { path: 'adr',                       loadComponent: () => import('./components/architecture/arch-patterns/adr/adr').then(m => m.ArchAdr) },
     { path: 'pattern-comparison',        loadComponent: () => import('./components/architecture/arch-patterns/pattern-comparison/pattern-comparison').then(m => m.ArchPatternComparison) },

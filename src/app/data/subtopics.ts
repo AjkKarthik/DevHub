@@ -3229,4 +3229,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' },
     { label: 'Splitting Call and Translate Lets Stripe Leak Back In', route: '/arch-patterns/anti-corruption-layer/splitting-call-and-translate-lets-stripe-leak-back-in' },
   ],
+  'strangler-fig': [
+    { label: 'Feature-Flag Comment Named the Wrong Migrated Feature', route: '/arch-patterns/strangler-fig/feature-flag-comment-named-the-wrong-migrated-feature' },
+    { label: 'Parallel Run Skipped Its Own Discrepancy Check', route: '/arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check' },
+    { label: 'The Split-Brain Risk Made Concrete', route: '/arch-patterns/strangler-fig/the-split-brain-risk-made-concrete' },
+  ],
 };

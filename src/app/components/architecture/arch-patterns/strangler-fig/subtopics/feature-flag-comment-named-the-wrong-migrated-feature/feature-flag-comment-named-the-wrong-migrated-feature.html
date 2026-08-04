@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strangler Fig Pattern" topicRoute="/arch-patterns/strangler-fig" subtopicLabel="Feature-Flag Comment Named the Wrong Migrated Feature" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Feature-Flag Comment Named the Wrong Migrated Feature</h1>
+  <p class="page-subtitle">The "Facade with Feature Flags" codeTab's rollout-ramp comment described retiring legacy cancel code — but cancelOrder() has no feature-flag mechanism at all. The ramp actually belongs to placeOrder()'s own flag.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic looks at a different codeTab on the same page — the Parallel Run's own discrepancy check has a real logic bug hiding in a nested condition.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Strangler Fig Pattern" topicRoute="/arch-patterns/strangler-fig"
+    [next]="{ label: 'Parallel Run Skipped Its Own Discrepancy Check', route: '/arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check' }" />
+</div>

@@ -28014,6 +28014,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The pattern has a natural completion state — once every route is migrated, the legacy system and facade can be decommissioned.',
     ],
   },
+  'arch-patterns/strangler-fig/feature-flag-comment-named-the-wrong-migrated-feature': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Strangler Fig Pattern (overview)', route: '/arch-patterns/strangler-fig' },
+      { label: 'Parallel Run Skipped Its Own Discrepancy Check', route: '/arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check' },
+    ],
+    tip: 'A rollout-ramp comment naming a specific feature is making a claim about that feature\'s migration mechanism — if the named method has no flag check at all, the comment is simply inaccurate.',
+    gotchas: [
+      'placeOrder(), getOrder(), and cancelOrder() are deliberately shown at three different migration states — flagged, fully-migrated, and not-yet-started — so a rollout comment needs to specify precisely which one it describes.',
+    ],
+  },
+  'arch-patterns/strangler-fig/parallel-run-skipped-its-own-discrepancy-check': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Feature-Flag Comment Named the Wrong Migrated Feature', route: '/arch-patterns/strangler-fig/feature-flag-comment-named-the-wrong-migrated-feature' },
+      { label: 'The Split-Brain Risk Made Concrete', route: '/arch-patterns/strangler-fig/the-split-brain-risk-made-concrete' },
+    ],
+    tip: 'IDs matching or differing says nothing about whether status or total also match — the status/total comparison has to run unconditionally, not nested behind an ID-difference check.',
+    gotchas: [
+      'This class of bug fails silently — no crash, no error — it just quietly stops running the one check it exists to run, under a condition rare enough to go unnoticed for a long time.',
+    ],
+  },
+  'arch-patterns/strangler-fig/the-split-brain-risk-made-concrete': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Strangler Fig Pattern (overview)', route: '/arch-patterns/strangler-fig' },
+      { label: 'Inbox/Outbox', route: '/arch-patterns/inbox-outbox' },
+    ],
+    tip: 'Every individual write and read can succeed perfectly while a customer\'s data silently splits across two disconnected systems — split-brain shows up as incomplete results, not errors.',
+    gotchas: [
+      'A sticky feature flag (once migrated, always migrated) only stops the gap from growing — it does nothing to reconcile data already split before the flag became sticky.',
+    ],
+  },
   'arch-patterns/vertical-slice': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

@@ -436,7 +436,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/arch-patterns/strangler-fig" routerLinkActive="active"><span class="nl-text">Strangler Fig Pattern</span>@if(p.isDone('arch-strangler-fig')){<span class="nl-done">✓</span>}@if(d('arch-strangler-fig');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/strangler-fig" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Strangler Fig Pattern</span>
+        @if(p.isDone('arch-strangler-fig')){<span class="nl-done">✓</span>}
+        @if(d('arch-strangler-fig');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('strangler-fig')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('strangler-fig')"
+                  (click)="toggleSubtopics('strangler-fig', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('strangler-fig'); as sfSubs) {
+        @if (isSubtopicsExpanded('strangler-fig')) {
+          <div class="nav-subtopics">
+            @for (s of sfSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/backend-for-frontend" routerLinkActive="active"><span class="nl-text">Backend for Frontend (BFF)</span>@if(p.isDone('arch-backend-for-frontend')){<span class="nl-done">✓</span>}@if(d('arch-backend-for-frontend');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>
 

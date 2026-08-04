@@ -113,11 +113,13 @@ class OrderServiceFacade {
   }
 }
 
-// Feature flag config — incremental rollout
+// Feature flag config — incremental rollout for 'new-order-placement'
+// (the SAME flag placeOrder() checks above — cancelOrder() has no flag
+// yet, since it hasn't started migrating)
 // Day 1:  0% traffic to new system (dark launch — log only)
 // Day 7:  5% traffic to new system
 // Day 14: 25% → watch error rates and latency
-// Day 21: 100% → retire legacy cancel code`
+// Day 21: 100% → retire legacy order-placement code`
     },
     {
       label: 'Parallel Run for Validation',
@@ -131,16 +133,18 @@ async function parallelRunPlaceOrder(cmd: PlaceOrderCommand): Promise<OrderResul
 
   // Log discrepancies for analysis
   if (legacyResult.status === 'fulfilled' && newResult.status === 'fulfilled') {
-    if (legacyResult.value.orderId !== newResult.value.orderId) {
-      // IDs differ (expected) — compare status and total
-      if (legacyResult.value.status !== newResult.value.status ||
-          legacyResult.value.total !== newResult.value.total) {
-        logger.warn('Parallel run discrepancy', {
-          legacy: legacyResult.value,
-          new: newResult.value,
-          cmd,
-        });
-      }
+    // IDs are EXPECTED to differ (separate systems, separate ID generators) --
+    // that alone is not a discrepancy. status/total must be compared
+    // UNCONDITIONALLY, regardless of whether the IDs happen to match --
+    // nesting this inside "if IDs differ" would silently skip the real
+    // check on the rare occasion the two systems produce the same ID.
+    if (legacyResult.value.status !== newResult.value.status ||
+        legacyResult.value.total !== newResult.value.total) {
+      logger.warn('Parallel run discrepancy', {
+        legacy: legacyResult.value,
+        new: newResult.value,
+        cmd,
+      });
     }
   } else if (newResult.status === 'rejected') {
     logger.error('New system failed in parallel run', { error: newResult.reason });
