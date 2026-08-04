@@ -27282,6 +27282,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'ACLs are especially valuable during a strangler-fig migration, isolating the new codebase from legacy quirks.',
     ],
   },
+  'arch-patterns/anti-corruption-layer/legacy-erp-adapter-referenced-undeclared-erp-client': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Anti-Corruption Layer (overview)', route: '/arch-patterns/anti-corruption-layer' },
+      { label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' },
+    ],
+    tip: 'A collaborator like an ERP client cannot be a bare property initializer — it has to be supplied from outside via the constructor, since there is no literal value to initialize it with inline.',
+    gotchas: [
+      'TypeScript strict mode rejects an undeclared field at compile time (TS2339) — the class already having one declared field does not mean every field its methods use is declared too.',
+    ],
+  },
+  'arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'LegacyErpAdapter Referenced an Undeclared erpClient', route: '/arch-patterns/anti-corruption-layer/legacy-erp-adapter-referenced-undeclared-erp-client' },
+      { label: 'Splitting Call and Translate Lets Stripe Leak Back In', route: '/arch-patterns/anti-corruption-layer/splitting-call-and-translate-lets-stripe-leak-back-in' },
+    ],
+    tip: 'Without the Domain-defined interface actually existing, nothing forces the ACL\'s public shape to stay aligned with what the Domain needs — the type system cannot catch a silent drift toward external concepts.',
+    gotchas: [
+      'A dependency-inversion claim is structural, not just prose — it either shows the interface and the implements clause in code, or it isn\'t actually demonstrated.',
+    ],
+  },
+  'arch-patterns/anti-corruption-layer/splitting-call-and-translate-lets-stripe-leak-back-in': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Anti-Corruption Layer (overview)', route: '/arch-patterns/anti-corruption-layer' },
+      { label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' },
+    ],
+    tip: 'A full-round-trip ACL (one method that both calls the external system and translates the result) removes the bypass path entirely — a split call/translate design leaves a raw shortcut for domain code to reach for.',
+    gotchas: [
+      'A code review checklist is a process control, not a structural one — it depends on human vigilance under exactly the time pressure the risk describes.',
+    ],
+  },
   'arch-patterns/api-gateway-pattern': {
     apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
     related: [

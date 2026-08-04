@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Anti-Corruption Layer" topicRoute="/arch-patterns/anti-corruption-layer" subtopicLabel="LegacyErpAdapter Referenced an Undeclared erpClient" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">LegacyErpAdapter Referenced an Undeclared erpClient</h1>
+  <p class="page-subtitle">The "ACL: Legacy ERP Integration" codeTab's class declared one field but used a second, undeclared one in a different method — a real TypeScript compile error, not a style nit.</p>
+  <app-page-meta [readingTime]="5" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic looks at a real gap in the page's own claims: the revision and QnA both say an ACL implements a Domain interface, but no codeTab ever shows that interface.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Anti-Corruption Layer" topicRoute="/arch-patterns/anti-corruption-layer"
+    [next]="{ label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' }" />
+</div>

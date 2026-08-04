@@ -1,0 +1,27 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Anti-Corruption Layer" topicRoute="/arch-patterns/anti-corruption-layer" subtopicLabel="The Missing IPaymentGateway Interface" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">The Missing IPaymentGateway Interface</h1>
+  <p class="page-subtitle">The page's own revision and QnA both claim the Domain defines the interface and the ACL implements it — a real dependency-inversion structure that no codeTab on the page ever actually shows in code.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic makes concrete a risk the page's own QnA names but never demonstrates — what actually happens when the "call" and "translate" responsibilities are split into separate layers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Anti-Corruption Layer" topicRoute="/arch-patterns/anti-corruption-layer"
+    [prev]="{ label: 'LegacyErpAdapter Referenced an Undeclared erpClient', route: '/arch-patterns/anti-corruption-layer/legacy-erp-adapter-referenced-undeclared-erp-client' }"
+    [next]="{ label: 'Splitting Call and Translate Lets Stripe Leak Back In', route: '/arch-patterns/anti-corruption-layer/splitting-call-and-translate-lets-stripe-leak-back-in' }" />
+</div>

@@ -1,0 +1,26 @@
+<div class="arch-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Anti-Corruption Layer" topicRoute="/arch-patterns/anti-corruption-layer" subtopicLabel="Splitting Call and Translate Lets Stripe Leak Back In" />
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Splitting Call and Translate Lets Stripe Leak Back In</h1>
+  <p class="page-subtitle">The page's own QnA names this risk in one sentence and moves on. This subtopic shows exactly how the bypass happens when the "call Stripe" and "translate the result" responsibilities live in separate classes.</p>
+  <app-page-meta [readingTime]="6" difficulty="intermediate" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="arch-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the batch: together the three subtopics fix a real compile error, make the page's own dependency-inversion claim concrete in code, and demonstrate a risk the QnA names but never shows happening.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Anti-Corruption Layer" topicRoute="/arch-patterns/anti-corruption-layer"
+    [prev]="{ label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' }" />
+</div>

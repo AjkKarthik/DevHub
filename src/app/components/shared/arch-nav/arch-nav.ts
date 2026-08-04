@@ -416,7 +416,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Integration</p>
-      <a routerLink="/arch-patterns/anti-corruption-layer" routerLinkActive="active"><span class="nl-text">Anti-Corruption Layer</span>@if(p.isDone('arch-anti-corruption-layer')){<span class="nl-done">✓</span>}@if(d('arch-anti-corruption-layer');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/arch-patterns/anti-corruption-layer" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Anti-Corruption Layer</span>
+        @if(p.isDone('arch-anti-corruption-layer')){<span class="nl-done">✓</span>}
+        @if(d('arch-anti-corruption-layer');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('anti-corruption-layer')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('anti-corruption-layer')"
+                  (click)="toggleSubtopics('anti-corruption-layer', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('anti-corruption-layer'); as aclSubs) {
+        @if (isSubtopicsExpanded('anti-corruption-layer')) {
+          <div class="nav-subtopics">
+            @for (s of aclSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/arch-patterns/strangler-fig" routerLinkActive="active"><span class="nl-text">Strangler Fig Pattern</span>@if(p.isDone('arch-strangler-fig')){<span class="nl-done">✓</span>}@if(d('arch-strangler-fig');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/arch-patterns/backend-for-frontend" routerLinkActive="active"><span class="nl-text">Backend for Frontend (BFF)</span>@if(p.isDone('arch-backend-for-frontend')){<span class="nl-done">✓</span>}@if(d('arch-backend-for-frontend');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

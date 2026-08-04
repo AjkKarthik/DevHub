@@ -3224,4 +3224,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Save-Then-Publish CodeTab Has a Dual-Write Bug', route: '/arch-patterns/aggregates-domain-events/save-then-publish-has-a-dual-write-bug' },
     { label: 'Fixing It With the Outbox Pattern', route: '/arch-patterns/aggregates-domain-events/fixing-it-with-the-outbox-pattern' },
   ],
+  'anti-corruption-layer': [
+    { label: 'LegacyErpAdapter Referenced an Undeclared erpClient', route: '/arch-patterns/anti-corruption-layer/legacy-erp-adapter-referenced-undeclared-erp-client' },
+    { label: 'The Missing IPaymentGateway Interface', route: '/arch-patterns/anti-corruption-layer/the-missing-ipaymentgateway-interface' },
+    { label: 'Splitting Call and Translate Lets Stripe Leak Back In', route: '/arch-patterns/anti-corruption-layer/splitting-call-and-translate-lets-stripe-leak-back-in' },
+  ],
 };
