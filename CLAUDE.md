@@ -3435,6 +3435,39 @@ do this same check before any other new hub's first subtopic set:
     levels; 860px wrapper confirmed via `getComputedStyle`; the corrected generic syntax confirmed
     rendering as literal text after expanding the Try It exercise's "Show solution" toggle.
     **Design Patterns hub Phase 10: 10 of 36 topics complete.**
+17. **The `facade` batch found and fixed a genuine, self-contained orchestration bug in the main
+    page's own "Order Checkout Facade" codeTab — two distinct ways it could leak reserved
+    inventory, both requiring only careful reading, no external research**: the original
+    `CheckoutAsync` reserved inventory item-by-item in a loop, and if a LATER item in the cart
+    failed its stock check, returned `Failure` immediately with no code releasing the items
+    already successfully reserved earlier in that same loop. Separately, the "charge payment, then
+    commit inventory" sequence had no exception handling at all — if `payment.Charge(...)` had
+    thrown (a realistic outcome for any real payment gateway), every reserved item would leak
+    indefinitely, since the method would exit via the exception before ever reaching
+    `inventory.Commit(...)`. Fixed by tracking successfully-reserved items for mid-loop rollback,
+    and wrapping the charge-through-commit sequence in a try/catch that releases every reservation
+    on any failure, added a `Release()` method to `InventoryService`. Three subtopics: (1) **The
+    Missing Rollback on Partial Checkout Failure** — traces both failure paths precisely, and
+    argues (against the main page's own "no business logic in Facade" mistake block) that
+    undoing the Facade's own prior steps is orchestration staying correct, not business logic;
+    (2) **Facade vs. Mediator, Made Concrete** — the main page states this distinction twice in
+    prose (theory AND quick reference) but never in code; built the SAME checkout subsystem two
+    ways — coordination living outside the subsystem classes (Facade) vs. subsystem classes
+    reporting events to a shared coordinator (Mediator); (3) **The API Gateway: A Network-Boundary
+    Facade** — the QnA calls API Gateway "an architectural Facade" in one sentence; built the same
+    shape at a network boundary, showing the genuinely new failure mode (a timeout means the
+    gateway cannot tell whether the backend call completed or not) that an in-process Facade never
+    has to reason about, tying back to subtopic 1's rollback discipline. No `SUBTOPICS` collision
+    for `facade` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). A nested-quote `exercise.prompt` field in subtopic 3 (a sentence
+    quoting two DIFFERENT phrases each wrapped in escaped single quotes, inside an outer
+    single-quoted TS string, inside double-quoted prose) was double-checked via `tsc --noEmit`
+    before the full build, then confirmed via direct browser text-search after publishing that no
+    stray `\'` characters leaked into the rendered page. Build passed clean. Browser-verified via
+    `window.ng.getComponent()` that the main-page rollback/catch fix was live before checking the
+    DOM; no console errors; nav accordion opens with 11 toggles total; breadcrumb showed all 4
+    levels; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 11 of
+    36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4402,11 +4435,11 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 10 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 11 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
-  `/design-patterns/decorator`,
+  `/design-patterns/decorator`, `/design-patterns/facade`,
   2026-08-04/2026-08-05) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found

@@ -7282,7 +7282,19 @@ off here with a date.
   Build passed clean. Browser-verified via `ng.getComponent()`: QnA fix confirmed live; no console
   errors; nav accordion opens with 10 toggles total; breadcrumb showed all 4 levels; 860px wrapper
   confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 10 of 36 topics complete.**
-- [ ] `/design-patterns/facade` — Facade Pattern
+- [x] `/design-patterns/facade` — Facade Pattern (2026-08-05) — fixed a genuine orchestration bug in
+  the "Order Checkout Facade" codeTab: a mid-loop stock failure never released items already
+  reserved earlier in the same loop, and the charge-then-commit sequence had no exception handling
+  at all, so a thrown payment exception leaked every reservation forever. Added a
+  `Release()`/try-catch rollback. 3 subtopics: (1) **The Missing Rollback on Partial Checkout
+  Failure** — traces both bugs precisely; (2) **Facade vs. Mediator, Made Concrete** — the same
+  checkout subsystem built two ways (coordination outside vs. between the subsystem classes); (3)
+  **The API Gateway: A Network-Boundary Facade** — the same shape at a network boundary, with the
+  new "did this actually happen?" timeout ambiguity an in-process Facade never faces. `facade`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified via
+  `ng.getComponent()`: rollback fix confirmed live; no console errors; nav accordion opens with 11
+  toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+  **Design Patterns hub Phase 10: 11 of 36 topics complete.**
 - [ ] `/design-patterns/flyweight` — Flyweight Pattern
 - [ ] `/design-patterns/proxy` — Proxy Pattern
 - [ ] `/design-patterns/chain-of-responsibility` — Chain of Responsibility
