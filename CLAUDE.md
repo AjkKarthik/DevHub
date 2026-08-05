@@ -3495,6 +3495,46 @@ do this same check before any other new hub's first subtopic set:
     via `getComputedStyle`; generic syntax (`HashSet<ParticleType>`) confirmed rendering as literal
     text with no vanished tags or stray entity codes. **Design Patterns hub Phase 10: 12 of 36
     topics complete — only `proxy` remains to finish the Structural nav group.**
+19. **The `proxy` batch — the final topic in the Structural nav group — found and fixed THREE
+    genuine issues, all requiring only careful reading of the page's own content or one targeted
+    external verification, plus a real cross-hub `SUBTOPICS` collision**: the QnA on "How does
+    Proxy interact with dependency injection?" used `LoggingOrderProxy` as its illustrative class
+    name — directly contradicting this SAME page's own theory bullet ("Decorator: same interface;
+    purpose is ADDING BEHAVIOUR (logging, retry, validation)"), and nearly matching the
+    `LoggingOrderService` class this hub's own Decorator topic already uses as ITS canonical
+    Decorator example. Renamed to `CachingOrderProxy` and added a note distinguishing logging as
+    the Decorator counterpart. Separately, the theory's "Four main proxy types: Virtual, Caching,
+    Protection, and Remote" was left unreconciled against the quiz and QnA, which both separately
+    discuss "Smart Reference Proxy" as if it were a valid but uncounted fifth type. Verified via
+    WebSearch that GoF's own canonical four types are actually Remote, Virtual, Protection, and
+    SMART REFERENCE — this page substitutes the more commonly-used Caching Proxy for Smart
+    Reference without ever saying so; rewrote the Smart Reference QnA answer to state this
+    explicitly. Three subtopics: (1) **LoggingOrderProxy Isn't a Proxy — It's a Decorator** — the
+    naming-contradiction fix, with a "sorts concerns by the page's own WHETHER/WHEN-to-forward
+    rule" codeTab contrasting genuine Proxy examples (auth, caching — both can skip the real call)
+    against a genuine Decorator (logging — always forwards); (2) **GetOrCreateAsync Silently
+    Caches null** — verified via WebSearch that `IMemoryCache.GetOrCreateAsync` caches whatever the
+    factory returns BY DEFAULT, including `null` (the opposite of the common assumption that null
+    results are skipped) — the main page's own `CachingProductRepository.GetByIdAsync` is exposed
+    to exactly this: a lookup for a nonexistent product ID caches "not found" for the full 5-minute
+    TTL, so a product created moments later stays invisible until the cache entry expires; showed
+    both the `entry.Dispose()` opt-out fix and a deliberate short-TTL negative-caching alternative;
+    (3) **Smart Reference: GoF's Actual Fourth Proxy Type** — the verified GoF-canon finding, with
+    a genuine reference-counting `SmartReferenceProxy<T>` (lease-based acquire/release, releasing
+    the real disposable resource only once every lease is returned) contrasted against the main
+    page's own `LazyImageProxy` to show exactly what Smart Reference adds beyond Virtual Proxy
+    alone. **A real `SUBTOPICS` map collision, different in kind from prior ones**: bare `proxy`
+    was already claimed by the JavaScript hub's own native-Proxy-object topic
+    (`/javascript/proxy`) — hub-prefixed to `dp-proxy` (matching this hub's own established
+    `dp-` search/progress prefix already used for every other DP hub topic), with all three
+    `DpNavComponent` accordion helper calls updated to the prefixed key. Confirmed via direct
+    browser navigation that `/javascript/proxy` renders completely unaffected by the fix. Build
+    passed clean (no duplicate-key error, confirming the collision was genuinely resolved).
+    Browser-verified via `window.ng.getComponent()` that both main-page fixes were live before
+    checking the DOM; no console errors; nav accordion opens with 13 toggles total; breadcrumb
+    showed all 4 levels on every subtopic; 860px wrapper confirmed via `getComputedStyle`; generic
+    syntax (`SmartReferenceProxy<T>`) confirmed rendering as literal text with no vanished tags.
+    **Design Patterns hub Phase 10: 13 of 36 topics complete — Structural nav group fully done.**
 
 ## Current state (update when it changes!)
 
@@ -4462,12 +4502,13 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 12 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 13 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
-  2026-08-04/2026-08-05) — see
+  `/design-patterns/proxy`,
+  2026-08-04/2026-08-05, Structural nav group complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more

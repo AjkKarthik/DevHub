@@ -7309,7 +7309,20 @@ off here with a date.
   nav accordion opens with 12 toggles total; breadcrumb showed all 4 levels; 860px wrapper
   confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 12 of 36 topics complete —
   only `proxy` remains to finish the Structural nav group.**
-- [ ] `/design-patterns/proxy` — Proxy Pattern
+- [x] `/design-patterns/proxy` — Proxy Pattern (2026-08-05) — fixed a naming contradiction
+  (LoggingOrderProxy → CachingOrderProxy; logging is this page's own Decorator concern, not
+  Proxy) and verified via WebSearch that GoF's canonical four proxy types are Remote/Virtual/
+  Protection/Smart Reference, not Caching — reconciled the QnA. 3 subtopics: (1) **LoggingOrder
+  Proxy Isn't a Proxy — It's a Decorator**; (2) **GetOrCreateAsync Silently Caches null** —
+  verified IMemoryCache.GetOrCreateAsync caches null by default (opposite of common assumption),
+  a real trap for the main page's own CachingProductRepository.GetByIdAsync; (3) **Smart
+  Reference: GoF's Actual Fourth Proxy Type** — a genuine reference-counting
+  SmartReferenceProxy&lt;T&gt;. Real SUBTOPICS collision: bare `proxy` already claimed by the
+  JavaScript hub — hub-prefixed to `dp-proxy`; confirmed /javascript/proxy unaffected. Build
+  passed clean (no duplicate-key error). Browser-verified via `ng.getComponent()`: both fixes
+  confirmed live; no console errors; nav accordion opens with 13 toggles total; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10:
+  13 of 36 topics complete — Structural nav group fully done.**
 - [ ] `/design-patterns/chain-of-responsibility` — Chain of Responsibility
 - [ ] `/design-patterns/command` — Command Pattern
 - [ ] `/design-patterns/iterator` — Iterator Pattern
