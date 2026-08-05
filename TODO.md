@@ -7222,8 +7222,37 @@ off here with a date.
   opens with 6 toggles total; breadcrumb showed all 4 levels; sidebar showed tailored
   composite-key content; 860px wrapper confirmed via `getComputedStyle`.
   **Design Patterns hub Phase 10: 6 of 36 topics complete.**
-- [ ] `/design-patterns/adapter` — Adapter Pattern
-- [ ] `/design-patterns/bridge` — Bridge Pattern
+- [x] `/design-patterns/adapter` — Adapter Pattern (2026-08-04) — fixed FOUR genuine issues: a real
+  CS0023 compile error in the "Object Adapter" codeTab (`Console.WriteLine(...) is null || true`,
+  void can't be compared to null); the "Logging Adapter" codeTab's `IsEnabled()`/`Log()` switches
+  silently demoted `LogLevel.Critical` to Information severity (missing 3 of 7 LogLevel mappings);
+  a ".NET Examples" bullet wrongly grouped `IQueryable<T>` with `IObservable<T>` as needing an
+  adapter, when `IQueryable<T>` already extends `IEnumerable<T>` via interface inheritance and
+  needs none; and two pre-existing bare `<T>` mentions vanishing from `[innerHTML]` fields. 3
+  subtopics: (1) **The ProcessPayment One-Liner Doesn't Compile**; (2) **The Missing LogLevel
+  Mappings** — complete, correct 6-level .NET-to-Serilog mapping table; (3) **IObservable vs.
+  IQueryable: Which One Really Needs an Adapter** — builds a real push-to-pull
+  `ObservableToEnumerableAdapter<T>`. `adapter` SUBTOPICS key collision-free, left bare. Build
+  passed clean. Browser-verified: no console errors; all four fixes confirmed rendering; nav
+  accordion opens with 7 toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Design Patterns hub Phase 10: 7 of 36 topics complete.**
+- [x] `/design-patterns/bridge` — Bridge Pattern (2026-08-05) — verified via WebSearch that .NET's
+  actual Logger class broadcasts to one ILogger instance PER registered provider on every call
+  (LoggerInformation[] array), not a one-to-one swap like the main page's own Shape/Renderer
+  example — tightened the QnA's vague "partially Bridge" hedge to state the precise mechanical
+  reason. 3 subtopics: (1) **Does ILogger Really Fit the Bridge Shape?** — the verified
+  one-to-many vs. one-to-one distinction; (2) **Bridge vs. Strategy: Which Side Actually Grows?**
+  — extends BOTH sides of the Shape/Renderer hierarchy (new Triangle abstraction + new
+  SvgRenderer implementor) to make the main page's own fuzzy QnA distinction concrete; (3)
+  **Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System** — builds the
+  Adapter+Bridge combination the QnA describes but never shows, connecting back to the Adapter
+  topic's own LegacyPaymentGateway naming. Hit a NEW stale-dev-server variant where a forced
+  file-write did not resolve staleness — a full `preview_stop`/`preview_start` restart was needed;
+  `window.ng.getComponent()` on the live instance proved to be the reliable staleness check. No
+  `SUBTOPICS` collision, left bare. Build passed clean. Browser-verified: no console errors; QnA
+  fix confirmed via `ng.getComponent()`; nav accordion opens with 8 toggles total; breadcrumb
+  showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub
+  Phase 10: 8 of 36 topics complete.**
 - [ ] `/design-patterns/composite` — Composite Pattern
 - [ ] `/design-patterns/decorator` — Decorator Pattern
 - [ ] `/design-patterns/facade` — Facade Pattern

@@ -3284,6 +3284,91 @@ do this same check before any other new hub's first subtopic set:
     accordion opens with 6 toggles total; breadcrumb showed all 4 levels on every subtopic; sidebar
     showed tailored composite-key content (confirmed via direct text search); 860px wrapper
     confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 6 of 36 topics complete.**
+13. **The `adapter` batch — the first topic in the Structural nav group — found and fixed FOUR
+    genuine issues, all self-contained (zero external research needed)**: the "Object Adapter"
+    codeTab's `LegacyPaymentGateway.ProcessPayment` was written as
+    `Console.WriteLine(...) is null || true` — a real, reproducible CS0023 compile error, since
+    `Console.WriteLine` returns `void` and C# rejects comparing a void expression to `null` at all;
+    fixed by expanding to a normal two-statement method body. The "Logging Adapter" codeTab's
+    `IsEnabled()`/`Log()` switches only explicitly handled 4 of .NET's 7 `LogLevel` values (Debug,
+    Information, Warning, Error), silently routing BOTH `Trace` and `Critical` — the two opposite
+    ends of the severity scale — into the same fallback bucket as `LogLevel.None` (logging
+    disabled); the practical consequence was that a `LogCritical(...)` call would still write output,
+    but demoted to Serilog's Information level, meaning a Fatal-level alert rule would never fire for
+    it. Fixed by adding the two missing mappings (`Trace` → `Verbose`, `Critical` → `Fatal`) to both
+    switches. Separately, a ".NET Examples" theory bullet grouped
+    `IEnumerable<T> adapters for IQueryable<T>, IObservable<T>` as if both needed adapting — but
+    `IQueryable<T>` is declared `IQueryable<T> : IEnumerable<T>, ...`, extending `IEnumerable<T>`
+    directly through ordinary interface inheritance, so it needs no adapter at all; only
+    `IObservable<T>` (push-based, no inheritance relationship with `IEnumerable<T>`) is the genuine
+    Adapter case, bridged in real Rx.NET via `ToEnumerable()`/`ToObservable()`. Fixed the theory
+    bullet to state this distinction directly. A fourth, pre-existing latent bug was caught during
+    the same sweep: two OTHER theory bullets (`Common Scenarios`) used bare `ILogger<T>` and
+    `IEnumerable<T>` inside `[innerHTML]`-bound `theory.points` with no entity-escaping — silently
+    vanishing as misparsed HTML tags — fixed alongside the others. Three subtopics: (1)
+    **The ProcessPayment One-Liner Doesn't Compile** — traces the CS0023 failure precisely, why
+    `|| true` cannot rescue a compile-time failure (short-circuiting is a runtime concept); (2)
+    **The Missing LogLevel Mappings** — the complete, correct 6-level .NET-to-Serilog mapping,
+    and why `LogLevel.None` is the only value that genuinely has no Serilog counterpart; (3)
+    **IObservable vs. IQueryable: Which One Really Needs an Adapter** — builds the real
+    push-to-pull `ObservableToEnumerableAdapter<T>` (via a `BlockingCollection<T>` buffer) that
+    Rx.NET's own `ToEnumerable()` uses internally. **A real, newly-introduced backtick-vs-`<code>`
+    house-style slip was caught and fixed mid-authoring**: an early draft of subtopic 1 used
+    markdown-style backtick-wrapped inline code (`` `is null` ``, `` `||` ``, etc.) inside the
+    `[innerHTML]`-bound `misconceptions.thought`/`.reality` fields AND inside the plain-interpolation
+    `exercise.solution` field — the `misconceptions` instances were converted to `<code>` tags (per
+    house style), while the `solution` field's backticks were simply removed entirely (plain
+    interpolation never renders backticks as styled code, and per the established `solution`-field
+    convention it should carry no markup or entities at all — raw text only). No `SUBTOPICS`
+    collision for `adapter` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). Build passed clean. Browser-verified: no console errors;
+    all four main-page fixes confirmed rendering (including the entity-escaped generics displaying as
+    literal text, not vanished); nav accordion opens with 7 toggles total; breadcrumb showed all 4
+    levels on every subtopic; sidebar showed tailored composite-key content; 860px wrapper confirmed
+    via `getComputedStyle`. **Design Patterns hub Phase 10: 7 of 36 topics complete.**
+14. **The `bridge` batch found no undeclared-class or compile-error bug — both codeTabs (Shape/
+    Renderer, Notification) were clean — but found one genuine, externally-verified inaccuracy in
+    the main page's own QnA, plus two gap-closing subtopics**: the QnA's "Is ILogger&lt;T&gt; in
+    .NET an example of Bridge?" answer hedged with "Partially... this is Bridge in spirit" without
+    ever stating WHY only partially. Verified via WebSearch against Microsoft.Extensions.Logging's
+    actual `Logger` class internals that `ILoggerFactory.CreateLogger()` builds a
+    `LoggerInformation[]` array with one entry PER registered `ILoggerProvider`, and
+    `Logger.Log()` loops over EVERY entry on each call — a genuine BROADCAST to N implementors
+    simultaneously, structurally different from the main page's own Shape/Renderer and Notification
+    examples, where an abstraction always holds exactly ONE implementor at a time. Tightened the QnA
+    to state the precise mechanical reason. Three subtopics: (1) **Does ILogger Really Fit the
+    Bridge Shape?** — the verified one-to-many vs. one-to-one distinction, with a
+    `BroadcastLogger` sketch contrasted directly against the main page's own single-implementor
+    `Circle`; (2) **Bridge vs. Strategy: Which Side Actually Grows?** — makes the main page's own
+    QnA distinction ("both context and strategy are typically concrete classes" vs. "both
+    abstraction and implementation are hierarchies") concrete by extending BOTH sides of the
+    Shape/Renderer hierarchy (a new Triangle abstraction AND a new SvgRenderer implementor) and
+    contrasting it with a Strategy example where the context class never grows; (3) **Bridge
+    Wrapping an Adapter: A ConcreteImplementor for a Legacy System** — the main page's own QnA
+    states this combination is common but never shows it; built a `LegacyFaxAdapter`
+    ConcreteImplementor wrapping a fictional legacy fax API, connecting back to the Adapter topic's
+    own `LegacyPaymentGateway` naming convention for cross-topic continuity. **Hit a NEW variant of
+    the stale-dev-server-artifact family, distinct from every prior instance in this file**: a
+    forced fresh file-write on `bridge.ts` (the standard fix) did NOT resolve the staleness this
+    time — `ng.getComponent()` on the live component instance kept returning the OLD `qna[0].a`
+    value even after the file-watcher logged a fresh "Application bundle generation complete" and
+    "Page reload sent to client(s)." This codebase runs Angular 22's newer esbuild+Vite dev server,
+    which apparently can retain a stale transformed-module cache in a way the file-watcher's own
+    rebuild log doesn't surface as an error. **The fix that actually worked this time: a full
+    `preview_stop` + `preview_start` (killing and restarting the entire dev server process)**, not
+    just touching the source file — confirmed via `ng.getComponent()` returning the corrected QnA
+    text immediately after the fresh server finished its cold-start compile. Diagnostic technique
+    worth keeping: `window.ng.getComponent(element)` on a live component instance is a more
+    reliable staleness check than text-searching rendered DOM, since it reads the actual bound data
+    the running JS module holds, ruling out both HTML-caching and Angular change-detection timing as
+    confounds. No `SUBTOPICS` collision for `bridge` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean (both the
+    standalone production build, run before the stale-server incident, and the final browser
+    verification after the restart). Browser-verified: no console errors; the QnA fix confirmed via
+    `ng.getComponent()` directly; the `SvgRenderer` codeTab's double-escaped `\"` rendered correctly
+    as a literal escaped quote in the displayed C# sample; nav accordion opens with 8 toggles total;
+    breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design
+    Patterns hub Phase 10: 8 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4251,10 +4336,11 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 6 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 8 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
-  2026-08-04) — see
+  `/design-patterns/adapter`, `/design-patterns/bridge`,
+  2026-08-04/2026-08-05) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more
