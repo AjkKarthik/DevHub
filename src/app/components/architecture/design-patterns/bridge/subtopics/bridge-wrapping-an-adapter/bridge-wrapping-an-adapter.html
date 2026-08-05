@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bridge" topicRoute="/design-patterns/bridge"
+    subtopicLabel="Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System</h1>
+  <p class="page-subtitle">The main page's QnA says a ConcreteImplementor can itself be an Adapter, but never
+    shows it. Here's a legacy fax system adapted into the Notification Bridge from the main page — same call
+    shape, zero changes anywhere else in the hierarchy.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This connects directly back to the Adapter topic's own LegacyPaymentGateway example — the same
+      "wrap what you cannot change" discipline, just now serving as one interchangeable piece inside a larger
+      Bridge instead of standing alone.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bridge" topicRoute="/design-patterns/bridge"
+    [prev]="{ label: 'Bridge vs. Strategy: Which Side Actually Grows?', route: '/design-patterns/bridge/bridge-vs-strategy-which-side-grows' }" />
+</div>

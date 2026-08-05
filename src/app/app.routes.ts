@@ -2742,7 +2742,12 @@ export const routes: Routes = [
       { path: 'missing-loglevel-mappings', loadComponent: () => import('./components/architecture/design-patterns/adapter/subtopics/missing-loglevel-mappings/missing-loglevel-mappings').then(m => m.MissingLoglevelMappingsSubtopic) },
       { path: 'iobservable-vs-iqueryable-real-adapter-need', loadComponent: () => import('./components/architecture/design-patterns/adapter/subtopics/iobservable-vs-iqueryable-real-adapter-need/iobservable-vs-iqueryable-real-adapter-need').then(m => m.IobservableVsIqueryableRealAdapterNeedSubtopic) },
     ] },
-    { path: 'bridge',             loadComponent: () => import('./components/architecture/design-patterns/bridge/bridge').then(m => m.DpBridge) },
+    { path: 'bridge', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/bridge/bridge').then(m => m.DpBridge) },
+      { path: 'does-ilogger-really-fit-the-bridge-shape', loadComponent: () => import('./components/architecture/design-patterns/bridge/subtopics/does-ilogger-really-fit-the-bridge-shape/does-ilogger-really-fit-the-bridge-shape').then(m => m.DoesIloggerReallyFitTheBridgeShapeSubtopic) },
+      { path: 'bridge-vs-strategy-which-side-grows', loadComponent: () => import('./components/architecture/design-patterns/bridge/subtopics/bridge-vs-strategy-which-side-grows/bridge-vs-strategy-which-side-grows').then(m => m.BridgeVsStrategyWhichSideGrowsSubtopic) },
+      { path: 'bridge-wrapping-an-adapter', loadComponent: () => import('./components/architecture/design-patterns/bridge/subtopics/bridge-wrapping-an-adapter/bridge-wrapping-an-adapter').then(m => m.BridgeWrappingAnAdapterSubtopic) },
+    ] },
     { path: 'composite',          loadComponent: () => import('./components/architecture/design-patterns/composite/composite').then(m => m.DpComposite) },
     { path: 'decorator',          loadComponent: () => import('./components/architecture/design-patterns/decorator/decorator').then(m => m.DpDecorator) },
     { path: 'facade',             loadComponent: () => import('./components/architecture/design-patterns/facade/facade').then(m => m.DpFacade) },

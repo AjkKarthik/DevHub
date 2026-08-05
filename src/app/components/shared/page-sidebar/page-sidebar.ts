@@ -26834,6 +26834,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Applying Bridge to a stable, unlikely-to-change hierarchy adds complexity with no payoff.',
     ],
   },
+  'design-patterns/bridge/does-ilogger-really-fit-the-bridge-shape': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Bridge (overview)', route: '/design-patterns/bridge' },
+      { label: 'Bridge vs. Strategy: Which Side Actually Grows?', route: '/design-patterns/bridge/bridge-vs-strategy-which-side-grows' },
+    ],
+    tip: '.NET\'s Logger holds one ILogger instance per registered provider and broadcasts every call to all of them — a one-to-many Bridge, not the one-to-one shape the main page\'s Shape/Renderer example uses.',
+    gotchas: [
+      'IsEnabled has to be checked per provider before each Log() call, since different providers can have different minimum levels configured — a concern that only exists because of the broadcast shape.',
+    ],
+  },
+  'design-patterns/bridge/bridge-vs-strategy-which-side-grows': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Does ILogger Really Fit the Bridge Shape?', route: '/design-patterns/bridge/does-ilogger-really-fit-the-bridge-shape' },
+      { label: 'Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System', route: '/design-patterns/bridge/bridge-wrapping-an-adapter' },
+    ],
+    tip: 'Bridge expects BOTH sides to grow into their own hierarchies; Strategy expects only the algorithm side to grow while the context stays one class.',
+    gotchas: [
+      'A large number of implementations on one side (many Strategy implementations, for instance) says nothing about which pattern it is — check whether the OTHER side also grows.',
+    ],
+  },
+  'design-patterns/bridge/bridge-wrapping-an-adapter': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Bridge (overview)', route: '/design-patterns/bridge' },
+      { label: 'The ProcessPayment One-Liner Doesn’t Compile', route: '/design-patterns/adapter/processpayment-void-compile-error' },
+    ],
+    tip: 'A ConcreteImplementor can itself be an Adapter wrapping a legacy system — from the Bridge hierarchy\'s point of view, it is just another implementor, indistinguishable from any other.',
+    gotchas: [
+      'The Adapter class has zero awareness it is being used inside a Bridge — the two patterns stay cleanly isolated even when combined.',
+    ],
+  },
   'design-patterns/builder': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

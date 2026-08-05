@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bridge" topicRoute="/design-patterns/bridge"
+    subtopicLabel="Does ILogger Really Fit the Bridge Shape?" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Does ILogger Really Fit the Bridge Shape?</h1>
+  <p class="page-subtitle">The main page's QnA calls .NET's ILogger "partially" Bridge. Here's the precise
+    reason why: it broadcasts to every registered provider on each call, not swap-one-implementor-at-a-time
+    like the Shape/Renderer example above it.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic looks at a related question from the main page's own QnA: how Bridge and Strategy
+      actually differ in practice, made concrete by extending both sides of the Shape/Renderer hierarchy.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bridge" topicRoute="/design-patterns/bridge"
+    [next]="{ label: 'Bridge vs. Strategy: Which Side Actually Grows?', route: '/design-patterns/bridge/bridge-vs-strategy-which-side-grows' }" />
+</div>

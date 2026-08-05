@@ -3274,4 +3274,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Missing LogLevel Mappings', route: '/design-patterns/adapter/missing-loglevel-mappings' },
     { label: 'IObservable vs. IQueryable: Which One Really Needs an Adapter', route: '/design-patterns/adapter/iobservable-vs-iqueryable-real-adapter-need' },
   ],
+  'bridge': [
+    { label: 'Does ILogger Really Fit the Bridge Shape?', route: '/design-patterns/bridge/does-ilogger-really-fit-the-bridge-shape' },
+    { label: 'Bridge vs. Strategy: Which Side Actually Grows?', route: '/design-patterns/bridge/bridge-vs-strategy-which-side-grows' },
+    { label: 'Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System', route: '/design-patterns/bridge/bridge-wrapping-an-adapter' },
+  ],
 };

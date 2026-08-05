@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Bridge" topicRoute="/design-patterns/bridge"
+    subtopicLabel="Bridge vs. Strategy: Which Side Actually Grows?" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Bridge vs. Strategy: Which Side Actually Grows?</h1>
+  <p class="page-subtitle">The main page's QnA distinguishes Bridge from Strategy in the abstract. Here's the
+    concrete test: extend both sides of the Shape/Renderer hierarchy, then contrast it with a Strategy example
+    where only one side ever grows.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic makes concrete something the main page's own QnA only states in prose: that a
+      ConcreteImplementor in a Bridge hierarchy can itself be an Adapter wrapping a legacy system.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Bridge" topicRoute="/design-patterns/bridge"
+    [prev]="{ label: 'Does ILogger Really Fit the Bridge Shape?', route: '/design-patterns/bridge/does-ilogger-really-fit-the-bridge-shape' }"
+    [next]="{ label: 'Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System', route: '/design-patterns/bridge/bridge-wrapping-an-adapter' }" />
+</div>
