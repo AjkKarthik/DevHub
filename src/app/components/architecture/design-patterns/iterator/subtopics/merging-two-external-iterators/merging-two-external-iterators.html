@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Iterator" topicRoute="/design-patterns/iterator"
+    subtopicLabel="Merging Two External Iterators, Made Concrete" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Merging Two External Iterators, Made Concrete</h1>
+  <p class="page-subtitle">The main page's QnA names "merging two iterators" as something external iteration
+    uniquely allows — never shown. Here's a hand-rolled MergeSorted, and why List&lt;T&gt;.ForEach() genuinely
+    cannot express the same thing.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic looks at the JavaScript Challenge's own Range iterator, and a gap in its step
+      handling the main page's own solution never tests for.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Iterator" topicRoute="/design-patterns/iterator"
+    [prev]="{ label: 'The Recursive-Yield Tree Traversal Is Secretly O(n²)', route: '/design-patterns/iterator/recursive-yield-tree-traversal-is-on-squared' }"
+    [next]="{ label: 'What Happens When Range’s step Is Negative', route: '/design-patterns/iterator/what-happens-when-range-step-is-negative' }" />
+</div>

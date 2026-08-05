@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Iterator" topicRoute="/design-patterns/iterator"
+    subtopicLabel="What Happens When Range's step Is Negative" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">What Happens When Range's step Is Negative</h1>
+  <p class="page-subtitle">The Challenge's own Range(start, end, step) accepts any number as step — but
+    next() hardcodes an ascending-only check. A negative step either silently produces nothing, or loops
+    forever, depending on which direction start and end point.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="ES2015+" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Across all three subtopics, Iterator's own flexibility — lazy sequences, external control, custom
+      traversal logic — is exactly where an untested combination of inputs (a skewed tree, a merge, a negative
+      step) can hide a real cost or a real bug behind a demo that never exercises it.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Iterator" topicRoute="/design-patterns/iterator"
+    [prev]="{ label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' }" />
+</div>

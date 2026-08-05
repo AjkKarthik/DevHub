@@ -27319,6 +27319,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'External iterators give the caller pacing control; internal iterators (forEach) are simpler but offer less control.',
     ],
   },
+  'design-patterns/iterator/recursive-yield-tree-traversal-is-on-squared': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Iterator (overview)', route: '/design-patterns/iterator' },
+      { label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' },
+    ],
+    tip: 'A recursive foreach-wrapped yield return adds a layer of enumerator nesting per recursion level — O(n log n) for a balanced tree, genuinely O(n²) for a degenerate one.',
+    gotchas: [
+      'An explicit-stack iterator keeps yield return\'s ergonomics while doing O(n) total work regardless of tree shape.',
+    ],
+  },
+  'design-patterns/iterator/merging-two-external-iterators': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Recursive-Yield Tree Traversal Is Secretly O(n²)', route: '/design-patterns/iterator/recursive-yield-tree-traversal-is-on-squared' },
+      { label: 'What Happens When Range\'s step Is Negative', route: '/design-patterns/iterator/what-happens-when-range-step-is-negative' },
+    ],
+    tip: 'Merging two already-sorted sequences by value requires explicit MoveNext() control over both — an internal iterator like ForEach() has no way to pause one traversal to compare against another.',
+    gotchas: [
+      'LINQ\'s Zip() pairs elements by position, not by value — it cannot replace a value-based merge of two sorted sequences.',
+    ],
+  },
+  'design-patterns/iterator/what-happens-when-range-step-is-negative': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Iterator (overview)', route: '/design-patterns/iterator' },
+      { label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' },
+    ],
+    tip: 'The Range Challenge\'s step parameter accepts any number, but next() hardcodes an ascending-only check — a negative step either silently yields nothing or loops forever, depending on start/end.',
+    gotchas: [
+      'The two failure modes are genuinely different: Range(10,1,-1) silently produces zero values, while Range(1,10,-1) loops forever — never assume a bug is "harmless" without tracing every input combination.',
+    ],
+  },
   'design-patterns/mediator': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

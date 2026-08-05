@@ -3315,4 +3315,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' },
     { label: 'When a Lambda Command Stops Being Enough', route: '/design-patterns/command/when-a-lambda-command-stops-being-enough' },
   ],
+  'iterator': [
+    { label: 'The Recursive-Yield Tree Traversal Is Secretly O(n²)', route: '/design-patterns/iterator/recursive-yield-tree-traversal-is-on-squared' },
+    { label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' },
+    { label: 'What Happens When Range’s step Is Negative', route: '/design-patterns/iterator/what-happens-when-range-step-is-negative' },
+  ],
 };

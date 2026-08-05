@@ -2791,7 +2791,12 @@ export const routes: Routes = [
       { path: 'a-real-macrocommand-undone-in-reverse', loadComponent: () => import('./components/architecture/design-patterns/command/subtopics/a-real-macrocommand-undone-in-reverse/a-real-macrocommand-undone-in-reverse').then(m => m.ARealMacrocommandUndoneInReverseSubtopic) },
       { path: 'when-a-lambda-command-stops-being-enough', loadComponent: () => import('./components/architecture/design-patterns/command/subtopics/when-a-lambda-command-stops-being-enough/when-a-lambda-command-stops-being-enough').then(m => m.WhenALambdaCommandStopsBeingEnoughSubtopic) },
     ] },
-    { path: 'iterator',           loadComponent: () => import('./components/architecture/design-patterns/iterator/iterator').then(m => m.DpIterator) },
+    { path: 'iterator', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/iterator/iterator').then(m => m.DpIterator) },
+      { path: 'recursive-yield-tree-traversal-is-on-squared', loadComponent: () => import('./components/architecture/design-patterns/iterator/subtopics/recursive-yield-tree-traversal-is-on-squared/recursive-yield-tree-traversal-is-on-squared').then(m => m.RecursiveYieldTreeTraversalIsOnSquaredSubtopic) },
+      { path: 'merging-two-external-iterators', loadComponent: () => import('./components/architecture/design-patterns/iterator/subtopics/merging-two-external-iterators/merging-two-external-iterators').then(m => m.MergingTwoExternalIteratorsSubtopic) },
+      { path: 'what-happens-when-range-step-is-negative', loadComponent: () => import('./components/architecture/design-patterns/iterator/subtopics/what-happens-when-range-step-is-negative/what-happens-when-range-step-is-negative').then(m => m.WhatHappensWhenRangeStepIsNegativeSubtopic) },
+    ] },
     { path: 'mediator',           loadComponent: () => import('./components/architecture/design-patterns/mediator/mediator').then(m => m.DpMediator) },
     { path: 'memento',            loadComponent: () => import('./components/architecture/design-patterns/memento/memento').then(m => m.DpMemento) },
     { path: 'observer',           loadComponent: () => import('./components/architecture/design-patterns/observer/observer').then(m => m.DpObserver) },
