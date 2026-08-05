@@ -3325,4 +3325,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' },
     { label: 'Pipeline Behavior Execution Order', route: '/design-patterns/mediator/pipeline-behavior-order' },
   ],
+  'memento': [
+    { label: 'AsReadOnly() Is a View, Not a Copy', route: '/design-patterns/memento/asreadonly-is-a-view-not-a-copy' },
+    { label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' },
+    { label: 'Delta Mementos: Storing Only What Changed', route: '/design-patterns/memento/delta-mementos-storing-only-what-changed' },
+  ],
 };

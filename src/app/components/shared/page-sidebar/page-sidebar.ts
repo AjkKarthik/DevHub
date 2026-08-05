@@ -27409,6 +27409,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The Caretaker never interprets the Memento\'s contents — that boundary is what preserves the Originator\'s encapsulation.',
     ],
   },
+  'design-patterns/memento/asreadonly-is-a-view-not-a-copy': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Memento (overview)', route: '/design-patterns/memento' },
+      { label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' },
+    ],
+    tip: 'List<T>.AsReadOnly() wraps the original list — it is a live view, not a copy. Mutating the source list after the "snapshot" is taken still shows up in it.',
+    gotchas: [
+      'ToArray() genuinely copies; AsReadOnly() genuinely does not — the two are easy to confuse when reaching for a "safe" collection to store in a Memento.',
+    ],
+  },
+  'design-patterns/memento/nested-class-memento-narrow-interface': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'AsReadOnly() Is a View, Not a Copy', route: '/design-patterns/memento/asreadonly-is-a-view-not-a-copy' },
+      { label: 'Delta Mementos: Storing Only What Changed', route: '/design-patterns/memento/delta-mementos-storing-only-what-changed' },
+    ],
+    tip: 'A private nested Memento class exposed only through an empty public marker interface makes "the Caretaker cannot read this" a compiler-enforced guarantee, not just a convention.',
+    gotchas: [
+      'A Caretaker holding only the marker interface has no legal way to cast down to the private concrete Memento type from outside the Originator.',
+    ],
+  },
+  'design-patterns/memento/delta-mementos-storing-only-what-changed': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' },
+      { label: 'Memento (overview)', route: '/design-patterns/memento' },
+    ],
+    tip: 'A delta memento stores only what one change touched, not the whole Originator — O(N) total memory for N edits instead of O(N x M) for M total fields.',
+    gotchas: [
+      'A single user-facing "undo" that touches multiple fields at once needs ALL of the resulting deltas grouped together, not just the last one, or undo only partially reverses the action.',
+    ],
+  },
   'design-patterns/null-object': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

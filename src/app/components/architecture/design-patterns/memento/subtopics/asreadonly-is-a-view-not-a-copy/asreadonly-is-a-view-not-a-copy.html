@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Memento" topicRoute="/design-patterns/memento"
+    subtopicLabel="AsReadOnly() Is a View, Not a Copy" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">AsReadOnly() Is a View, Not a Copy</h1>
+  <p class="page-subtitle">The main page's own mistake block warns against storing mutable state by
+    reference — but its own Game Save System codeTab does exactly that, disguised behind a method whose
+    name sounds safe.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET Framework 1.1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This is the same "encapsulation on paper, not in practice" theme the next two subtopics extend from a
+      different angle — a nested-class Memento enforces the Caretaker's opacity at compile time instead of
+      by convention, and a delta Memento avoids the whole full-copy question for large state.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Memento" topicRoute="/design-patterns/memento"
+    [next]="{ label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' }" />
+</div>

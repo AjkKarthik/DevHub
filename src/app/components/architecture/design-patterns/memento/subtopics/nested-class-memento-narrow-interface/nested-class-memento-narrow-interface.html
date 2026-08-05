@@ -1,0 +1,32 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Memento" topicRoute="/design-patterns/memento"
+    subtopicLabel="A Real Nested-Class Memento" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">A Real Nested-Class Memento</h1>
+  <p class="page-subtitle">One of the main page's own quiz explanations describes a nested-class Memento
+    with a narrow/wide interface split — but neither codeTab on the page actually builds one. Here's what
+    that looks like, and what it genuinely protects against.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Where the previous subtopic showed encapsulation quietly breaking despite good intentions, this one
+      shows the opposite: encapsulation enforced by the compiler itself, not just by discipline. The next
+      subtopic returns to a more ordinary concern — what to do when even a well-encapsulated snapshot is
+      simply too large to copy on every change.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Memento" topicRoute="/design-patterns/memento"
+    [prev]="{ label: 'AsReadOnly() Is a View, Not a Copy', route: '/design-patterns/memento/asreadonly-is-a-view-not-a-copy' }"
+    [next]="{ label: 'Delta Mementos: Storing Only What Changed', route: '/design-patterns/memento/delta-mementos-storing-only-what-changed' }" />
+</div>

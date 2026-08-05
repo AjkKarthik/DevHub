@@ -167,7 +167,7 @@ public class Player
     public List<string> Inventory { get; } = new();
 
     public GameSave CreateSave() =>
-        new(Level, Score, Position, Inventory.AsReadOnly(), DateTime.UtcNow);
+        new(Level, Score, Position, [..Inventory], DateTime.UtcNow); // COPY the list — AsReadOnly() would only wrap it
 
     public void LoadSave(GameSave save)
     {

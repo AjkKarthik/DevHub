@@ -2803,7 +2803,12 @@ export const routes: Routes = [
       { path: 'publish-exception-halts-later-handlers', loadComponent: () => import('./components/architecture/design-patterns/mediator/subtopics/publish-exception-halts-later-handlers/publish-exception-halts-later-handlers').then(m => m.PublishExceptionHaltsLaterHandlersSubtopic) },
       { path: 'pipeline-behavior-order', loadComponent: () => import('./components/architecture/design-patterns/mediator/subtopics/pipeline-behavior-order/pipeline-behavior-order').then(m => m.PipelineBehaviorOrderSubtopic) },
     ] },
-    { path: 'memento',            loadComponent: () => import('./components/architecture/design-patterns/memento/memento').then(m => m.DpMemento) },
+    { path: 'memento', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/memento/memento').then(m => m.DpMemento) },
+      { path: 'asreadonly-is-a-view-not-a-copy', loadComponent: () => import('./components/architecture/design-patterns/memento/subtopics/asreadonly-is-a-view-not-a-copy/asreadonly-is-a-view-not-a-copy').then(m => m.AsreadonlyIsAViewNotACopySubtopic) },
+      { path: 'nested-class-memento-narrow-interface', loadComponent: () => import('./components/architecture/design-patterns/memento/subtopics/nested-class-memento-narrow-interface/nested-class-memento-narrow-interface').then(m => m.NestedClassMementoNarrowInterfaceSubtopic) },
+      { path: 'delta-mementos-storing-only-what-changed', loadComponent: () => import('./components/architecture/design-patterns/memento/subtopics/delta-mementos-storing-only-what-changed/delta-mementos-storing-only-what-changed').then(m => m.DeltaMementosStoringOnlyWhatChangedSubtopic) },
+    ] },
     { path: 'observer',           loadComponent: () => import('./components/architecture/design-patterns/observer/observer').then(m => m.DpObserver) },
     { path: 'state',              loadComponent: () => import('./components/architecture/design-patterns/state/state').then(m => m.DpState) },
     { path: 'strategy',           loadComponent: () => import('./components/architecture/design-patterns/strategy/strategy').then(m => m.DpStrategy) },
