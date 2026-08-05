@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Command" topicRoute="/design-patterns/command"
+    subtopicLabel="Redo() Silently Wipes the Rest of the Redo Stack" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Redo() Silently Wipes the Rest of the Redo Stack</h1>
+  <p class="page-subtitle">The main page's own fix for one mistake ("clear the redo stack on new Execute()")
+    quietly caused another: CommandHistory.Redo() routed through that same Execute(), wiping out any other
+    commands still waiting to be redone.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic makes concrete something the main page's own QnA names but never shows: a real
+      MacroCommand, undoing its sub-commands in reverse order.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Command" topicRoute="/design-patterns/command"
+    [next]="{ label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' }" />
+</div>

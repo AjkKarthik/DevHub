@@ -3310,4 +3310,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Pass-Through-With-Side-Effect Handler, Made Concrete', route: '/design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler' },
     { label: 'Making “No Handler Accepted This” a Real Signal', route: '/design-patterns/chain-of-responsibility/making-unhandled-a-real-signal' },
   ],
+  'command': [
+    { label: 'Redo() Silently Wipes the Rest of the Redo Stack', route: '/design-patterns/command/redo-silently-wipes-the-redo-stack' },
+    { label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' },
+    { label: 'When a Lambda Command Stops Being Enough', route: '/design-patterns/command/when-a-lambda-command-stops-being-enough' },
+  ],
 };

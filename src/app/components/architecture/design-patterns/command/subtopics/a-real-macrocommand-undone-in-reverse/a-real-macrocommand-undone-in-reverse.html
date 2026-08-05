@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Command" topicRoute="/design-patterns/command"
+    subtopicLabel="A Real MacroCommand, Undone in Reverse Order" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">A Real MacroCommand, Undone in Reverse Order</h1>
+  <p class="page-subtitle">The main page's theory and QnA both name MacroCommand and its reverse-order undo
+    requirement — neither codeTab shows it. Here's a genuine Composite-plus-Command MacroCommand, and why
+    getting the undo order backward can corrupt state.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic looks at the opposite end of the spectrum from MacroCommand's complexity — when a
+      plain lambda genuinely is enough to be "the Command pattern," and exactly where that stops being true.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Command" topicRoute="/design-patterns/command"
+    [prev]="{ label: 'Redo() Silently Wipes the Rest of the Redo Stack', route: '/design-patterns/command/redo-silently-wipes-the-redo-stack' }"
+    [next]="{ label: 'When a Lambda Command Stops Being Enough', route: '/design-patterns/command/when-a-lambda-command-stops-being-enough' }" />
+</div>

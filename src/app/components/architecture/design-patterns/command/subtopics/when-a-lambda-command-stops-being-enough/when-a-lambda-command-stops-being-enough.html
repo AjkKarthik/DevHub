@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Command" topicRoute="/design-patterns/command"
+    subtopicLabel="When a Lambda Command Stops Being Enough" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">When a Lambda Command Stops Being Enough</h1>
+  <p class="page-subtitle">The main page's QnA names the exact boundary (undo state, logging, serialization)
+    where a lambda-based Command breaks down — but never shows it happening. Here's each requirement, tested
+    against a bare Action, one at a time.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Across all three subtopics, Command's own machinery (a history stack, a composite of sub-commands, a
+      bare delegate standing in for a full class) is exactly where its flexibility creates room for subtle,
+      easy-to-miss gaps.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Command" topicRoute="/design-patterns/command"
+    [prev]="{ label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' }" />
+</div>

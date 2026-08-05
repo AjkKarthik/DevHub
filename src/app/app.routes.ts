@@ -2785,7 +2785,12 @@ export const routes: Routes = [
       { path: 'pass-through-with-side-effect-handler', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/subtopics/pass-through-with-side-effect-handler/pass-through-with-side-effect-handler').then(m => m.PassThroughWithSideEffectHandlerSubtopic) },
       { path: 'making-unhandled-a-real-signal', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/subtopics/making-unhandled-a-real-signal/making-unhandled-a-real-signal').then(m => m.MakingUnhandledARealSignalSubtopic) },
     ] },
-    { path: 'command',            loadComponent: () => import('./components/architecture/design-patterns/command/command').then(m => m.DpCommand) },
+    { path: 'command', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/command/command').then(m => m.DpCommand) },
+      { path: 'redo-silently-wipes-the-redo-stack', loadComponent: () => import('./components/architecture/design-patterns/command/subtopics/redo-silently-wipes-the-redo-stack/redo-silently-wipes-the-redo-stack').then(m => m.RedoSilentlyWipesTheRedoStackSubtopic) },
+      { path: 'a-real-macrocommand-undone-in-reverse', loadComponent: () => import('./components/architecture/design-patterns/command/subtopics/a-real-macrocommand-undone-in-reverse/a-real-macrocommand-undone-in-reverse').then(m => m.ARealMacrocommandUndoneInReverseSubtopic) },
+      { path: 'when-a-lambda-command-stops-being-enough', loadComponent: () => import('./components/architecture/design-patterns/command/subtopics/when-a-lambda-command-stops-being-enough/when-a-lambda-command-stops-being-enough').then(m => m.WhenALambdaCommandStopsBeingEnoughSubtopic) },
+    ] },
     { path: 'iterator',           loadComponent: () => import('./components/architecture/design-patterns/iterator/iterator').then(m => m.DpIterator) },
     { path: 'mediator',           loadComponent: () => import('./components/architecture/design-patterns/mediator/mediator').then(m => m.DpMediator) },
     { path: 'memento',            loadComponent: () => import('./components/architecture/design-patterns/memento/memento').then(m => m.DpMemento) },

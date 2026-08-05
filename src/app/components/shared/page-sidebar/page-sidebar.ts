@@ -26984,6 +26984,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Macro commands combine Command with Composite so a multi-step operation can be undone as one atomic unit.',
     ],
   },
+  'design-patterns/command/redo-silently-wipes-the-redo-stack': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Command (overview)', route: '/design-patterns/command' },
+      { label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' },
+    ],
+    tip: 'Redo() must NOT route through the same Execute() used for new commands — that method clears the redo stack as a side effect meant only for genuinely new commands.',
+    gotchas: [
+      'Redoing one command should never invalidate OTHER commands still waiting in the redo stack — only a genuinely new Execute() should clear redo history.',
+    ],
+  },
+  'design-patterns/command/a-real-macrocommand-undone-in-reverse': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Redo() Silently Wipes the Rest of the Redo Stack', route: '/design-patterns/command/redo-silently-wipes-the-redo-stack' },
+      { label: 'When a Lambda Command Stops Being Enough', route: '/design-patterns/command/when-a-lambda-command-stops-being-enough' },
+    ],
+    tip: 'MacroCommand.Undo() must reverse sub-commands in the OPPOSITE order from Execute() — later sub-commands can depend on earlier ones already having run.',
+    gotchas: [
+      'Getting undo order wrong does not always fail obviously — a specific example can happen to produce the right result by coincidence while the underlying logic is still broken.',
+    ],
+  },
+  'design-patterns/command/when-a-lambda-command-stops-being-enough': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Command (overview)', route: '/design-patterns/command' },
+      { label: 'A Real MacroCommand, Undone in Reverse Order', route: '/design-patterns/command/a-real-macrocommand-undone-in-reverse' },
+    ],
+    tip: 'A bare Action is a genuine Command for simple, one-shot cases — it breaks down the moment undo state, meaningful logging, or serialization is actually needed.',
+    gotchas: [
+      'Retrofitting a name or state onto a lambda-based command usually reinvents, ad hoc, exactly what a named Command class already provides for free.',
+    ],
+  },
   'design-patterns/composite': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
