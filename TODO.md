@@ -7459,7 +7459,23 @@ off here with a date.
   rendered code (3 FreeShipping() occurrences); breadcrumb showed all 4 levels; 860px wrapper
   confirmed via `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 21 of 36
   topics complete.**
-- [ ] `/design-patterns/template-method` — Template Method Pattern
+- [x] `/design-patterns/template-method` — Template Method Pattern (2026-08-05) — fixed THREE genuine
+  compile errors, the most in one batch this hub: (1) the Report Generator codeTab's own template
+  method used `sealed` without `override` (CS0238) — fixed to a plain non-virtual method; (2)
+  mistake #1's own "right" example repeated the identical bug — fixed the same way; (3) the Data
+  Migration Hook codeTab's AuditController inherited ControllerBase and overrode
+  OnActionExecuting — verified via WebSearch that only Controller (not ControllerBase) implements
+  IActionFilter (CS0115) — fixed to inherit Controller. 3 subtopics: (1) **Why sealed Requires
+  override in C#** — the general language rule behind both sealed bugs; (2) **ControllerBase vs
+  Controller for Action Filter Hooks** — the ASP.NET Core bug plus a second fix (standalone
+  IActionFilter) that stays on ControllerBase; (3) **Converting Template Method to Strategy,
+  Concretely** — applies the main page's own QnA conversion recipe to its own ReportGenerator
+  example, which the QnA never actually does. Grepped every new solution field for <code>/entities
+  before building — caught it in 2 of 3 subtopics. `template-method` SUBTOPICS key collision-free,
+  left bare. Build passed clean. Browser-verified: nav accordion opens with 22 toggles total; all 3
+  subtopic links render correctly; all three main-page fixes confirmed rendering; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
+  hub Phase 10: 22 of 36 topics complete.**
 - [ ] `/design-patterns/visitor` — Visitor Pattern
 - [ ] `/design-patterns/null-object` — Null Object Pattern
 - [ ] `/design-patterns/repository` — Repository Pattern

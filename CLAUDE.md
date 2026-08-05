@@ -3862,6 +3862,51 @@ do this same check before any other new hub's first subtopic set:
     three corrected `solution` fields confirmed rendering as literal text with no stray entity
     codes; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design
     Patterns hub Phase 10: 21 of 36 topics complete.**
+28. **The `template-method` batch — the ninth of eleven Behavioral topics — found and fixed THREE
+    genuine, verified compile errors in the main page's own C# codeTabs, the most in any single
+    batch this hub, all findable via a well-known language/framework rule rather than a guess**: (1)
+    the "Report Generator" codeTab's own template method was declared `public sealed void
+    GenerateReport(ReportRequest request)` — C# only allows `sealed` on a method that is ALSO
+    `override` (CS0238: "cannot be sealed because it is not an override"), and this method,
+    declared directly on the base class itself, overrides nothing. Fixed to a plain non-virtual
+    method — already un-overridable by any subclass without needing the keyword at all. (2) Mistake
+    #1's own "right" example repeated the IDENTICAL bug (`public sealed void
+    GenerateReport(ReportRequest r)`), clearly copy-modeled on the main codeTab's own (also-broken)
+    version — fixed the same way, with the explanation text updated to note the actual C# rule. (3)
+    The "Data Migration Hook" codeTab's `AuditController : ControllerBase` overrode
+    `OnActionExecuting` — verified via WebSearch that `ControllerBase` (the lean, API-only base
+    class) does NOT implement `IActionFilter` at all; only `Controller` (which itself inherits from
+    `ControllerBase`, adding view support) declares `OnActionExecuting`/`OnActionExecuted` as
+    virtual no-op hooks (CS0115: "no suitable method found to override"). Fixed to inherit from
+    `Controller` instead — confirmed consistent with the main page's OWN theory section, which
+    already correctly says "ASP.NET Core **Controller**: OnActionExecuting/OnActionExecuted hooks."
+    Three subtopics: (1) **Why sealed Requires override in C#** — the general language rule behind
+    both sealed bugs, with a worked example of where `sealed` DOES apply correctly (an intermediate
+    class stopping a further override chain); (2) **ControllerBase vs Controller for Action Filter
+    Hooks** — the ASP.NET Core-specific bug, PLUS a second, genuinely different fix for a team that
+    wants to stay on the lighter `ControllerBase` (implementing `IActionFilter` directly, ideally
+    extracted into a standalone class registered globally via `options.Filters.Add<T>()` rather than
+    switching every controller's base class); (3) **Converting Template Method to Strategy,
+    Concretely** — the main page's own QnA lays out a step-by-step Template-Method-to-Strategy
+    conversion recipe using a DIFFERENT example than its own codeTab and never applies it to its own
+    `ReportGenerator`/`SalesReportGenerator` — did exactly that, turning five overridden
+    methods into five small interfaces composed via constructor injection, with a Try It on the
+    concrete capability gained (freely mixing a `SalesDataFetcher` with an unrelated formatter,
+    impossible under the original inheritance-based version). **Escalating on the standing
+    `solution`-field mistake from the Strategy batch's own entry**: grepped every new
+    `exercise.solution` field for `<code>`/HTML entities in ALL THREE subtopics BEFORE ever writing
+    the build command this time (not just before committing) — caught and fixed it in TWO of the
+    three subtopics this way, confirming the mandatory-pre-build-grep escalation was the right call;
+    the third subtopic's `solution` field was clean on the first pass. No `SUBTOPICS` collision for
+    `template-method` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). Build passed clean. Browser-verified: no console errors;
+    nav accordion opens with 22 toggles total; all 3 subtopic links render correctly; all THREE
+    main-page fixes confirmed rendering (the two codeTab fixes required switching the code-block's
+    own tab selector to each specific tab — "Report Generator" is the default, "Data Migration Hook"
+    needed an explicit click — and the mistake-block fix required expanding the Common Mistakes
+    accordion); all three `solution` fields confirmed rendering as literal text with no stray
+    entity codes; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 22 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4829,7 +4874,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 21 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 22 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -4837,6 +4882,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
+  `/design-patterns/template-method`,
   2026-08-04/2026-08-05, Structural nav group complete; Behavioral in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
