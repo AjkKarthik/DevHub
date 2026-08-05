@@ -3335,4 +3335,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real IObservable<T> Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' },
     { label: 'What a WeakReference-Based Observer Looks Like', route: '/design-patterns/observer/weakreference-based-observer-implementation' },
   ],
+  // NOTE: keyed 'dp-state', NOT bare 'state' — the Terraform hub
+  // already claims the bare key with its own subtopics.
+  'dp-state': [
+    { label: 'Singleton States: Making Them Actually Stateless', route: '/design-patterns/state/singleton-states-making-them-actually-stateless' },
+    { label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' },
+    { label: 'Reconstructing State From Persisted Data', route: '/design-patterns/state/reconstructing-state-from-persisted-data' },
+  ],
 };

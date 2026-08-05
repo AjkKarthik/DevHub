@@ -1,0 +1,28 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="State" topicRoute="/design-patterns/state"
+    subtopicLabel="Singleton States: Making Them Actually Stateless" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Singleton States: Making Them Actually Stateless</h1>
+  <p class="page-subtitle">The main page's own QnA says stateless states can safely be shared as singletons —
+    but every one of its own five concrete states allocates a fresh instance on every single transition anyway.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Both remaining subtopics build actual code for two more things the main page's own QnA discusses
+      in prose only: a data-driven transition table, and reconstructing a state from persisted data.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="State" topicRoute="/design-patterns/state"
+    [next]="{ label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' }" />
+</div>

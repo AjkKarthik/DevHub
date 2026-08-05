@@ -2815,7 +2815,12 @@ export const routes: Routes = [
       { path: 'a-real-iobservable-implementation', loadComponent: () => import('./components/architecture/design-patterns/observer/subtopics/a-real-iobservable-implementation/a-real-iobservable-implementation').then(m => m.ARealIobservableImplementationSubtopic) },
       { path: 'weakreference-based-observer-implementation', loadComponent: () => import('./components/architecture/design-patterns/observer/subtopics/weakreference-based-observer-implementation/weakreference-based-observer-implementation').then(m => m.WeakreferenceBasedObserverImplementationSubtopic) },
     ] },
-    { path: 'state',              loadComponent: () => import('./components/architecture/design-patterns/state/state').then(m => m.DpState) },
+    { path: 'state', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/state/state').then(m => m.DpState) },
+      { path: 'singleton-states-making-them-actually-stateless', loadComponent: () => import('./components/architecture/design-patterns/state/subtopics/singleton-states-making-them-actually-stateless/singleton-states-making-them-actually-stateless').then(m => m.SingletonStatesMakingThemActuallyStatelessSubtopic) },
+      { path: 'data-driven-state-transition-table', loadComponent: () => import('./components/architecture/design-patterns/state/subtopics/data-driven-state-transition-table/data-driven-state-transition-table').then(m => m.DataDrivenStateTransitionTableSubtopic) },
+      { path: 'reconstructing-state-from-persisted-data', loadComponent: () => import('./components/architecture/design-patterns/state/subtopics/reconstructing-state-from-persisted-data/reconstructing-state-from-persisted-data').then(m => m.ReconstructingStateFromPersistedDataSubtopic) },
+    ] },
     { path: 'strategy',           loadComponent: () => import('./components/architecture/design-patterns/strategy/strategy').then(m => m.DpStrategy) },
     { path: 'template-method',    loadComponent: () => import('./components/architecture/design-patterns/template-method/template-method').then(m => m.DpTemplateMethod) },
     { path: 'visitor',            loadComponent: () => import('./components/architecture/design-patterns/visitor/visitor').then(m => m.DpVisitor) },

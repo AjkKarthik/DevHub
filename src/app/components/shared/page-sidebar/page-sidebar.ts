@@ -27755,6 +27755,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'State vs Strategy: State represents an object\'s self-managed behavioral mode over its lifecycle; Strategy represents an externally-selected algorithm variant.',
     ],
   },
+  'design-patterns/state/singleton-states-making-them-actually-stateless': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'State (overview)', route: '/design-patterns/state' },
+      { label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' },
+    ],
+    tip: 'Every one of the main page\'s own five concrete states has zero instance fields — provably stateless, and provably safe to share as static readonly singletons instead of reallocating on every transition.',
+    gotchas: [
+      'The moment a state needs to remember something per-transition, singleton sharing becomes unsafe — that data belongs on the Context instead.',
+    ],
+  },
+  'design-patterns/state/data-driven-state-transition-table': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Singleton States: Making Them Actually Stateless', route: '/design-patterns/state/singleton-states-making-them-actually-stateless' },
+      { label: 'Reconstructing State From Persisted Data', route: '/design-patterns/state/reconstructing-state-from-persisted-data' },
+    ],
+    tip: 'A (state, event) -> nextState Dictionary replaces five separate classes with one lookup — but per-transition side effects need a parallel action map, since a pure lookup only maps to a next state.',
+    gotchas: [
+      'Prefer class-per-state when behavior per state is genuinely complex; prefer a table when transitions are uniform or need to be data-driven.',
+    ],
+  },
+  'design-patterns/state/reconstructing-state-from-persisted-data': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' },
+      { label: 'State (overview)', route: '/design-patterns/state' },
+    ],
+    tip: 'Reconstructing IOrderState from a stored string needs a deliberate decision on unrecognized values — silently defaulting hides real data-integrity problems that throwing surfaces instead.',
+    gotchas: [
+      'C# switch pattern matching on string literals is case-sensitive by default — a stored "shipped" will not match a "Shipped" arm.',
+    ],
+  },
   'design-patterns/strategy': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

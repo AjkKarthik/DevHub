@@ -408,7 +408,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/state" routerLinkActive="active"><span class="nl-text">State</span>@if(p.isDone('dp-state')){<span class="nl-done">✓</span>}@if(d('dp-state');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/state" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">State</span>
+        @if(p.isDone('dp-state')){<span class="nl-done">✓</span>}
+        @if(d('dp-state');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('dp-state')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dp-state')"
+                  (click)="toggleSubtopics('dp-state', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dp-state'); as stSubs) {
+        @if (isSubtopicsExpanded('dp-state')) {
+          <div class="nav-subtopics">
+            @for (s of stSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/strategy" routerLinkActive="active"><span class="nl-text">Strategy</span>@if(p.isDone('dp-strategy')){<span class="nl-done">✓</span>}@if(d('dp-strategy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/template-method" routerLinkActive="active"><span class="nl-text">Template Method</span>@if(p.isDone('dp-template-method')){<span class="nl-done">✓</span>}@if(d('dp-template-method');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/visitor" routerLinkActive="active"><span class="nl-text">Visitor</span>@if(p.isDone('dp-visitor')){<span class="nl-done">✓</span>}@if(d('dp-visitor');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
