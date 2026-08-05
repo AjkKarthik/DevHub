@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Chain of Responsibility" topicRoute="/design-patterns/chain-of-responsibility"
+    subtopicLabel="The Auth Middleware's Operator-Precedence Bug" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Auth Middleware's Operator-Precedence Bug (Fails Open for Anonymous Users)</h1>
+  <p class="page-subtitle">The main page's own "Auth middleware" codeTab checked
+    <code>!x?.y ?? false</code> — a real C# precedence trap where <code>!</code> binds tighter than
+    <code>??</code>, silently letting anonymous requests through as if authenticated.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic makes concrete a variant the main page's own QnA describes but never shows in code:
+      a handler that both processes a request AND still passes it along the chain.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Chain of Responsibility" topicRoute="/design-patterns/chain-of-responsibility"
+    [next]="{ label: 'The Pass-Through-With-Side-Effect Handler, Made Concrete', route: '/design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler' }" />
+</div>

@@ -288,7 +288,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Behavioral</p>
-      <a routerLink="/design-patterns/chain-of-responsibility" routerLinkActive="active"><span class="nl-text">Chain of Responsibility</span>@if(p.isDone('dp-chain-of-responsibility')){<span class="nl-done">✓</span>}@if(d('dp-chain-of-responsibility');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/chain-of-responsibility" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Chain of Responsibility</span>
+        @if(p.isDone('dp-chain-of-responsibility')){<span class="nl-done">✓</span>}
+        @if(d('dp-chain-of-responsibility');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('chain-of-responsibility')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('chain-of-responsibility')"
+                  (click)="toggleSubtopics('chain-of-responsibility', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('chain-of-responsibility'); as corSubs) {
+        @if (isSubtopicsExpanded('chain-of-responsibility')) {
+          <div class="nav-subtopics">
+            @for (s of corSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/command" routerLinkActive="active"><span class="nl-text">Command</span>@if(p.isDone('dp-command')){<span class="nl-done">✓</span>}@if(d('dp-command');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/iterator" routerLinkActive="active"><span class="nl-text">Iterator</span>@if(p.isDone('dp-iterator')){<span class="nl-done">✓</span>}@if(d('dp-iterator');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/mediator" routerLinkActive="active"><span class="nl-text">Mediator</span>@if(p.isDone('dp-mediator')){<span class="nl-done">✓</span>}@if(d('dp-mediator');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

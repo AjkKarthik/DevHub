@@ -3305,4 +3305,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' },
     { label: 'Smart Reference: GoF’s Actual Fourth Proxy Type', route: '/design-patterns/proxy/smart-reference-gofs-actual-fourth-type' },
   ],
+  'chain-of-responsibility': [
+    { label: 'The Auth Middleware’s Operator-Precedence Bug', route: '/design-patterns/chain-of-responsibility/auth-middleware-operator-precedence-bug' },
+    { label: 'The Pass-Through-With-Side-Effect Handler, Made Concrete', route: '/design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler' },
+    { label: 'Making “No Handler Accepted This” a Real Signal', route: '/design-patterns/chain-of-responsibility/making-unhandled-a-real-signal' },
+  ],
 };

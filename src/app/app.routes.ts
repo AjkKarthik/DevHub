@@ -2779,7 +2779,12 @@ export const routes: Routes = [
       { path: 'smart-reference-gofs-actual-fourth-type', loadComponent: () => import('./components/architecture/design-patterns/proxy/subtopics/smart-reference-gofs-actual-fourth-type/smart-reference-gofs-actual-fourth-type').then(m => m.SmartReferenceGofsActualFourthTypeSubtopic) },
     ] },
     // Behavioral
-    { path: 'chain-of-responsibility', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/chain-of-responsibility').then(m => m.DpChainOfResponsibility) },
+    { path: 'chain-of-responsibility', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/chain-of-responsibility').then(m => m.DpChainOfResponsibility) },
+      { path: 'auth-middleware-operator-precedence-bug', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/subtopics/auth-middleware-operator-precedence-bug/auth-middleware-operator-precedence-bug').then(m => m.AuthMiddlewareOperatorPrecedenceBugSubtopic) },
+      { path: 'pass-through-with-side-effect-handler', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/subtopics/pass-through-with-side-effect-handler/pass-through-with-side-effect-handler').then(m => m.PassThroughWithSideEffectHandlerSubtopic) },
+      { path: 'making-unhandled-a-real-signal', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/subtopics/making-unhandled-a-real-signal/making-unhandled-a-real-signal').then(m => m.MakingUnhandledARealSignalSubtopic) },
+    ] },
     { path: 'command',            loadComponent: () => import('./components/architecture/design-patterns/command/command').then(m => m.DpCommand) },
     { path: 'iterator',           loadComponent: () => import('./components/architecture/design-patterns/iterator/iterator').then(m => m.DpIterator) },
     { path: 'mediator',           loadComponent: () => import('./components/architecture/design-patterns/mediator/mediator').then(m => m.DpMediator) },

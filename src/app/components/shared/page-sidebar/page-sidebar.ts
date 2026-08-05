@@ -26925,6 +26925,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Reordering handlers only requires changing the chain\'s wiring, not the handler classes themselves.',
     ],
   },
+  'design-patterns/chain-of-responsibility/auth-middleware-operator-precedence-bug': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Chain of Responsibility (overview)', route: '/design-patterns/chain-of-responsibility' },
+      { label: 'Making "No Handler Accepted This" a Real Signal', route: '/design-patterns/chain-of-responsibility/making-unhandled-a-real-signal' },
+    ],
+    tip: 'C#\'s unary ! binds tighter than binary ?? — !x?.y ?? false does NOT mean !(x?.y ?? false); use != true to check "not definitely true" without the precedence trap.',
+    gotchas: [
+      'The buggy form happens to work for both true and explicit-false cases — only the null (no Identity at all) case silently slips through, making it easy to miss in casual testing.',
+    ],
+  },
+  'design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Auth Middleware\'s Operator-Precedence Bug', route: '/design-patterns/chain-of-responsibility/auth-middleware-operator-precedence-bug' },
+      { label: 'Making "No Handler Accepted This" a Real Signal', route: '/design-patterns/chain-of-responsibility/making-unhandled-a-real-signal' },
+    ],
+    tip: 'A handler that always calls next() is still genuine CoR, not Decorator — what matters is that it COULD stop propagation via the same mechanism every other handler uses, not that it always does.',
+    gotchas: [
+      'Placing an always-forwarding handler INSIDE the chain (vs. wrapping the whole chain in a Decorator) allows fine-grained placement at any specific point in the sequence.',
+    ],
+  },
+  'design-patterns/chain-of-responsibility/making-unhandled-a-real-signal': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Chain of Responsibility (overview)', route: '/design-patterns/chain-of-responsibility' },
+      { label: 'The Pass-Through-With-Side-Effect Handler, Made Concrete', route: '/design-patterns/chain-of-responsibility/pass-through-with-side-effect-handler' },
+    ],
+    tip: 'A Console.WriteLine for the unhandled case is not silent, but it is not actionable either — calling code needs a real return value or signal to route on, not just a log line.',
+    gotchas: [
+      'Reaching the end of a chain is not automatically an error condition — an exception forces every caller into a try/catch even for an expected, valid business outcome.',
+    ],
+  },
   'design-patterns/clean-architecture': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
