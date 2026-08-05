@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Template Method" topicRoute="/design-patterns/template-method"
+    subtopicLabel="Why sealed Requires override in C#" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Why sealed Requires override in C#</h1>
+  <p class="page-subtitle">The main page's own "Report Generator" codeTab and its own mistake block both
+    wrote sealed on a method that isn't an override — invalid C#. Here's the actual rule, and what makes a
+    base class method un-overridable without it.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic traces a second, unrelated compile error on the same page — the "Data Migration
+      Hook" codeTab's own AuditController — before a final subtopic builds real code for converting Template
+      Method to Strategy, which the page's own QnA only describes in prose.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Template Method" topicRoute="/design-patterns/template-method"
+    [next]="{ label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' }" />
+</div>

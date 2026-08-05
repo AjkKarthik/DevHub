@@ -2827,7 +2827,12 @@ export const routes: Routes = [
       { path: 'keyed-di-strategy-selection', loadComponent: () => import('./components/architecture/design-patterns/strategy/subtopics/keyed-di-strategy-selection/keyed-di-strategy-selection').then(m => m.KeyedDiStrategySelectionSubtopic) },
       { path: 'why-strategies-must-be-reentrant', loadComponent: () => import('./components/architecture/design-patterns/strategy/subtopics/why-strategies-must-be-reentrant/why-strategies-must-be-reentrant').then(m => m.WhyStrategiesMustBeReentrantSubtopic) },
     ] },
-    { path: 'template-method',    loadComponent: () => import('./components/architecture/design-patterns/template-method/template-method').then(m => m.DpTemplateMethod) },
+    { path: 'template-method', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/template-method/template-method').then(m => m.DpTemplateMethod) },
+      { path: 'why-sealed-requires-override-in-csharp', loadComponent: () => import('./components/architecture/design-patterns/template-method/subtopics/why-sealed-requires-override-in-csharp/why-sealed-requires-override-in-csharp').then(m => m.WhySealedRequiresOverrideInCsharpSubtopic) },
+      { path: 'controllerbase-vs-controller-for-action-filter-hooks', loadComponent: () => import('./components/architecture/design-patterns/template-method/subtopics/controllerbase-vs-controller-for-action-filter-hooks/controllerbase-vs-controller-for-action-filter-hooks').then(m => m.ControllerbaseVsControllerForActionFilterHooksSubtopic) },
+      { path: 'converting-template-method-to-strategy-concretely', loadComponent: () => import('./components/architecture/design-patterns/template-method/subtopics/converting-template-method-to-strategy-concretely/converting-template-method-to-strategy-concretely').then(m => m.ConvertingTemplateMethodToStrategyConcretelySubtopic) },
+    ] },
     { path: 'visitor',            loadComponent: () => import('./components/architecture/design-patterns/visitor/visitor').then(m => m.DpVisitor) },
     { path: 'null-object',        loadComponent: () => import('./components/architecture/design-patterns/null-object/null-object').then(m => m.DpNullObject) },
     // Enterprise

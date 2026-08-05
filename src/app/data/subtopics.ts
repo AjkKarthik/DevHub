@@ -3347,4 +3347,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' },
     { label: 'Why Strategies Must Be Reentrant', route: '/design-patterns/strategy/why-strategies-must-be-reentrant' },
   ],
+  'template-method': [
+    { label: 'Why sealed Requires override in C#', route: '/design-patterns/template-method/why-sealed-requires-override-in-csharp' },
+    { label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' },
+    { label: 'Converting Template Method to Strategy, Concretely', route: '/design-patterns/template-method/converting-template-method-to-strategy-concretely' },
+  ],
 };

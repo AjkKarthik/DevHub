@@ -27845,6 +27845,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Every subclass overriding hooks is implicitly coupled to the base class\'s exact algorithm sequence, a real cost if that skeleton needs to evolve.',
     ],
   },
+  'design-patterns/template-method/why-sealed-requires-override-in-csharp': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Template Method (overview)', route: '/design-patterns/template-method' },
+      { label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' },
+    ],
+    tip: 'C# only allows sealed on a method that is also an override — a plain, non-virtual base class method is already un-overridable without it.',
+    gotchas: [
+      'sealed on a class is unconditional; sealed on a method requires override alongside it — two genuinely different rules sharing one keyword.',
+    ],
+  },
+  'design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Why sealed Requires override in C#', route: '/design-patterns/template-method/why-sealed-requires-override-in-csharp' },
+      { label: 'Converting Template Method to Strategy, Concretely', route: '/design-patterns/template-method/converting-template-method-to-strategy-concretely' },
+    ],
+    tip: 'ControllerBase does not implement IActionFilter — only Controller declares OnActionExecuting/OnActionExecuted as virtual hooks; ControllerBase-only controllers need IActionFilter implemented directly instead.',
+    gotchas: [
+      'A standalone IActionFilter class registered globally via options.Filters.Add<T>() scales across many controllers; switching every controller to Controller does not.',
+    ],
+  },
+  'design-patterns/template-method/converting-template-method-to-strategy-concretely': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' },
+      { label: 'Template Method (overview)', route: '/design-patterns/template-method' },
+    ],
+    tip: 'Converting each abstract step and hook to its own interface turns a fixed subclass into independently mixable strategy classes — at the cost of composing several constructor parameters instead of one subclass definition.',
+    gotchas: [
+      'The optional-hook behavior survives the conversion — it just moves from an overridable default to a caller-supplied no-op implementation at construction time.',
+    ],
+  },
   'design-patterns/unit-of-work': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
