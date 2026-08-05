@@ -3403,6 +3403,38 @@ do this same check before any other new hub's first subtopic set:
     console errors; nav accordion opens with 9 toggles total; breadcrumb showed all 4 levels; 860px
     wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 9 of 36 topics
     complete.**
+16. **The `decorator` batch found no undeclared-class or compile-error bug in either codeTab, but
+    found one genuine, externally-verified inaccuracy in the main page's own QnA, plus two
+    gap-closing subtopics**: the QnA's "Are C# [attributes] the Decorator pattern?" answer lumped
+    Castle DynamicProxy and PostSharp together as both using "attribute-style syntax to generate
+    Decorator proxies." Verified via WebSearch that they use fundamentally different mechanisms —
+    Castle DynamicProxy generates a genuine runtime proxy CLASS that wraps the target (real
+    Decorator-shaped composition), while PostSharp weaves aspect code directly into the compiled IL
+    at BUILD time, with no wrapper object created at all (a compile-time postcompiler, not runtime
+    object composition). Rewrote the QnA to distinguish the two precisely. Three subtopics: (1)
+    **Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?** — sketches both
+    mechanisms side by side, and why only the DynamicProxy approach inherits Decorator's own known
+    limitations (virtual-only interception, object identity); (2) **When Decorator Breaks Object
+    Identity** — the QnA names "identity checks fail" as a limitation in one sentence, never
+    demonstrated; built a reference-keyed `TrustedServiceRegistry` that silently fails once the
+    main page's own DI registration wraps `OrderService`, plus the stable-ID fix; (3) **Removing
+    One Decorator from the Middle of the Stack** — the QnA's "reconstructing the stack" cost, made
+    concrete against the main page's own hand-nested DI registration lambda, contrasted with a
+    list-based reconfigurable alternative and an honest note that the added indirection is not
+    worth it for a 2-layer stack. **Self-caught and fixed a real, genuine bug during the pre-build
+    sweep, not the build**: subtopic 3's `exercise.solution` field (plain interpolation, per the
+    established rule) originally used `&lt;`/`&gt;` HTML entities around
+    `List<Func<IOrderService, IOrderService>>` — since `solution` never decodes entities, this would
+    have rendered the literal raw entity-code text to the reader instead of the actual generic
+    syntax; fixed to raw characters before the build ever ran, confirmed via browser text-search
+    after publishing that no stray `&lt;`/`&gt;` text remained and the corrected generic rendered
+    correctly. No `SUBTOPICS` collision for `decorator` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean.
+    Browser-verified via `window.ng.getComponent()` that the QnA fix was live before checking the
+    DOM; no console errors; nav accordion opens with 10 toggles total; breadcrumb showed all 4
+    levels; 860px wrapper confirmed via `getComputedStyle`; the corrected generic syntax confirmed
+    rendering as literal text after expanding the Try It exercise's "Show solution" toggle.
+    **Design Patterns hub Phase 10: 10 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4370,10 +4402,11 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 9 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 10 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
+  `/design-patterns/decorator`,
   2026-08-04/2026-08-05) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found

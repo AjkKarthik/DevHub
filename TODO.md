@@ -7269,7 +7269,19 @@ off here with a date.
   console errors; nav accordion opens with 9 toggles total; breadcrumb showed all 4 levels; 860px
   wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 9 of 36 topics
   complete.**
-- [ ] `/design-patterns/decorator` — Decorator Pattern
+- [x] `/design-patterns/decorator` — Decorator Pattern (2026-08-05) — verified via WebSearch that
+  the QnA's claim lumping Castle DynamicProxy and PostSharp together as both "generating Decorator
+  proxies" was wrong for PostSharp — it weaves aspect IL directly at build time with no wrapper
+  object at all, unlike DynamicProxy's genuine runtime proxy composition. Rewrote the QnA. 3
+  subtopics: (1) **Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?**; (2)
+  **When Decorator Breaks Object Identity** — a reference-keyed registry silently failing against
+  the main page's own DI registration, plus the stable-ID fix; (3) **Removing One Decorator from
+  the Middle of the Stack** — made concrete against the main page's own nested DI lambda. Self-
+  caught and fixed a real entity-in-solution-field bug before the build (List&lt;Func...&gt; would
+  have rendered as literal raw entity text). `decorator` SUBTOPICS key collision-free, left bare.
+  Build passed clean. Browser-verified via `ng.getComponent()`: QnA fix confirmed live; no console
+  errors; nav accordion opens with 10 toggles total; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 10 of 36 topics complete.**
 - [ ] `/design-patterns/facade` — Facade Pattern
 - [ ] `/design-patterns/flyweight` — Flyweight Pattern
 - [ ] `/design-patterns/proxy` — Proxy Pattern
