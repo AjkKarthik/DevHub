@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Decorator" topicRoute="/design-patterns/decorator"
+    subtopicLabel="When Decorator Breaks Object Identity" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">When Decorator Breaks Object Identity</h1>
+  <p class="page-subtitle">The main page's QnA names "identity checks fail" as a Decorator limitation in one
+    sentence. Here's a reproducible break — a reference-keyed registry silently failing — using the main
+    page's own DI registration, and the fix.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Identity is one limitation from the main page's own list — the final subtopic makes concrete a second
+      one: what actually has to change to remove a single decorator from the middle of an existing stack.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Decorator" topicRoute="/design-patterns/decorator"
+    [prev]="{ label: 'Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?', route: '/design-patterns/decorator/castle-dynamicproxy-vs-postsharp' }"
+    [next]="{ label: 'Removing One Decorator from the Middle of the Stack', route: '/design-patterns/decorator/removing-one-decorator-from-the-middle' }" />
+</div>

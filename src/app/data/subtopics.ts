@@ -3284,4 +3284,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What the Transparency Design Actually Looks Like', route: '/design-patterns/composite/the-transparency-design-made-concrete' },
     { label: 'Composite Plus Visitor, Made Concrete', route: '/design-patterns/composite/composite-plus-visitor-made-concrete' },
   ],
+  'decorator': [
+    { label: 'Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?', route: '/design-patterns/decorator/castle-dynamicproxy-vs-postsharp' },
+    { label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' },
+    { label: 'Removing One Decorator from the Middle of the Stack', route: '/design-patterns/decorator/removing-one-decorator-from-the-middle' },
+  ],
 };

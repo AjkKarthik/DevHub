@@ -204,7 +204,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/decorator" routerLinkActive="active"><span class="nl-text">Decorator</span>@if(p.isDone('dp-decorator')){<span class="nl-done">✓</span>}@if(d('dp-decorator');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/decorator" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Decorator</span>
+        @if(p.isDone('dp-decorator')){<span class="nl-done">✓</span>}
+        @if(d('dp-decorator');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('decorator')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('decorator')"
+                  (click)="toggleSubtopics('decorator', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('decorator'); as dcSubs) {
+        @if (isSubtopicsExpanded('decorator')) {
+          <div class="nav-subtopics">
+            @for (s of dcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/facade" routerLinkActive="active"><span class="nl-text">Facade</span>@if(p.isDone('dp-facade')){<span class="nl-done">✓</span>}@if(d('dp-facade');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/flyweight" routerLinkActive="active"><span class="nl-text">Flyweight</span>@if(p.isDone('dp-flyweight')){<span class="nl-done">✓</span>}@if(d('dp-flyweight');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/proxy" routerLinkActive="active"><span class="nl-text">Proxy</span>@if(p.isDone('dp-proxy')){<span class="nl-done">✓</span>}@if(d('dp-proxy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

@@ -27023,6 +27023,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Decorating behaviors that are actually always needed together adds unneeded indirection — the pattern earns its keep when behaviors are genuinely independently optional.',
     ],
   },
+  'design-patterns/decorator/castle-dynamicproxy-vs-postsharp': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Decorator (overview)', route: '/design-patterns/decorator' },
+      { label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' },
+    ],
+    tip: 'Castle DynamicProxy generates a genuine runtime wrapper object — real Decorator. PostSharp weaves aspect code directly into compiled IL, with no wrapper object at all.',
+    gotchas: [
+      'Only the wrapper-based approach (DynamicProxy) inherits Decorator\'s own limitations — virtual-only interception, object identity divergence.',
+    ],
+  },
+  'design-patterns/decorator/when-decorator-breaks-object-identity': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Castle DynamicProxy vs. PostSharp: Which One Is Actually Decorator?', route: '/design-patterns/decorator/castle-dynamicproxy-vs-postsharp' },
+      { label: 'Removing One Decorator from the Middle of the Stack', route: '/design-patterns/decorator/removing-one-decorator-from-the-middle' },
+    ],
+    tip: 'A decorator is, by construction, a different heap object from the one it wraps — ReferenceEquals(decorated, raw) can never be true, no matter how the decorator is implemented.',
+    gotchas: [
+      'Reference-keyed collections (ConditionalWeakTable, a HashSet with ReferenceEqualityComparer) silently miss once decoration is introduced — track a stable ID instead.',
+    ],
+  },
+  'design-patterns/decorator/removing-one-decorator-from-the-middle': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Decorator (overview)', route: '/design-patterns/decorator' },
+      { label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' },
+    ],
+    tip: 'A hand-nested decorator registration has no "list of active layers" to edit — removing one middle layer means rewriting the composition-root expression itself.',
+    gotchas: [
+      'A fully list-based, reconfigurable decorator pipeline is only worth its extra indirection once the number of independently-toggled layers actually justifies it — not for a 2-layer stack.',
+    ],
+  },
   'design-patterns/dependency-inversion': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

@@ -2754,7 +2754,12 @@ export const routes: Routes = [
       { path: 'the-transparency-design-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/composite/subtopics/the-transparency-design-made-concrete/the-transparency-design-made-concrete').then(m => m.TheTransparencyDesignMadeConcreteSubtopic) },
       { path: 'composite-plus-visitor-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/composite/subtopics/composite-plus-visitor-made-concrete/composite-plus-visitor-made-concrete').then(m => m.CompositePlusVisitorMadeConcreteSubtopic) },
     ] },
-    { path: 'decorator',          loadComponent: () => import('./components/architecture/design-patterns/decorator/decorator').then(m => m.DpDecorator) },
+    { path: 'decorator', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/decorator/decorator').then(m => m.DpDecorator) },
+      { path: 'castle-dynamicproxy-vs-postsharp', loadComponent: () => import('./components/architecture/design-patterns/decorator/subtopics/castle-dynamicproxy-vs-postsharp/castle-dynamicproxy-vs-postsharp').then(m => m.CastleDynamicproxyVsPostsharpSubtopic) },
+      { path: 'when-decorator-breaks-object-identity', loadComponent: () => import('./components/architecture/design-patterns/decorator/subtopics/when-decorator-breaks-object-identity/when-decorator-breaks-object-identity').then(m => m.WhenDecoratorBreaksObjectIdentitySubtopic) },
+      { path: 'removing-one-decorator-from-the-middle', loadComponent: () => import('./components/architecture/design-patterns/decorator/subtopics/removing-one-decorator-from-the-middle/removing-one-decorator-from-the-middle').then(m => m.RemovingOneDecoratorFromTheMiddleSubtopic) },
+    ] },
     { path: 'facade',             loadComponent: () => import('./components/architecture/design-patterns/facade/facade').then(m => m.DpFacade) },
     { path: 'flyweight',          loadComponent: () => import('./components/architecture/design-patterns/flyweight/flyweight').then(m => m.DpFlyweight) },
     { path: 'proxy',              loadComponent: () => import('./components/architecture/design-patterns/proxy/proxy').then(m => m.DpProxy) },
