@@ -1,0 +1,31 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Facade" topicRoute="/design-patterns/facade"
+    subtopicLabel="Facade vs. Mediator, Made Concrete" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Facade vs. Mediator, Made Concrete</h1>
+  <p class="page-subtitle">The main page states the Facade/Mediator distinction twice in prose but never in
+    code. Here's the same checkout subsystem, built two ways: coordination outside the subsystems (Facade)
+    vs. coordination between them (Mediator).</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic zooms out from a single process to a distributed one — the main page's own QnA
+      calls the API Gateway pattern an architectural Facade, and shows it's a Facade with a genuinely new
+      failure mode this hub's own rollback subtopic already introduced.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Facade" topicRoute="/design-patterns/facade"
+    [prev]="{ label: 'The Missing Rollback on Partial Checkout Failure', route: '/design-patterns/facade/the-missing-rollback-on-partial-checkout-failure' }"
+    [next]="{ label: 'The API Gateway: A Network-Boundary Facade', route: '/design-patterns/facade/api-gateway-a-network-boundary-facade' }" />
+</div>

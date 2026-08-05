@@ -77,6 +77,7 @@ internal class InventoryService
 {
     public bool Reserve(string productId, int qty) { /* check stock */ return true; }
     public void Commit(string productId, int qty)  { /* reduce stock */ }
+    public void Release(string productId, int qty) { /* undo a reservation */ }
 }
 
 internal class PaymentGateway
@@ -104,25 +105,42 @@ public class CheckoutFacade(
 {
     public async Task<CheckoutResult> CheckoutAsync(CartSummary cart, PaymentInfo payInfo)
     {
-        // 1. Reserve inventory
+        // 1. Reserve inventory — track what succeeded so a partial failure can be undone
+        var reserved = new List<CartItem>();
         foreach (var item in cart.Items)
+        {
             if (!inventory.Reserve(item.ProductId, item.Qty))
+            {
+                foreach (var r in reserved) inventory.Release(r.ProductId, r.Qty);
                 return CheckoutResult.Failure($"Out of stock: {item.ProductId}");
+            }
+            reserved.Add(item);
+        }
 
-        // 2. Charge payment
-        var paymentId = payment.Charge(payInfo.CardToken, cart.Total);
+        try
+        {
+            // 2. Charge payment
+            var paymentId = payment.Charge(payInfo.CardToken, cart.Total);
 
-        // 3. Commit inventory
-        foreach (var item in cart.Items)
-            inventory.Commit(item.ProductId, item.Qty);
+            // 3. Commit inventory — only once payment has actually succeeded
+            foreach (var item in cart.Items)
+                inventory.Commit(item.ProductId, item.Qty);
 
-        // 4. Create shipment
-        var shipmentId = shipping.CreateShipment(paymentId, payInfo.ShippingAddress);
+            // 4. Create shipment
+            var shipmentId = shipping.CreateShipment(paymentId, payInfo.ShippingAddress);
 
-        // 5. Send confirmation
-        email.SendOrderConfirmation(payInfo.Email, paymentId);
+            // 5. Send confirmation
+            email.SendOrderConfirmation(payInfo.Email, paymentId);
 
-        return CheckoutResult.Success(paymentId, shipmentId);
+            return CheckoutResult.Success(paymentId, shipmentId);
+        }
+        catch
+        {
+            // Anything failing between reservation and commit must release the hold —
+            // otherwise inventory stays reserved forever for a checkout that never completed.
+            foreach (var item in cart.Items) inventory.Release(item.ProductId, item.Qty);
+            throw;
+        }
     }
 }
 

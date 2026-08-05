@@ -224,7 +224,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/facade" routerLinkActive="active"><span class="nl-text">Facade</span>@if(p.isDone('dp-facade')){<span class="nl-done">✓</span>}@if(d('dp-facade');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/facade" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Facade</span>
+        @if(p.isDone('dp-facade')){<span class="nl-done">✓</span>}
+        @if(d('dp-facade');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('facade')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('facade')"
+                  (click)="toggleSubtopics('facade', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('facade'); as fcSubs) {
+        @if (isSubtopicsExpanded('facade')) {
+          <div class="nav-subtopics">
+            @for (s of fcSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/flyweight" routerLinkActive="active"><span class="nl-text">Flyweight</span>@if(p.isDone('dp-flyweight')){<span class="nl-done">✓</span>}@if(d('dp-flyweight');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/proxy" routerLinkActive="active"><span class="nl-text">Proxy</span>@if(p.isDone('dp-proxy')){<span class="nl-done">✓</span>}@if(d('dp-proxy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

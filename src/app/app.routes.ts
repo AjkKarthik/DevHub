@@ -2760,7 +2760,12 @@ export const routes: Routes = [
       { path: 'when-decorator-breaks-object-identity', loadComponent: () => import('./components/architecture/design-patterns/decorator/subtopics/when-decorator-breaks-object-identity/when-decorator-breaks-object-identity').then(m => m.WhenDecoratorBreaksObjectIdentitySubtopic) },
       { path: 'removing-one-decorator-from-the-middle', loadComponent: () => import('./components/architecture/design-patterns/decorator/subtopics/removing-one-decorator-from-the-middle/removing-one-decorator-from-the-middle').then(m => m.RemovingOneDecoratorFromTheMiddleSubtopic) },
     ] },
-    { path: 'facade',             loadComponent: () => import('./components/architecture/design-patterns/facade/facade').then(m => m.DpFacade) },
+    { path: 'facade', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/facade/facade').then(m => m.DpFacade) },
+      { path: 'the-missing-rollback-on-partial-checkout-failure', loadComponent: () => import('./components/architecture/design-patterns/facade/subtopics/the-missing-rollback-on-partial-checkout-failure/the-missing-rollback-on-partial-checkout-failure').then(m => m.TheMissingRollbackOnPartialCheckoutFailureSubtopic) },
+      { path: 'facade-vs-mediator-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/facade/subtopics/facade-vs-mediator-made-concrete/facade-vs-mediator-made-concrete').then(m => m.FacadeVsMediatorMadeConcreteSubtopic) },
+      { path: 'api-gateway-a-network-boundary-facade', loadComponent: () => import('./components/architecture/design-patterns/facade/subtopics/api-gateway-a-network-boundary-facade/api-gateway-a-network-boundary-facade').then(m => m.ApiGatewayANetworkBoundaryFacadeSubtopic) },
+    ] },
     { path: 'flyweight',          loadComponent: () => import('./components/architecture/design-patterns/flyweight/flyweight').then(m => m.DpFlyweight) },
     { path: 'proxy',              loadComponent: () => import('./components/architecture/design-patterns/proxy/proxy').then(m => m.DpProxy) },
     // Behavioral

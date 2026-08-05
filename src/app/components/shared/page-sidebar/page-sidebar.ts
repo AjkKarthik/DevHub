@@ -27106,6 +27106,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A Facade accumulating real business logic of its own has effectively become a service, not just a coordination layer.',
     ],
   },
+  'design-patterns/facade/the-missing-rollback-on-partial-checkout-failure': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Facade (overview)', route: '/design-patterns/facade' },
+      { label: 'Facade vs. Mediator, Made Concrete', route: '/design-patterns/facade/facade-vs-mediator-made-concrete' },
+    ],
+    tip: 'A Facade orchestrating several stateful subsystem calls has to undo its OWN earlier steps when a later step fails — that is orchestration staying correct, not business logic creeping in.',
+    gotchas: [
+      'A partial mid-loop failure and an exception thrown mid-sequence are two separate failure paths — both need their own rollback, not just one.',
+    ],
+  },
+  'design-patterns/facade/facade-vs-mediator-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Missing Rollback on Partial Checkout Failure', route: '/design-patterns/facade/the-missing-rollback-on-partial-checkout-failure' },
+      { label: 'The API Gateway: A Network-Boundary Facade', route: '/design-patterns/facade/api-gateway-a-network-boundary-facade' },
+    ],
+    tip: 'Facade coordinates between an external client and a subsystem; Mediator coordinates between the subsystem classes themselves, which report events to a shared coordinator instead of calling each other directly.',
+    gotchas: [
+      'The two shapes can produce identical observable behavior for a simple case while organizing the underlying decision-making completely differently.',
+    ],
+  },
+  'design-patterns/facade/api-gateway-a-network-boundary-facade': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Facade (overview)', route: '/design-patterns/facade' },
+      { label: 'The Missing Rollback on Partial Checkout Failure', route: '/design-patterns/facade/the-missing-rollback-on-partial-checkout-failure' },
+    ],
+    tip: 'An API Gateway is the same Facade shape at the network boundary — but a timeout there means the gateway genuinely cannot tell whether the backend call completed or not.',
+    gotchas: [
+      'Network-boundary Facades need idempotency keys in addition to compensating rollback logic — an in-process Facade never faces the "did this actually happen?" ambiguity a timeout introduces.',
+    ],
+  },
   'design-patterns/factory-method': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

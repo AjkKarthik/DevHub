@@ -3289,4 +3289,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'When Decorator Breaks Object Identity', route: '/design-patterns/decorator/when-decorator-breaks-object-identity' },
     { label: 'Removing One Decorator from the Middle of the Stack', route: '/design-patterns/decorator/removing-one-decorator-from-the-middle' },
   ],
+  'facade': [
+    { label: 'The Missing Rollback on Partial Checkout Failure', route: '/design-patterns/facade/the-missing-rollback-on-partial-checkout-failure' },
+    { label: 'Facade vs. Mediator, Made Concrete', route: '/design-patterns/facade/facade-vs-mediator-made-concrete' },
+    { label: 'The API Gateway: A Network-Boundary Facade', route: '/design-patterns/facade/api-gateway-a-network-boundary-facade' },
+  ],
 };

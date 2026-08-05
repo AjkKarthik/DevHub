@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Facade" topicRoute="/design-patterns/facade"
+    subtopicLabel="The Missing Rollback on Partial Checkout Failure" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Missing Rollback on Partial Checkout Failure</h1>
+  <p class="page-subtitle">The main page's own Order Checkout Facade could leak reserved inventory two
+    different ways: a mid-loop stock failure, and any exception between reserving and committing. Here's
+    both bugs, traced precisely, and the fix.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic turns to a different gap — the main page's theory names Mediator as a related
+      pattern in one sentence, but never shows what a genuinely Mediator-shaped version of this same
+      subsystem would look like.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Facade" topicRoute="/design-patterns/facade"
+    [next]="{ label: 'Facade vs. Mediator, Made Concrete', route: '/design-patterns/facade/facade-vs-mediator-made-concrete' }" />
+</div>
