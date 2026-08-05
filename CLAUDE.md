@@ -3535,6 +3535,43 @@ do this same check before any other new hub's first subtopic set:
     showed all 4 levels on every subtopic; 860px wrapper confirmed via `getComputedStyle`; generic
     syntax (`SmartReferenceProxy<T>`) confirmed rendering as literal text with no vanished tags.
     **Design Patterns hub Phase 10: 13 of 36 topics complete — Structural nav group fully done.**
+20. **The `chain-of-responsibility` batch — the first topic in the Behavioral nav group — found and
+    fixed a genuine, security-relevant C# operator-precedence bug in the main page's own "Auth
+    middleware" codeTab, requiring only careful application of C# precedence rules, no external
+    research**: the check `if (!context.User.Identity?.IsAuthenticated ?? false)` was intended to
+    mean "if NOT authenticated, reject" but unary `!` binds TIGHTER than binary `??` in C#, so it
+    actually parses as `(!context.User.Identity?.IsAuthenticated) ?? false`. Traced all three cases:
+    when `Identity` is null (a plain anonymous request — the single most common case this check
+    exists to catch), `!null` is null, `null ?? false` is `false`, so the 401 short-circuit is
+    SKIPPED and the anonymous request is let through as if authenticated — the exact opposite of
+    the intended behavior. The other two cases (genuinely authenticated, explicitly
+    `IsAuthenticated = false`) both happen to work correctly, which is exactly why this class of bug
+    survives casual testing. Fixed to `if (context.User.Identity?.IsAuthenticated != true)`, a
+    single unambiguous comparison with no precedence trap. Three subtopics: (1) **The Auth
+    Middleware's Operator-Precedence Bug** — traces every case through the buggy expression, and a
+    Try It exercise asking for the PARENTHESIZED (not `!= true`) fix to test precise understanding
+    of where the missing parens belong; (2) **The Pass-Through-With-Side-Effect Handler, Made
+    Concrete** — the QnA names this "logging and metrics always call next() after recording" variant
+    but the main page's own `ApprovalHandler` chain never demonstrates it; built an
+    `AuditLogHandler` link that always forwards, and reasoned through why placing it INSIDE the
+    chain (vs. an outer Decorator) allows fine-grained placement at a specific point in the
+    sequence; (3) **Making "No Handler Accepted This" a Real Signal** — the main page's own
+    `DirectorApprover` handles the fallthrough case with a bare `Console.WriteLine`, which is not
+    silent but is not actionable either; built a real `ApprovalResult`/`ApprovalOutcome` type the
+    caller can branch on, reasoning through why a thrown exception would be the WRONG fix here
+    (reaching the chain's end is an expected business outcome, not an error). **A real, newly-
+    introduced apostrophe-escaping mistake was caught and self-fixed mid-authoring**: an early draft
+    of subtopic 2's `.html` file used backslash-escaped apostrophes (`\'`) inside the `[prev]`/
+    `[next]` bound-attribute labels — the `.ts`-field convention — instead of the required
+    typographic curly quote (`'`) for `.html` bound attributes; caught and fixed before the build,
+    also escalating to curly double-quotes (`"..."`) for a scare-quoted label, per the DevOps hub's
+    own established precedent for that specific case. No `SUBTOPICS` collision for
+    `chain-of-responsibility` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+    directly, confirmed collision-free, left bare). Build passed clean. Browser-verified via
+    `window.ng.getComponent()` that the main-page fix was live before checking the DOM; no console
+    errors; nav accordion opens with 14 toggles total; breadcrumb showed all 4 levels on every
+    subtopic; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 14 of
+    36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4502,12 +4539,12 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 13 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 14 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
-  `/design-patterns/proxy`,
+  `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`,
   2026-08-04/2026-08-05, Structural nav group complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found

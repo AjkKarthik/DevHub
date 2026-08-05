@@ -7323,7 +7323,20 @@ off here with a date.
   confirmed live; no console errors; nav accordion opens with 13 toggles total; breadcrumb showed
   all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10:
   13 of 36 topics complete — Structural nav group fully done.**
-- [ ] `/design-patterns/chain-of-responsibility` — Chain of Responsibility
+- [x] `/design-patterns/chain-of-responsibility` — Chain of Responsibility (2026-08-05) — fixed a
+  real, security-relevant C# operator-precedence bug in the "Auth middleware" codeTab:
+  `!x?.y ?? false` parses as `(!x?.y) ?? false` (unary ! binds tighter than ??), so an anonymous
+  request (null Identity) was let through as if authenticated — the exact opposite of intent. Fixed
+  to `x?.y != true`. 3 subtopics: (1) **The Auth Middleware's Operator-Precedence Bug** — traces
+  all three cases through the buggy expression; (2) **The Pass-Through-With-Side-Effect Handler,
+  Made Concrete** — the QnA's own described variant, never shown in the Approval Chain; (3)
+  **Making "No Handler Accepted This" a Real Signal** — replaces a bare Console.WriteLine fallback
+  with a real ApprovalResult type. Self-caught and fixed a `.html` apostrophe-escaping mistake
+  (backslash instead of typographic curly quote) before the build. `chain-of-responsibility`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified via
+  `ng.getComponent()`: fix confirmed live; no console errors; nav accordion opens with 14 toggles
+  total; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design
+  Patterns hub Phase 10: 14 of 36 topics complete.**
 - [ ] `/design-patterns/command` — Command Pattern
 - [ ] `/design-patterns/iterator` — Iterator Pattern
 - [ ] `/design-patterns/mediator` — Mediator Pattern
