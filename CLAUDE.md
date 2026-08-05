@@ -3819,8 +3819,13 @@ do this same check before any other new hub's first subtopic set:
     failure this file has documented for several earlier hubs' own first collisions. Build passed
     clean. Browser-verified: no console errors; nav accordion opens with 20 toggles
     total; all 3 subtopic links render correctly; breadcrumb showed all 4 levels; 860px wrapper
-    confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 20 of 36 topics complete —
-    Behavioral nav group fully done.**
+    confirmed via `getComputedStyle`. **Correction to an inaccurate claim made in this same entry
+    when first written**: this was originally logged as completing the Behavioral nav group — a
+    mistake, caught immediately afterward by directly reading `dp-nav.ts`'s own Behavioral group
+    block, which lists 11 topics (Chain of Responsibility, Command, Iterator, Mediator, Memento,
+    Observer, State, Strategy, Template Method, Visitor, Null Object), not 7 — Strategy, Template
+    Method, Visitor, and Null Object still remain. **Design Patterns hub Phase 10: 20 of 36 topics
+    complete.**
 
 ## Current state (update when it changes!)
 
@@ -4796,7 +4801,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
   `/design-patterns/observer`, `/design-patterns/state`,
-  2026-08-04/2026-08-05, Structural + Behavioral nav groups complete) — see
+  2026-08-04/2026-08-05, Structural nav group complete; Behavioral in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more

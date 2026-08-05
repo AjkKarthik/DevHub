@@ -7440,8 +7440,8 @@ off here with a date.
   caught via the standard pre-add grep this time. Build passed clean. Browser-verified: nav
   accordion opens with 20 toggles total; all 3 subtopic links render correctly; breadcrumb showed
   all 4 levels; `/terraform/state` confirmed unaffected; 860px wrapper confirmed via
-  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 20 of 36 topics complete —
-  Behavioral nav group fully done.**
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 20 of 36 topics complete**
+  (Strategy, Template Method, Visitor, Null Object still remain in the Behavioral group).
 - [ ] `/design-patterns/strategy` — Strategy Pattern
 - [ ] `/design-patterns/template-method` — Template Method Pattern
 - [ ] `/design-patterns/visitor` — Visitor Pattern
