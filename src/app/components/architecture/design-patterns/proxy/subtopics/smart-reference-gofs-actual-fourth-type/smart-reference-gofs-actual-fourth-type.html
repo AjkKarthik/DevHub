@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Proxy" topicRoute="/design-patterns/proxy"
+    subtopicLabel="Smart Reference: GoF's Actual Fourth Proxy Type" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Smart Reference: GoF's Actual Fourth Proxy Type</h1>
+  <p class="page-subtitle">The main page's theory names "four main proxy types" (Virtual, Caching, Protection,
+    Remote) — but GoF's own original fourth type is Smart Reference, which the page's quiz and QnA discuss
+    separately without ever reconciling. Here's a genuine reference-counting Smart Reference Proxy.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Across all three subtopics, the same theme recurs: Proxy's four (or five) variants share one
+      structural shape but genuinely different intents — mixing up which intent a given wrapper serves is
+      the recurring source of confusion this whole topic warns about.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Proxy" topicRoute="/design-patterns/proxy"
+    [prev]="{ label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' }" />
+</div>

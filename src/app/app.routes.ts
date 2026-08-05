@@ -2772,7 +2772,12 @@ export const routes: Routes = [
       { path: 'the-race-in-particlefactory-get', loadComponent: () => import('./components/architecture/design-patterns/flyweight/subtopics/the-race-in-particlefactory-get/the-race-in-particlefactory-get').then(m => m.TheRaceInParticlefactoryGetSubtopic) },
       { path: 'when-flyweight-identity-merges-distinct-objects', loadComponent: () => import('./components/architecture/design-patterns/flyweight/subtopics/when-flyweight-identity-merges-distinct-objects/when-flyweight-identity-merges-distinct-objects').then(m => m.WhenFlyweightIdentityMergesDistinctObjectsSubtopic) },
     ] },
-    { path: 'proxy',              loadComponent: () => import('./components/architecture/design-patterns/proxy/proxy').then(m => m.DpProxy) },
+    { path: 'proxy', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/proxy/proxy').then(m => m.DpProxy) },
+      { path: 'loggingorderproxy-isnt-a-proxy-its-a-decorator', loadComponent: () => import('./components/architecture/design-patterns/proxy/subtopics/loggingorderproxy-isnt-a-proxy-its-a-decorator/loggingorderproxy-isnt-a-proxy-its-a-decorator').then(m => m.LoggingorderproxyIsntAProxyItsADecoratorSubtopic) },
+      { path: 'getorcreateasync-silently-caches-null', loadComponent: () => import('./components/architecture/design-patterns/proxy/subtopics/getorcreateasync-silently-caches-null/getorcreateasync-silently-caches-null').then(m => m.GetorcreateasyncSilentlyCachesNullSubtopic) },
+      { path: 'smart-reference-gofs-actual-fourth-type', loadComponent: () => import('./components/architecture/design-patterns/proxy/subtopics/smart-reference-gofs-actual-fourth-type/smart-reference-gofs-actual-fourth-type').then(m => m.SmartReferenceGofsActualFourthTypeSubtopic) },
+    ] },
     // Behavioral
     { path: 'chain-of-responsibility', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/chain-of-responsibility').then(m => m.DpChainOfResponsibility) },
     { path: 'command',            loadComponent: () => import('./components/architecture/design-patterns/command/command').then(m => m.DpCommand) },

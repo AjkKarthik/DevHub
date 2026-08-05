@@ -27416,6 +27416,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Choose the specific proxy variant based on the actual reason access needs controlling, not as a generic wrapper habit.',
     ],
   },
+  'design-patterns/proxy/loggingorderproxy-isnt-a-proxy-its-a-decorator': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Proxy (overview)', route: '/design-patterns/proxy' },
+      { label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' },
+    ],
+    tip: 'Proxy decides WHETHER/WHEN to forward a call (auth checks, cache hits can skip it); Decorator always forwards and only adds behavior around the call — logging always forwards, so it is a Decorator concern.',
+    gotchas: [
+      'Structural identity between Proxy and Decorator makes intent-carrying class names the main signal a reader has — a misleading name actively works against that signal.',
+    ],
+  },
+  'design-patterns/proxy/getorcreateasync-silently-caches-null': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'LoggingOrderProxy Isn’t a Proxy — It’s a Decorator', route: '/design-patterns/proxy/loggingorderproxy-isnt-a-proxy-its-a-decorator' },
+      { label: 'Smart Reference: GoF’s Actual Fourth Proxy Type', route: '/design-patterns/proxy/smart-reference-gofs-actual-fourth-type' },
+    ],
+    tip: 'IMemoryCache.GetOrCreateAsync caches whatever the factory returns, including null — a "not found" lookup gets cached for the full TTL by default, not skipped.',
+    gotchas: [
+      'entry.Dispose() inside the factory delegate opts a null result OUT of caching — or give misses their own, much shorter TTL if negative caching is actually wanted.',
+    ],
+  },
+  'design-patterns/proxy/smart-reference-gofs-actual-fourth-type': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Proxy (overview)', route: '/design-patterns/proxy' },
+      { label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' },
+    ],
+    tip: 'GoF\'s own original four proxy types are Remote, Virtual, Protection, and Smart Reference — this page substitutes Caching for Smart Reference as the more commonly-used modern variant.',
+    gotchas: [
+      'Smart Reference adds lifetime management (reference counting) on top of what Virtual Proxy alone provides — Virtual Proxy only handles WHEN to create, not WHEN to release.',
+    ],
+  },
   'design-patterns/repository': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

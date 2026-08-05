@@ -3299,4 +3299,10 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' },
     { label: 'When Flyweight Identity Silently Merges Logically Distinct Objects', route: '/design-patterns/flyweight/when-flyweight-identity-merges-distinct-objects' },
   ],
+  // NOTE: hub-prefixed — bare 'proxy' is already claimed by the JavaScript hub's own /javascript/proxy topic
+  'dp-proxy': [
+    { label: 'LoggingOrderProxy Isn’t a Proxy — It’s a Decorator', route: '/design-patterns/proxy/loggingorderproxy-isnt-a-proxy-its-a-decorator' },
+    { label: 'GetOrCreateAsync Silently Caches null', route: '/design-patterns/proxy/getorcreateasync-silently-caches-null' },
+    { label: 'Smart Reference: GoF’s Actual Fourth Proxy Type', route: '/design-patterns/proxy/smart-reference-gofs-actual-fourth-type' },
+  ],
 };

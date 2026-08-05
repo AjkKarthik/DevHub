@@ -264,7 +264,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/proxy" routerLinkActive="active"><span class="nl-text">Proxy</span>@if(p.isDone('dp-proxy')){<span class="nl-done">✓</span>}@if(d('dp-proxy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/proxy" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Proxy</span>
+        @if(p.isDone('dp-proxy')){<span class="nl-done">✓</span>}
+        @if(d('dp-proxy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('dp-proxy')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dp-proxy')"
+                  (click)="toggleSubtopics('dp-proxy', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dp-proxy'); as pxSubs) {
+        @if (isSubtopicsExpanded('dp-proxy')) {
+          <div class="nav-subtopics">
+            @for (s of pxSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

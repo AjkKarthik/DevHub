@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Proxy" topicRoute="/design-patterns/proxy"
+    subtopicLabel="GetOrCreateAsync Silently Caches null" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">GetOrCreateAsync Silently Caches null</h1>
+  <p class="page-subtitle">The main page's own Caching Proxy caches whatever GetByIdAsync returns — including
+    null for a missing product. Verified: IMemoryCache does NOT skip caching null by default, creating a
+    stale negative-cache window most developers don't expect.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic reconciles a different tension — the main page's own "four main proxy types"
+      framing against the Smart Reference Proxy its quiz and QnA separately describe.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Proxy" topicRoute="/design-patterns/proxy"
+    [prev]="{ label: 'LoggingOrderProxy Isn’t a Proxy — It’s a Decorator', route: '/design-patterns/proxy/loggingorderproxy-isnt-a-proxy-its-a-decorator' }"
+    [next]="{ label: 'Smart Reference: GoF’s Actual Fourth Proxy Type', route: '/design-patterns/proxy/smart-reference-gofs-actual-fourth-type' }" />
+</div>
