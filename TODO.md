@@ -7253,7 +7253,22 @@ off here with a date.
   fix confirmed via `ng.getComponent()`; nav accordion opens with 8 toggles total; breadcrumb
   showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub
   Phase 10: 8 of 36 topics complete.**
-- [ ] `/design-patterns/composite` — Composite Pattern
+- [x] `/design-patterns/composite` — Composite Pattern (2026-08-05) — verified via WebSearch that
+  .NET's FileSystemInfo/DirectoryInfo (cited on the main page as a Composite example) has no
+  recursive size/traversal operation at all — GetFiles()/GetDirectories() return flat arrays the
+  caller must manually recurse over, so the shared base class only reuses metadata, not Composite's
+  defining recursive-delegation trait. Tightened the theory bullet. 3 subtopics: (1) **Does
+  System.IO's FileSystemInfo Really Give You Composite?** — builds a real wrapper
+  (RealFolderComposite/RealFileLeaf) showing what it actually takes; (2) **What the Transparency
+  Design Actually Looks Like** — the main page's own theory/quiz/QnA discuss Transparency vs.
+  Safety but only ever show Safety in code; built the Transparency version side by side with the
+  downcast the quiz mentions but never writes out; (3) **Composite Plus Visitor, Made Concrete** —
+  adds a one-time Accept() method to the main page's own node classes, then two independent
+  visitors demonstrating zero-change extensibility. `composite` SUBTOPICS key collision-free, left
+  bare. Build passed clean. Browser-verified via `ng.getComponent()`: theory fix confirmed live; no
+  console errors; nav accordion opens with 9 toggles total; breadcrumb showed all 4 levels; 860px
+  wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 9 of 36 topics
+  complete.**
 - [ ] `/design-patterns/decorator` — Decorator Pattern
 - [ ] `/design-patterns/facade` — Facade Pattern
 - [ ] `/design-patterns/flyweight` — Flyweight Pattern

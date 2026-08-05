@@ -3369,6 +3369,40 @@ do this same check before any other new hub's first subtopic set:
     as a literal escaped quote in the displayed C# sample; nav accordion opens with 8 toggles total;
     breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design
     Patterns hub Phase 10: 8 of 36 topics complete.**
+15. **The `composite` batch — the cleanest page found so far in this hub, no undeclared-class or
+    compile-error bug in either codeTab — found one genuine, externally-verified inaccuracy in the
+    main page's own theory, plus two gap-closing subtopics**: the ".NET Examples" bullet claimed
+    "FileInfo and DirectoryInfo — both inherit FileSystemInfo" as a Composite example. Verified via
+    WebSearch that `FileSystemInfo` declares no recursive size/traversal operation at all, and
+    `DirectoryInfo` has no built-in method to recursively sum a subtree's size —
+    `GetFiles()`/`GetDirectories()` return flat arrays the CALLER must manually recurse over. This
+    means the shared base class only reuses METADATA (Name, Exists, Attributes), not Composite's
+    defining trait (a shared operation a container recursively delegates to its children). Tightened
+    the theory bullet to state this precisely. Three subtopics: (1) **Does System.IO's
+    FileSystemInfo Really Give You Composite?** — the verified finding, plus a genuine
+    `RealFolderComposite`/`RealFileLeaf` wrapper showing what it actually takes to get Composite
+    behavior over the real BCL file-system types; (2) **What the Transparency Design Actually
+    Looks Like** — the main page's own theory/quiz/QnA all discuss the Transparency-vs-Safety
+    design tension (Add/Remove on the shared Component interface vs. Composite-only) but every
+    codeTab only ever shows Safety; built the Transparency version (Add/Remove on
+    `ITransparentFileSystemItem`, with a leaf throwing `NotSupportedException`) side by side with
+    the downcast the quiz's own explanation mentions but the main page never actually writes out;
+    (3) **Composite Plus Visitor, Made Concrete** — the QnA calls this "a very common combination"
+    in one sentence and moves on; added a one-time `Accept(IFileSystemVisitor)` method to the main
+    page's own `IFileSystemItem`/`FileItem`/`Folder` classes, then wrote two independent visitors
+    (`LargeFileCounterVisitor`, `FlattenPathsVisitor`) demonstrating new operations arriving with
+    zero changes to the node hierarchy — a genuine double-dispatch mechanism deliberately introduced
+    early to set up the still-unbuilt Visitor topic later in the Behavioral group. A real, correctly
+    -escaped double-backslash verbatim-string path (`@"C:\Projects\DevHub\src"`) was used in subtopic
+    1's codeTab, confirmed rendering with single backslashes in the browser — matching the
+    established "double backslash in source produces single backslash in displayed C# code" rule.
+    No `SUBTOPICS` collision for `composite` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean.
+    Browser-verified via `window.ng.getComponent()` (the reliable staleness check established in
+    the Bridge batch) that the theory-bullet fix was actually live before checking the DOM; no
+    console errors; nav accordion opens with 9 toggles total; breadcrumb showed all 4 levels; 860px
+    wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 9 of 36 topics
+    complete.**
 
 ## Current state (update when it changes!)
 
@@ -4336,10 +4370,10 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 8 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 9 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
-  `/design-patterns/adapter`, `/design-patterns/bridge`,
+  `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   2026-08-04/2026-08-05) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
