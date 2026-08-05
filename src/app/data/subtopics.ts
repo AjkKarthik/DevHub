@@ -3330,4 +3330,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real Nested-Class Memento', route: '/design-patterns/memento/nested-class-memento-narrow-interface' },
     { label: 'Delta Mementos: Storing Only What Changed', route: '/design-patterns/memento/delta-mementos-storing-only-what-changed' },
   ],
+  'observer': [
+    { label: 'Field-Like Events Are Already Thread-Safe', route: '/design-patterns/observer/field-like-events-are-already-thread-safe' },
+    { label: 'A Real IObservable<T> Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' },
+    { label: 'What a WeakReference-Based Observer Looks Like', route: '/design-patterns/observer/weakreference-based-observer-implementation' },
+  ],
 };

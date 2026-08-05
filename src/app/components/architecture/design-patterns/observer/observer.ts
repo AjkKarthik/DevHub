@@ -42,9 +42,9 @@ const theory: TheoryPoint[] = [
   {
     heading: 'IObservable<T> / IObserver<T>: Reactive Observer',
     points: [
-      'IObservable<T>: the Subject — has Subscribe(IObserver<T>).',
-      'IObserver<T>: declares OnNext(T), OnError(Exception), OnCompleted().',
-      'Reactive Extensions (Rx.NET) builds LINQ-style operators on top of IObservable<T>.',
+      '<code>IObservable&lt;T&gt;</code>: the Subject — has <code>Subscribe(IObserver&lt;T&gt;)</code>.',
+      '<code>IObserver&lt;T&gt;</code>: declares <code>OnNext(T)</code>, <code>OnError(Exception)</code>, <code>OnCompleted()</code>.',
+      'Reactive Extensions (Rx.NET) builds LINQ-style operators on top of <code>IObservable&lt;T&gt;</code>.',
       'Ideal for async event streams: HTTP responses, UI events, sensor data, stock prices.',
     ],
   },
@@ -317,16 +317,16 @@ const quiz: QuizQuestion[] = [
 const qna: QnaItem[] = [
   {
     q: 'When should I use IObservable<T> vs C# events?',
-    a: 'Use C# events for simple notifications with a few well-known event types (Button.Click, OrderPlaced). Use IObservable<T> for complex async event streams where you need LINQ-style composition (filter, throttle, merge, buffer) — Rx.NET shines for sensor streams, real-time data, and complex UI interactions.',
+    a: 'Use C# events for simple notifications with a few well-known event types (Button.Click, OrderPlaced). Use <code>IObservable&lt;T&gt;</code> for complex async event streams where you need LINQ-style composition (filter, throttle, merge, buffer) — Rx.NET shines for sensor streams, real-time data, and complex UI interactions.',
   },
   {
     q: 'How do I avoid memory leaks with event subscriptions?',
-    a: 'Three approaches: (1) always unsubscribe in Dispose() — implement IDisposable; (2) use WeakReference<T> event handlers so the subscriber can be garbage-collected even when subscribed; (3) for IObservable<T>, Subscribe() returns an IDisposable — dispose it when done. Rx.NET CompositeDisposable helps manage multiple subscriptions.',
+    a: 'Three approaches: (1) always unsubscribe in Dispose() — implement IDisposable; (2) use <code>WeakReference&lt;T&gt;</code> event handlers so the subscriber can be garbage-collected even when subscribed; (3) for <code>IObservable&lt;T&gt;</code>, Subscribe() returns an IDisposable — dispose it when done. Rx.NET CompositeDisposable helps manage multiple subscriptions.',
   },
   { q: 'Why does a WeakReference-based Observer implementation avoid memory leaks WITHOUT requiring callers to remember to unsubscribe, and what is the tradeoff?', a: 'A WeakReference does not count as a strong reference for garbage collection purposes — if the observer object has no other strong references keeping it alive, the GC can collect it even while the subject still holds a WeakReference to it, meaning a caller that simply forgets to unsubscribe no longer causes a leak, since the forgotten registration does not keep the observer alive. The tradeoff: this shifts a deterministic bug (a leak you can reliably detect and fix) into a non-deterministic one (notifications silently stop arriving whenever the GC happens to collect the observer, which is timing-dependent and hard to reproduce in testing) — most teams prefer explicit unsubscription patterns (disposables, takeUntil) specifically because the failure mode is more predictable than weak-reference-based silent notification loss.' },
   { q: 'How does the Observer pattern relate to Reactive Programming (RxJS, Reactor)?', a: 'Reactive programming libraries (RxJS in JavaScript, Reactor in Java, RxPY in Python) formalize and extend the Observer pattern. Observable in RxJS is the subject; Observer is the subscriber. The subscription protocol is standardized: next(value), error(err), complete(). Reactive adds: composable operators (map, filter, merge, combineLatest) to transform event streams before observers receive them. Backpressure handling for slow consumers. Automatic error propagation through the stream. Schedulers for controlling execution context. Observable is the Observer pattern with a rich composition algebra. In Angular, the async pipe in templates is the standard Observer-based approach for reactive UI updates.' },
   { q: 'What is the ObservableCollection approach in .NET?', a: 'INotifyPropertyChanged and INotifyCollectionChanged (ObservableCollection<T>) are the .NET standard Observer pattern implementations for data binding. PropertyChanged event fires when a property value changes. CollectionChanged fires when items are added or removed. WPF, WinForms, MAUI, and Blazor UI frameworks subscribe to these events to update bound UI elements automatically. ObservableCollection<T> fires CollectionChanged on Add, Remove, Replace, Move, and Reset operations. The UI framework subscribes as an observer; the domain class (ViewModel) is the subject. This is the foundation of MVVM: the ViewModel exposes observable state; the View subscribes via data binding.' },
-  { q: 'How do you implement Observer with thread safety for multithreaded subjects?', a: 'Thread-safety issues: an observer may unsubscribe while notify() is iterating the observer list, causing ConcurrentModificationException. Multiple threads may register observers simultaneously corrupting the list. Solutions: copy-on-write observer list: iterate a snapshot for notification; registrations modify a new copy. Use ConcurrentList or lock the list during add/remove but iterate a snapshot during notify. Use Interlocked or lock in subscribe/unsubscribe. In .NET, event handlers (MulticastDelegate) are immutable: each add or remove creates a new delegate chain, avoiding modification-during-iteration issues. In Java, CopyOnWriteArrayList is commonly used for the observer list in concurrent event sources.' },
+  { q: 'How do you implement Observer with thread safety for multithreaded subjects?', a: 'Thread-safety issues: an observer may unsubscribe while notify() is iterating the observer list, causing ConcurrentModificationException. Multiple threads may register observers simultaneously corrupting the list. Solutions: copy-on-write observer list: iterate a snapshot for notification; registrations modify a new copy. Use ConcurrentList or lock the list during add/remove but iterate a snapshot during notify. Use Interlocked or lock in subscribe/unsubscribe. Note this manual synchronization advice applies to a hand-rolled subject like this page\'s own StockMarket (a plain List<IStockObserver>) — a genuine field-like C# event (public event EventHandler? Foo) does NOT need it: since C# 4, the compiler generates lock-free compare-and-swap add/remove accessors, making concurrent += / -= on the SAME event field-safe by default, with no locking code required. In Java, CopyOnWriteArrayList is commonly used for the observer list in concurrent event sources.' },
 ];
 
 const revision: RevisionSummary = {
@@ -341,7 +341,7 @@ const revision: RevisionSummary = {
   interviewFocus: [
     'How do event subscriptions cause memory leaks in .NET?',
     'Observer vs Mediator — when to use each?',
-    'When would you use IObservable<T> over C# events?',
+    'When would you use <code>IObservable&lt;T&gt;</code> over C# events?',
   ],
 };
 

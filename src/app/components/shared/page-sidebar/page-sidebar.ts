@@ -27511,6 +27511,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Many subscribers with frequent notifications can create real performance concerns at scale.',
     ],
   },
+  'design-patterns/observer/field-like-events-are-already-thread-safe': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Observer (overview)', route: '/design-patterns/observer' },
+      { label: 'A Real IObservable<T> Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' },
+    ],
+    tip: 'Since C# 4, field-like event add/remove accessors are compiler-generated lock-free CAS — a hand-rolled List<T> Subject still needs manual locking, a genuine event does not.',
+    gotchas: [
+      'This only covers concurrent add/remove — it says nothing about synchronizing an event\'s own business logic with what happens during Invoke().',
+    ],
+  },
+  'design-patterns/observer/a-real-iobservable-implementation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Field-Like Events Are Already Thread-Safe', route: '/design-patterns/observer/field-like-events-are-already-thread-safe' },
+      { label: 'What a WeakReference-Based Observer Looks Like', route: '/design-patterns/observer/weakreference-based-observer-implementation' },
+    ],
+    tip: 'IObservable<T>/IObserver<T> ship in the base class library with zero Rx.NET dependency — the real grammar is OnNext*, then at most one of OnError or OnCompleted, ever.',
+    gotchas: [
+      'A late subscriber to an already-completed stream should still receive OnCompleted, not silently hear nothing ever again.',
+    ],
+  },
+  'design-patterns/observer/weakreference-based-observer-implementation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'A Real IObservable<T> Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' },
+      { label: 'Observer (overview)', route: '/design-patterns/observer' },
+    ],
+    tip: 'A WeakReference-based Subject trades a deterministic, reliably-reproducible leak for a non-deterministic one — notifications silently stop whenever the GC happens to collect the observer.',
+    gotchas: [
+      'The Subject still needs to prune dead WeakReference entries itself, or its own observer list grows forever with entries that will never fire again.',
+    ],
+  },
   'design-patterns/outbox': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

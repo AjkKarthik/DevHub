@@ -2809,7 +2809,12 @@ export const routes: Routes = [
       { path: 'nested-class-memento-narrow-interface', loadComponent: () => import('./components/architecture/design-patterns/memento/subtopics/nested-class-memento-narrow-interface/nested-class-memento-narrow-interface').then(m => m.NestedClassMementoNarrowInterfaceSubtopic) },
       { path: 'delta-mementos-storing-only-what-changed', loadComponent: () => import('./components/architecture/design-patterns/memento/subtopics/delta-mementos-storing-only-what-changed/delta-mementos-storing-only-what-changed').then(m => m.DeltaMementosStoringOnlyWhatChangedSubtopic) },
     ] },
-    { path: 'observer',           loadComponent: () => import('./components/architecture/design-patterns/observer/observer').then(m => m.DpObserver) },
+    { path: 'observer', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/observer/observer').then(m => m.DpObserver) },
+      { path: 'field-like-events-are-already-thread-safe', loadComponent: () => import('./components/architecture/design-patterns/observer/subtopics/field-like-events-are-already-thread-safe/field-like-events-are-already-thread-safe').then(m => m.FieldLikeEventsAreAlreadyThreadSafeSubtopic) },
+      { path: 'a-real-iobservable-implementation', loadComponent: () => import('./components/architecture/design-patterns/observer/subtopics/a-real-iobservable-implementation/a-real-iobservable-implementation').then(m => m.ARealIobservableImplementationSubtopic) },
+      { path: 'weakreference-based-observer-implementation', loadComponent: () => import('./components/architecture/design-patterns/observer/subtopics/weakreference-based-observer-implementation/weakreference-based-observer-implementation').then(m => m.WeakreferenceBasedObserverImplementationSubtopic) },
+    ] },
     { path: 'state',              loadComponent: () => import('./components/architecture/design-patterns/state/state').then(m => m.DpState) },
     { path: 'strategy',           loadComponent: () => import('./components/architecture/design-patterns/strategy/strategy').then(m => m.DpStrategy) },
     { path: 'template-method',    loadComponent: () => import('./components/architecture/design-patterns/template-method/template-method').then(m => m.DpTemplateMethod) },

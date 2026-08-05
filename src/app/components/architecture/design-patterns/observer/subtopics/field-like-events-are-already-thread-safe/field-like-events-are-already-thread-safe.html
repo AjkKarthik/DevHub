@@ -1,0 +1,29 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Observer" topicRoute="/design-patterns/observer"
+    subtopicLabel="Field-Like Events Are Already Thread-Safe" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Field-Like Events Are Already Thread-Safe</h1>
+  <p class="page-subtitle">The main page's own thread-safety QnA recommends manual locking for concurrent
+    subscribe/unsubscribe — but that advice applies to only ONE of the page's two Subject implementations,
+    not both.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 4.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Both remaining subtopics close a different kind of gap on this page — a term named in the quick
+      reference and theory section with no code anywhere to back it up.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Observer" topicRoute="/design-patterns/observer"
+    [next]="{ label: 'A Real IObservable<T> Implementation', route: '/design-patterns/observer/a-real-iobservable-implementation' }" />
+</div>
