@@ -7369,7 +7369,25 @@ off here with a date.
   missed content that `document.querySelector('app-code-block pre code').textContent` correctly
   found — an `innerText`-extraction quirk on `<pre><code>` blocks, not a real bug. **Design Patterns
   hub Phase 10: 16 of 36 topics complete.**
-- [ ] `/design-patterns/mediator` — Mediator Pattern
+- [x] `/design-patterns/mediator` — Mediator Pattern (2026-08-05) — fixed a real gap in the main
+  page's own trade-offs QnA: MediatR shipped a dual RPL-1.5/commercial license from Lucky Penny
+  Software starting v13 (July 2025) — free under $5M USD annual revenue, paid above that; v12.x and
+  earlier stay Apache 2.0 forever — never mentioned in a QnA specifically about trade-offs. 3
+  subtopics: (1) **MediatR's 2025 Commercial License Change** — the license mechanics, the exact
+  threshold, the 12.x escape hatch, and a brief mention of martinothamar/Mediator as a fully
+  open-source source-generator alternative; (2) **Publish() Stops on the First Handler Exception** —
+  verified via WebSearch against MediatR's own ForeachAwaitPublisher source that the default
+  notification publisher is sequential and a thrown exception skips every handler registered after
+  it; extends the main page's own EmailNotificationHandler/AnalyticsHandler example with the
+  TaskWhenAllPublisher fix; (3) **Pipeline Behavior Execution Order** — verified via WebSearch that
+  first-registered IPipelineBehavior becomes the outermost wrapper; extends mistake #4, which
+  registers only one behavior and never demonstrates ordering with two or more. Self-caught and
+  fixed a straight-apostrophe-in-bound-attribute mistake before the build. `mediator` SUBTOPICS key
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens with 17
+  toggles total; all 3 subtopic links render correctly; breadcrumb showed all 4 levels via direct
+  innerHTML inspection; the QnA fix and both codeTab fixes confirmed rendering after expanding their
+  respective collapsed toggles; 860px wrapper confirmed via `getComputedStyle`; no console errors.
+  **Design Patterns hub Phase 10: 17 of 36 topics complete.**
 - [ ] `/design-patterns/memento` — Memento Pattern
 - [ ] `/design-patterns/observer` — Observer Pattern
 - [ ] `/design-patterns/state` — State Pattern

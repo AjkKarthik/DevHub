@@ -3630,6 +3630,54 @@ do this same check before any other new hub's first subtopic set:
     false-alarm rather than a real bug, worth remembering the next time an `innerText`-based
     verification check on preformatted code content comes back unexpectedly empty. **Design
     Patterns hub Phase 10: 16 of 36 topics complete.**
+23. **The `mediator` batch — the third topic in the Behavioral nav group — found and fixed a real
+    but easy-to-miss gap in the main page's own QnA, verified via WebSearch rather than assumed**:
+    the "What are the trade-offs of using MediatR in a C# project?" QnA discussed indirection,
+    assembly-scanning registration, and over-engineering risk, but never mentioned that MediatR
+    shipped a dual RPL-1.5/commercial license from creator Jimmy Bogard's new company, Lucky Penny
+    Software, starting v13 (July 2, 2025) — free for individuals and companies under $5M USD annual
+    revenue, paid above that; v12.x and every earlier release stay on the original Apache 2.0
+    license and were never retroactively relicensed. For a page whose own theory section calls
+    MediatR "the de facto .NET Mediator for CQRS," omitting the one genuinely new trade-off
+    introduced in 2025 from a QnA specifically ABOUT trade-offs was a real content gap, not just an
+    opportunity for elaboration. Fixed the QnA to state the license model and threshold directly.
+    Three subtopics: (1) **MediatR's 2025 Commercial License Change** — the license mechanics
+    themselves (what changed, the exact revenue threshold, why 12.x sidesteps the question
+    entirely), plus a brief mention of martinothamar/Mediator (a fully open-source,
+    source-generator-based alternative with a near-identical API) for teams that want to avoid the
+    question altogether; (2) **Publish() Stops on the First Handler Exception** — verified via
+    WebSearch against MediatR's own `ForeachAwaitPublisher` source that the DEFAULT notification
+    publisher awaits handlers sequentially in registration order, and a thrown exception stops every
+    handler registered after it from running at all — extending the main page's own
+    `EmailNotificationHandler`/`AnalyticsHandler` example, which registers two genuinely independent
+    side effects with zero indication of this failure mode; showed the `TaskWhenAllPublisher`
+    registration fix (`cfg.NotificationPublisher = new TaskWhenAllPublisher()`), verified via the
+    exact real configuration API rather than guessed; (3) **Pipeline Behavior Execution Order** —
+    verified via WebSearch that MediatR's `IPipelineBehavior` wrapping order is determined purely by
+    DI registration order (first registered = outermost layer, onion-style), extending mistake #4
+    on the main page, which tells the reader to register `IPipelineBehavior<,>` implementations for
+    validation/logging/transactions but only ever registers ONE and never demonstrates what order
+    two or more actually run in; built a concrete `LoggingBehavior`+`ValidationBehavior` chain and
+    traced the exact console output for both a valid and an invalid request under two different
+    registration orders. **A real, newly-introduced apostrophe-escaping mistake was caught and
+    self-fixed mid-authoring**: an early draft of subtopic 2's `.html` file used a straight
+    apostrophe inside a `[prev]` bound-attribute label (`'MediatR's 2025...'`) — the SAME
+    delimiter-collision mistake this file has documented many times before — caught immediately
+    (before ever reaching the build) and fixed to the typographic curly quote (`'`), the established
+    `.html` bound-attribute convention. No `SUBTOPICS` collision for `mediator` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    Build passed clean. Browser-verified: no console errors; nav accordion opens with 17 toggles
+    total; all 3 subtopic links render correctly including the typographic curly-quote possessive
+    ("MediatR's 2025..."); breadcrumb showed all 4 levels (Home icon -> Design Patterns -> Mediator
+    -> subtopic) via direct `innerHTML` inspection, not just a flat text-content check; the QnA fix
+    confirmed rendering after expanding both the QnA section's own outer toggle and the specific
+    Q6 row; both subtopic 2 and 3's codeTab fixes confirmed after expanding their own collapsed
+    "View Code" toggles; 860px wrapper confirmed via `getComputedStyle`. One tooling gotcha
+    reconfirmed: clicking a `.nav-subtopics-toggle` located via `element.parentElement.querySelector`
+    can silently return the WRONG topic's toggle if the parent is a shared container with multiple
+    toggles inside it — querying `medLink.querySelector(...)` (the toggle is a CHILD of the topic's
+    own `<a>`, not a sibling) is the reliable selector. **Design Patterns hub Phase 10: 17 of 36
+    topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4597,13 +4645,13 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 16 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 17 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
-  `/design-patterns/iterator`,
+  `/design-patterns/iterator`, `/design-patterns/mediator`,
   2026-08-04/2026-08-05, Structural nav group complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
