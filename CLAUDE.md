@@ -3572,6 +3572,34 @@ do this same check before any other new hub's first subtopic set:
     errors; nav accordion opens with 14 toggles total; breadcrumb showed all 4 levels on every
     subtopic; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 14 of
     36 topics complete.**
+21. **The `command` batch — the second topic in the Behavioral nav group — found and fixed a
+    genuine, self-contained bug in the main page's own `CommandHistory` class, findable purely by
+    tracing two methods against each other, no external research needed**: the main page's own
+    mistake block ("Forgetting to clear the redo stack on new Execute()") correctly teaches that
+    `Execute(ICommand cmd)` must call `_redoStack.Clear()` — but the SAME `CommandHistory` class's
+    own `Redo()` method originally routed through that SAME `Execute()` internally, meaning redoing
+    ONE command silently wiped out every OTHER command still waiting in the redo stack. Traced a
+    concrete sequence (Execute A/B/C, Undo twice, Redo once) showing the exact moment C's redo entry
+    gets destroyed even though redoing B never should have invalidated it. Fixed `Redo()` to
+    re-execute and push to history directly, bypassing the redo-clearing side effect that only makes
+    sense for genuinely new commands. Three subtopics: (1) **Redo() Silently Wipes the Rest of the
+    Redo Stack** — the traced bug and fix, with a Try It exercise walking the FIXED version through
+    the same sequence to confirm the remaining redo entry survives; (2) **A Real MacroCommand,
+    Undone in Reverse Order** — the theory and QnA both name macro commands and their reverse-order
+    undo requirement, but neither codeTab shows one; built a genuine Composite-plus-Command
+    `MacroCommand`, reasoning through why forward-order undo can corrupt state when sub-commands
+    depend on each other; (3) **When a Lambda Command Stops Being Enough** — the QnA names the exact
+    boundary (undo state, meaningful logging, serialization) where a bare `Action` breaks down as a
+    Command, but never demonstrates it failing; tested each requirement one at a time against a
+    plain delegate. **A real, newly-introduced backtick-vs-`<code>` house-style slip was caught and
+    fixed mid-authoring**: subtopic 1's `exercise.hint` field used a markdown-style backtick around
+    `_redoStack` inside an `[innerHTML]`-bound field — converted to `<code>` per house style before
+    the build ran. No `SUBTOPICS` collision for `command` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean.
+    Browser-verified via `window.ng.getComponent()` that the main-page fix was live before checking
+    the DOM; no console errors; nav accordion opens with 15 toggles total; breadcrumb showed all 4
+    levels on every subtopic; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub
+    Phase 10: 15 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4539,12 +4567,12 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 14 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 15 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
-  `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`,
+  `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
   2026-08-04/2026-08-05, Structural nav group complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found

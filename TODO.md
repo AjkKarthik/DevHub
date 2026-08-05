@@ -7337,7 +7337,19 @@ off here with a date.
   `ng.getComponent()`: fix confirmed live; no console errors; nav accordion opens with 14 toggles
   total; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design
   Patterns hub Phase 10: 14 of 36 topics complete.**
-- [ ] `/design-patterns/command` — Command Pattern
+- [x] `/design-patterns/command` — Command Pattern (2026-08-05) — fixed a genuine bug in
+  CommandHistory: Redo() routed through the same Execute() the mistake block teaches must clear
+  the redo stack — meaning redoing one command silently wiped out every OTHER command still
+  waiting in the redo stack. Fixed Redo() to re-execute and push to history directly. 3 subtopics:
+  (1) **Redo() Silently Wipes the Rest of the Redo Stack** — traced concrete sequence proving the
+  bug; (2) **A Real MacroCommand, Undone in Reverse Order** — the theory/QnA name this but never
+  show it; built a genuine Composite+Command MacroCommand; (3) **When a Lambda Command Stops Being
+  Enough** — tests the QnA's own named boundary (undo, logging, serialization) against a bare
+  Action, one requirement at a time. Self-caught and fixed a backtick-vs-code house-style slip
+  before the build. `command` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified via `ng.getComponent()`: fix confirmed live; no console errors; nav accordion
+  opens with 15 toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`. **Design Patterns hub Phase 10: 15 of 36 topics complete.**
 - [ ] `/design-patterns/iterator` — Iterator Pattern
 - [ ] `/design-patterns/mediator` — Mediator Pattern
 - [ ] `/design-patterns/memento` — Memento Pattern
