@@ -27800,6 +27800,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Strategy avoids large conditional blocks that select behavior based on a type flag.',
     ],
   },
+  'design-patterns/strategy/identical-branches-bug-in-selectstrategy': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Strategy (overview)', route: '/design-patterns/strategy' },
+      { label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' },
+    ],
+    tip: 'The main page\'s own SelectStrategy had two pattern-match arms returning the identical result — the order.Total > 100m threshold never actually changed the outcome until fixed.',
+    gotchas: [
+      'A bug where two branches produce the same result passes every individual test case — it only surfaces when comparing cases across the threshold side by side.',
+    ],
+  },
+  'design-patterns/strategy/keyed-di-strategy-selection': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Identical-Branches Bug in SelectStrategy', route: '/design-patterns/strategy/identical-branches-bug-in-selectstrategy' },
+      { label: 'Why Strategies Must Be Reentrant', route: '/design-patterns/strategy/why-strategies-must-be-reentrant' },
+    ],
+    tip: '.NET 8 Keyed Services (AddKeyedScoped/GetKeyedService) resolve a strategy directly by key with no custom selector code; the older IEnumerable<T>-plus-filter approach works on any .NET version.',
+    gotchas: [
+      'Keyed Services requires .NET 8+ — a real constraint for codebases still targeting an earlier framework.',
+    ],
+  },
+  'design-patterns/strategy/why-strategies-must-be-reentrant': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' },
+      { label: 'Strategy (overview)', route: '/design-patterns/strategy' },
+    ],
+    tip: 'A mutable instance field on a shared strategy is a real risk once the strategy is reused across calls (DI Scoped/Singleton, or a recursive call) — per-call data belongs in a local variable, not a field.',
+    gotchas: [
+      'The failure mode is a silently wrong result, not a crash — often harder to notice than a thrown exception.',
+    ],
+  },
   'design-patterns/template-method': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

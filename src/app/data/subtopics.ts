@@ -3342,4 +3342,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Data-Driven State Transition Table', route: '/design-patterns/state/data-driven-state-transition-table' },
     { label: 'Reconstructing State From Persisted Data', route: '/design-patterns/state/reconstructing-state-from-persisted-data' },
   ],
+  'strategy': [
+    { label: 'The Identical-Branches Bug in SelectStrategy', route: '/design-patterns/strategy/identical-branches-bug-in-selectstrategy' },
+    { label: 'Keyed DI Strategy Selection', route: '/design-patterns/strategy/keyed-di-strategy-selection' },
+    { label: 'Why Strategies Must Be Reentrant', route: '/design-patterns/strategy/why-strategies-must-be-reentrant' },
+  ],
 };

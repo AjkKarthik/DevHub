@@ -116,7 +116,7 @@ public IShippingStrategy SelectStrategy(Order order, Customer customer) =>
     (customer.IsPremium, order.Total) switch
     {
         (true,  _)      => new FreeShipping(),
-        (false, > 100m) => new StandardShipping(),
+        (false, > 100m) => new FreeShipping(),  // orders over $100 also qualify for free shipping
         (false, _)      => new StandardShipping()
     };
 

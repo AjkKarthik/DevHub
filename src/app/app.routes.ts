@@ -2821,7 +2821,12 @@ export const routes: Routes = [
       { path: 'data-driven-state-transition-table', loadComponent: () => import('./components/architecture/design-patterns/state/subtopics/data-driven-state-transition-table/data-driven-state-transition-table').then(m => m.DataDrivenStateTransitionTableSubtopic) },
       { path: 'reconstructing-state-from-persisted-data', loadComponent: () => import('./components/architecture/design-patterns/state/subtopics/reconstructing-state-from-persisted-data/reconstructing-state-from-persisted-data').then(m => m.ReconstructingStateFromPersistedDataSubtopic) },
     ] },
-    { path: 'strategy',           loadComponent: () => import('./components/architecture/design-patterns/strategy/strategy').then(m => m.DpStrategy) },
+    { path: 'strategy', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/strategy/strategy').then(m => m.DpStrategy) },
+      { path: 'identical-branches-bug-in-selectstrategy', loadComponent: () => import('./components/architecture/design-patterns/strategy/subtopics/identical-branches-bug-in-selectstrategy/identical-branches-bug-in-selectstrategy').then(m => m.IdenticalBranchesBugInSelectstrategySubtopic) },
+      { path: 'keyed-di-strategy-selection', loadComponent: () => import('./components/architecture/design-patterns/strategy/subtopics/keyed-di-strategy-selection/keyed-di-strategy-selection').then(m => m.KeyedDiStrategySelectionSubtopic) },
+      { path: 'why-strategies-must-be-reentrant', loadComponent: () => import('./components/architecture/design-patterns/strategy/subtopics/why-strategies-must-be-reentrant/why-strategies-must-be-reentrant').then(m => m.WhyStrategiesMustBeReentrantSubtopic) },
+    ] },
     { path: 'template-method',    loadComponent: () => import('./components/architecture/design-patterns/template-method/template-method').then(m => m.DpTemplateMethod) },
     { path: 'visitor',            loadComponent: () => import('./components/architecture/design-patterns/visitor/visitor').then(m => m.DpVisitor) },
     { path: 'null-object',        loadComponent: () => import('./components/architecture/design-patterns/null-object/null-object').then(m => m.DpNullObject) },
