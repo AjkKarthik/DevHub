@@ -7406,7 +7406,26 @@ off here with a date.
   "Game Save System" code tab specifically; corrected solution fields confirmed rendering as
   literal text; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design
   Patterns hub Phase 10: 18 of 36 topics complete.**
-- [ ] `/design-patterns/observer` — Observer Pattern
+- [x] `/design-patterns/observer` — Observer Pattern (2026-08-05) — fixed a real, CURRENTLY-LIVE
+  rendering bug: theory.points (x3) and qna.a (x2) wrote IObservable<T>/IObserver<T>/
+  WeakReference<T> as bare generics inside [innerHTML]-bound fields, silently swallowed by the
+  browser as unknown tags — confirmed empirically in the live production page before fixing (it was
+  rendering "IObservable" instead of "IObservable<T>"). Fixed all 6 occurrences with
+  <code>&lt;...&gt;</code> wrapping. Also tightened the thread-safety QnA, verified via WebFetch
+  against Microsoft's own compiler blog, to distinguish StockMarket's hand-rolled List<T> Subject
+  (needs manual locking) from OrderService's field-like C# event (compiler-generated lock-free CAS
+  since C# 4 — not something that was "always true"). 3 subtopics: (1) **Field-Like Events Are
+  Already Thread-Safe** — traces the C# 4 compiler change with a decompiled-accessor sketch; (2)
+  **A Real IObservable<T> Implementation** — builds the actual OnNext/OnError/OnCompleted grammar
+  the quick ref and theory name but never show in code, zero Rx.NET dependency; (3) **What a
+  WeakReference-Based Observer Looks Like** — builds the WeakReference<T>-based Subject two QnAs
+  discuss in prose with no code, demonstrating the non-deterministic notification-loss trade-off.
+  Self-caught and fixed the same solution-field <code>-tag mistake as the Memento batch before the
+  build. `observer` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified:
+  nav accordion opens with 19 toggles total; all 3 subtopic links render correctly including raw
+  `<T>` (verified safe via checking every consuming component's binding mechanism); both main-page
+  fixes confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 19 of 36 topics complete.**
 - [ ] `/design-patterns/state` — State Pattern
 - [ ] `/design-patterns/strategy` — Strategy Pattern
 - [ ] `/design-patterns/template-method` — Template Method Pattern

@@ -3723,6 +3723,62 @@ do this same check before any other new hub's first subtopic set:
     `solution` fields confirmed rendering as literal text after expanding each Try It's own
     collapsed "Show solution" toggle; 860px wrapper confirmed via `getComputedStyle`. **Design
     Patterns hub Phase 10: 18 of 36 topics complete.**
+25. **The `observer` batch — the fifth topic in the Behavioral nav group — found and fixed a real,
+    CURRENTLY-LIVE rendering bug on the main page itself, empirically confirmed in the browser
+    before ever touching the source**: three `theory.points` entries and two `qna.a` answers wrote
+    `IObservable<T>`, `IObserver<T>`, and `WeakReference<T>` as BARE generic syntax inside
+    `[innerHTML]`-bound fields — the browser silently misparses the `<T>` as an unknown custom
+    element, dropping it from the rendered text entirely. Confirmed via a direct in-browser check
+    (`target.querySelectorAll('li')` under the "IObservable<T> / IObserver<T>: Reactive Observer"
+    theory heading) that the LIVE, production-serving page was rendering "IObservable: the Subject
+    — has Subscribe(IObserver)." instead of the correct "IObservable\<T\>: the Subject — has
+    Subscribe(IObserver\<T\>)." — this had been silently wrong on a PUBLISHED main topic page the
+    whole time, not something introduced this session. Before fixing, checked every OTHER shared
+    component's binding mechanism this page's fields flow through (`QuickRefComponent`,
+    `QuizBlockComponent`, `RevisionCardComponent`, `CommonMistakesComponent`) to find exactly which
+    fields were actually at risk: `quick-ref.name`/`desc`, `quiz.q`/`options`/`explanation`, and
+    `mistakes.wrong`/`right`/`explanation` all bind via plain `{{ }}` interpolation (confirmed safe,
+    matching the empirical `document.body.textContent.includes('IObservable<T>')` check on Quick
+    Ref returning true) — only `theory.points`, `qna.a`, and `revision.interviewFocus` bind via
+    `[innerHTML]` and needed the fix. Fixed all 6 affected occurrences
+    (`theory.points` x3, `qna.a` x2, `revision.interviewFocus` x1) by wrapping in
+    `<code>&lt;...&gt;</code>`, confirmed via a fresh browser check afterward that all three theory
+    bullets and both QnA answers render the full generic syntax correctly. **A second, separate,
+    lighter main-page tightening**: the thread-safety QnA recommended manual locking for concurrent
+    observer registration without distinguishing WHICH of the page's own two Subject
+    implementations actually needs it — verified via WebSearch/WebFetch against Microsoft's own
+    compiler-team blog ("Events get a little overhaul in C# 4, Part I: Locks") that field-like C#
+    events have generated LOCK-FREE, compare-and-swap add/remove accessors since C# 4 (2010) — a
+    dateable compiler change, not an inherent property of delegates, and a genuine correction to
+    the common assumption that this was "always true." Tightened the QnA to state this applies to
+    the page's own `StockMarket` (a hand-rolled `List<IStockObserver>`, which DOES need manual
+    synchronization) but not `OrderService.OrderPlaced` (a genuine field-like event, which doesn't).
+    Three subtopics: (1) **Field-Like Events Are Already Thread-Safe** — traces the C# 4 change with
+    a decompiled-accessor sketch, and a Try It testing precisely which of the QnA's own advice
+    applies to which of the page's two Subject patterns; (2) **A Real IObservable\<T\> Implementation**
+    — the quick ref and theory both name it at length, neither codeTab builds one; implemented the
+    actual OnNext/OnError/OnCompleted grammar (including the "late subscriber to an already-completed
+    stream still gets OnCompleted" contract) with zero Rx.NET dependency; (3) **What a
+    WeakReference-Based Observer Looks Like** — two separate QnAs discuss this technique in prose at
+    length, neither shows code; built the concrete `WeakReference<T>`-based Subject and demonstrated
+    the exact non-deterministic trade-off the main page's own QnA names, using a forced
+    `GC.Collect()` specifically to make an otherwise-nondeterministic outcome reproducible for the
+    demonstration. **A real, newly-introduced mistake was self-caught and fixed mid-authoring, the
+    SAME mistake as the immediately-prior Memento batch**: subtopic 2's own `exercise.solution` field
+    initially wrapped identifiers in `<code>` tags (the `[innerHTML]`-field treatment) despite
+    `solution` using plain interpolation — caught during the pre-build sweep and fixed to raw text
+    before the build ever ran, confirming this specific mistake is worth a dedicated standing check
+    on every future batch, not a one-off. No `SUBTOPICS` collision for `observer` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    Build passed clean. Browser-verified: no console errors; nav accordion opens with 19 toggles
+    total; all 3 subtopic links render correctly including the raw `<T>` in "A Real IObservable<T>
+    Implementation" (confirmed safe via checking every consuming component's binding mechanism —
+    `SubtopicNavEntry.label` in `dp-nav.ts`, `DP_LABELS` in `breadcrumb.ts`, and `related.label`/
+    `tip`/`gotchas` in `page-sidebar.ts` all bind via plain `{{ }}` interpolation, confirmed by
+    reading each template directly rather than assuming); both main-page fixes (the theory-section
+    generic-escaping fix and the thread-safety QnA tightening) confirmed rendering correctly;
+    breadcrumb showed all 4 levels with the raw `<T>` intact; 860px wrapper confirmed via
+    `getComputedStyle`. **Design Patterns hub Phase 10: 19 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4690,13 +4746,14 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 18 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 19 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
+  `/design-patterns/observer`,
   2026-08-04/2026-08-05, Structural nav group complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
