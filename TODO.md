@@ -7295,7 +7295,20 @@ off here with a date.
   `ng.getComponent()`: rollback fix confirmed live; no console errors; nav accordion opens with 11
   toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
   **Design Patterns hub Phase 10: 11 of 36 topics complete.**
-- [ ] `/design-patterns/flyweight` — Flyweight Pattern
+- [x] `/design-patterns/flyweight` — Flyweight Pattern (2026-08-05) — verified via WebSearch that the
+  ".NET Examples" bullet's "boxed integers -128 to 127 are cached in Java/.NET-like runtimes" claim
+  is true for Java only — the CLR has no boxing cache at all, every box allocates fresh. Corrected
+  the bullet. 3 subtopics: (1) **Why .NET Has No Small-Integer Boxing Cache** — ReferenceEquals
+  proof-by-code; (2) **The Race in ParticleFactory.Get() Under Concurrent Access** — the main
+  page's own plain Dictionary-backed factory has a check-then-act race defeating sharing under
+  concurrent access; built the ConcurrentDictionary.GetOrAdd() fix; (3) **When Flyweight Identity
+  Silently Merges Logically Distinct Objects** — a concrete bug where tracking selection via
+  HashSet&lt;ParticleType&gt; instead of HashSet&lt;Particle&gt; silently merges distinct
+  particles sharing a flyweight. `flyweight` SUBTOPICS key collision-free, left bare. Build passed
+  clean. Browser-verified via `ng.getComponent()`: theory fix confirmed live; no console errors;
+  nav accordion opens with 12 toggles total; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 12 of 36 topics complete —
+  only `proxy` remains to finish the Structural nav group.**
 - [ ] `/design-patterns/proxy` — Proxy Pattern
 - [ ] `/design-patterns/chain-of-responsibility` — Chain of Responsibility
 - [ ] `/design-patterns/command` — Command Pattern

@@ -3468,6 +3468,33 @@ do this same check before any other new hub's first subtopic set:
     DOM; no console errors; nav accordion opens with 11 toggles total; breadcrumb showed all 4
     levels; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 11 of
     36 topics complete.**
+18. **The `flyweight` batch found and fixed a genuine, externally-verified inaccuracy in the main
+    page's own theory, plus two gap-closing subtopics identified by careful reading alone**: the
+    ".NET Examples" bullet claimed "boxed integers -128 to 127 are cached in Java/.NET-like
+    runtimes." Verified via WebSearch that this is TRUE for Java (`Integer.valueOf()`'s JLS-
+    mandated cache) but FALSE for .NET — the CLR's `box` IL instruction always allocates a fresh
+    heap object, with no equivalent cache anywhere in the runtime. Corrected the bullet to state
+    this is Java-specific and explicitly NOT a .NET Flyweight example. Three subtopics: (1) **Why
+    .NET Has No Small-Integer Boxing Cache** — the verified finding, with a direct
+    `ReferenceEquals` proof-by-code and the JLS-vs-CLR reasoning for why the two runtimes diverge;
+    (2) **The Race in ParticleFactory.Get() Under Concurrent Access** — the main page's own QnA
+    mentions thread-safety in one sentence ("use ConcurrentDictionary"), but the shown
+    `ParticleFactory` uses a plain `Dictionary<string, ParticleType>`; traced the check-then-act
+    race precisely (two threads can both miss the cache and create separate instances, defeating
+    sharing entirely) and built the `ConcurrentDictionary.GetOrAdd()` fix, including the real
+    subtlety that the factory delegate can still run more than once under contention even though
+    only one value is ever stored; (3) **When Flyweight Identity Silently Merges Logically
+    Distinct Objects** — the theory's own "object identity is not important" caveat describes the
+    FLYWEIGHT, not the object referencing it; built a concrete bug where tracking "selected
+    particles" via `HashSet<ParticleType>` instead of `HashSet<Particle>` silently selects every
+    particle sharing a type once any one of them is selected. No `SUBTOPICS` collision for
+    `flyweight` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). Build passed clean. Browser-verified via `window.ng.getComponent()`
+    that the main-page theory fix was live before checking the DOM; no console errors; nav
+    accordion opens with 12 toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed
+    via `getComputedStyle`; generic syntax (`HashSet<ParticleType>`) confirmed rendering as literal
+    text with no vanished tags or stray entity codes. **Design Patterns hub Phase 10: 12 of 36
+    topics complete — only `proxy` remains to finish the Structural nav group.**
 
 ## Current state (update when it changes!)
 
@@ -4435,11 +4462,11 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 11 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 12 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
-  `/design-patterns/decorator`, `/design-patterns/facade`,
+  `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
   2026-08-04/2026-08-05) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
