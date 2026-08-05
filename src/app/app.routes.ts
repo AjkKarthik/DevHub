@@ -2797,7 +2797,12 @@ export const routes: Routes = [
       { path: 'merging-two-external-iterators', loadComponent: () => import('./components/architecture/design-patterns/iterator/subtopics/merging-two-external-iterators/merging-two-external-iterators').then(m => m.MergingTwoExternalIteratorsSubtopic) },
       { path: 'what-happens-when-range-step-is-negative', loadComponent: () => import('./components/architecture/design-patterns/iterator/subtopics/what-happens-when-range-step-is-negative/what-happens-when-range-step-is-negative').then(m => m.WhatHappensWhenRangeStepIsNegativeSubtopic) },
     ] },
-    { path: 'mediator',           loadComponent: () => import('./components/architecture/design-patterns/mediator/mediator').then(m => m.DpMediator) },
+    { path: 'mediator', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/mediator/mediator').then(m => m.DpMediator) },
+      { path: 'mediatr-2025-license-change', loadComponent: () => import('./components/architecture/design-patterns/mediator/subtopics/mediatr-2025-license-change/mediatr-2025-license-change').then(m => m.Mediatr2025LicenseChangeSubtopic) },
+      { path: 'publish-exception-halts-later-handlers', loadComponent: () => import('./components/architecture/design-patterns/mediator/subtopics/publish-exception-halts-later-handlers/publish-exception-halts-later-handlers').then(m => m.PublishExceptionHaltsLaterHandlersSubtopic) },
+      { path: 'pipeline-behavior-order', loadComponent: () => import('./components/architecture/design-patterns/mediator/subtopics/pipeline-behavior-order/pipeline-behavior-order').then(m => m.PipelineBehaviorOrderSubtopic) },
+    ] },
     { path: 'memento',            loadComponent: () => import('./components/architecture/design-patterns/memento/memento').then(m => m.DpMemento) },
     { path: 'observer',           loadComponent: () => import('./components/architecture/design-patterns/observer/observer').then(m => m.DpObserver) },
     { path: 'state',              loadComponent: () => import('./components/architecture/design-patterns/state/state').then(m => m.DpState) },

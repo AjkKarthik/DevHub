@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Mediator" topicRoute="/design-patterns/mediator"
+    subtopicLabel="Pipeline Behavior Execution Order" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Pipeline Behavior Execution Order</h1>
+  <p class="page-subtitle">The main page's own mistake block tells you to register pipeline behaviors for
+    validation, logging, and transactions — but only ever shows one. With two or more, the order they're
+    registered in silently decides which one wraps which.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="MediatR 3.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with Publish()'s own execution-order behavior, this closes out the "what actually happens at
+      runtime" gap in the main page's MediatR coverage — Send() through an ordered pipeline of behaviors, and
+      Publish() through a sequential (by default) list of notification handlers.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Mediator" topicRoute="/design-patterns/mediator"
+    [prev]="{ label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' }" />
+</div>

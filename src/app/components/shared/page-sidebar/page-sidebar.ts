@@ -27364,6 +27364,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mediator vs Observer: Mediator coordinates a fixed, known set of colleagues with specific rules; Observer supports an open-ended number of generic subscribers.',
     ],
   },
+  'design-patterns/mediator/mediatr-2025-license-change': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Mediator (overview)', route: '/design-patterns/mediator' },
+      { label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' },
+    ],
+    tip: 'MediatR v13+ (July 2025) ships under a dual RPL-1.5/commercial license — free under $5M USD annual revenue, paid above that; v12.x and earlier stay Apache 2.0 forever.',
+    gotchas: [
+      'The licensing change only applies to a company choosing to upgrade past v12 — staying on 12.x sidesteps the question entirely.',
+    ],
+  },
+  'design-patterns/mediator/publish-exception-halts-later-handlers': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'MediatR\'s 2025 Commercial License Change', route: '/design-patterns/mediator/mediatr-2025-license-change' },
+      { label: 'Pipeline Behavior Execution Order', route: '/design-patterns/mediator/pipeline-behavior-order' },
+    ],
+    tip: 'MediatR\'s default Publish() strategy (ForeachAwaitPublisher) awaits handlers sequentially in registration order — one throwing stops every handler registered after it from running at all.',
+    gotchas: [
+      'Swap to TaskWhenAllPublisher for genuinely independent notification handlers — it runs all of them regardless of one failing.',
+    ],
+  },
+  'design-patterns/mediator/pipeline-behavior-order': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' },
+      { label: 'Mediator (overview)', route: '/design-patterns/mediator' },
+    ],
+    tip: 'IPipelineBehavior registration order determines wrap order — the first behavior registered becomes the OUTERMOST layer, running before and after every other behavior.',
+    gotchas: [
+      'Swapping two AddTransient(IPipelineBehavior<,>, ...) registrations swaps the resulting execution order with no other code change.',
+    ],
+  },
   'design-patterns/memento': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

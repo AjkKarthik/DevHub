@@ -3320,4 +3320,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Merging Two External Iterators, Made Concrete', route: '/design-patterns/iterator/merging-two-external-iterators' },
     { label: 'What Happens When Range’s step Is Negative', route: '/design-patterns/iterator/what-happens-when-range-step-is-negative' },
   ],
+  'mediator': [
+    { label: 'MediatR’s 2025 Commercial License Change', route: '/design-patterns/mediator/mediatr-2025-license-change' },
+    { label: 'Publish() Stops on the First Handler Exception', route: '/design-patterns/mediator/publish-exception-halts-later-handlers' },
+    { label: 'Pipeline Behavior Execution Order', route: '/design-patterns/mediator/pipeline-behavior-order' },
+  ],
 };
