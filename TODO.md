@@ -7350,7 +7350,25 @@ off here with a date.
   Browser-verified via `ng.getComponent()`: fix confirmed live; no console errors; nav accordion
   opens with 15 toggles total; breadcrumb showed all 4 levels; 860px wrapper confirmed via
   `getComputedStyle`. **Design Patterns hub Phase 10: 15 of 36 topics complete.**
-- [ ] `/design-patterns/iterator` — Iterator Pattern
+- [x] `/design-patterns/iterator` — Iterator Pattern (2026-08-05) — cleanest page found in a while,
+  no main-page bug found; all 3 subtopics gap-closing/verification-driven. 3 subtopics: (1)
+  **Recursive Yield Tree Traversal Is O(n²)** — verified against Eric Lippert's own analysis of
+  recursive-yield iterator performance; contrasts the main page's recursive `InOrderFrom` against
+  an explicit `Stack<Node>`-based `InOrderIterative()`, demonstrated via sorted insertion into the
+  unbalanced `BinaryTree<T>`; (2) **Merging Two External Iterators** — hand-rolled
+  `MergeSorted<T>(IEnumerable<T> left, IEnumerable<T> right)` using explicit `GetEnumerator()`/
+  `MoveNext()` control over two sequences at once, contrasted against `List<T>.ForEach()`'s
+  inability to express this and LINQ's positional (not value-based) `Zip()`; (3) **What Happens
+  When Range's Step Is Negative** — found the Challenge's own `Range` class hardcodes ascending-only
+  `current <= end` in `next()`, producing two distinct silent failure modes for a negative step
+  (yields nothing vs. loops forever); fixed with a direction-aware `stillInRange()` check. `iterator`
+  SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens
+  with 16 toggles total, all 3 subtopic links render correctly (including the O(n²) superscript and
+  typographic curly-quote possessive); breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. Noted a verification false-alarm: `document.body.innerText`
+  missed content that `document.querySelector('app-code-block pre code').textContent` correctly
+  found — an `innerText`-extraction quirk on `<pre><code>` blocks, not a real bug. **Design Patterns
+  hub Phase 10: 16 of 36 topics complete.**
 - [ ] `/design-patterns/mediator` — Mediator Pattern
 - [ ] `/design-patterns/memento` — Memento Pattern
 - [ ] `/design-patterns/observer` — Observer Pattern

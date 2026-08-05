@@ -3600,6 +3600,36 @@ do this same check before any other new hub's first subtopic set:
     the DOM; no console errors; nav accordion opens with 15 toggles total; breadcrumb showed all 4
     levels on every subtopic; 860px wrapper confirmed via `getComputedStyle`. **Design Patterns hub
     Phase 10: 15 of 36 topics complete.**
+22. **The `iterator` batch was the cleanest page found in a while — no self-contained bug or
+    internal contradiction in either main codeTab — so all three subtopics are gap-closing/verified
+    rather than main-page fixes, following the same "clean main page" precedent as Abstract
+    Factory's own batch**: (1) **The Recursive-Yield Tree Traversal Is Secretly O(n²)** — verified
+    via WebSearch against Eric Lippert's own "Recursive Iterator Performance" analysis that the main
+    page's own `InOrderFrom` (a recursive method re-wrapping `foreach (var v in
+    InOrderFrom(node.Left)) yield return v;` at every level) adds one layer of enumerator nesting per
+    recursion level — O(n log n) for a balanced tree, genuinely O(n²) for a degenerate one. Since the
+    main page's own `BinaryTree<T>` has no self-balancing logic, inserting already-sorted input (a
+    completely realistic case, not contrived) produces exactly that degenerate shape; built the
+    explicit-stack fix that keeps `yield return`'s ergonomics while doing O(n) total work regardless
+    of tree shape; (2) **Merging Two External Iterators, Made Concrete** — the QnA names "external
+    iterators allow merging two iterators" in one sentence, never shown; built a hand-rolled
+    `MergeSorted` using explicit `MoveNext()` control over two enumerators at once, and reasoned
+    through why `List<T>.ForEach()` (an internal iterator) genuinely cannot express the same
+    operation; (3) **What Happens When Range's step Is Negative** — the Challenge's own `Range`
+    constructor accepts any numeric `step` with no restriction, but `next()` hardcodes an
+    ascending-only `current <= end` check; traced two genuinely different failure modes for a
+    negative step depending on the relative position of start and end — a silent empty iteration
+    for one input shape, an actual infinite loop for another — and fixed the check to depend on the
+    sign of step. No `SUBTOPICS` collision for `iterator` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean.
+    Browser-verified: no console errors; nav accordion opens with 16 toggles total; breadcrumb showed
+    all 4 levels on every subtopic; 860px wrapper confirmed via `getComputedStyle`; a
+    `document.body.innerText` check on subtopic 3 initially came back falsely negative for text
+    inside a `<pre><code>` block — confirmed via the more precise
+    `codeEl.textContent` check that the content was actually rendering correctly, a tooling
+    false-alarm rather than a real bug, worth remembering the next time an `innerText`-based
+    verification check on preformatted code content comes back unexpectedly empty. **Design
+    Patterns hub Phase 10: 16 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4567,12 +4597,13 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 15 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 16 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
+  `/design-patterns/iterator`,
   2026-08-04/2026-08-05, Structural nav group complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
