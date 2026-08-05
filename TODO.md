@@ -7442,7 +7442,23 @@ off here with a date.
   all 4 levels; `/terraform/state` confirmed unaffected; 860px wrapper confirmed via
   `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 20 of 36 topics complete**
   (Strategy, Template Method, Visitor, Null Object still remain in the Behavioral group).
-- [ ] `/design-patterns/strategy` — Strategy Pattern
+- [x] `/design-patterns/strategy` — Strategy Pattern (2026-08-05) — fixed a genuine, self-contained
+  bug: SelectStrategy's three-armed pattern match had two identical arms — (false, > 100m) and
+  (false, _) both returned StandardShipping(), so the $100 threshold never actually changed the
+  outcome. Fixed the over-$100 arm to return FreeShipping(), matching the common "free shipping over
+  $100" business rule. 3 subtopics: (1) **The Identical-Branches Bug in SelectStrategy** — traces
+  the bug and fix with a Try It on the exact > vs >= boundary; (2) **Keyed DI Strategy Selection** —
+  builds working code for both DI techniques two QnAs name but never show (.NET 8 Keyed Services and
+  IEnumerable<T>-plus-selector); (3) **Why Strategies Must Be Reentrant** — builds the concrete
+  before/after for the QnA's warning against mutable per-call state on a shared strategy instance.
+  Self-caught and fixed the same solution-field <code>-tag mistake in ALL THREE subtopics — fourth
+  consecutive batch with this exact recurrence (Memento, Observer, State, Strategy); escalating to a
+  mandatory grep-every-solution-field-before-building habit going forward. `strategy` SUBTOPICS key
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens with 21
+  toggles total; all 3 subtopic links render correctly; the main-page fix confirmed via the actual
+  rendered code (3 FreeShipping() occurrences); breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 21 of 36
+  topics complete.**
 - [ ] `/design-patterns/template-method` — Template Method Pattern
 - [ ] `/design-patterns/visitor` — Visitor Pattern
 - [ ] `/design-patterns/null-object` — Null Object Pattern

@@ -3826,6 +3826,42 @@ do this same check before any other new hub's first subtopic set:
     Observer, State, Strategy, Template Method, Visitor, Null Object), not 7 — Strategy, Template
     Method, Visitor, and Null Object still remain. **Design Patterns hub Phase 10: 20 of 36 topics
     complete.**
+27. **The `strategy` batch — the eighth of eleven Behavioral topics — found and fixed a genuine,
+    self-contained bug in the main page's own `SelectStrategy`, findable purely by reading the code
+    (no external research needed)**: a three-armed pattern match on `(customer.IsPremium,
+    order.Total)` had its second and third arms — `(false, > 100m)` and `(false, _)` — BOTH
+    returning `new StandardShipping()`, the exact same result. The `order.Total > 100m` condition
+    could never change the outcome for a non-premium customer regardless of order size — a $50 order
+    and a $500 order got identical shipping. Fixed the over-$100 arm to return `FreeShipping()`
+    instead, matching the common "free shipping over $100" e-commerce threshold the three-armed
+    match visibly implied but never actually delivered. Three subtopics: (1) **The Identical-
+    Branches Bug in SelectStrategy** — traces the exact bug and fix, with a Try It on the precise
+    `> 100m` vs `>= 100m` boundary (an order of exactly $100 does NOT qualify under the fix); (2)
+    **Keyed DI Strategy Selection** — TWO separate QnAs name real .NET techniques for resolving a
+    strategy at runtime through DI (`.NET 8 Keyed Services` via `AddKeyedScoped`/
+    `GetKeyedService<T>`, and the older `IEnumerable<T>`-plus-selector approach) with zero working
+    code for either; built both side by side; (3) **Why Strategies Must Be Reentrant** — the page's
+    own QnA warns against mutable per-call state on a shared strategy instance ("would make them
+    non-reentrant... use local variables... not instance fields") but never demonstrates the actual
+    failure; built a concrete non-reentrant vs. reentrant discount strategy and a Try It establishing
+    that the failure mode is a silently wrong result, not a crash. **A real mistake was self-caught
+    and fixed in ALL THREE subtopics' `exercise.solution` fields before the build — this exact
+    mistake (wrapping identifiers in `<code>`/entities inside a plain-interpolation `solution` field)
+    has now recurred across FOUR consecutive batches (Memento, Observer, State, Strategy)**, despite
+    being explicitly logged as a standing per-batch check after the State batch — worth escalating
+    from "check for it" to "assume it happened and grep every new `solution:` field for `<code>` or
+    `&lt;`/`&gt;` before ever attempting the build," since noting the pattern three times running did
+    not prevent a fourth occurrence. No `SUBTOPICS` collision for `strategy` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    Build passed clean. Browser-verified: no console errors; nav accordion opens with 21 toggles
+    total; all 3 subtopic links render correctly; the main-page fix confirmed rendering after
+    switching to the "Shipping Strategy" code tab and counting three `FreeShipping()` occurrences (a
+    plain substring search for the fix's own inline comment initially came back empty — the code
+    itself was still correct, this was a text-matching miss, not a rendering bug, confirmed by
+    reading the actual rendered code content directly instead of guessing at exact wording); all
+    three corrected `solution` fields confirmed rendering as literal text with no stray entity
+    codes; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **Design
+    Patterns hub Phase 10: 21 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4793,14 +4829,14 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 20 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 21 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
-  `/design-patterns/observer`, `/design-patterns/state`,
+  `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
   2026-08-04/2026-08-05, Structural nav group complete; Behavioral in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
