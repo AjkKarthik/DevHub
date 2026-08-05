@@ -7388,7 +7388,24 @@ off here with a date.
   innerHTML inspection; the QnA fix and both codeTab fixes confirmed rendering after expanding their
   respective collapsed toggles; 860px wrapper confirmed via `getComputedStyle`; no console errors.
   **Design Patterns hub Phase 10: 17 of 36 topics complete.**
-- [ ] `/design-patterns/memento` — Memento Pattern
+- [x] `/design-patterns/memento` — Memento Pattern (2026-08-05) — fixed a genuine bug in the main
+  page's own Game Save System codeTab: Player.CreateSave() called Inventory.AsReadOnly(), verified
+  via WebSearch to be a live view over the original list (not a copy), silently violating the
+  page's own "Deep-copying mutable state in the Memento" mistake block one section earlier. Fixed
+  to [..Inventory]. 3 subtopics: (1) **AsReadOnly() Is a View, Not a Copy** — traces the bug with a
+  concrete before/after and contrasts against ToArray() (which does copy); (2) **A Real
+  Nested-Class Memento** — builds the narrow/wide-interface nested-class implementation the quiz
+  names but never shows, making Caretaker opacity a compile-time guarantee instead of a convention;
+  (3) **Delta Mementos: Storing Only What Changed** — builds the incremental-snapshot approach the
+  QnA recommends but never demonstrates, with a Try It on the multi-field-undo grouping trade-off.
+  Self-caught and fixed a real mistake before the build: all three exercise.solution fields
+  (plain-interpolation) initially used <code> tags/entities meant for [innerHTML]-bound fields —
+  fixed to plain text. `memento` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with 18 toggles total; all 3 subtopic links render
+  correctly; breadcrumb showed all 4 levels; the main-page fix confirmed after switching to the
+  "Game Save System" code tab specifically; corrected solution fields confirmed rendering as
+  literal text; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design
+  Patterns hub Phase 10: 18 of 36 topics complete.**
 - [ ] `/design-patterns/observer` — Observer Pattern
 - [ ] `/design-patterns/state` — State Pattern
 - [ ] `/design-patterns/strategy` — Strategy Pattern

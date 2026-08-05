@@ -3678,6 +3678,51 @@ do this same check before any other new hub's first subtopic set:
     toggles inside it — querying `medLink.querySelector(...)` (the toggle is a CHILD of the topic's
     own `<a>`, not a sibling) is the reliable selector. **Design Patterns hub Phase 10: 17 of 36
     topics complete.**
+24. **The `memento` batch — the fourth topic in the Behavioral nav group — found and fixed a real,
+    verified bug in the main page's own "Game Save System" codeTab, using a well-documented .NET
+    gotcha rather than a guess**: `Player.CreateSave()` wrote `Inventory.AsReadOnly()`, believing it
+    produced an independent snapshot of the inventory list. Verified via WebSearch against
+    Microsoft's own documented behavior that `List<T>.AsReadOnly()` returns a
+    `ReadOnlyCollection<T>` that WRAPS the original list — a live view, not a copy — so any later
+    mutation of `Player.Inventory` silently leaks into the already-"saved" `GameSave`. This
+    directly violates the SAME page's own "Deep-copying mutable state in the Memento" mistake block
+    one section earlier, which explicitly teaches to copy mutable collections (`[..Inventory]`)
+    rather than share a reference — the Game Save codeTab committed exactly the mistake its own
+    neighboring mistake block warns against, just disguised behind a method name that sounds
+    defensive. Fixed to `[..Inventory]`, matching the Text Editor codeTab's own established fix
+    pattern for the identical mistake. Three subtopics: (1) **AsReadOnly() Is a View, Not a Copy**
+    — traces the bug with a concrete before/after (2 items leak into an already-taken save vs. 1
+    item correctly frozen), and a Try It contrasting `AsReadOnly()` against `ToArray()` (which DOES
+    copy) to test precise understanding of the distinction; (2) **A Real Nested-Class Memento** —
+    one of the main page's own quiz explanations describes the classic narrow/wide-interface
+    nested-class Memento implementation in prose, but neither codeTab's fully-public records
+    actually build one; built a private nested `Memento` class exposed only through an empty
+    public `IMemento` marker interface, making Caretaker opacity a COMPILE-TIME guarantee (a
+    Caretaker holding only `IMemento` has no legal way to cast down to the private concrete type)
+    instead of a convention a fully-public record only asks nicely for; (3) **Delta Mementos:
+    Storing Only What Changed** — the main page's own QnA recommends "incremental snapshots (delta
+    mementos)" for large state but shows no code; built a `FieldChange`-based delta Memento
+    contrasted against a full-snapshot `DocumentSnapshot` approach, and a Try It exercise tracing
+    the real trade-off: a single user-facing "undo" spanning multiple field changes needs ALL the
+    resulting deltas collected and undone together, not just the last one. **A real, newly-
+    introduced mistake was self-caught and fixed BEFORE the build**: all three subtopics'
+    `exercise.solution` fields (plain-interpolation, per the established per-field-binding rule)
+    initially wrapped generic syntax and identifiers in `<code>` tags and HTML entities — the
+    `[innerHTML]`-bound-field treatment — which would have rendered as literal raw entity-code
+    text since `solution` never decodes HTML. Caught during the standard pre-build sweep (grepping
+    for `<code>`/`&lt;` inside `solution:` fields specifically, per the precedent this file has
+    documented for the Decorator and Prototype batches) and fixed to plain, unescaped text in all
+    three files before ever reaching the build — confirmed via a direct browser check afterward
+    that `List<T>.ToArray()` renders as correct literal text with no stray entity codes. No
+    `SUBTOPICS` collision for `memento` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean.
+    Browser-verified: no console errors; nav accordion opens with 18 toggles total; all 3 subtopic
+    links render correctly; breadcrumb showed all 4 levels; the main-page fix confirmed rendering
+    after switching the code-block's own tab selector to "Game Save System" specifically (the
+    default-selected tab was "Text Editor," which never contained the fix); the corrected
+    `solution` fields confirmed rendering as literal text after expanding each Try It's own
+    collapsed "Show solution" toggle; 860px wrapper confirmed via `getComputedStyle`. **Design
+    Patterns hub Phase 10: 18 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4645,13 +4690,13 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 17 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 18 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
-  `/design-patterns/iterator`, `/design-patterns/mediator`,
+  `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
   2026-08-04/2026-08-05, Structural nav group complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
