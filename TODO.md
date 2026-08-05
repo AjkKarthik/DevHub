@@ -7426,7 +7426,22 @@ off here with a date.
   `<T>` (verified safe via checking every consuming component's binding mechanism); both main-page
   fixes confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
   `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 19 of 36 topics complete.**
-- [ ] `/design-patterns/state` — State Pattern
+- [x] `/design-patterns/state` — State Pattern (2026-08-05) — cleanest page found in a while, no
+  main-page bug found; all 3 subtopics build real code for what the QnA describes in prose only. 3
+  subtopics: (1) **Singleton States: Making Them Actually Stateless** — the QnA says stateless
+  states are safe as static readonly singletons; every one of the page's own five concrete states
+  is provably stateless yet allocates fresh on every transition; (2) **A Data-Driven State
+  Transition Table** — builds the Dictionary<(State,Event),State> alternative the QnA names but
+  never shows; (3) **Reconstructing State From Persisted Data** — builds the full save/load round
+  trip the QnA's one-line "switch-on-load" sketch skips, making explicit the unrecognized-value
+  design decision. Self-caught and fixed the same solution-field <code>-tag mistake as Memento and
+  Observer before the build — third recurrence, now a standing per-batch check. Real SUBTOPICS
+  collision: bare `state` already claimed by the Terraform hub — hub-prefixed to `dp-state`,
+  caught via the standard pre-add grep this time. Build passed clean. Browser-verified: nav
+  accordion opens with 20 toggles total; all 3 subtopic links render correctly; breadcrumb showed
+  all 4 levels; `/terraform/state` confirmed unaffected; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 20 of 36 topics complete —
+  Behavioral nav group fully done.**
 - [ ] `/design-patterns/strategy` — Strategy Pattern
 - [ ] `/design-patterns/template-method` — Template Method Pattern
 - [ ] `/design-patterns/visitor` — Visitor Pattern

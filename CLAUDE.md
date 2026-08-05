@@ -3779,6 +3779,48 @@ do this same check before any other new hub's first subtopic set:
     generic-escaping fix and the thread-safety QnA tightening) confirmed rendering correctly;
     breadcrumb showed all 4 levels with the raw `<T>` intact; 860px wrapper confirmed via
     `getComputedStyle`. **Design Patterns hub Phase 10: 19 of 36 topics complete.**
+26. **The `state` batch — the sixth and final topic in the Behavioral nav group — was the cleanest
+    page found in a while: a careful read of both codeTabs, all four mistakes, the Challenge, and
+    every QnA found no compile error, no internal contradiction, and no factual inaccuracy.** All
+    three subtopics build real code for something the main page's own QnA answers describe in prose
+    but never demonstrate: (1) **Singleton States: Making Them Actually Stateless** — the page's own
+    "Should states be singletons?" QnA says stateless states are safe to share as
+    `static readonly` instances, and EVERY ONE of the page's own five concrete states
+    (`DraftState`/`SubmittedState`/`PaidState`/`ShippedState`/`CancelledState`) has zero instance
+    fields — provably eligible — yet the codeTab allocates a fresh instance on every single
+    transition regardless; converted them to shared singletons and used a Try It to test the
+    boundary condition (a hypothetical `SubmittedAt` field that would make the optimization unsafe,
+    tying back to the page's own THIRD mistake block about keeping domain data on the Context); (2)
+    **A Data-Driven State Transition Table** — the QnA names an entire alternative approach
+    ("state-event-action-nextState tuples in a data structure") and exactly when to prefer it, with
+    zero code anywhere on the page; built a `Dictionary<(OrderState, OrderEvent), OrderState>`
+    version of the same Order lifecycle and a Try It on the real trade-off (per-transition side
+    effects don't fit a pure lookup as naturally as per-state classes do); (3) **Reconstructing
+    State From Persisted Data** — the QnA sketches "switch-on-load" in one line with no working
+    version; built the full save/load round trip against the page's own `Order.Status` derivation,
+    making explicit the ONE real design decision the one-line sketch skips entirely — what happens
+    on an unrecognized/corrupted stored value (chose to throw rather than silently default, since a
+    corrupted status string should surface as an error, not quietly reset the order's lifecycle). **A
+    real, newly-introduced mistake was self-caught and fixed mid-authoring, the THIRD time this
+    exact mistake has recurred across three consecutive batches (Memento, Observer, now State)**:
+    subtopic 1's own `exercise.solution` field again wrapped identifiers in `<code>` tags despite
+    `solution` using plain interpolation — caught during the pre-build sweep and fixed before the
+    build ever ran; worth treating this specific mistake as a STANDING per-batch check from here on,
+    not just a lesson noted after the fact, since noting it twice already did not prevent a third
+    occurrence. **A real `SUBTOPICS` collision, this time against a DIFFERENT hub than usual**: bare
+    `state` was already claimed by the Terraform hub's own `/terraform/state` topic (not one of the
+    more commonly-colliding hubs like JavaScript/C#/SQL) — hub-prefixed to `dp-state`, matching the
+    Design Patterns hub's own existing `dp-` progress/search key prefix, with the usual `// NOTE:`
+    comment; all three `DpNavComponent` accordion helper calls
+    (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'dp-state'` key
+    consistently; confirmed via direct navigation that `/terraform/state` itself renders correctly,
+    completely unaffected by the fix. The collision was caught by the standard pre-add grep this
+    time (checked before ever adding the entry), avoiding a repeat of the build-time duplicate-key
+    failure this file has documented for several earlier hubs' own first collisions. Build passed
+    clean. Browser-verified: no console errors; nav accordion opens with 20 toggles
+    total; all 3 subtopic links render correctly; breadcrumb showed all 4 levels; 860px wrapper
+    confirmed via `getComputedStyle`. **Design Patterns hub Phase 10: 20 of 36 topics complete —
+    Behavioral nav group fully done.**
 
 ## Current state (update when it changes!)
 
@@ -4746,15 +4788,15 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 19 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 20 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
   `/design-patterns/decorator`, `/design-patterns/facade`, `/design-patterns/flyweight`,
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
-  `/design-patterns/observer`,
-  2026-08-04/2026-08-05, Structural nav group complete) — see
+  `/design-patterns/observer`, `/design-patterns/state`,
+  2026-08-04/2026-08-05, Structural + Behavioral nav groups complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more
