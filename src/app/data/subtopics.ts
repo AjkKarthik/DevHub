@@ -3294,4 +3294,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Facade vs. Mediator, Made Concrete', route: '/design-patterns/facade/facade-vs-mediator-made-concrete' },
     { label: 'The API Gateway: A Network-Boundary Facade', route: '/design-patterns/facade/api-gateway-a-network-boundary-facade' },
   ],
+  'flyweight': [
+    { label: 'Why .NET Has No Small-Integer Boxing Cache', route: '/design-patterns/flyweight/no-small-integer-boxing-cache-in-dotnet' },
+    { label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' },
+    { label: 'When Flyweight Identity Silently Merges Logically Distinct Objects', route: '/design-patterns/flyweight/when-flyweight-identity-merges-distinct-objects' },
+  ],
 };

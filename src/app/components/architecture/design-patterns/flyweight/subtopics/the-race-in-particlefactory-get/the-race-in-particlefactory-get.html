@@ -1,0 +1,31 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Flyweight" topicRoute="/design-patterns/flyweight"
+    subtopicLabel="The Race in ParticleFactory.Get() Under Concurrent Access" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Race in ParticleFactory.Get() Under Concurrent Access</h1>
+  <p class="page-subtitle">The main page's QnA mentions thread-safety in one sentence — the main codeTab's
+    ParticleFactory uses a plain Dictionary that can both corrupt under concurrent writes and silently defeat
+    sharing. Here's the race, and the ConcurrentDictionary fix.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic turns to a different kind of gap — the theory's own "object identity is not
+      important" caveat, made concrete with a scenario where relying on flyweight identity actually causes a
+      bug.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Flyweight" topicRoute="/design-patterns/flyweight"
+    [prev]="{ label: 'Why .NET Has No Small-Integer Boxing Cache', route: '/design-patterns/flyweight/no-small-integer-boxing-cache-in-dotnet' }"
+    [next]="{ label: 'When Flyweight Identity Silently Merges Logically Distinct Objects', route: '/design-patterns/flyweight/when-flyweight-identity-merges-distinct-objects' }" />
+</div>

@@ -27196,6 +27196,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Only worth the added API complexity when a system creates a genuinely large number of similar objects.',
     ],
   },
+  'design-patterns/flyweight/no-small-integer-boxing-cache-in-dotnet': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Flyweight (overview)', route: '/design-patterns/flyweight' },
+      { label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' },
+    ],
+    tip: 'Java\'s Integer.valueOf() caches -128 to 127 by spec — the CLR has no equivalent; every C# boxing operation allocates a fresh heap object regardless of value.',
+    gotchas: [
+      'ReferenceEquals on two independently-boxed small ints is always false in C#, unlike the equivalent Java == comparison inside -128..127.',
+    ],
+  },
+  'design-patterns/flyweight/the-race-in-particlefactory-get': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Why .NET Has No Small-Integer Boxing Cache', route: '/design-patterns/flyweight/no-small-integer-boxing-cache-in-dotnet' },
+      { label: 'When Flyweight Identity Silently Merges Logically Distinct Objects', route: '/design-patterns/flyweight/when-flyweight-identity-merges-distinct-objects' },
+    ],
+    tip: 'A plain Dictionary-backed FlyweightFactory has a check-then-act race under concurrent Get() calls — two threads can both miss the cache and create separate instances, defeating sharing entirely.',
+    gotchas: [
+      'ConcurrentDictionary.GetOrAdd() guarantees one shared VALUE per key, not that the factory delegate itself only ever runs once under contention.',
+    ],
+  },
+  'design-patterns/flyweight/when-flyweight-identity-merges-distinct-objects': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Flyweight (overview)', route: '/design-patterns/flyweight' },
+      { label: 'The Race in ParticleFactory.Get() Under Concurrent Access', route: '/design-patterns/flyweight/the-race-in-particlefactory-get' },
+    ],
+    tip: '"Identity is not important" describes the flyweight itself, not the object that references it — tracking identity by the shared flyweight instead of the containing object silently merges distinct entities.',
+    gotchas: [
+      'This bug is easy to introduce precisely because Flyweight was applied correctly — the same sharing that saves memory causes the identity mix-up.',
+    ],
+  },
   'design-patterns/grasp': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

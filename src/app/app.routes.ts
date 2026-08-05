@@ -2766,7 +2766,12 @@ export const routes: Routes = [
       { path: 'facade-vs-mediator-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/facade/subtopics/facade-vs-mediator-made-concrete/facade-vs-mediator-made-concrete').then(m => m.FacadeVsMediatorMadeConcreteSubtopic) },
       { path: 'api-gateway-a-network-boundary-facade', loadComponent: () => import('./components/architecture/design-patterns/facade/subtopics/api-gateway-a-network-boundary-facade/api-gateway-a-network-boundary-facade').then(m => m.ApiGatewayANetworkBoundaryFacadeSubtopic) },
     ] },
-    { path: 'flyweight',          loadComponent: () => import('./components/architecture/design-patterns/flyweight/flyweight').then(m => m.DpFlyweight) },
+    { path: 'flyweight', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/flyweight/flyweight').then(m => m.DpFlyweight) },
+      { path: 'no-small-integer-boxing-cache-in-dotnet', loadComponent: () => import('./components/architecture/design-patterns/flyweight/subtopics/no-small-integer-boxing-cache-in-dotnet/no-small-integer-boxing-cache-in-dotnet').then(m => m.NoSmallIntegerBoxingCacheInDotnetSubtopic) },
+      { path: 'the-race-in-particlefactory-get', loadComponent: () => import('./components/architecture/design-patterns/flyweight/subtopics/the-race-in-particlefactory-get/the-race-in-particlefactory-get').then(m => m.TheRaceInParticlefactoryGetSubtopic) },
+      { path: 'when-flyweight-identity-merges-distinct-objects', loadComponent: () => import('./components/architecture/design-patterns/flyweight/subtopics/when-flyweight-identity-merges-distinct-objects/when-flyweight-identity-merges-distinct-objects').then(m => m.WhenFlyweightIdentityMergesDistinctObjectsSubtopic) },
+    ] },
     { path: 'proxy',              loadComponent: () => import('./components/architecture/design-patterns/proxy/proxy').then(m => m.DpProxy) },
     // Behavioral
     { path: 'chain-of-responsibility', loadComponent: () => import('./components/architecture/design-patterns/chain-of-responsibility/chain-of-responsibility').then(m => m.DpChainOfResponsibility) },
