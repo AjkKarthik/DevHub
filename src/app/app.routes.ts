@@ -2748,7 +2748,12 @@ export const routes: Routes = [
       { path: 'bridge-vs-strategy-which-side-grows', loadComponent: () => import('./components/architecture/design-patterns/bridge/subtopics/bridge-vs-strategy-which-side-grows/bridge-vs-strategy-which-side-grows').then(m => m.BridgeVsStrategyWhichSideGrowsSubtopic) },
       { path: 'bridge-wrapping-an-adapter', loadComponent: () => import('./components/architecture/design-patterns/bridge/subtopics/bridge-wrapping-an-adapter/bridge-wrapping-an-adapter').then(m => m.BridgeWrappingAnAdapterSubtopic) },
     ] },
-    { path: 'composite',          loadComponent: () => import('./components/architecture/design-patterns/composite/composite').then(m => m.DpComposite) },
+    { path: 'composite', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/composite/composite').then(m => m.DpComposite) },
+      { path: 'does-filesysteminfo-really-give-you-composite', loadComponent: () => import('./components/architecture/design-patterns/composite/subtopics/does-filesysteminfo-really-give-you-composite/does-filesysteminfo-really-give-you-composite').then(m => m.DoesFilesysteminfoReallyGiveYouCompositeSubtopic) },
+      { path: 'the-transparency-design-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/composite/subtopics/the-transparency-design-made-concrete/the-transparency-design-made-concrete').then(m => m.TheTransparencyDesignMadeConcreteSubtopic) },
+      { path: 'composite-plus-visitor-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/composite/subtopics/composite-plus-visitor-made-concrete/composite-plus-visitor-made-concrete').then(m => m.CompositePlusVisitorMadeConcreteSubtopic) },
+    ] },
     { path: 'decorator',          loadComponent: () => import('./components/architecture/design-patterns/decorator/decorator').then(m => m.DpDecorator) },
     { path: 'facade',             loadComponent: () => import('./components/architecture/design-patterns/facade/facade').then(m => m.DpFacade) },
     { path: 'flyweight',          loadComponent: () => import('./components/architecture/design-patterns/flyweight/flyweight').then(m => m.DpFlyweight) },

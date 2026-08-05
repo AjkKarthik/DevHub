@@ -51,7 +51,7 @@ const theory: TheoryPoint[] = [
   {
     heading: '.NET Examples',
     points: [
-      'System.IO: FileInfo and DirectoryInfo — both inherit FileSystemInfo.',
+      'System.IO: FileInfo and DirectoryInfo share a common base, FileSystemInfo — but that base class has no recursive size/traversal operation of its own, so it is a shared-metadata base class, not a full Composite; getting genuine Composite behavior (like GetSize()) over the real file system means wrapping it yourself.',
       'LINQ expression trees: Expression<T> — leaves are constants, composites are binary/method expressions.',
       'ASP.NET Core middleware pipeline: each middleware processes the request, then passes to the next (chain of composites).',
       'WPF/MAUI: UIElement is the Component; controls are leaves; panels/grids are composites.',

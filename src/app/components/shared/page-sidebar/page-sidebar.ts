@@ -26964,6 +26964,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Composite fits genuinely tree-shaped data — applying it to flat data adds structure with no benefit.',
     ],
   },
+  'design-patterns/composite/does-filesysteminfo-really-give-you-composite': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Composite (overview)', route: '/design-patterns/composite' },
+      { label: 'Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System', route: '/design-patterns/bridge/bridge-wrapping-an-adapter' },
+    ],
+    tip: 'A shared base class for METADATA (FileSystemInfo) is not the same as a shared recursive OPERATION — Composite specifically needs the latter.',
+    gotchas: [
+      'DirectoryInfo has no built-in recursive size method — getting real Composite behavior over the real file system means wrapping FileInfo/DirectoryInfo yourself.',
+    ],
+  },
+  'design-patterns/composite/the-transparency-design-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Does System.IO’s FileSystemInfo Really Give You Composite?', route: '/design-patterns/composite/does-filesysteminfo-really-give-you-composite' },
+      { label: 'Composite Plus Visitor, Made Concrete', route: '/design-patterns/composite/composite-plus-visitor-made-concrete' },
+    ],
+    tip: 'Transparency catches a leaf/composite mistake at RUNTIME (an exception); Safety catches the same mistake at COMPILE time (a missing method forcing a downcast).',
+    gotchas: [
+      'A silent no-op Add() on a leaf is worse than either design — it fails neither at compile time nor at runtime, just silently does nothing.',
+    ],
+  },
+  'design-patterns/composite/composite-plus-visitor-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Composite (overview)', route: '/design-patterns/composite' },
+      { label: 'What the Transparency Design Actually Looks Like', route: '/design-patterns/composite/the-transparency-design-made-concrete' },
+    ],
+    tip: 'Accept() is added once, as infrastructure — every future operation after that arrives as a new Visitor class with zero changes to the node classes.',
+    gotchas: [
+      'Visitor and baking operations into node classes trade off in opposite directions: Visitor makes new operations cheap but new node types expensive, and vice versa.',
+    ],
+  },
   'design-patterns/cqrs': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

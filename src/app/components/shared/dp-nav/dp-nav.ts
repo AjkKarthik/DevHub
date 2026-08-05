@@ -184,7 +184,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/composite" routerLinkActive="active"><span class="nl-text">Composite</span>@if(p.isDone('dp-composite')){<span class="nl-done">✓</span>}@if(d('dp-composite');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/composite" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Composite</span>
+        @if(p.isDone('dp-composite')){<span class="nl-done">✓</span>}
+        @if(d('dp-composite');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('composite')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('composite')"
+                  (click)="toggleSubtopics('composite', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('composite'); as cpSubs) {
+        @if (isSubtopicsExpanded('composite')) {
+          <div class="nav-subtopics">
+            @for (s of cpSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/decorator" routerLinkActive="active"><span class="nl-text">Decorator</span>@if(p.isDone('dp-decorator')){<span class="nl-done">✓</span>}@if(d('dp-decorator');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/facade" routerLinkActive="active"><span class="nl-text">Facade</span>@if(p.isDone('dp-facade')){<span class="nl-done">✓</span>}@if(d('dp-facade');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/flyweight" routerLinkActive="active"><span class="nl-text">Flyweight</span>@if(p.isDone('dp-flyweight')){<span class="nl-done">✓</span>}@if(d('dp-flyweight');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

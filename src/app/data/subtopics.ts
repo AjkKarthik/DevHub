@@ -3279,4 +3279,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Bridge vs. Strategy: Which Side Actually Grows?', route: '/design-patterns/bridge/bridge-vs-strategy-which-side-grows' },
     { label: 'Bridge Wrapping an Adapter: A ConcreteImplementor for a Legacy System', route: '/design-patterns/bridge/bridge-wrapping-an-adapter' },
   ],
+  'composite': [
+    { label: 'Does System.IO’s FileSystemInfo Really Give You Composite?', route: '/design-patterns/composite/does-filesysteminfo-really-give-you-composite' },
+    { label: 'What the Transparency Design Actually Looks Like', route: '/design-patterns/composite/the-transparency-design-made-concrete' },
+    { label: 'Composite Plus Visitor, Made Concrete', route: '/design-patterns/composite/composite-plus-visitor-made-concrete' },
+  ],
 };
