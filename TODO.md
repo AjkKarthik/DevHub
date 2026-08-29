@@ -7607,7 +7607,23 @@ off here with a date.
   "MassTransit Built-In Outbox" tab; breadcrumb showed all 4 levels; 860px wrapper confirmed via
   `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 30 of 36 topics
   complete.**
-- [ ] `/design-patterns/specification` — Specification Pattern
+- [x] `/design-patterns/specification` — Specification Pattern (2026-08-30) — 3 subtopics: The
+  Expression.Invoke Composition Problem (fixed a real internal contradiction — the QnA explains
+  the ExpressionVisitor Parameter Replacer technique is needed to combine expression trees
+  safely for EF Core translation, but AndSpec/OrSpec/NotSpec used Expression.Invoke() instead;
+  added a real ParameterReplacer and rewrote all three composites); Specification as a
+  Construction Rule (builds the third "classic use" — construction — a quiz question names but
+  no codeTab shows, via a specification-driven EligibleCustomerFactory); A Hybrid
+  Database-Then-In-Memory Pipeline (builds the two-stage pipeline the QnA's own performance
+  answer suggests for specifications that can't be translated to SQL). No `SUBTOPICS` collision
+  for `specification`, left bare. All three `solution` fields clean on first sweep. Build passed
+  clean. Browser-verified: nav accordion opens with 31 toggles total; all 3 subtopic links
+  render correctly; the main-page fix confirmed rendering (zero remaining Expression.Invoke
+  calls); breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no
+  console errors. **Real tooling gotcha**: a `git commit -m '...'` with embedded apostrophes
+  broke the shell quoting mid-message — fixed with `git commit -F -` + a heredoc instead, now
+  the standing approach for any commit message quoting code identifiers or possessives.
+  **Design Patterns hub Phase 10: 31 of 36 topics complete.**
 - [ ] `/design-patterns/clean-architecture` — Clean Architecture
 - [ ] `/design-patterns/solid` — SOLID Principles
 - [ ] `/design-patterns/grasp` — GRASP Principles

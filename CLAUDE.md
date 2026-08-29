@@ -4205,6 +4205,57 @@ do this same check before any other new hub's first subtopic set:
     subtopic's own `solution` field confirmed rendering as literal plain text; breadcrumb showed
     all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 30 of 36 topics complete.**
+37. **The `specification` batch found and fixed a genuine internal contradiction in the main
+    page's own composite specifications**: the QnA explains, in real technical detail, that
+    combining two <code>Expression&lt;Func&lt;T,bool&gt;&gt;</code> trees needs "the
+    ExpressionVisitor pattern to rewrite one expression's parameter to match the other's (a
+    Parameter Replacer)" specifically because LINQ providers have well-documented trouble
+    translating <code>Expression.Invoke()</code> over a separately-stored expression variable —
+    but the main codeTab's own <code>AndSpec</code>/<code>OrSpec</code>/<code>NotSpec</code>
+    classes never actually use that technique, relying on <code>Expression.Invoke(l, param)</code>
+    instead, exactly the naive approach the QnA's own explanation warns is fragile. This works fine
+    for the in-memory <code>IsSatisfiedBy()</code> path (which just <code>.Compile()</code>s and
+    runs the whole tree) but risks failing translation on the OTHER path the same codeTab
+    demonstrates — <code>db.Customers.Where(eligibleForDiscount.ToExpression())</code>. Fixed by
+    adding a real <code>ParameterReplacer : ExpressionVisitor</code> and rewriting all three
+    composites to rewrite each sub-expression's body onto a SHARED parameter before combining them
+    — producing one flat tree with zero <code>Invoke</code> nodes, exactly matching the technique
+    the QnA already names. Three subtopics: (1) **fix-adjacent** — traces precisely why
+    <code>Invoke</code> is fine for <code>.Compile()</code> but risky for SQL translation, and why
+    the fix only matters for the SQL-querying half of the pattern's own "works both ways" promise;
+    (2) **gap-closing** — a quiz question names THREE classic Specification uses (selection,
+    validation, construction) but only the first two ever get a codeTab; built a
+    specification-driven <code>EligibleCustomerFactory</code> that constructs an object guaranteed
+    to satisfy a given rule, with a defensive <code>IsSatisfiedBy()</code> check catching the
+    factory and the specification falling out of sync; (3) **gap-closing** — the "performance
+    implications" QnA suggests a two-stage "database specification for initial filtering, then...
+    in-memory specifications on the smaller result set" pattern for rules that can't be expressed as
+    SQL at all, with zero code showing it; built a working <code>DiscountEligibilityService</code>
+    pipeline (SQL-translatable specs narrow the set first, a
+    <code>PassesFraudCheckSpec</code> calling an external service runs second, on the already-small
+    candidate set). No `SUBTOPICS` collision for `specification` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept and confirmed clean on the first pass. **A real tooling gotcha
+    hit at commit time, not during authoring**: the commit message for this batch contained several
+    straight apostrophes (`"classic use"`, `can't`, `QnA's`) inside a single-quoted `git commit -m
+    '...'` shell argument — the FIRST embedded apostrophe closed the shell's quoting early, and the
+    rest of the message was parsed as loose shell tokens, producing a confusing `pathspec ... did
+    not match any file(s)` error that names no file actually related to the real problem. Fixed by
+    using `git commit -F -` with a heredoc (`<<'EOF' ... EOF`) instead of an inline `-m '...'`
+    argument — the heredoc's own quoted delimiter (`'EOF'`) prevents the shell from expanding or
+    terminating early on ANY character inside the body, sidestepping the entire class of
+    apostrophe/quote-escaping problem for commit messages specifically (distinct from, but the same
+    underlying root cause as, the many `.ts`/`.html` apostrophe-escaping gotchas already documented
+    in this file — a delimiter character appearing literally inside text delimited by that same
+    character). **Worth using a heredoc for every future commit message that quotes code identifiers
+    or contains natural possessives/contractions, rather than inline `-m`.** Build passed clean.
+    Browser-verified: no console errors; nav accordion opens with 31 toggles total; all 3 subtopic
+    links render correctly; the main-page fix confirmed rendering (grepped the rendered code for
+    `ParameterReplacer`/`.Visit(` and confirmed zero remaining `Expression.Invoke` calls) after
+    expanding the default "Composable Specification" tab; a subtopic's own `solution` field
+    confirmed rendering as literal plain text with embedded double quotes intact; breadcrumb showed
+    all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 31 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5172,7 +5223,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 30 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 31 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5183,6 +5234,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
   `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
   `/design-patterns/event-sourcing`, `/design-patterns/saga`, `/design-patterns/outbox`,
+  `/design-patterns/specification`,
   2026-08-04/2026-08-30, Structural + Behavioral nav groups complete; Enterprise in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
