@@ -3442,4 +3442,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building an Attack Tree in Code', route: '/security/threat-modelling/building-an-attack-tree-in-code' },
     { label: 'A PASTA-Style Business-Risk Reprioritization', route: '/security/threat-modelling/a-pasta-style-business-risk-reprioritization' },
   ],
+  'secure-coding': [
+    { label: 'Why Truncate-Then-Encode Can Exceed maxLength', route: '/security/secure-coding/why-truncate-then-encode-can-exceed-maxlength' },
+    { label: 'Path Traversal — Vulnerable Endpoint and Fix', route: '/security/secure-coding/path-traversal-vulnerable-endpoint-and-fix' },
+    { label: 'A TOCTOU Race Condition, Timelined', route: '/security/secure-coding/a-toctou-race-condition-timeline' },
+  ],
 };

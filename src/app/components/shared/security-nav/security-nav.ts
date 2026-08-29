@@ -78,7 +78,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/secure-coding" routerLinkActive="active"><span class="nl-text">Secure Coding</span>@if(progress.isDone('sec-secure-coding')){<span class="nl-done">✓</span>}@if(d('sec-secure-coding');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/secure-coding" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Secure Coding</span>
+        @if(progress.isDone('sec-secure-coding')){<span class="nl-done">✓</span>}
+        @if(d('sec-secure-coding');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('secure-coding')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('secure-coding')"
+                  (click)="toggleSubtopics('secure-coding', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('secure-coding'); as scSubs) {
+        @if (isSubtopicsExpanded('secure-coding')) {
+          <div class="nav-subtopics">
+            @for (s of scSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

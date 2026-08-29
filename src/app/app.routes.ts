@@ -3255,7 +3255,12 @@ export const routes: Routes = [
         { path: 'building-an-attack-tree-in-code', loadComponent: () => import('./components/architecture/security/threat-modelling/subtopics/building-an-attack-tree-in-code/building-an-attack-tree-in-code').then(m => m.BuildingAnAttackTreeInCodeSubtopic) },
         { path: 'a-pasta-style-business-risk-reprioritization', loadComponent: () => import('./components/architecture/security/threat-modelling/subtopics/a-pasta-style-business-risk-reprioritization/a-pasta-style-business-risk-reprioritization').then(m => m.APastaStyleBusinessRiskReprioritizationSubtopic) },
       ] },
-    { path: 'secure-coding',         loadComponent: () => import('./components/architecture/security/secure-coding/secure-coding').then(m => m.SecSecureCoding) },
+    { path: 'secure-coding', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/secure-coding/secure-coding').then(m => m.SecSecureCoding) },
+        { path: 'why-truncate-then-encode-can-exceed-maxlength', loadComponent: () => import('./components/architecture/security/secure-coding/subtopics/why-truncate-then-encode-can-exceed-maxlength/why-truncate-then-encode-can-exceed-maxlength').then(m => m.WhyTruncateThenEncodeCanExceedMaxlengthSubtopic) },
+        { path: 'path-traversal-vulnerable-endpoint-and-fix', loadComponent: () => import('./components/architecture/security/secure-coding/subtopics/path-traversal-vulnerable-endpoint-and-fix/path-traversal-vulnerable-endpoint-and-fix').then(m => m.PathTraversalVulnerableEndpointAndFixSubtopic) },
+        { path: 'a-toctou-race-condition-timeline', loadComponent: () => import('./components/architecture/security/secure-coding/subtopics/a-toctou-race-condition-timeline/a-toctou-race-condition-timeline').then(m => m.AToctouRaceConditionTimelineSubtopic) },
+      ] },
     { path: 'password-security',     loadComponent: () => import('./components/architecture/security/password-security/password-security').then(m => m.SecPasswordSecurity) },
     { path: 'oauth-oidc',            loadComponent: () => import('./components/architecture/security/oauth-oidc/oauth-oidc').then(m => m.SecOauthOidc) },
     { path: 'jwt',                   loadComponent: () => import('./components/architecture/security/jwt/jwt').then(m => m.SecJwt) },

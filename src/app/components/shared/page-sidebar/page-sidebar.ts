@@ -34406,6 +34406,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Error messages shown to users should never leak internal implementation details (stack traces, database schema) that could aid an attacker.',
     ],
   },
+  'security/secure-coding/why-truncate-then-encode-can-exceed-maxlength': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Secure Coding (overview)', route: '/security/secure-coding' },
+      { label: 'Path Traversal — Vulnerable Endpoint and Fix', route: '/security/secure-coding/path-traversal-vulnerable-endpoint-and-fix' },
+    ],
+    tip: 'Whether a length bound applies to the raw input or the final encoded output is easy to leave unstated — decide which one a "maxLength" parameter actually means before choosing where to truncate.',
+    gotchas: [
+      'Encoding after truncation can produce a final string longer than maxLength; truncating after encoding can produce a mangled, incomplete HTML entity — pick the failure mode that matches what the bound is actually protecting.',
+    ],
+  },
+  'security/secure-coding/path-traversal-vulnerable-endpoint-and-fix': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Why Truncate-Then-Encode Can Exceed maxLength', route: '/security/secure-coding/why-truncate-then-encode-can-exceed-maxlength' },
+      { label: 'A TOCTOU Race Condition, Timelined', route: '/security/secure-coding/a-toctou-race-condition-timeline' },
+    ],
+    tip: 'Resolving to an absolute path and checking it against an allowlisted base directory defeats every encoding variant of a traversal attack at once — the check never needs to recognize the string ".." in the first place.',
+    gotchas: [
+      'A base-directory prefix check without a trailing path separator can be bypassed by a sibling directory that happens to share the same string prefix (e.g. uploads vs. uploads-backup).',
+    ],
+  },
+  'security/secure-coding/a-toctou-race-condition-timeline': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Path Traversal — Vulnerable Endpoint and Fix', route: '/security/secure-coding/path-traversal-vulnerable-endpoint-and-fix' },
+      { label: 'Secure Coding (overview)', route: '/security/secure-coding' },
+    ],
+    tip: 'Any await sitting between a check and its corresponding use is a potential TOCTOU gap — not just filesystem symlink swaps, the identical race shows up in check-then-decrement database patterns too.',
+    gotchas: [
+      'A TOCTOU fix is not "add more validation" — it is eliminating the gap entirely by making the check and the use a single atomic operation (O_NOFOLLOW at open time; a WHERE clause folded into the same UPDATE).',
+    ],
+  },
   'security/api-security': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
