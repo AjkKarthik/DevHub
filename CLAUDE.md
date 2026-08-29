@@ -4298,6 +4298,48 @@ do this same check before any other new hub's first subtopic set:
     Architecture — all 8 of 8 topics now have subtopics).
     **Design Patterns hub Phase 10: 32 of 36 topics complete — only the Principles group (SOLID,
     GRASP, DRY/KISS/YAGNI, Dependency Inversion) remains.**
+39. **The `solid` batch — the FIRST Principles-group topic — found no compile error or undeclared
+    reference in either codeTab (the cleanest page found in a while for THAT category of bug), but
+    found and fixed a genuine mismatch between the LSP theory's own WORDED fix and what the codeTab
+    actually shows**: the theory bullet said "Fix: prefer composition over inheritance when the
+    'is-a' relationship has special constraints" — but the codeTab's actual Square/Rectangle fix is
+    TWO FULLY UNRELATED TYPES (<code>Rectangle(width, height)</code>, <code>Square(side)</code>,
+    sharing no code, no interface, nothing) — which is neither inheritance NOR composition.
+    Composition specifically means one type HOLDS an instance of another and delegates to it; "two
+    unrelated classes" is a third, different option. Tightened the theory bullet to name both valid
+    techniques precisely and note the choice depends on how much shared behaviour is worth reusing.
+    Three subtopics: (1) **fix-adjacent** — builds the ACTUAL composition-based fix the original
+    wording promised (a <code>Square</code> that HAS-A <code>Rectangle</code> internally, delegating
+    <code>Area</code>/<code>Perimeter</code>/<code>IsValid</code>), on a version of
+    <code>Rectangle</code> with enough real behaviour that reuse genuinely matters (unlike the main
+    page's own trivial one-line-<code>Area</code> example, where composition would be needless
+    indirection); (2) **gap-closing** — the "SOLID as a Coherent Set" theory AND a QnA answer both
+    assert, in the abstract, that an SRP violation "typically also becomes harder to extend... often
+    violates ISP" — neither ever traces ONE class through the cascade; built
+    <code>OrderNotifier</code> (one class mixing formatting + delivery + channel-switching) showing
+    the OCP violation (adding "push" means editing the same switch) and the ISP violation
+    (<code>OrderAuditLogger</code> needing only formatted text for a log has to depend on — and
+    accidentally trigger — the ENTIRE sending class) as MECHANICAL consequences of the SRP violation,
+    then the split fixing all three as one side effect, not three separate fixes; (3) **gap-closing**
+    — the mistakes block, the QnA's misapplications answer, and a mistake explanation all separately
+    warn against over-fragmentation ("hundreds of tiny classes," "interface explosion") with zero
+    worked boundary; built a three-way granularity comparison (under-split, correctly-split,
+    over-split) applying the main page's own "one reason to change" test directly, with a Try It
+    showing how a genuinely new requirement exposes an arbitrary split (drawn along a numeric-
+    comparison-operator line, not a real business-reason line) as having bought nothing. **Two
+    real, self-caught bugs in my OWN illustrative code, fixed before the sweep**: subtopic 1's Try
+    It solution initially reassigned a field declared <code>readonly</code> (invalid C#) — fixed to
+    return a new instance instead, matching the immutable-value-object convention already used
+    elsewhere in this hub; subtopic 2's "wrong" codeTab initially passed a <code>void</code>-returning
+    method's result to <code>Console.WriteLine(...)</code> (CS1503) — fixed by having the method
+    return the formatted message after sending, which is also a MORE REALISTIC illustration of the
+    ISP violation (the caller now visibly triggers a real send just to get text back). No
+    `SUBTOPICS` collision for `solid` (checked both `subtopics.ts` forms and grepped `app.routes.ts`
+    directly, confirmed collision-free, left bare). All three `exercise.solution` fields swept and
+    confirmed clean. Build passed clean. Browser-verified: no console errors; nav accordion opens
+    with 33 toggles total; all 3 subtopic links render correctly; the main-page theory fix confirmed
+    rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 33 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5265,7 +5307,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 32 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 33 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5277,8 +5319,9 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
   `/design-patterns/event-sourcing`, `/design-patterns/saga`, `/design-patterns/outbox`,
   `/design-patterns/specification`, `/design-patterns/clean-architecture`,
-  2026-08-04/2026-08-30, Structural + Behavioral + Enterprise nav groups complete; only
-  Principles remains) — see
+  `/design-patterns/solid`,
+  2026-08-04/2026-08-30, Structural + Behavioral + Enterprise nav groups complete; Principles
+  in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more

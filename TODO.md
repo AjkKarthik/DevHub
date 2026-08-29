@@ -7642,7 +7642,21 @@ off here with a date.
   confirmed via `getComputedStyle`; no console errors. **This completes the Enterprise nav group
   entirely (8 of 8 topics). Design Patterns hub Phase 10: 32 of 36 topics complete — only the
   Principles group remains.**
-- [ ] `/design-patterns/solid` — SOLID Principles
+- [x] `/design-patterns/solid` — SOLID Principles (2026-08-30) — 3 subtopics: The
+  Composition-Based LSP Fix (fixed a real theory/code mismatch — the LSP theory promised
+  "composition" but the codeTab's fix was two unrelated types, neither inheritance nor
+  composition; tightened the wording and built the actual composition-based fix); Tracing How
+  One SRP Violation Cascades (traces one class mechanically through SRP → OCP → ISP violations,
+  making the QnA's own "principles work together" claim concrete instead of asserted); How Much
+  Segregation Is Too Much (a three-way granularity comparison applying the "one reason to
+  change" test, answering a warning repeated three times on the page with no worked boundary).
+  Self-caught and fixed two bugs in my own illustrative code before the sweep (a readonly-field
+  reassignment, a void-to-Console.WriteLine mismatch). First Principles-group topic done. No
+  `SUBTOPICS` collision for `solid`, left bare. All three `solution` fields clean. Build passed
+  clean. Browser-verified: nav accordion opens with 33 toggles total; all 3 subtopic links
+  render correctly; the main-page theory fix confirmed rendering; breadcrumb showed all 4
+  levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
+  hub Phase 10: 33 of 36 topics complete.**
 - [ ] `/design-patterns/grasp` — GRASP Principles
 - [ ] `/design-patterns/dry-kiss-yagni` — DRY, KISS & YAGNI
 - [ ] `/design-patterns/dependency-inversion` — Dependency Inversion
