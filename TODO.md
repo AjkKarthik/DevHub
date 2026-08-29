@@ -7579,7 +7579,20 @@ off here with a date.
   render correctly; the main-page fix confirmed rendering after switching to the "Event Store +
   Projection" tab; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`;
   no console errors. **Design Patterns hub Phase 10: 28 of 36 topics complete.**
-- [ ] `/design-patterns/saga` — Saga Pattern
+- [x] `/design-patterns/saga` — Saga Pattern (2026-08-30) — 3 subtopics: The Missing Order Total
+  in InventoryReservedEvent (fixed a real cross-service data-contract bug — the main page's own
+  choreography codeTab's InventoryReservedConsumer read ctx.Message.Amount, but
+  InventoryReservedEvent was only ever constructed with (OrderId, reservationId), never an
+  amount; fixed by threading Total through); Ordering Steps Around the Pivot Transaction (builds
+  the pivot-aware step-ordering rule the mistakes block names in one sentence but never shows);
+  Building a Commutative Compensation (contrasts a decrement-style vs. set-style compensation to
+  make the quiz's own commutativity definition concrete, with a lost-update Try It). No
+  `SUBTOPICS` collision for `saga`, left bare. All three `solution` fields clean on first sweep.
+  Build passed clean. Browser-verified: nav accordion opens with 29 toggles total; all 3 subtopic
+  links render correctly; the main-page fix confirmed rendering after expanding the "Choreography
+  Saga" tab specifically; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 29 of 36 topics
+  complete.**
 - [ ] `/design-patterns/outbox` — Outbox Pattern
 - [ ] `/design-patterns/specification` — Specification Pattern
 - [ ] `/design-patterns/clean-architecture` — Clean Architecture

@@ -4137,6 +4137,39 @@ do this same check before any other new hub's first subtopic set:
     own `solution` field confirmed rendering as literal plain text; breadcrumb showed all 4 levels;
     860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 28 of 36 topics complete.**
+35. **The `saga` batch found and fixed a genuine cross-service data-contract bug in the main
+    page's own "Choreography Saga" codeTab**: <code>InventoryReservedConsumer.Consume()</code>
+    read <code>ctx.Message.Amount</code>, but <code>InventoryReservedEvent</code> was only ever
+    CONSTRUCTED, one method above in <code>OrderPlacedConsumer</code>, as
+    <code>new InventoryReservedEvent(ctx.Message.OrderId, reservationId)</code> — no
+    <code>Amount</code> anywhere. The order total WAS available (right there in the same method's
+    own <code>ctx.Message.Total</code>, from <code>OrderPlacedEvent</code>) but never got forwarded
+    into the NEXT event Inventory Service publishes. A purely self-contained catch: no external
+    research needed, just tracing which fields an event was actually constructed with versus what a
+    downstream consumer reads off it — the same undeclared-field category of bug this hub has hit
+    many times, just crossing a service boundary (a published event) instead of a single class this
+    time. Fixed by threading <code>Total</code> through <code>InventoryReservedEvent</code>'s
+    constructor and renaming the read-side reference to match. Three subtopics: (1)
+    **fix-adjacent** — traces the missing-field bug precisely and explains why choreography's own
+    "looser coupling, harder to trace" trade-off (already named in the main page's own theory) makes
+    this specific kind of gap easy to miss; (2) **gap-closing** — the mistakes block names "pivot
+    transactions" (irreversible steps like sending an email) in exactly one sentence with zero
+    working example; built a <code>SagaStep</code> array with an explicit
+    <code>IsCompensatable</code> flag and a <code>ValidatePivotOrdering()</code> check enforcing
+    that every compensatable step comes before every non-compensatable one; (3) **gap-closing** — a
+    quiz question defines commutative compensation precisely ("decrement inventory by X... vs. set
+    inventory to exactly Y") but no codeTab builds either version; contrasted a read-then-set
+    compensation (loses a concurrent change) against a pure decrement (survives any interleaving),
+    with a Try It tracing the exact lost-update sequence for the non-commutative version. No
+    `SUBTOPICS` collision for `saga` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). All three `exercise.solution`
+    fields swept and confirmed clean on the first pass. Build passed clean. Browser-verified: no
+    console errors; nav accordion opens with 29 toggles total; all 3 subtopic links render
+    correctly; the main-page fix confirmed rendering after expanding the "Choreography Saga" tab
+    specifically (the default-selected tab is "Orchestration Saga (MassTransit)," which never
+    contained the bug); a subtopic's own `solution` field confirmed rendering as literal plain text;
+    breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 29 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5104,7 +5137,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 28 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 29 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5114,7 +5147,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
   `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
   `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
-  `/design-patterns/event-sourcing`,
+  `/design-patterns/event-sourcing`, `/design-patterns/saga`,
   2026-08-04/2026-08-30, Structural + Behavioral nav groups complete; Enterprise in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
