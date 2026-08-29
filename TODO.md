@@ -7754,7 +7754,22 @@ off here with a date.
   total across the hub); breadcrumb showed all 4 levels; sidebar showed tailored composite-key
   content; 860px wrapper confirmed; no console errors on any of the 4 pages.
   **Security & Auth hub Phase 10: 3 of 23 topics complete.**
-- [ ] `/security/secure-coding` — Secure Coding Practices
+- [x] `/security/secure-coding` — Secure Coding Practices (2026-08-30) — Phase 10: 3 subtopics
+  added. Verified via direct Node.js execution that the Challenge's own truncate-then-encode order
+  can produce a final string longer than `maxLength` once entity expansion runs after truncation
+  (neither of the Challenge's own two demo calls happens to reveal this). Subtopics: Why
+  Truncate-Then-Encode Can Exceed maxLength (fix-adjacent, plus a contrasting encode-then-truncate
+  variant that trades the length-bound issue for a mangled HTML entity instead); Path Traversal —
+  Vulnerable Endpoint and Fix (gap-closing, a real vulnerable Node.js endpoint + the quiz's own
+  resolve-and-check fix, including a sibling-directory prefix trap verified via Node execution); A
+  TOCTOU Race Condition, Timelined (gap-closing, a millisecond-by-millisecond race timeline + an
+  `O_NOFOLLOW`-based atomic fix verified against Node's real documented behavior, extended to a
+  database check-then-decrement race in the Try It). Self-caught and fixed a missing closing brace
+  in my own authoring of the second codeTab before the build. No `SUBTOPICS` collision, left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels (4 toggles total
+  across the hub); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
+  tailored composite-key content; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 4 of 23 topics complete.**
 - [ ] `/security/password-security` — Password Security
 - [ ] `/security/oauth-oidc` — OAuth 2.0 & OIDC
 - [ ] `/security/jwt` — JWT (JSON Web Tokens)

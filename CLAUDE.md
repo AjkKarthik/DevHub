@@ -4607,6 +4607,47 @@ this same check before any other new hub's first subtopic set:
    levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
    `getComputedStyle`; Try It solution text confirmed correct via direct component inspection.
    **Security & Auth hub Phase 10: 3 of 23 topics complete.**
+10. **The `secure-coding` batch found and fixed a real self-authored bug during subtopic
+    authoring, plus built three subtopics grounded in direct Node.js verification rather than
+    a main-page correction**: the main page's own Challenge (`sanitiseInput`) solution passes both
+    of its own demonstration calls correctly, but neither call happens to place a special
+    character right at the truncation boundary — running a THIRD input
+    (`sanitiseInput('<b>hi</b>', 4)`) reveals the real, verified property: entity expansion AFTER
+    truncation produces a final string (10 chars) far longer than `maxLength` (4), confirmed via
+    direct Node.js execution. This is not a bug in the strict sense (the function does exactly
+    what its own numbered steps describe, in that order) — whether it's correct depends entirely
+    on whether `maxLength` is meant to bound the RAW input or the FINAL output, a distinction the
+    Challenge description itself never states. Three subtopics: (1) **fix-adjacent** — the
+    verified truncate-then-encode property, contrasted with an encode-then-truncate variant that
+    fixes the length bound but can produce a MANGLED, incomplete HTML entity instead (`&lt` missing
+    its trailing semicolon) — also verified via Node execution — with a Try It reasoning through
+    which order actually fits a real `VARCHAR(200)`-backed field (truncate-then-encode, since the
+    column bounds the RAW stored text, matching the main page's own separate `ProductSchema`
+    pattern); (2) **gap-closing** — the quiz describes path traversal in real technical depth
+    (URL-encoded and double-encoded bypasses named explicitly) but the main page has no vulnerable
+    endpoint or fix in code; built both, including a sibling-directory prefix trap
+    (`/var/app/uploads` vs. `/var/app/uploads-backup`) a `startsWith()` check without a trailing
+    path separator falls into — verified via direct Node.js execution that the check is exploitable
+    without the separator and correctly rejects with it; (3) **gap-closing** — the quiz names TOCTOU
+    and its fix (atomic operations, `O_EXCL`, `flock`) in prose only; built the actual
+    millisecond-timeline of the race and the `O_NOFOLLOW`-based atomic fix, verified against
+    Node.js's real, documented `fs.constants.O_NOFOLLOW` behaviour via WebSearch before publishing,
+    plus a Try It extending the identical "make check-and-use one atomic operation" principle to a
+    database check-then-decrement coupon race (`UPDATE ... WHERE uses_remaining > 0` folding the
+    check into the write itself). **A real, self-authored bug caught and fixed BEFORE the build**:
+    the encode-then-truncate codeTab in subtopic 1 was originally missing its function's own closing
+    brace — a genuine authoring mistake in the illustrative code sample (harmless to the Angular
+    build itself, since it's a string literal, but a real bug in the code SHOWN to the reader),
+    caught by directly re-reading the file rather than assuming the Node-verified logic implied
+    correct surrounding syntax. No `SUBTOPICS` collision for `secure-coding` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    All three `solution` fields swept clean (both the standing apostrophe-escaping script and a
+    manual bracket-balance check); two flagged lines in the apostrophe sweep were confirmed false
+    positives (bare apostrophes inside backtick-delimited `code:` fields, which tolerate them fine).
+    Build passed clean. Browser-verified: no console errors on any of the 4 pages; nav accordion
+    opens with all 3 labels (4 toggles total across the hub); breadcrumb and 860px wrapper confirmed
+    on every subtopic; sidebar showed tailored composite-key content; Try It solution text confirmed
+    via direct component inspection. **Security & Auth hub Phase 10: 4 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5608,9 +5649,9 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 3 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
-  `/security/owasp-top-10`; `/security/threat-modelling`, 2026-08-30) — see
-  "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
+  Phase 10: 4 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`, 2026-08-30) —
+  see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).
 - **API Design hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
