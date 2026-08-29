@@ -2833,7 +2833,12 @@ export const routes: Routes = [
       { path: 'controllerbase-vs-controller-for-action-filter-hooks', loadComponent: () => import('./components/architecture/design-patterns/template-method/subtopics/controllerbase-vs-controller-for-action-filter-hooks/controllerbase-vs-controller-for-action-filter-hooks').then(m => m.ControllerbaseVsControllerForActionFilterHooksSubtopic) },
       { path: 'converting-template-method-to-strategy-concretely', loadComponent: () => import('./components/architecture/design-patterns/template-method/subtopics/converting-template-method-to-strategy-concretely/converting-template-method-to-strategy-concretely').then(m => m.ConvertingTemplateMethodToStrategyConcretelySubtopic) },
     ] },
-    { path: 'visitor',            loadComponent: () => import('./components/architecture/design-patterns/visitor/visitor').then(m => m.DpVisitor) },
+    { path: 'visitor', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/visitor/visitor').then(m => m.DpVisitor) },
+      { path: 'the-non-virtual-accept-failure-demonstrated', loadComponent: () => import('./components/architecture/design-patterns/visitor/subtopics/the-non-virtual-accept-failure-demonstrated/the-non-virtual-accept-failure-demonstrated').then(m => m.TheNonVirtualAcceptFailureDemonstratedSubtopic) },
+      { path: 'simulating-double-dispatch-with-dynamic', loadComponent: () => import('./components/architecture/design-patterns/visitor/subtopics/simulating-double-dispatch-with-dynamic/simulating-double-dispatch-with-dynamic').then(m => m.SimulatingDoubleDispatchWithDynamicSubtopic) },
+      { path: 'visitor-plus-composite-recursive-order-group', loadComponent: () => import('./components/architecture/design-patterns/visitor/subtopics/visitor-plus-composite-recursive-order-group/visitor-plus-composite-recursive-order-group').then(m => m.VisitorPlusCompositeRecursiveOrderGroupSubtopic) },
+    ] },
     { path: 'null-object',        loadComponent: () => import('./components/architecture/design-patterns/null-object/null-object').then(m => m.DpNullObject) },
     // Enterprise
     { path: 'repository',         loadComponent: () => import('./components/architecture/design-patterns/repository/repository').then(m => m.DpRepository) },

@@ -27902,6 +27902,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Best for a stable set of element types needing many operations added over time — not for element hierarchies expected to grow frequently.',
     ],
   },
+  'design-patterns/visitor/the-non-virtual-accept-failure-demonstrated': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Visitor (overview)', route: '/design-patterns/visitor' },
+      { label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' },
+    ],
+    tip: 'If Accept() is defined once on a base class and never overridden per concrete type, the second (Visit-side) dispatch resolves against the base type at compile time — silently calling the wrong overload.',
+    gotchas: [
+      'Both main-page codeTabs use an interface for elements, which makes this specific bug structurally impossible — it only surfaces with a non-virtual Accept() on an abstract base class.',
+    ],
+  },
+  'design-patterns/visitor/simulating-double-dispatch-with-dynamic': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Non-Virtual Accept() Failure, Demonstrated', route: '/design-patterns/visitor/the-non-virtual-accept-failure-demonstrated' },
+      { label: 'Visitor + Composite: A Recursive Order Group', route: '/design-patterns/visitor/visitor-plus-composite-recursive-order-group' },
+    ],
+    tip: 'dynamic forces the DLR to resolve the correct Visit overload at runtime, letting elements skip Accept()/an interface entirely — at the cost of moving unmatched-overload errors from compile time to a RuntimeBinderException.',
+    gotchas: [
+      'The DLR caches the resolved binding per call site once a type combination has been seen — the real performance cost concentrates on the first call, not every call equally.',
+    ],
+  },
+  'design-patterns/visitor/visitor-plus-composite-recursive-order-group': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' },
+      { label: 'Visitor (overview)', route: '/design-patterns/visitor' },
+    ],
+    tip: 'A Composite element\'s Accept() visits itself, then recurses into every child\'s own Accept() — the same visitor written for a flat list works unchanged against an arbitrarily nested tree.',
+    gotchas: [
+      'Visiting the group STRUCTURE and visiting the LEAF elements are independent capabilities — a visitor that only cares about leaves can leave the composite\'s own Visit() overload as a no-op.',
+    ],
+  },
 
   // ── Architecture Patterns: per-page entries ────────────────────────────────
   'arch-patterns/ddd-core': {

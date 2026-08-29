@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Visitor" topicRoute="/design-patterns/visitor"
+    subtopicLabel="Visitor + Composite: A Recursive Order Group" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Visitor + Composite: A Recursive Order Group</h1>
+  <p class="page-subtitle">The main page's own revision calls Visitor + Composite "a very common pairing" —
+    but never builds it against the page's own IOrderElement hierarchy. Here's a SplitShipmentGroup composite,
+    reusing every element type already on the page.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 9.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Together with the previous two subtopics, this closes out the main page's own three biggest gaps: a
+      failure mode described but never triggered, a technique named but never shown, and a "very common
+      pairing" never actually built against the page's own running example.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Visitor" topicRoute="/design-patterns/visitor"
+    [prev]="{ label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' }" />
+</div>

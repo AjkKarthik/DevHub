@@ -3352,4 +3352,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ControllerBase vs Controller for Action Filter Hooks', route: '/design-patterns/template-method/controllerbase-vs-controller-for-action-filter-hooks' },
     { label: 'Converting Template Method to Strategy, Concretely', route: '/design-patterns/template-method/converting-template-method-to-strategy-concretely' },
   ],
+  'visitor': [
+    { label: 'The Non-Virtual Accept() Failure, Demonstrated', route: '/design-patterns/visitor/the-non-virtual-accept-failure-demonstrated' },
+    { label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' },
+    { label: 'Visitor + Composite: A Recursive Order Group', route: '/design-patterns/visitor/visitor-plus-composite-recursive-order-group' },
+  ],
 };
