@@ -2846,7 +2846,12 @@ export const routes: Routes = [
       { path: 'when-a-null-object-violates-liskov-substitution', loadComponent: () => import('./components/architecture/design-patterns/null-object/subtopics/when-a-null-object-violates-liskov-substitution/when-a-null-object-violates-liskov-substitution').then(m => m.WhenANullObjectViolatesLiskovSubstitutionSubtopic) },
     ] },
     // Enterprise
-    { path: 'repository',         loadComponent: () => import('./components/architecture/design-patterns/repository/repository').then(m => m.DpRepository) },
+    { path: 'repository', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/repository/repository').then(m => m.DpRepository) },
+      { path: 'connecting-efspecificationevaluator-to-a-real-repository', loadComponent: () => import('./components/architecture/design-patterns/repository/subtopics/connecting-efspecificationevaluator-to-a-real-repository/connecting-efspecificationevaluator-to-a-real-repository').then(m => m.ConnectingEfspecificationevaluatorToARealRepositorySubtopic) },
+      { path: 'generic-repositorybase-as-an-internal-implementation-detail', loadComponent: () => import('./components/architecture/design-patterns/repository/subtopics/generic-repositorybase-as-an-internal-implementation-detail/generic-repositorybase-as-an-internal-implementation-detail').then(m => m.GenericRepositorybaseAsAnInternalImplementationDetailSubtopic) },
+      { path: 'the-n-plus-1-lazy-loading-pitfall-demonstrated', loadComponent: () => import('./components/architecture/design-patterns/repository/subtopics/the-n-plus-1-lazy-loading-pitfall-demonstrated/the-n-plus-1-lazy-loading-pitfall-demonstrated').then(m => m.TheNPlus1LazyLoadingPitfallDemonstratedSubtopic) },
+    ] },
     { path: 'unit-of-work',       loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/unit-of-work').then(m => m.DpUnitOfWork) },
     { path: 'cqrs',               loadComponent: () => import('./components/architecture/design-patterns/cqrs/cqrs').then(m => m.DpCqrs) },
     { path: 'event-sourcing',     loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/event-sourcing').then(m => m.DpEventSourcing) },

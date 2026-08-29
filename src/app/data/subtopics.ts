@@ -3362,4 +3362,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Nested Null Objects for Object-Returning Methods', route: '/design-patterns/null-object/nested-null-objects-for-object-returning-methods' },
     { label: 'When a Null Object Violates Liskov Substitution', route: '/design-patterns/null-object/when-a-null-object-violates-liskov-substitution' },
   ],
+  'repository': [
+    { label: 'Connecting EfSpecificationEvaluator to a Real Repository', route: '/design-patterns/repository/connecting-efspecificationevaluator-to-a-real-repository' },
+    { label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' },
+    { label: 'The N+1 Lazy-Loading Pitfall, Demonstrated', route: '/design-patterns/repository/the-n-plus-1-lazy-loading-pitfall-demonstrated' },
+  ],
 };

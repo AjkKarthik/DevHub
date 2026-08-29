@@ -27693,6 +27693,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Repository should generally operate at the AGGREGATE level, not per individual entity or table.',
     ],
   },
+  'design-patterns/repository/connecting-efspecificationevaluator-to-a-real-repository': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Repository (overview)', route: '/design-patterns/repository' },
+      { label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' },
+    ],
+    tip: 'The main page\'s own EfSpecificationEvaluator.Apply() is defined but never called by anything — a real repository method must pass db.Orders (a live IQueryable), not a materialized list, into it to get the specification translated into one SQL query.',
+    gotchas: [
+      'Materializing the source with ToList() before applying the specification moves every filter/sort/page operation from the database into application memory.',
+    ],
+  },
+  'design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Connecting EfSpecificationEvaluator to a Real Repository', route: '/design-patterns/repository/connecting-efspecificationevaluator-to-a-real-repository' },
+      { label: 'The N+1 Lazy-Loading Pitfall, Demonstrated', route: '/design-patterns/repository/the-n-plus-1-lazy-loading-pitfall-demonstrated' },
+    ],
+    tip: 'A generic RepositoryBase<T> used purely as internal boilerplate (protected methods, never part of the public interface) gets the code-reuse benefit without the interface-leakage cost a publicly-exposed IRepository<T> has.',
+    gotchas: [
+      'The safety only holds if callers are consistently handed IOrderRepository references, not the concrete class or the base class directly.',
+    ],
+  },
+  'design-patterns/repository/the-n-plus-1-lazy-loading-pitfall-demonstrated': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' },
+      { label: 'Repository (overview)', route: '/design-patterns/repository' },
+    ],
+    tip: 'With lazy-loading proxies enabled, reading an un-Included navigation property on each of N returned entities triggers N separate database round trips — Include() fixes it by folding the related data into one JOIN.',
+    gotchas: [
+      'Include() only eagerly loads the specific navigation property it names — a second property read without its own Include() call reintroduces N+1 independently.',
+    ],
+  },
   'design-patterns/saga': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

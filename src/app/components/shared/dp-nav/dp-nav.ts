@@ -512,7 +512,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
 
     <div class="nav-group">
       <p class="nav-group-label">Enterprise</p>
-      <a routerLink="/design-patterns/repository" routerLinkActive="active"><span class="nl-text">Repository</span>@if(p.isDone('dp-repository')){<span class="nl-done">✓</span>}@if(d('dp-repository');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/repository" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Repository</span>
+        @if(p.isDone('dp-repository')){<span class="nl-done">✓</span>}
+        @if(d('dp-repository');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('repository')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('repository')"
+                  (click)="toggleSubtopics('repository', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('repository'); as repoSubs) {
+        @if (isSubtopicsExpanded('repository')) {
+          <div class="nav-subtopics">
+            @for (s of repoSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/unit-of-work" routerLinkActive="active"><span class="nl-text">Unit of Work</span>@if(p.isDone('dp-unit-of-work')){<span class="nl-done">✓</span>}@if(d('dp-unit-of-work');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/cqrs" routerLinkActive="active"><span class="nl-text">CQRS Pattern</span>@if(p.isDone('dp-cqrs')){<span class="nl-done">✓</span>}@if(d('dp-cqrs');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/event-sourcing" routerLinkActive="active"><span class="nl-text">Event Sourcing</span>@if(p.isDone('dp-event-sourcing')){<span class="nl-done">✓</span>}@if(d('dp-event-sourcing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
