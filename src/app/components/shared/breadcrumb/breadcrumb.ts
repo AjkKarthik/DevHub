@@ -2631,6 +2631,9 @@ const API_DESIGN_LABELS: Record<string, string> = {
 
 const SECURITY_LABELS: Record<string, string> = {
   'fundamentals':            'Security Fundamentals',
+  'fundamentals/threat-modeling-a-password-reset-endpoint': 'Threat-Modeling a Password-Reset Endpoint',
+  'fundamentals/fail-secure-vs-fail-safe-made-concrete': 'Fail-Secure vs. Fail-Safe, Made Concrete',
+  'fundamentals/what-sast-actually-catches': 'What SAST Actually Catches',
   'owasp-top-10':            'OWASP Top 10',
   'threat-modelling':        'Threat Modelling',
   'secure-coding':           'Secure Coding',

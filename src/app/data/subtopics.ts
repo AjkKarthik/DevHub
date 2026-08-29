@@ -3425,4 +3425,11 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' },
     { label: 'Property and Method Injection, Shown', route: '/design-patterns/dependency-inversion/property-and-method-injection-shown' },
   ],
+  // NOTE: hub-prefixed — bare 'fundamentals' is already claimed by the
+  // JavaScript hub's own /javascript/fundamentals topic.
+  'sec-fundamentals': [
+    { label: 'Threat-Modeling a Password-Reset Endpoint', route: '/security/fundamentals/threat-modeling-a-password-reset-endpoint' },
+    { label: 'Fail-Secure vs. Fail-Safe, Made Concrete', route: '/security/fundamentals/fail-secure-vs-fail-safe-made-concrete' },
+    { label: 'What SAST Actually Catches', route: '/security/fundamentals/what-sast-actually-catches' },
+  ],
 };

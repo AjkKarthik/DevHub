@@ -1460,6 +1460,9 @@ export const SEARCH_INDEX: SearchEntry[] = [
 
   // ── Security ──────────────────────────────────────────────────────────────
   { route: 'sec-fundamentals',          title: 'Security Fundamentals',      section: 'Security', difficulty: 'beginner',     keywords: 'security cia triad confidentiality integrity availability defense in depth least privilege zero trust shift left' },
+  { route: 'sec-fundamentals/threat-modeling-a-password-reset-endpoint', title: 'Threat-Modeling a Password-Reset Endpoint', section: 'Security', difficulty: 'intermediate', keywords: 'STRIDE threat model password reset spoofing tampering repudiation disclosure denial elevation' },
+  { route: 'sec-fundamentals/fail-secure-vs-fail-safe-made-concrete', title: 'Fail-Secure vs. Fail-Safe, Made Concrete', section: 'Security', difficulty: 'intermediate', keywords: 'fail secure fail safe authorization middleware exception handling default deny' },
+  { route: 'sec-fundamentals/what-sast-actually-catches', title: 'What SAST Actually Catches', section: 'Security', difficulty: 'intermediate', keywords: 'SAST static analysis semgrep codeql sql injection pattern matching' },
   { route: 'sec-owasp-top-10',          title: 'OWASP Top 10',               section: 'Security', difficulty: 'beginner',     keywords: 'owasp top 10 injection xss csrf broken auth misconfiguration vulnerable components logging insecure design' },
   { route: 'sec-threat-modelling',      title: 'Threat Modelling',           section: 'Security', difficulty: 'intermediate', keywords: 'threat modelling stride dread pasta attack tree dfd data flow diagram spoofing tampering repudiation' },
   { route: 'sec-secure-coding',         title: 'Secure Coding',              section: 'Security', difficulty: 'intermediate', keywords: 'secure coding input validation output encoding parameterized queries least privilege error handling secrets' },

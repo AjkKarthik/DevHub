@@ -34081,6 +34081,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Security added as an afterthought is consistently more expensive and less effective than security designed in from the start.',
     ],
   },
+  'security/fundamentals/threat-modeling-a-password-reset-endpoint': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Security Fundamentals (overview)', route: '/security/fundamentals' },
+      { label: 'Fail-Secure vs. Fail-Safe, Made Concrete', route: '/security/fundamentals/fail-secure-vs-fail-safe-made-concrete' },
+    ],
+    tip: 'A password-reset flow genuinely triggers all six STRIDE categories at once — identity, a stored token, an audit trail, a secret in transit, an unauthenticated endpoint, and a privilege boundary.',
+    gotchas: [
+      'Forgetting to invalidate the reset token after use opens a replay-attack window even though the token itself was never leaked.',
+    ],
+  },
+  'security/fundamentals/fail-secure-vs-fail-safe-made-concrete': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Threat-Modeling a Password-Reset Endpoint', route: '/security/fundamentals/threat-modeling-a-password-reset-endpoint' },
+      { label: 'What SAST Actually Catches', route: '/security/fundamentals/what-sast-actually-catches' },
+    ],
+    tip: 'A fail-open bug rarely looks like a security bug — it usually looks like defensive error handling that swallows an exception and lets the request continue.',
+    gotchas: [
+      'Fail-secure isn\'t universally correct — the right default depends on the threat model (a fire exit should fail safe, not secure).',
+    ],
+  },
+  'security/fundamentals/what-sast-actually-catches': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Fail-Secure vs. Fail-Safe, Made Concrete', route: '/security/fundamentals/fail-secure-vs-fail-safe-made-concrete' },
+      { label: 'Security Fundamentals (overview)', route: '/security/fundamentals' },
+    ],
+    tip: 'SAST is static analysis — it never runs the code, which is why it can scan every commit in seconds but can only catch patterns it was taught to recognize.',
+    gotchas: [
+      'Routing an unsafe value through an intermediate helper function can slip past a SAST rule that only checks the immediate call site.',
+    ],
+  },
   'security/threat-modelling': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

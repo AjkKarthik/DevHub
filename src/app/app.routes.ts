@@ -3237,7 +3237,12 @@ export const routes: Routes = [
   ] },
   { path: 'security', children: [
     { path: '', loadComponent: () => import('./components/architecture/security/home/home').then(m => m.SecurityHome) },
-    { path: 'fundamentals',          loadComponent: () => import('./components/architecture/security/fundamentals/fundamentals').then(m => m.SecFundamentals) },
+    { path: 'fundamentals', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/fundamentals/fundamentals').then(m => m.SecFundamentals) },
+        { path: 'threat-modeling-a-password-reset-endpoint', loadComponent: () => import('./components/architecture/security/fundamentals/subtopics/threat-modeling-a-password-reset-endpoint/threat-modeling-a-password-reset-endpoint').then(m => m.ThreatModelingAPasswordResetEndpointSubtopic) },
+        { path: 'fail-secure-vs-fail-safe-made-concrete', loadComponent: () => import('./components/architecture/security/fundamentals/subtopics/fail-secure-vs-fail-safe-made-concrete/fail-secure-vs-fail-safe-made-concrete').then(m => m.FailSecureVsFailSafeMadeConcreteSubtopic) },
+        { path: 'what-sast-actually-catches', loadComponent: () => import('./components/architecture/security/fundamentals/subtopics/what-sast-actually-catches/what-sast-actually-catches').then(m => m.WhatSastActuallyCatchesSubtopic) },
+      ] },
     { path: 'owasp-top-10',          loadComponent: () => import('./components/architecture/security/owasp-top-10/owasp-top-10').then(m => m.SecOwaspTop10) },
     { path: 'threat-modelling',      loadComponent: () => import('./components/architecture/security/threat-modelling/threat-modelling').then(m => m.SecThreatModelling) },
     { path: 'secure-coding',         loadComponent: () => import('./components/architecture/security/secure-coding/secure-coding').then(m => m.SecSecureCoding) },

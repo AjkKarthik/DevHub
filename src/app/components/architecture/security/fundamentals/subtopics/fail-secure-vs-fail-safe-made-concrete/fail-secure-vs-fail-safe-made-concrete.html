@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Security Fundamentals" topicRoute="/security/fundamentals"
+    subtopicLabel="Fail-Secure vs. Fail-Safe, Made Concrete" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Fail-Secure vs. Fail-Safe, Made Concrete</h1>
+  <p class="page-subtitle">The QnA explains this distinction in prose, with a specific example. Here's the middleware bug that example describes — and the fix.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic covers a different unfinished thread — the theory names SAST, SCA, and DAST by tool name but never shows what any of them actually catch in real code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Security Fundamentals" topicRoute="/security/fundamentals"
+    [prev]="{ label: 'Threat-Modeling a Password-Reset Endpoint', route: '/security/fundamentals/threat-modeling-a-password-reset-endpoint' }"
+    [next]="{ label: 'What SAST Actually Catches', route: '/security/fundamentals/what-sast-actually-catches' }" />
+</div>
