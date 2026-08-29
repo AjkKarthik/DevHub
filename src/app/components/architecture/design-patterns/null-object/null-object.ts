@@ -160,11 +160,11 @@ var checkout = new Checkout(customer.HasDiscount
     : NoDiscount.Instance);
 
 // Null Object for empty collection
-public class ProductRepository
+public class ProductRepository(IProductDb db)
 {
     public IReadOnlyList<Product> GetRecommendations(int userId)
     {
-        var products = _db.GetRecs(userId);
+        var products = db.GetRecs(userId);
         return products ?? Array.Empty<Product>(); // Array.Empty<T>() is Null Object
     }
 }

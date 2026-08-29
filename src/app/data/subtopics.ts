@@ -3357,4 +3357,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Simulating Double Dispatch With dynamic', route: '/design-patterns/visitor/simulating-double-dispatch-with-dynamic' },
     { label: 'Visitor + Composite: A Recursive Order Group', route: '/design-patterns/visitor/visitor-plus-composite-recursive-order-group' },
   ],
+  'null-object': [
+    { label: 'The Undeclared _db Field in ProductRepository', route: '/design-patterns/null-object/the-undeclared-db-field-in-productrepository' },
+    { label: 'Nested Null Objects for Object-Returning Methods', route: '/design-patterns/null-object/nested-null-objects-for-object-returning-methods' },
+    { label: 'When a Null Object Violates Liskov Substitution', route: '/design-patterns/null-object/when-a-null-object-violates-liskov-substitution' },
+  ],
 };

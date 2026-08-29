@@ -488,7 +488,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/null-object" routerLinkActive="active"><span class="nl-text">Null Object</span>@if(p.isDone('dp-null-object')){<span class="nl-done">✓</span>}@if(d('dp-null-object');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/null-object" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Null Object</span>
+        @if(p.isDone('dp-null-object')){<span class="nl-done">✓</span>}
+        @if(d('dp-null-object');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('null-object')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('null-object')"
+                  (click)="toggleSubtopics('null-object', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('null-object'); as noSubs) {
+        @if (isSubtopicsExpanded('null-object')) {
+          <div class="nav-subtopics">
+            @for (s of noSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

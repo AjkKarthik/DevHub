@@ -2839,7 +2839,12 @@ export const routes: Routes = [
       { path: 'simulating-double-dispatch-with-dynamic', loadComponent: () => import('./components/architecture/design-patterns/visitor/subtopics/simulating-double-dispatch-with-dynamic/simulating-double-dispatch-with-dynamic').then(m => m.SimulatingDoubleDispatchWithDynamicSubtopic) },
       { path: 'visitor-plus-composite-recursive-order-group', loadComponent: () => import('./components/architecture/design-patterns/visitor/subtopics/visitor-plus-composite-recursive-order-group/visitor-plus-composite-recursive-order-group').then(m => m.VisitorPlusCompositeRecursiveOrderGroupSubtopic) },
     ] },
-    { path: 'null-object',        loadComponent: () => import('./components/architecture/design-patterns/null-object/null-object').then(m => m.DpNullObject) },
+    { path: 'null-object', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/null-object/null-object').then(m => m.DpNullObject) },
+      { path: 'the-undeclared-db-field-in-productrepository', loadComponent: () => import('./components/architecture/design-patterns/null-object/subtopics/the-undeclared-db-field-in-productrepository/the-undeclared-db-field-in-productrepository').then(m => m.TheUndeclaredDbFieldInProductrepositorySubtopic) },
+      { path: 'nested-null-objects-for-object-returning-methods', loadComponent: () => import('./components/architecture/design-patterns/null-object/subtopics/nested-null-objects-for-object-returning-methods/nested-null-objects-for-object-returning-methods').then(m => m.NestedNullObjectsForObjectReturningMethodsSubtopic) },
+      { path: 'when-a-null-object-violates-liskov-substitution', loadComponent: () => import('./components/architecture/design-patterns/null-object/subtopics/when-a-null-object-violates-liskov-substitution/when-a-null-object-violates-liskov-substitution').then(m => m.WhenANullObjectViolatesLiskovSubstitutionSubtopic) },
+    ] },
     // Enterprise
     { path: 'repository',         loadComponent: () => import('./components/architecture/design-patterns/repository/repository').then(m => m.DpRepository) },
     { path: 'unit-of-work',       loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/unit-of-work').then(m => m.DpUnitOfWork) },

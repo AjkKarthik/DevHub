@@ -27454,6 +27454,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing Null Object can hide genuine errors that a caller should have been alerted to.',
     ],
   },
+  'design-patterns/null-object/the-undeclared-db-field-in-productrepository': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Null Object (overview)', route: '/design-patterns/null-object' },
+      { label: 'Nested Null Objects for Object-Returning Methods', route: '/design-patterns/null-object/nested-null-objects-for-object-returning-methods' },
+    ],
+    tip: 'The main page\'s own ProductRepository referenced _db without ever declaring it — a plain undeclared-identifier compile error, fixed with a primary constructor matching the codeTab\'s own established style.',
+    gotchas: [
+      'This category of mistake — a field or method referenced but never declared in the same class — has recurred across many topics in this hub, usually in the last, smallest snippet of a multi-example codeTab.',
+    ],
+  },
+  'design-patterns/null-object/nested-null-objects-for-object-returning-methods': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Undeclared _db Field in ProductRepository', route: '/design-patterns/null-object/the-undeclared-db-field-in-productrepository' },
+      { label: 'When a Null Object Violates Liskov Substitution', route: '/design-patterns/null-object/when-a-null-object-violates-liskov-substitution' },
+    ],
+    tip: 'A Null Object whose own methods return object types needs its own recursive Null Object down every level — NullCustomer.Orders should return an empty collection, not null or a thrown exception.',
+    gotchas: [
+      'Whether a nested Null Object is the right choice depends entirely on whether the caller needs to distinguish "found" from "not found" — the same judgment call the main page\'s own fourth mistake block makes.',
+    ],
+  },
+  'design-patterns/null-object/when-a-null-object-violates-liskov-substitution': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Nested Null Objects for Object-Returning Methods', route: '/design-patterns/null-object/nested-null-objects-for-object-returning-methods' },
+      { label: 'Null Object (overview)', route: '/design-patterns/null-object' },
+    ],
+    tip: 'A Null Object that throws NotImplementedException on only some methods is worse than a null check — it fails unpredictably, deep in unrelated code, instead of immediately and obviously at the call site.',
+    gotchas: [
+      'Every method needs a genuinely safe default, not just the ones a test suite happens to exercise — a compiling, passing Null Object can still violate LSP on an untested path.',
+    ],
+  },
   'design-patterns/object-pool': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
