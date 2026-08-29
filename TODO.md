@@ -7685,7 +7685,22 @@ off here with a date.
   the nested-escaping codeTab confirmed rendering as valid C#; breadcrumb showed all 4 levels;
   860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns hub Phase
   10: 35 of 36 topics complete — only Dependency Inversion remains.**
-- [ ] `/design-patterns/dependency-inversion` — Dependency Inversion
+- [x] `/design-patterns/dependency-inversion` — Dependency Inversion (2026-08-30) — 3 subtopics:
+  The Missing GetSummaryAsync Method (fixed a real bug spanning two codeTabs — the
+  "DIP + Constructor Injection" codeTab declares IOrderRepository with only SaveAsync(); the
+  separate "Lifetimes + Captive Dependency" codeTab's fixed OrderSummaryService calls
+  repo.GetSummaryAsync() on that same interface, never declared; added the missing method to
+  both the interface and SqlOrderRepository); Who Should Own the Abstraction? (a quiz question
+  makes a precise ownership claim in prose — built the wrong project layout, interface owned by
+  Infrastructure, next to the correct one, owned by Application); Property and Method Injection,
+  Shown (the theory names all three DI styles but every codeTab uses only constructor injection —
+  built both missing styles with the theory's own example scenarios). No `SUBTOPICS` collision
+  for `dependency-inversion`, left bare. All three `solution` fields clean; bracket-balance
+  checked. Build passed clean. Browser-verified: nav accordion opens with 36 toggles total; all 3
+  subtopic links render correctly; both main-page fixes confirmed rendering; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **This
+  completes the Design Patterns hub's ENTIRE Phase 10 rollout — all 36 topics now have deep-dive
+  subtopic pages, 108 subtopic pages total across the hub, finished 2026-08-30.**
 
 #### Security — 23 topic pages
 

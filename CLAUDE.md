@@ -4414,6 +4414,48 @@ do this same check before any other new hub's first subtopic set:
     Node-verified expected output exactly; breadcrumb showed all 4 levels including the "&" in "DRY,
     KISS & YAGNI"; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 35 of 36 topics complete — only Dependency Inversion remains.**
+42. **The `dependency-inversion` batch — the FOURTH and FINAL Principles-group topic, and the last
+    topic in the entire Design Patterns hub — found and fixed a genuine undeclared-method bug
+    SPANNING the main page's own two codeTabs**: the "DIP + Constructor Injection" codeTab declares
+    <code>IOrderRepository</code> with exactly one method, <code>SaveAsync</code>. The SEPARATE
+    "Lifetimes + Captive Dependency" codeTab's own FIXED captive-dependency example —
+    <code>OrderSummaryService</code> resolving <code>IOrderRepository</code> via
+    <code>IServiceScopeFactory</code> — calls <code>repo.GetSummaryAsync()</code> on that same
+    interface, a method never declared anywhere on the page. The exact same cross-codeTab
+    undeclared-method shape this hub already found once on the Clean Architecture topic (the
+    <code>Order</code> aggregate's missing <code>Ship()</code>/<code>AddDomainEvent</code>) — a
+    purely self-contained catch requiring only checking one codeTab's method calls against
+    ANOTHER codeTab's own interface declaration, no external research. Fixed by adding
+    <code>Task&lt;OrderSummary&gt; GetSummaryAsync(CancellationToken ct = default)</code> to both
+    <code>IOrderRepository</code> and its one registered implementation, <code>SqlOrderRepository</code>.
+    Three subtopics: (1) **fix-adjacent** — traces the cross-codeTab bug precisely, with a Try It
+    on what happens to an EXISTING second implementation of the interface (a test double) the
+    moment a new member is added — C# requires it to implement the full, now-larger contract
+    immediately; (2) **gap-closing** — a quiz question makes a precise, easy-to-miss ownership
+    claim in prose ("if the low-level module defines the interface, the high-level module still
+    depends on something the low-level module controls") but every codeTab already has the
+    interface correctly positioned, with the WRONG version never built; built both project layouts
+    side by side (interface owned by Infrastructure vs. owned by Application), with a Try It on why
+    a new Mongo-specific requirement leaks more easily into the wrong-ownership version; (3)
+    **gap-closing** — the theory names all THREE DI styles (Constructor, Property, Method) but
+    every codeTab on the page uses only Constructor Injection; built Property Injection (an
+    optional <code>ILogger?</code> dependency) and Method Injection (an <code>IDiscountStrategy</code>
+    parameter varying per call) using the exact scenarios the theory's own parentheticals describe,
+    with a Try It showing what capability <code>PricingService</code> would LOSE if refactored to
+    take the per-call strategy as a constructor parameter instead. No `SUBTOPICS` collision for
+    `dependency-inversion` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution` fields swept and confirmed
+    clean, plus the standing bracket-balance check (Node-verified open/close brace counts and even
+    backtick counts) run on all three new files before the build. Build passed clean.
+    Browser-verified: no console errors; nav accordion opens with 36 toggles total — matching all
+    36 of 36 Design Patterns hub topics now having subtopics; all 3 subtopic links render correctly;
+    BOTH main-page fixes confirmed rendering (the interface declaration in the "DIP + Constructor
+    Injection" tab, and the still-present <code>GetSummaryAsync()</code> call in the "Lifetimes +
+    Captive Dependency" tab, now resolving against a real member); a subtopic's own `solution` field
+    confirmed rendering as literal plain text; breadcrumb showed all 4 levels; 860px wrapper
+    confirmed via `getComputedStyle`. **This completes the Design Patterns hub's ENTIRE Phase 10
+    rollout — all 36 topics now have deep-dive subtopic pages, 108 subtopic pages total across the
+    hub, finished 2026-08-30.**
 
 ## Current state (update when it changes!)
 
@@ -5381,7 +5423,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 35 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: **COMPLETE — 36 of 36 topics have subtopics** (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5394,8 +5436,9 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/event-sourcing`, `/design-patterns/saga`, `/design-patterns/outbox`,
   `/design-patterns/specification`, `/design-patterns/clean-architecture`,
   `/design-patterns/solid`, `/design-patterns/grasp`, `/design-patterns/dry-kiss-yagni`,
-  2026-08-04/2026-08-30, Structural + Behavioral + Enterprise nav groups complete; Principles
-  in progress) — see
+  `/design-patterns/dependency-inversion`,
+  2026-08-04/2026-08-30, all nav groups complete, finished 2026-08-30, 108 subtopic pages
+  total across the hub) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more
