@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GRASP Principles" topicRoute="/design-patterns/grasp"
+    subtopicLabel="A Second Protected Variations Example" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">A Second Protected Variations Example</h1>
+  <p class="page-subtitle">The QnA names a storage-swap scenario in one sentence. The only codeTab example protects against tax-law changes instead — here's the storage one, built out.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic covers a different Low Coupling concern the QnA names in passing — the Law of Demeter — with a concrete violate/fix comparison.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GRASP Principles" topicRoute="/design-patterns/grasp"
+    [prev]="{ label: 'The Low Coupling vs. High Cohesion Tension', route: '/design-patterns/grasp/the-low-coupling-vs-high-cohesion-tension' }"
+    [next]="{ label: 'Avoiding a Law of Demeter Violation', route: '/design-patterns/grasp/avoiding-a-law-of-demeter-violation' }" />
+</div>

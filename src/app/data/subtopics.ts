@@ -3410,4 +3410,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' },
     { label: 'How Much Segregation Is Too Much', route: '/design-patterns/solid/how-much-segregation-is-too-much' },
   ],
+  'grasp': [
+    { label: 'The Low Coupling vs. High Cohesion Tension', route: '/design-patterns/grasp/the-low-coupling-vs-high-cohesion-tension' },
+    { label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' },
+    { label: 'Avoiding a Law of Demeter Violation', route: '/design-patterns/grasp/avoiding-a-law-of-demeter-violation' },
+  ],
 };

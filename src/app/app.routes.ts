@@ -2901,7 +2901,12 @@ export const routes: Routes = [
         { path: 'tracing-how-one-srp-violation-cascades', loadComponent: () => import('./components/architecture/design-patterns/solid/subtopics/tracing-how-one-srp-violation-cascades/tracing-how-one-srp-violation-cascades').then(m => m.TracingHowOneSrpViolationCascadesSubtopic) },
         { path: 'how-much-segregation-is-too-much', loadComponent: () => import('./components/architecture/design-patterns/solid/subtopics/how-much-segregation-is-too-much/how-much-segregation-is-too-much').then(m => m.HowMuchSegregationIsTooMuchSubtopic) },
       ] },
-    { path: 'grasp',              loadComponent: () => import('./components/architecture/design-patterns/grasp/grasp').then(m => m.DpGrasp) },
+    { path: 'grasp', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/grasp/grasp').then(m => m.DpGrasp) },
+        { path: 'the-low-coupling-vs-high-cohesion-tension', loadComponent: () => import('./components/architecture/design-patterns/grasp/subtopics/the-low-coupling-vs-high-cohesion-tension/the-low-coupling-vs-high-cohesion-tension').then(m => m.TheLowCouplingVsHighCohesionTensionSubtopic) },
+        { path: 'a-second-protected-variations-example', loadComponent: () => import('./components/architecture/design-patterns/grasp/subtopics/a-second-protected-variations-example/a-second-protected-variations-example').then(m => m.ASecondProtectedVariationsExampleSubtopic) },
+        { path: 'avoiding-a-law-of-demeter-violation', loadComponent: () => import('./components/architecture/design-patterns/grasp/subtopics/avoiding-a-law-of-demeter-violation/avoiding-a-law-of-demeter-violation').then(m => m.AvoidingALawOfDemeterViolationSubtopic) },
+      ] },
     { path: 'dry-kiss-yagni',     loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/dry-kiss-yagni').then(m => m.DpDryKissYagni) },
     { path: 'dependency-inversion', loadComponent: () => import('./components/architecture/design-patterns/dependency-inversion/dependency-inversion').then(m => m.DpDependencyInversion) },
     // Reference

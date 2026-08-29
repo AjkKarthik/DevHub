@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GRASP Principles" topicRoute="/design-patterns/grasp"
+    subtopicLabel="Avoiding a Law of Demeter Violation" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Avoiding a Law of Demeter Violation</h1>
+  <p class="page-subtitle">The Low Coupling QnA names it in one parenthetical. Here's the "train wreck" chain it's warning about, and the fix.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three GRASP concerns the main page names but doesn't fully build: the coupling/cohesion tension made concrete (first subtopic), a second Protected Variations example matching the QnA's own storage scenario (second), and now the Law of Demeter fix — all three examples of applying Low Coupling and its related principles in practice, not just naming them.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GRASP Principles" topicRoute="/design-patterns/grasp"
+    [prev]="{ label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' }" />
+</div>

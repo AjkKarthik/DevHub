@@ -696,7 +696,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/grasp" routerLinkActive="active"><span class="nl-text">GRASP Principles</span>@if(p.isDone('dp-grasp')){<span class="nl-done">✓</span>}@if(d('dp-grasp');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/grasp" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">GRASP Principles</span>
+        @if(p.isDone('dp-grasp')){<span class="nl-done">✓</span>}
+        @if(d('dp-grasp');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('grasp')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('grasp')"
+                  (click)="toggleSubtopics('grasp', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('grasp'); as graspSubs) {
+        @if (isSubtopicsExpanded('grasp')) {
+          <div class="nav-subtopics">
+            @for (s of graspSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/dry-kiss-yagni" routerLinkActive="active"><span class="nl-text">DRY, KISS &amp; YAGNI</span>@if(p.isDone('dp-dry-kiss-yagni')){<span class="nl-done">✓</span>}@if(d('dp-dry-kiss-yagni');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/dependency-inversion" routerLinkActive="active"><span class="nl-text">Dependency Inversion</span>@if(p.isDone('dp-dependency-inversion')){<span class="nl-done">✓</span>}@if(d('dp-dependency-inversion');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

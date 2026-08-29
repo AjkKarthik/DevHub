@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GRASP Principles" topicRoute="/design-patterns/grasp"
+    subtopicLabel="The Low Coupling vs. High Cohesion Tension" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Low Coupling vs. High Cohesion Tension</h1>
+  <p class="page-subtitle">The theory says these two principles tension each other. Here's what "classes doing too little" actually looks like.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out other GRASP concepts the main page names but doesn't fully demonstrate: a second Protected Variations example matching the QnA's own storage-swap scenario, and a concrete Law of Demeter violation the Low Coupling QnA mentions in one clause.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="GRASP Principles" topicRoute="/design-patterns/grasp"
+    [next]="{ label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' }" />
+</div>

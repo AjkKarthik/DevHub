@@ -27406,6 +27406,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GRASP principles help evaluate whether a named pattern genuinely fits a situation, or would actually increase coupling.',
     ],
   },
+  'design-patterns/grasp/the-low-coupling-vs-high-cohesion-tension': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'GRASP Principles (overview)', route: '/design-patterns/grasp' },
+      { label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' },
+    ],
+    tip: 'Pursuing coupling reduction past the point where it still tracks a genuine, cohesive responsibility produces classes with almost no reason to exist on their own.',
+    gotchas: [
+      'More, narrower classes is not automatically evidence of higher cohesion — cohesion is about whether a class\'s own members relate to one coherent purpose, not about class count.',
+    ],
+  },
+  'design-patterns/grasp/a-second-protected-variations-example': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Low Coupling vs. High Cohesion Tension', route: '/design-patterns/grasp/the-low-coupling-vs-high-cohesion-tension' },
+      { label: 'Avoiding a Law of Demeter Violation', route: '/design-patterns/grasp/avoiding-a-law-of-demeter-violation' },
+    ],
+    tip: 'The main page\'s own tax-calculator example and this storage-swap example protect against two completely different kinds of variation — neither interface protects against the other kind of change.',
+    gotchas: [
+      'The protection comes from the interface existing as what callers depend on — even with only one concrete implementation, the caller is already protected.',
+    ],
+  },
+  'design-patterns/grasp/avoiding-a-law-of-demeter-violation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' },
+      { label: 'GRASP Principles (overview)', route: '/design-patterns/grasp' },
+    ],
+    tip: 'A "train wreck" call chain (order.Customer.Address.City) couples the caller to the internal shape of every class along the chain, not just one.',
+    gotchas: [
+      'Fluent APIs like LINQ chaining are NOT Demeter violations — the restriction is on reaching through progressively different, unrelated objects, not method calls in general.',
+    ],
+  },
   'design-patterns/iterator': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
