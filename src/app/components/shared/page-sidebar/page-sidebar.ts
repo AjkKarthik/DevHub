@@ -27076,6 +27076,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Applying full CQRS to simple CRUD screens with no real read/write divergence adds overhead without benefit.',
     ],
   },
+  'design-patterns/cqrs/the-cancel-endpoints-invalid-arrow-block': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'CQRS Pattern (overview)', route: '/design-patterns/cqrs' },
+      { label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' },
+    ],
+    tip: 'The main page\'s own Cancel action combined => with a { } block — expression-bodied syntax accepts only a single expression, never a multi-statement block.',
+    gotchas: [
+      'Place and Get on the same controller were fine because their bodies really are single expressions — only Cancel needed a block.',
+    ],
+  },
+  'design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Cancel Endpoint\'s Invalid Arrow-Block', route: '/design-patterns/cqrs/the-cancel-endpoints-invalid-arrow-block' },
+      { label: 'Read-Your-Writes for the Issuing User', route: '/design-patterns/cqrs/read-your-writes-for-the-issuing-user' },
+    ],
+    tip: 'MediatR\'s INotificationHandler<T> (via Publish) is a separate, fan-out mechanism from the single-handler IRequestHandler<T> (via Send) the main page\'s commands and queries already use.',
+    gotchas: [
+      'The command handler that publishes the event has zero knowledge of how many projection handlers (if any) subscribe to it — that\'s what keeps the write side decoupled.',
+    ],
+  },
+  'design-patterns/cqrs/read-your-writes-for-the-issuing-user': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' },
+      { label: 'CQRS Pattern (overview)', route: '/design-patterns/cqrs' },
+    ],
+    tip: 'Read-your-writes is scoped to one actor\'s one request right after their own write — every other concurrent read keeps using the fast projection path unchanged.',
+    gotchas: [
+      'A query with no MinVersion hint always takes the fast projection path, regardless of whether the projection has finished syncing yet.',
+    ],
+  },
   'design-patterns/decorator': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

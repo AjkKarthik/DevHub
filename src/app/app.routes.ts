@@ -2858,7 +2858,12 @@ export const routes: Routes = [
       { path: 'handling-optimistic-concurrency-conflicts', loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/subtopics/handling-optimistic-concurrency-conflicts/handling-optimistic-concurrency-conflicts').then(m => m.HandlingOptimisticConcurrencyConflictsSubtopic) },
       { path: 'a-manual-unit-of-work-without-entity-framework', loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/subtopics/a-manual-unit-of-work-without-entity-framework/a-manual-unit-of-work-without-entity-framework').then(m => m.AManualUnitOfWorkWithoutEntityFrameworkSubtopic) },
     ] },
-    { path: 'cqrs',               loadComponent: () => import('./components/architecture/design-patterns/cqrs/cqrs').then(m => m.DpCqrs) },
+    { path: 'cqrs', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/cqrs/cqrs').then(m => m.DpCqrs) },
+        { path: 'the-cancel-endpoints-invalid-arrow-block', loadComponent: () => import('./components/architecture/design-patterns/cqrs/subtopics/the-cancel-endpoints-invalid-arrow-block/the-cancel-endpoints-invalid-arrow-block').then(m => m.TheCancelEndpointsInvalidArrowBlockSubtopic) },
+        { path: 'syncing-a-read-model-projection-from-a-domain-event', loadComponent: () => import('./components/architecture/design-patterns/cqrs/subtopics/syncing-a-read-model-projection-from-a-domain-event/syncing-a-read-model-projection-from-a-domain-event').then(m => m.SyncingAReadModelProjectionFromADomainEventSubtopic) },
+        { path: 'read-your-writes-for-the-issuing-user', loadComponent: () => import('./components/architecture/design-patterns/cqrs/subtopics/read-your-writes-for-the-issuing-user/read-your-writes-for-the-issuing-user').then(m => m.ReadYourWritesForTheIssuingUserSubtopic) },
+      ] },
     { path: 'event-sourcing',     loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/event-sourcing').then(m => m.DpEventSourcing) },
     { path: 'saga',               loadComponent: () => import('./components/architecture/design-patterns/saga/saga').then(m => m.DpSaga) },
     { path: 'outbox',             loadComponent: () => import('./components/architecture/design-patterns/outbox/outbox').then(m => m.DpOutbox) },

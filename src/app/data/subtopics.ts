@@ -3372,4 +3372,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' },
     { label: 'A Manual Unit of Work Without Entity Framework', route: '/design-patterns/unit-of-work/a-manual-unit-of-work-without-entity-framework' },
   ],
+  'cqrs': [
+    { label: 'The Cancel Endpoint’s Invalid Arrow-Block', route: '/design-patterns/cqrs/the-cancel-endpoints-invalid-arrow-block' },
+    { label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' },
+    { label: 'Read-Your-Writes for the Issuing User', route: '/design-patterns/cqrs/read-your-writes-for-the-issuing-user' },
+  ],
 };

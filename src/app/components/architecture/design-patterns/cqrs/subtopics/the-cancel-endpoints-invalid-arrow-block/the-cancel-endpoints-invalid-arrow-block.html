@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CQRS Pattern" topicRoute="/design-patterns/cqrs"
+    subtopicLabel="The Cancel Endpoint's Invalid Arrow-Block" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Cancel Endpoint's Invalid Arrow-Block</h1>
+  <p class="page-subtitle">Why <code>=&gt;</code> followed by a <code>&#123; &#125;</code> block never compiles — and why <code>Place</code>/<code>Get</code> on the same controller were fine.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own <code>PlaceOrderHandler</code>/<code>CancelOrderHandler</code> pair shows commands returning either an ID or nothing — the controller layer around them has to compile before any of that logic ever runs. Getting the expression-body-vs-block-body choice right on every action is a small, mechanical habit worth having automatic before moving on to the read side of CQRS, covered in the next two subtopics.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CQRS Pattern" topicRoute="/design-patterns/cqrs"
+    [next]="{ label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' }" />
+</div>

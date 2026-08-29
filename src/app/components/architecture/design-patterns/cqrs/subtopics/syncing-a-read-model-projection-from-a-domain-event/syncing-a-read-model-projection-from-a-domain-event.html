@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CQRS Pattern" topicRoute="/design-patterns/cqrs"
+    subtopicLabel="Syncing a Read Model Projection From a Domain Event" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Syncing a Read Model Projection From a Domain Event</h1>
+  <p class="page-subtitle">The main page names "read model projection" as a real point on the CQRS spectrum — here's what actually keeps one in sync.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own <code>GetOrderHandler</code> queries the write-side <code>Orders</code> table directly — a perfectly valid "lightweight CQRS" choice for a single shared database. This subtopic shows what changes once the read side genuinely needs its own optimised shape. The next subtopic covers the flip side of the same trade-off: what a client sees in the brief window before that projection has caught up.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CQRS Pattern" topicRoute="/design-patterns/cqrs"
+    [prev]="{ label: 'The Cancel Endpoint’s Invalid Arrow-Block', route: '/design-patterns/cqrs/the-cancel-endpoints-invalid-arrow-block' }"
+    [next]="{ label: 'Read-Your-Writes for the Issuing User', route: '/design-patterns/cqrs/read-your-writes-for-the-issuing-user' }" />
+</div>

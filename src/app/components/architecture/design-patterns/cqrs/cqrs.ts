@@ -123,7 +123,7 @@ public class OrdersController(IMediator mediator) : ControllerBase
         Ok(await mediator.Send(cmd));
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Cancel(Guid id, [FromBody] string reason) =>
+    public async Task<IActionResult> Cancel(Guid id, [FromBody] string reason)
     {
         await mediator.Send(new CancelOrderCommand(id, reason));
         return NoContent();
