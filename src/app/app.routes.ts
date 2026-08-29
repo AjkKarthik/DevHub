@@ -3249,7 +3249,12 @@ export const routes: Routes = [
         { path: 'a08-insecure-deserialization-made-concrete', loadComponent: () => import('./components/architecture/security/owasp-top-10/subtopics/a08-insecure-deserialization-made-concrete/a08-insecure-deserialization-made-concrete').then(m => m.A08InsecureDeserializationMadeConcreteSubtopic) },
         { path: 'preventing-ssrf-with-an-ip-allowlist', loadComponent: () => import('./components/architecture/security/owasp-top-10/subtopics/preventing-ssrf-with-an-ip-allowlist/preventing-ssrf-with-an-ip-allowlist').then(m => m.PreventingSsrfWithAnIpAllowlistSubtopic) },
       ] },
-    { path: 'threat-modelling',      loadComponent: () => import('./components/architecture/security/threat-modelling/threat-modelling').then(m => m.SecThreatModelling) },
+    { path: 'threat-modelling', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/threat-modelling/threat-modelling').then(m => m.SecThreatModelling) },
+        { path: 'mapping-a-stride-threat-to-mitre-attck', loadComponent: () => import('./components/architecture/security/threat-modelling/subtopics/mapping-a-stride-threat-to-mitre-attck/mapping-a-stride-threat-to-mitre-attck').then(m => m.MappingAStrideThreatToMitreAttckSubtopic) },
+        { path: 'building-an-attack-tree-in-code', loadComponent: () => import('./components/architecture/security/threat-modelling/subtopics/building-an-attack-tree-in-code/building-an-attack-tree-in-code').then(m => m.BuildingAnAttackTreeInCodeSubtopic) },
+        { path: 'a-pasta-style-business-risk-reprioritization', loadComponent: () => import('./components/architecture/security/threat-modelling/subtopics/a-pasta-style-business-risk-reprioritization/a-pasta-style-business-risk-reprioritization').then(m => m.APastaStyleBusinessRiskReprioritizationSubtopic) },
+      ] },
     { path: 'secure-coding',         loadComponent: () => import('./components/architecture/security/secure-coding/secure-coding').then(m => m.SecSecureCoding) },
     { path: 'password-security',     loadComponent: () => import('./components/architecture/security/password-security/password-security').then(m => m.SecPasswordSecurity) },
     { path: 'oauth-oidc',            loadComponent: () => import('./components/architecture/security/oauth-oidc/oauth-oidc').then(m => m.SecOauthOidc) },

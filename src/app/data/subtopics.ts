@@ -3437,4 +3437,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' },
     { label: 'Preventing SSRF With an IP Allowlist', route: '/security/owasp-top-10/preventing-ssrf-with-an-ip-allowlist' },
   ],
+  'threat-modelling': [
+    { label: 'Mapping a STRIDE Threat to Real MITRE ATT&CK Techniques', route: '/security/threat-modelling/mapping-a-stride-threat-to-mitre-attck' },
+    { label: 'Building an Attack Tree in Code', route: '/security/threat-modelling/building-an-attack-tree-in-code' },
+    { label: 'A PASTA-Style Business-Risk Reprioritization', route: '/security/threat-modelling/a-pasta-style-business-risk-reprioritization' },
+  ],
 };

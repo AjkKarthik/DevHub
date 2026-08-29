@@ -34126,6 +34126,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A threat model is a living document — it should be revisited when the system\'s architecture or trust boundaries change.',
     ],
   },
+  'security/threat-modelling/mapping-a-stride-threat-to-mitre-attck': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Threat Modelling (overview)', route: '/security/threat-modelling' },
+      { label: 'Building an Attack Tree in Code', route: '/security/threat-modelling/building-an-attack-tree-in-code' },
+    ],
+    tip: 'A generic STRIDE category like "Spoofing" can hide a two-step attacker chain — naming the specific ATT&CK techniques for each step can surface a mitigation gap the category alone never would.',
+    gotchas: [
+      'Not every STRIDE threat decomposes into a multi-technique chain — some really are a single atomic action, and forcing an artificial chain just to look thorough misrepresents the threat.',
+    ],
+  },
+  'security/threat-modelling/building-an-attack-tree-in-code': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Mapping a STRIDE Threat to Real MITRE ATT&CK Techniques', route: '/security/threat-modelling/mapping-a-stride-threat-to-mitre-attck' },
+      { label: 'A PASTA-Style Business-Risk Reprioritization', route: '/security/threat-modelling/a-pasta-style-business-risk-reprioritization' },
+    ],
+    tip: 'An OR node\'s difficulty is set by its EASIEST branch, not its average — a high-difficulty branch sitting next to an easy one contributes nothing to the overall risk as long as the easier path still exists.',
+    gotchas: [
+      'An AND node is bottlenecked by its HARDEST step — defeating just one step in the chain is enough to block that entire branch, even if every other step in it is trivial.',
+    ],
+  },
+  'security/threat-modelling/a-pasta-style-business-risk-reprioritization': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Building an Attack Tree in Code', route: '/security/threat-modelling/building-an-attack-tree-in-code' },
+      { label: 'Threat Modelling (overview)', route: '/security/threat-modelling' },
+    ],
+    tip: 'A PASTA business-context multiplier is applied ON TOP OF a raw DREAD score, not instead of it — the two methodologies combine into a two-pass process, not a choice between them.',
+    gotchas: [
+      'A low raw-DREAD threat can still become the top overall priority once a real business consequence (a specific regulation or contract\'s scope) applies — technical severity and business consequence are independent axes.',
+    ],
+  },
   'security/owasp-top-10': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

@@ -58,7 +58,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/threat-modelling" routerLinkActive="active"><span class="nl-text">Threat Modelling</span>@if(progress.isDone('sec-threat-modelling')){<span class="nl-done">✓</span>}@if(d('sec-threat-modelling');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/threat-modelling" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Threat Modelling</span>
+        @if(progress.isDone('sec-threat-modelling')){<span class="nl-done">✓</span>}
+        @if(d('sec-threat-modelling');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('threat-modelling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('threat-modelling')"
+                  (click)="toggleSubtopics('threat-modelling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('threat-modelling'); as tmSubs) {
+        @if (isSubtopicsExpanded('threat-modelling')) {
+          <div class="nav-subtopics">
+            @for (s of tmSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/secure-coding" routerLinkActive="active"><span class="nl-text">Secure Coding</span>@if(progress.isDone('sec-secure-coding')){<span class="nl-done">✓</span>}@if(d('sec-secure-coding');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
     </div>
 
