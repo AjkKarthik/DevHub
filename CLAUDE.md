@@ -4514,6 +4514,51 @@ this same check before any other new hub's first subtopic set:
    subtopic links render correctly; breadcrumb showed all 4 levels; sidebar showed tailored
    composite-key content; 860px wrapper confirmed via `getComputedStyle`.
    **Security & Auth hub Phase 10: 1 of 23 topics complete.**
+8. **The `owasp-top-10` batch found and fixed a genuine, VERIFIED bug in the main page's own
+   Challenge solution — verified by actually EXECUTING the code via `node -e`, not just reading
+   it**: `INJECTION_PATTERNS` included `"'or"` (a quote immediately followed by "or", no space) —
+   this never matches the classic SQL injection example the SAME solution demonstrates,
+   `"SELECT * FROM users WHERE id = '1' OR '1'='1'"` (which has a SPACE between the quote and
+   "OR"), and its own trailing comment claims the call returns `// INJECTION`. Running the actual
+   function against that exact string confirmed it returns `'SAFE'` instead — a purely
+   self-contained catch (no external research needed), but one the standard "read the code and
+   its own comments together" review missed, since the comment and the code look perfectly
+   consistent unless someone actually runs it. Fixed by changing the pattern to `' or '` (leading
+   and trailing space) — verified via a second Node.js execution that this correctly produces
+   `INJECTION`/`IDOR`/`SAFE` for all three of the page's own worked test cases. **New verification
+   technique reinforced from earlier in this session**: when a Challenge/codeTab's own claimed
+   test-case output looks suspicious, actually EXECUTE the exact logic via `node -e` before either
+   trusting or "fixing" it — this is what caught this bug, and what confirmed the fix was
+   complete and correct before it was ever applied to the source file. Three subtopics: (1)
+   **fix-adjacent** — traces the bug precisely with Before/After codeTabs, and a Try It on the
+   FIXED pattern's own boundary condition (`orders` correctly matches nothing, `major_orders`
+   correctly matches nothing either, since neither contains a space-bounded `" or "` token); (2)
+   **gap-closing** — A08 Insecure Deserialization is named in the main page's theory/quiz/QnA at
+   length but never demonstrated in code; built an illustrative Node.js `unserialize()`-style RCE
+   vulnerability contrasted against a safe `JSON.parse()` + Zod schema-validated fix; (3)
+   **gap-closing** — A10 SSRF is described in unusually specific detail in the main page's own quiz
+   (the AWS metadata endpoint, private IP ranges, the `file://` scheme risk) but has no working
+   vulnerable endpoint anywhere on the page; built a link-preview `fetch(url)` endpoint and its
+   allowlist-scheme + DNS-resolved-IP-range-blocking fix, with a Try It deliberately surfacing a
+   genuine, unaddressed edge case the quiz's own explanation never mentions: an HTTP redirect
+   AFTER the initial DNS check passes (to a URL whose real, public-looking hostname resolves
+   safely but which then 302s to `169.254.169.254`) is not caught by the shown fix at all, since
+   `fetch()` follows redirects by default and the redirect target is never independently
+   re-checked. No `SUBTOPICS` collision for `owasp-top-10` (checked both `subtopics.ts` forms and
+   grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+   `exercise.solution`/`quiz` fields swept clean via the standing apostrophe-escaping script and a
+   Node bracket-balance check before the build — no self-authored mistakes this batch. Build
+   passed clean. Browser-verified: no console errors on any of the 4 pages (overview + 3
+   subtopics); nav accordion opens with all 3 labels (a UI click-dispatch flakiness already
+   documented elsewhere in this file — synthetic clicks toggling state without the DOM visibly
+   updating in the SAME check — recurred here too; confirmed the underlying signal/template logic
+   was correct via `window.ng.getComponent(...).isSubtopicsExpanded(...)`/`toggleSubtopics(...)`
+   called directly, the same established fallback); breadcrumb showed all 4 levels; sidebar showed
+   tailored composite-key content; 860px wrapper confirmed via `getComputedStyle` on all 3
+   subtopic pages; the main-page Challenge fix confirmed genuinely live by reading the running
+   component's own `challenge.solution` string directly (`' or '` present, `"'or"` absent) —
+   sidestepping the same click-dispatch flakiness that blocked the "Reveal Solution" UI path.
+   **Security & Auth hub Phase 10: 2 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5515,9 +5560,10 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 1 of 23 topics have subtopics (`/security/fundamentals`, pilot batch, 2026-08-30) — see
+  Phase 10: 2 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  `/security/owasp-top-10`, 2026-08-30) — see
   "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
-  structural fix and the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
+  structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).
 - **API Design hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
   Cyan theme `$accent: #0891b2`, `$tint: #ecfeff`. Search prefix `api-`. Route: `/api-design`.

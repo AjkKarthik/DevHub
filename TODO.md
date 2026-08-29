@@ -7722,7 +7722,24 @@ off here with a date.
   levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
   `getComputedStyle`; no console errors. **Security & Auth hub Phase 10: 1 of 23 topics
   complete.**
-- [ ] `/security/owasp-top-10` — OWASP Top 10
+- [x] `/security/owasp-top-10` — OWASP Top 10 (2026-08-30) — Phase 10: 3 subtopics added.
+  Found and fixed a genuine bug in the main page's own Challenge solution, verified by actually
+  EXECUTING the code via `node -e`: `INJECTION_PATTERNS` included `"'or"` (no space), which never
+  matches the classic SQL injection test string (which has a space before "OR"), so the function
+  returned `'SAFE'` instead of the `'INJECTION'` its own comment claims — fixed to `' or '`,
+  re-verified via Node execution against all three of the page's own test cases. Subtopics: The
+  Injection Pattern That Missed Its Own Test (fix-adjacent, Before/After codeTabs, a boundary-
+  condition Try It); A08 Insecure Deserialization, Made Concrete (gap-closing — an illustrative
+  Node.js `unserialize()` RCE vs. safe `JSON.parse()` + Zod schema validation); Preventing SSRF
+  With an IP Allowlist (gap-closing — a vulnerable link-preview fetch endpoint vs. an allowlist-
+  scheme + DNS-resolved-IP-range fix, with a Try It surfacing a genuine unaddressed HTTP-redirect
+  edge case the quiz's own explanation never mentions). No `SUBTOPICS` collision, left bare. Build
+  passed clean. Browser-verified: nav accordion opens with all 3 labels (confirmed underlying
+  logic directly via `ng.getComponent(...)` due to a UI click-dispatch flakiness already
+  documented elsewhere); breadcrumb showed all 4 levels; sidebar showed tailored composite-key
+  content; 860px wrapper confirmed; the main-page Challenge fix confirmed genuinely live by
+  reading the running component's own `challenge.solution` string directly; no console errors.
+  **Security & Auth hub Phase 10: 2 of 23 topics complete.**
 - [ ] `/security/threat-modelling` — Threat Modelling
 - [ ] `/security/secure-coding` — Secure Coding Practices
 - [ ] `/security/password-security` — Password Security
