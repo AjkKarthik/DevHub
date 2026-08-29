@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DRY, KISS &amp; YAGNI" topicRoute="/design-patterns/dry-kiss-yagni"
+    subtopicLabel="Why Microservices Duplicate Domain Models" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Why Microservices Duplicate Domain Models</h1>
+  <p class="page-subtitle">One clause in a QnA answer. Here's a shared Customer class causing exactly the coupling the main page's own theory warns about — and the fix.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The next subtopic covers a different unfinished thread from the QnA — the "apply them in order" resolution for when DRY, KISS, and YAGNI genuinely conflict on the same feature, applied to a single worked example instead of stated as a rule.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DRY, KISS &amp; YAGNI" topicRoute="/design-patterns/dry-kiss-yagni"
+    [prev]="{ label: 'DRY vs. DAMP in Tests, Made Concrete', route: '/design-patterns/dry-kiss-yagni/dry-vs-damp-in-tests-made-concrete' }"
+    [next]="{ label: 'Applying the YAGNI → DRY → KISS Resolution Order', route: '/design-patterns/dry-kiss-yagni/applying-the-yagni-dry-kiss-resolution-order' }" />
+</div>

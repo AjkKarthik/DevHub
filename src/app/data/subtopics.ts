@@ -3415,4 +3415,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Second Protected Variations Example', route: '/design-patterns/grasp/a-second-protected-variations-example' },
     { label: 'Avoiding a Law of Demeter Violation', route: '/design-patterns/grasp/avoiding-a-law-of-demeter-violation' },
   ],
+  'dry-kiss-yagni': [
+    { label: 'DRY vs. DAMP in Tests, Made Concrete', route: '/design-patterns/dry-kiss-yagni/dry-vs-damp-in-tests-made-concrete' },
+    { label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' },
+    { label: 'Applying the YAGNI → DRY → KISS Resolution Order', route: '/design-patterns/dry-kiss-yagni/applying-the-yagni-dry-kiss-resolution-order' },
+  ],
 };

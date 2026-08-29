@@ -2907,7 +2907,12 @@ export const routes: Routes = [
         { path: 'a-second-protected-variations-example', loadComponent: () => import('./components/architecture/design-patterns/grasp/subtopics/a-second-protected-variations-example/a-second-protected-variations-example').then(m => m.ASecondProtectedVariationsExampleSubtopic) },
         { path: 'avoiding-a-law-of-demeter-violation', loadComponent: () => import('./components/architecture/design-patterns/grasp/subtopics/avoiding-a-law-of-demeter-violation/avoiding-a-law-of-demeter-violation').then(m => m.AvoidingALawOfDemeterViolationSubtopic) },
       ] },
-    { path: 'dry-kiss-yagni',     loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/dry-kiss-yagni').then(m => m.DpDryKissYagni) },
+    { path: 'dry-kiss-yagni', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/dry-kiss-yagni').then(m => m.DpDryKissYagni) },
+        { path: 'dry-vs-damp-in-tests-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/subtopics/dry-vs-damp-in-tests-made-concrete/dry-vs-damp-in-tests-made-concrete').then(m => m.DryVsDampInTestsMadeConcreteSubtopic) },
+        { path: 'why-microservices-duplicate-domain-models', loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/subtopics/why-microservices-duplicate-domain-models/why-microservices-duplicate-domain-models').then(m => m.WhyMicroservicesDuplicateDomainModelsSubtopic) },
+        { path: 'applying-the-yagni-dry-kiss-resolution-order', loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/subtopics/applying-the-yagni-dry-kiss-resolution-order/applying-the-yagni-dry-kiss-resolution-order').then(m => m.ApplyingTheYagniDryKissResolutionOrderSubtopic) },
+      ] },
     { path: 'dependency-inversion', loadComponent: () => import('./components/architecture/design-patterns/dependency-inversion/dependency-inversion').then(m => m.DpDependencyInversion) },
     // Reference
     { path: 'cheatsheet',         loadComponent: () => import('./components/architecture/design-patterns/cheatsheet/cheatsheet').then(m => m.DpCheatsheet) },

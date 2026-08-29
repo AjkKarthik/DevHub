@@ -27213,6 +27213,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'A shared abstraction created too early tends to accumulate special-case branches as new requirements reveal it wasn\'t as universal as assumed.',
     ],
   },
+  'design-patterns/dry-kiss-yagni/dry-vs-damp-in-tests-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'DRY, KISS & YAGNI (overview)', route: '/design-patterns/dry-kiss-yagni' },
+      { label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' },
+    ],
+    tip: 'A failing test is read to understand what went WRONG — a shared setup helper means the reader has to jump elsewhere just to see what state a specific test started from.',
+    gotchas: [
+      'DAMP means some repetition, not zero sharing — genuinely stable test infrastructure is still worth centralizing.',
+    ],
+  },
+  'design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'DRY vs. DAMP in Tests, Made Concrete', route: '/design-patterns/dry-kiss-yagni/dry-vs-damp-in-tests-made-concrete' },
+      { label: 'Applying the YAGNI → DRY → KISS Resolution Order', route: '/design-patterns/dry-kiss-yagni/applying-the-yagni-dry-kiss-resolution-order' },
+    ],
+    tip: 'DRY is about knowledge, not textual similarity — two services both having a "Customer" concept isn\'t duplicated knowledge if each owns a genuinely different slice of what that means.',
+    gotchas: [
+      'A shared domain model across services forces both to redeploy for a change relevant to only one of them.',
+    ],
+  },
+  'design-patterns/dry-kiss-yagni/applying-the-yagni-dry-kiss-resolution-order': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' },
+      { label: 'DRY, KISS & YAGNI (overview)', route: '/design-patterns/dry-kiss-yagni' },
+    ],
+    tip: 'YAGNI sets the scope, DRY finds the genuinely shared knowledge within that scope, KISS checks the result didn\'t introduce machinery the scope never asked for.',
+    gotchas: [
+      'The three-stage pass isn\'t a one-time ritual — a genuinely new requirement gets its own pass through all three stages again.',
+    ],
+  },
   'design-patterns/event-sourcing': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

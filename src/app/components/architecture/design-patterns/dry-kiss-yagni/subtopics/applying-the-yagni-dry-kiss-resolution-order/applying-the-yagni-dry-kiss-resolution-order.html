@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="DRY, KISS &amp; YAGNI" topicRoute="/design-patterns/dry-kiss-yagni"
+    subtopicLabel="Applying the YAGNI → DRY → KISS Resolution Order" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Applying the YAGNI → DRY → KISS Resolution Order</h1>
+  <p class="page-subtitle">The QnA states the resolution order in one paragraph. Here's one feature walked through all three stages.</p>
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three DRY/KISS/YAGNI concerns the main page names but doesn't fully build: the DRY-vs-DAMP trade-off in tests (first subtopic), intentional duplication across service boundaries (second), and now the three-stage resolution process applied to one real feature, revisited when a genuinely new requirement arrives.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="DRY, KISS &amp; YAGNI" topicRoute="/design-patterns/dry-kiss-yagni"
+    [prev]="{ label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' }" />
+</div>
