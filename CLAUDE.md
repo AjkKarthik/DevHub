@@ -3956,6 +3956,46 @@ do this same check before any other new hub's first subtopic set:
     updated successfully, verify the target commit object directly with `git cat-file`/`git show`
     before touching anything, and check `git fetch` against the remote before assuming a re-push is
     needed. **Design Patterns hub Phase 10: 23 of 36 topics complete.**
+30. **The `null-object` batch — the ELEVENTH and final Behavioral topic — found and fixed a genuine,
+    self-contained compile error, plain enough to catch on a careful read alone (no external research
+    needed)**: the main page's own "Null Discount & Collection" codeTab's `ProductRepository` class
+    declared NO constructor and NO field, yet its own `GetRecommendations` method referenced
+    `_db.GetRecs(userId)` — a straightforward CS0103 "the name `_db` does not exist in the current
+    context" error. Every OTHER class in the exact same codeTab (`PercentageDiscount`, `Checkout`)
+    already uses primary-constructor dependency injection; `ProductRepository` alone was written
+    without one, likely because the snippet's focus was the `?? Array.Empty<Product>()` line
+    specifically. Fixed with `ProductRepository(IProductDb db)`, matching the codeTab's own
+    established style exactly. Three subtopics: (1) **The Undeclared _db Field in
+    ProductRepository** — traces the bug and shows a second, equally valid fix (an ordinary
+    constructor assigning to an explicit `_db` field) via a Try It; (2) **Nested Null Objects for
+    Object-Returning Methods** — the main page's own QnA on return values lists SIX patterns for
+    what a Null Object should return per type, but only the FIRST (`Array.Empty<Product>()`) is ever
+    shown; built the most structurally interesting of the remaining five — "return another Null
+    Object for object return types" — as a full, recursive `NullCustomerRepository`/`NullCustomer`
+    example, where `NullCustomer.Orders` itself returns an empty collection rather than null,
+    keeping the "always safe" guarantee intact at every level a caller might navigate to; (3) **When
+    a Null Object Violates Liskov Substitution** — the QnA states plainly that "a Null Object that
+    throws `NotImplementedException` on some methods violates LSP and is worse than a null check,"
+    but never shows one actually doing this; built both a `BrokenNullPaymentGateway` (two of three
+    methods are genuine no-ops, the third throws) and a correct `NullPaymentGateway`, tracing exactly
+    why the broken version's failure is HARDER to find than an ordinary null-dereference — it
+    compiles fine, passes every test that never happens to call the one broken method, and only fails
+    the first time some unrelated code path, written months later by someone who has never seen the
+    class, finally reaches it. No `SUBTOPICS` collision for `null-object` (checked both
+    `subtopics.ts` forms, confirmed collision-free, left bare). Grepped every new `exercise.solution`
+    field for `<code>`/HTML entities before ever running the build — caught and fixed it in the
+    FIRST subtopic (a fifth recurrence of this exact mistake across five consecutive batches: Memento,
+    Observer, State, Strategy, now Null Object), the other two were clean on the first pass. Build
+    passed clean. Browser-verified: no console errors; nav accordion opens with 24 toggles total; all
+    3 subtopic links render correctly; the main-page fix confirmed rendering after switching the
+    code-block's own tab selector to "Null Discount & Collection" specifically; the corrected
+    `solution` field confirmed rendering as literal text with no stray entity codes; breadcrumb
+    showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`. **This completes the entire
+    Behavioral nav group** (Chain of Responsibility, Command, Iterator, Mediator, Memento, Observer,
+    State, Strategy, Template Method, Visitor, Null Object — all 11 of 11 topics now have subtopics).
+    **Design Patterns hub Phase 10: 24 of 36 topics complete — only the Enterprise group (8 topics:
+    Repository, Unit of Work, CQRS, Event Sourcing, Saga, Outbox, Specification, Clean Architecture)
+    and the Principles group (4 topics: SOLID, GRASP, DRY/KISS/YAGNI, Dependency Inversion) remain.**
 
 ## Current state (update when it changes!)
 
@@ -4923,7 +4963,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 23 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 24 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -4931,8 +4971,8 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
-  `/design-patterns/template-method`, `/design-patterns/visitor`,
-  2026-08-04/2026-08-05, Structural nav group complete; Behavioral in progress) — see
+  `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
+  2026-08-04/2026-08-29, Structural + Behavioral nav groups complete) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more

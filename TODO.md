@@ -7499,7 +7499,24 @@ off here with a date.
   with `git update-ref` after removing the empty file (update-ref itself refuses to overwrite a ref
   it cannot first resolve). See CLAUDE.md's own dense entry for this batch for the full recovery
   playbook. **Design Patterns hub Phase 10: 23 of 36 topics complete.**
-- [ ] `/design-patterns/null-object` — Null Object Pattern
+- [x] `/design-patterns/null-object` — Null Object Pattern (2026-08-29) — the eleventh and FINAL
+  Behavioral topic. Fixed a genuine, self-contained compile error: the main page's own "Null
+  Discount & Collection" codeTab's ProductRepository referenced _db with no constructor or field
+  declaring it (CS0103) — fixed with a primary constructor matching the codeTab's own established
+  style. 3 subtopics: (1) **The Undeclared _db Field in ProductRepository** — traces the bug and a
+  second equally valid fix; (2) **Nested Null Objects for Object-Returning Methods** — the QnA
+  lists six return-value patterns, only empty-collection is shown — built the recursive
+  NullCustomerRepository/NullCustomer example for "return another Null Object"; (3) **When a Null
+  Object Violates Liskov Substitution** — the QnA warns a Null Object throwing
+  NotImplementedException on some methods is "worse than a null check" but never shows one — built
+  both broken and correct NullPaymentGateway versions. Self-caught and fixed the recurring
+  solution-field <code>-tag mistake in the first subtopic (fifth consecutive-batch recurrence).
+  `null-object` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified: nav
+  accordion opens with 24 toggles total; all 3 subtopic links render correctly; the main-page fix
+  confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **This completes the entire Behavioral nav group (11 of 11
+  topics). Design Patterns hub Phase 10: 24 of 36 topics complete — Structural + Behavioral nav
+  groups fully done. Only Enterprise (8 topics) and Principles (4 topics) remain.**
 - [ ] `/design-patterns/repository` — Repository Pattern
 - [ ] `/design-patterns/unit-of-work` — Unit of Work Pattern
 - [ ] `/design-patterns/cqrs` — CQRS
