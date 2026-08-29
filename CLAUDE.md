@@ -4648,6 +4648,52 @@ this same check before any other new hub's first subtopic set:
     opens with all 3 labels (4 toggles total across the hub); breadcrumb and 860px wrapper confirmed
     on every subtopic; sidebar showed tailored composite-key content; Try It solution text confirmed
     via direct component inspection. **Security & Auth hub Phase 10: 4 of 23 topics complete.**
+11. **The `password-security` batch found and fixed a genuine imprecise comment in the main
+    page's own Challenge solution, verified via direct Node.js execution**: the demonstration
+    `checkPasswordStrength('P@ssw0rd123!')` was commented `// { score: 3 or 4, feedback: [] }` for
+    a function with zero randomness — running it directly confirms the result is always exactly
+    `3`, never `4`. The password satisfies all 4 character classes (the variety half of score 4's
+    requirement) but is only 12 characters, short of the SEPARATE 16-character floor score 4 also
+    needs — the two conditions are independent and additive, and satisfying one says nothing about
+    the other. Fixed the comment to state the deterministic result and why. Three subtopics: (1)
+    **fix-adjacent** — traces the fix precisely and builds what it actually takes to reach score 4
+    (extending the same password to 16+ characters while keeping every class), plus a near-miss at
+    15 characters staying capped at 3 — all outputs verified via direct Node.js execution before
+    publishing; a Try It on a case that's "correct" by the algorithm's own rules but doesn't reflect
+    real strength (a repeating 4-character block scoring the maximum), naming this as a genuine
+    limitation of a length-and-class-only scorer; (2) **gap-closing** — the quiz explains passkeys
+    with real technical precision (FIDO2 key pairs, private key never leaving the device) but no
+    codeTab anywhere on the page shows the actual WebAuthn API; built `navigator.credentials.create()`/
+    `.get()` registration and login flows, verified against the current WebAuthn spec and MDN via
+    WebSearch (the `rp`/`user`/`pubKeyCredParams`/`challenge` shape, and the `-7`/ES256 algorithm
+    convention) rather than invented, plus a Try It on origin-bound phishing resistance — verified
+    via a SEPARATE WebSearch that the BROWSER itself (not server-side logic) enforces that a
+    credential can only be used on the exact origin it was created for, making a cloned phishing
+    domain structurally unable to receive a valid assertion; (3) **gap-closing** — the QnA names
+    the exact password-spraying detection signal ("if any single IP hits many different accounts...
+    block and alert") but never builds it; built a `Set`-based per-IP, cross-account failure
+    tracker, verified via direct Node.js execution that it correctly assigns `distinctAccounts: 1`
+    (not spray-suspected) to 20 failures against ONE account, while correctly flagging 8 failures
+    against 8 DIFFERENT accounts — demonstrating why a raw failure-count rate limit can't
+    distinguish spraying from an ordinary user's mistyping, but a distinct-account Set can. **A
+    real, self-authored mistake caught and fixed BEFORE the build**: an early draft of subtopic 1's
+    own `theory.points` field mistakenly used Angular's `{{ '{' }}`/`{{ '}' }}` interpolation-escape
+    trick (the fix for literal `{{ }}` in STATIC `.html` template text) inside a TS string field
+    bound via `[innerHTML]` — which per this file's own already-corrected rule (from the earlier
+    Factory Method batch) needs NO brace escaping at all, since `[innerHTML]` never runs Angular's
+    template compiler on the string's content. Left uncorrected, the reader would have seen the
+    literal, broken text `{{ '{' }}` instead of a plain `{` character. Caught by direct re-reading
+    before the build, fixed to plain unescaped braces. No `SUBTOPICS` collision for
+    `password-security` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `solution` fields swept clean (apostrophe script
+    + bracket-balance check; two flagged lines in the passkey subtopic confirmed false positives —
+    multiple correctly-paired single-quoted strings inside a backtick-delimited `code:` field).
+    Build passed clean. Browser-verified: no console errors on any of the 4 pages; the main-page fix
+    confirmed live via direct component inspection; nav accordion opens with all 3 labels (5 toggles
+    total across the hub); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
+    tailored composite-key content; the fixed brace text confirmed rendering as literal `{`/`}`
+    characters, not the broken interpolation-trick text. **Security & Auth hub Phase 10: 5 of 23
+    topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5649,8 +5695,9 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 4 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
-  `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`, 2026-08-30) —
+  Phase 10: 5 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
+  `/security/password-security`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).

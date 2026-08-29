@@ -7770,7 +7770,22 @@ off here with a date.
   across the hub); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
   tailored composite-key content; no console errors on any of the 4 pages.
   **Security & Auth hub Phase 10: 4 of 23 topics complete.**
-- [ ] `/security/password-security` — Password Security
+- [x] `/security/password-security` — Password Security (2026-08-30) — Phase 10: 3 subtopics
+  added. Found and fixed an imprecise Challenge comment, verified via direct Node.js execution:
+  `checkPasswordStrength('P@ssw0rd123!')` was commented "score: 3 or 4" for a fully deterministic
+  function that always returns exactly 3 (all 4 character classes present, but only 12 chars,
+  short of score 4's separate 16-char floor). Subtopics: Score 3 vs 4 — the Real Boundary
+  (fix-adjacent, plus what it actually takes to reach score 4, Node-verified); A Simplified
+  Passkey Registration and Login Flow (gap-closing, real `navigator.credentials.create()`/`.get()`
+  API verified against the WebAuthn spec and MDN via WebSearch, plus origin-bound phishing
+  resistance verified via WebSearch); Detecting Password Spraying Across Accounts (gap-closing, a
+  Set-based per-IP cross-account detector, Node-verified to correctly ignore same-account brute
+  force while flagging genuine spraying). Self-caught and fixed a mistaken Angular-interpolation
+  brace-escape trick inside an `[innerHTML]`-bound field before the build. No `SUBTOPICS`
+  collision, left bare. Build passed clean. Browser-verified: nav accordion opens with all 3
+  labels (5 toggles total across the hub); main-page fix confirmed live via direct component
+  inspection; breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any
+  of the 4 pages. **Security & Auth hub Phase 10: 5 of 23 topics complete.**
 - [ ] `/security/oauth-oidc` — OAuth 2.0 & OIDC
 - [ ] `/security/jwt` — JWT (JSON Web Tokens)
 - [ ] `/security/mfa` — Multi-Factor Authentication
