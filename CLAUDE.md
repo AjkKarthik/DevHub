@@ -4062,6 +4062,49 @@ do this same check before any other new hub's first subtopic set:
     rendered text, not just a substring match, to be certain it now sits genuinely inside
     `OrderService`; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 26 of 36 topics complete.**
+33. **The `cqrs` batch found and fixed a genuine, reproducible C# compile error in the main page's
+    own "Commands & Queries (MediatR)" codeTab**: the <code>Cancel</code> controller action was
+    written as <code>public async Task&lt;IActionResult&gt; Cancel(...) =&gt;</code> immediately
+    followed by a <code>{ ... }</code> block — combining expression-bodied member syntax
+    (<code>=&gt;</code>, which requires exactly one expression) with a multi-statement block body,
+    which C# does not allow at all. A purely self-contained catch: no external research needed,
+    just recognizing that <code>Cancel</code> genuinely needs two statements (send the command,
+    then return a DIFFERENT result than the mediator's own return value) where <code>Place</code>
+    and <code>Get</code> on the SAME controller correctly stay as one-line <code>=&gt;</code>
+    expression bodies. Fixed by dropping the stray <code>=&gt;</code>. Three subtopics: (1)
+    **fix-adjacent** — traces the exact error precisely and contrasts it against the other two,
+    correctly-written actions on the same controller; (2) **gap-closing** — the theory's own
+    "CQRS Spectrum" bullet names "read model projection... synchronised by events" as a real point
+    on the spectrum, but every codeTab reads directly from the same write-side table; built the
+    missing piece with MediatR's separate <code>INotificationHandler&lt;T&gt;</code>/
+    <code>Publish()</code> mechanism (distinct from the request/response
+    <code>IRequestHandler&lt;T&gt;</code>/<code>Send()</code> commands and queries already use),
+    keeping a denormalized <code>OrderSummary</code> read row in sync with an <code>OrderPlaced</code>
+    domain event; (3) **gap-closing** — the QnA's own eventual-consistency mitigation list names
+    "read from the write model immediately after their command" for the issuing user in prose only;
+    built a version-stamped query handler that falls back to the write model ONLY for the one actor
+    whose own write hasn't synced to the projection yet, leaving every other concurrent read on the
+    fast projection path unchanged. **A real, self-caught build error during this exact batch,
+    distinct from the standing `solution`-field mistake**: the first subtopic's own page-subtitle
+    wrote a literal, unescaped <code>{ }</code> directly in the `.html` file's own prose text node —
+    the same bare-single-brace-in-static-template-text gotcha this file has documented for other
+    hubs (the TypeScript hub's `EventHandlers<T>` incident) — caught by the build itself
+    (`NG5002: Unexpected character "EOF"...`), fixed with the standard `&#123;`/`&#125;`
+    HTML-entity escape; confirmed this is unrelated to the `[innerHTML]`-bound-field braces rule
+    (which needs NO escaping at all) since this was bare prose text directly in the `.html` file,
+    not a TS string field. All three `exercise.solution` fields swept and confirmed clean on the
+    first pass — the recurring `<code>`/entity-in-`solution` mistake did not recur this batch. No
+    `SUBTOPICS` collision for `cqrs` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean after the
+    brace-escape fix. Browser-verified: no console errors; nav accordion opens with 27 toggles
+    total; all 3 subtopic links render correctly including the curly-quote possessive
+    ("Endpoint's") in the nav accordion, breadcrumb, and sidebar; the main-page fix confirmed
+    rendering (`Cancel` now has no `=>` while `Place`/`Get` still correctly do) after expanding the
+    default "Commands & Queries (MediatR)" code tab; the escaped `{ }` in the subtitle confirmed
+    rendering as literal text, not raw entity codes; a subtopic's own `solution` field confirmed
+    rendering as literal plain text with the embedded `$"order:{e.OrderId}"` C# interpolation intact;
+    breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 27 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5029,7 +5072,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 26 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 27 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5038,7 +5081,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
   `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
-  `/design-patterns/repository`, `/design-patterns/unit-of-work`,
+  `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
   2026-08-04/2026-08-30, Structural + Behavioral nav groups complete; Enterprise in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found

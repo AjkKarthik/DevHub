@@ -7549,7 +7549,21 @@ off here with a date.
   precise indentation/brace-nesting checks, not just a substring match; breadcrumb showed all 4
   levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns hub
   Phase 10: 26 of 36 topics complete.**
-- [ ] `/design-patterns/cqrs` — CQRS
+- [x] `/design-patterns/cqrs` — CQRS Pattern (2026-08-30) — 3 subtopics: The Cancel Endpoint's
+  Invalid Arrow-Block (fixed a real compile error — the main page's own Cancel controller action
+  combined `=>` expression-bodied syntax with a multi-statement `{ }` block, which never compiles;
+  contrasts against Place/Get's correct single-expression `=>` bodies on the same controller);
+  Syncing a Read Model Projection From a Domain Event (builds the MediatR `INotificationHandler<T>`
+  projection the theory's "CQRS Spectrum" bullet names but never shows in code); Read-Your-Writes
+  for the Issuing User (a version-stamped query handler implementing the QnA's own eventual-
+  consistency mitigation, scoped to only the issuing actor's own next read). Self-caught and fixed
+  a real NG5002 build error (a bare `{ }` in the first subtopic's own page-subtitle prose text —
+  the static-template-text single-brace gotcha, fixed with `&#123;`/`&#125;`). All three `solution`
+  fields clean on first sweep. `cqrs` SUBTOPICS key collision-free, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with 27 toggles total; all 3 subtopic links render
+  correctly; the main-page fix confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 27 of 36
+  topics complete.**
 - [ ] `/design-patterns/event-sourcing` — Event Sourcing
 - [ ] `/design-patterns/saga` — Saga Pattern
 - [ ] `/design-patterns/outbox` — Outbox Pattern
