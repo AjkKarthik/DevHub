@@ -7657,7 +7657,20 @@ off here with a date.
   render correctly; the main-page theory fix confirmed rendering; breadcrumb showed all 4
   levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
   hub Phase 10: 33 of 36 topics complete.**
-- [ ] `/design-patterns/grasp` — GRASP Principles
+- [x] `/design-patterns/grasp` — GRASP Principles (2026-08-30) — 3 subtopics, all gap-closing
+  (cleanest main page found in a while, no compile bug): The Low Coupling vs. High Cohesion
+  Tension (the theory names this tension in one sentence; built an over-decoupled, low-cohesion
+  contrast against the main page's own balanced design); A Second Protected Variations Example
+  (the QnA names a SQL-to-NoSQL storage-swap scenario; the only codeTab example protects against
+  tax-law changes instead — built the storage-swap IOrderRepository example); Avoiding a Law of
+  Demeter Violation (the Low Coupling QnA names it in one parenthetical — built a concrete
+  "train wreck" chain and its fix). Self-caught and fixed a real syntax error in my own
+  authoring (a missing array-closing bracket) via a bracket-balance sweep before the build. No
+  `SUBTOPICS` collision for `grasp`, left bare. All three `solution` fields clean. Build passed
+  clean. Browser-verified: nav accordion opens with 34 toggles total; all 3 subtopic links
+  render correctly; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 34 of 36 topics
+  complete.**
 - [ ] `/design-patterns/dry-kiss-yagni` — DRY, KISS & YAGNI
 - [ ] `/design-patterns/dependency-inversion` — Dependency Inversion
 

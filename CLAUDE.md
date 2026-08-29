@@ -4340,6 +4340,42 @@ do this same check before any other new hub's first subtopic set:
     with 33 toggles total; all 3 subtopic links render correctly; the main-page theory fix confirmed
     rendering; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 33 of 36 topics complete.**
+40. **The `grasp` batch — the SECOND Principles-group topic — was the cleanest main page found in
+    a while: no compile error or undeclared reference in either codeTab, so no main-page edit this
+    batch.** All three subtopics are gap-closing, each building something the main page names in
+    prose but never demonstrates in code: (1) the theory's own "Low Coupling and High Cohesion...
+    tension each other: very low coupling can mean low cohesion (classes doing too little)" claim,
+    made concrete — built an over-decoupled version (four thin pass-through classes, each touching
+    only one other class but none with a cohesive purpose of its own) contrasted against the main
+    page's own balanced <code>Order</code>/<code>OrderItem</code> design, with a Try It showing the
+    extreme splitting doesn't even make a genuinely NEW requirement easier to place; (2) the
+    Protected Variations QnA names a specific SQL-to-NoSQL storage-swap scenario in one sentence,
+    but the only codeTab example (<code>ITaxCalculator</code>) protects against tax-LAW changes
+    instead — built the storage-swap example the QnA actually describes
+    (<code>IOrderRepository</code>/<code>SqlOrderRepository</code>/<code>CosmosOrderRepository</code>),
+    with a Try It contrasting what kind of change each of the page's two PV examples protects
+    against (neither protects against the other's kind); (3) the Low Coupling QnA names the Law of
+    Demeter in one parenthetical ("Avoid accessing dependencies through other dependencies") with
+    zero code — built a concrete "train wreck" chain (<code>order.Customer.Address.City</code>)
+    and its fix (<code>Order.GetShippingAddressLine()</code>), explicitly distinguishing it from
+    LINQ-style fluent chaining (not a violation, since each call operates on the same kind of
+    object). **A real, self-caught syntax error in my OWN authoring, caught by the standing
+    bracket-balance sweep before the build ever ran**: the third subtopic's <code>codeTabs</code>
+    array was missing its closing <code>]</code>/second entry's closing <code>}</code> after the
+    "After" tab's backtick string — the array literal was accidentally terminated with <code>};</code>
+    instead of <code>},\n];</code>, which would have been a real TypeScript syntax error. Caught via
+    a `grep -o '{' | wc -l` vs `grep -o '}' | wc -l` balance check across all three new files
+    specifically BEFORE running the build, confirming the standing pre-build sweep catches more than
+    just the documented apostrophe/entity/brace-in-prose gotchas — a basic bracket-balance check is
+    worth running on every new subtopic batch, not just when something looks visually off. No
+    `SUBTOPICS` collision for `grasp` (checked both `subtopics.ts` forms and grepped
+    `app.routes.ts` directly, confirmed collision-free, left bare). All three `exercise.solution`
+    fields swept and confirmed clean. Build passed clean. Browser-verified: no console errors; nav
+    accordion opens with 34 toggles total; all 3 subtopic links render correctly; a subtopic's own
+    `solution` field confirmed rendering as literal plain text; the fixed third subtopic's two
+    codeTabs ("Before" and "After") both confirmed rendering as genuinely distinct, separately
+    clickable tabs; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 34 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5307,7 +5343,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 33 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 34 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5319,7 +5355,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
   `/design-patterns/event-sourcing`, `/design-patterns/saga`, `/design-patterns/outbox`,
   `/design-patterns/specification`, `/design-patterns/clean-architecture`,
-  `/design-patterns/solid`,
+  `/design-patterns/solid`, `/design-patterns/grasp`,
   2026-08-04/2026-08-30, Structural + Behavioral + Enterprise nav groups complete; Principles
   in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
