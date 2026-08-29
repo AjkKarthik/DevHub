@@ -3261,7 +3261,12 @@ export const routes: Routes = [
         { path: 'path-traversal-vulnerable-endpoint-and-fix', loadComponent: () => import('./components/architecture/security/secure-coding/subtopics/path-traversal-vulnerable-endpoint-and-fix/path-traversal-vulnerable-endpoint-and-fix').then(m => m.PathTraversalVulnerableEndpointAndFixSubtopic) },
         { path: 'a-toctou-race-condition-timeline', loadComponent: () => import('./components/architecture/security/secure-coding/subtopics/a-toctou-race-condition-timeline/a-toctou-race-condition-timeline').then(m => m.AToctouRaceConditionTimelineSubtopic) },
       ] },
-    { path: 'password-security',     loadComponent: () => import('./components/architecture/security/password-security/password-security').then(m => m.SecPasswordSecurity) },
+    { path: 'password-security', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/password-security/password-security').then(m => m.SecPasswordSecurity) },
+        { path: 'score-3-vs-4-the-real-boundary', loadComponent: () => import('./components/architecture/security/password-security/subtopics/score-3-vs-4-the-real-boundary/score-3-vs-4-the-real-boundary').then(m => m.Score3Vs4TheRealBoundarySubtopic) },
+        { path: 'a-simplified-passkey-registration-and-login-flow', loadComponent: () => import('./components/architecture/security/password-security/subtopics/a-simplified-passkey-registration-and-login-flow/a-simplified-passkey-registration-and-login-flow').then(m => m.ASimplifiedPasskeyRegistrationAndLoginFlowSubtopic) },
+        { path: 'detecting-password-spraying-across-accounts', loadComponent: () => import('./components/architecture/security/password-security/subtopics/detecting-password-spraying-across-accounts/detecting-password-spraying-across-accounts').then(m => m.DetectingPasswordSprayingAcrossAccountsSubtopic) },
+      ] },
     { path: 'oauth-oidc',            loadComponent: () => import('./components/architecture/security/oauth-oidc/oauth-oidc').then(m => m.SecOauthOidc) },
     { path: 'jwt',                   loadComponent: () => import('./components/architecture/security/jwt/jwt').then(m => m.SecJwt) },
     { path: 'mfa',                   loadComponent: () => import('./components/architecture/security/mfa/mfa').then(m => m.SecMfa) },

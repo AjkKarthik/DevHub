@@ -34276,6 +34276,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Rate limiting and account lockout policies protect against online brute-force even with a strong hashing algorithm protecting the stored hash.',
     ],
   },
+  'security/password-security/score-3-vs-4-the-real-boundary': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Password Security (overview)', route: '/security/password-security' },
+      { label: 'A Simplified Passkey Registration and Login Flow', route: '/security/password-security/a-simplified-passkey-registration-and-login-flow' },
+    ],
+    tip: 'The Challenge\'s own scoring function is fully deterministic — a worked example that hedges between two possible scores is a signal to actually run the code, not a real ambiguity in the algorithm.',
+    gotchas: [
+      'Score 3 and score 4 check completely independent dimensions (character variety vs. length) — satisfying one does nothing to satisfy the other.',
+    ],
+  },
+  'security/password-security/a-simplified-passkey-registration-and-login-flow': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Score 3 vs 4 — the Real Boundary', route: '/security/password-security/score-3-vs-4-the-real-boundary' },
+      { label: 'Detecting Password Spraying Across Accounts', route: '/security/password-security/detecting-password-spraying-across-accounts' },
+    ],
+    tip: 'A passkey\'s private key never leaves the device, and the browser itself enforces that a credential can only be used on the exact origin it was created for — this is what makes passkeys structurally, not just behaviourally, resistant to phishing.',
+    gotchas: [
+      'The server only ever stores a public key, never a secret — a full breach of a passkey database is a fundamentally different, far less severe event than a breach of password hashes.',
+    ],
+  },
+  'security/password-security/detecting-password-spraying-across-accounts': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A Simplified Passkey Registration and Login Flow', route: '/security/password-security/a-simplified-passkey-registration-and-login-flow' },
+      { label: 'Password Security (overview)', route: '/security/password-security' },
+    ],
+    tip: 'The spray-detection signal is the number of DISTINCT accounts one IP has touched with failures, not the total failure count — a Set naturally collapses repeated failures against the same account, which is exactly the behaviour a legitimate mistyping user should never trigger.',
+    gotchas: [
+      'Per-account temporary lockout and cross-account spray detection catch two different attack shapes — a spray attack deliberately stays under any single account\'s lockout threshold, so lockout alone never catches it.',
+    ],
+  },
   'security/hashing': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

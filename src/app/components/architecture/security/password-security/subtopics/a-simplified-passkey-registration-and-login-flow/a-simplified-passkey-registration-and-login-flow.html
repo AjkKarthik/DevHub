@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Password Security" topicRoute="/security/password-security"
+    subtopicLabel="A Simplified Passkey Registration and Login Flow" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">A Simplified Passkey Registration and Login Flow</h1>
+  <p class="page-subtitle">The quiz explains passkeys in real technical detail. Here's the actual WebAuthn API — navigator.credentials.create() and .get() — verified against the current spec.</p>
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds a detector for the exact cross-account failure pattern the QnA describes for password spraying — the one attack class on this page's own list that has no code demonstrating how it's actually caught.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Password Security" topicRoute="/security/password-security"
+    [prev]="{ label: 'Score 3 vs 4 — the Real Boundary', route: '/security/password-security/score-3-vs-4-the-real-boundary' }"
+    [next]="{ label: 'Detecting Password Spraying Across Accounts', route: '/security/password-security/detecting-password-spraying-across-accounts' }" />
+</div>

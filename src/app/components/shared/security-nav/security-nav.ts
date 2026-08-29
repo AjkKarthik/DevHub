@@ -102,7 +102,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
 
     <div class="nav-group">
       <p class="nav-group-label">Identity &amp; Auth</p>
-      <a routerLink="/security/password-security" routerLinkActive="active"><span class="nl-text">Password Security</span>@if(progress.isDone('sec-password-security')){<span class="nl-done">✓</span>}@if(d('sec-password-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/password-security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Password Security</span>
+        @if(progress.isDone('sec-password-security')){<span class="nl-done">✓</span>}
+        @if(d('sec-password-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('password-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('password-security')"
+                  (click)="toggleSubtopics('password-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('password-security'); as psSubs) {
+        @if (isSubtopicsExpanded('password-security')) {
+          <div class="nav-subtopics">
+            @for (s of psSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/oauth-oidc" routerLinkActive="active"><span class="nl-text">OAuth 2.0 &amp; OIDC</span>@if(progress.isDone('sec-oauth-oidc')){<span class="nl-done">✓</span>}@if(d('sec-oauth-oidc');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/jwt" routerLinkActive="active"><span class="nl-text">JSON Web Tokens</span>@if(progress.isDone('sec-jwt')){<span class="nl-done">✓</span>}@if(d('sec-jwt');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/mfa" routerLinkActive="active"><span class="nl-text">Multi-Factor Auth</span>@if(progress.isDone('sec-mfa')){<span class="nl-done">✓</span>}@if(d('sec-mfa');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
