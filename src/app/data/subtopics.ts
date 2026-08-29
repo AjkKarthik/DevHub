@@ -3377,4 +3377,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Syncing a Read Model Projection From a Domain Event', route: '/design-patterns/cqrs/syncing-a-read-model-projection-from-a-domain-event' },
     { label: 'Read-Your-Writes for the Issuing User', route: '/design-patterns/cqrs/read-your-writes-for-the-issuing-user' },
   ],
+  'event-sourcing': [
+    { label: 'The OrderPlaced Handler Never Persists Its Insert', route: '/design-patterns/event-sourcing/the-orderplaced-handler-never-persists-its-insert' },
+    { label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' },
+    { label: 'An Upcaster Chain for OrderPlaced v1 to v2', route: '/design-patterns/event-sourcing/an-upcaster-chain-for-orderplaced-v1-to-v2' },
+  ],
 };

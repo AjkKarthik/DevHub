@@ -572,7 +572,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/event-sourcing" routerLinkActive="active"><span class="nl-text">Event Sourcing</span>@if(p.isDone('dp-event-sourcing')){<span class="nl-done">✓</span>}@if(d('dp-event-sourcing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/event-sourcing" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Event Sourcing</span>
+        @if(p.isDone('dp-event-sourcing')){<span class="nl-done">✓</span>}
+        @if(d('dp-event-sourcing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('event-sourcing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('event-sourcing')"
+                  (click)="toggleSubtopics('event-sourcing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('event-sourcing'); as esSubs) {
+        @if (isSubtopicsExpanded('event-sourcing')) {
+          <div class="nav-subtopics">
+            @for (s of esSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/saga" routerLinkActive="active"><span class="nl-text">Saga Pattern</span>@if(p.isDone('dp-saga')){<span class="nl-done">✓</span>}@if(d('dp-saga');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/outbox" routerLinkActive="active"><span class="nl-text">Outbox Pattern</span>@if(p.isDone('dp-outbox')){<span class="nl-done">✓</span>}@if(d('dp-outbox');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/specification" routerLinkActive="active"><span class="nl-text">Specification Pattern</span>@if(p.isDone('dp-specification')){<span class="nl-done">✓</span>}@if(d('dp-specification');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

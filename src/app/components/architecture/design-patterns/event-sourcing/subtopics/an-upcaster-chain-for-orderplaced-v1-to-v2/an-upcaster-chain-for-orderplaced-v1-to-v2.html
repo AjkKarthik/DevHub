@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Sourcing" topicRoute="/design-patterns/event-sourcing"
+    subtopicLabel="An Upcaster Chain for OrderPlaced v1 to v2" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">An Upcaster Chain for OrderPlaced v1 to v2</h1>
+  <p class="page-subtitle">The mistakes block, quiz, and QnA all describe upcasting in prose — here's the function that actually does it.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Snapshotting (the previous subtopic) and upcasting solve two different problems that both stem from the same fact — events are permanent. Snapshotting is about how EXPENSIVE replay gets over time; upcasting is about what happens when the SHAPE of an old event stops matching what current code expects. Both leave the stored event log completely untouched.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Event Sourcing" topicRoute="/design-patterns/event-sourcing"
+    [prev]="{ label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' }" />
+</div>

@@ -222,8 +222,11 @@ public class OrderRepository(IEventStore store)
 // Projection — builds a read model from events
 public class OrderSummaryProjection(AppDbContext db)
 {
-    public async Task HandleAsync(OrderPlaced e, CancellationToken ct) =>
+    public async Task HandleAsync(OrderPlaced e, CancellationToken ct)
+    {
         await db.OrderSummaries.AddAsync(new OrderSummary(e.AggregateId, e.CustomerId, e.Total, "Pending"), ct);
+        await db.SaveChangesAsync(ct);   // AddAsync only tracks the entity — it never persists on its own
+    }
 
     public async Task HandleAsync(OrderCancelled e, CancellationToken ct)
     {

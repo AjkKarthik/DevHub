@@ -27193,6 +27193,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'GDPR right-to-erasure conflicts with immutable events — techniques like crypto-shredding address this tension.',
     ],
   },
+  'design-patterns/event-sourcing/the-orderplaced-handler-never-persists-its-insert': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Event Sourcing (overview)', route: '/design-patterns/event-sourcing' },
+      { label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' },
+    ],
+    tip: 'DbSet<T>.AddAsync() only tracks an entity as "Added" — only a following SaveChangesAsync() call actually writes the INSERT.',
+    gotchas: [
+      'The main page\'s own OrderCancelled handler on the same class already ends with SaveChangesAsync() — comparing sibling handler methods is what surfaces this kind of gap.',
+    ],
+  },
+  'design-patterns/event-sourcing/rehydrating-from-a-snapshot': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The OrderPlaced Handler Never Persists Its Insert', route: '/design-patterns/event-sourcing/the-orderplaced-handler-never-persists-its-insert' },
+      { label: 'An Upcaster Chain for OrderPlaced v1 to v2', route: '/design-patterns/event-sourcing/an-upcaster-chain-for-orderplaced-v1-to-v2' },
+    ],
+    tip: 'A snapshot is disposable, derived data — correctness never depends on it, only load performance does.',
+    gotchas: [
+      'Replaying events from Version 0 on top of a snapshot-seeded aggregate double-applies every event up to the snapshot\'s own version.',
+    ],
+  },
+  'design-patterns/event-sourcing/an-upcaster-chain-for-orderplaced-v1-to-v2': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' },
+      { label: 'Event Sourcing (overview)', route: '/design-patterns/event-sourcing' },
+    ],
+    tip: 'Upcasting happens entirely at read time inside deserialisation — the stored bytes for an old event never change.',
+    gotchas: [
+      'A multi-step chain (v1 -> v2 -> v3) applies each upcaster in sequence — an old event never jumps straight to the current shape in one step.',
+    ],
+  },
   'design-patterns/facade': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

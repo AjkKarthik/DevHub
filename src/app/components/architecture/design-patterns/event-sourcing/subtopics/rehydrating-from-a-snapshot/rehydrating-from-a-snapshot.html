@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Event Sourcing" topicRoute="/design-patterns/event-sourcing"
+    subtopicLabel="Rehydrating From a Snapshot" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Rehydrating From a Snapshot</h1>
+  <p class="page-subtitle">The main page has a whole theory section on snapshots — here's the load path it never shows in code.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Snapshots solve the LOAD-time cost of a long event stream. The next subtopic solves a different problem the main page also names but never demonstrates: what happens when the SHAPE of an old event no longer matches the current event type.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Event Sourcing" topicRoute="/design-patterns/event-sourcing"
+    [prev]="{ label: 'The OrderPlaced Handler Never Persists Its Insert', route: '/design-patterns/event-sourcing/the-orderplaced-handler-never-persists-its-insert' }"
+    [next]="{ label: 'An Upcaster Chain for OrderPlaced v1 to v2', route: '/design-patterns/event-sourcing/an-upcaster-chain-for-orderplaced-v1-to-v2' }" />
+</div>

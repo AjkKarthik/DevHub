@@ -2864,7 +2864,12 @@ export const routes: Routes = [
         { path: 'syncing-a-read-model-projection-from-a-domain-event', loadComponent: () => import('./components/architecture/design-patterns/cqrs/subtopics/syncing-a-read-model-projection-from-a-domain-event/syncing-a-read-model-projection-from-a-domain-event').then(m => m.SyncingAReadModelProjectionFromADomainEventSubtopic) },
         { path: 'read-your-writes-for-the-issuing-user', loadComponent: () => import('./components/architecture/design-patterns/cqrs/subtopics/read-your-writes-for-the-issuing-user/read-your-writes-for-the-issuing-user').then(m => m.ReadYourWritesForTheIssuingUserSubtopic) },
       ] },
-    { path: 'event-sourcing',     loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/event-sourcing').then(m => m.DpEventSourcing) },
+    { path: 'event-sourcing', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/event-sourcing').then(m => m.DpEventSourcing) },
+        { path: 'the-orderplaced-handler-never-persists-its-insert', loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/subtopics/the-orderplaced-handler-never-persists-its-insert/the-orderplaced-handler-never-persists-its-insert').then(m => m.TheOrderplacedHandlerNeverPersistsItsInsertSubtopic) },
+        { path: 'rehydrating-from-a-snapshot', loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/subtopics/rehydrating-from-a-snapshot/rehydrating-from-a-snapshot').then(m => m.RehydratingFromASnapshotSubtopic) },
+        { path: 'an-upcaster-chain-for-orderplaced-v1-to-v2', loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/subtopics/an-upcaster-chain-for-orderplaced-v1-to-v2/an-upcaster-chain-for-orderplaced-v1-to-v2').then(m => m.AnUpcasterChainForOrderplacedV1ToV2Subtopic) },
+      ] },
     { path: 'saga',               loadComponent: () => import('./components/architecture/design-patterns/saga/saga').then(m => m.DpSaga) },
     { path: 'outbox',             loadComponent: () => import('./components/architecture/design-patterns/outbox/outbox').then(m => m.DpOutbox) },
     { path: 'specification',      loadComponent: () => import('./components/architecture/design-patterns/specification/specification').then(m => m.DpSpecification) },
