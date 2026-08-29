@@ -4559,6 +4559,54 @@ this same check before any other new hub's first subtopic set:
    component's own `challenge.solution` string directly (`' or '` present, `"'or"` absent) —
    sidestepping the same click-dispatch flakiness that blocked the "Reveal Solution" UI path.
    **Security & Auth hub Phase 10: 2 of 23 topics complete.**
+9. **The `threat-modelling` batch was a clean main page — no compile bug or internal
+   contradiction found after careful reading, plus one direct Node.js verification of the
+   codeTab's own DREAD-sorting logic** — all three subtopics are gap-closing, each building
+   something the QnA describes in precise, buildable detail but never demonstrates in code: (1)
+   **Mapping a STRIDE Threat to Real MITRE ATT&CK Techniques** — expands the main page's own T1
+   threat ("stolen JWT impersonation") into two REAL ATT&CK Enterprise techniques, verified via
+   WebSearch against `attack.mitre.org` before publishing rather than invented: `T1528 — Steal
+   Application Access Token` (Credential Access — how the token is obtained) chained into
+   `T1550.001 — Use Alternate Authentication Material: Application Access Token` (Lateral
+   Movement/Defense Evasion — how the stolen token is replayed) — revealing that the main page's
+   own T1 mitigation ("short JWT expiry + refresh rotation + device fingerprint") only ever
+   covered the SECOND technique in the chain, never the theft itself. A Try It on the SAME page's
+   own T3 threat (missing authorization check) establishes the converse finding — not every
+   STRIDE threat decomposes into a multi-technique chain; T3 maps to a single atomic action, and
+   knowing WHICH kind of threat you're looking at is itself the useful output of the mapping
+   exercise. (2) **Building an Attack Tree in Code** — the QnA defines attack trees with AND/OR
+   nodes precisely ("AND: some branches require all sub-steps; OR: any one sub-step") but the main
+   page never builds one; built a real `AttackNode` tree for "steal customer payment data" reusing
+   the same Payment Processing API context, with a `rollUp()` function (AND = `Math.max` of
+   children, OR = `Math.min`) — verified via direct Node.js execution that the tree's overall
+   difficulty resolves to 3 (the insider-phishing leaf), confirming the codeTab's own claim that a
+   difficult-looking branch (RCE-based server compromise, difficulty 8) contributes NOTHING to
+   overall risk once an easier OR-sibling exists. (3) **A PASTA-Style Business-Risk
+   Reprioritization** — the QnA contrasts PASTA's business-centric risk register against STRIDE's
+   technical threat list in one paragraph, but the main page's own DREAD-scored threats (T1/T2/T3)
+   are never re-examined through it; applied PASTA Stage 7 ("Risk and Impact Analysis") as a
+   SECOND pass on top of the existing DREAD scores, adding a PCI-DSS compliance multiplier to T2
+   (payment-amount tampering) specifically — verified via direct Node.js execution that this flips
+   T2 from the LOWEST raw-DREAD score of the three (5.0) to the HIGHEST PASTA-weighted score (9.0),
+   a genuine reprioritization a purely technical score has no field to express. A Try It
+   distinguishes a hypothetical T4 (anonymised aggregate counts, out of PCI-DSS scope) from T2
+   (in-scope cardholder-data tampering) to test the boundary of when the multiplier actually
+   applies. **A real nested-escaping risk avoided proactively, not caught after the fact**: an
+   early draft of the ATT&CK subtopic's own codeTab needed a nested single-quoted JS string
+   literal containing "the main page's" — rather than risk the doubled-backslash `\\'`
+   nested-escaping technique (previously confirmed correct but error-prone across several earlier
+   batches in this file), switched the nested string's own delimiter to double quotes instead,
+   sidestepping the collision entirely — a lower-risk fix than getting the escaping exactly right.
+   No `SUBTOPICS` collision for `threat-modelling` (checked both `subtopics.ts` forms and grepped
+   `app.routes.ts` directly, confirmed collision-free, left bare). All three `solution` fields and
+   bracket-balance/backtick-parity swept clean on the first pass. Build passed clean.
+   Browser-verified: no console errors on any of the 4 pages; nav accordion opens with 3 toggles
+   total across the hub; all 3 subtopic links render correctly including the bare `&` in bound
+   `[prev]`/`[next]` attributes and the `&amp;`-escaped form in plain text/attribute contexts,
+   confirmed both are safe per the established codebase convention; breadcrumb showed all 4
+   levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
+   `getComputedStyle`; Try It solution text confirmed correct via direct component inspection.
+   **Security & Auth hub Phase 10: 3 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5560,8 +5608,8 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 2 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
-  `/security/owasp-top-10`, 2026-08-30) — see
+  Phase 10: 3 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  `/security/owasp-top-10`; `/security/threat-modelling`, 2026-08-30) — see
   "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).

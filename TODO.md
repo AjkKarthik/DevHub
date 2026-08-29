@@ -7740,7 +7740,20 @@ off here with a date.
   content; 860px wrapper confirmed; the main-page Challenge fix confirmed genuinely live by
   reading the running component's own `challenge.solution` string directly; no console errors.
   **Security & Auth hub Phase 10: 2 of 23 topics complete.**
-- [ ] `/security/threat-modelling` — Threat Modelling
+- [x] `/security/threat-modelling` — Threat Modelling (2026-08-30) — Phase 10: 3 subtopics added.
+  Clean main page — no compile bug found, but one verified via direct Node.js execution (the
+  STRIDE Analysis codeTab's own DREAD-sort). All three subtopics gap-closing: Mapping a STRIDE
+  Threat to Real MITRE ATT&CK Techniques (T1528 + T1550.001, both verified via WebSearch against
+  attack.mitre.org, revealing the main page's own T1 mitigation only covers the second half of a
+  two-step attacker chain); Building an Attack Tree in Code (a real AND/OR `AttackNode` tree with
+  a `rollUp()` function, verified via Node execution that the tree's overall difficulty resolves
+  to 3, the insider-phishing leaf); A PASTA-Style Business-Risk Reprioritization (a PCI-DSS
+  compliance multiplier applied on top of the main page's own DREAD scores, verified via Node
+  execution that it flips T2 from lowest to highest priority). No `SUBTOPICS` collision, left
+  bare. Build passed clean. Browser-verified: nav accordion opens with all 3 labels (3 toggles
+  total across the hub); breadcrumb showed all 4 levels; sidebar showed tailored composite-key
+  content; 860px wrapper confirmed; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 3 of 23 topics complete.**
 - [ ] `/security/secure-coding` — Secure Coding Practices
 - [ ] `/security/password-security` — Password Security
 - [ ] `/security/oauth-oidc` — OAuth 2.0 & OIDC
