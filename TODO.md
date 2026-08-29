@@ -7533,7 +7533,22 @@ off here with a date.
   render correctly; all three solution fields confirmed rendering as literal text; breadcrumb showed
   all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
   hub Phase 10: 25 of 36 topics complete.**
-- [ ] `/design-patterns/unit-of-work` — Unit of Work Pattern
+- [x] `/design-patterns/unit-of-work` — Unit of Work Pattern (2026-08-30) — second Enterprise-group
+  topic. Fixed a genuine structural compile error: the main page's own "EF Core DbContext as UoW"
+  codeTab closed OrderService's class body one method too early, leaving TransferFundsAsync declared
+  outside any class entirely (an illegal namespace-scope method) whose own body referenced db, out of
+  scope. Fixed by moving TransferFundsAsync back inside OrderService as a second method. 3 subtopics:
+  (1) **The Orphaned TransferFundsAsync Method** — traces both problems, Try It on an equally valid
+  alternative fix (a separate AccountService class); (2) **Handling Optimistic Concurrency
+  Conflicts** — builds the RowVersion/DbUpdateConcurrencyException mechanism the QnA describes but
+  never shows; (3) **A Manual Unit of Work Without Entity Framework** — builds a working
+  SqlUnitOfWork (raw ADO.NET, Dapper-style) the QnA sketches but never demonstrates. Grepped every
+  solution field before building — all three clean this time. `unit-of-work` SUBTOPICS key
+  collision-free, left bare. Build passed clean. Browser-verified: nav accordion opens with 26
+  toggles total; all 3 subtopic links render correctly; the main-page fix confirmed rendering with
+  precise indentation/brace-nesting checks, not just a substring match; breadcrumb showed all 4
+  levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns hub
+  Phase 10: 26 of 36 topics complete.**
 - [ ] `/design-patterns/cqrs` — CQRS
 - [ ] `/design-patterns/event-sourcing` — Event Sourcing
 - [ ] `/design-patterns/saga` — Saga Pattern

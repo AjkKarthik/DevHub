@@ -4027,6 +4027,41 @@ do this same check before any other new hub's first subtopic set:
     subtopic links render correctly; all three `solution` fields confirmed rendering as literal text
     with no stray entity codes; breadcrumb showed all 4 levels; 860px wrapper confirmed via
     `getComputedStyle`. **Design Patterns hub Phase 10: 25 of 36 topics complete.**
+32. **The `unit-of-work` batch — the second Enterprise-group topic — found and fixed a genuine
+    structural compile error, findable purely by reading the code carefully (no external research
+    needed)**: the main page's own "EF Core DbContext as UoW" codeTab closed `OrderService`'s class
+    body one method too early — `TransferFundsAsync` landed OUTSIDE any class entirely, an illegal
+    method declaration at namespace scope. Every brace in the file was still perfectly balanced (a
+    misplaced brace, not a missing one), which is exactly why this category of mistake is easy to
+    miss on a quick visual scan or bracket-matching check. Compounding it, the orphaned method's own
+    body referenced `db` — only ever in scope as `OrderService`'s own primary-constructor parameter
+    — a second, `_db`-shaped CS0103-style failure matching the exact pattern already found once
+    before in this hub's own Null Object topic. Fixed by moving `TransferFundsAsync` back inside
+    `OrderService` as a second method. Three subtopics: (1) **The Orphaned TransferFundsAsync
+    Method** — traces both the structural (method outside any class) and reference (`db` out of
+    scope) problems, with a Try It on an equally valid alternative fix (a brand-new
+    `AccountService(ShopDbContext db)` class, since transferring funds is arguably a different domain
+    concern than order processing anyway); (2) **Handling Optimistic Concurrency Conflicts** — the
+    page's own QnA describes the ENTIRE mechanism precisely (a `[Timestamp]`/RowVersion column,
+    `DbUpdateConcurrencyException`, reload-and-merge/client-wins/database-wins resolution) but shows
+    none of it in any codeTab; built a real `TryDecrementStockAsync` that hits the conflict and
+    resolves it via `entry.GetDatabaseValuesAsync()` + `entry.OriginalValues.SetValues()`, with a Try
+    It tracing exactly why skipping that `SetValues()` call makes a retry fail with the identical
+    exception every time; (3) **A Manual Unit of Work Without Entity Framework** — every codeTab on
+    the page assumes EF Core; the QnA sketches a Dapper/raw-SQL version in prose only ("useful with
+    Dapper or raw SQL") — built a working `SqlUnitOfWork` sharing one `SqlConnection`/`SqlTransaction`
+    across repositories by hand, with an async factory method (since opening a connection and
+    beginning a transaction are both async operations a constructor cannot await). Grepped every new
+    `exercise.solution` field for `<code>`/HTML entities before ever running the build — all three
+    were clean on the first pass this time. No `SUBTOPICS` collision for `unit-of-work` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare).
+    Build passed clean — confirming the main-page fix itself compiles. Browser-verified: no console
+    errors; nav accordion opens with 26 toggles total; all 3 subtopic links render correctly; the
+    main-page fix confirmed rendering after expanding the "EF Core DbContext as UoW" tab — verified
+    precisely by checking `TransferFundsAsync`'s own indentation level and brace nesting in the
+    rendered text, not just a substring match, to be certain it now sits genuinely inside
+    `OrderService`; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 26 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4994,7 +5029,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 25 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 26 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5003,7 +5038,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
   `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
-  `/design-patterns/repository`,
+  `/design-patterns/repository`, `/design-patterns/unit-of-work`,
   2026-08-04/2026-08-30, Structural + Behavioral nav groups complete; Enterprise in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
