@@ -7624,7 +7624,24 @@ off here with a date.
   broke the shell quoting mid-message — fixed with `git commit -F -` + a heredoc instead, now
   the standing approach for any commit message quoting code identifiers or possessives.
   **Design Patterns hub Phase 10: 31 of 36 topics complete.**
-- [ ] `/design-patterns/clean-architecture` — Clean Architecture
+- [x] `/design-patterns/clean-architecture` — Clean Architecture Pattern (2026-08-30) — 3
+  subtopics: The Order Aggregate's Missing Ship() and AddDomainEvent (fixed TWO real bugs
+  spanning the main page's own two codeTabs — Order.Cancel() calls AddDomainEvent(...), never
+  declared on Order; a separate test calls order.Ship(), also never declared; added a
+  domain-events list + AddDomainEvent, and a Ship() method); Input and Output Ports, Made
+  Concrete (builds the explicit port interfaces a quiz question defines but no codeTab shows,
+  serving three callers from one unchanged use case); Returning a Result Type Instead of
+  Throwing (builds the Result<T> type the QnA's own validation answer recommends in one
+  sentence, alongside the domain exception it deliberately doesn't replace). First Design
+  Patterns hub topic to reuse a bare SUBTOPICS key the Architecture Patterns hub's own
+  identically-slugged topic deliberately left free (`arch-clean-architecture`) — confirmed via
+  browser that `/arch-patterns/clean-architecture` renders unaffected. All three `solution`
+  fields clean on first sweep. Build passed clean. Browser-verified: nav accordion opens with 32
+  toggles total; all 3 subtopic links render correctly; both main-page fixes confirmed
+  rendering; cross-hub isolation confirmed; breadcrumb showed all 4 levels; 860px wrapper
+  confirmed via `getComputedStyle`; no console errors. **This completes the Enterprise nav group
+  entirely (8 of 8 topics). Design Patterns hub Phase 10: 32 of 36 topics complete — only the
+  Principles group remains.**
 - [ ] `/design-patterns/solid` — SOLID Principles
 - [ ] `/design-patterns/grasp` — GRASP Principles
 - [ ] `/design-patterns/dry-kiss-yagni` — DRY, KISS & YAGNI

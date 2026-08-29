@@ -4256,6 +4256,48 @@ do this same check before any other new hub's first subtopic set:
     confirmed rendering as literal plain text with embedded double quotes intact; breadcrumb showed
     all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 31 of 36 topics complete.**
+38. **The `clean-architecture` batch — the LAST topic in the Enterprise nav group — found and
+    fixed TWO genuine, self-contained undeclared-method bugs SPANNING the main page's own two
+    separate codeTabs**: the "Layer Structure" codeTab's <code>Order.Cancel()</code> calls
+    <code>AddDomainEvent(new OrderCancelledEvent(Id, reason));</code> — but <code>AddDomainEvent</code>
+    is never declared anywhere on <code>Order</code>, which extends no base class either. The
+    SEPARATE "Testing Without Infrastructure" codeTab has a test calling <code>order.Ship();</code> —
+    but <code>Order</code>, as shown in the OTHER codeTab, has no <code>Ship()</code> method at all.
+    Both are the same undeclared-method category this hub keeps finding, just split across TWO
+    codeTabs instead of contained in one — reading either in isolation looks complete, and the
+    gap only surfaces by checking one codeTab's assumptions against the other's actual
+    declarations. Fixed by adding a private domain-events list + <code>AddDomainEvent</code> to
+    <code>Order</code>, and a <code>Ship()</code> method transitioning <code>Pending</code> to
+    <code>Shipped</code> (matching the test's own implied precondition — "Cannot cancel a shipped
+    order" requires SOME way to reach that state). Three subtopics: (1) **fix-adjacent** — traces
+    both bugs precisely, with a Try It confirming the fixed <code>Ship()</code>/<code>Cancel()</code>
+    sequence makes the ORIGINAL test's intent (verifying a shipped order can't be cancelled)
+    actually reachable for the first time; (2) **gap-closing** — a quiz question defines Input and
+    Output Ports precisely but no codeTab ever declares an explicit port interface (the main page's
+    own <code>PlaceOrderHandler</code> is plain MediatR); built <code>IPlaceOrderInputPort</code>/
+    <code>IPlaceOrderOutputPort</code> serving three different callers (HTTP, CLI, a background
+    import job) from one unchanged use case; (3) **gap-closing** — the QnA's own validation answer
+    recommends "a Result or Either type... without exceptions" in one sentence, never shown; built a
+    working <code>Result&lt;T&gt;</code> used for EXPECTED business failures (a blocked customer),
+    explicitly keeping the existing <code>DomainException</code> for genuine invariant violations
+    (zero items) as two deliberately-coexisting failure categories, not a replacement. **This is the
+    Design Patterns hub's FIRST topic to reuse a bare `SUBTOPICS` key the Architecture Patterns hub's
+    own identically-slugged topic had deliberately left free** — confirmed via the standing `//
+    NOTE:` comment left in `subtopics.ts` during that earlier hub-prefixing (`arch-clean-architecture`)
+    specifically anticipating this moment; verified via direct browser navigation that
+    `/arch-patterns/clean-architecture` renders completely unaffected by this batch, still showing
+    its own "Clean / Onion Architecture" content and breadcrumb. All three `exercise.solution`
+    fields swept and confirmed clean on the first pass. Build passed clean. Browser-verified: no
+    console errors; nav accordion opens with 32 toggles total; all 3 subtopic links render correctly;
+    both main-page fixes confirmed rendering (grepped the rendered "Layer Structure" tab for
+    `AddDomainEvent`/`_domainEvents`/`Ship()`, all present); the cross-hub isolation check passed;
+    generic syntax (`Result&lt;T&gt;`, `Task&lt;Result&lt;Guid&gt;&gt;`) confirmed rendering as
+    literal text with nothing vanished; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+    `getComputedStyle`. **This completes the Design Patterns hub's Enterprise nav group entirely**
+    (Repository, Unit of Work, CQRS, Event Sourcing, Saga, Outbox, Specification, Clean
+    Architecture — all 8 of 8 topics now have subtopics).
+    **Design Patterns hub Phase 10: 32 of 36 topics complete — only the Principles group (SOLID,
+    GRASP, DRY/KISS/YAGNI, Dependency Inversion) remains.**
 
 ## Current state (update when it changes!)
 
@@ -5223,7 +5265,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 31 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 32 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5234,8 +5276,9 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
   `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
   `/design-patterns/event-sourcing`, `/design-patterns/saga`, `/design-patterns/outbox`,
-  `/design-patterns/specification`,
-  2026-08-04/2026-08-30, Structural + Behavioral nav groups complete; Enterprise in progress) — see
+  `/design-patterns/specification`, `/design-patterns/clean-architecture`,
+  2026-08-04/2026-08-30, Structural + Behavioral + Enterprise nav groups complete; only
+  Principles remains) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more
