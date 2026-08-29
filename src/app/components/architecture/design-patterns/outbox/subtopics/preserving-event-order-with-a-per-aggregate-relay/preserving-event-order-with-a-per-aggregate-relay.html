@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Outbox Pattern" topicRoute="/design-patterns/outbox"
+    subtopicLabel="Preserving Event Order With a Per-Aggregate Relay" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Preserving Event Order With a Per-Aggregate Relay</h1>
+  <p class="page-subtitle">The QnA names "single-threaded relay per aggregate type" in one sentence — here's a relay that groups by aggregate and actually does it.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three producer-and-consumer-side concerns the main page names but doesn't fully build: a correctly-registered consumer (first subtopic), idempotent processing via an Inbox (second), and now preserving event order under a faster, parallelized relay. All three sit on top of the main page's own core guarantee — write the domain change and the event atomically — filling in what happens on either side of that one atomic write.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Outbox Pattern" topicRoute="/design-patterns/outbox"
+    [prev]="{ label: 'Building the Inbox Pattern’s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' }" />
+</div>

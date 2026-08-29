@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Outbox Pattern" topicRoute="/design-patterns/outbox"
+    subtopicLabel="The Mismatched Consumer Type in AddConsumer" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">The Mismatched Consumer Type in AddConsumer</h1>
+  <p class="page-subtitle">The main page registers a class that no codeTab ever declares — a type mismatch between a registration line and the consumer it's meant to register.</p>
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>With the producer side (this subtopic, plus the main page's own outbox table and relay) correctly wired, the next two subtopics build out the consumer-side half of reliable event delivery the QnA discusses but never shows: idempotent processing via an Inbox table, and keeping events in order when a relay processes them concurrently.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Outbox Pattern" topicRoute="/design-patterns/outbox"
+    [next]="{ label: 'Building the Inbox Pattern’s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' }" />
+</div>

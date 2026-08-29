@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Outbox Pattern" topicRoute="/design-patterns/outbox"
+    subtopicLabel="Building the Inbox Pattern’s Idempotency Table" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Building the Inbox Pattern's Idempotency Table</h1>
+  <p class="page-subtitle">Two separate QnA answers describe the Inbox pattern in prose. Here's the constraint-backed table and consumer that actually implement it.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>An Inbox keeps redelivered events from being double-PROCESSED. The next subtopic covers a different consumer-side concern the QnA's own "operational challenges" answer names — keeping events in the right ORDER when a relay dispatches them.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Outbox Pattern" topicRoute="/design-patterns/outbox"
+    [prev]="{ label: 'The Mismatched Consumer Type in AddConsumer', route: '/design-patterns/outbox/the-mismatched-consumer-type-in-addconsumer' }"
+    [next]="{ label: 'Preserving Event Order With a Per-Aggregate Relay', route: '/design-patterns/outbox/preserving-event-order-with-a-per-aggregate-relay' }" />
+</div>

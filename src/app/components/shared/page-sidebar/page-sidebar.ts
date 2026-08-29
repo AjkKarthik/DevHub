@@ -27656,6 +27656,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'This "record intent atomically, execute asynchronously" structure generalizes beyond messaging to any local-plus-external-side-effect scenario.',
     ],
   },
+  'design-patterns/outbox/the-mismatched-consumer-type-in-addconsumer': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern (overview)', route: '/design-patterns/outbox' },
+      { label: 'Building the Inbox Pattern\'s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' },
+    ],
+    tip: 'AddConsumer<T>() requires T to be a concrete class implementing IConsumer<TMessage> — the main page\'s own registration referenced a type never declared anywhere in the same codeTab.',
+    gotchas: [
+      'The actual consumer class, PlaceOrderConsumer, is correctly named after the COMMAND it handles, not the event it later publishes.',
+    ],
+  },
+  'design-patterns/outbox/building-the-inbox-patterns-idempotency-table': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Mismatched Consumer Type in AddConsumer', route: '/design-patterns/outbox/the-mismatched-consumer-type-in-addconsumer' },
+      { label: 'Preserving Event Order With a Per-Aggregate Relay', route: '/design-patterns/outbox/preserving-event-order-with-a-per-aggregate-relay' },
+    ],
+    tip: 'A unique-constraint-backed insert detects a duplicate delivery atomically — a separate read-then-write idempotency check cannot, under concurrent redelivery.',
+    gotchas: [
+      'Outbox guarantees at-least-once DELIVERY from the producer; Inbox is what turns that into effectively-once PROCESSING on the consumer.',
+    ],
+  },
+  'design-patterns/outbox/preserving-event-order-with-a-per-aggregate-relay': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Building the Inbox Pattern\'s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' },
+      { label: 'Outbox Pattern (overview)', route: '/design-patterns/outbox' },
+    ],
+    tip: 'Grouping outbox rows by aggregate ID gives real parallelism across aggregates while keeping each aggregate\'s own events strictly in order.',
+    gotchas: [
+      'Naive Task.WhenAll over every pending row with no grouping can let a later event reach the broker before an earlier one for the SAME aggregate.',
+    ],
+  },
   'design-patterns/prototype': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

@@ -3387,4 +3387,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' },
     { label: 'Building a Commutative Compensation', route: '/design-patterns/saga/building-a-commutative-compensation' },
   ],
+  'outbox': [
+    { label: 'The Mismatched Consumer Type in AddConsumer', route: '/design-patterns/outbox/the-mismatched-consumer-type-in-addconsumer' },
+    { label: 'Building the Inbox Pattern’s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' },
+    { label: 'Preserving Event Order With a Per-Aggregate Relay', route: '/design-patterns/outbox/preserving-event-order-with-a-per-aggregate-relay' },
+  ],
 };

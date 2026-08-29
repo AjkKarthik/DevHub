@@ -152,7 +152,7 @@ builder.Services.AddHostedService<OutboxRelay>();`,
     code: `// MassTransit 8+ transactional outbox — minimal configuration
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<OrderPlacedConsumer>();
+    x.AddConsumer<PlaceOrderConsumer>();   // must match the class defined below
 
     x.UsingRabbitMq((ctx, cfg) =>
     {

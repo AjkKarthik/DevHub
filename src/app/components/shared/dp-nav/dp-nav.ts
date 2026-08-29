@@ -612,7 +612,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/outbox" routerLinkActive="active"><span class="nl-text">Outbox Pattern</span>@if(p.isDone('dp-outbox')){<span class="nl-done">✓</span>}@if(d('dp-outbox');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/outbox" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Outbox Pattern</span>
+        @if(p.isDone('dp-outbox')){<span class="nl-done">✓</span>}
+        @if(d('dp-outbox');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('outbox')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('outbox')"
+                  (click)="toggleSubtopics('outbox', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('outbox'); as outboxSubs) {
+        @if (isSubtopicsExpanded('outbox')) {
+          <div class="nav-subtopics">
+            @for (s of outboxSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/specification" routerLinkActive="active"><span class="nl-text">Specification Pattern</span>@if(p.isDone('dp-specification')){<span class="nl-done">✓</span>}@if(d('dp-specification');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/clean-architecture" routerLinkActive="active"><span class="nl-text">Clean Architecture Pattern</span>@if(p.isDone('dp-clean-architecture')){<span class="nl-done">✓</span>}@if(d('dp-clean-architecture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
     </div>

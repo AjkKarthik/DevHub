@@ -2876,7 +2876,12 @@ export const routes: Routes = [
         { path: 'ordering-steps-around-the-pivot-transaction', loadComponent: () => import('./components/architecture/design-patterns/saga/subtopics/ordering-steps-around-the-pivot-transaction/ordering-steps-around-the-pivot-transaction').then(m => m.OrderingStepsAroundThePivotTransactionSubtopic) },
         { path: 'building-a-commutative-compensation', loadComponent: () => import('./components/architecture/design-patterns/saga/subtopics/building-a-commutative-compensation/building-a-commutative-compensation').then(m => m.BuildingACommutativeCompensationSubtopic) },
       ] },
-    { path: 'outbox',             loadComponent: () => import('./components/architecture/design-patterns/outbox/outbox').then(m => m.DpOutbox) },
+    { path: 'outbox', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/outbox/outbox').then(m => m.DpOutbox) },
+        { path: 'the-mismatched-consumer-type-in-addconsumer', loadComponent: () => import('./components/architecture/design-patterns/outbox/subtopics/the-mismatched-consumer-type-in-addconsumer/the-mismatched-consumer-type-in-addconsumer').then(m => m.TheMismatchedConsumerTypeInAddconsumerSubtopic) },
+        { path: 'building-the-inbox-patterns-idempotency-table', loadComponent: () => import('./components/architecture/design-patterns/outbox/subtopics/building-the-inbox-patterns-idempotency-table/building-the-inbox-patterns-idempotency-table').then(m => m.BuildingTheInboxPatternsIdempotencyTableSubtopic) },
+        { path: 'preserving-event-order-with-a-per-aggregate-relay', loadComponent: () => import('./components/architecture/design-patterns/outbox/subtopics/preserving-event-order-with-a-per-aggregate-relay/preserving-event-order-with-a-per-aggregate-relay').then(m => m.PreservingEventOrderWithAPerAggregateRelaySubtopic) },
+      ] },
     { path: 'specification',      loadComponent: () => import('./components/architecture/design-patterns/specification/specification').then(m => m.DpSpecification) },
     { path: 'clean-architecture', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/clean-architecture').then(m => m.DpCleanArchitecture) },
     // Principles
