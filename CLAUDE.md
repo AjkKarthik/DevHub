@@ -3907,6 +3907,55 @@ do this same check before any other new hub's first subtopic set:
     accordion); all three `solution` fields confirmed rendering as literal text with no stray
     entity codes; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 22 of 36 topics complete.**
+29. **The `visitor` batch — the tenth of eleven Behavioral topics — was the cleanest page found in
+    this stretch: no compile error or self-contradiction in either codeTab. All three subtopics
+    build actual code for something the page's own quiz/QnA/revision describe in prose but never
+    demonstrate.** (1) **The Non-Virtual Accept() Failure, Demonstrated** — one of the page's own
+    quiz questions describes exactly how double dispatch breaks if `Accept()` isn't itself
+    overridden per element type (the second dispatch resolves against the base-class compile-time
+    type, silently calling the wrong `Visit` overload), but both codeTabs use an interface for
+    elements, which makes that specific failure structurally impossible — built the broken
+    abstract-base-class version that actually triggers it, traced exactly why, and the fix
+    (`Accept()` made abstract and overridden per concrete class); (2) **Simulating Double Dispatch
+    With dynamic** — the QnA names C#'s `dynamic` keyword as an Accept/Visit alternative "at a
+    performance cost" with zero code showing what it looks like or what the cost actually is —
+    built the `dynamic`-based `TotalCalculator` (no `Accept()`/interface needed on elements at all)
+    and traced the real trade-off precisely: an unmatched-overload mistake moves from a compile
+    error (classic Accept/Visit) to a `RuntimeBinderException` (dynamic); (3) **Visitor + Composite:
+    A Recursive Order Group** — the page's own revision calls this pairing "very common" but never
+    builds it against the page's own `IOrderElement`/`ProductItem`/`DiscountItem`/`ShippingItem`
+    hierarchy every other codeTab already uses — built a `SplitShipmentGroup` composite whose
+    `Accept()` visits itself then recurses into children, reusing every element type already on the
+    page, with a Try It establishing that visiting the STRUCTURE and visiting the LEAVES are
+    independent capabilities a well-built composite needs to support both of. Grepped every new
+    `exercise.solution` field for `<code>`/HTML entities before ever writing the build command, per
+    the mandatory-pre-build-grep escalation from the Template Method batch — all three were clean on
+    the first pass. No `SUBTOPICS` collision for `visitor` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean.
+    Browser-verified: no console errors; nav accordion opens with 23 toggles total; all 3 subtopic
+    links render correctly; all three `solution` fields confirmed rendering as literal text with no
+    stray entity codes; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+    `getComputedStyle`. **A real session interruption occurred immediately after this feature
+    commit**: a subsequent `git commit` for the docs-update batch failed with "cannot lock ref
+    'HEAD': unable to resolve reference 'refs/heads/development': reference broken" —
+    `.git/refs/heads/development` had been silently truncated to empty content sometime after the
+    feature commit succeeded (likely an interrupted write during a context-reset event mid-session,
+    unrelated to the commit itself). **Diagnosed and repaired without any data loss, using the
+    reflog as the recovery source**: `git cat-file`/`git show --stat` confirmed the commit object
+    the reflog's last entry pointed to (`1c78b995...`) was fully intact and contained exactly the
+    intended Visitor batch file list; `git fetch origin development` then confirmed the SAME commit
+    was ALREADY the tip of `origin/development` — the earlier push had actually succeeded before the
+    ref corruption happened, so nothing needed re-pushing. Fixed by removing the empty ref file
+    (`rm .git/refs/heads/development`, since `git update-ref` itself refuses to write over a ref it
+    cannot first resolve, even to overwrite it) and recreating it with `git update-ref
+    refs/heads/development <sha>` pointing at the verified commit — confirmed via a clean `git fsck
+    --full` (only pre-existing harmless dangling objects remained, no ref errors) and `git status`
+    showing a clean working tree matching the commit exactly. **General lesson for any future ref
+    corruption**: never assume a failed git command means lost work — check `.git/logs/HEAD` (the
+    reflog) first, since it records commit SHAs independently of whether the branch ref itself
+    updated successfully, verify the target commit object directly with `git cat-file`/`git show`
+    before touching anything, and check `git fetch` against the remote before assuming a re-push is
+    needed. **Design Patterns hub Phase 10: 23 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4874,7 +4923,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 22 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 23 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -4882,7 +4931,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/proxy`, `/design-patterns/chain-of-responsibility`, `/design-patterns/command`,
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
-  `/design-patterns/template-method`,
+  `/design-patterns/template-method`, `/design-patterns/visitor`,
   2026-08-04/2026-08-05, Structural nav group complete; Behavioral in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found

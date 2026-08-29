@@ -7476,7 +7476,29 @@ off here with a date.
   subtopic links render correctly; all three main-page fixes confirmed rendering; breadcrumb showed
   all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
   hub Phase 10: 22 of 36 topics complete.**
-- [ ] `/design-patterns/visitor` — Visitor Pattern
+- [x] `/design-patterns/visitor` — Visitor Pattern (2026-08-29) — cleanest page found in this
+  stretch, no compile error or self-contradiction found; all 3 subtopics build real code for
+  something the page's own quiz/QnA/revision describe in prose but never demonstrate. 3 subtopics:
+  (1) **The Non-Virtual Accept() Failure, Demonstrated** — the page's own quiz describes exactly
+  how double dispatch breaks if Accept() isn't overridden per element type, but both codeTabs use
+  an interface which makes that bug structurally impossible — built the broken abstract-base-class
+  version that actually triggers it; (2) **Simulating Double Dispatch With dynamic** — the QnA
+  names dynamic as an Accept/Visit alternative "at a performance cost" with no code — built it and
+  traced the real trade-off (compile error vs RuntimeBinderException); (3) **Visitor + Composite: A
+  Recursive Order Group** — the revision calls this pairing "very common" but never builds it
+  against the page's own IOrderElement hierarchy — built a SplitShipmentGroup composite reusing
+  every element type already on the page. Grepped every solution field before building — all three
+  clean. `visitor` SUBTOPICS key collision-free, left bare. Build passed clean. Browser-verified:
+  nav accordion opens with 23 toggles total; all 3 subtopic links render correctly; breadcrumb
+  showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **A git
+  ref corruption occurred immediately after the feature commit** (`.git/refs/heads/development`
+  silently truncated to empty, likely during a mid-session context-reset interruption) — diagnosed
+  via the reflog (which recorded the commit SHA independently of the branch ref) and repaired with
+  zero data loss: the commit object was verified intact and its content matched exactly, `git
+  fetch` confirmed the push had already succeeded before the corruption, and the ref was recreated
+  with `git update-ref` after removing the empty file (update-ref itself refuses to overwrite a ref
+  it cannot first resolve). See CLAUDE.md's own dense entry for this batch for the full recovery
+  playbook. **Design Patterns hub Phase 10: 23 of 36 topics complete.**
 - [ ] `/design-patterns/null-object` — Null Object Pattern
 - [ ] `/design-patterns/repository` — Repository Pattern
 - [ ] `/design-patterns/unit-of-work` — Unit of Work Pattern
