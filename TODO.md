@@ -7593,7 +7593,20 @@ off here with a date.
   Saga" tab specifically; breadcrumb showed all 4 levels; 860px wrapper confirmed via
   `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 29 of 36 topics
   complete.**
-- [ ] `/design-patterns/outbox` — Outbox Pattern
+- [x] `/design-patterns/outbox` — Outbox Pattern (2026-08-30) — 3 subtopics: The Mismatched
+  Consumer Type in AddConsumer (fixed a real compile error — the main page's own MassTransit
+  registration called AddConsumer<OrderPlacedConsumer>(), a type never declared anywhere in the
+  codeTab; the actual class is PlaceOrderConsumer : IConsumer<PlaceOrderCommand>); Building the
+  Inbox Pattern's Idempotency Table (builds the constraint-backed inbox table two separate QnA
+  answers describe in prose but never show in code); Preserving Event Order With a
+  Per-Aggregate Relay (builds the per-aggregate grouped relay the QnA names in one sentence,
+  giving real parallelism across aggregates while keeping each aggregate's own events ordered).
+  No `SUBTOPICS` collision for `outbox`, left bare. All three `solution` fields clean on first
+  sweep. Build passed clean. Browser-verified: nav accordion opens with 30 toggles total; all 3
+  subtopic links render correctly; the main-page fix confirmed rendering after expanding the
+  "MassTransit Built-In Outbox" tab; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 30 of 36 topics
+  complete.**
 - [ ] `/design-patterns/specification` — Specification Pattern
 - [ ] `/design-patterns/clean-architecture` — Clean Architecture
 - [ ] `/design-patterns/solid` — SOLID Principles

@@ -4170,6 +4170,41 @@ do this same check before any other new hub's first subtopic set:
     contained the bug); a subtopic's own `solution` field confirmed rendering as literal plain text;
     breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 29 of 36 topics complete.**
+36. **The `outbox` batch found and fixed a genuine, self-contained undeclared-type bug in the main
+    page's own "MassTransit Built-In Outbox" codeTab**: the registration block called
+    <code>x.AddConsumer&lt;OrderPlacedConsumer&gt;();</code> — but no class named
+    <code>OrderPlacedConsumer</code> exists anywhere in the codeTab. The only consumer actually
+    defined, a few lines further down, is <code>PlaceOrderConsumer : IConsumer&lt;PlaceOrderCommand&gt;</code>
+    — correctly named after the COMMAND it handles, matching this hub's own established naming
+    convention (imperative commands vs. past-tense events, already established on the CQRS and
+    Event Sourcing topics). A purely self-contained catch: no external research needed, just
+    grepping the codeTab for whether a type used as a generic argument was ever actually declared
+    — the same discipline this hub applies to undeclared fields/methods, here applied to a
+    <code>AddConsumer&lt;T&gt;()</code> registration instead. As written this would fail with
+    CS0246 ("type or namespace not found") at compile time. Fixed by registering
+    <code>PlaceOrderConsumer</code> instead. Three subtopics: (1) **fix-adjacent** — traces the
+    bug precisely and explains why the fix belongs on the registration line, not the class name;
+    (2) **gap-closing** — the QnA has TWO separate answers describing the Inbox pattern in prose
+    ("Is the Outbox pattern the same as the Inbox pattern?" and "How does the Inbox pattern
+    complement the Outbox pattern?") but no codeTab ever builds one; built a constraint-backed
+    <code>InboxMessage</code> table plus a consumer wrapping the idempotency insert and the
+    business work in ONE transaction, with a Try It contrasting it against the main page's own
+    weaker <code>AnyAsync</code>-based idempotency check; (3) **gap-closing** — the "operational
+    challenges" QnA names "single-threaded relay per aggregate type" as the fix for out-of-order
+    publishing in exactly one sentence; built a per-aggregate grouped relay (
+    <code>GroupBy(m =&gt; m.AggregateId)</code> + <code>Task.WhenAll</code> across groups, strict
+    <code>foreach</code> within each group) that gets real parallelism across aggregates while
+    keeping each aggregate's own events strictly ordered. No `SUBTOPICS` collision for `outbox`
+    (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). All three `exercise.solution` fields swept and confirmed clean on
+    the first pass. Build passed clean. Browser-verified: no console errors; nav accordion opens
+    with 30 toggles total; all 3 subtopic links render correctly including the curly-quote
+    possessive ("Pattern's") in the nav accordion, breadcrumb, and sidebar; the main-page fix
+    confirmed rendering after expanding the "MassTransit Built-In Outbox" tab specifically (the
+    default-selected tab is "Manual Outbox (EF Core)," which never contained the bug); a
+    subtopic's own `solution` field confirmed rendering as literal plain text; breadcrumb showed
+    all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 30 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5137,7 +5172,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 29 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 30 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5147,7 +5182,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
   `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
   `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
-  `/design-patterns/event-sourcing`, `/design-patterns/saga`,
+  `/design-patterns/event-sourcing`, `/design-patterns/saga`, `/design-patterns/outbox`,
   2026-08-04/2026-08-30, Structural + Behavioral nav groups complete; Enterprise in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
