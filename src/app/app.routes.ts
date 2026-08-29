@@ -2852,7 +2852,12 @@ export const routes: Routes = [
       { path: 'generic-repositorybase-as-an-internal-implementation-detail', loadComponent: () => import('./components/architecture/design-patterns/repository/subtopics/generic-repositorybase-as-an-internal-implementation-detail/generic-repositorybase-as-an-internal-implementation-detail').then(m => m.GenericRepositorybaseAsAnInternalImplementationDetailSubtopic) },
       { path: 'the-n-plus-1-lazy-loading-pitfall-demonstrated', loadComponent: () => import('./components/architecture/design-patterns/repository/subtopics/the-n-plus-1-lazy-loading-pitfall-demonstrated/the-n-plus-1-lazy-loading-pitfall-demonstrated').then(m => m.TheNPlus1LazyLoadingPitfallDemonstratedSubtopic) },
     ] },
-    { path: 'unit-of-work',       loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/unit-of-work').then(m => m.DpUnitOfWork) },
+    { path: 'unit-of-work', children: [
+      { path: '', loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/unit-of-work').then(m => m.DpUnitOfWork) },
+      { path: 'the-orphaned-transferfundsasync-method', loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/subtopics/the-orphaned-transferfundsasync-method/the-orphaned-transferfundsasync-method').then(m => m.TheOrphanedTransferfundsasyncMethodSubtopic) },
+      { path: 'handling-optimistic-concurrency-conflicts', loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/subtopics/handling-optimistic-concurrency-conflicts/handling-optimistic-concurrency-conflicts').then(m => m.HandlingOptimisticConcurrencyConflictsSubtopic) },
+      { path: 'a-manual-unit-of-work-without-entity-framework', loadComponent: () => import('./components/architecture/design-patterns/unit-of-work/subtopics/a-manual-unit-of-work-without-entity-framework/a-manual-unit-of-work-without-entity-framework').then(m => m.AManualUnitOfWorkWithoutEntityFrameworkSubtopic) },
+    ] },
     { path: 'cqrs',               loadComponent: () => import('./components/architecture/design-patterns/cqrs/cqrs').then(m => m.DpCqrs) },
     { path: 'event-sourcing',     loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/event-sourcing').then(m => m.DpEventSourcing) },
     { path: 'saga',               loadComponent: () => import('./components/architecture/design-patterns/saga/saga').then(m => m.DpSaga) },

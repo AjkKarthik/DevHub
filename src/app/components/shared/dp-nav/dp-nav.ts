@@ -532,7 +532,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/unit-of-work" routerLinkActive="active"><span class="nl-text">Unit of Work</span>@if(p.isDone('dp-unit-of-work')){<span class="nl-done">✓</span>}@if(d('dp-unit-of-work');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/unit-of-work" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Unit of Work</span>
+        @if(p.isDone('dp-unit-of-work')){<span class="nl-done">✓</span>}
+        @if(d('dp-unit-of-work');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('unit-of-work')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('unit-of-work')"
+                  (click)="toggleSubtopics('unit-of-work', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('unit-of-work'); as uowSubs) {
+        @if (isSubtopicsExpanded('unit-of-work')) {
+          <div class="nav-subtopics">
+            @for (s of uowSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/design-patterns/cqrs" routerLinkActive="active"><span class="nl-text">CQRS Pattern</span>@if(p.isDone('dp-cqrs')){<span class="nl-done">✓</span>}@if(d('dp-cqrs');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/event-sourcing" routerLinkActive="active"><span class="nl-text">Event Sourcing</span>@if(p.isDone('dp-event-sourcing')){<span class="nl-done">✓</span>}@if(d('dp-event-sourcing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
       <a routerLink="/design-patterns/saga" routerLinkActive="active"><span class="nl-text">Saga Pattern</span>@if(p.isDone('dp-saga')){<span class="nl-done">✓</span>}@if(d('dp-saga');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>

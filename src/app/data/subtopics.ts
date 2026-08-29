@@ -3367,4 +3367,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Generic RepositoryBase as an Internal Implementation Detail', route: '/design-patterns/repository/generic-repositorybase-as-an-internal-implementation-detail' },
     { label: 'The N+1 Lazy-Loading Pitfall, Demonstrated', route: '/design-patterns/repository/the-n-plus-1-lazy-loading-pitfall-demonstrated' },
   ],
+  'unit-of-work': [
+    { label: 'The Orphaned TransferFundsAsync Method', route: '/design-patterns/unit-of-work/the-orphaned-transferfundsasync-method' },
+    { label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' },
+    { label: 'A Manual Unit of Work Without Entity Framework', route: '/design-patterns/unit-of-work/a-manual-unit-of-work-without-entity-framework' },
+  ],
 };

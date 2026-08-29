@@ -1,0 +1,30 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unit of Work" topicRoute="/design-patterns/unit-of-work"
+    subtopicLabel="Handling Optimistic Concurrency Conflicts" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Handling Optimistic Concurrency Conflicts</h1>
+  <p class="page-subtitle">The main page's own QnA describes RowVersion columns and
+    DbUpdateConcurrencyException in full detail — but no codeTab shows any of it. Here's a real
+    TryDecrementStockAsync that hits the conflict and resolves it.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="EF Core 3.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds the last thing the main page's own QnA describes but never shows — a manual
+      Unit of Work built entirely without Entity Framework, using raw ADO.NET connections and transactions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Unit of Work" topicRoute="/design-patterns/unit-of-work"
+    [prev]="{ label: 'The Orphaned TransferFundsAsync Method', route: '/design-patterns/unit-of-work/the-orphaned-transferfundsasync-method' }"
+    [next]="{ label: 'A Manual Unit of Work Without Entity Framework', route: '/design-patterns/unit-of-work/a-manual-unit-of-work-without-entity-framework' }" />
+</div>

@@ -27956,6 +27956,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Repository abstracts HOW objects persist; Unit of Work coordinates WHEN a batch of changes commits together.',
     ],
   },
+  'design-patterns/unit-of-work/the-orphaned-transferfundsasync-method': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Unit of Work (overview)', route: '/design-patterns/unit-of-work' },
+      { label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' },
+    ],
+    tip: 'The main page\'s own TransferFundsAsync method sat outside any class entirely — a misplaced closing brace, not a missing one, so every brace in the file was still perfectly balanced.',
+    gotchas: [
+      'The fix is mechanical: move the method back inside OrderService so its own db parameter comes back into scope.',
+    ],
+  },
+  'design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Orphaned TransferFundsAsync Method', route: '/design-patterns/unit-of-work/the-orphaned-transferfundsasync-method' },
+      { label: 'A Manual Unit of Work Without Entity Framework', route: '/design-patterns/unit-of-work/a-manual-unit-of-work-without-entity-framework' },
+    ],
+    tip: 'A [Timestamp]/RowVersion column makes EF Core include it in every generated UPDATE\'s WHERE clause — a stale RowVersion means zero rows affected, which EF Core reports as DbUpdateConcurrencyException.',
+    gotchas: [
+      'Retrying SaveChangesAsync() without first calling entry.OriginalValues.SetValues() on the fresh database values repeats the exact same failed comparison.',
+    ],
+  },
+  'design-patterns/unit-of-work/a-manual-unit-of-work-without-entity-framework': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Handling Optimistic Concurrency Conflicts', route: '/design-patterns/unit-of-work/handling-optimistic-concurrency-conflicts' },
+      { label: 'Unit of Work (overview)', route: '/design-patterns/unit-of-work' },
+    ],
+    tip: 'Without EF Core\'s change tracker, a manual Unit of Work\'s only real job is transaction lifecycle — sharing one SqlConnection and SqlTransaction across every participating repository\'s explicit SQL commands.',
+    gotchas: [
+      'A repository opening its own separate SqlConnection cannot participate in the shared transaction, regardless of how correctly the rest of the UnitOfWork is wired.',
+    ],
+  },
   'design-patterns/visitor': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
