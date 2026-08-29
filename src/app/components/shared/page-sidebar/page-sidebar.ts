@@ -27805,6 +27805,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Orchestration (central coordinator) vs choreography (event reactions, no coordinator) trades debuggability against decoupling.',
     ],
   },
+  'design-patterns/saga/the-missing-order-total-in-inventoryreservedevent': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern (overview)', route: '/design-patterns/saga' },
+      { label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' },
+    ],
+    tip: 'The main page\'s own InventoryReservedEvent was constructed with only two fields, but a downstream consumer referenced a third (Amount) that was never included.',
+    gotchas: [
+      'Each choreography consumer reads correctly in isolation — the gap only shows up in the DATA CONTRACT between publisher and consumer, not in either file alone.',
+    ],
+  },
+  'design-patterns/saga/ordering-steps-around-the-pivot-transaction': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Missing Order Total in InventoryReservedEvent', route: '/design-patterns/saga/the-missing-order-total-in-inventoryreservedevent' },
+      { label: 'Building a Commutative Compensation', route: '/design-patterns/saga/building-a-commutative-compensation' },
+    ],
+    tip: 'A pivot transaction is the first non-compensatable step in a saga\'s sequence — order every compensatable step before it, never after.',
+    gotchas: [
+      'The rule is "minimise work after the pivot," not "eliminate it entirely" — some steps are constrained by real business ordering regardless of compensatability.',
+    ],
+  },
+  'design-patterns/saga/building-a-commutative-compensation': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' },
+      { label: 'Saga Pattern (overview)', route: '/design-patterns/saga' },
+    ],
+    tip: 'A commutative compensation (decrement by X) never reads current state first, so it stays correct regardless of what order it runs in relative to other concurrent operations.',
+    gotchas: [
+      'A "set to exactly Y" compensation silently discards any concurrent change that landed between its own read and write.',
+    ],
+  },
   'design-patterns/singleton': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

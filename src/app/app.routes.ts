@@ -2870,7 +2870,12 @@ export const routes: Routes = [
         { path: 'rehydrating-from-a-snapshot', loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/subtopics/rehydrating-from-a-snapshot/rehydrating-from-a-snapshot').then(m => m.RehydratingFromASnapshotSubtopic) },
         { path: 'an-upcaster-chain-for-orderplaced-v1-to-v2', loadComponent: () => import('./components/architecture/design-patterns/event-sourcing/subtopics/an-upcaster-chain-for-orderplaced-v1-to-v2/an-upcaster-chain-for-orderplaced-v1-to-v2').then(m => m.AnUpcasterChainForOrderplacedV1ToV2Subtopic) },
       ] },
-    { path: 'saga',               loadComponent: () => import('./components/architecture/design-patterns/saga/saga').then(m => m.DpSaga) },
+    { path: 'saga', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/saga/saga').then(m => m.DpSaga) },
+        { path: 'the-missing-order-total-in-inventoryreservedevent', loadComponent: () => import('./components/architecture/design-patterns/saga/subtopics/the-missing-order-total-in-inventoryreservedevent/the-missing-order-total-in-inventoryreservedevent').then(m => m.TheMissingOrderTotalInInventoryreservedeventSubtopic) },
+        { path: 'ordering-steps-around-the-pivot-transaction', loadComponent: () => import('./components/architecture/design-patterns/saga/subtopics/ordering-steps-around-the-pivot-transaction/ordering-steps-around-the-pivot-transaction').then(m => m.OrderingStepsAroundThePivotTransactionSubtopic) },
+        { path: 'building-a-commutative-compensation', loadComponent: () => import('./components/architecture/design-patterns/saga/subtopics/building-a-commutative-compensation/building-a-commutative-compensation').then(m => m.BuildingACommutativeCompensationSubtopic) },
+      ] },
     { path: 'outbox',             loadComponent: () => import('./components/architecture/design-patterns/outbox/outbox').then(m => m.DpOutbox) },
     { path: 'specification',      loadComponent: () => import('./components/architecture/design-patterns/specification/specification').then(m => m.DpSpecification) },
     { path: 'clean-architecture', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/clean-architecture').then(m => m.DpCleanArchitecture) },

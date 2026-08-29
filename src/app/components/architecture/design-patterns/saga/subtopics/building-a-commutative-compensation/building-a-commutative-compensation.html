@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Saga Pattern" topicRoute="/design-patterns/saga"
+    subtopicLabel="Building a Commutative Compensation" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Building a Commutative Compensation</h1>
+  <p class="page-subtitle">A quiz question defines commutativity precisely. Here's the decrement-vs-set contrast that actually shows why it matters.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three concerns the main page names but doesn't fully build out: getting the DATA an event carries right (the first subtopic), ORDERING irreversible steps around the pivot (the second), and now making sure a compensation itself stays correct no matter what order it lands in. All three are different facets of the same underlying trade-off — a Saga gives up the single global lock a 2PC transaction would provide, in exchange for these explicit, application-level correctness responsibilities.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Saga Pattern" topicRoute="/design-patterns/saga"
+    [prev]="{ label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' }" />
+</div>

@@ -3382,4 +3382,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Rehydrating From a Snapshot', route: '/design-patterns/event-sourcing/rehydrating-from-a-snapshot' },
     { label: 'An Upcaster Chain for OrderPlaced v1 to v2', route: '/design-patterns/event-sourcing/an-upcaster-chain-for-orderplaced-v1-to-v2' },
   ],
+  'saga': [
+    { label: 'The Missing Order Total in InventoryReservedEvent', route: '/design-patterns/saga/the-missing-order-total-in-inventoryreservedevent' },
+    { label: 'Ordering Steps Around the Pivot Transaction', route: '/design-patterns/saga/ordering-steps-around-the-pivot-transaction' },
+    { label: 'Building a Commutative Compensation', route: '/design-patterns/saga/building-a-commutative-compensation' },
+  ],
 };

@@ -175,7 +175,9 @@ public class OrderPlacedConsumer(IInventoryRepository repo, IPublishEndpoint bus
         try
         {
             var reservationId = await repo.ReserveAsync(ctx.Message.OrderId, ctx.Message.Items);
-            await bus.Publish(new InventoryReservedEvent(ctx.Message.OrderId, reservationId));
+            // Forward the order total — Payment Service has no other way
+            // to know what to charge; it never sees OrderPlacedEvent itself.
+            await bus.Publish(new InventoryReservedEvent(ctx.Message.OrderId, reservationId, ctx.Message.Total));
         }
         catch (InsufficientStockException)
         {
@@ -190,7 +192,7 @@ public class InventoryReservedConsumer(IPaymentGateway gateway, IPublishEndpoint
 {
     public async Task Consume(ConsumeContext<InventoryReservedEvent> ctx)
     {
-        var result = await gateway.ChargeAsync(ctx.Message.OrderId, ctx.Message.Amount);
+        var result = await gateway.ChargeAsync(ctx.Message.OrderId, ctx.Message.Total);
         if (result.Success)
             await bus.Publish(new PaymentProcessedEvent(ctx.Message.OrderId, result.PaymentId));
         else
