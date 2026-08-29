@@ -4457,6 +4457,64 @@ do this same check before any other new hub's first subtopic set:
     rollout — all 36 topics now have deep-dive subtopic pages, 108 subtopic pages total across the
     hub, finished 2026-08-30.**
 
+### Security & Auth hub subtopic wiring — first pilot; the 13th `*NavComponent` in a row missing
+the subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/security/fundamentals`, 2026-08-30) — do
+this same check before any other new hub's first subtopic set:
+
+1. **`SecurityNavComponent` (`shared/security-nav/security-nav.ts`) had ZERO subtopics-accordion
+   support** — the same structural gap already hit and fixed on every `*NavComponent`-based hub's
+   own pilot before it (Go, DevOps, Containers, AWS, Azure, Linux, Terraform, Service Mesh, System
+   Design, Architecture Patterns, Design Patterns — this is the 13th in a row). Fixed identically:
+   added `signal`, `Router`, `NavigationEnd`, `filter` (rxjs), and `SUBTOPICS` (from
+   `../../../data/subtopics`) to the imports, then the same three methods
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, copied directly from `DpNavComponent`'s own implementation (read directly, not
+   reconstructed from memory, per the established copy-fidelity discipline). Worked correctly on
+   the first browser check — no stale-chunk incident.
+2. **Real `SUBTOPICS` map bare-key collision**: `fundamentals` was already claimed by the
+   JavaScript hub's own `/javascript/fundamentals` topic (checked both quoted and unquoted forms,
+   per the standing collision-detection discipline). Hub-prefixed to `sec-fundamentals` —
+   matching this hub's own established progress/search key prefix (`sec-`) — with the usual
+   `// NOTE:` comment. All three `SecurityNavComponent` accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) use the prefixed `'sec-fundamentals'`
+   key consistently.
+3. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'security/fundamentals'`, confirmed the base
+   entry — and its own `SEC_DEFAULT` constant — already existed) — subtopic composite keys
+   follow suit: `'security/fundamentals/<slug>'`.
+4. **`SECURITY_LABELS` breadcrumb map uses bare keys** (`'fundamentals'`), matching the generic
+   pattern every hub's own dedicated labels map shares — composite subtopic keys there are bare
+   too (`'fundamentals/<slug>'`).
+5. **`.sec-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`) — every
+   subtopic `.scss` needs the full `.sec-page { max-width: 860px; margin: 0 auto; }` rule.
+   `$accent: #dc2626`, `$tint: #fef2f2`, icon `🔒`, `tech="javascript"` (Security pages share the
+   JS/TS playground and run-it links, same as every other non-JS-runtime-specific hub).
+6. **No live playground** — despite the main page's own codeTabs being TypeScript/Node.js-style
+   (Express handlers, zod validation, AWS IAM policies), this content is fundamentally
+   SERVER-SIDE/conceptual, following the same `<app-code-block>`-only pattern as the Node.js hub's
+   own server-only topics — no `LivePlaygroundComponent`/`PlaygroundFile` import.
+7. **The `fundamentals` batch was a clean main page — no compile error or undeclared reference
+   found in either codeTab after careful reading** — all three subtopics are gap-closing,
+   building code for concepts the main page names in prose (STRIDE categories, the fail-secure/
+   fail-safe distinction, named SAST/SCA/DAST tools) but never shows working: (1) a single
+   password-reset endpoint walked through all six STRIDE categories in the exact order the page's
+   own quiz lists them; (2) the exact authorization-middleware bug the QnA's own fail-secure
+   example describes ("Authorization middleware that throws an exception should return HTTP 403,
+   not 200"), plus the fix; (3) the SQL-injection pattern a SAST scanner is built to flag, and a
+   variant (routed through a helper function) a naive single-call-site pattern match can miss.
+   **A real authoring self-catch, fixed before the sweep**: an early draft of the STRIDE codeTab
+   registered the SAME Express route (`app.post('/reset-password/request', ...)`) twice with two
+   different middleware signatures — combined into one canonical registration before it could read
+   as a genuine inconsistency. All three `exercise.solution` fields swept and confirmed clean, plus
+   the standing bracket-balance check (Node-verified open/close brace counts and even backtick
+   counts) run on all three new files before the build. No `SUBTOPICS` collision beyond the
+   `fundamentals` bare-key clash already resolved above. Build passed clean. Browser-verified: no
+   console errors; nav accordion opens with 1 toggle (this hub's first Phase 10 topic); all 3
+   subtopic links render correctly; breadcrumb showed all 4 levels; sidebar showed tailored
+   composite-key content; 860px wrapper confirmed via `getComputedStyle`.
+   **Security & Auth hub Phase 10: 1 of 23 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -5457,6 +5515,10 @@ do this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
+  Phase 10: 1 of 23 topics have subtopics (`/security/fundamentals`, pilot batch, 2026-08-30) — see
+  "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
+  structural fix and the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
+  JavaScript hub's own bare `fundamentals` topic key).
 - **API Design hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
   Cyan theme `$accent: #0891b2`, `$tint: #ecfeff`. Search prefix `api-`. Route: `/api-design`.
   CSS classes: `.api-page`, `.api-icon`, `.api-section`. Icon content: `🔌` at `font-size: 1.8rem`. `tech="javascript"`.

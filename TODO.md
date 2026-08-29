@@ -7704,7 +7704,24 @@ off here with a date.
 
 #### Security — 23 topic pages
 
-- [ ] `/security/fundamentals` — Security Fundamentals
+- [x] `/security/fundamentals` — Security Fundamentals (2026-08-30) — FIRST Security & Auth hub
+  Phase 10 pilot. Fixed the structural gap every `*NavComponent`-based hub's own pilot has hit
+  before this one: `SecurityNavComponent` had zero subtopics-accordion support — added the
+  standard trio + router subscription, copied from `DpNavComponent`. Real `SUBTOPICS` collision:
+  bare `fundamentals` was already claimed by the JavaScript hub — hub-prefixed to
+  `sec-fundamentals`. 3 subtopics, all gap-closing (clean main page, no compile bug): Threat-
+  Modeling a Password-Reset Endpoint (a quiz question defines all six STRIDE categories in one
+  line each — built a single feature walked through every one); Fail-Secure vs. Fail-Safe, Made
+  Concrete (the QnA describes this distinction with a specific example — built the exact
+  middleware bug and the fix); What SAST Actually Catches (SAST/SCA/DAST named with real tools
+  but shown catching nothing — built the SQL-injection pattern a SAST scanner is designed to
+  flag, plus a variant it can miss). Self-caught and fixed a duplicate Express route registration
+  in my own authoring before the sweep. All three `solution` fields clean; bracket-balance
+  checked. Build passed clean on the first attempt (no stale-nav incident). Browser-verified: nav
+  accordion opens with 1 toggle; all 3 subtopic links render correctly; breadcrumb showed all 4
+  levels; sidebar showed tailored composite-key content; 860px wrapper confirmed via
+  `getComputedStyle`; no console errors. **Security & Auth hub Phase 10: 1 of 23 topics
+  complete.**
 - [ ] `/security/owasp-top-10` — OWASP Top 10
 - [ ] `/security/threat-modelling` — Threat Modelling
 - [ ] `/security/secure-coding` — Secure Coding Practices
