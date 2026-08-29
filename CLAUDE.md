@@ -3996,6 +3996,37 @@ do this same check before any other new hub's first subtopic set:
     **Design Patterns hub Phase 10: 24 of 36 topics complete — only the Enterprise group (8 topics:
     Repository, Unit of Work, CQRS, Event Sourcing, Saga, Outbox, Specification, Clean Architecture)
     and the Principles group (4 topics: SOLID, GRASP, DRY/KISS/YAGNI, Dependency Inversion) remain.**
+31. **The `repository` batch — the first topic in the Enterprise nav group — found no compile error
+    in either codeTab, but a genuine, confirmed content gap requiring only careful reading to catch
+    (no external research needed)**: the main page's own "Specification + Repository" codeTab
+    defines `EfSpecificationEvaluator.Apply()` and an `IOrderRepository.FindAsync(ISpecification<Order>,
+    ...)` interface method, plus a usage line calling `orderRepo.FindAsync(spec)` — but no repository
+    CLASS anywhere on the page actually implements `FindAsync` by calling the evaluator.
+    `EfSpecificationEvaluator.Apply` is defined but never called by anything shown; each of the three
+    pieces (interface, evaluator, usage) is individually correct, but the page never assembles them.
+    Three subtopics: (1) **Connecting EfSpecificationEvaluator to a Real Repository** — builds the
+    missing `OrderRepository.FindAsync` implementation wiring `db.Orders` through the evaluator, with
+    a Try It on the real performance consequence of materializing the source with `ToList()` before
+    applying the specification (correct results, dramatically worse performance — every filter/sort/
+    page operation moves from SQL into application memory); (2) **Generic RepositoryBase as an
+    Internal Implementation Detail** — the main page's own fourth QnA draws a precise distinction
+    (generic-repository criticism applies to a PUBLICLY exposed `IRepository<T>`, not to a generic
+    base class used purely as internal, `protected` boilerplate-avoidance) but only ever shows the BAD
+    version in its own mistake block — built the good one, with `protected` CRUD helpers on
+    `RepositoryBase<T>` that a caller holding only `IOrderRepository` has no way to reach; (3) **The
+    N+1 Lazy-Loading Pitfall, Demonstrated** — the QnA names this pitfall and its `Include()` fix in
+    one sentence of prose, never shown with an actual query count — built the exact same
+    `GetPendingOrdersAsync` method both ways (51 queries vs. 1) and a Try It on why fixing ONE
+    navigation property's N+1 doesn't fix a second, un-Included one. Grepped every new
+    `exercise.solution` field for `<code>`/HTML entities before ever running the build — caught and
+    fixed it in the SECOND subtopic (a sixth recurrence of this exact mistake across six consecutive
+    batches: Memento, Observer, State, Strategy, Null Object, now Repository), the other two were
+    clean on the first pass. No `SUBTOPICS` collision for `repository` (checked both `subtopics.ts`
+    forms and grepped `app.routes.ts` directly, confirmed collision-free, left bare). Build passed
+    clean. Browser-verified: no console errors; nav accordion opens with 25 toggles total; all 3
+    subtopic links render correctly; all three `solution` fields confirmed rendering as literal text
+    with no stray entity codes; breadcrumb showed all 4 levels; 860px wrapper confirmed via
+    `getComputedStyle`. **Design Patterns hub Phase 10: 25 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -4963,7 +4994,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 24 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 25 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -4972,7 +5003,8 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/iterator`, `/design-patterns/mediator`, `/design-patterns/memento`,
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
   `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
-  2026-08-04/2026-08-29, Structural + Behavioral nav groups complete) — see
+  `/design-patterns/repository`,
+  2026-08-04/2026-08-30, Structural + Behavioral nav groups complete; Enterprise in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found
   and fixed across both batches so far. The `factory-method` batch found and fixed two more

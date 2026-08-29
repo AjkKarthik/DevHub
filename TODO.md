@@ -7517,7 +7517,22 @@ off here with a date.
   `getComputedStyle`; no console errors. **This completes the entire Behavioral nav group (11 of 11
   topics). Design Patterns hub Phase 10: 24 of 36 topics complete — Structural + Behavioral nav
   groups fully done. Only Enterprise (8 topics) and Principles (4 topics) remain.**
-- [ ] `/design-patterns/repository` — Repository Pattern
+- [x] `/design-patterns/repository` — Repository Pattern (2026-08-30) — first Enterprise-group topic.
+  No compile error found; a genuine content gap instead: the main page's own "Specification +
+  Repository" codeTab defines EfSpecificationEvaluator.Apply() and an
+  IOrderRepository.FindAsync(ISpecification<Order>, ...) interface, but no repository class anywhere
+  implements FindAsync by calling the evaluator — it's defined but never called by anything shown. 3
+  subtopics: (1) **Connecting EfSpecificationEvaluator to a Real Repository** — builds the missing
+  implementation; (2) **Generic RepositoryBase as an Internal Implementation Detail** — the QnA
+  distinguishes a public IRepository<T> (bad) from an internal protected base class (fine), only the
+  bad version was shown — built the good one; (3) **The N+1 Lazy-Loading Pitfall, Demonstrated** —
+  built the same GetPendingOrdersAsync both ways (51 queries vs 1) the QnA names but never shows.
+  Self-caught and fixed the recurring solution-field <code>-tag mistake in the second subtopic —
+  sixth consecutive-batch recurrence. `repository` SUBTOPICS key collision-free, left bare. Build
+  passed clean. Browser-verified: nav accordion opens with 25 toggles total; all 3 subtopic links
+  render correctly; all three solution fields confirmed rendering as literal text; breadcrumb showed
+  all 4 levels; 860px wrapper confirmed via `getComputedStyle`; no console errors. **Design Patterns
+  hub Phase 10: 25 of 36 topics complete.**
 - [ ] `/design-patterns/unit-of-work` — Unit of Work Pattern
 - [ ] `/design-patterns/cqrs` — CQRS
 - [ ] `/design-patterns/event-sourcing` — Event Sourcing
