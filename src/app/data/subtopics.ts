@@ -3420,4 +3420,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why Microservices Duplicate Domain Models', route: '/design-patterns/dry-kiss-yagni/why-microservices-duplicate-domain-models' },
     { label: 'Applying the YAGNI → DRY → KISS Resolution Order', route: '/design-patterns/dry-kiss-yagni/applying-the-yagni-dry-kiss-resolution-order' },
   ],
+  'dependency-inversion': [
+    { label: 'The Missing GetSummaryAsync Method', route: '/design-patterns/dependency-inversion/the-missing-getsummaryasync-method' },
+    { label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' },
+    { label: 'Property and Method Injection, Shown', route: '/design-patterns/dependency-inversion/property-and-method-injection-shown' },
+  ],
 };

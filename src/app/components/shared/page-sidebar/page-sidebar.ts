@@ -27201,6 +27201,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Depending directly on a concrete class (SqlDatabase) instead of an interface locks business logic to that specific infrastructure choice.',
     ],
   },
+  'design-patterns/dependency-inversion/the-missing-getsummaryasync-method': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Dependency Inversion (overview)', route: '/design-patterns/dependency-inversion' },
+      { label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' },
+    ],
+    tip: 'The main page\'s own captive-dependency fix calls repo.GetSummaryAsync() on IOrderRepository — a method the interface, declared in a separate codeTab, was never given.',
+    gotchas: [
+      'Each codeTab reads correctly in isolation — the gap only surfaces by checking one codeTab\'s method calls against another codeTab\'s own interface declaration.',
+    ],
+  },
+  'design-patterns/dependency-inversion/who-should-own-the-abstraction': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Missing GetSummaryAsync Method', route: '/design-patterns/dependency-inversion/the-missing-getsummaryasync-method' },
+      { label: 'Property and Method Injection, Shown', route: '/design-patterns/dependency-inversion/property-and-method-injection-shown' },
+    ],
+    tip: 'If the low-level module defines the interface, the high-level module still depends on something the low-level module controls — true inversion requires the high-level side to own the abstraction.',
+    gotchas: [
+      'Injecting an interface achieves the DI mechanism regardless of ownership — but the DIP principle genuinely depends on which project the interface\'s own definition lives in.',
+    ],
+  },
+  'design-patterns/dependency-inversion/property-and-method-injection-shown': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' },
+      { label: 'Dependency Inversion (overview)', route: '/design-patterns/dependency-inversion' },
+    ],
+    tip: 'Property Injection fits genuinely optional dependencies; Method Injection fits dependencies that vary per call — neither is a lesser substitute for Constructor Injection.',
+    gotchas: [
+      'A dependency that varies per call can\'t be expressed through Constructor Injection at all — the constructor only runs once, at creation.',
+    ],
+  },
   'design-patterns/dry-kiss-yagni': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Inversion" topicRoute="/design-patterns/dependency-inversion"
+    subtopicLabel="Property and Method Injection, Shown" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Property and Method Injection, Shown</h1>
+  <p class="page-subtitle">The theory names all three DI styles. Every codeTab on the page uses only constructor injection — here are the other two.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three DIP concerns the main page names but doesn't fully build: the interface that calls a method it never declared (first subtopic), precisely who should own an abstraction's definition (second), and now the two DI styles besides the constructor injection every codeTab already demonstrates. This completes the Design Patterns hub's entire Phase 10 rollout.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Dependency Inversion" topicRoute="/design-patterns/dependency-inversion"
+    [prev]="{ label: 'Who Should Own the Abstraction?', route: '/design-patterns/dependency-inversion/who-should-own-the-abstraction' }" />
+</div>

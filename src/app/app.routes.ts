@@ -2913,7 +2913,12 @@ export const routes: Routes = [
         { path: 'why-microservices-duplicate-domain-models', loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/subtopics/why-microservices-duplicate-domain-models/why-microservices-duplicate-domain-models').then(m => m.WhyMicroservicesDuplicateDomainModelsSubtopic) },
         { path: 'applying-the-yagni-dry-kiss-resolution-order', loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/subtopics/applying-the-yagni-dry-kiss-resolution-order/applying-the-yagni-dry-kiss-resolution-order').then(m => m.ApplyingTheYagniDryKissResolutionOrderSubtopic) },
       ] },
-    { path: 'dependency-inversion', loadComponent: () => import('./components/architecture/design-patterns/dependency-inversion/dependency-inversion').then(m => m.DpDependencyInversion) },
+    { path: 'dependency-inversion', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/dependency-inversion/dependency-inversion').then(m => m.DpDependencyInversion) },
+        { path: 'the-missing-getsummaryasync-method', loadComponent: () => import('./components/architecture/design-patterns/dependency-inversion/subtopics/the-missing-getsummaryasync-method/the-missing-getsummaryasync-method').then(m => m.TheMissingGetsummaryasyncMethodSubtopic) },
+        { path: 'who-should-own-the-abstraction', loadComponent: () => import('./components/architecture/design-patterns/dependency-inversion/subtopics/who-should-own-the-abstraction/who-should-own-the-abstraction').then(m => m.WhoShouldOwnTheAbstractionSubtopic) },
+        { path: 'property-and-method-injection-shown', loadComponent: () => import('./components/architecture/design-patterns/dependency-inversion/subtopics/property-and-method-injection-shown/property-and-method-injection-shown').then(m => m.PropertyAndMethodInjectionShownSubtopic) },
+      ] },
     // Reference
     { path: 'cheatsheet',         loadComponent: () => import('./components/architecture/design-patterns/cheatsheet/cheatsheet').then(m => m.DpCheatsheet) },
     { path: 'interview-prep',     loadComponent: () => import('./components/architecture/design-patterns/interview-prep/interview-prep').then(m => m.DpInterviewPrep) },

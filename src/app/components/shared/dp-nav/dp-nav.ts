@@ -736,7 +736,26 @@ const DIFF: Record<string, string> = Object.fromEntries(
           </div>
         }
       }
-      <a routerLink="/design-patterns/dependency-inversion" routerLinkActive="active"><span class="nl-text">Dependency Inversion</span>@if(p.isDone('dp-dependency-inversion')){<span class="nl-done">✓</span>}@if(d('dp-dependency-inversion');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/design-patterns/dependency-inversion" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Dependency Inversion</span>
+        @if(p.isDone('dp-dependency-inversion')){<span class="nl-done">✓</span>}
+        @if(d('dp-dependency-inversion');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}
+        @if (subtopicsOf('dependency-inversion')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dependency-inversion')"
+                  (click)="toggleSubtopics('dependency-inversion', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dependency-inversion'); as dipSubs) {
+        @if (isSubtopicsExpanded('dependency-inversion')) {
+          <div class="nav-subtopics">
+            @for (s of dipSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

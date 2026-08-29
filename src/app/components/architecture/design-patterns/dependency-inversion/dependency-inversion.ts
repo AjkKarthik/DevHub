@@ -91,7 +91,11 @@ public class OrderService
 // ── With DIP — interfaces + constructor injection ──────────────────────────────
 
 // Abstractions (defined in Application layer)
-public interface IOrderRepository { Task SaveAsync(Order order, CancellationToken ct = default); }
+public interface IOrderRepository
+{
+    Task SaveAsync(Order order, CancellationToken ct = default);
+    Task<OrderSummary> GetSummaryAsync(CancellationToken ct = default);
+}
 public interface IEmailService    { Task SendConfirmationAsync(Order order, CancellationToken ct = default); }
 
 // High-level module — depends ONLY on abstractions
@@ -109,6 +113,9 @@ public class SqlOrderRepository(AppDbContext db) : IOrderRepository
 {
     public Task SaveAsync(Order order, CancellationToken ct) =>
         db.Orders.AddAsync(order, ct).AsTask();
+
+    public async Task<OrderSummary> GetSummaryAsync(CancellationToken ct) =>
+        new(await db.Orders.CountAsync(ct), await db.Orders.SumAsync(o => o.Total, ct));
 }
 
 public class SmtpEmailService(IOptions<SmtpSettings> settings) : IEmailService
