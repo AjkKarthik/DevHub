@@ -34138,6 +34138,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Broken Access Control has topped the list in recent revisions, reflecting how commonly authorization checks are missed or implemented incorrectly.',
     ],
   },
+  'security/owasp-top-10/the-injection-pattern-that-missed-its-own-test': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OWASP Top 10 (overview)', route: '/security/owasp-top-10' },
+      { label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' },
+    ],
+    tip: 'A pattern-matching detector is only as good as its test suite — the same string that "looks like" a bypass in a code comment can silently fail to actually match, and the only way to know is to run it.',
+    gotchas: [
+      'A missing space around a keyword like "or" can make a blocklist pattern fail to match the exact classic injection string it was written to catch.',
+    ],
+  },
+  'security/owasp-top-10/a08-insecure-deserialization-made-concrete': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'The Injection Pattern That Missed Its Own Test', route: '/security/owasp-top-10/the-injection-pattern-that-missed-its-own-test' },
+      { label: 'Preventing SSRF With an IP Allowlist', route: '/security/owasp-top-10/preventing-ssrf-with-an-ip-allowlist' },
+    ],
+    tip: 'Deserializing untrusted data with a format that can reconstruct executable objects (not just plain data) hands the attacker a way to run code — validating the RESULT after deserializing is already too late.',
+    gotchas: [
+      'Swapping to JSON.parse() alone only removes the code-execution risk — it does not validate the SHAPE of the data, which is what a schema validator like Zod is still needed for.',
+    ],
+  },
+  'security/owasp-top-10/preventing-ssrf-with-an-ip-allowlist': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' },
+      { label: 'OWASP Top 10 (overview)', route: '/security/owasp-top-10' },
+    ],
+    tip: 'Checking a resolved IP address up front is not the same as checking it on every hop — a fetch client that follows redirects by default can still land on a blocked address the first check never saw.',
+    gotchas: [
+      'A hostname an attacker controls the DNS record for can be pointed at a private or link-local IP just as easily as a public one — validate the resolved address, never the hostname text.',
+    ],
+  },
   'security/injection': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

@@ -3243,7 +3243,12 @@ export const routes: Routes = [
         { path: 'fail-secure-vs-fail-safe-made-concrete', loadComponent: () => import('./components/architecture/security/fundamentals/subtopics/fail-secure-vs-fail-safe-made-concrete/fail-secure-vs-fail-safe-made-concrete').then(m => m.FailSecureVsFailSafeMadeConcreteSubtopic) },
         { path: 'what-sast-actually-catches', loadComponent: () => import('./components/architecture/security/fundamentals/subtopics/what-sast-actually-catches/what-sast-actually-catches').then(m => m.WhatSastActuallyCatchesSubtopic) },
       ] },
-    { path: 'owasp-top-10',          loadComponent: () => import('./components/architecture/security/owasp-top-10/owasp-top-10').then(m => m.SecOwaspTop10) },
+    { path: 'owasp-top-10', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/owasp-top-10/owasp-top-10').then(m => m.SecOwaspTop10) },
+        { path: 'the-injection-pattern-that-missed-its-own-test', loadComponent: () => import('./components/architecture/security/owasp-top-10/subtopics/the-injection-pattern-that-missed-its-own-test/the-injection-pattern-that-missed-its-own-test').then(m => m.TheInjectionPatternThatMissedItsOwnTestSubtopic) },
+        { path: 'a08-insecure-deserialization-made-concrete', loadComponent: () => import('./components/architecture/security/owasp-top-10/subtopics/a08-insecure-deserialization-made-concrete/a08-insecure-deserialization-made-concrete').then(m => m.A08InsecureDeserializationMadeConcreteSubtopic) },
+        { path: 'preventing-ssrf-with-an-ip-allowlist', loadComponent: () => import('./components/architecture/security/owasp-top-10/subtopics/preventing-ssrf-with-an-ip-allowlist/preventing-ssrf-with-an-ip-allowlist').then(m => m.PreventingSsrfWithAnIpAllowlistSubtopic) },
+      ] },
     { path: 'threat-modelling',      loadComponent: () => import('./components/architecture/security/threat-modelling/threat-modelling').then(m => m.SecThreatModelling) },
     { path: 'secure-coding',         loadComponent: () => import('./components/architecture/security/secure-coding/secure-coding').then(m => m.SecSecureCoding) },
     { path: 'password-security',     loadComponent: () => import('./components/architecture/security/password-security/password-security').then(m => m.SecPasswordSecurity) },

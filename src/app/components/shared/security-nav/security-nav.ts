@@ -38,7 +38,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/owasp-top-10" routerLinkActive="active"><span class="nl-text">OWASP Top 10</span>@if(progress.isDone('sec-owasp-top-10')){<span class="nl-done">✓</span>}@if(d('sec-owasp-top-10');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/owasp-top-10" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">OWASP Top 10</span>
+        @if(progress.isDone('sec-owasp-top-10')){<span class="nl-done">✓</span>}
+        @if(d('sec-owasp-top-10');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('owasp-top-10')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('owasp-top-10')"
+                  (click)="toggleSubtopics('owasp-top-10', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('owasp-top-10'); as owaspSubs) {
+        @if (isSubtopicsExpanded('owasp-top-10')) {
+          <div class="nav-subtopics">
+            @for (s of owaspSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/threat-modelling" routerLinkActive="active"><span class="nl-text">Threat Modelling</span>@if(progress.isDone('sec-threat-modelling')){<span class="nl-done">✓</span>}@if(d('sec-threat-modelling');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/secure-coding" routerLinkActive="active"><span class="nl-text">Secure Coding</span>@if(progress.isDone('sec-secure-coding')){<span class="nl-done">✓</span>}@if(d('sec-secure-coding');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
     </div>

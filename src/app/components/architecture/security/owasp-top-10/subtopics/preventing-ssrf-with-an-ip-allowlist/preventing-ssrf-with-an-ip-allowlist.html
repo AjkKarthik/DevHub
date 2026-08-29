@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="OWASP Top 10" topicRoute="/security/owasp-top-10"
+    subtopicLabel="Preventing SSRF With an IP Allowlist" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Preventing SSRF With an IP Allowlist</h1>
+  <p class="page-subtitle">The quiz names the AWS metadata endpoint and private IP ranges in detail. Here's the vulnerable endpoint that reaches them — and the fix.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three OWASP categories the main page names but doesn't fully demonstrate: a Challenge that didn't correctly detect its own worked example (first subtopic), A08 Insecure Deserialization made concrete (second), and now A10 SSRF — including a genuinely tricky redirect-following edge case the quiz's own explanation never mentions.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="OWASP Top 10" topicRoute="/security/owasp-top-10"
+    [prev]="{ label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' }" />
+</div>

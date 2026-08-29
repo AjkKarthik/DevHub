@@ -3432,4 +3432,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Fail-Secure vs. Fail-Safe, Made Concrete', route: '/security/fundamentals/fail-secure-vs-fail-safe-made-concrete' },
     { label: 'What SAST Actually Catches', route: '/security/fundamentals/what-sast-actually-catches' },
   ],
+  'owasp-top-10': [
+    { label: 'The Injection Pattern That Missed Its Own Test', route: '/security/owasp-top-10/the-injection-pattern-that-missed-its-own-test' },
+    { label: 'A08 Insecure Deserialization, Made Concrete', route: '/security/owasp-top-10/a08-insecure-deserialization-made-concrete' },
+    { label: 'Preventing SSRF With an IP Allowlist', route: '/security/owasp-top-10/preventing-ssrf-with-an-ip-allowlist' },
+  ],
 };
