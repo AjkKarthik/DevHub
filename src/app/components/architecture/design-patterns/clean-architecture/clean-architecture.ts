@@ -84,11 +84,24 @@ public class Order
     public IReadOnlyList<OrderItem> Items => _items.AsReadOnly();
     private readonly List<OrderItem> _items = new();
 
+    // Domain events raised by this aggregate — not yet published,
+    // just recorded until Infrastructure dispatches them after commit.
+    private readonly List<object> _domainEvents = new();
+    public IReadOnlyList<object> DomainEvents => _domainEvents.AsReadOnly();
+    private void AddDomainEvent(object domainEvent) => _domainEvents.Add(domainEvent);
+
     public static Order Create(Guid customerId, IEnumerable<OrderItem> items)
     {
         if (!items.Any()) throw new DomainException("Order must have at least one item");
         return new Order { Id = Guid.NewGuid(), CustomerId = customerId, Status = OrderStatus.Pending,
                            _items = items.ToList() };
+    }
+
+    public void Ship()
+    {
+        if (Status != OrderStatus.Pending) throw new DomainException("Only a pending order can be shipped");
+        Status = OrderStatus.Shipped;
+        AddDomainEvent(new OrderShippedEvent(Id));
     }
 
     public void Cancel(string reason)

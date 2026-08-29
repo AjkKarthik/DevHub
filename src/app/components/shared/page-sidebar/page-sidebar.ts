@@ -26971,6 +26971,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The testability benefit only materializes if the team actually keeps business logic out of the outer layers — the structure alone does not enforce it.',
     ],
   },
+  'design-patterns/clean-architecture/the-order-aggregates-missing-ship-and-adddomainevent': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Clean Architecture Pattern (overview)', route: '/design-patterns/clean-architecture' },
+      { label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' },
+    ],
+    tip: 'The main page\'s own Order.Cancel() calls AddDomainEvent(...), and a separate test calls order.Ship() — neither method was ever declared on the Order class.',
+    gotchas: [
+      'Reading either codeTab in isolation looks complete — the gap only shows up by checking one codeTab\'s assumptions against the other\'s actual declarations.',
+    ],
+  },
+  'design-patterns/clean-architecture/input-and-output-ports-made-concrete': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Order Aggregate\'s Missing Ship() and AddDomainEvent', route: '/design-patterns/clean-architecture/the-order-aggregates-missing-ship-and-adddomainevent' },
+      { label: 'Returning a Result Type Instead of Throwing', route: '/design-patterns/clean-architecture/returning-a-result-type-instead-of-throwing' },
+    ],
+    tip: 'An explicit Output Port lets the SAME use case serve multiple callers (HTTP, CLI, a background job) each with their own presenter — without the use case knowing which one is listening.',
+    gotchas: [
+      'Adding a new caller only requires a new presenter implementation — the use case itself never needs to change.',
+    ],
+  },
+  'design-patterns/clean-architecture/returning-a-result-type-instead-of-throwing': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' },
+      { label: 'Clean Architecture Pattern (overview)', route: '/design-patterns/clean-architecture' },
+    ],
+    tip: 'A Result type is for EXPECTED business failures a caller needs to branch on; a genuine domain-invariant violation still throws — the two categories coexist deliberately.',
+    gotchas: [
+      'Only the FIRST failing check is ever reported — a caller only sees the earliest applicable reason, not every rule an input happens to violate.',
+    ],
+  },
   'design-patterns/command': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

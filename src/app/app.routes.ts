@@ -2888,7 +2888,12 @@ export const routes: Routes = [
         { path: 'specification-as-a-construction-rule', loadComponent: () => import('./components/architecture/design-patterns/specification/subtopics/specification-as-a-construction-rule/specification-as-a-construction-rule').then(m => m.SpecificationAsAConstructionRuleSubtopic) },
         { path: 'a-hybrid-database-then-in-memory-pipeline', loadComponent: () => import('./components/architecture/design-patterns/specification/subtopics/a-hybrid-database-then-in-memory-pipeline/a-hybrid-database-then-in-memory-pipeline').then(m => m.AHybridDatabaseThenInMemoryPipelineSubtopic) },
       ] },
-    { path: 'clean-architecture', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/clean-architecture').then(m => m.DpCleanArchitecture) },
+    { path: 'clean-architecture', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/clean-architecture').then(m => m.DpCleanArchitecture) },
+        { path: 'the-order-aggregates-missing-ship-and-adddomainevent', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/subtopics/the-order-aggregates-missing-ship-and-adddomainevent/the-order-aggregates-missing-ship-and-adddomainevent').then(m => m.TheOrderAggregatesMissingShipAndAdddomaineventSubtopic) },
+        { path: 'input-and-output-ports-made-concrete', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/subtopics/input-and-output-ports-made-concrete/input-and-output-ports-made-concrete').then(m => m.InputAndOutputPortsMadeConcreteSubtopic) },
+        { path: 'returning-a-result-type-instead-of-throwing', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/subtopics/returning-a-result-type-instead-of-throwing/returning-a-result-type-instead-of-throwing').then(m => m.ReturningAResultTypeInsteadOfThrowingSubtopic) },
+      ] },
     // Principles
     { path: 'solid',              loadComponent: () => import('./components/architecture/design-patterns/solid/solid').then(m => m.DpSolid) },
     { path: 'grasp',              loadComponent: () => import('./components/architecture/design-patterns/grasp/grasp').then(m => m.DpGrasp) },

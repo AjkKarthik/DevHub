@@ -3397,4 +3397,12 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' },
     { label: 'A Hybrid Database-Then-In-Memory Pipeline', route: '/design-patterns/specification/a-hybrid-database-then-in-memory-pipeline' },
   ],
+  // NOTE: bare 'clean-architecture' is safe here — the Architecture Patterns
+  // hub's own identically-slugged topic is hub-prefixed to 'arch-clean-architecture'
+  // (see the note above that entry) specifically to leave this key free.
+  'clean-architecture': [
+    { label: 'The Order Aggregate’s Missing Ship() and AddDomainEvent', route: '/design-patterns/clean-architecture/the-order-aggregates-missing-ship-and-adddomainevent' },
+    { label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' },
+    { label: 'Returning a Result Type Instead of Throwing', route: '/design-patterns/clean-architecture/returning-a-result-type-instead-of-throwing' },
+  ],
 };

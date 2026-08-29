@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Clean Architecture Pattern" topicRoute="/design-patterns/clean-architecture"
+    subtopicLabel="Returning a Result Type Instead of Throwing" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Returning a Result Type Instead of Throwing</h1>
+  <p class="page-subtitle">The QnA's own validation answer recommends a Result type for expected failures in one sentence. Here's a working one, alongside the domain exception it doesn't replace.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three Application-layer concerns the main page names but doesn't fully build: a compiling Order aggregate (first subtopic), explicit multi-caller ports (second), and now the expected-vs-exceptional failure distinction the QnA's own validation answer draws but never demonstrates in code.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Clean Architecture Pattern" topicRoute="/design-patterns/clean-architecture"
+    [prev]="{ label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' }" />
+</div>
