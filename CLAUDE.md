@@ -4105,6 +4105,38 @@ do this same check before any other new hub's first subtopic set:
     rendering as literal plain text with the embedded `$"order:{e.OrderId}"` C# interpolation intact;
     breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 27 of 36 topics complete.**
+34. **The `event-sourcing` batch found and fixed a genuine, self-contained bug in the main page's
+    own `OrderSummaryProjection`**: <code>HandleAsync(OrderPlaced e, ...)</code> called
+    <code>db.OrderSummaries.AddAsync(...)</code> but never followed it with
+    <code>SaveChangesAsync()</code> — <code>AddAsync</code> only queues the entity into EF Core's
+    change tracker, it never writes to the database on its own. The sibling method on the SAME
+    class, <code>HandleAsync(OrderCancelled e, ...)</code>, correctly ends with
+    <code>SaveChangesAsync(ct)</code> — a purely self-contained catch found by comparing the two
+    handler methods against each other, no external research needed. Every <code>OrderPlaced</code>
+    event processed by this projection was silently never creating its read-model row. Fixed by
+    adding the missing <code>SaveChangesAsync()</code> call. Three subtopics: (1) **fix-adjacent** —
+    traces the exact gap and why <code>async</code>/<code>await</code> on <code>AddAsync</code>
+    doesn't mean a database write happened; (2) **gap-closing** — the main page has an entire
+    "Snapshots" theory section and a dedicated quiz question, but every codeTab always replays the
+    FULL event stream; built a snapshot-aware <code>OrderRepository.GetByIdAsync</code> that seeds
+    from the latest snapshot and replays only newer events, plus the matching
+    <code>Order.FromSnapshot</code>/<code>ToSnapshot</code>/<code>ApplyRange</code> additions
+    (caught and fixed a real access-modifier mistake of my own mid-authoring — <code>FromSnapshot</code>
+    needed to be <code>public static</code>, not <code>private</code>, since a different class calls
+    it); (3) **gap-closing** — the mistakes block, a quiz question, and a QnA answer all describe
+    event upcasting in prose only; built an actual <code>OrderPlacedV1</code> → <code>OrderPlacedV2</code>
+    upcaster function wired into <code>EventStore.Deserialise</code>'s own switch expression, with a
+    Try It extending it to a genuine v1→v2→v3 chain. No `SUBTOPICS` collision for `event-sourcing`
+    (checked both `subtopics.ts` forms — the only near-match was the unrelated `cqrs-event-sourcing`
+    key from the Architecture Patterns hub — and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). All three `exercise.solution` fields swept and confirmed clean on the
+    first pass. Build passed clean. Browser-verified: no console errors; nav accordion opens with 28
+    toggles total; all 3 subtopic links render correctly; the main-page fix confirmed rendering after
+    switching the code-block's own tab selector to "Event Store + Projection" specifically (the
+    default-selected tab is "Event-Sourced Aggregate," which never contained the fix); a subtopic's
+    own `solution` field confirmed rendering as literal plain text; breadcrumb showed all 4 levels;
+    860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 28 of 36 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5072,7 +5104,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 27 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 28 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5082,6 +5114,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/observer`, `/design-patterns/state`, `/design-patterns/strategy`,
   `/design-patterns/template-method`, `/design-patterns/visitor`, `/design-patterns/null-object`,
   `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
+  `/design-patterns/event-sourcing`,
   2026-08-04/2026-08-30, Structural + Behavioral nav groups complete; Enterprise in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
   fix (12th `*NavComponent`-based hub in a row missing it at pilot time) and the genuine bugs found

@@ -7564,7 +7564,21 @@ off here with a date.
   correctly; the main-page fix confirmed rendering; breadcrumb showed all 4 levels; 860px wrapper
   confirmed via `getComputedStyle`; no console errors. **Design Patterns hub Phase 10: 27 of 36
   topics complete.**
-- [ ] `/design-patterns/event-sourcing` — Event Sourcing
+- [x] `/design-patterns/event-sourcing` — Event Sourcing (2026-08-30) — 3 subtopics: The
+  OrderPlaced Handler Never Persists Its Insert (fixed a real bug — the main page's own
+  OrderSummaryProjection.HandleAsync(OrderPlaced) called AddAsync() but never SaveChangesAsync(),
+  while the sibling HandleAsync(OrderCancelled) on the same class correctly commits; a purely
+  self-contained catch from comparing the two handlers); Rehydrating From a Snapshot (builds the
+  snapshot-aware load path the "Snapshots" theory section names but never shows in code, plus a
+  self-caught access-modifier fix — FromSnapshot needed to be public static, not private); An
+  Upcaster Chain for OrderPlaced v1 to v2 (builds the upcaster the mistakes block/quiz/QnA all
+  describe in prose only, wired into EventStore.Deserialise). No `SUBTOPICS` collision for
+  `event-sourcing` (the only near-match was the unrelated `cqrs-event-sourcing` key from the
+  Architecture Patterns hub), left bare. All three `solution` fields clean on first sweep. Build
+  passed clean. Browser-verified: nav accordion opens with 28 toggles total; all 3 subtopic links
+  render correctly; the main-page fix confirmed rendering after switching to the "Event Store +
+  Projection" tab; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`;
+  no console errors. **Design Patterns hub Phase 10: 28 of 36 topics complete.**
 - [ ] `/design-patterns/saga` — Saga Pattern
 - [ ] `/design-patterns/outbox` — Outbox Pattern
 - [ ] `/design-patterns/specification` — Specification Pattern
