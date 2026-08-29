@@ -27941,6 +27941,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'New rule combinations should ideally be expressed by combining EXISTING specifications rather than writing new bespoke conditionals.',
     ],
   },
+  'design-patterns/specification/the-expression-invoke-composition-problem': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Specification Pattern (overview)', route: '/design-patterns/specification' },
+      { label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' },
+    ],
+    tip: 'Expression.Invoke() works fine once compiled and run in memory, but LINQ providers like EF Core have well-documented trouble translating it — a Parameter Replacer produces one flat, translatable tree instead.',
+    gotchas: [
+      'The main page\'s own QnA already names the correct fix (an ExpressionVisitor Parameter Replacer) — the composite AndSpec/OrSpec/NotSpec just never actually used it.',
+    ],
+  },
+  'design-patterns/specification/specification-as-a-construction-rule': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Expression.Invoke Composition Problem', route: '/design-patterns/specification/the-expression-invoke-composition-problem' },
+      { label: 'A Hybrid Database-Then-In-Memory Pipeline', route: '/design-patterns/specification/a-hybrid-database-then-in-memory-pipeline' },
+    ],
+    tip: 'Construction needs the specification\'s rule PLUS separate knowledge of what values satisfy it — a bare IsSatisfiedBy() predicate alone can\'t build a new object.',
+    gotchas: [
+      'A defensive IsSatisfiedBy() check inside the factory catches the factory and the specification falling out of sync — nothing enforces that automatically otherwise.',
+    ],
+  },
+  'design-patterns/specification/a-hybrid-database-then-in-memory-pipeline': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' },
+      { label: 'Specification Pattern (overview)', route: '/design-patterns/specification' },
+    ],
+    tip: 'The SQL-translatable stage runs FIRST to shrink the candidate set before the expensive, non-translatable in-memory stage ever runs on it.',
+    gotchas: [
+      'A specification calling an external service can\'t be composed into the same expression tree as a SQL-translatable one — they stay as two separate pipeline stages, not one combined specification.',
+    ],
+  },
   'design-patterns/state': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [

@@ -2882,7 +2882,12 @@ export const routes: Routes = [
         { path: 'building-the-inbox-patterns-idempotency-table', loadComponent: () => import('./components/architecture/design-patterns/outbox/subtopics/building-the-inbox-patterns-idempotency-table/building-the-inbox-patterns-idempotency-table').then(m => m.BuildingTheInboxPatternsIdempotencyTableSubtopic) },
         { path: 'preserving-event-order-with-a-per-aggregate-relay', loadComponent: () => import('./components/architecture/design-patterns/outbox/subtopics/preserving-event-order-with-a-per-aggregate-relay/preserving-event-order-with-a-per-aggregate-relay').then(m => m.PreservingEventOrderWithAPerAggregateRelaySubtopic) },
       ] },
-    { path: 'specification',      loadComponent: () => import('./components/architecture/design-patterns/specification/specification').then(m => m.DpSpecification) },
+    { path: 'specification', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/specification/specification').then(m => m.DpSpecification) },
+        { path: 'the-expression-invoke-composition-problem', loadComponent: () => import('./components/architecture/design-patterns/specification/subtopics/the-expression-invoke-composition-problem/the-expression-invoke-composition-problem').then(m => m.TheExpressionInvokeCompositionProblemSubtopic) },
+        { path: 'specification-as-a-construction-rule', loadComponent: () => import('./components/architecture/design-patterns/specification/subtopics/specification-as-a-construction-rule/specification-as-a-construction-rule').then(m => m.SpecificationAsAConstructionRuleSubtopic) },
+        { path: 'a-hybrid-database-then-in-memory-pipeline', loadComponent: () => import('./components/architecture/design-patterns/specification/subtopics/a-hybrid-database-then-in-memory-pipeline/a-hybrid-database-then-in-memory-pipeline').then(m => m.AHybridDatabaseThenInMemoryPipelineSubtopic) },
+      ] },
     { path: 'clean-architecture', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/clean-architecture').then(m => m.DpCleanArchitecture) },
     // Principles
     { path: 'solid',              loadComponent: () => import('./components/architecture/design-patterns/solid/solid').then(m => m.DpSolid) },

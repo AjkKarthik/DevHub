@@ -1,0 +1,26 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Specification Pattern" topicRoute="/design-patterns/specification"
+    subtopicLabel="A Hybrid Database-Then-In-Memory Pipeline" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">A Hybrid Database-Then-In-Memory Pipeline</h1>
+  <p class="page-subtitle">The QnA suggests this exact two-stage approach for specifications that can't be expressed as SQL. Here's a working version of it.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>This closes out three concerns the main page names but doesn't fully build: correct composition across both evaluation modes (first subtopic), specification-driven construction (second), and now a working pipeline for the rules that genuinely can't be evaluated in the database at all. All three sit on top of the main page's own central claim — one named rule, reusable across contexts — filling in exactly where that reuse gets harder in practice.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Specification Pattern" topicRoute="/design-patterns/specification"
+    [prev]="{ label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' }" />
+</div>

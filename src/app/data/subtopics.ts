@@ -3392,4 +3392,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building the Inbox Pattern’s Idempotency Table', route: '/design-patterns/outbox/building-the-inbox-patterns-idempotency-table' },
     { label: 'Preserving Event Order With a Per-Aggregate Relay', route: '/design-patterns/outbox/preserving-event-order-with-a-per-aggregate-relay' },
   ],
+  'specification': [
+    { label: 'The Expression.Invoke Composition Problem', route: '/design-patterns/specification/the-expression-invoke-composition-problem' },
+    { label: 'Specification as a Construction Rule', route: '/design-patterns/specification/specification-as-a-construction-rule' },
+    { label: 'A Hybrid Database-Then-In-Memory Pipeline', route: '/design-patterns/specification/a-hybrid-database-then-in-memory-pipeline' },
+  ],
 };
