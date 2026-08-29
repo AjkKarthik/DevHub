@@ -4376,6 +4376,44 @@ do this same check before any other new hub's first subtopic set:
     codeTabs ("Before" and "After") both confirmed rendering as genuinely distinct, separately
     clickable tabs; breadcrumb showed all 4 levels; 860px wrapper confirmed via `getComputedStyle`.
     **Design Patterns hub Phase 10: 34 of 36 topics complete.**
+41. **The `dry-kiss-yagni` batch — the THIRD Principles-group topic — was another clean main page:
+    no compile error or undeclared reference in either codeTab, so no main-page edit this batch.**
+    All three subtopics are gap-closing: (1) DAMP gets its own quickRef entry, its own theory bullet
+    ("In tests: prefer DAMP... test independence and clarity are worth some repetition"), and its
+    own QnA mention — but no codeTab ever shows a test written the DRY way next to the SAME test
+    written the DAMP way; built the identical <code>OrderTests</code> suite both ways, with a Try It
+    showing how the DRY version's shared <code>CreateValidOrder()</code> helper has to change (for
+    every existing caller) the moment a third test needs something the helper's original parameters
+    can't express; (2) the intentional-duplication QnA lists "different bounded contexts —
+    microservices intentionally duplicate domain models" as one bullet among four, never built; built
+    a shared-<code>Customer</code>-model anti-pattern (forcing both a Billing and a Shipping service
+    to redeploy for fields neither fully owns) contrasted against each service owning its own
+    <code>Customer</code> shape, with a Try It distinguishing a shared EVENT-level <code>CustomerId</code>
+    (a stable identifier, not duplicated domain knowledge) from a shared MODEL; (3) the QnA states a
+    specific DRY/KISS/YAGNI conflict-resolution order ("apply them in order — YAGNI first... then
+    DRY... then KISS") in one paragraph, never applied to a concrete feature; walked a CSV-export
+    feature through all three stages in sequence, then re-ran the same three-stage pass six months
+    later when a genuinely new requirement (an Inventory report type) arrived, showing the
+    correctly-scoped DRY abstraction from stage one needed zero changes. **A real verification
+    technique used before trusting a tricky nested-escaping codeTab**: the third subtopic's
+    <code>CsvFormatting.EscapeField()</code> sample needed a C# interpolated string with escaped
+    embedded quotes (<code>$"\"{value}\""</code>), itself embedded inside the subtopic's own outer TS
+    template literal — rather than trust the escaping by eye, actually EXTRACTED the exact backtick
+    span from the raw file text and evaluated it as a real JS template literal via
+    <code>new Function('return `' + body + '`;')</code>, confirming the resulting string was valid,
+    correctly-escaped C# before ever running the build — a more rigorous version of the standing
+    pre-build sweep for cases where nested string-escaping across two languages makes a plain visual
+    read unreliable. No `SUBTOPICS` collision for `dry-kiss-yagni` (checked both `subtopics.ts` forms
+    and grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three
+    `exercise.solution` fields swept and confirmed clean, plus a bracket-balance check
+    (`grep -o '{' | wc -l` vs `}"`, and a Node backtick-count check) run on all three new files before
+    the build, per the standing practice established in the immediately-prior GRASP batch. Build
+    passed clean. Browser-verified: no console errors; nav accordion opens with 35 toggles total; all
+    3 subtopic links render correctly including the arrow characters ("YAGNI → DRY → KISS"); the
+    nested-escaping codeTab confirmed rendering as valid C# on the live page, matching the
+    Node-verified expected output exactly; breadcrumb showed all 4 levels including the "&" in "DRY,
+    KISS & YAGNI"; 860px wrapper confirmed via `getComputedStyle`.
+    **Design Patterns hub Phase 10: 35 of 36 topics complete — only Dependency Inversion remains.**
 
 ## Current state (update when it changes!)
 
@@ -5343,7 +5381,7 @@ do this same check before any other new hub's first subtopic set:
   All 39 cards `available: true` in `architecture/design-patterns/home/home.ts`. Progress: `dpTotal=36` in progress.service.ts.
   Design Patterns pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. DpNavComponent at `shared/dp-nav/dp-nav.ts`.
-  Phase 10: 34 of 36 topics have subtopics (`/design-patterns/singleton`,
+  Phase 10: 35 of 36 topics have subtopics (`/design-patterns/singleton`,
   `/design-patterns/factory-method`, `/design-patterns/abstract-factory`,
   `/design-patterns/builder`, `/design-patterns/prototype`, `/design-patterns/object-pool`,
   `/design-patterns/adapter`, `/design-patterns/bridge`, `/design-patterns/composite`,
@@ -5355,7 +5393,7 @@ do this same check before any other new hub's first subtopic set:
   `/design-patterns/repository`, `/design-patterns/unit-of-work`, `/design-patterns/cqrs`,
   `/design-patterns/event-sourcing`, `/design-patterns/saga`, `/design-patterns/outbox`,
   `/design-patterns/specification`, `/design-patterns/clean-architecture`,
-  `/design-patterns/solid`, `/design-patterns/grasp`,
+  `/design-patterns/solid`, `/design-patterns/grasp`, `/design-patterns/dry-kiss-yagni`,
   2026-08-04/2026-08-30, Structural + Behavioral + Enterprise nav groups complete; Principles
   in progress) — see
   "Design Patterns hub subtopic wiring" section above for the `DpNavComponent` accordion structural
