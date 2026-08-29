@@ -3405,4 +3405,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Input and Output Ports, Made Concrete', route: '/design-patterns/clean-architecture/input-and-output-ports-made-concrete' },
     { label: 'Returning a Result Type Instead of Throwing', route: '/design-patterns/clean-architecture/returning-a-result-type-instead-of-throwing' },
   ],
+  'solid': [
+    { label: 'The Composition-Based LSP Fix', route: '/design-patterns/solid/the-composition-based-lsp-fix' },
+    { label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' },
+    { label: 'How Much Segregation Is Too Much', route: '/design-patterns/solid/how-much-segregation-is-too-much' },
+  ],
 };

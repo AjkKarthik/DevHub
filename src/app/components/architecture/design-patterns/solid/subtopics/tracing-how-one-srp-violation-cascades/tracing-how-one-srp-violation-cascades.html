@@ -1,0 +1,27 @@
+<div class="dp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="SOLID Principles" topicRoute="/design-patterns/solid"
+    subtopicLabel="Tracing How One SRP Violation Cascades" />
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Tracing How One SRP Violation Cascades</h1>
+  <p class="page-subtitle">The QnA claims SOLID violations cascade into each other. Here's one class traced mechanically through all three.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="dp-section">
+    <h2>Where this fits</h2>
+    <p>Splitting <code>OrderNotifier</code> by responsibility fixed OCP and ISP as side effects — but it's worth asking how far that splitting should go. The next subtopic covers exactly that boundary: when SRP-driven splitting stops helping and starts fragmenting.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="SOLID Principles" topicRoute="/design-patterns/solid"
+    [prev]="{ label: 'The Composition-Based LSP Fix', route: '/design-patterns/solid/the-composition-based-lsp-fix' }"
+    [next]="{ label: 'How Much Segregation Is Too Much', route: '/design-patterns/solid/how-much-segregation-is-too-much' }" />
+</div>

@@ -2895,7 +2895,12 @@ export const routes: Routes = [
         { path: 'returning-a-result-type-instead-of-throwing', loadComponent: () => import('./components/architecture/design-patterns/clean-architecture/subtopics/returning-a-result-type-instead-of-throwing/returning-a-result-type-instead-of-throwing').then(m => m.ReturningAResultTypeInsteadOfThrowingSubtopic) },
       ] },
     // Principles
-    { path: 'solid',              loadComponent: () => import('./components/architecture/design-patterns/solid/solid').then(m => m.DpSolid) },
+    { path: 'solid', children: [
+        { path: '', loadComponent: () => import('./components/architecture/design-patterns/solid/solid').then(m => m.DpSolid) },
+        { path: 'the-composition-based-lsp-fix', loadComponent: () => import('./components/architecture/design-patterns/solid/subtopics/the-composition-based-lsp-fix/the-composition-based-lsp-fix').then(m => m.TheCompositionBasedLspFixSubtopic) },
+        { path: 'tracing-how-one-srp-violation-cascades', loadComponent: () => import('./components/architecture/design-patterns/solid/subtopics/tracing-how-one-srp-violation-cascades/tracing-how-one-srp-violation-cascades').then(m => m.TracingHowOneSrpViolationCascadesSubtopic) },
+        { path: 'how-much-segregation-is-too-much', loadComponent: () => import('./components/architecture/design-patterns/solid/subtopics/how-much-segregation-is-too-much/how-much-segregation-is-too-much').then(m => m.HowMuchSegregationIsTooMuchSubtopic) },
+      ] },
     { path: 'grasp',              loadComponent: () => import('./components/architecture/design-patterns/grasp/grasp').then(m => m.DpGrasp) },
     { path: 'dry-kiss-yagni',     loadComponent: () => import('./components/architecture/design-patterns/dry-kiss-yagni/dry-kiss-yagni').then(m => m.DpDryKissYagni) },
     { path: 'dependency-inversion', loadComponent: () => import('./components/architecture/design-patterns/dependency-inversion/dependency-inversion').then(m => m.DpDependencyInversion) },

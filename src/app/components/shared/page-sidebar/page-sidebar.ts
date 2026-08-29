@@ -27962,6 +27962,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'SOLID principles are heuristics for managing growing complexity, not rules to dogmatically apply to every small, stable class.',
     ],
   },
+  'design-patterns/solid/the-composition-based-lsp-fix': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'SOLID Principles (overview)', route: '/design-patterns/solid' },
+      { label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' },
+    ],
+    tip: 'The main page\'s own Square/Rectangle fix uses neither inheritance nor composition — just two unrelated types. Composition is a genuinely different third option, worth it once there\'s real behaviour to reuse.',
+    gotchas: [
+      'Composition only exposes what the wrapping class explicitly delegates to — a new method on the wrapped type isn\'t automatically available through it.',
+    ],
+  },
+  'design-patterns/solid/tracing-how-one-srp-violation-cascades': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'The Composition-Based LSP Fix', route: '/design-patterns/solid/the-composition-based-lsp-fix' },
+      { label: 'How Much Segregation Is Too Much', route: '/design-patterns/solid/how-much-segregation-is-too-much' },
+    ],
+    tip: 'Splitting a class by responsibility fixes OCP and ISP as a mechanical SIDE EFFECT — each new focused class gets its own extension point and its own narrow public surface for free.',
+    gotchas: [
+      'A caller depending on the whole unsplit class can trigger unwanted real side effects (like actually sending a message) just to reach one piece of behaviour it needed.',
+    ],
+  },
+  'design-patterns/solid/how-much-segregation-is-too-much': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Tracing How One SRP Violation Cascades', route: '/design-patterns/solid/tracing-how-one-srp-violation-cascades' },
+      { label: 'SOLID Principles (overview)', route: '/design-patterns/solid' },
+    ],
+    tip: 'The "one reason to change" test is about REASONS, not class or method count — two classes that always change together for the same reason aren\'t genuinely separable.',
+    gotchas: [
+      'A split that doesn\'t align with how requirements actually evolve is a sign the granularity was chosen for its own sake, not for a concrete reason.',
+    ],
+  },
   'design-patterns/specification': {
     apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
     related: [
