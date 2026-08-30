@@ -7958,7 +7958,7 @@ off here with a date.
   hub); breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
   **Security & Auth hub Phase 10: 17 of 23 topics complete — Transport & Crypto nav group started.**
 - [x] `/security/secrets-management` — Secrets Management (2026-08-30, see entry below)
-- [ ] `/security/container-security` — Container Security
+- [x] `/security/container-security` — Container Security (2026-08-30, see entry below)
 - [x] `/security/symmetric-encryption` — Symmetric Encryption (2026-08-30). 3 subtopics, all
   gap-closing (clean main page — double-checked the "2^32 messages" GCM IV-collision claim
   against NIST SP 800-38D and confirmed it's correct, no fix needed): Field-Level Encryption You
@@ -8022,6 +8022,22 @@ off here with a date.
   opens with all 3 labels (21 toggles total across the hub); the `pool` fix confirmed rendering
   live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
   **Security & Auth hub Phase 10: 21 of 23 topics complete.**
+- [x] `/security/container-security` — Container Security (2026-08-30). Fixed a genuine bug in
+  the main page's own "Kubernetes Security Context" codeTab: `image: ...api:sha256-abc123` used
+  a colon (a plain mutable TAG) where the page's own mistakes block, two sections later,
+  correctly uses `@sha256:...` (a real digest pin) — the comment claiming "pinned digest, not
+  tag" described the opposite of what the syntax did. Fixed to the real `@sha256:...` form. 3
+  subtopics: a reference parser distinguishing tag vs digest references (verified via direct
+  Node.js execution); a real Falco rule (verified against Falco's own official rules reference
+  via WebFetch) for the shell-detection scenario the QnA describes but no codeTab shows; a custom
+  Localhost-type seccomp profile JSON (verified against Kubernetes' own official seccomp
+  tutorial). Real SUBTOPICS collision: bare `container-security` already claimed by the
+  Containers/K8s hub — hub-prefixed to `sec-container-security`. Build passed clean (explicit
+  EXITCODE capture; MAX_PATH dry-run also clean). Browser-verified: no console errors on any of
+  the 4 pages; nav accordion opens with all 3 labels (22 toggles total across the hub); the
+  digest-pin fix confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar showed
+  tailored composite-key content. **Security & Auth hub Phase 10: 22 of 23 topics complete —
+  only `supply-chain` remains to finish the entire hub.**
 - [ ] `/security/supply-chain` — Supply Chain Security
 
 #### API Design — 19 topic pages

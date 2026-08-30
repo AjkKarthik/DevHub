@@ -5265,6 +5265,37 @@ this same check before any other new hub's first subtopic set:
     rendering live inside the "AWS Secrets Manager" code tab; breadcrumb and 860px wrapper
     confirmed on every subtopic; sidebar showed tailored composite-key content. **Security & Auth
     hub Phase 10: 21 of 23 topics complete.**
+22. **The `container-security` batch found and fixed a genuine bug in the main page's own
+    "Kubernetes Security Context" codeTab, caught by cross-checking it against the SAME page's own
+    later, correct usage**: `image: gcr.io/myproject/api:sha256-abc123` used a COLON, making
+    `sha256-abc123` just a plain, mutable TAG — not a real digest pin at all — while the page's own
+    third mistake block, two sections later, correctly demonstrates the real syntax:
+    `image: gcr.io/myproject/myapp@sha256:abc123...` (an AT-SIGN). The comment claiming "pinned
+    digest, not tag" was describing the exact opposite of what the syntax actually did. Fixed to
+    the real `@sha256:...` form. Three subtopics: (1) **fix-adjacent** — a small reference parser
+    distinguishing tag references from digest references by their delimiter, verified via direct
+    Node.js execution to reproduce both the fixed and the original broken string's exact claimed
+    output; (2) **gap-closing** — a real Falco rule (`rule`/`desc`/`condition`/`output`/`priority`,
+    plus a custom macro), verified against Falco's own official rules reference via WebFetch before
+    writing, for the exact "shell spawned inside a container" scenario the QnA describes in prose
+    but no codeTab ever showed; (3) **gap-closing** — a custom `Localhost`-type seccomp profile JSON
+    (`defaultAction`/`syscalls`), verified against Kubernetes' own official seccomp tutorial via
+    WebFetch, contrasted against the main page's RuntimeDefault-only coverage, with a Try It on the
+    real operational risk of a hand-derived allowlist (untested code paths failing at runtime once
+    `defaultAction: SCMP_ACT_ERRNO` denies anything not explicitly observed). **A real cross-hub
+    `SUBTOPICS`-map collision**: bare `container-security` was already claimed by the Containers/K8s
+    hub's own topic (confirmed via direct `subtopics.ts` grep) — hub-prefixed to
+    `sec-container-security`, matching this hub's own established `sec-` progress/search key prefix;
+    all three `SecurityNavComponent` accordion helper calls use the prefixed key consistently, and
+    `search.ts`'s existing `sec-` → `/security/` prefix-strip rule required no special-casing since
+    `container-security` doesn't itself start with `sec-`. Build passed clean (explicit
+    `EXITCODE:$?` capture, zero `ERROR` lines; a `git add -A -n` dry run also confirmed no MAX_PATH
+    issue before writing). Browser-verified: no console errors on any of the 4 pages; nav accordion
+    opens with all 3 labels (22 toggles total across the hub); the digest-pin fix confirmed
+    rendering live inside the "Kubernetes Security Context" code tab; breadcrumb and 860px wrapper
+    confirmed on every subtopic; sidebar showed tailored composite-key content. **Security & Auth
+    hub Phase 10: 22 of 23 topics complete — only `supply-chain` remains to finish the entire
+    hub.**
 
 ## Current state (update when it changes!)
 
@@ -6266,14 +6297,14 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 21 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 22 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
   `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`;
   `/security/security-headers`; `/security/tls-https`; `/security/symmetric-encryption`;
-  `/security/asymmetric-cryptography`; `/security/hashing`; `/security/secrets-management`,
-  2026-08-30) —
+  `/security/asymmetric-cryptography`; `/security/hashing`; `/security/secrets-management`;
+  `/security/container-security`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive
