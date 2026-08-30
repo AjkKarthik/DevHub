@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="REST Fundamentals" topicRoute="/api-design/rest-fundamentals"
+    subtopicLabel="Content Negotiation: the Same Resource, JSON or CSV" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">Content Negotiation: the Same Resource, JSON or CSV</h1>
+  <p class="page-subtitle">The theory names the exact scenario — the same report as JSON or CSV depending on the Accept header — but no codeTab on the main page ever implements it. Here’s the real handler, verified against Express’s own documented req.accepts() behavior.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A missing body check, HATEOAS links, and content negotiation are three different ways a REST endpoint communicates more than just “here is the data” — what’s valid, what’s currently possible, and what format the response takes.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="REST Fundamentals" topicRoute="/api-design/rest-fundamentals"
+    [prev]="{ label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' }" />
+</div>

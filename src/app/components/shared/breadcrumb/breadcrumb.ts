@@ -2606,6 +2606,9 @@ const DP_LABELS: Record<string, string> = {
 };
 
 const API_DESIGN_LABELS: Record<string, string> = {
+  'rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest': 'The Missing hasBody Check in validateRestRequest',
+  'rest-fundamentals/a-real-hateoas-response-with-links': 'A Real HATEOAS Response, With Links',
+  'rest-fundamentals/content-negotiation-the-same-resource-json-or-csv': 'Content Negotiation: the Same Resource, JSON or CSV',
   'rest-fundamentals':       'REST Fundamentals',
   'resource-url-design':     'Resource & URL Design',
   'http-methods-status-codes': 'HTTP Methods & Status Codes',

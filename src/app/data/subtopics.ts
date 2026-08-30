@@ -3550,4 +3550,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' },
     { label: 'Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies', route: '/security/supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps' },
   ],
+  'rest-fundamentals': [
+    { label: 'The Missing hasBody Check in validateRestRequest', route: '/api-design/rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest' },
+    { label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' },
+    { label: 'Content Negotiation: the Same Resource, JSON or CSV', route: '/api-design/rest-fundamentals/content-negotiation-the-same-resource-json-or-csv' },
+  ],
 };

@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="REST Fundamentals" topicRoute="/api-design/rest-fundamentals"
+    subtopicLabel="The Missing hasBody Check in validateRestRequest" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Missing hasBody Check in validateRestRequest</h1>
+  <p class="page-subtitle">The main page’s own Challenge promised three checks — its original two-parameter signature could only ever satisfy one of them. Here’s exactly why, and the fix.</p>
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>The QnA describes HATEOAS — links to next possible actions embedded in a response — in real detail, but no codeTab on the main page ever shows one. The next subtopic builds the actual response shape.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="REST Fundamentals" topicRoute="/api-design/rest-fundamentals"
+    [next]="{ label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' }" />
+</div>

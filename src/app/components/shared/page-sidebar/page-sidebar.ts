@@ -35127,6 +35127,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Statelessness means each request must contain all information needed to process it — server-side session state stored between requests violates this constraint.',
     ],
   },
+  'api-design/rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' },
+      { label: 'REST Fundamentals (overview)', route: '/api-design/rest-fundamentals' },
+    ],
+    tip: 'A function can only validate information it actually receives as a parameter — a Challenge description promising a check the function\'s own signature has no way to represent is a real, catchable gap before writing any implementation at all.',
+    gotchas: [
+      'A global or environment variable "fix" for missing information turns a pure function into one with hidden state — a real parameter keeps the function\'s output fully determined by its own arguments.',
+    ],
+  },
+  'api-design/rest-fundamentals/a-real-hateoas-response-with-links': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Missing hasBody Check in validateRestRequest', route: '/api-design/rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest' },
+      { label: 'Content Negotiation: the Same Resource, JSON or CSV', route: '/api-design/rest-fundamentals/content-negotiation-the-same-resource-json-or-csv' },
+    ],
+    tip: 'The set of links a HATEOAS response returns should change with the resource\'s own current state — a fixed link list on every response, regardless of state, is not really HATEOAS even if it happens to include a self link.',
+    gotchas: [
+      'A client that follows links dynamically needs zero code changes when a server-side business rule about what\'s currently allowed changes — a hard-coded client needs a redeploy for the exact same change.',
+    ],
+  },
+  'api-design/rest-fundamentals/content-negotiation-the-same-resource-json-or-csv': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real HATEOAS Response, With Links', route: '/api-design/rest-fundamentals/a-real-hateoas-response-with-links' },
+      { label: 'REST Fundamentals (overview)', route: '/api-design/rest-fundamentals' },
+    ],
+    tip: 'A real Accept header can list multiple acceptable formats with quality values expressing relative preference — a plain substring check has no way to respect that ordering, unlike Express\'s own req.accepts().',
+    gotchas: [
+      'Silently falling back to a default format when a client requests one you don\'t support hides the mismatch — returning 406 Not Acceptable is the more honest response.',
+    ],
+  },
   'api-design/http-methods-status-codes': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

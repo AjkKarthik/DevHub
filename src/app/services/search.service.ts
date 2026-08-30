@@ -1554,6 +1554,9 @@ export const SEARCH_INDEX: SearchEntry[] = [
 
   // ── API Design (keys prefixed 'api-') ────────────────────────────────────
   { route: 'api-rest-fundamentals',      title: 'REST Fundamentals',          section: 'API Design', difficulty: 'beginner',     keywords: 'rest fundamentals http stateless uniform interface resources representations' },
+  { route: 'api-rest-fundamentals/the-missing-hasbody-check-in-validaterestrequest', title: 'The Missing hasBody Check in validateRestRequest', section: 'API Design', difficulty: 'beginner', keywords: 'challenge signature parameter validation rest body get delete head' },
+  { route: 'api-rest-fundamentals/a-real-hateoas-response-with-links', title: 'A Real HATEOAS Response, With Links', section: 'API Design', difficulty: 'intermediate', keywords: 'hateoas hypermedia links self cancel payment richardson maturity model' },
+  { route: 'api-rest-fundamentals/content-negotiation-the-same-resource-json-or-csv', title: 'Content Negotiation: the Same Resource, JSON or CSV', section: 'API Design', difficulty: 'intermediate', keywords: 'content negotiation accept header req.accepts json csv 406 not acceptable' },
   { route: 'api-resource-url-design',    title: 'Resource & URL Design',      section: 'API Design', difficulty: 'beginner',     keywords: 'url design resource naming plural nouns nested routes query params kebab camelcase' },
   { route: 'api-http-methods-status-codes', title: 'HTTP Methods & Status Codes', section: 'API Design', difficulty: 'beginner',  keywords: 'http methods get post put patch delete status codes 200 201 204 400 401 403 404 429 500' },
   { route: 'api-pagination-patterns',    title: 'Pagination Patterns',        section: 'API Design', difficulty: 'intermediate', keywords: 'pagination cursor offset page limit scrolling infinite scroll keyset next cursor' },

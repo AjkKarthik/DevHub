@@ -3064,7 +3064,12 @@ export const routes: Routes = [
   ] },
   { path: 'api-design', children: [
     { path: '', loadComponent: () => import('./components/architecture/api-design/home/home').then(m => m.ApiDesignHome) },
-    { path: 'rest-fundamentals',     loadComponent: () => import('./components/architecture/api-design/rest-fundamentals/rest-fundamentals').then(m => m.ApiRestFundamentals) },
+    { path: 'rest-fundamentals', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/rest-fundamentals/rest-fundamentals').then(m => m.ApiRestFundamentals) },
+        { path: 'the-missing-hasbody-check-in-validaterestrequest', loadComponent: () => import('./components/architecture/api-design/rest-fundamentals/subtopics/the-missing-hasbody-check-in-validaterestrequest/the-missing-hasbody-check-in-validaterestrequest').then(m => m.TheMissingHasbodyCheckInValidaterestrequestSubtopic) },
+        { path: 'a-real-hateoas-response-with-links', loadComponent: () => import('./components/architecture/api-design/rest-fundamentals/subtopics/a-real-hateoas-response-with-links/a-real-hateoas-response-with-links').then(m => m.ARealHateoasResponseWithLinksSubtopic) },
+        { path: 'content-negotiation-the-same-resource-json-or-csv', loadComponent: () => import('./components/architecture/api-design/rest-fundamentals/subtopics/content-negotiation-the-same-resource-json-or-csv/content-negotiation-the-same-resource-json-or-csv').then(m => m.ContentNegotiationTheSameResourceJsonOrCsvSubtopic) },
+      ] },
     { path: 'resource-url-design',   loadComponent: () => import('./components/architecture/api-design/resource-url-design/resource-url-design').then(m => m.ApiResourceUrlDesign) },
     { path: 'http-methods-status-codes', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/http-methods-status-codes').then(m => m.ApiHttpMethods) },
     { path: 'pagination-patterns',   loadComponent: () => import('./components/architecture/api-design/pagination-patterns/pagination-patterns').then(m => m.ApiPaginationPatterns) },
