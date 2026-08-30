@@ -1,0 +1,27 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pagination Patterns" topicRoute="/api-design/pagination-patterns"
+    subtopicLabel="The Deferred-Join Trick for Deep Offset Pages" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">The Deferred-Join Trick for Deep Offset Pages</h1>
+  <p class="page-subtitle">The QnA describes the deferred-join query in real SQL detail — here it is next to the naive version it improves on, with the actual mechanism behind why it’s faster.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>Quiz Q5 names the Relay Connection spec’s exact type shapes for GraphQL pagination in real detail, but no codeTab ever builds a resolver implementing them. The next subtopic writes one.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Pagination Patterns" topicRoute="/api-design/pagination-patterns"
+    [prev]="{ label: 'The Missing id Tiebreaker in Cursor Pagination', route: '/api-design/pagination-patterns/the-missing-id-tiebreaker-in-cursor-pagination' }"
+    [next]="{ label: 'A Real Relay Connection GraphQL Resolver', route: '/api-design/pagination-patterns/a-real-relay-connection-graphql-resolver' }" />
+</div>

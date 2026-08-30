@@ -35261,6 +35261,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Returning the TOTAL count alongside paginated results can be expensive on large tables — consider whether consumers genuinely need it.',
     ],
   },
+  'api-design/pagination-patterns/the-missing-id-tiebreaker-in-cursor-pagination': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' },
+      { label: 'Pagination Patterns (overview)', route: '/api-design/pagination-patterns' },
+    ],
+    tip: 'A cursor field can be encoded into the token and still never actually be used in the query comparison — two rows sharing the exact same timestamp as the cursor boundary will be silently skipped without a real tiebreaker.',
+    gotchas: [
+      'This is a missing-ROW bug, not a wrong-ordering bug — the skipped item is not returned at all, not just returned out of order.',
+    ],
+  },
+  'api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Missing id Tiebreaker in Cursor Pagination', route: '/api-design/pagination-patterns/the-missing-id-tiebreaker-in-cursor-pagination' },
+      { label: 'A Real Relay Connection GraphQL Resolver', route: '/api-design/pagination-patterns/a-real-relay-connection-graphql-resolver' },
+    ],
+    tip: 'A deferred join does not eliminate the O(offset) scan cost — it eliminates reading full row data for every skipped row by making the offset/limit operate on an index-only scan first.',
+    gotchas: [
+      'The benefit scales with row width — a table with small, narrow rows sees a smaller improvement than one with large JSON/text columns.',
+    ],
+  },
+  'api-design/pagination-patterns/a-real-relay-connection-graphql-resolver': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' },
+      { label: 'Pagination Patterns (overview)', route: '/api-design/pagination-patterns' },
+    ],
+    tip: 'An edge\'s own cursor field and a request\'s after/before argument are the same opaque token used in two roles — a client\'s next request literally reuses the cursor value it received on a previous edge.',
+    gotchas: [
+      'A Connection field can support forward pagination, backward pagination, or both on the same field — the resolver branches on which arguments were actually supplied.',
+    ],
+  },
   'api-design/error-response-design': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

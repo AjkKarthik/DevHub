@@ -3565,4 +3565,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implementing Idempotency Keys for POST Requests', route: '/api-design/http-methods-status-codes/implementing-idempotency-keys-for-post-requests' },
     { label: 'JSON Patch (RFC 6902), Applied', route: '/api-design/http-methods-status-codes/json-patch-rfc-6902-applied' },
   ],
+  'pagination-patterns': [
+    { label: 'The Missing id Tiebreaker in Cursor Pagination', route: '/api-design/pagination-patterns/the-missing-id-tiebreaker-in-cursor-pagination' },
+    { label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' },
+    { label: 'A Real Relay Connection GraphQL Resolver', route: '/api-design/pagination-patterns/a-real-relay-connection-graphql-resolver' },
+  ],
 };

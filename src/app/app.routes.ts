@@ -3082,7 +3082,12 @@ export const routes: Routes = [
         { path: 'implementing-idempotency-keys-for-post-requests', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/subtopics/implementing-idempotency-keys-for-post-requests/implementing-idempotency-keys-for-post-requests').then(m => m.ImplementingIdempotencyKeysForPostRequestsSubtopic) },
         { path: 'json-patch-rfc-6902-applied', loadComponent: () => import('./components/architecture/api-design/http-methods-status-codes/subtopics/json-patch-rfc-6902-applied/json-patch-rfc-6902-applied').then(m => m.JsonPatchRfc6902AppliedSubtopic) },
       ] },
-    { path: 'pagination-patterns',   loadComponent: () => import('./components/architecture/api-design/pagination-patterns/pagination-patterns').then(m => m.ApiPaginationPatterns) },
+    { path: 'pagination-patterns', children: [
+        { path: '', loadComponent: () => import('./components/architecture/api-design/pagination-patterns/pagination-patterns').then(m => m.ApiPaginationPatterns) },
+        { path: 'the-missing-id-tiebreaker-in-cursor-pagination', loadComponent: () => import('./components/architecture/api-design/pagination-patterns/subtopics/the-missing-id-tiebreaker-in-cursor-pagination/the-missing-id-tiebreaker-in-cursor-pagination').then(m => m.TheMissingIdTiebreakerInCursorPaginationSubtopic) },
+        { path: 'the-deferred-join-trick-for-deep-offset-pages', loadComponent: () => import('./components/architecture/api-design/pagination-patterns/subtopics/the-deferred-join-trick-for-deep-offset-pages/the-deferred-join-trick-for-deep-offset-pages').then(m => m.TheDeferredJoinTrickForDeepOffsetPagesSubtopic) },
+        { path: 'a-real-relay-connection-graphql-resolver', loadComponent: () => import('./components/architecture/api-design/pagination-patterns/subtopics/a-real-relay-connection-graphql-resolver/a-real-relay-connection-graphql-resolver').then(m => m.ARealRelayConnectionGraphqlResolverSubtopic) },
+      ] },
     { path: 'api-versioning',        loadComponent: () => import('./components/architecture/api-design/api-versioning/api-versioning').then(m => m.ApiVersioning) },
     { path: 'error-response-design', loadComponent: () => import('./components/architecture/api-design/error-response-design/error-response-design').then(m => m.ApiErrorResponse) },
     { path: 'hateoas-hypermedia',    loadComponent: () => import('./components/architecture/api-design/hateoas-hypermedia/hateoas-hypermedia').then(m => m.ApiHateoas) },

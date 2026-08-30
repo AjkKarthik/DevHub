@@ -1,0 +1,26 @@
+<div class="api-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Pagination Patterns" topicRoute="/api-design/pagination-patterns"
+    subtopicLabel="A Real Relay Connection GraphQL Resolver" />
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">A Real Relay Connection GraphQL Resolver</h1>
+  <p class="page-subtitle">The quiz names Connection, Edge, Node, and PageInfo in real detail — here’s an actual resolver implementing them, verified against the Relay Cursor Connections spec itself.</p>
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="api-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="api-section">
+    <h2>Where this fits</h2>
+    <p>A fixed cursor tiebreaker, the deferred-join optimization, and a real Relay resolver are three concrete implementations of ideas this topic names in prose but leaves as description.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Pagination Patterns" topicRoute="/api-design/pagination-patterns"
+    [prev]="{ label: 'The Deferred-Join Trick for Deep Offset Pages', route: '/api-design/pagination-patterns/the-deferred-join-trick-for-deep-offset-pages' }" />
+</div>
