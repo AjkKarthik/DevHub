@@ -242,7 +242,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/api-security" routerLinkActive="active"><span class="nl-text">API Security</span>@if(progress.isDone('sec-api-security')){<span class="nl-done">✓</span>}@if(d('sec-api-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/api-security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">API Security</span>
+        @if(progress.isDone('sec-api-security')){<span class="nl-done">✓</span>}
+        @if(d('sec-api-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('sec-api-security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sec-api-security')"
+                  (click)="toggleSubtopics('sec-api-security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sec-api-security'); as apiSecSubs) {
+        @if (isSubtopicsExpanded('sec-api-security')) {
+          <div class="nav-subtopics">
+            @for (s of apiSecSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

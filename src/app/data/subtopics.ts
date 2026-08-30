@@ -3482,4 +3482,15 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Audience Validation Attack, Demonstrated', route: '/security/claims-identity/the-audience-validation-attack-demonstrated' },
     { label: 'DB-Verified Role Recheck vs. Freshness-Only', route: '/security/claims-identity/db-verified-role-recheck-vs-freshness-only' },
   ],
+  // NOTE: hub-prefixed proactively -- the API Design hub's own route also
+  // uses the bare 'api-security' slug (different parent path,
+  // /api-design/api-security), matching the cross-hub duplicate-slug
+  // pattern already hit once (Design Patterns' clean-architecture batch).
+  // No active collision today (ApiDesignNavComponent has no subtopics
+  // accordion support yet), but prefixed defensively regardless.
+  'sec-api-security': [
+    { label: 'BFLA, Demonstrated and Fixed', route: '/security/api-security/bfla-demonstrated-and-fixed' },
+    { label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' },
+    { label: 'The Fixed-Window Rate Limiter’s Burst Problem', route: '/security/api-security/the-fixed-window-rate-limiters-burst-problem' },
+  ],
 };

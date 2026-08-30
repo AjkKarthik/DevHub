@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="API Security" topicRoute="/security/api-security"
+    subtopicLabel="BFLA, Demonstrated and Fixed" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">BFLA, Demonstrated and Fixed</h1>
+  <p class="page-subtitle">Every codeTab on the main page demonstrates BOLA. Here's BFLA — the function-level vulnerability the QnA distinguishes from it precisely, but never shows in code.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out mechanisms the quiz describes in real detail but never demonstrates in code: HMAC request signing, and the fixed-window rate limiter's own burst vulnerability.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="API Security" topicRoute="/security/api-security"
+    [next]="{ label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' }" />
+</div>

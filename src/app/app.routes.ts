@@ -3303,7 +3303,12 @@ export const routes: Routes = [
         { path: 'the-audience-validation-attack-demonstrated', loadComponent: () => import('./components/architecture/security/claims-identity/subtopics/the-audience-validation-attack-demonstrated/the-audience-validation-attack-demonstrated').then(m => m.TheAudienceValidationAttackDemonstratedSubtopic) },
         { path: 'db-verified-role-recheck-vs-freshness-only', loadComponent: () => import('./components/architecture/security/claims-identity/subtopics/db-verified-role-recheck-vs-freshness-only/db-verified-role-recheck-vs-freshness-only').then(m => m.DbVerifiedRoleRecheckVsFreshnessOnlySubtopic) },
       ] },
-    { path: 'api-security',          loadComponent: () => import('./components/architecture/security/api-security/api-security').then(m => m.SecApiSecurity) },
+    { path: 'api-security', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/api-security/api-security').then(m => m.SecApiSecurity) },
+        { path: 'bfla-demonstrated-and-fixed', loadComponent: () => import('./components/architecture/security/api-security/subtopics/bfla-demonstrated-and-fixed/bfla-demonstrated-and-fixed').then(m => m.BflaDemonstratedAndFixedSubtopic) },
+        { path: 'hmac-request-signing-implemented', loadComponent: () => import('./components/architecture/security/api-security/subtopics/hmac-request-signing-implemented/hmac-request-signing-implemented').then(m => m.HmacRequestSigningImplementedSubtopic) },
+        { path: 'the-fixed-window-rate-limiters-burst-problem', loadComponent: () => import('./components/architecture/security/api-security/subtopics/the-fixed-window-rate-limiters-burst-problem/the-fixed-window-rate-limiters-burst-problem').then(m => m.TheFixedWindowRateLimitersBurstProblemSubtopic) },
+      ] },
     { path: 'xss',                   loadComponent: () => import('./components/architecture/security/xss/xss').then(m => m.SecXss) },
     { path: 'csrf-clickjacking',     loadComponent: () => import('./components/architecture/security/csrf-clickjacking/csrf-clickjacking').then(m => m.SecCsrfClickjacking) },
     { path: 'injection',             loadComponent: () => import('./components/architecture/security/injection/injection').then(m => m.SecInjection) },

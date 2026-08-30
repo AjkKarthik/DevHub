@@ -34682,6 +34682,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'API versioning and deprecation need a security lens too — an old, unmaintained API version left reachable is a common overlooked attack surface.',
     ],
   },
+  'security/api-security/bfla-demonstrated-and-fixed': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'API Security (overview)', route: '/security/api-security' },
+      { label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' },
+    ],
+    tip: 'BFLA is a missing check on WHICH FUNCTION a caller can reach at all — a distinct failure from BOLA, which is a missing check on WHICH OBJECT within an otherwise-permitted function a caller can reach.',
+    gotchas: [
+      'requireAuth confirming a valid token says nothing about function-level permission — authentication and authorization answer two separate questions, and BFLA lives in the gap between them.',
+    ],
+  },
+  'security/api-security/hmac-request-signing-implemented': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'BFLA, Demonstrated and Fixed', route: '/security/api-security/bfla-demonstrated-and-fixed' },
+      { label: 'The Fixed-Window Rate Limiter’s Burst Problem', route: '/security/api-security/the-fixed-window-rate-limiters-burst-problem' },
+    ],
+    tip: 'An API key alone proves possession of a valid credential; HMAC signing additionally proves the specific request body was not altered in transit — two different guarantees, not two versions of the same one.',
+    gotchas: [
+      'Checking only timestamp age defends against an OLD replayed request, but not a repeated one — a genuinely fresh replay within the same window still passes unless a single-use nonce is also tracked.',
+    ],
+  },
+  'security/api-security/the-fixed-window-rate-limiters-burst-problem': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'HMAC Request Signing, Implemented', route: '/security/api-security/hmac-request-signing-implemented' },
+      { label: 'API Security (overview)', route: '/security/api-security' },
+    ],
+    tip: 'A fixed window resets completely at fixed clock boundaries, with no memory of the previous window — a client positioned right at the boundary can get up to 2x the stated limit through in a matter of milliseconds.',
+    gotchas: [
+      'The main page\'s own express-rate-limit configuration (windowMs/max) is the fixed-window algorithm by default — a well-maintained library doesn\'t change which algorithm it implements unless a different store/strategy is explicitly configured.',
+    ],
+  },
   'security/container-security': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
