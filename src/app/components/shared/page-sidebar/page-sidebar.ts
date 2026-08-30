@@ -35068,6 +35068,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Signing and verifying artifacts (Cosign/Sigstore) addresses tampering risk that dependency scanning alone does not cover.',
     ],
   },
+  'security/supply-chain/sha-pinned-actions-why-v4-and-master-both-fail': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' },
+      { label: 'Supply Chain Security (overview)', route: '/security/supply-chain' },
+    ],
+    tip: 'A version tag is a mutable pointer the repository owner can reassign at any time — a commit SHA cannot be reassigned, by definition, since it always refers to the one fixed set of bytes that hash to it.',
+    gotchas: [
+      'A branch reference like @master is even riskier than a tag — it moves on every single commit pushed to it, with no release process or review checkpoint in between.',
+    ],
+  },
+  'security/supply-chain/cosign-keyless-signing-the-actual-cli-flow': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'SHA-Pinned Actions: Why @v4 and @master Both Fail', route: '/security/supply-chain/sha-pinned-actions-why-v4-and-master-both-fail' },
+      { label: 'Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies', route: '/security/supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps' },
+    ],
+    tip: 'A bare "cosign verify" with no --certificate-identity or --certificate-oidc-issuer flags only proves SOME valid Sigstore signature exists — not that it came from the specific pipeline you actually trust.',
+    gotchas: [
+      '"Keyless" means no long-lived key to protect, not "no cryptography involved" — an ephemeral keypair is still generated and used for every signature, then destroyed immediately after.',
+    ],
+  },
+  'security/supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' },
+      { label: 'Supply Chain Security (overview)', route: '/security/supply-chain' },
+    ],
+    tip: 'An SBOM carries zero vulnerability data of its own — it is a plain component inventory that only becomes a security signal once its listed purls are checked against a live, continuously-updated vulnerability feed.',
+    gotchas: [
+      'A component\'s version can stay completely unchanged for months while a brand-new CVE is disclosed against that exact version — re-scanning finds this even when nothing about the artifact itself was touched.',
+    ],
+  },
 
   // ── API Design: per-page entries ────────────────────────────────────────────
   'api-design/api-design-principles': {

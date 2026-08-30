@@ -3369,7 +3369,12 @@ export const routes: Routes = [
         { path: 'benchmarking-bcrypt-argon2id-to-choose-a-work-factor', loadComponent: () => import('./components/architecture/security/hashing/subtopics/benchmarking-bcrypt-argon2id-to-choose-a-work-factor/benchmarking-bcrypt-argon2id-to-choose-a-work-factor').then(m => m.BenchmarkingBcryptArgon2idToChooseAWorkFactorSubtopic) },
         { path: 'rainbow-tables-vs-salting-demonstrated', loadComponent: () => import('./components/architecture/security/hashing/subtopics/rainbow-tables-vs-salting-demonstrated/rainbow-tables-vs-salting-demonstrated').then(m => m.RainbowTablesVsSaltingDemonstratedSubtopic) },
       ] },
-    { path: 'supply-chain',          loadComponent: () => import('./components/architecture/security/supply-chain/supply-chain').then(m => m.SecSupplyChain) },
+    { path: 'supply-chain', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/supply-chain/supply-chain').then(m => m.SecSupplyChain) },
+        { path: 'sha-pinned-actions-why-v4-and-master-both-fail', loadComponent: () => import('./components/architecture/security/supply-chain/subtopics/sha-pinned-actions-why-v4-and-master-both-fail/sha-pinned-actions-why-v4-and-master-both-fail').then(m => m.ShaPinnedActionsWhyV4AndMasterBothFailSubtopic) },
+        { path: 'cosign-keyless-signing-the-actual-cli-flow', loadComponent: () => import('./components/architecture/security/supply-chain/subtopics/cosign-keyless-signing-the-actual-cli-flow/cosign-keyless-signing-the-actual-cli-flow').then(m => m.CosignKeylessSigningTheActualCliFlowSubtopic) },
+        { path: 'diffing-two-sboms-to-catch-newly-vulnerable-deps', loadComponent: () => import('./components/architecture/security/supply-chain/subtopics/diffing-two-sboms-to-catch-newly-vulnerable-deps/diffing-two-sboms-to-catch-newly-vulnerable-deps').then(m => m.DiffingTwoSbomsToCatchNewlyVulnerableDepsSubtopic) },
+      ] },
     { path: 'cheatsheet',            loadComponent: () => import('./components/architecture/security/cheatsheet/cheatsheet').then(m => m.SecCheatsheet) },
     { path: 'interview-prep',        loadComponent: () => import('./components/architecture/security/interview-prep/interview-prep').then(m => m.SecInterviewPrep) },
   ] },

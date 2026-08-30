@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Supply Chain Security" topicRoute="/security/supply-chain"
+    subtopicLabel="Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies</h1>
+  <p class="page-subtitle">The theory names the gap precisely — a static SBOM goes stale as new CVEs appear for already-shipped dependencies — but every codeTab on the main page only ever generates an SBOM once. Here’s the actual re-scan.</p>
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>SHA-pinned actions, signed artifacts, and continuously re-scanned SBOMs close three different gaps in the same supply chain — build-time integrity of the pipeline itself, provenance of what it produced, and ongoing visibility into what already shipped.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Supply Chain Security" topicRoute="/security/supply-chain"
+    [prev]="{ label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' }" />
+</div>

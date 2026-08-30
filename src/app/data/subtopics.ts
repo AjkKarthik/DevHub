@@ -3545,4 +3545,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real Falco Rule Detecting a Shell in a Container', route: '/security/container-security/falco-rule-detects-shell-in-container' },
     { label: 'A Custom seccomp Profile, Beyond RuntimeDefault', route: '/security/container-security/custom-seccomp-profile-beyond-runtimedefault' },
   ],
+  'supply-chain': [
+    { label: 'SHA-Pinned Actions: Why @v4 and @master Both Fail', route: '/security/supply-chain/sha-pinned-actions-why-v4-and-master-both-fail' },
+    { label: 'Cosign Keyless Signing: The Actual CLI Flow', route: '/security/supply-chain/cosign-keyless-signing-the-actual-cli-flow' },
+    { label: 'Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies', route: '/security/supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps' },
+  ],
 };

@@ -1548,6 +1548,9 @@ export const SEARCH_INDEX: SearchEntry[] = [
   { route: 'sec-hashing/benchmarking-bcrypt-argon2id-to-choose-a-work-factor', title: 'Benchmarking bcrypt/Argon2id to Choose a Work Factor', section: 'Security', difficulty: 'intermediate', keywords: 'benchmark bcrypt argon2id work factor cost memory time production hardware' },
   { route: 'sec-hashing/rainbow-tables-vs-salting-demonstrated', title: 'Rainbow Tables vs Salting, Demonstrated', section: 'Security', difficulty: 'intermediate', keywords: 'rainbow table salting precomputed lookup password crack demonstration' },
   { route: 'sec-supply-chain',          title: 'Supply Chain Security',      section: 'Security', difficulty: 'intermediate', keywords: 'supply chain sbom slsa provenance dependency audit npm audit typosquatting lockfile solarwinds' },
+  { route: 'sec-supply-chain/sha-pinned-actions-why-v4-and-master-both-fail', title: 'SHA-Pinned Actions: Why @v4 and @master Both Fail', section: 'Security', difficulty: 'intermediate', keywords: 'github actions pin commit sha tag mutable branch master supply chain ci cd' },
+  { route: 'sec-supply-chain/cosign-keyless-signing-the-actual-cli-flow', title: 'Cosign Keyless Signing: The Actual CLI Flow', section: 'Security', difficulty: 'advanced', keywords: 'cosign sign verify keyless fulcio rekor oidc sigstore certificate identity' },
+  { route: 'sec-supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps', title: 'Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies', section: 'Security', difficulty: 'intermediate', keywords: 'sbom rescan cyclonedx purl vulnerability feed continuous monitoring stale' },
 
   // ── API Design (keys prefixed 'api-') ────────────────────────────────────
   { route: 'api-rest-fundamentals',      title: 'REST Fundamentals',          section: 'API Design', difficulty: 'beginner',     keywords: 'rest fundamentals http stateless uniform interface resources representations' },

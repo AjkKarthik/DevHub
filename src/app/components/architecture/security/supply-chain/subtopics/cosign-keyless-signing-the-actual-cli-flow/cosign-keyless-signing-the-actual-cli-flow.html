@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Supply Chain Security" topicRoute="/security/supply-chain"
+    subtopicLabel="Cosign Keyless Signing: The Actual CLI Flow" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Cosign Keyless Signing: The Actual CLI Flow</h1>
+  <p class="page-subtitle">The QnA describes Fulcio, Rekor, and OIDC identity tokens in real mechanical detail — here are the actual cosign sign and verify commands, verified against Sigstore’s own official docs.</p>
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>Signing verifies WHO built an artifact — it says nothing about whether the artifact’s own component list has grown newly risky since it shipped. The next subtopic builds the ongoing SBOM monitoring the theory names but never shows.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Supply Chain Security" topicRoute="/security/supply-chain"
+    [prev]="{ label: 'SHA-Pinned Actions: Why @v4 and @master Both Fail', route: '/security/supply-chain/sha-pinned-actions-why-v4-and-master-both-fail' }"
+    [next]="{ label: 'Diffing Two SBOMs to Catch Newly-Vulnerable Dependencies', route: '/security/supply-chain/diffing-two-sboms-to-catch-newly-vulnerable-deps' }" />
+</div>
