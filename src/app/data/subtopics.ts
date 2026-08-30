@@ -3462,4 +3462,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The RS256 → HS256 Confusion Attack, Demonstrated', route: '/security/jwt/the-rs256-to-hs256-confusion-attack-demonstrated' },
     { label: 'Refresh Token Rotation With Reuse Detection', route: '/security/jwt/refresh-token-rotation-with-reuse-detection' },
   ],
+  'mfa': [
+    { label: 'MFA Fatigue and Number Matching, Implemented', route: '/security/mfa/mfa-fatigue-and-number-matching-implemented' },
+    { label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' },
+    { label: 'HOTP Counter Resynchronization', route: '/security/mfa/hotp-counter-resynchronization' },
+  ],
 };

@@ -3279,7 +3279,12 @@ export const routes: Routes = [
         { path: 'the-rs256-to-hs256-confusion-attack-demonstrated', loadComponent: () => import('./components/architecture/security/jwt/subtopics/the-rs256-to-hs256-confusion-attack-demonstrated/the-rs256-to-hs256-confusion-attack-demonstrated').then(m => m.TheRs256ToHs256ConfusionAttackDemonstratedSubtopic) },
         { path: 'refresh-token-rotation-with-reuse-detection', loadComponent: () => import('./components/architecture/security/jwt/subtopics/refresh-token-rotation-with-reuse-detection/refresh-token-rotation-with-reuse-detection').then(m => m.RefreshTokenRotationWithReuseDetectionSubtopic) },
       ] },
-    { path: 'mfa',                   loadComponent: () => import('./components/architecture/security/mfa/mfa').then(m => m.SecMfa) },
+    { path: 'mfa', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/mfa/mfa').then(m => m.SecMfa) },
+        { path: 'mfa-fatigue-and-number-matching-implemented', loadComponent: () => import('./components/architecture/security/mfa/subtopics/mfa-fatigue-and-number-matching-implemented/mfa-fatigue-and-number-matching-implemented').then(m => m.MfaFatigueAndNumberMatchingImplementedSubtopic) },
+        { path: 'step-up-authentication-for-high-risk-operations', loadComponent: () => import('./components/architecture/security/mfa/subtopics/step-up-authentication-for-high-risk-operations/step-up-authentication-for-high-risk-operations').then(m => m.StepUpAuthenticationForHighRiskOperationsSubtopic) },
+        { path: 'hotp-counter-resynchronization', loadComponent: () => import('./components/architecture/security/mfa/subtopics/hotp-counter-resynchronization/hotp-counter-resynchronization').then(m => m.HotpCounterResynchronizationSubtopic) },
+      ] },
     { path: 'sso',                   loadComponent: () => import('./components/architecture/security/sso/sso').then(m => m.SecSso) },
     { path: 'rbac-abac',             loadComponent: () => import('./components/architecture/security/rbac-abac/rbac-abac').then(m => m.SecRbacAbac) },
     { path: 'claims-identity',       loadComponent: () => import('./components/architecture/security/claims-identity/claims-identity').then(m => m.SecClaimsIdentity) },

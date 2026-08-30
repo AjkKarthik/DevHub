@@ -1,0 +1,27 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Factor Authentication" topicRoute="/security/mfa"
+    subtopicLabel="Step-Up Authentication for High-Risk Operations" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Step-Up Authentication for High-Risk Operations</h1>
+  <p class="page-subtitle">The QnA lays out the exact mechanism — freshness TTL, tagged endpoints, a separate step-up timestamp. Here's the actual middleware, and a subtlety its own description skips.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The final subtopic builds HOTP's counter resynchronization protocol — the fix for the "synchronisation problems" the QnA names but never explains how to actually resolve.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Multi-Factor Authentication" topicRoute="/security/mfa"
+    [prev]="{ label: 'MFA Fatigue and Number Matching, Implemented', route: '/security/mfa/mfa-fatigue-and-number-matching-implemented' }"
+    [next]="{ label: 'HOTP Counter Resynchronization', route: '/security/mfa/hotp-counter-resynchronization' }" />
+</div>

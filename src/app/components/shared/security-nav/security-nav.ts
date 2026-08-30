@@ -162,7 +162,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/mfa" routerLinkActive="active"><span class="nl-text">Multi-Factor Auth</span>@if(progress.isDone('sec-mfa')){<span class="nl-done">✓</span>}@if(d('sec-mfa');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/mfa" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">Multi-Factor Auth</span>
+        @if(progress.isDone('sec-mfa')){<span class="nl-done">✓</span>}
+        @if(d('sec-mfa');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('mfa')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mfa')"
+                  (click)="toggleSubtopics('mfa', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mfa'); as mfaSubs) {
+        @if (isSubtopicsExpanded('mfa')) {
+          <div class="nav-subtopics">
+            @for (s of mfaSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/sso" routerLinkActive="active"><span class="nl-text">Single Sign-On</span>@if(progress.isDone('sec-sso')){<span class="nl-done">✓</span>}@if(d('sec-sso');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/rbac-abac" routerLinkActive="active"><span class="nl-text">RBAC &amp; ABAC</span>@if(progress.isDone('sec-rbac-abac')){<span class="nl-done">✓</span>}@if(d('sec-rbac-abac');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/claims-identity" routerLinkActive="active"><span class="nl-text">Claims &amp; Identity</span>@if(progress.isDone('sec-claims-identity')){<span class="nl-done">✓</span>}@if(d('sec-claims-identity');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>

@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Multi-Factor Authentication" topicRoute="/security/mfa"
+    subtopicLabel="MFA Fatigue and Number Matching, Implemented" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">MFA Fatigue and Number Matching, Implemented</h1>
+  <p class="page-subtitle">The quiz describes push bombing and its number-matching fix in real detail. Here's the vulnerable Approve/Deny flow — and the fix that actually breaks the attack's core mechanism.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out mechanisms the QnA describes in real detail but never shows in code: step-up authentication for high-risk operations, and HOTP's counter resynchronization protocol.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="Multi-Factor Authentication" topicRoute="/security/mfa"
+    [next]="{ label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' }" />
+</div>

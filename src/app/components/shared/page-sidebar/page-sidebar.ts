@@ -34481,6 +34481,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'FIDO2/WebAuthn is phishing-resistant by design, since the authentication is cryptographically bound to the specific origin — a major advantage over OTP codes that can be phished.',
     ],
   },
+  'security/mfa/mfa-fatigue-and-number-matching-implemented': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Factor Authentication (overview)', route: '/security/mfa' },
+      { label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' },
+    ],
+    tip: 'Number matching works because it requires the user to already be looking at their own real login screen to have a correct answer — a plain Approve/Deny push needs no such context, which is exactly what makes it vulnerable to fatigue spam.',
+    gotchas: [
+      'Number matching must show the choices on the AUTH APP and the correct number on the LOGIN SCREEN — a single-device implementation defeats the whole point, since an attacker\'s own push could just display its own correct answer.',
+    ],
+  },
+  'security/mfa/step-up-authentication-for-high-risk-operations': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'MFA Fatigue and Number Matching, Implemented', route: '/security/mfa/mfa-fatigue-and-number-matching-implemented' },
+      { label: 'HOTP Counter Resynchronization', route: '/security/mfa/hotp-counter-resynchronization' },
+    ],
+    tip: 'Step-up freshness needs its own separate timestamp, distinct from the session\'s original login-time MFA pass — otherwise a session hijacked hours after login inherits that old MFA pass as if it were still recent.',
+    gotchas: [
+      'A single shared lastStepUpAt timestamp means completing a step-up challenge for ONE sensitive action can also satisfy a DIFFERENT sensitive action within the same TTL window — a real design tradeoff, not a bug.',
+    ],
+  },
+  'security/mfa/hotp-counter-resynchronization': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Step-Up Authentication for High-Risk Operations', route: '/security/mfa/step-up-authentication-for-high-risk-operations' },
+      { label: 'Multi-Factor Authentication (overview)', route: '/security/mfa' },
+    ],
+    tip: 'HOTP\'s look-ahead window only ever checks FORWARD from the server\'s stored counter, never backward — unlike TOTP\'s symmetric window, since a device\'s counter can only increase, never decrease.',
+    gotchas: [
+      'A successful match at counter+i resyncs the server to (counter+i)+1, not just counter+1 — fully absorbing whatever drift had accumulated, not just advancing by one step.',
+    ],
+  },
   'security/secrets-management': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [
