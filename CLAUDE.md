@@ -4869,6 +4869,39 @@ this same check before any other new hub's first subtopic set:
     every subtopic; sidebar showed tailored composite-key content; the nested-backtick SQL codeTab
     confirmed rendering cleanly via direct component inspection. **Security & Auth hub Phase 10:
     10 of 23 topics complete.**
+17. **The `claims-identity` batch built three subtopics for mechanisms the quiz/QnA describe in
+    real detail but never demonstrate in code, plus a genuine self-authored bug caught before the
+    build**: (1) **gap-closing** — the quiz's own worked example ("IdP sends
+    `groups=[CORP-DEV-TEAM-A]`... transformed to `roles=[developer, code-reviewer]`") had zero
+    code anywhere; built the mapping table and transformation step, verified via direct execution
+    including a Try It confirming overlapping group memberships correctly de-duplicate to a single
+    role each (a `Set`, not an array push); (2) **gap-closing** — the quiz explains `aud` claim
+    protection precisely, but the main page's own `extractClaims()` already validates audience, so
+    the actual ATTACK the check defends against is never shown; built the vulnerable version and a
+    genuine token replay against it, plus a Try It on a same-audience misconfiguration (both
+    services set to the identical value) that silently defeats the fix even when the check is
+    technically present and running correctly; (3) **gap-closing** — the QnA names "database check
+    on sensitive operations" as a distinct strategy for mid-session role changes, but the main
+    page's own mistake-block fix is freshness-only (`iat`-based); built both side by side, tracing
+    precisely why a demotion happening AFTER token issuance but WITHIN the freshness window slips
+    past a freshness-only check while a DB-verified recheck catches it immediately. **A real,
+    self-authored bug caught during the standing pre-build re-read, not by the sweep scripts**: a
+    missing `//` comment prefix on one line of subtopic 2's own illustrative codeTab (`-- and
+    presents it directly...` left as bare text instead of a comment) — harmless to the Angular
+    build itself (it's a string literal, not real compiled TS), but a genuine break in the
+    illustrative code sample's OWN internal syntax that would have confused any reader trying to
+    follow it as real TypeScript. Caught via a direct line-by-line re-read specifically checking
+    for lines that don't start with a comment marker or a recognised code keyword, not by any of
+    the standing apostrophe/bracket sweep scripts, which don't check for this class of mistake at
+    all. No `SUBTOPICS` collision for `claims-identity` (checked both `subtopics.ts` forms and
+    grepped `app.routes.ts` directly, confirmed collision-free, left bare). All three `solution`
+    fields and bracket-balance/backtick-parity swept clean; every apostrophe-sweep flag confirmed a
+    false positive (multiple correctly-paired quoted strings inside backtick-delimited `code:`
+    fields). Build passed clean. Browser-verified: no console errors on any of the 4 pages; nav
+    accordion opens with all 3 labels (11 toggles total across the hub); breadcrumb and 860px
+    wrapper confirmed on every subtopic; sidebar showed tailored composite-key content; the fixed
+    comment confirmed rendering correctly (no stray bare-dash line) via direct component
+    inspection. **Security & Auth hub Phase 10: 11 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5870,10 +5903,10 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 10 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 11 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
-  `/security/sso`; `/security/rbac-abac`, 2026-08-30) —
+  `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).

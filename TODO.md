@@ -7847,7 +7847,17 @@ off here with a date.
   with all 3 labels (10 toggles total across the hub); breadcrumb and 860px wrapper confirmed on
   every subtopic; no console errors on any of the 4 pages.
   **Security & Auth hub Phase 10: 10 of 23 topics complete.**
-- [ ] `/security/claims-identity` — Claims & Identity
+- [x] `/security/claims-identity` — Claims & Identity (2026-08-30) — Phase 10: 3 subtopics
+  added, all gap-closing. Claims Transformation — IdP Groups to App Roles (mapping table +
+  transformation step, verified via execution); The Audience Validation Attack, Demonstrated
+  (a vulnerable version + genuine token replay, plus a same-audience misconfiguration Try It);
+  DB-Verified Role Recheck vs. Freshness-Only (both side by side, tracing exactly which gap only
+  the DB check closes). Self-caught and fixed a missing `//` comment prefix in an illustrative
+  codeTab before the build. No `SUBTOPICS` collision, left bare. Build passed clean.
+  Browser-verified: nav accordion opens with all 3 labels (11 toggles total across the hub);
+  breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on any of the 4
+  pages.
+  **Security & Auth hub Phase 10: 11 of 23 topics complete.**
 - [ ] `/security/api-security` — API Security
 - [ ] `/security/xss` — Cross-Site Scripting (XSS)
 - [ ] `/security/csrf-clickjacking` — CSRF & Clickjacking
