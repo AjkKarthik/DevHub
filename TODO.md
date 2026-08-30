@@ -8082,7 +8082,26 @@ off here with a date.
   the 4 pages; nav accordion opens with all 3 labels (1 toggle — this hub's first Phase 10
   topic); both fixes confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar
   showed tailored composite-key content. **API Design hub Phase 10: 1 of 19 topics complete.**
-- [ ] `/api-design/resource-url-design` — Resource & URL Design
+- [x] `/api-design/resource-url-design` — Resource & URL Design (2026-08-30). Fixed a genuine
+  bug in the main page's own Challenge: the verb check used `VERBS.includes(lower)` -- an EXACT
+  whole-segment match -- so real verb-in-URL violations (`getUserById`, `createOrder`) never
+  matched. Verified via direct execution that the original `/getUserById` test case was flagged
+  invalid for the WRONG reason (camelCase, not the verb check), and `/getusers` (all lowercase)
+  passed as fully valid. Fixed to a prefix-based check (`VERBS.some(v => lower.startsWith(v))`),
+  documenting the real tradeoff (a noun like `listings` becomes a false positive). Also
+  generalized `ApiDesignNavComponent`'s subtopics-accordion wiring from a hardcoded
+  `item.path === 'rest-fundamentals'` check (the pilot batch) to a generic
+  `subtopicsOf(item.path)` lookup -- needed once a SECOND topic in the same `@for`-looped nav
+  group got subtopics. 3 subtopics: a Before/After trace of the exact-match-vs-prefix bug
+  (verified via execution); a real `POST /orders/42/cancellations` sub-resource endpoint with
+  idempotency handling, named in the QnA but never built; real cursor-based pagination
+  (base64 encode/decode verified via execution matching the theory's own example byte-for-byte)
+  contrasted against offset pagination's documented instability under concurrent deletes. No
+  SUBTOPICS collision. Build passed clean, also confirming the nav generalization compiles for
+  two topics in the same group. Browser-verified: no console errors on any of the 4 pages; nav
+  accordion opens with all 3 labels (2 toggles total); the Challenge fix confirmed rendering
+  live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **API Design hub Phase 10: 2 of 19 topics complete.**
 - [ ] `/api-design/http-methods-status-codes` — HTTP Methods & Status Codes
 - [ ] `/api-design/pagination-patterns` — Pagination Patterns
 - [ ] `/api-design/api-versioning` — API Versioning Strategies

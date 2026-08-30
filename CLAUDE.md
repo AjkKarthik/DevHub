@@ -5415,6 +5415,48 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
    parameter fix AND the description-field fix confirmed rendering live via direct text search;
    breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key
    content. **API Design hub Phase 10: 1 of 19 topics complete.**
+9. **The `resource-url-design` batch found and fixed a genuine bug in the main page's own
+   Challenge, exactly the same failure SHAPE as this hub's own pilot batch a step earlier**: the
+   verb check used `VERBS.includes(lower)` — an EXACT whole-segment match against a 6-word list.
+   Real verb-in-URL violations are compound words (`getUserById`, `createOrder`) that never equal
+   a bare verb exactly — confirmed via direct execution that the ORIGINAL code's own
+   `/getUserById` test case was still flagged invalid, but for the WRONG reason (the separate
+   camelCase check catching it, not the verb check the comment claimed), and that a realistic
+   all-lowercase violation like `/getusers` passed as fully VALID with zero issues, silently
+   missing exactly the anti-pattern this Challenge exists to catch. Fixed to a prefix-based check
+   (`VERBS.some(v => lower.startsWith(v))`), documented inline with the real tradeoff it
+   introduces (a genuine noun like `listings` becomes a false positive, verified via the same
+   execution pass). **Also generalized `ApiDesignNavComponent`'s subtopics-accordion wiring**
+   from the pilot batch's hardcoded `item.path === 'rest-fundamentals'` check to a generic
+   `subtopicsOf(item.path)` lookup that works for any topic inside a `@for`-looped nav group
+   without per-topic hardcoding — this hub's SECOND topic to get subtopics is what surfaced the
+   need for this generalization; a third+ topic would have needed a third hardcoded branch
+   otherwise. Three subtopics: (1) **fix-adjacent** — traces the exact-match-vs-prefix bug with a
+   Before/After codeTab pair, both verified via direct Node.js execution matching every claimed
+   output exactly, including the `listings` false positive and a Try It on why a camelCase-word-
+   splitting alternative fix would ALSO miss the all-lowercase case; (2) **gap-closing** — a real
+   `POST /orders/42/cancellations` sub-resource endpoint, named as one of three options in the
+   QnA ("model the action as a sub-resource... use option 2 when the action has its own
+   attributes") but never built in any codeTab — includes idempotency handling (`409 Conflict` on
+   a repeated cancellation) and a full audit-history capability a status-only PATCH structurally
+   cannot offer; (3) **gap-closing** — real cursor-based pagination, with the theory's own
+   `eyJpZCI6NDJ9` example decoded byte-for-byte via direct execution (confirmed `{"id":42}`), a
+   stable-sort tiebreaker field, and a Try It tracing exactly how offset pagination silently
+   duplicates/skips a row under concurrent deletion while the cursor-based version is unaffected.
+   No `SUBTOPICS` collision for `resource-url-design` (checked both forms, confirmed
+   collision-free, left bare). All three `solution`/`heading` fields swept clean via the standing
+   apostrophe/backtick-parity scripts before the build (the raw brace-count sweep script itself
+   produced a false positive on this file's own PRE-EXISTING `seg.startsWith('{')` code — a
+   single-brace CHARACTER correctly embedded in a string literal, not a real imbalance — confirmed
+   by locating the exact line via a depth-tracking script rather than trusting the naive
+   open/close count; a reminder that a raw brace-count sweep is a heuristic, not authoritative,
+   whenever code samples legitimately contain a lone brace character in a string). Build passed
+   clean (explicit `EXITCODE:$?` capture, zero `ERROR` lines) — also confirming the nav-toggle
+   generalization compiles correctly for two distinct topics in the same `@for` group. Browser-
+   verified: no console errors on any of the 4 pages; nav accordion opens with all 3 labels (2
+   toggles total across the hub); the Challenge fix confirmed rendering live; breadcrumb and 860px
+   wrapper confirmed on every subtopic; sidebar showed tailored composite-key content. **API
+   Design hub Phase 10: 2 of 19 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6442,10 +6484,13 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 1 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch,
-  2026-08-30) — see "API Design hub subtopic wiring" section above for the `ApiDesignNavComponent`
-  accordion structural fix and the per-group-`@for`-loop toggle-gating pattern this hub's nav
-  template needed (a first for this hub, since most prior hubs hand-write one `<a>` per topic).
+  Phase 10: 2 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  `/api-design/resource-url-design`, 2026-08-30) — see "API Design hub subtopic wiring" section
+  above for the `ApiDesignNavComponent` accordion structural fix and the generic
+  `subtopicsOf(item.path)` toggle-gating pattern this hub's `@for`-looped nav template needed
+  (a first for this hub, since most prior hubs hand-write one `<a>` per topic) — generalized from
+  a per-topic hardcoded check to a lookup keyed directly off the loop's own `item.path` once a
+  second topic in the same nav group needed subtopics too.
 - **Observability & SRE hub**: 20 trackable topic pages + 2 reference (22 cards total). Feature-complete.
   Emerald theme `$accent: #059669`, `$tint: #ecfdf5`, dark `#34d399`. Search prefix `obs-`. Route: `/observability`.
   CSS classes: `.obs-page`, `.obs-icon`, `.obs-section`. Icon content: `📊` at `font-size: 1.8rem`. `tech="javascript"`.
