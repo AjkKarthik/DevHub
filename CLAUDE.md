@@ -4995,6 +4995,49 @@ this same check before any other new hub's first subtopic set:
     `<script>`/`<img>`/`<style>` mentions confirmed rendering as literal text on every affected
     page; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored
     composite-key content. **Security & Auth hub Phase 10: 13 of 23 topics complete.**
+20. **The `csrf-clickjacking` batch found and fixed FIVE more issues — the SAME "vanishing
+    `[innerHTML]`-bound tag" bug class the XSS batch first caught, plus two externally-verified
+    inaccuracies**: a proactive sweep of every `theory.points`/`revision.mustKnow` field for raw
+    `<tag>` mentions (run BEFORE the build this time, learning from the XSS batch) found THREE more
+    live instances on this ALREADY-PUBLISHED main page — a raw `<img src="...">` and a raw
+    `<iframe>` in `theory.points`, and a raw `<img src="">` in `revision.mustKnow` — all confirmed
+    vanishing via live `.textContent` inspection, then fixed by wrapping in
+    `<code>&lt;tag&gt;</code>`, confirmed correct afterward. Separately, verified via WebSearch that
+    `csurf` (the main page's own primary CSRF codeTab dependency) is officially deprecated per
+    Express.js's own 2025 cleanup announcement — added an in-place deprecation note pointing to
+    `csrf-csrf`, the maintained Double Submit Cookie replacement, rather than rewriting the whole
+    codeTab. Also verified via Chromium's own SameSite documentation that the QnA's "2-minute window
+    (Chrome bug bounty research)" framing was inaccurate on two counts: it's a documented,
+    intentional compatibility measure named "Lax+POST," not a bug-bounty finding, AND it applies
+    ONLY to cookies with no explicit `SameSite` attribute at all (Chrome's implicit default), not to
+    an explicitly-set `SameSite=Lax` cookie — corrected the QnA to state the real, narrower scope.
+    Three subtopics: (1) fix-adjacent — the full `csrf-csrf` migration (`doubleCsrf()`, its four
+    returned functions, the `__Host-` cookie-prefix guarantee verified via a Try It); (2)
+    fix-adjacent — the verified Lax+POST scope distinction, with an implicit-vs-explicit
+    side-by-side codeTab and a concrete attack-timeline trace; (3) gap-closing — login CSRF (the
+    QnA names it precisely, zero code anywhere on the page), building the pre-session token pattern
+    the standard session-backed Challenge pattern can't cover. **Self-caught and fixed a real
+    authoring mistake during the FIRST build attempt, not the sweep**: an `Edit` call adding the
+    csurf deprecation comment accidentally dropped the `code: \`` field-opening backtick, breaking
+    the codeTab's TS syntax — the harness's own exit-code-0 wrapper initially masked this (the
+    piped `tail` command reported success despite real `TS1128`/`Unexpected ","` errors in the
+    output body), caught only by actually reading the build log's CONTENT rather than trusting the
+    reported exit code, then re-verified with a reliable `EXITCODE:$?` capture pattern after the
+    fix. **New standing lesson: a background build task's reported "exit code 0" can be an
+    artifact of shell piping (`| tail`) rather than the actual compiler's exit status — always grep
+    the log body for `ERROR`/`error TS` before trusting a green status, and prefer explicit
+    `> log; echo EXITCODE:$? >> log` capture for any build run through a pipe.** No `SUBTOPICS`
+    collision for `csrf-clickjacking` (checked both `subtopics.ts` forms and `app.routes.ts`
+    directly, confirmed collision-free, left bare). Build passed clean after the fix (re-verified
+    via explicit exit-code capture, zero `ERROR` lines). Browser-verified: no real console errors
+    on any page (one `net::ERR_CONNECTION_TIMED_OUT` was an unrelated external resource, not app
+    content, confirmed via `read_network_requests` showing every actual app request returning 200);
+    nav accordion opens with all 3 labels (14 toggles total across the hub); all three
+    previously-vanishing `<img>`/`<iframe>` mentions confirmed rendering as literal text; the csurf
+    deprecation NOTE comment confirmed rendering inside the codeTab's own collapsed "View Code"
+    toggle; the Lax+POST QnA fix confirmed rendering; breadcrumb and 860px wrapper confirmed on
+    every subtopic; sidebar showed tailored composite-key content. **Security & Auth hub Phase 10:
+    14 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5996,11 +6039,11 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 13 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 14 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
-  `/security/xss`, 2026-08-30) —
+  `/security/xss`; `/security/csrf-clickjacking`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive

@@ -7894,7 +7894,27 @@ off here with a date.
   literal text; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored
   composite-key content.
   **Security & Auth hub Phase 10: 13 of 23 topics complete.**
-- [ ] `/security/csrf-clickjacking` — CSRF & Clickjacking
+- [x] `/security/csrf-clickjacking` — CSRF & Clickjacking (2026-08-30). 3 subtopics: Migrating Off
+  csurf to csrf-csrf, Lax+POST: Why Explicit SameSite Beats the Default, Login CSRF: Defending a
+  Page With No Session Yet. Found and fixed FIVE main-page issues: (1) verified csurf is officially
+  deprecated (Express.js's own 2025 cleanup announcement) — added a deprecation note pointing to
+  csrf-csrf; (2) verified via Chromium's own docs that the "2-minute window (Chrome bug bounty
+  research)" QnA framing was wrong on two counts — it's the documented "Lax+POST" intervention, and
+  applies only to cookies with NO explicit SameSite attribute, not an explicitly-set SameSite=Lax
+  — corrected the QnA; (3-5) THREE more currently-live [innerHTML] rendering bugs (same class as
+  the XSS batch, caught by a proactive pre-build sweep this time) — raw <img>/<iframe> tags in
+  theory.points and revision.mustKnow silently vanishing — fixed by entity-escaping into <code>
+  tags, confirmed via live .textContent inspection. Self-caught a real authoring mistake during the
+  first build: an Edit accidentally dropped a `code:` field's opening backtick, breaking TS syntax
+  — the background task's exit-code-0 wrapper masked this initially (piped through `tail`); caught
+  by reading the log body for ERROR lines rather than trusting the reported exit code, fixed, and
+  re-verified with an explicit EXITCODE capture. No SUBTOPICS collision. Build passed clean.
+  Browser-verified: no real console errors (one unrelated external-resource timeout, confirmed via
+  read_network_requests showing every app request as 200); nav accordion opens with all 3 labels
+  (14 toggles total across the hub); all vanishing-tag fixes and the csurf deprecation note
+  confirmed rendering; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
+  tailored composite-key content.
+  **Security & Auth hub Phase 10: 14 of 23 topics complete.**
 - [ ] `/security/injection` — Injection Attacks
 - [ ] `/security/security-headers` — Security Headers
 - [ ] `/security/tls-https` — TLS & HTTPS
