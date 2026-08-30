@@ -7945,7 +7945,18 @@ off here with a date.
   main-page COEP note and vanishing-tag fix both confirmed rendering; breadcrumb and 860px
   wrapper confirmed; sidebar showed tailored composite-key content.
   **Security & Auth hub Phase 10: 16 of 23 topics complete.**
-- [ ] `/security/tls-https` — TLS & HTTPS
+- [x] `/security/tls-https` — TLS & HTTPS (2026-08-30). 3 subtopics, all gap-closing (clean main
+  page, no fixes needed): Certificate Pinning, Implemented (Public Key Hash); Authorizing by
+  Client Certificate CN, Not Just Authenticating; 0-RTT Replay Protection, Concretely. A real
+  self-correction during authoring: an early draft of the 0-RTT subtopic assumed a Node.js
+  socket.isEarlyData() API based on an unreliable web summary — verified directly against Node's
+  own official TLS docs via WebFetch that no such API exists; rewrote around the actual verified
+  architecture (nginx forwarding the RFC 8470 Early-Data: 1 header), confirming the header syntax
+  via a direct MDN fetch before publishing. All exercise logic verified via direct Node.js
+  execution. No SUBTOPICS collision. Build passed clean (explicit EXITCODE capture). Browser-
+  verified: no console errors; nav accordion opens with all 3 labels (17 toggles total across the
+  hub); breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 17 of 23 topics complete — Transport & Crypto nav group started.**
 - [ ] `/security/secrets-management` — Secrets Management
 - [ ] `/security/container-security` — Container Security
 - [ ] `/security/symmetric-encryption` — Symmetric Encryption

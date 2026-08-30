@@ -5114,6 +5114,40 @@ this same check before any other new hub's first subtopic set:
     across the hub); the main-page COEP note and the vanishing-`<script>` fix both confirmed
     rendering; breadcrumb and 860px wrapper confirmed on a subtopic page; sidebar showed tailored
     composite-key content. **Security & Auth hub Phase 10: 16 of 23 topics complete.**
+23. **The `tls-https` batch — the first Transport & Crypto nav-group topic — was a clean main
+    page (no compile bug or inaccuracy found after careful reading, matching the same vanishing-
+    tag sweep run on every batch since XSS — zero raw `<tag>` mentions in `theory.points`/
+    `revision.mustKnow`/`qna.a` this time)**, so all three subtopics are gap-closing, each building
+    real code for a concept the QnA names precisely but never demonstrates: (1) certificate
+    pinning via a Node.js `checkServerIdentity()` hook, pinning the INTERMEDIATE CA's public key
+    hash specifically — matching the page's own separate QnA on why that survives routine leaf
+    renewal where pinning the leaf itself would not; (2) a per-service authorization check layered
+    on top of the main page's own mTLS codeTab, which extracts `cert.subject.CN` and logs it but
+    never checks whether that specific service is allowed to reach that specific endpoint — the
+    same authn-vs-authz gap this hub's own API Security topic already covers for JWTs, here
+    applied one layer lower; (3) 0-RTT replay protection, closing the QnA's own one-sentence "never
+    allow state-changing requests as 0-RTT... use only for idempotent reads" into a real
+    architecture. **A genuine, caught-before-publishing fabricated-API mistake**: an early draft of
+    subtopic 3 assumed a Node.js `socket.isEarlyData()` method, based on an unreliable WebSearch
+    summary — a direct WebFetch against Node's own official TLS documentation confirmed NO such
+    API exists anywhere in it (0-RTT/early-data has no exposed Node.js API at all). Rather than
+    publish a fabricated API, rewrote the subtopic around the actual, externally-verified
+    architecture: TLS 1.3 termination (and the 0-RTT decision) happens at whatever's actually
+    terminating TLS in front of the app — nginx, a CDN — which forwards the standard, RFC
+    8470-defined `Early-Data: 1` header to the application; confirmed the exact header syntax via a
+    direct MDN fetch before publishing. **This is the same "verify the exact API/spec before
+    trusting it" discipline this session has applied to Chromium's Lax+POST mechanics, libxmljs2's
+    parse options, and csrf-csrf's function signatures in prior batches — just this time catching
+    something that would have been outright fabricated, not merely imprecise.** No `SUBTOPICS`
+    collision for `tls-https` (checked both `subtopics.ts` forms and `app.routes.ts` directly,
+    confirmed collision-free, left bare). All three `exercise.solution`-adjacent claims (the HSTS-
+    style regex logic pattern reused from the prior Security Headers batch, the permission-map
+    lookup, the pinned-hash comparison) verified via direct Node.js execution before publishing.
+    Build passed clean (explicit `EXITCODE:$?` capture, zero `ERROR` lines). Browser-verified: no
+    console errors; nav accordion opens with all 3 labels (17 toggles total across the hub);
+    breadcrumb and 860px wrapper confirmed on a subtopic page; sidebar showed tailored composite-
+    key content. **Security & Auth hub Phase 10: 17 of 23 topics complete — Transport & Crypto nav
+    group started.**
 
 ## Current state (update when it changes!)
 
@@ -6115,12 +6149,12 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 16 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 17 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
   `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`;
-  `/security/security-headers`, 2026-08-30) —
+  `/security/security-headers`; `/security/tls-https`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive
