@@ -7825,7 +7825,18 @@ off here with a date.
   clean. Browser-verified: nav accordion opens with all 3 labels (8 toggles total across the
   hub); main page confirmed unchanged from original; no console errors on any of the 4 pages.
   **Security & Auth hub Phase 10: 8 of 23 topics complete.**
-- [ ] `/security/sso` — Single Sign-On (SSO)
+- [x] `/security/sso` — Single Sign-On (SSO) (2026-08-30) — Phase 10: 3 subtopics added, all
+  gap-closing. The SAML Signature Wrapping Attack, Demonstrated (a simplified document model
+  isolating the structural bug, verified against real XSW attack mechanics via WebSearch and
+  confirmed end-to-end via Node execution, including a reversed-order variant); Multi-Tenant SSO
+  — Domain Resolution and Isolation (domain-based IdP resolution + the isolation check catching a
+  signature-valid assertion from the wrong tenant's own real IdP, verified via execution); SCIM
+  Deprovisioning — the JIT Gap SCIM Closes (the SCIM endpoint closing JIT's one structural gap,
+  with a Try It on why session revocation must be explicit). No `SUBTOPICS` collision, left bare.
+  Build passed clean. Browser-verified: nav accordion opens with all 3 labels (9 toggles total
+  across the hub); breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on
+  any of the 4 pages.
+  **Security & Auth hub Phase 10: 9 of 23 topics complete.**
 - [ ] `/security/rbac-abac` — RBAC & ABAC
 - [ ] `/security/claims-identity` — Claims & Identity
 - [ ] `/security/api-security` — API Security

@@ -4803,6 +4803,42 @@ this same check before any other new hub's first subtopic set:
     subtopic; sidebar showed tailored composite-key content; the corrected apostrophe confirmed
     rendering as literal text with no stray backslash. **Security & Auth hub Phase 10: 8 of 23
     topics complete.**
+15. **The `sso` batch built three subtopics for mechanisms the quiz/QnA all describe in real
+    technical detail but never show in code, following the same rigorous verify-before-publish
+    discipline established after the MFA batch's near-miss**: (1) **gap-closing** — the quiz
+    explains the SAML XML signature wrapping attack precisely but the main page's own mistakes
+    block only ever warns against manual XML parsing without showing the actual vulnerable code;
+    built a simplified document model isolating the structural bug (claims extraction running a
+    SEPARATE "first assertion" query instead of reusing the element the signature actually
+    referenced) — verified against real, documented XSW attack mechanics via WebSearch first, then
+    confirmed end-to-end via direct Node execution that the exploit succeeds (an injected, unsigned
+    `roles: ['admin']` assertion gets read even though the real signature check genuinely passes
+    against the LEGITIMATE assertion elsewhere in the same document) AND that a reversed-element-
+    order variant (the Try It's own probe) behaves exactly as traced; (2) **gap-closing** — the
+    QnA describes real multi-tenant SSO architecture (domain-based IdP resolution, tenant isolation
+    checks) in detail, but every codeTab on the page is single-tenant; built domain-based
+    resolution and the isolation check that catches a signature-VALID assertion from the WRONG
+    tenant's own genuine IdP — verified via direct execution that a mismatched-tenant login is
+    correctly rejected even though the underlying signature check passes cleanly, exactly
+    reproducing the QnA's own named "trusting the wrong IdP" risk; (3) **gap-closing** — the main
+    page's own OIDC and SAML codeTabs already call `findOrCreate` on every login (genuine JIT
+    provisioning, never named as such), and the QnA states JIT's one structural limitation
+    precisely ("JIT cannot deactivate accounts; you only learn a user logged in, not that they
+    left"); built the SCIM endpoint that closes exactly that gap, with a Try It establishing that
+    session revocation must be an explicit SEPARATE step from account deactivation — a still-valid
+    existing session doesn't automatically know the underlying account was just marked inactive
+    unless something explicitly kills it. No `SUBTOPICS` collision for `sso` (checked both
+    `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed collision-free, left
+    bare). All three `solution` fields and bracket-balance/backtick-parity swept clean; every
+    apostrophe-sweep flag across the batch confirmed a false positive (multiple correctly-paired
+    single-quoted strings inside backtick-delimited `code:` fields). Build passed clean.
+    Browser-verified: no console errors on any of the 4 pages; nav accordion opens with all 3
+    labels (9 toggles total across the hub — a same-tick DOM query after the toggle call initially
+    returned an empty array before Angular's change detection flushed, the same established timing
+    artifact documented elsewhere in this session; a fresh, separate query afterward confirmed all
+    3 links present); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
+    tailored composite-key content; Try It solution text confirmed via direct component inspection.
+    **Security & Auth hub Phase 10: 9 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5804,10 +5840,10 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 8 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 9 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
-  `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`,
-  2026-08-30) —
+  `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
+  `/security/sso`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).
