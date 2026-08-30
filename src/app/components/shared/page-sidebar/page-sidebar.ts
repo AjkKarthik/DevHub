@@ -35439,6 +35439,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'When implemented, hypermedia links can reduce coupling between client and server URL structure, since clients follow links rather than constructing URLs from templates.',
     ],
   },
+  'api-design/hateoas-hypermedia/the-missing-json-parse-in-the-link-following-example': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real JSON:API Response Shape', route: '/api-design/hateoas-hypermedia/a-real-jsonapi-response-shape' },
+      { label: 'HATEOAS & Hypermedia (overview)', route: '/api-design/hateoas-hypermedia' },
+    ],
+    tip: 'fetch() resolves to a Response object, not the parsed JSON body -- .json() must be called explicitly before any field from the response body, like _links, is actually reachable.',
+    gotchas: [
+      'A Response body can only be read once -- calling .json() a second time on the same Response object throws, which is part of why parsing it once, immediately, is the safer pattern.',
+    ],
+  },
+  'api-design/hateoas-hypermedia/a-real-jsonapi-response-shape': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'The Missing .json() Parse in the Link-Following Example', route: '/api-design/hateoas-hypermedia/the-missing-json-parse-in-the-link-following-example' },
+      { label: 'Pagination via the Link Header (RFC 8288)', route: '/api-design/hateoas-hypermedia/pagination-via-the-link-header-rfc-8288' },
+    ],
+    tip: 'A relationship\'s own "data" field is a bare type+id pointer, never the related resource\'s attributes -- the full data, if present, lives separately in the top-level "included" array, matched by that same pointer.',
+    gotchas: [
+      'The "included" array is a single, flat, top-level list shared across the whole document -- not scoped per relationship.',
+    ],
+  },
+  'api-design/hateoas-hypermedia/pagination-via-the-link-header-rfc-8288': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'A Real JSON:API Response Shape', route: '/api-design/hateoas-hypermedia/a-real-jsonapi-response-shape' },
+      { label: 'HATEOAS & Hypermedia (overview)', route: '/api-design/hateoas-hypermedia' },
+    ],
+    tip: 'The Link header and a HAL-style _links body can coexist on the same response -- a common middle ground uses Link headers for well-understood relations like pagination while keeping the JSON body itself plain.',
+    gotchas: [
+      'A client following Link-header URLs never needs to understand the API\'s own query-parameter conventions -- each relation resolves to a complete, ready-to-fetch URL.',
+    ],
+  },
   'api-design/graphql-fundamentals': {
     apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
     related: [

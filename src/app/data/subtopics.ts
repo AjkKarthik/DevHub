@@ -3583,4 +3583,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real traceparent Header (W3C Trace Context)', route: '/api-design/error-response-design/a-real-traceparent-header-w3c-trace-context' },
     { label: 'Wiring the Error Handler: Why It Must Be Last', route: '/api-design/error-response-design/wiring-the-error-handler-why-it-must-be-last' },
   ],
+  'hateoas-hypermedia': [
+    { label: 'The Missing .json() Parse in the Link-Following Example', route: '/api-design/hateoas-hypermedia/the-missing-json-parse-in-the-link-following-example' },
+    { label: 'A Real JSON:API Response Shape', route: '/api-design/hateoas-hypermedia/a-real-jsonapi-response-shape' },
+    { label: 'Pagination via the Link Header (RFC 8288)', route: '/api-design/hateoas-hypermedia/pagination-via-the-link-header-rfc-8288' },
+  ],
 };

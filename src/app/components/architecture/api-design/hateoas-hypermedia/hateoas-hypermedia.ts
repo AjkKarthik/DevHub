@@ -165,9 +165,11 @@ const mistakes: CommonMistake[] = [
     wrong: `// Client hard-codes every URL — breaks when server restructures
 const ordersUrl = \`https://api.example.com/v1/users/\${userId}/orders\`;`,
     right: `// Start at root, follow links — server controls URL structure
-const root = await fetch('https://api.example.com/');
+// fetch() resolves to a Response object -- .json() is required to
+// get the parsed body before _links is actually accessible.
+const root = await (await fetch('https://api.example.com/')).json();
 const usersUrl = root._links.users.href;
-const user = await fetch(usersUrl + '/' + userId);
+const user = await (await fetch(usersUrl + '/' + userId)).json();
 const ordersUrl = user._links.orders.href;`,
     explanation: 'Hard-coding URLs couples clients to server URL structure. When the server reorganizes URLs (a new version, restructuring), all hard-coded clients break. Following links from a known entry point allows the server to change URLs without breaking clients.',
   },
