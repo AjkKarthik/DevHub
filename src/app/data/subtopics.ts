@@ -3472,4 +3472,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Multi-Tenant SSO — Domain Resolution and Isolation', route: '/security/sso/multi-tenant-sso-domain-resolution-and-isolation' },
     { label: 'SCIM Deprovisioning — the JIT Gap SCIM Closes', route: '/security/sso/scim-deprovisioning-the-jit-gap-scim-closes' },
   ],
+  'rbac-abac': [
+    { label: 'ReBAC — a Zanzibar-Style Relationship Resolver', route: '/security/rbac-abac/rebac-a-zanzibar-style-relationship-resolver' },
+    { label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' },
+    { label: 'Separation of Duties, Enforced at Role Assignment', route: '/security/rbac-abac/separation-of-duties-enforced-at-role-assignment' },
+  ],
 };

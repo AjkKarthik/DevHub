@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="RBAC & ABAC" topicRoute="/security/rbac-abac"
+    subtopicLabel="ReBAC — a Zanzibar-Style Relationship Resolver" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">ReBAC — a Zanzibar-Style Relationship Resolver</h1>
+  <p class="page-subtitle">The QnA names Google Zanzibar and nested groups in real detail. Here's an actual relationship-tuple store and the recursive resolver that walks it — verified end-to-end.</p>
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The next two subtopics build out mechanisms the QnA describes in real detail but never demonstrates in code: database-level row-level security, and separation-of-duties constraints enforced at role-assignment time.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="RBAC & ABAC" topicRoute="/security/rbac-abac"
+    [next]="{ label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' }" />
+</div>

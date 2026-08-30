@@ -34503,6 +34503,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'ABAC policies can become difficult to test exhaustively, since the number of possible attribute combinations grows combinatorially.',
     ],
   },
+  'security/rbac-abac/rebac-a-zanzibar-style-relationship-resolver': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'RBAC & ABAC (overview)', route: '/security/rbac-abac' },
+      { label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' },
+    ],
+    tip: 'Nested group membership resolves through the SAME recursive resolver function regardless of how many levels deep the chain goes — no restructuring needed as a permission graph grows, unlike RBAC roles or ABAC policies.',
+    gotchas: [
+      'A relationship graph without a cycle guard can recurse infinitely if group membership ever forms a loop — a real risk in data imported or edited across multiple systems.',
+    ],
+  },
+  'security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'ReBAC — a Zanzibar-Style Relationship Resolver', route: '/security/rbac-abac/rebac-a-zanzibar-style-relationship-resolver' },
+      { label: 'Separation of Duties, Enforced at Role Assignment', route: '/security/rbac-abac/separation-of-duties-enforced-at-role-assignment' },
+    ],
+    tip: 'Database-level RLS is enforced by the engine itself on EVERY query against the table — a forgotten WHERE clause in one application endpoint no longer matters once the policy is active.',
+    gotchas: [
+      'A query that never sets the RLS session variable at all still fails closed (an error or zero rows), not open — bypassing the application middleware alone does not leak other users\' data.',
+    ],
+  },
+  'security/rbac-abac/separation-of-duties-enforced-at-role-assignment': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Database-Level Row-Level Security vs. a Forgotten WHERE', route: '/security/rbac-abac/database-level-row-level-security-vs-a-forgotten-where' },
+      { label: 'RBAC & ABAC (overview)', route: '/security/rbac-abac' },
+    ],
+    tip: 'SoD constraints must be checked at role-GRANT time, not permission-check time — by the time a permission check runs, a conflicting pair of roles has already been assigned and the violation already happened.',
+    gotchas: [
+      'A grant-time SoD check only prevents NEW violations through that one code path — it does nothing to detect existing conflicting-role holders granted before the check existed or through a different path entirely.',
+    ],
+  },
   'security/mfa': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

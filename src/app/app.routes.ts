@@ -3291,7 +3291,12 @@ export const routes: Routes = [
         { path: 'multi-tenant-sso-domain-resolution-and-isolation', loadComponent: () => import('./components/architecture/security/sso/subtopics/multi-tenant-sso-domain-resolution-and-isolation/multi-tenant-sso-domain-resolution-and-isolation').then(m => m.MultiTenantSsoDomainResolutionAndIsolationSubtopic) },
         { path: 'scim-deprovisioning-the-jit-gap-scim-closes', loadComponent: () => import('./components/architecture/security/sso/subtopics/scim-deprovisioning-the-jit-gap-scim-closes/scim-deprovisioning-the-jit-gap-scim-closes').then(m => m.ScimDeprovisioningTheJitGapScimClosesSubtopic) },
       ] },
-    { path: 'rbac-abac',             loadComponent: () => import('./components/architecture/security/rbac-abac/rbac-abac').then(m => m.SecRbacAbac) },
+    { path: 'rbac-abac', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/rbac-abac/rbac-abac').then(m => m.SecRbacAbac) },
+        { path: 'rebac-a-zanzibar-style-relationship-resolver', loadComponent: () => import('./components/architecture/security/rbac-abac/subtopics/rebac-a-zanzibar-style-relationship-resolver/rebac-a-zanzibar-style-relationship-resolver').then(m => m.RebacAZanzibarStyleRelationshipResolverSubtopic) },
+        { path: 'database-level-row-level-security-vs-a-forgotten-where', loadComponent: () => import('./components/architecture/security/rbac-abac/subtopics/database-level-row-level-security-vs-a-forgotten-where/database-level-row-level-security-vs-a-forgotten-where').then(m => m.DatabaseLevelRowLevelSecurityVsAForgottenWhereSubtopic) },
+        { path: 'separation-of-duties-enforced-at-role-assignment', loadComponent: () => import('./components/architecture/security/rbac-abac/subtopics/separation-of-duties-enforced-at-role-assignment/separation-of-duties-enforced-at-role-assignment').then(m => m.SeparationOfDutiesEnforcedAtRoleAssignmentSubtopic) },
+      ] },
     { path: 'claims-identity',       loadComponent: () => import('./components/architecture/security/claims-identity/claims-identity').then(m => m.SecClaimsIdentity) },
     { path: 'api-security',          loadComponent: () => import('./components/architecture/security/api-security/api-security').then(m => m.SecApiSecurity) },
     { path: 'xss',                   loadComponent: () => import('./components/architecture/security/xss/xss').then(m => m.SecXss) },
