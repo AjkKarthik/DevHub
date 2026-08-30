@@ -8059,7 +8059,29 @@ off here with a date.
 
 #### API Design — 19 topic pages
 
-- [ ] `/api-design/rest-fundamentals` — REST Fundamentals
+- [x] `/api-design/rest-fundamentals` — REST Fundamentals (2026-08-30). First Phase 10 pilot batch
+  for the API Design hub. Fixed `ApiDesignNavComponent`'s missing subtopics-accordion structural
+  support (14th `*NavComponent`-based hub in a row missing it at pilot time) — this hub's nav
+  template groups topics via `@for` loops per group rather than one hand-written `<a>` per topic,
+  so the toggle had to be gated with `@if (item.path === 'rest-fundamentals' && ...)` inside the
+  loop instead. Fixed a genuine spec/signature mismatch in the main page's own Challenge: the
+  description promised 3 checks but the original 2-parameter `validateRestRequest(method, path)`
+  signature had no way to represent "does this request have a body" at all — check #2 was
+  unimplementable, not just unimplemented (verified via direct Node.js execution). Added a
+  `hasBody: boolean` parameter and implemented the check. **A second, separate staleness caught
+  only during browser verification**: the Challenge's own `description` string still quoted the
+  OLD 2-parameter signature inline even after starterCode/solution were fixed — a live text
+  search after the first fix caught it, not a source re-read. Fixed the description too. 3
+  subtopics: a Before/After trace of the missing-parameter bug (both verified via direct Node.js
+  execution); a real HATEOAS response whose `_links` change with resource state, closing the gap
+  between the QnA's detailed prose and the main page's plain-REST codeTabs (verified via
+  execution); a real Express content-negotiation handler using `req.accepts()` (verified against
+  Express's own official docs via WebFetch) for the JSON-vs-CSV scenario the theory names but
+  never implements. No SUBTOPICS collision. Build passed clean TWICE (once before the
+  description-field fix was caught, once after). Browser-verified: no console errors on any of
+  the 4 pages; nav accordion opens with all 3 labels (1 toggle — this hub's first Phase 10
+  topic); both fixes confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar
+  showed tailored composite-key content. **API Design hub Phase 10: 1 of 19 topics complete.**
 - [ ] `/api-design/resource-url-design` — Resource & URL Design
 - [ ] `/api-design/http-methods-status-codes` — HTTP Methods & Status Codes
 - [ ] `/api-design/pagination-patterns` — Pagination Patterns

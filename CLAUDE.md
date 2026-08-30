@@ -5334,6 +5334,88 @@ this same check before any other new hub's first subtopic set:
     Phase 10 rollout — all 23 topics now have deep-dive subtopic pages, 69 subtopic pages total
     across the hub.**
 
+### API Design hub subtopic wiring — first pilot; the 14th `*NavComponent` in a row missing the
+subtopics-accordion structural fix
+
+Confirmed via direct file inspection before the pilot (`/api-design/rest-fundamentals`,
+2026-08-30) — do this same check before any other new hub's first subtopic set:
+
+1. **`ApiDesignNavComponent` (`shared/api-design-nav/api-design-nav.ts`) had ZERO
+   subtopics-accordion support** — the same structural gap already hit and fixed on every
+   `*NavComponent`-based hub's own pilot before it (Go, DevOps, Containers, AWS, Azure, Linux,
+   Terraform, Service Mesh, System Design, Architecture Patterns, Design Patterns, Security — this
+   is the 14th in a row). Fixed identically: added `signal`, `Router`, `NavigationEnd`, `filter`
+   (rxjs), and `SUBTOPICS` (from `../../../data/subtopics`) to the imports, then the same three
+   methods (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) and constructor-level router
+   subscription, copied directly from `SecurityNavComponent`'s own implementation (read directly,
+   not reconstructed from memory, per the established copy-fidelity discipline). **A structural
+   difference from every prior `*NavComponent` pilot**: this hub's nav template groups topics via
+   `@for` loops over per-group arrays (`foundations`, `restDesign`, `protocols`, …) rather than one
+   hand-written `<a>` per topic — the toggle/accordion markup for the SPECIFIC topic getting
+   subtopics this batch (`rest-fundamentals`) had to be gated with an `@if (item.path ===
+   'rest-fundamentals' && …)` check inside the loop, rather than simply appended to one specific
+   `<a>` tag the way every hand-written-per-topic hub's nav does it. Worked correctly on the first
+   browser check (verified via `window.ng.getComponent()` directly calling `toggleSubtopics`, since
+   this batch's session had no interactive click available) — no stale-chunk incident.
+2. **No `SUBTOPICS` map bare-key collision for `rest-fundamentals`** (checked both quoted and
+   unquoted forms in `subtopics.ts`, and grepped `app.routes.ts` directly, confirmed
+   collision-free) — left as a bare key.
+3. **`API_DESIGN_LABELS` breadcrumb map uses bare keys** (`'rest-fundamentals'`), matching the
+   generic pattern every hub's own dedicated labels map shares — composite subtopic keys there are
+   bare too (`'rest-fundamentals/<slug>'`).
+4. **`SIDEBAR_MAP` keys are FULL-PATH PREFIXED** (`'api-design/rest-fundamentals'`, confirmed the
+   base entry — and its own `API_DESIGN_DEFAULT` constant — already existed) — subtopic composite
+   keys follow suit: `'api-design/rest-fundamentals/<slug>'`.
+5. **Progress/search keys are `api-` PREFIXED** (`api-rest-fundamentals`), confirmed via the DIFF
+   map already keying entries this way in `api-design-nav.ts` itself. `search.ts`'s existing
+   `api-` → `/api-design/` prefix-strip rule required no special-casing since `rest-fundamentals`
+   doesn't itself start with `api-`.
+6. **`.api-page` wrapper rule is NOT global** (confirmed absent from `src/styles.scss`) — every
+   subtopic `.scss` needs the full `.api-page { max-width: 860px; margin: 0 auto; }` rule, with
+   `.subtopic-page { padding: 2rem 1.25rem 4rem; }` alongside it. `$accent: #0891b2`,
+   `$tint: #ecfeff`, `.api-icon` content `🔌`, `tech="javascript"` in `app-page-meta`.
+7. **No live playground** — REST/HTTP API design content has no dedicated in-browser runtime,
+   following the same `<app-code-block>`-only pattern as every other non-JS-runtime-specific hub —
+   every code tab across all three subtopics uses plain TypeScript/Express illustrative snippets,
+   matching the main page's own `codeTabs` style exactly.
+8. **The `rest-fundamentals` batch found and fixed a genuine spec/signature mismatch in the main
+   page's own Challenge, PLUS a second, separate staleness in the SAME Challenge caught only during
+   browser verification, not the initial fix**: the Challenge's own `description` listed three
+   checks (verb-shaped paths, GET/DELETE/HEAD must not carry a body, PUT/POST/PATCH must also avoid
+   query verbs), but the original two-parameter `validateRestRequest(method, path)` signature had
+   no way to even REPRESENT "does this request have a body" — check #2 was not merely
+   unimplemented, it was structurally unimplementable with that signature (verified via direct
+   Node.js execution that the original function returns `{ valid: true, issues: [] }` for a GET
+   request with a body, since it has no data to check against at all). Fixed by adding a
+   `hasBody: boolean` parameter to `starterCode`/`solution` and implementing the real check. **A
+   live-browser text search after the first fix revealed the Challenge's own `description` STRING
+   still quoted the stale two-parameter signature inline** (`Implement validateRestRequest(method:
+   string, path: string): { ... }`) — a second, independent staleness the initial fix missed
+   entirely, since it only touched `starterCode`/`solution`, not `description`'s own prose. Fixed
+   the description's inline signature to match. **Lesson reinforced for any Challenge-block fix
+   going forward**: a Challenge's `description` often repeats the function signature as prose
+   documentation — grep/search for the OLD signature string across the WHOLE object literal, not
+   just the `starterCode`/`solution` fields, before considering a signature fix complete; a
+   live-browser text check after publishing (not just re-reading the source diff) is what actually
+   caught this one. Three subtopics: (1) **fix-adjacent** — traces the missing-parameter bug
+   precisely, with a Before/After codeTab pair both verified via direct Node.js execution matching
+   their own claimed output exactly; (2) **gap-closing** — a real HATEOAS response whose `_links`
+   object changes with the resource's own current state (`pending` vs. `shipped`), closing the gap
+   between the QnA's detailed prose description and the main page's two plain-REST codeTabs, also
+   verified via direct execution matching claimed output; (3) **gap-closing** — a real Express
+   content-negotiation handler using `req.accepts()`, verified against Express's own official docs
+   (two separate WebFetch passes, both confirming the same q-value-aware best-match behavior) for
+   the exact JSON-vs-CSV scenario the theory names in prose but never implements in any codeTab. No
+   `SUBTOPICS` collision for `rest-fundamentals` (checked both forms, confirmed collision-free,
+   left bare). All three `solution`/`heading` fields swept clean via the standing apostrophe/
+   bracket-balance/backtick-parity scripts before the build. Build passed clean TWICE (once before
+   the description-field fix was caught, once after — both explicit `EXITCODE:$?` captures, zero
+   `ERROR` lines). Browser-verified: no console errors on any of the 4 pages; nav accordion opens
+   with all 3 labels (1 toggle total — this hub's first Phase 10 topic); both the `hasBody`
+   parameter fix AND the description-field fix confirmed rendering live via direct text search;
+   breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed tailored composite-key
+   content. **API Design hub Phase 10: 1 of 19 topics complete.**
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
@@ -6353,10 +6435,17 @@ this same check before any other new hub's first subtopic set:
 - **API Design hub**: 19 trackable topic pages + 2 reference (21 cards total). Feature-complete.
   Cyan theme `$accent: #0891b2`, `$tint: #ecfeff`. Search prefix `api-`. Route: `/api-design`.
   CSS classes: `.api-page`, `.api-icon`, `.api-section`. Icon content: `🔌` at `font-size: 1.8rem`. `tech="javascript"`.
-  Nav groups: Foundations, REST, gRPC & GraphQL, Real-Time, Design & Governance, Reference.
+  Nav groups (corrected 2026-08-30 — previously misdocumented as "Foundations, REST, gRPC &
+  GraphQL, Real-Time, Design & Governance, Reference"; confirmed against the real
+  `api-design-nav.ts`): Foundations, REST Design, Protocols, GraphQL & Real-Time, Advanced,
+  Reference.
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
+  Phase 10: 1 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch,
+  2026-08-30) — see "API Design hub subtopic wiring" section above for the `ApiDesignNavComponent`
+  accordion structural fix and the per-group-`@for`-loop toggle-gating pattern this hub's nav
+  template needed (a first for this hub, since most prior hubs hand-write one `<a>` per topic).
 - **Observability & SRE hub**: 20 trackable topic pages + 2 reference (22 cards total). Feature-complete.
   Emerald theme `$accent: #059669`, `$tint: #ecfdf5`, dark `#34d399`. Search prefix `obs-`. Route: `/observability`.
   CSS classes: `.obs-page`, `.obs-icon`, `.obs-section`. Icon content: `📊` at `font-size: 1.8rem`. `tech="javascript"`.
