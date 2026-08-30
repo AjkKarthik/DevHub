@@ -4839,6 +4839,36 @@ this same check before any other new hub's first subtopic set:
     3 links present); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
     tailored composite-key content; Try It solution text confirmed via direct component inspection.
     **Security & Auth hub Phase 10: 9 of 23 topics complete.**
+16. **The `rbac-abac` batch built three subtopics for mechanisms the theory/QnA all describe in
+    real technical detail but never demonstrate in code**: (1) **gap-closing** — Google Zanzibar
+    and nested-group inheritance are named precisely, with zero relationship-graph code anywhere;
+    built a `(object, relation, subject)` tuple store and a recursive resolver that follows group-
+    membership chains, verified via direct Node execution across the base cases AND a Try It that
+    adds a third nesting level with zero changes to the resolver itself (confirmed via execution:
+    4 recursive calls to resolve a 3-hop chain); (2) **gap-closing** — the QnA states the exact risk
+    ("developer forgets the WHERE clause... exposing all orders") and its database-level fix in one
+    breath, but neither ever appears in code; built a vulnerable endpoint reproducing the QnA's own
+    named failure alongside a PostgreSQL RLS policy that protects the SAME table even with that
+    exact bug present, verifying the `current_setting()` `missing_ok`/fail-closed semantics via
+    WebSearch against real Postgres documentation before publishing (confirming both the
+    error-on-missing and NULL-comparison-denies-all-rows behaviors the Try It traces); (3)
+    **gap-closing** — the QnA states SoD "enforces constraints AT ASSIGNMENT TIME" precisely, but
+    every RBAC codeTab on the page checks WHAT a user can do, never WHETHER a role grant itself
+    would create a conflict; built a mutually-exclusive-role-pairs table and a grant-time check,
+    verified via direct execution including a Try It confirming WHICH of two unrelated existing
+    roles a user holds is the one that actually triggers a block. No `SUBTOPICS` collision for
+    `rbac-abac` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly, confirmed
+    collision-free, left bare). All three `solution` fields and bracket-balance/backtick-parity
+    swept clean, including a nested-backtick SQL codeTab (an escaped `\`` inner template literal
+    holding the RLS policy text) confirmed correctly balanced and rendering with no stray escaping
+    artifacts. Build passed clean. Browser-verified: no console errors on any of the 4 pages; nav
+    accordion opens with all 3 labels (10 toggles total across the hub — the same-tick
+    change-detection timing artifact recurred here too; a `setTimeout`-deferred re-check within the
+    SAME `javascript_tool` call reliably confirmed the correct state, a refinement on the
+    separate-call workaround used in earlier batches); breadcrumb and 860px wrapper confirmed on
+    every subtopic; sidebar showed tailored composite-key content; the nested-backtick SQL codeTab
+    confirmed rendering cleanly via direct component inspection. **Security & Auth hub Phase 10:
+    10 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -5840,10 +5870,10 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 9 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 10 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
-  `/security/sso`, 2026-08-30) —
+  `/security/sso`; `/security/rbac-abac`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key).

@@ -7837,7 +7837,16 @@ off here with a date.
   across the hub); breadcrumb and 860px wrapper confirmed on every subtopic; no console errors on
   any of the 4 pages.
   **Security & Auth hub Phase 10: 9 of 23 topics complete.**
-- [ ] `/security/rbac-abac` — RBAC & ABAC
+- [x] `/security/rbac-abac` — RBAC & ABAC (2026-08-30) — Phase 10: 3 subtopics added, all
+  gap-closing. ReBAC — a Zanzibar-Style Relationship Resolver (a real tuple store + recursive
+  resolver for nested group membership, verified via Node execution); Database-Level Row-Level
+  Security vs. a Forgotten WHERE (a vulnerable app-level endpoint + a PostgreSQL RLS policy that
+  protects it anyway, verified against real Postgres docs); Separation of Duties, Enforced at
+  Role Assignment (a mutually-exclusive-role check at grant time, verified via execution). No
+  `SUBTOPICS` collision, left bare. Build passed clean. Browser-verified: nav accordion opens
+  with all 3 labels (10 toggles total across the hub); breadcrumb and 860px wrapper confirmed on
+  every subtopic; no console errors on any of the 4 pages.
+  **Security & Auth hub Phase 10: 10 of 23 topics complete.**
 - [ ] `/security/claims-identity` — Claims & Identity
 - [ ] `/security/api-security` — API Security
 - [ ] `/security/xss` — Cross-Site Scripting (XSS)
