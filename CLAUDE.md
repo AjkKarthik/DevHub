@@ -5038,6 +5038,43 @@ this same check before any other new hub's first subtopic set:
     toggle; the Lax+POST QnA fix confirmed rendering; breadcrumb and 860px wrapper confirmed on
     every subtopic; sidebar showed tailored composite-key content. **Security & Auth hub Phase 10:
     14 of 23 topics complete.**
+21. **The `injection` batch was cleaner on the "vanishing tag" front than the two prior
+    batches — a proactive sweep of every `theory.points`/`revision.mustKnow`/`qna.a` field found
+    zero raw, unescaped `<tag>` mentions** (the page's existing `<code>`/`<ol>`/`<li>` usage was
+    already correct, intentional formatting) — but found and fixed a genuine, self-contained bug
+    in the main page's own Challenge reference solution, plus built out a quiz-named-but-uncoded
+    concept via externally-verified API details: the "Safe Query Builder" Challenge solution
+    correctly validates the TABLE name against an allowlist and parameterizes every VALUE
+    ($1, $2, ...) — but concatenates `Object.keys(filters)` (the COLUMN names) directly into the
+    SQL string with no validation at all, verified via direct Node.js execution that a malicious
+    filter key produces a genuinely injectable query even with the table check passing cleanly.
+    This is exactly the gap the page's own SEPARATE QnA on ORM raw queries already states as a
+    general principle ("dynamic column names... cannot be parameterized; use an allowlist of
+    valid column names instead") — the Challenge's own solution never applies that principle to
+    itself. Added an in-place note (not a full restructure) pointing to the dedicated subtopic.
+    Verified via WebSearch the exact `libxmljs2` parse-option API (`noent`/`dtdload`/`nonet`) —
+    confirming entities are disabled by DEFAULT and the vulnerability requires an explicit opt-in
+    — to build a working vulnerable/fixed Node.js XXE parser for a concept the quiz explains in
+    real technical depth but never shows in any codeTab. Three subtopics: (1) fix-adjacent — the
+    column-name exploit and the per-table allowlist fix, with the Try It's own two-branch
+    prediction (one column valid on a different table, one genuinely valid) verified via direct
+    Node execution before publishing; (2) gap-closing — the XXE parser, with a Try It isolating
+    which SPECIFIC option (`noent`, not `dtdload`/`nonet`) stops the direct file-read variant
+    specifically, distinct from out-of-band/network XXE variants; (3) gap-closing — the quiz's
+    own registration-then-password-reset second-order SQL injection scenario, built into two
+    concrete functions reusing the main page's own parameterized-query patterns, with the SQL
+    comment-truncation mechanics of the `admin'--` payload traced and verified by hand. Self-caught
+    and fixed a straight-apostrophe-in-a-`[prev]`-label mistake (needed the typographic curly
+    quote) before the build. No `SUBTOPICS` collision for `injection` (checked both `subtopics.ts`
+    forms and `app.routes.ts` directly, confirmed collision-free, left bare). Build passed clean
+    (verified with an explicit `EXITCODE:$?` capture per the lesson from the prior batch's masked
+    failure — zero `ERROR` lines). Browser-verified: no real console errors (one unrelated
+    external-resource timeout, consistent with the prior two batches); nav accordion opens with
+    all 3 labels (15 toggles total across the hub); the Challenge-solution fix confirmed rendering
+    after Reveal Solution + both "▼ View Code" toggles (starterCode's own toggle and the
+    solution's separate one); breadcrumb and 860px wrapper confirmed on every subtopic; sidebar
+    showed tailored composite-key content. **Security & Auth hub Phase 10: 15 of 23 topics
+    complete.**
 
 ## Current state (update when it changes!)
 
@@ -6039,11 +6076,11 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 14 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 15 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
-  `/security/xss`; `/security/csrf-clickjacking`, 2026-08-30) —
+  `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`, 2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive

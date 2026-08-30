@@ -7915,7 +7915,22 @@ off here with a date.
   confirmed rendering; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
   tailored composite-key content.
   **Security & Auth hub Phase 10: 14 of 23 topics complete.**
-- [ ] `/security/injection` — Injection Attacks
+- [x] `/security/injection` — Injection Attacks (2026-08-30). 3 subtopics: The Safe Query
+  Builder's Own Column-Name Gap, XXE in Node: From ENTITY to File Read, Second-Order SQL
+  Injection, Demonstrated. Found and fixed a genuine bug in the main page's own Challenge
+  reference solution — it correctly parameterizes every VALUE but concatenates the unvalidated
+  COLUMN names (Object.keys of filters) directly into the SQL string, verified via direct Node.js
+  execution that a malicious filter key produces an injectable query even with the table
+  allowlist passing — matching the gap the page's own separate QnA already names as a general
+  principle but the Challenge's own solution never applies to itself; added an in-place note.
+  Verified via WebSearch the exact libxmljs2 parse-option API (noent/dtdload/nonet) to build a
+  working XXE demo for a concept the quiz explains but never codes. Self-caught a straight-
+  apostrophe-in-[prev]-label mistake before the build. No SUBTOPICS collision. Build passed clean
+  (verified with explicit EXITCODE capture). Browser-verified: no real console errors; nav
+  accordion opens with all 3 labels (15 toggles total across the hub); the Challenge-solution fix
+  confirmed rendering; breadcrumb and 860px wrapper confirmed on every subtopic; sidebar showed
+  tailored composite-key content.
+  **Security & Auth hub Phase 10: 15 of 23 topics complete.**
 - [ ] `/security/security-headers` — Security Headers
 - [ ] `/security/tls-https` — TLS & HTTPS
 - [ ] `/security/secrets-management` — Secrets Management
