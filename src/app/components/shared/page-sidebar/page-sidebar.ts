@@ -34273,6 +34273,39 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CSRF only matters for state-changing requests using ambient credentials (cookies) — a pure token-in-header API is inherently less exposed to classic CSRF.',
     ],
   },
+  'security/csrf-clickjacking/migrating-off-csurf-to-csrf-csrf': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' },
+      { label: 'CSRF & Clickjacking (overview)', route: '/security/csrf-clickjacking' },
+    ],
+    tip: 'csurf is officially deprecated — csrf-csrf\'s doubleCsrf() implements the same Double Submit Cookie pattern statelessly, with no server-side session storage needed at all.',
+    gotchas: [
+      'The __Host- cookie name prefix is a browser-enforced guarantee (Secure, Path=/, no Domain), not a csrf-csrf feature — it rules out subdomain-scoped cookie shadowing.',
+    ],
+  },
+  'security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Migrating Off csurf to csrf-csrf', route: '/security/csrf-clickjacking/migrating-off-csurf-to-csrf-csrf' },
+      { label: 'Login CSRF: Defending a Page With No Session Yet', route: '/security/csrf-clickjacking/login-csrf-defending-a-page-with-no-session-yet' },
+    ],
+    tip: 'Chromium\'s "Lax+POST" 2-minute exception applies only to cookies with NO explicit SameSite attribute — a cookie with SameSite=Lax written out explicitly gets full protection, no exception window at all.',
+    gotchas: [
+      'Always set SameSite explicitly on every cookie you issue — relying on the browser default silently opts into an exception window that explicit configuration removes entirely.',
+    ],
+  },
+  'security/csrf-clickjacking/login-csrf-defending-a-page-with-no-session-yet': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' },
+      { label: 'CSRF & Clickjacking (overview)', route: '/security/csrf-clickjacking' },
+    ],
+    tip: 'A pre-session CSRF token is tied to an anonymous, short-lived cookie issued on GET /login — there is no authenticated session yet to validate a standard token against at that point.',
+    gotchas: [
+      'Login CSRF logs the VICTIM into the ATTACKER\'s account, not the other way around — the risk is the victim unknowingly entering sensitive data into an attacker-controlled account.',
+    ],
+  },
   'security/tls-https': {
     apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
     related: [

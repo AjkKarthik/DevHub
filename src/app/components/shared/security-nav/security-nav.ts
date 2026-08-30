@@ -286,7 +286,26 @@ const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e
           </div>
         }
       }
-      <a routerLink="/security/csrf-clickjacking" routerLinkActive="active"><span class="nl-text">CSRF &amp; Clickjacking</span>@if(progress.isDone('sec-csrf-clickjacking')){<span class="nl-done">✓</span>}@if(d('sec-csrf-clickjacking');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/csrf-clickjacking" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <span class="nl-text">CSRF &amp; Clickjacking</span>
+        @if(progress.isDone('sec-csrf-clickjacking')){<span class="nl-done">✓</span>}
+        @if(d('sec-csrf-clickjacking');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}
+        @if (subtopicsOf('csrf-clickjacking')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('csrf-clickjacking')"
+                  (click)="toggleSubtopics('csrf-clickjacking', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('csrf-clickjacking'); as csrfSubs) {
+        @if (isSubtopicsExpanded('csrf-clickjacking')) {
+          <div class="nav-subtopics">
+            @for (s of csrfSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/security/injection" routerLinkActive="active"><span class="nl-text">Injection Attacks</span>@if(progress.isDone('sec-injection')){<span class="nl-done">✓</span>}@if(d('sec-injection');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
       <a routerLink="/security/security-headers" routerLinkActive="active"><span class="nl-text">Security Headers</span>@if(progress.isDone('sec-security-headers')){<span class="nl-done">✓</span>}@if(d('sec-security-headers');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
     </div>

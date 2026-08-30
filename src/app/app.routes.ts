@@ -3315,7 +3315,12 @@ export const routes: Routes = [
         { path: 'svg-xss-img-tag-safe-but-direct-navigation-isnt', loadComponent: () => import('./components/architecture/security/xss/subtopics/svg-xss-img-tag-safe-but-direct-navigation-isnt/svg-xss-img-tag-safe-but-direct-navigation-isnt').then(m => m.SvgXssImgTagSafeButDirectNavigationIsntSubtopic) },
         { path: 'csp-nonces-why-an-injected-script-tag-gets-blocked', loadComponent: () => import('./components/architecture/security/xss/subtopics/csp-nonces-why-an-injected-script-tag-gets-blocked/csp-nonces-why-an-injected-script-tag-gets-blocked').then(m => m.CspNoncesWhyAnInjectedScriptTagGetsBlockedSubtopic) },
       ] },
-    { path: 'csrf-clickjacking',     loadComponent: () => import('./components/architecture/security/csrf-clickjacking/csrf-clickjacking').then(m => m.SecCsrfClickjacking) },
+    { path: 'csrf-clickjacking', children: [
+        { path: '', loadComponent: () => import('./components/architecture/security/csrf-clickjacking/csrf-clickjacking').then(m => m.SecCsrfClickjacking) },
+        { path: 'migrating-off-csurf-to-csrf-csrf', loadComponent: () => import('./components/architecture/security/csrf-clickjacking/subtopics/migrating-off-csurf-to-csrf-csrf/migrating-off-csurf-to-csrf-csrf').then(m => m.MigratingOffCsurfToCsrfCsrfSubtopic) },
+        { path: 'lax-post-why-explicit-samesite-beats-the-default', loadComponent: () => import('./components/architecture/security/csrf-clickjacking/subtopics/lax-post-why-explicit-samesite-beats-the-default/lax-post-why-explicit-samesite-beats-the-default').then(m => m.LaxPostWhyExplicitSamesiteBeatsTheDefaultSubtopic) },
+        { path: 'login-csrf-defending-a-page-with-no-session-yet', loadComponent: () => import('./components/architecture/security/csrf-clickjacking/subtopics/login-csrf-defending-a-page-with-no-session-yet/login-csrf-defending-a-page-with-no-session-yet').then(m => m.LoginCsrfDefendingAPageWithNoSessionYetSubtopic) },
+      ] },
     { path: 'injection',             loadComponent: () => import('./components/architecture/security/injection/injection').then(m => m.SecInjection) },
     { path: 'security-headers',      loadComponent: () => import('./components/architecture/security/security-headers/security-headers').then(m => m.SecSecurityHeaders) },
     { path: 'tls-https',             loadComponent: () => import('./components/architecture/security/tls-https/tls-https').then(m => m.SecTlsHttps) },

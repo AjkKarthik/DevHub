@@ -3498,4 +3498,9 @@ export const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SVG XSS: Why img Is Safe But Direct Navigation Isn’t', route: '/security/xss/svg-xss-img-tag-safe-but-direct-navigation-isnt' },
     { label: 'CSP Nonces: Why an Injected Script Tag Gets Blocked', route: '/security/xss/csp-nonces-why-an-injected-script-tag-gets-blocked' },
   ],
+  'csrf-clickjacking': [
+    { label: 'Migrating Off csurf to csrf-csrf', route: '/security/csrf-clickjacking/migrating-off-csurf-to-csrf-csrf' },
+    { label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' },
+    { label: 'Login CSRF: Defending a Page With No Session Yet', route: '/security/csrf-clickjacking/login-csrf-defending-a-page-with-no-session-yet' },
+  ],
 };

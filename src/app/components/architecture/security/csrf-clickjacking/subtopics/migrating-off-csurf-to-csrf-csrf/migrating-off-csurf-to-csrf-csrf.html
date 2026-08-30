@@ -1,0 +1,26 @@
+<div class="sec-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="CSRF &amp; Clickjacking" topicRoute="/security/csrf-clickjacking"
+    subtopicLabel="Migrating Off csurf to csrf-csrf" />
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Migrating Off csurf to csrf-csrf</h1>
+  <p class="page-subtitle">The main page's own CSRF codeTab uses csurf — officially deprecated. Here's the maintained Double Submit Cookie replacement, and why it needs no session storage at all.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Always" tech="javascript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sec-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sec-section">
+    <h2>Where this fits</h2>
+    <p>The main page's own QnA raises a real gap in the SameSite=Lax story too — the next subtopic traces exactly which cookies get Chromium's 2-minute "Lax+POST" exception, and which don't.</p>
+  </section>
+
+  <app-subtopic-nav topicLabel="CSRF &amp; Clickjacking" topicRoute="/security/csrf-clickjacking"
+    [next]="{ label: 'Lax+POST: Why Explicit SameSite Beats the Default', route: '/security/csrf-clickjacking/lax-post-why-explicit-samesite-beats-the-default' }" />
+</div>
