@@ -7957,7 +7957,7 @@ off here with a date.
   verified: no console errors; nav accordion opens with all 3 labels (17 toggles total across the
   hub); breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
   **Security & Auth hub Phase 10: 17 of 23 topics complete — Transport & Crypto nav group started.**
-- [ ] `/security/secrets-management` — Secrets Management
+- [x] `/security/secrets-management` — Secrets Management (2026-08-30, see entry below)
 - [ ] `/security/container-security` — Container Security
 - [x] `/security/symmetric-encryption` — Symmetric Encryption (2026-08-30). 3 subtopics, all
   gap-closing (clean main page — double-checked the "2^32 messages" GCM IV-collision claim
@@ -8005,6 +8005,23 @@ off here with a date.
   content. **This completes the Transport & Crypto nav group entirely** (tls-https,
   symmetric-encryption, asymmetric-cryptography, hashing — all 4 topics now have subtopics).
   **Security & Auth hub Phase 10: 20 of 23 topics complete.**
+- [x] `/security/secrets-management` — Secrets Management (2026-08-30). First topic in the new
+  "Infrastructure" nav group. Fixed a genuine scoping bug in the main page's own "AWS Secrets
+  Manager" codeTab: `pool` was declared `const` inside `main()`'s local scope while a separate
+  top-level `queryWithRetry()` function reads/reassigns it — hoisted to module-scope
+  `let pool: Pool;`. 3 subtopics, each verified against HashiCorp's own official Vault HTTP API
+  docs (WebFetch before writing code): Renewing a Vault Lease Before It Expires (real
+  `POST /v1/sys/leases/renew`, renew at 2/3 TTL, fallback to fresh credential fetch); Vault
+  Transit: Encryption as a Service, Implemented (real `POST /v1/transit/encrypt|decrypt/:name`,
+  `vault:v1:...` prefix enabling zero-code-change key rotation); The Vault Agent Injector Sidecar
+  Pattern in Kubernetes (real `vault.hashicorp.com/agent-inject-*` pod annotations, app container
+  reads a plain injected file with no Vault permissions of its own). Self-caught a CodeTab
+  language-tag mistake (YAML manifest tagged `'typescript'`, fixed to `'bash'` — no yaml/json
+  option exists in the `CodeTab` interface). No SUBTOPICS collision. Build passed clean (explicit
+  EXITCODE capture). Browser-verified: no console errors on any of the 4 pages; nav accordion
+  opens with all 3 labels (21 toggles total across the hub); the `pool` fix confirmed rendering
+  live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key content.
+  **Security & Auth hub Phase 10: 21 of 23 topics complete.**
 - [ ] `/security/supply-chain` — Supply Chain Security
 
 #### API Design — 19 topic pages

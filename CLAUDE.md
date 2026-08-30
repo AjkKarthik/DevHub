@@ -5235,6 +5235,36 @@ this same check before any other new hub's first subtopic set:
     composite-key content. **This completes the Transport & Crypto nav group entirely**
     (`tls-https`, `symmetric-encryption`, `asymmetric-cryptography`, `hashing` — all 4 topics now
     have subtopics). **Security & Auth hub Phase 10: 20 of 23 topics complete.**
+21. **The `secrets-management` batch — the first topic in the "Infrastructure" nav group — found
+    and fixed a genuine scoping bug in the main page's own "AWS Secrets Manager" codeTab**: `pool`
+    was declared `const pool = new Pool(...)` INSIDE `main()`'s local function scope, but a
+    separate, top-level `queryWithRetry()` function on the SAME page reads and reassigns `pool` —
+    a plain out-of-scope reference, findable by static reading alone (no external research
+    needed). Fixed by hoisting to module-scope `let pool: Pool;`. Three subtopics, each verified
+    against HashiCorp's own official Vault HTTP API docs (fetched directly via WebFetch before
+    writing any code, following the discipline established in the `tls-https` batch's own
+    fabricated-API near-miss): (1) **Renewing a Vault Lease Before It Expires** — a lease-renewal
+    loop using the real `POST /v1/sys/leases/renew` API, renewing at 2/3 of granted duration with
+    a fallback to a fresh credential fetch once renewal starts failing (as it eventually must, once
+    a mount's `max_ttl` ceiling approaches); (2) **Vault Transit: Encryption as a Service,
+    Implemented** — `transitEncrypt`/`transitDecrypt` functions using the real
+    `POST /v1/transit/encrypt|decrypt/:name` API, with a Try It on the `vault:v1:...` ciphertext
+    prefix that lets key rotation happen with zero application code changes; (3) **The Vault Agent
+    Injector Sidecar Pattern in Kubernetes** — a Deployment manifest using the real, verified
+    `vault.hashicorp.com/agent-inject-*` pod annotations, with the application container reading
+    only a plain file from a shared volume and needing zero Vault-specific code or permissions of
+    its own. **A self-caught CodeTab language-tag mistake**: the YAML Deployment manifest was
+    initially tagged `language: 'typescript'`; checking `code-block.ts`'s actual `CodeTab`
+    interface confirmed no `'yaml'`/`'json'` option exists (`'typescript' | 'html' | 'scss' |
+    'bash' | 'csharp' | 'sql' | 'css'` only) — fixed to `'bash'`, matching the established
+    Azure/SQL/Terraform-hub convention for non-TS content. No `SUBTOPICS` collision for
+    `secrets-management` (checked both `subtopics.ts` forms and grepped `app.routes.ts` directly,
+    confirmed collision-free, left bare). Build passed clean (explicit `EXITCODE:$?` capture, zero
+    `ERROR` lines). Browser-verified: no console errors on any of the 4 pages; nav accordion opens
+    with all 3 labels (21 toggles total across the hub); the `pool` scoping fix confirmed
+    rendering live inside the "AWS Secrets Manager" code tab; breadcrumb and 860px wrapper
+    confirmed on every subtopic; sidebar showed tailored composite-key content. **Security & Auth
+    hub Phase 10: 21 of 23 topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6236,13 +6266,14 @@ this same check before any other new hub's first subtopic set:
   All 25 cards `available: true` in `architecture/security/home/home.ts`. Progress: `secTotal=23` in progress.service.ts.
   Security pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. SecurityNavComponent at `shared/security-nav/security-nav.ts`.
-  Phase 10: 20 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
+  Phase 10: 21 of 23 topics have subtopics (`/security/fundamentals`, pilot batch;
   `/security/owasp-top-10`; `/security/threat-modelling`; `/security/secure-coding`;
   `/security/password-security`; `/security/oauth-oidc`; `/security/jwt`; `/security/mfa`;
   `/security/sso`; `/security/rbac-abac`; `/security/claims-identity`; `/security/api-security`;
   `/security/xss`; `/security/csrf-clickjacking`; `/security/injection`;
   `/security/security-headers`; `/security/tls-https`; `/security/symmetric-encryption`;
-  `/security/asymmetric-cryptography`; `/security/hashing`, 2026-08-30) —
+  `/security/asymmetric-cryptography`; `/security/hashing`; `/security/secrets-management`,
+  2026-08-30) —
   see "Security & Auth hub subtopic wiring" section above for the `SecurityNavComponent` accordion
   structural fix, the `sec-fundamentals` SUBTOPICS-map collision resolution (collided with the
   JavaScript hub's own bare `fundamentals` topic key), and the `sec-api-security` proactive
