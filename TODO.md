@@ -8134,7 +8134,25 @@ off here with a date.
   where-clause fix confirmed rendering live; breadcrumb and 860px wrapper confirmed; sidebar
   showed tailored composite-key content. **API Design hub Phase 10: 4 of 19 topics complete --
   Foundations nav group fully done.**
-- [ ] `/api-design/api-versioning` — API Versioning Strategies
+- [x] `/api-design/api-versioning` — API Versioning Strategies (2026-08-30). First topic in the
+  REST Design nav group. Fixed a genuine ordering bug in the main page's own "Header Versioning"
+  codeTab: a warning middleware was registered AFTER the /users route handler, which never calls
+  next() -- since Express walks middleware in registration order and a non-next()-calling handler
+  ends the chain, the middleware was dead code. Verified via a direct simulation of Express's own
+  middleware-stack-walking behavior (both broken and fixed, matching claimed output exactly).
+  Fixed by reordering registration. Extended the generic `subtopicsOf(item.path)` accordion
+  pattern to the REST Design group's own separate `@for` loop (previously only wired for
+  Foundations) -- the shared class methods needed no changes. Real bare-SUBTOPICS-key REUSE, not
+  a fresh collision: the ASP.NET hub's own api-versioning topic was pre-emptively hub-prefixed to
+  `aspnet-api-versioning` in an earlier session anticipating this exact moment (confirmed via its
+  own inline NOTE comment); verified `/aspnet/api-versioning` renders unaffected. 3 subtopics: the
+  middleware-ordering bug traced via simulation (verified via execution); a real 410 Gone route
+  for a version past its sunset date, named in two QnAs but never built; a real expand-contract
+  field rename with usage-monitoring middleware. Build passed clean. Browser-verified: no console
+  errors on any of the 4 new pages or on /aspnet/api-versioning (cross-hub isolation check); nav
+  accordion opens with all 3 labels (5 toggles total); the middleware-order fix confirmed
+  rendering live; breadcrumb and 860px wrapper confirmed; sidebar showed tailored composite-key
+  content. **API Design hub Phase 10: 5 of 19 topics complete.**
 - [ ] `/api-design/error-response-design` — Error Response Design
 - [ ] `/api-design/hateoas-hypermedia` — HATEOAS & Hypermedia
 - [ ] `/api-design/protocol-buffers` — Protocol Buffers

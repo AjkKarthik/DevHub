@@ -5526,6 +5526,42 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
     content. **API Design hub Phase 10: 4 of 19 topics complete — the Foundations nav group is now
     fully done (rest-fundamentals, resource-url-design, http-methods-status-codes,
     pagination-patterns all have subtopics); REST Design is next.**
+12. **The `api-versioning` batch — the first topic in the REST Design nav group — found and fixed
+    a genuine ordering bug in the main page's own "Header Versioning" codeTab**: a warning
+    middleware meant to flag requests missing the `api-version` header was registered AFTER the
+    `/users` route handler — which never calls `next()`. Since Express walks middleware/routes in
+    registration order and a non-`next()`-calling handler ends the chain there, the warning
+    middleware was dead code for the only route the codeTab demonstrates. Verified via a direct
+    simulation of Express's own middleware-stack-walking behavior (a minimal `createApp()`
+    reproducing registration-order execution), confirmed both broken (middleware never runs) and
+    fixed (runs correctly, in order) matching claimed output exactly. Fixed by reordering
+    registration. **Extended the generic `subtopicsOf(item.path)` accordion pattern to the REST
+    Design nav group's own separate `@for` loop** — previously wired only for Foundations; the
+    shared `subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` methods on the class needed no
+    changes, only the SECOND loop's template markup needed the same treatment applied once. **A
+    real bare-key REUSE, not a fresh collision, confirmed via an inline NOTE comment left by an
+    earlier session**: the ASP.NET hub's own `api-versioning` topic had already been pre-emptively
+    hub-prefixed to `aspnet-api-versioning`, anticipating this exact moment — bare `api-versioning`
+    was free for this hub's own use, confirmed via direct browser navigation that
+    `/aspnet/api-versioning` renders completely unaffected by this batch. Three subtopics: (1)
+    **fix-adjacent** — the middleware-ordering bug traced via the same minimal Express-stack
+    simulation, verified via direct execution matching both the broken and fixed console output
+    exactly, with a Try It on why "just call `next()` after the response is already sent" is a
+    worse non-fix than reordering; (2) **gap-closing** — a real `410 Gone` route for a version past
+    its sunset date, named in TWO separate QnAs (the deprecation-process QnA and a dedicated
+    410-vs-404 QnA) but never built in any codeTab; (3) **gap-closing** — a real expand-contract
+    field rename (`customer_name` → `customerName`) with genuine usage-monitoring middleware, plus
+    a Try It on why counting SERVED responses containing the old field is necessary but not
+    sufficient proof it's safe to remove (it never observes whether a CLIENT actually reads it).
+    No further `SUBTOPICS` collision beyond the confirmed-safe reuse above. All three
+    `solution`/`heading` fields swept clean via the standing apostrophe/backtick-parity scripts
+    before the build. Build passed clean (explicit `EXITCODE:$?` capture, zero `ERROR` lines) —
+    also confirming no duplicate-key error from the bare `api-versioning` reuse. Browser-verified:
+    no console errors on any of the 4 new pages OR on `/aspnet/api-versioning` (cross-hub isolation
+    check); nav accordion opens with all 3 labels (5 toggles total across the hub); the
+    middleware-order fix confirmed rendering live; breadcrumb and 860px wrapper confirmed on every
+    subtopic; sidebar showed tailored composite-key content. **API Design hub Phase 10: 5 of 19
+    topics complete.**
 
 ## Current state (update when it changes!)
 
@@ -6553,16 +6589,20 @@ Confirmed via direct file inspection before the pilot (`/api-design/rest-fundame
   All 21 cards `available: true` in `architecture/api-design/home/home.ts`. Progress: `apiTotal=19` in progress.service.ts.
   API Design pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
   Challenge.language: `'typescript'`. ApiDesignNavComponent at `shared/api-design-nav/api-design-nav.ts`.
-  Phase 10: 4 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
+  Phase 10: 5 of 19 topics have subtopics (`/api-design/rest-fundamentals`, pilot batch;
   `/api-design/resource-url-design`; `/api-design/http-methods-status-codes`;
-  `/api-design/pagination-patterns`, 2026-08-30 — Foundations nav group fully done) — see
-  "API Design hub subtopic wiring" section above for the `ApiDesignNavComponent` accordion
-  structural fix and the generic `subtopicsOf(item.path)` toggle-gating pattern this hub's
-  `@for`-looped nav template needed (a first for this hub, since most prior hubs hand-write one
-  `<a>` per topic) — generalized from a per-topic hardcoded check to a lookup keyed directly off
-  the loop's own `item.path` once a second topic in the same nav group needed subtopics too,
-  confirmed requiring zero further template changes for a third AND fourth topic in the same
-  group.
+  `/api-design/pagination-patterns` — Foundations nav group fully done; `/api-design/api-versioning`
+  — REST Design nav group started, 2026-08-30) — see "API Design hub subtopic wiring" section above
+  for the `ApiDesignNavComponent` accordion structural fix and the generic `subtopicsOf(item.path)`
+  toggle-gating pattern this hub's `@for`-looped nav template needed (a first for this hub, since
+  most prior hubs hand-write one `<a>` per topic) — generalized from a per-topic hardcoded check to
+  a lookup keyed directly off the loop's own `item.path` once a second topic in the same nav group
+  needed subtopics too, confirmed requiring zero further template changes for a third and fourth
+  topic in the same group, then extended to a SECOND, separate `@for` loop (REST Design) once that
+  group's own first topic needed it — the shared class methods required no changes, only that
+  loop's own template markup. Also confirmed a real bare-`SUBTOPICS`-key REUSE (not a fresh
+  collision): the ASP.NET hub's own `api-versioning` topic was pre-emptively hub-prefixed to
+  `aspnet-api-versioning` in an earlier session specifically anticipating this moment.
 - **Observability & SRE hub**: 20 trackable topic pages + 2 reference (22 cards total). Feature-complete.
   Emerald theme `$accent: #059669`, `$tint: #ecfdf5`, dark `#34d399`. Search prefix `obs-`. Route: `/observability`.
   CSS classes: `.obs-page`, `.obs-icon`, `.obs-section`. Icon content: `📊` at `font-size: 1.8rem`. `tech="javascript"`.
